@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import AdSlot from "@/components/ads/AdSlot";
 import { saveBlob } from "@/lib/download";
 import { useTranslations } from "next-intl";
 import { commonOutputs, formats, type FormatId } from "@/config/formats";
 import { isRunnable } from "@/lib/convert";
+import { canConvertImageInBrowser, preloadImageCodecs } from "@/lib/image/client";
 import {
   DEFAULT_QUALITY,
   lossyFormats,
@@ -19,6 +20,12 @@ import { useFileQueue } from "./useFileQueue";
 // Only shown once files are added: keep them out of the initial bundle.
 const FileRow = dynamic(() => import("./FileRow"));
 const ImageOptionsPanel = dynamic(() => import("./ImageOptionsPanel"));
+
+/** Loads the image codecs for a conversion in the background. */
+function preload(froms: readonly (FormatId | undefined)[], to: FormatId | undefined) {
+  if (!to || formats[to].category !== "image" || !canConvertImageInBrowser(to)) return;
+  for (const from of froms) if (from !== "pdf") preloadImageCodecs(from, to);
+}
 
 interface Props {
   /** Conversion pages preselect their formats. */
@@ -48,6 +55,13 @@ export default function Converter({ from, to, options }: Props = {}) {
   const done = items.flatMap((i) => (i.job?.status === "done" ? [i.job] : []));
   const [zipping, setZipping] = useState(false);
 
+  // Picking an output (or adding files) fetches its codecs right away.
+  const preloadTo = selected?.engine === "browser" ? selected.to : undefined;
+  const preloadFrom = [...new Set(detected)].join(",");
+  useEffect(() => {
+    preload(preloadFrom ? (preloadFrom.split(",") as FormatId[]) : [undefined], preloadTo);
+  }, [preloadFrom, preloadTo]);
+
   async function downloadAll() {
     setZipping(true);
     try {
@@ -59,7 +73,13 @@ export default function Converter({ from, to, options }: Props = {}) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    // Conversion pages know the formats: start loading when the user heads
+    // for the tool (hover/focus), not on page load.
+    <div
+      className="flex flex-col gap-4"
+      onPointerEnter={to ? () => preload([from], to) : undefined}
+      onFocus={to ? () => preload([from], to) : undefined}
+    >
       <div className="flex justify-center">
         <ProcessingBadge engine={selected?.engine ?? "browser"} />
       </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { formats, type FormatId } from "@/config/formats";
-import type { ImageJob, ImageWorkerMessage } from "@/workers/protocol";
+import type { ImageJob, ImageWorkerMessage, PreloadRequest } from "@/workers/protocol";
 import { computeSize } from "./dimensions";
 import { browserImageOutputs, type ImageOptions } from "./options";
 import { svgIntrinsicSize } from "./svg";
@@ -57,6 +57,21 @@ function getWorker() {
     worker = null;
   };
   return worker;
+}
+
+const preloaded = new Set<string>();
+
+/**
+ * Starts the worker and loads the codecs for `from` → `to` in the background
+ * (once per pair), so the first conversion doesn't wait for the download.
+ */
+export function preloadImageCodecs(from: FormatId | undefined, to: FormatId | undefined) {
+  if (typeof Worker === "undefined" || (!from && !to)) return;
+  const key = `${from ?? ""}>${to ?? ""}`;
+  if (preloaded.has(key)) return;
+  preloaded.add(key);
+  const request: PreloadRequest = { type: "preload", from, to };
+  getWorker().postMessage(request);
 }
 
 export function canConvertImageInBrowser(to: FormatId) {

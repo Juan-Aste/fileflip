@@ -693,3 +693,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Qué sigue**
 - 2A.7: caché inmutable para `.wasm`/workers y precarga del códec.
+
+## 2026-10-20 00:05 UTC — Fase 2, tarea 2A.7 (caché de WASM/workers y precarga del códec)
+
+**Qué se hizo**
+- Caché: todos los `.wasm` (`/_next/static/media/*.<hash>.wasm`) y los chunks de los workers (`/_next/static/chunks/<id>.<hash>.js`) ya llevan hash en el nombre y Next los sirve con `Cache-Control: public, max-age=31536000, immutable` (verificado con `curl -I` sobre `next start`, que es lo que corre en Railway). No se agregó `headers()` en `next.config.ts`: Next ignora/sobrescribe cabeceras propias en `/_next/static` y `public/` está vacío.
+- Precarga del códec (`preloadImageCodecs(from, to)` en `src/lib/image/client.ts`): manda un mensaje `preload` al worker compartido (una vez por par), que importa e inicializa el códec (`encoderWarmers`/`decoderWarmers` en `codecs.ts`: @jsquash jpg/png/webp/avif con `init()`, gifenc, utif2 y libheif). Un trabajo que llega mientras se precarga espera esa misma promesa (no compila dos veces). Si la precarga falla, el trabajo carga el códec como antes.
+- `Converter`: precarga al elegir el formato de salida o al agregar archivos (incluido el decodificador HEIC), y en las páginas de conversión cuando el usuario pasa el mouse o enfoca la herramienta. Nada se descarga al cargar la página.
+- `heic.ts`: `loadHeic()` idempotente (promesa compartida).
+- Tests: `src/lib/image/preload.test.ts` (un worker, un mensaje por par, sin Worker no falla; cobertura de los códecs WASM).
+
+**Verificación (Chromium + `next start`)**
+- `/es/jpg-a-webp`: 0 `.wasm` al cargar; al pasar el mouse por la herramienta se descarga `webp_enc_simd.wasm`.
+- Portada: al agregar un HEIC se precarga el códec de la salida por defecto (JPG) y al elegir AVIF el de AVIF; la conversión HEIC → AVIF termina con "Descargar". PNG → WEBP en `/es/png-a-webp` después de la precarga: correcto (8,4 kB → 944 B).
+
+**Qué sigue**
+- 2A.8: pool de workers con concurrencia limitada y liberación de memoria.

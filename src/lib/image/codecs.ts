@@ -86,3 +86,24 @@ export const decoders: Partial<Record<FormatId, Decoder>> = {
     return { width, height, data: new Uint8ClampedArray(UTIF.toRGBA8(ifd)) };
   },
 };
+
+/**
+ * Download and compile a format's code ahead of time (the user picked the
+ * output or is about to drop a file) so the first conversion doesn't wait.
+ * Formats encoded natively or in plain JS need nothing.
+ */
+export const encoderWarmers: Partial<Record<FormatId, () => Promise<unknown>>> = {
+  jpg: async () => (await import("@jsquash/jpeg/encode")).init(),
+  png: async () => (await import("@jsquash/png/encode")).init(),
+  webp: async () => (await import("@jsquash/webp/encode")).init(),
+  avif: async () => (await import("@jsquash/avif/encode")).init(),
+  gif: () => import("gifenc"),
+  tiff: () => import("utif2"),
+  ico: async () => (await import("@jsquash/png/encode")).init(),
+};
+
+/** Only for inputs browsers (except Safari) can't decode natively. */
+export const decoderWarmers: Partial<Record<FormatId, () => Promise<unknown>>> = {
+  heic: async () => (await import("./heic")).loadHeic(),
+  tiff: () => import("utif2"),
+};

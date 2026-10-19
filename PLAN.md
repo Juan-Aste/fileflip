@@ -128,7 +128,7 @@ Meta: Lighthouse móvil ≥ 90 en portada y páginas de conversión, sin empeora
 - [x] 2A.4 Reducir el JS inicial: componentes de servidor donde se pueda (header, footer, secciones estáticas), import dinámico de las herramientas PDF y de paneles que no están a la vista (opciones, ZIP), y verificar que pdf.js/pdf-lib/fflate/códecs no entren al bundle de la portada
 - [x] 2A.5 Revisar SSG/ISR: conversiones, cola larga y legales estáticas en los 5 idiomas; precios con el mínimo dinamismo posible; solo cuenta y API por pedido
 - [x] 2A.6 Sin saltos de diseño: espacio reservado para anuncios (también mientras se carga el plan), imágenes con `next/image` y tamaños, y `next/font` preparado (subconjuntos, `display: swap`)
-- [ ] 2A.7 Caché larga e inmutable para `.wasm` y workers con hash (`headers()` en `next.config.ts`), y precarga del códec al elegir formato o al pasar el mouse por la herramienta
+- [x] 2A.7 Caché larga e inmutable para `.wasm` y workers con hash (`headers()` en `next.config.ts`), y precarga del códec al elegir formato o al pasar el mouse por la herramienta
 - [ ] 2A.8 Workers: reutilizar el worker, lotes con concurrencia limitada según `navigator.hardwareConcurrency` (pool), liberar memoria (`revokeObjectURL`, `ImageBitmap.close`) + tests del pool
 - [ ] 2A.9 Servidor: índices en MongoDB para las consultas actuales y del panel, timeouts razonables hacia Gotenberg, respuestas sin copias innecesarias de buffers
 - [ ] 2A.10 Medición final de 2A (mismas páginas y método) y comparación en `docs/perf/`
