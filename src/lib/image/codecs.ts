@@ -73,6 +73,8 @@ export const decoders: Partial<Record<FormatId, Decoder>> = {
     if (!image) throw new Error("AVIF decode failed");
     return image;
   },
+  // Safari 17+ decodes HEIC natively; everyone else needs libheif.
+  heic: async (buffer) => (await import("./heic")).decodeHeic(buffer),
   // Only Safari decodes TIFF natively.
   tiff: async (buffer) => {
     const UTIF = await import("utif2");

@@ -181,6 +181,19 @@
 **Qué sigue**
 - 2.6: HEIC de entrada.
 
+## 2026-10-19 — Sesión 5 (tarea 2.6: HEIC)
+
+**Qué se hizo**
+- `libheif-js` (variante ESM con el WASM embebido, `libheif-bundle.mjs`): `src/lib/image/heic.ts` decodifica la imagen principal aplicando la rotación guardada en el archivo y libera la memoria WASM. El módulo (~2 MB) se carga solo la primera vez que alguien convierte un HEIC, dentro del worker.
+- El worker intenta primero el decodificador nativo (Safari 17+ lo soporta) y si falla usa libheif.
+- Test con un HEIC real de 120×80 (`tests/fixtures/photo.heic`, generado con pillow-heif). Probado en Chromium: HEIC → JPG y PNG.
+
+**Decisiones**
+- Se eligió libheif-js en vez de heic2any porque heic2any necesita el DOM (no funciona dentro de un Web Worker). libheif es LGPL-3.0: se usa sin modificar y en un chunk separado que se carga dinámicamente, lo que es compatible con la licencia; conviene mencionarlo en la página de licencias/créditos.
+
+**Qué sigue**
+- 2.7: insignia "Se procesa en tu dispositivo" / "en nuestro servidor".
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
