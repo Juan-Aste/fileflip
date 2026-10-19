@@ -1,10 +1,72 @@
 {
   "Metadata": {
-    "title": "FileFlip — Convertí archivos e imágenes gratis",
-    "description": "Convertí imágenes y documentos sin marcas de agua ni registro. Lo que se puede, se procesa en tu dispositivo."
+    "title": "FileFlip — Convierte archivos e imágenes gratis",
+    "description": "Convierte imágenes y documentos sin marcas de agua ni registro. Lo que se puede, se procesa en tu dispositivo."
+  },
+  "Common": {
+    "appName": "FileFlip",
+    "skipToContent": "Saltar al contenido",
+    "loading": "Cargando…",
+    "close": "Cerrar",
+    "download": "Descargar",
+    "cancel": "Cancelar",
+    "retry": "Reintentar"
+  },
+  "Header": {
+    "homeLink": "Inicio de FileFlip",
+    "nav": {
+      "tools": "Herramientas",
+      "pricing": "Precios",
+      "login": "Iniciar sesión",
+      "account": "Mi cuenta"
+    },
+    "mainNav": "Navegación principal"
+  },
+  "LocaleSwitcher": {
+    "label": "Idioma"
+  },
+  "Theme": {
+    "toggle": "Cambiar tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "Footer": {
+    "tagline": "Conversión de archivos rápida y privada.",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "contact": "Contacto",
+    "pricing": "Precios",
+    "copyright": "© {year} FileFlip. Sin marcas de agua, sin registro obligatorio."
   },
   "HomePage": {
-    "title": "FileFlip",
-    "tagline": "Convertí tus archivos sin que salgan de tu computadora."
+    "title": "Convierte tus archivos sin que salgan de tu computadora",
+    "tagline": "Imágenes y PDF se procesan directamente en tu navegador: más rápido, más privado y gratis. Sin marcas de agua y sin crear una cuenta.",
+    "cta": "Elegir archivos",
+    "features": {
+      "heading": "¿Por qué FileFlip?",
+      "privacy": {
+        "title": "Privado de verdad",
+        "body": "Tus imágenes y PDF nunca se suben: todo ocurre en tu dispositivo."
+      },
+      "speed": {
+        "title": "Rapidísimo",
+        "body": "Sin esperar subidas ni descargas. La conversión empieza al instante."
+      },
+      "free": {
+        "title": "Gratis y sin registro",
+        "body": "Sin marcas de agua, sin cuentas obligatorias y sin límites ocultos."
+      },
+      "office": {
+        "title": "También documentos de oficina",
+        "body": "Word, Excel y PowerPoint se convierten en nuestro servidor y se borran en 1 hora."
+      }
+    }
+  },
+  "Errors": {
+    "generic": "Algo salió mal. Inténtalo de nuevo.",
+    "notFoundTitle": "Página no encontrada",
+    "notFoundBody": "La página que buscas no existe o fue movida.",
+    "backHome": "Volver al inicio"
   }
 }

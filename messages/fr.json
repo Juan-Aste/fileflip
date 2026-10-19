@@ -1,10 +1,72 @@
 {
   "Metadata": {
     "title": "FileFlip — Convertissez fichiers et images gratuitement",
-    "description": "Convertissez images et documents sans filigrane ni inscription. Tout ce qui peut se faire sur votre appareil y reste."
+    "description": "Convertissez images et documents sans filigrane ni inscription. Tout ce qui peut être traité sur votre appareil y reste."
+  },
+  "Common": {
+    "appName": "FileFlip",
+    "skipToContent": "Aller au contenu",
+    "loading": "Chargement…",
+    "close": "Fermer",
+    "download": "Télécharger",
+    "cancel": "Annuler",
+    "retry": "Réessayer"
+  },
+  "Header": {
+    "homeLink": "Accueil FileFlip",
+    "nav": {
+      "tools": "Outils",
+      "pricing": "Tarifs",
+      "login": "Se connecter",
+      "account": "Mon compte"
+    },
+    "mainNav": "Navigation principale"
+  },
+  "LocaleSwitcher": {
+    "label": "Langue"
+  },
+  "Theme": {
+    "toggle": "Changer de thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "Footer": {
+    "tagline": "Conversion de fichiers rapide et confidentielle.",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "contact": "Contact",
+    "pricing": "Tarifs",
+    "copyright": "© {year} FileFlip. Sans filigrane, sans inscription obligatoire."
   },
   "HomePage": {
-    "title": "FileFlip",
-    "tagline": "Convertissez vos fichiers sans qu'ils quittent votre ordinateur."
+    "title": "Convertissez vos fichiers sans qu'ils quittent votre ordinateur",
+    "tagline": "Images et PDF sont traités directement dans votre navigateur : plus rapide, plus confidentiel et gratuit. Sans filigrane ni compte.",
+    "cta": "Choisir des fichiers",
+    "features": {
+      "heading": "Pourquoi FileFlip ?",
+      "privacy": {
+        "title": "Vraiment confidentiel",
+        "body": "Vos images et PDF ne sont jamais envoyés : tout se passe sur votre appareil."
+      },
+      "speed": {
+        "title": "Ultra rapide",
+        "body": "Pas d'attente d'envoi ni de téléchargement. La conversion démarre aussitôt."
+      },
+      "free": {
+        "title": "Gratuit, sans inscription",
+        "body": "Pas de filigrane, pas de compte obligatoire, pas de limite cachée."
+      },
+      "office": {
+        "title": "Documents bureautiques aussi",
+        "body": "Word, Excel et PowerPoint sont convertis sur notre serveur et supprimés sous 1 heure."
+      }
+    }
+  },
+  "Errors": {
+    "generic": "Une erreur s'est produite. Veuillez réessayer.",
+    "notFoundTitle": "Page introuvable",
+    "notFoundBody": "La page que vous cherchez n'existe pas ou a été déplacée.",
+    "backHome": "Retour à l'accueil"
   }
 }

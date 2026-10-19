@@ -1,10 +1,72 @@
 {
   "Metadata": {
     "title": "FileFlip — 免费转换文件和图片",
-    "description": "无水印、无需注册即可转换图片和文档。能在您设备上完成的处理，都在本地完成。"
+    "description": "转换图片和文档，无水印、无需注册。能在你设备上完成的处理，都留在你的设备上。"
+  },
+  "Common": {
+    "appName": "FileFlip",
+    "skipToContent": "跳到主要内容",
+    "loading": "加载中…",
+    "close": "关闭",
+    "download": "下载",
+    "cancel": "取消",
+    "retry": "重试"
+  },
+  "Header": {
+    "homeLink": "FileFlip 首页",
+    "nav": {
+      "tools": "工具",
+      "pricing": "价格",
+      "login": "登录",
+      "account": "我的账户"
+    },
+    "mainNav": "主导航"
+  },
+  "LocaleSwitcher": {
+    "label": "语言"
+  },
+  "Theme": {
+    "toggle": "切换主题",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
+  "Footer": {
+    "tagline": "快速、私密的文件转换。",
+    "privacy": "隐私",
+    "terms": "条款",
+    "contact": "联系我们",
+    "pricing": "价格",
+    "copyright": "© {year} FileFlip。无水印，无需注册。"
   },
   "HomePage": {
-    "title": "FileFlip",
-    "tagline": "转换文件，文件始终留在您的电脑上。"
+    "title": "转换文件，文件不离开你的电脑",
+    "tagline": "图片和 PDF 直接在浏览器中处理：更快、更私密，而且免费。无水印，无需创建账户。",
+    "cta": "选择文件",
+    "features": {
+      "heading": "为什么选择 FileFlip？",
+      "privacy": {
+        "title": "真正的隐私",
+        "body": "你的图片和 PDF 从不上传，一切都在你的设备上完成。"
+      },
+      "speed": {
+        "title": "极速",
+        "body": "无需等待上传或下载，转换立即开始。"
+      },
+      "free": {
+        "title": "免费，无需注册",
+        "body": "无水印、无强制账户、无隐藏限制。"
+      },
+      "office": {
+        "title": "也支持办公文档",
+        "body": "Word、Excel 和 PowerPoint 在我们的服务器上转换，并在 1 小时内删除。"
+      }
+    }
+  },
+  "Errors": {
+    "generic": "出了点问题，请重试。",
+    "notFoundTitle": "页面未找到",
+    "notFoundBody": "你要找的页面不存在或已被移动。",
+    "backHome": "返回首页"
   }
 }

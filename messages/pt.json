@@ -1,10 +1,72 @@
 {
   "Metadata": {
     "title": "FileFlip — Converta arquivos e imagens grátis",
-    "description": "Converta imagens e documentos sem marca d'água e sem cadastro. O que dá para fazer no seu aparelho é feito nele."
+    "description": "Converta imagens e documentos sem marca d'água e sem cadastro. O que dá para fazer no seu aparelho fica no seu aparelho."
+  },
+  "Common": {
+    "appName": "FileFlip",
+    "skipToContent": "Pular para o conteúdo",
+    "loading": "Carregando…",
+    "close": "Fechar",
+    "download": "Baixar",
+    "cancel": "Cancelar",
+    "retry": "Tentar de novo"
+  },
+  "Header": {
+    "homeLink": "Página inicial do FileFlip",
+    "nav": {
+      "tools": "Ferramentas",
+      "pricing": "Preços",
+      "login": "Entrar",
+      "account": "Minha conta"
+    },
+    "mainNav": "Navegação principal"
+  },
+  "LocaleSwitcher": {
+    "label": "Idioma"
+  },
+  "Theme": {
+    "toggle": "Mudar tema",
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema"
+  },
+  "Footer": {
+    "tagline": "Conversão de arquivos rápida e privada.",
+    "privacy": "Privacidade",
+    "terms": "Termos",
+    "contact": "Contato",
+    "pricing": "Preços",
+    "copyright": "© {year} FileFlip. Sem marca d'água, sem cadastro obrigatório."
   },
   "HomePage": {
-    "title": "FileFlip",
-    "tagline": "Converta seus arquivos sem que eles saiam do seu computador."
+    "title": "Converta seus arquivos sem que eles saiam do seu computador",
+    "tagline": "Imagens e PDFs são processados direto no navegador: mais rápido, mais privado e de graça. Sem marca d'água e sem criar conta.",
+    "cta": "Escolher arquivos",
+    "features": {
+      "heading": "Por que o FileFlip?",
+      "privacy": {
+        "title": "Privacidade de verdade",
+        "body": "Suas imagens e PDFs nunca são enviados: tudo acontece no seu aparelho."
+      },
+      "speed": {
+        "title": "Muito rápido",
+        "body": "Nada de esperar upload ou download. A conversão começa na hora."
+      },
+      "free": {
+        "title": "Grátis e sem cadastro",
+        "body": "Sem marca d'água, sem conta obrigatória e sem limites escondidos."
+      },
+      "office": {
+        "title": "Documentos do Office também",
+        "body": "Word, Excel e PowerPoint são convertidos no nosso servidor e apagados em até 1 hora."
+      }
+    }
+  },
+  "Errors": {
+    "generic": "Algo deu errado. Tente de novo.",
+    "notFoundTitle": "Página não encontrada",
+    "notFoundBody": "A página que você procura não existe ou foi movida.",
+    "backHome": "Voltar ao início"
   }
 }

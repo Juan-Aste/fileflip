@@ -3,8 +3,70 @@
     "title": "FileFlip — Convert files and images for free",
     "description": "Convert images and documents with no watermarks and no sign-up. Whatever can be done on your device stays there."
   },
+  "Common": {
+    "appName": "FileFlip",
+    "skipToContent": "Skip to content",
+    "loading": "Loading…",
+    "close": "Close",
+    "download": "Download",
+    "cancel": "Cancel",
+    "retry": "Try again"
+  },
+  "Header": {
+    "homeLink": "FileFlip home",
+    "nav": {
+      "tools": "Tools",
+      "pricing": "Pricing",
+      "login": "Sign in",
+      "account": "My account"
+    },
+    "mainNav": "Main navigation"
+  },
+  "LocaleSwitcher": {
+    "label": "Language"
+  },
+  "Theme": {
+    "toggle": "Change theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "Footer": {
+    "tagline": "Fast, private file conversion.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "pricing": "Pricing",
+    "copyright": "© {year} FileFlip. No watermarks, no sign-up required."
+  },
   "HomePage": {
-    "title": "FileFlip",
-    "tagline": "Convert your files without them ever leaving your computer."
+    "title": "Convert your files without them ever leaving your computer",
+    "tagline": "Images and PDFs are processed right in your browser: faster, more private and free. No watermarks, no account needed.",
+    "cta": "Choose files",
+    "features": {
+      "heading": "Why FileFlip?",
+      "privacy": {
+        "title": "Actually private",
+        "body": "Your images and PDFs are never uploaded — everything happens on your device."
+      },
+      "speed": {
+        "title": "Seriously fast",
+        "body": "No waiting for uploads or downloads. Conversion starts instantly."
+      },
+      "free": {
+        "title": "Free, no sign-up",
+        "body": "No watermarks, no mandatory accounts and no hidden limits."
+      },
+      "office": {
+        "title": "Office documents too",
+        "body": "Word, Excel and PowerPoint are converted on our server and deleted within 1 hour."
+      }
+    }
+  },
+  "Errors": {
+    "generic": "Something went wrong. Please try again.",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you're looking for doesn't exist or has moved.",
+    "backHome": "Back to home"
   }
 }
