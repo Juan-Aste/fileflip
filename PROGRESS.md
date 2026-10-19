@@ -536,6 +536,19 @@
 **Qué sigue**
 - Hito 8: 8.1 Dockerfile multi-etapa.
 
+## 2026-10-19 — Sesión 5 (tarea 8.1: Dockerfile)
+
+**Qué se hizo**
+- `Dockerfile` multi-etapa sobre `node:22-bookworm-slim` (glibc, para los binarios de sharp): dependencias con `npm ci` (sin descargar el MongoDB de tests), build con las `NEXT_PUBLIC_*` como `ARG`, y una imagen final solo con `.next/standalone`, estáticos y `public/`, usuario `node`, `HEALTHCHECK`. Imagen base sobreescribible (`NODE_IMAGE`) para usar un mirror.
+- `.dockerignore` y `GET /api/health` (`{"status":"ok","gotenberg":true|false}`; Gotenberg caído no marca la app como caída).
+- **Verificado construyendo y ejecutando la imagen** (522 MB): portada 200, imagen → AVIF con sharp, DOCX → PDF con Gotenberg y PDF → Word desde el contenedor.
+
+**Problemas**
+- En este entorno Docker Hub devolvía 429 y los contenedores no tienen el proxy de salida: para la prueba se usó `mirror.gcr.io` y un Dockerfile auxiliar (solo local, no versionado) que agrega el certificado del proxy. El Dockerfile del repo no necesita nada de eso en Railway.
+
+**Qué sigue**
+- 8.2: DEPLOY.md.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
