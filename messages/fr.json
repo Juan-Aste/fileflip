@@ -220,5 +220,29 @@
     "button": "Se connecter",
     "fallback": "Si le bouton ne fonctionne pas, copiez-collez ce lien dans votre navigateur :",
     "ignore": "Si vous n'avez pas demandé cet e-mail, ignorez-le : personne ne peut se connecter sans ce lien."
+  },
+  "Login": {
+    "title": "Connexion",
+    "subtitle": "Pas besoin de compte pour convertir. Connectez-vous pour gérer votre offre Pro.",
+    "google": "Continuer avec Google",
+    "or": "ou",
+    "emailLabel": "Votre e-mail",
+    "emailPlaceholder": "vous@email.com",
+    "emailSubmit": "Recevoir un lien",
+    "noMethods": "La connexion n'est pas encore configurée.",
+    "error": "Connexion impossible. Veuillez réessayer.",
+    "verifyTitle": "Consultez vos e-mails",
+    "verifyBody": "Nous vous avons envoyé un lien de connexion. Cela peut prendre une minute ; pensez à vérifier vos spams.",
+    "privacyNote": "Nous utilisons votre e-mail uniquement pour la connexion et votre abonnement."
+  },
+  "Account": {
+    "title": "Mon compte",
+    "signedInAs": "Connecté en tant que {email}",
+    "plan": "Votre offre",
+    "planFree": "Gratuite",
+    "planPro": "Pro",
+    "freeBody": "Tous les outils gratuitement, avec des limites sur les conversions serveur.",
+    "upgrade": "Passer à Pro",
+    "signOut": "Se déconnecter"
   }
 }

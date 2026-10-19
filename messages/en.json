@@ -220,5 +220,29 @@
     "button": "Sign in",
     "fallback": "If the button doesn't work, copy and paste this link into your browser:",
     "ignore": "If you didn't ask for this email, you can ignore it: nobody can sign in without this link."
+  },
+  "Login": {
+    "title": "Sign in",
+    "subtitle": "You don't need an account to convert. Sign in to manage your Pro plan.",
+    "google": "Continue with Google",
+    "or": "or",
+    "emailLabel": "Your email",
+    "emailPlaceholder": "you@email.com",
+    "emailSubmit": "Email me a link",
+    "noMethods": "Sign-in isn't configured yet.",
+    "error": "We couldn't sign you in. Please try again.",
+    "verifyTitle": "Check your email",
+    "verifyBody": "We sent you a sign-in link. It may take a minute; check your spam folder too.",
+    "privacyNote": "We only use your email to sign you in and about your subscription."
+  },
+  "Account": {
+    "title": "My account",
+    "signedInAs": "Signed in as {email}",
+    "plan": "Your plan",
+    "planFree": "Free",
+    "planPro": "Pro",
+    "freeBody": "Every tool at no cost, with limits on server conversions.",
+    "upgrade": "Upgrade to Pro",
+    "signOut": "Sign out"
   }
 }

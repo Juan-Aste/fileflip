@@ -220,5 +220,29 @@
     "button": "Iniciar sesión",
     "fallback": "Si el botón no funciona, copia y pega este enlace en tu navegador:",
     "ignore": "Si no pediste este correo, puedes ignorarlo: nadie podrá entrar sin este enlace."
+  },
+  "Login": {
+    "title": "Inicia sesión",
+    "subtitle": "No necesitas cuenta para convertir. Entra para gestionar tu plan Pro.",
+    "google": "Continuar con Google",
+    "or": "o",
+    "emailLabel": "Tu correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "emailSubmit": "Enviarme un enlace",
+    "noMethods": "El inicio de sesión todavía no está configurado.",
+    "error": "No pudimos iniciar sesión. Inténtalo de nuevo.",
+    "verifyTitle": "Revisa tu correo",
+    "verifyBody": "Te enviamos un enlace para entrar. Puede tardar un minuto; revisa también la carpeta de spam.",
+    "privacyNote": "Solo usamos tu correo para iniciar sesión y avisarte de tu suscripción."
+  },
+  "Account": {
+    "title": "Mi cuenta",
+    "signedInAs": "Sesión iniciada como {email}",
+    "plan": "Tu plan",
+    "planFree": "Gratis",
+    "planPro": "Pro",
+    "freeBody": "Todas las herramientas sin costo, con límites en las conversiones de servidor.",
+    "upgrade": "Pasar a Pro",
+    "signOut": "Cerrar sesión"
   }
 }

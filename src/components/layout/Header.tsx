@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import AccountLink from "./AccountLink";
 import LocaleSwitcher from "./LocaleSwitcher";
 import ThemeToggle from "./ThemeToggle";
 
@@ -30,6 +31,7 @@ export default function Header() {
           >
             {t("nav.tools")}
           </Link>
+          <AccountLink />
           <LocaleSwitcher />
           <ThemeToggle />
         </nav>

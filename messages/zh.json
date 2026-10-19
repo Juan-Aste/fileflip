@@ -220,5 +220,29 @@
     "button": "登录",
     "fallback": "如果按钮无法使用，请将此链接复制到浏览器中打开：",
     "ignore": "如果你没有请求此邮件，可以忽略：没有此链接，任何人都无法登录。"
+  },
+  "Login": {
+    "title": "登录",
+    "subtitle": "转换文件无需账户。登录后可管理你的 Pro 方案。",
+    "google": "使用 Google 继续",
+    "or": "或",
+    "emailLabel": "你的邮箱",
+    "emailPlaceholder": "you@email.com",
+    "emailSubmit": "给我发送登录链接",
+    "noMethods": "登录功能尚未配置。",
+    "error": "无法登录，请重试。",
+    "verifyTitle": "请查收邮件",
+    "verifyBody": "我们已向你发送登录链接。可能需要一分钟，也请检查垃圾邮件文件夹。",
+    "privacyNote": "我们只将你的邮箱用于登录和订阅通知。"
+  },
+  "Account": {
+    "title": "我的账户",
+    "signedInAs": "已登录：{email}",
+    "plan": "你的方案",
+    "planFree": "免费",
+    "planPro": "Pro",
+    "freeBody": "所有工具免费使用，服务器转换有一定限制。",
+    "upgrade": "升级到 Pro",
+    "signOut": "退出登录"
   }
 }

@@ -220,5 +220,29 @@
     "button": "Entrar",
     "fallback": "Se o botão não funcionar, copie e cole este link no navegador:",
     "ignore": "Se você não pediu este e-mail, pode ignorá-lo: ninguém consegue entrar sem este link."
+  },
+  "Login": {
+    "title": "Entrar",
+    "subtitle": "Você não precisa de conta para converter. Entre para gerenciar seu plano Pro.",
+    "google": "Continuar com o Google",
+    "or": "ou",
+    "emailLabel": "Seu e-mail",
+    "emailPlaceholder": "voce@email.com",
+    "emailSubmit": "Me envie um link",
+    "noMethods": "O login ainda não está configurado.",
+    "error": "Não conseguimos fazer seu login. Tente de novo.",
+    "verifyTitle": "Confira seu e-mail",
+    "verifyBody": "Enviamos um link para você entrar. Pode levar um minuto; veja também a pasta de spam.",
+    "privacyNote": "Só usamos seu e-mail para o login e para avisos da sua assinatura."
+  },
+  "Account": {
+    "title": "Minha conta",
+    "signedInAs": "Conectado como {email}",
+    "plan": "Seu plano",
+    "planFree": "Grátis",
+    "planPro": "Pro",
+    "freeBody": "Todas as ferramentas sem custo, com limites nas conversões no servidor.",
+    "upgrade": "Assinar o Pro",
+    "signOut": "Sair"
   }
 }

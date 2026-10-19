@@ -376,6 +376,22 @@
 **Qué sigue**
 - 5.2: páginas de login y "Mi cuenta".
 
+## 2026-10-19 — Sesión 5 (tarea 5.2: login y "Mi cuenta")
+
+**Qué se hizo**
+- `/[locale]/login`: botón de Google y formulario de magic link (solo los métodos configurados), mensaje de error, `callbackUrl` limitado a rutas relativas del mismo sitio (evita redirecciones abiertas). Si ya hay sesión, va a la cuenta.
+- `/[locale]/login/verify`: "Revisa tu correo".
+- `/[locale]/account`: email de la sesión, plan (Gratis por ahora; estado de suscripción y cancelación en 5.6), botón "Pasar a Pro" y "Cerrar sesión". Sin sesión redirige al login con `callbackUrl`.
+- Header: enlace "Iniciar sesión" / "Mi cuenta" (`AccountLink`), que consulta la sesión en el cliente para que el resto de las páginas sigan siendo estáticas.
+- Todo traducido (namespaces `Login`, `Account`); páginas de cuenta con `noindex` y renderizado dinámico.
+- Probado en Chromium con MongoDB en memoria: pedir enlace → "Revisa tu correo" → abrir enlace → `/es/account` → header muestra "Mi cuenta" → cerrar sesión vuelve a `/es`.
+
+**Decisiones**
+- Las páginas de cuenta/precios/legales usan rutas fijas en inglés en todos los idiomas (`/es/login`, `/es/account`, `/es/pricing`...): no son páginas de búsqueda, y Auth.js necesita rutas fijas. Los slugs traducidos quedan para herramientas, conversiones y cola larga, que son las que importan para SEO.
+
+**Qué sigue**
+- 5.3: configuración de precios por país, detección de país y selector manual.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
