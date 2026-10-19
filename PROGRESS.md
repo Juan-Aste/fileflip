@@ -420,10 +420,21 @@
 **Qué sigue**
 - 5.5: webhook de Mercado Pago con verificación de firma.
 
+## 2026-10-19 — Sesión 5 (tarea 5.5: webhook de Mercado Pago)
+
+**Qué se hizo**
+- `src/lib/payments/mp-signature.ts`: verificación de la cabecera `x-signature` según la documentación de Mercado Pago (HMAC-SHA256 de `id:<data.id>;request-id:<x-request-id>;ts:<ts>;`, ids alfanuméricos en minúscula, comparación en tiempo constante) y rechazo de notificaciones de más de 10 minutos (repeticiones). Acepta cualquiera de los secretos configurados (`MP_WEBHOOK_SECRET` y `MP_WEBHOOK_SECRET_XX` por cuenta/país). Tests.
+- `POST /api/webhooks/mercadopago`: firma inválida → 401. `subscription_preapproval` → se vuelve a leer la suscripción desde Mercado Pago (no se confía en el cuerpo) y se guarda el estado (`syncSubscription`). `subscription_authorized_payment` → se busca la suscripción del cobro (`/authorized_payments/{id}`) y se sincroniza. Otros tópicos se ignoran con 200; errores internos → 500 para que Mercado Pago reintente. Tests del handler.
+- Verificado con el servidor real: notificación firmada → 200 y suscripción sincronizada; firma falsa → 401.
+
+**Qué sigue**
+- 5.6: página de precios y cancelación desde "Mi cuenta".
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
 - Crear cuenta de Mercado Pago y obtener credenciales de prueba (`MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`). Ojo: cada cuenta de Mercado Pago cobra solo en la moneda de su país; para vender en varios países hace falta una cuenta (y un token `MP_ACCESS_TOKEN_XX`) por país.
+- En cada cuenta de Mercado Pago, configurar el webhook (Tus integraciones → Webhooks) apuntando a `https://<dominio>/api/webhooks/mercadopago` con el evento "Planes y suscripciones", y copiar la clave secreta en `MP_WEBHOOK_SECRET` (o `MP_WEBHOOK_SECRET_XX` por país).
 - Elegir proveedor de pagos internacional (por ejemplo Lemon Squeezy o Paddle) para usuarios fuera de los países de Mercado Pago.
 - Cuenta de Google AdSense (`NEXT_PUBLIC_ADSENSE_CLIENT`).
 - Proyecto en Railway y base MongoDB (Railway o Atlas).

@@ -108,3 +108,18 @@ export function createMercadoPagoProvider(
     },
   };
 }
+
+/** Subscription id of a recurring charge ("subscription_authorized_payment" notifications). */
+export async function preapprovalOfAuthorizedPayment(
+  accessToken: string,
+  paymentId: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<string | null> {
+  const res = await fetchImpl(`${API}/authorized_payments/${encodeURIComponent(paymentId)}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    signal: AbortSignal.timeout(15_000),
+  });
+  if (!res.ok) throw new PaymentProviderError(res.status >= 500 ? "unavailable" : "rejected", String(res.status));
+  const body = (await res.json()) as { preapproval_id?: string };
+  return body.preapproval_id ?? null;
+}

@@ -96,3 +96,13 @@ export async function cancelUserSubscription(userId: string): Promise<boolean> {
   await applyProviderStatus(sub.externalId, "cancelled");
   return true;
 }
+
+/** Re-reads a subscription from its provider and stores the new status. */
+export async function syncSubscription(externalId: string): Promise<boolean> {
+  await connectToDatabase();
+  const sub = await Subscription.findOne({ externalId }).lean();
+  if (!sub) return false;
+  const remote = await providerById(sub.provider, sub.region as PricingRegion).getSubscription(externalId);
+  return applyProviderStatus(externalId, remote.status, remote.nextPaymentDate);
+}
+
