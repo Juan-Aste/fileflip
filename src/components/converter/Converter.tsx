@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import AdSlot from "@/components/ads/AdSlot";
 import { saveBlob } from "@/lib/download";
 import { useTranslations } from "next-intl";
 import { commonOutputs, formats, type FormatId } from "@/config/formats";
@@ -151,6 +152,10 @@ export default function Converter() {
             </div>
           )}
         </section>
+      )}
+      {/* Below the results, well apart from the download buttons. */}
+      {done.length > 0 && !working && (
+        <AdSlot placement="result" className="mt-6" />
       )}
     </div>
   );

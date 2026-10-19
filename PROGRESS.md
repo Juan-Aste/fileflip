@@ -465,6 +465,16 @@
 **Qué sigue**
 - 6.2: ubicaciones (lateral en escritorio y debajo del resultado).
 
+## 2026-10-19 — Sesión 5 (tarea 6.2: ubicaciones de anuncios)
+
+**Qué se hizo**
+- `WithSidebarAd`: columna lateral fija (sticky) de 300 px solo en pantallas anchas (`xl`), en la portada (junto al conversor) y en todas las páginas de herramientas. En celulares no hay anuncio lateral.
+- Anuncio debajo del resultado: en el conversor aparece cuando hay resultados y no se está convirtiendo, separado del bloque de botones; en las herramientas va debajo de la tarjeta de resultado con margen amplio. Nunca junto al botón de descarga ni con su estilo; siempre con la etiqueta "Publicidad".
+- Revisado con capturas: escritorio 1440 px (lateral + debajo del resultado, ambos etiquetados) y móvil 390 px (sin anuncios antes de convertir). Ajuste: "Iniciar sesión" ya no se corta en dos líneas en el header móvil.
+
+**Qué sigue**
+- Hito 7: 7.1 páginas por conversión con slugs traducidos.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

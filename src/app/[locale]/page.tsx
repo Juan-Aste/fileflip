@@ -1,6 +1,7 @@
 import { use } from "react";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import WithSidebarAd from "@/components/ads/WithSidebarAd";
 import Converter from "@/components/converter/Converter";
 
 const features = [
@@ -41,7 +42,9 @@ export default function HomePage({
       </section>
 
       <section id="converter" aria-label={t("cta")} className="scroll-mt-24">
-        <Converter />
+        <WithSidebarAd>
+          <Converter />
+        </WithSidebarAd>
       </section>
 
       <section aria-labelledby="steps-heading" className="py-12">

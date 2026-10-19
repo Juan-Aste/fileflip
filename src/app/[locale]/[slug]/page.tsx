@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import WithSidebarAd from "@/components/ads/WithSidebarAd";
 import ProcessingBadge from "@/components/converter/ProcessingBadge";
 import ToolComponent from "@/components/tools/ToolComponent";
 import { availableTools, toolFromSlug, tools } from "@/config/tools";
@@ -22,39 +23,59 @@ function resolve({ locale, slug }: Params) {
   return tool && availableTools.includes(tool.id) ? tool : undefined;
 }
 
-export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
   const p = await params;
   const tool = resolve(p);
   if (!tool) return {};
-  const t = await getTranslations({ locale: p.locale, namespace: `Tools.${tool.id}` });
+  const t = await getTranslations({
+    locale: p.locale,
+    namespace: `Tools.${tool.id}`,
+  });
   return {
     title: `${t("title")} — FileFlip`,
     description: t("description"),
     alternates: {
       canonical: `/${p.locale}/${tool.slugs[p.locale as Locale]}`,
-      languages: Object.fromEntries(routing.locales.map((l) => [l, `/${l}/${tool.slugs[l]}`])),
+      languages: Object.fromEntries(
+        routing.locales.map((l) => [l, `/${l}/${tool.slugs[l]}`]),
+      ),
     },
   };
 }
 
-export default async function ToolPage({ params }: { params: Promise<Params> }) {
+export default async function ToolPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
   const p = await params;
   const tool = resolve(p);
   if (!tool) notFound();
   setRequestLocale(p.locale);
-  const t = await getTranslations({ locale: p.locale, namespace: `Tools.${tool.id}` });
+  const t = await getTranslations({
+    locale: p.locale,
+    namespace: `Tools.${tool.id}`,
+  });
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-12">
-      <header className="flex flex-col items-center gap-3 text-center">
-        <span aria-hidden="true" className="text-5xl">
-          {tool.icon}
-        </span>
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{t("title")}</h1>
-        <p className="max-w-xl text-muted">{t("description")}</p>
-        <ProcessingBadge engine={tool.engine} />
-      </header>
-      <ToolComponent id={tool.id} />
-    </div>
+    <WithSidebarAd>
+      <div className="mx-auto flex max-w-3xl flex-col gap-6 py-12">
+        <header className="flex flex-col items-center gap-3 text-center">
+          <span aria-hidden="true" className="text-5xl">
+            {tool.icon}
+          </span>
+          <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
+            {t("title")}
+          </h1>
+          <p className="max-w-xl text-muted">{t("description")}</p>
+          <ProcessingBadge engine={tool.engine} />
+        </header>
+        <ToolComponent id={tool.id} />
+      </div>
+    </WithSidebarAd>
   );
 }
