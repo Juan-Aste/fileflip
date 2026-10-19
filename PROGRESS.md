@@ -354,6 +354,15 @@
 **Qué sigue**
 - 4.5: mensajes de error traducidos para la API.
 
+## 2026-10-19 — Sesión 5 (tarea 4.5: errores de API traducidos)
+
+**Qué se hizo**
+- Ya estaba resuelto por diseño en 2.9/4.x: la API responde solo códigos (`{ error: "fileTooLarge" }`, etc., en `src/lib/api-errors.ts`) y la interfaz los traduce con el namespace `ApiErrors` en los 5 idiomas (incluye `rateLimited`, `serviceUnavailable`, `pdfHasNoText`, `browserUnsupported`). Un test exige traducción para cada código.
+- Se agregaron tests de `errorCode` (errores inesperados → mensaje genérico, sin filtrar detalles técnicos) y de `apiError` (código + estado HTTP).
+
+**Qué sigue**
+- Hito 5: 5.1 Auth.js v5 con Google + magic link.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

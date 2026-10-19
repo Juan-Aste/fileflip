@@ -87,7 +87,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 4.2 PDF→Word en el servidor (Gotenberg/LibreOffice) con aviso de calidad
 - [x] 4.3 Validación por magic bytes, límites de tamaño por plan y rate limiting por IP + tests de límites
 - [x] 4.4 Almacenamiento temporal con borrado ≤1 hora y modelo de metadatos en Mongo (sin contenido)
-- [ ] 4.5 Mensajes de error traducidos para la API
+- [x] 4.5 Mensajes de error traducidos para la API
 
 ### Hito 5 — Cuentas y suscripción
 - [ ] 5.1 Auth.js v5: Google + email magic link (adaptador MongoDB), email traducido
