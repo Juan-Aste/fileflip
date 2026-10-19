@@ -6,6 +6,7 @@ import { attachment } from "@/lib/server/http";
 import { convertImageOnServer } from "@/lib/server/image";
 import { logConversion } from "@/lib/server/stats";
 import { readUpload } from "@/lib/server/upload";
+import { requestPlan } from "@/lib/server/plan";
 
 export const runtime = "nodejs";
 
@@ -14,8 +15,8 @@ export const runtime = "nodejs";
  * file too large for the device). Processed in memory only: nothing is stored.
  */
 export async function POST(request: Request) {
-  // TODO(5.7): use the signed-in user's plan.
-  const upload = await readUpload(request, "free", canConvertImageOnServer);
+  const { plan, signedIn } = await requestPlan();
+  const upload = await readUpload(request, plan, canConvertImageOnServer, { signedIn });
   if (upload instanceof Response) return upload;
   const { file, bytes, from, to, form } = upload;
 

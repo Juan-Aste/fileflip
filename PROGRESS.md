@@ -443,6 +443,18 @@
 **Qué sigue**
 - 5.7: aplicar los límites Pro en cliente y servidor.
 
+## 2026-10-19 — Sesión 5 (tarea 5.7: límites Pro)
+
+**Qué se hizo**
+- Servidor: `src/lib/server/plan.ts` (`requestPlan`) lee la sesión y el plan; las APIs de imagen y documentos aplican `limits[plan]` y saltan el rate limit por IP para usuarios con sesión.
+- La sesión expone `user.plan` (`free`/`pro`, calculado con la suscripción; tipos en `src/types/next-auth.d.ts`).
+- Cliente: `SessionInfoProvider` (`src/components/session/SessionInfo.tsx`) consulta la sesión una vez y comparte `signedIn` y `plan` (también lo usará `<AdSlot>`). El conversor usa el plan para el tamaño máximo (navegador y servidor) y el máximo por lote de servidor. `AccountLink` usa el mismo contexto.
+- Vitest: `next-auth` agregado a `server.deps.inline`. Test nuevo: un usuario Pro puede subir 16 MB (el gratuito recibe 413).
+- Verificado con el servidor real: anónimo con 16 MB → 413; usuario con suscripción activa → la sesión dice `plan: "pro"` y la API acepta el archivo (luego LibreOffice falló con ese TXT artificial de 16 MB en una sola línea, respondido como 503).
+
+**Qué sigue**
+- Hito 6: 6.1 componente `<AdSlot>`.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

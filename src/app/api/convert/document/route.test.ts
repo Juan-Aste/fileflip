@@ -6,6 +6,9 @@ vi.mock("@/lib/server/gotenberg", async (importOriginal) => ({
   officeToPdf: (...args: unknown[]) => officeToPdf(...args),
 }));
 
+let currentPlan: "free" | "pro" = "free";
+vi.mock("@/lib/server/plan", () => ({ requestPlan: async () => ({ plan: currentPlan, signedIn: currentPlan === "pro" }) }));
+
 const { POST } = await import("./route");
 const { GotenbergError } = await import("@/lib/server/gotenberg");
 
@@ -19,7 +22,10 @@ function request(file: Blob, name: string, to = "pdf") {
 const rtf = new Blob(["{\\rtf1\\ansi Hola}"]);
 
 describe("POST /api/convert/document", () => {
-  beforeEach(() => officeToPdf.mockReset());
+  beforeEach(() => {
+    officeToPdf.mockReset();
+    currentPlan = "free";
+  });
 
   it("converts a document and names the result after the upload", async () => {
     officeToPdf.mockResolvedValue(new TextEncoder().encode("%PDF-1.7"));
@@ -55,6 +61,14 @@ describe("POST /api/convert/document", () => {
     const big = new Blob([new Uint8Array(16 * 1024 * 1024)]);
     const res = await POST(request(big, "big.txt"));
     expect(res.status).toBe(413);
+  });
+
+  it("lets Pro users convert larger files", async () => {
+    currentPlan = "pro";
+    officeToPdf.mockResolvedValue(new TextEncoder().encode("%PDF-1.7"));
+    const big = new Blob(["a".repeat(16 * 1024 * 1024)]);
+    const res = await POST(request(big, "big.txt"));
+    expect(res.status).toBe(200);
   });
 
   it("reports service outages separately from bad documents", async () => {

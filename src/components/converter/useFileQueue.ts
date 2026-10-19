@@ -7,6 +7,7 @@ import {
   type FormatId,
 } from "@/config/formats";
 import { limits } from "@/config/limits";
+import { useSessionInfo } from "@/components/session/SessionInfo";
 import type { ApiErrorCode } from "@/lib/api-errors";
 import { convertFile, type ConvertOptions } from "@/lib/convert";
 import { errorCode } from "@/lib/convert-error";
@@ -40,6 +41,7 @@ const revoke = (item: QueuedFile) => {
 
 /** Files picked by the user, their detected real format and conversion state. */
 export function useFileQueue() {
+  const { plan } = useSessionInfo();
   const [items, setItems] = useState<QueuedFile[]>([]);
   const itemsRef = useRef(items);
   itemsRef.current = items;
@@ -94,8 +96,7 @@ export function useFileQueue() {
       for (const item of queue) {
         // Server conversions cost us money: free batches are capped.
         if (findConversion(item.format as FormatId, to)?.engine === "server") {
-          // TODO(5.7): use the signed-in user's plan.
-          if (++serverJobs > limits.free.serverMaxBatch) {
+          if (++serverJobs > limits[plan].serverMaxBatch) {
             update(item.id, { job: { status: "error", code: "tooManyFiles" } });
             continue;
           }
@@ -107,6 +108,7 @@ export function useFileQueue() {
             to,
             {
               ...options,
+              plan,
               onProgress: (progress) =>
                 update(item.id, { job: { status: "working", progress } }),
             },
@@ -142,7 +144,7 @@ export function useFileQueue() {
         }
       }
     },
-    [update],
+    [update, plan],
   );
 
   return { items, add, remove, clear, convertAll };

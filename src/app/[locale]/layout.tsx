@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import { SessionInfoProvider } from "@/components/session/SessionInfo";
 import { themeInitScript } from "@/components/layout/theme";
 import "./globals.css";
 
@@ -47,6 +48,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       </head>
       <body className="flex min-h-screen flex-col antialiased">
         <NextIntlClientProvider>
+          <SessionInfoProvider>
           <a
             href="#main"
             className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-brand focus:px-4 focus:py-2 focus:text-white"
@@ -58,6 +60,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             {children}
           </main>
           <Footer />
+          </SessionInfoProvider>
         </NextIntlClientProvider>
       </body>
     </html>

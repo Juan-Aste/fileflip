@@ -96,7 +96,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 5.4 Interfaz `PaymentProvider` intercambiable; implementación Mercado Pago (preapproval) en modo prueba; stub internacional (USD)
 - [x] 5.5 Webhook de Mercado Pago con verificación de firma y actualización de estado de suscripción
 - [x] 5.6 Página de precios (mensual/anual) y cancelación desde "Mi cuenta"
-- [ ] 5.7 Aplicar límites Pro (tamaño y lote) en cliente y servidor
+- [x] 5.7 Aplicar límites Pro (tamaño y lote) en cliente y servidor
 
 ### Hito 6 — Publicidad
 - [ ] 6.1 Componente `<AdSlot>` (placeholder sin `NEXT_PUBLIC_ADSENSE_CLIENT`, oculto para Pro)

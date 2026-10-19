@@ -6,7 +6,7 @@ import {
   type Conversion,
   type FormatId,
 } from "@/config/formats";
-import { limits } from "@/config/limits";
+import { limits, type Plan } from "@/config/limits";
 import { canConvertDocumentOnServer, canConvertImageOnServer } from "@/config/server-capabilities";
 import { browserSupportsImaging, currentDeviceBudget } from "./capabilities";
 import { ConversionError } from "./convert-error";
@@ -16,6 +16,8 @@ import { convertOnServer } from "./server-client";
 
 export interface ConvertOptions extends ImageOptions {
   onProgress?: (progress: number) => void;
+  /** The user's plan decides size limits (enforced again by the server). */
+  plan?: Plan;
 }
 
 export interface ConvertResult {
@@ -52,8 +54,9 @@ export async function convertFile(
   file: Blob,
   from: FormatId,
   to: FormatId,
-  { onProgress, ...options }: ConvertOptions = {},
+  { onProgress, plan = "free", ...options }: ConvertOptions = {},
 ): Promise<ConvertResult> {
+  const limit = limits[plan];
   const conversion = findConversion(from, to);
   if (!conversion || !isRunnable(conversion))
     throw new ConversionError("unsupportedFormat");
@@ -70,8 +73,7 @@ export async function convertFile(
     return pdfPagesToImages(file, to, options, onProgress);
 
   if (conversion.engine === "server") {
-    // TODO(5.7): use the signed-in user's plan.
-    if (file.size > limits.free.serverMaxFileBytes) {
+    if (file.size > limit.serverMaxFileBytes) {
       throw new ConversionError("fileTooLarge");
     }
     return {
@@ -80,10 +82,7 @@ export async function convertFile(
     };
   }
 
-  // TODO(5.7): use the signed-in user's plan.
-  const serverOk =
-    canConvertImageOnServer(from, to) &&
-    file.size <= limits.free.serverMaxFileBytes;
+  const serverOk = canConvertImageOnServer(from, to) && file.size <= limit.serverMaxFileBytes;
   const server = async (): Promise<ConvertResult> => ({
     blob: await convertOnServer(
       "/api/convert/image",

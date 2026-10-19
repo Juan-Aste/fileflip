@@ -4,6 +4,7 @@ import Google from "next-auth/providers/google";
 import Nodemailer from "next-auth/providers/nodemailer";
 import { createTransport } from "nodemailer";
 import { localeFromSignInUrl, magicLinkEmail } from "@/lib/email/magic-link";
+import { planForUser } from "@/lib/billing";
 import { getMongoClient } from "@/lib/mongo-client";
 
 /** Which sign-in methods are configured (the login page only shows those). */
@@ -48,11 +49,13 @@ function config(): NextAuthConfig {
     pages: { signIn: "/login", verifyRequest: "/login/verify", error: "/login" },
     callbacks: {
       // Only expose what the UI needs (never the session token).
-      session({ session, user, token }) {
+      async session({ session, user, token }) {
+        const id = user?.id ?? token?.sub ?? "";
         return {
           expires: session.expires,
           user: {
-            id: user?.id ?? token?.sub ?? "",
+            id,
+            plan: await planForUser(id),
             name: session.user?.name ?? null,
             email: session.user?.email ?? "",
             image: session.user?.image ?? null,

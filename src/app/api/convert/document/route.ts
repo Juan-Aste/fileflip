@@ -6,6 +6,7 @@ import { attachment } from "@/lib/server/http";
 import { PdfHasNoTextError, pdfToDocx } from "@/lib/server/pdf-to-docx";
 import { logConversion } from "@/lib/server/stats";
 import { readUpload } from "@/lib/server/upload";
+import { requestPlan } from "@/lib/server/plan";
 
 export const runtime = "nodejs";
 // LibreOffice can take a while on big spreadsheets or presentations.
@@ -16,8 +17,8 @@ export const maxDuration = 120;
  * PDF via Gotenberg, and PDF → Word (text extraction). In memory only.
  */
 export async function POST(request: Request) {
-  // TODO(5.7): use the signed-in user's plan.
-  const upload = await readUpload(request, "free", canConvertDocumentOnServer);
+  const { plan, signedIn } = await requestPlan();
+  const upload = await readUpload(request, plan, canConvertDocumentOnServer, { signedIn });
   if (upload instanceof Response) return upload;
   const { file, bytes, from, to } = upload;
 
