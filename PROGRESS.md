@@ -665,3 +665,16 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Qué sigue**
 - 2A.5: revisar SSG/ISR.
+
+## 2026-10-20 00:20 UTC — Fase 2, tarea 2A.5 (revisión de SSG)
+
+**Qué se hizo**
+- Revisión del `prerender-manifest`: la portada, las 522 páginas de `[slug]` (herramientas, conversiones y cola larga en los 5 idiomas), privacidad, términos, contacto y "revisa tu correo" son estáticas (SSG, sin revalidación: el contenido sale del código, así que cambia solo con un nuevo deploy). `dynamicParams = false` en `[slug]`: un slug desconocido es 404 sin renderizar.
+- Dinámicas a propósito: precios (precio según el país por cookie/cabecera y estado Pro), login y cuenta (sesión), y las API.
+- `scripts/check-static.mjs` (`npm run check:static`, agregado al CI después del build): toma todas las URL del sitemap generado y falla si alguna no está prerenderizada, salvo precios. Probado que detecta páginas dinámicas (quitando la excepción de precios marca las 5).
+
+**Decisiones**
+- No se usa ISR: no hay contenido que cambie sin deploy. Precios sigue dinámica: hacerla estática obligaría a mover la detección de país al cliente y mostraría primero un precio equivocado; ya mide 99 en Lighthouse.
+
+**Qué sigue**
+- 2A.6: sin saltos de diseño (espacio de anuncios, imágenes, next/font).
