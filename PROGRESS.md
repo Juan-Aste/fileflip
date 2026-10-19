@@ -678,3 +678,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Qué sigue**
 - 2A.6: sin saltos de diseño (espacio de anuncios, imágenes, next/font).
+
+## 2026-10-19 23:58 UTC — Fase 2, tarea 2A.6 (sin saltos de diseño)
+
+**Qué se hizo**
+- `AdSlot`: nuevo modo `reserved` mientras se consulta el plan: se reserva el mismo bloque (etiqueta + espacio del anuncio) vacío y oculto para lectores de pantalla, así nada se mueve cuando aparece el anuncio o el marcador. Para Pro el espacio se libera al conocer el plan (no ven anuncios nunca). Tests de `adMode` actualizados.
+- `AccountLink`: las dos etiquetas ("Iniciar sesión" / "Mi cuenta") comparten la misma celda de grid, así el enlace mide lo mismo antes y después de cargar la sesión y el header no se desplaza.
+- Imágenes: la única `<img>` del sitio son las miniaturas (URL `blob:`) de "Ordenar PDF", que ya van dentro de una caja con `aspect-[3/4]`; `next/image` no aplica a URL `blob:`. No hay otras imágenes en las páginas.
+- Fuentes: hoy se usa la pila de fuentes del sistema (sin fuente web, sin salto por fuente). La fuente propia llega en 2B.1 y se cargará con `next/font` (subconjunto `latin`, `display: swap` y fallback ajustado automático); queda anotado como convención.
+- AdSense ya se cargaba con `strategy="lazyOnload"`.
+
+**Mediciones**
+- CLS medido con Playwright (`PerformanceObserver` de `layout-shift`) en portada, conversión de imagen, conversión PDF, herramienta PDF, cola larga y precios, a 360 px y 1366 px: 0 en todas, también después de convertir un PNG en la portada (aparecen resultados y anuncio).
+
+**Qué sigue**
+- 2A.7: caché inmutable para `.wasm`/workers y precarga del códec.
