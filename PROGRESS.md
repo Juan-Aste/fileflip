@@ -194,6 +194,14 @@
 **Qué sigue**
 - 2.7: insignia "Se procesa en tu dispositivo" / "en nuestro servidor".
 
+## 2026-10-19 — Sesión 5 (tarea 2.7: insignia de procesamiento)
+
+**Qué se hizo**
+- `ProcessingBadge` (verde "Se procesa en tu dispositivo: tu archivo no sale de tu computadora" / ámbar "Se procesa en nuestro servidor y se borra en 1 hora"), traducida a los 5 idiomas. En el conversor cambia según el motor de la conversión elegida; las páginas por herramienta (7.1) la reutilizan.
+
+**Qué sigue**
+- 2.8: lotes con descarga ZIP.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

@@ -109,5 +109,9 @@
     "width": "Ancho máximo (px)",
     "height": "Alto máximo (px)",
     "fitHint": "Se mantiene la proporción y nunca se agranda."
+  },
+  "ProcessingBadge": {
+    "browser": "Se procesa en tu dispositivo: tu archivo no sale de tu computadora",
+    "server": "Se procesa en nuestro servidor y se borra en 1 hora"
   }
 }

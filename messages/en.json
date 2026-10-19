@@ -109,5 +109,9 @@
     "width": "Max width (px)",
     "height": "Max height (px)",
     "fitHint": "Aspect ratio is kept and images are never enlarged."
+  },
+  "ProcessingBadge": {
+    "browser": "Processed on your device: your file never leaves your computer",
+    "server": "Processed on our server and deleted within 1 hour"
   }
 }

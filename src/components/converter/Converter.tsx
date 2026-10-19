@@ -8,6 +8,7 @@ import { DEFAULT_QUALITY, lossyFormats, type ImageOptions } from "@/lib/image/op
 import Dropzone from "./Dropzone";
 import FileRow from "./FileRow";
 import ImageOptionsPanel from "./ImageOptionsPanel";
+import ProcessingBadge from "./ProcessingBadge";
 import { useFileQueue } from "./useFileQueue";
 
 export default function Converter() {
@@ -27,6 +28,9 @@ export default function Converter() {
 
   return (
     <div className="flex flex-col gap-4">
+      <div className="flex justify-center">
+        <ProcessingBadge engine={selected?.engine ?? "browser"} />
+      </div>
       <Dropzone onFiles={add} compact={items.length > 0} />
 
       {items.length > 0 && (
