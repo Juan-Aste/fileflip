@@ -1,16 +1,27 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { findConversion, outputFilename, type FormatId } from "@/config/formats";
+import {
+  findConversion,
+  outputFilename,
+  type FormatId,
+} from "@/config/formats";
 import { limits } from "@/config/limits";
 import type { ApiErrorCode } from "@/lib/api-errors";
 import { convertFile, type ConvertOptions } from "@/lib/convert";
 import { errorCode } from "@/lib/convert-error";
 import { detectFileFormat } from "@/lib/detect";
+import { reportConversion } from "@/lib/stats-client";
 
 export type JobState =
   | { status: "working"; progress: number }
-  | { status: "done"; blob: Blob; url: string; name: string; engine: "browser" | "server" }
+  | {
+      status: "done";
+      blob: Blob;
+      url: string;
+      name: string;
+      engine: "browser" | "server";
+    }
   | { status: "error"; code: ApiErrorCode };
 
 export interface QueuedFile {
@@ -90,11 +101,26 @@ export function useFileQueue() {
           }
         }
         try {
-          const { blob, engine, filename } = await convertFile(item.file, item.format as FormatId, to, {
-            ...options,
-            onProgress: (progress) =>
-              update(item.id, { job: { status: "working", progress } }),
-          });
+          const { blob, engine, filename } = await convertFile(
+            item.file,
+            item.format as FormatId,
+            to,
+            {
+              ...options,
+              onProgress: (progress) =>
+                update(item.id, { job: { status: "working", progress } }),
+            },
+          );
+          // Server conversions are logged by the API itself.
+          if (engine === "browser") {
+            reportConversion({
+              from: item.format as FormatId,
+              to,
+              size: item.file.size,
+              outputSize: blob.size,
+              success: true,
+            });
+          }
           update(item.id, {
             job: {
               status: "done",
@@ -106,6 +132,12 @@ export function useFileQueue() {
           });
         } catch (error) {
           console.error(error);
+          reportConversion({
+            from: item.format as FormatId,
+            to,
+            size: item.file.size,
+            success: false,
+          });
           update(item.id, { job: { status: "error", code: errorCode(error) } });
         }
       }

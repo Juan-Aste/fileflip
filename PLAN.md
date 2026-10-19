@@ -86,7 +86,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 4.1 Cliente Gotenberg (`src/lib/gotenberg.ts`) y ruta API Word/Excel/PowerPoint/ODT/ODS/RTF/TXT/CSV→PDF
 - [x] 4.2 PDF→Word en el servidor (Gotenberg/LibreOffice) con aviso de calidad
 - [x] 4.3 Validación por magic bytes, límites de tamaño por plan y rate limiting por IP + tests de límites
-- [ ] 4.4 Almacenamiento temporal con borrado ≤1 hora y modelo de metadatos en Mongo (sin contenido)
+- [x] 4.4 Almacenamiento temporal con borrado ≤1 hora y modelo de metadatos en Mongo (sin contenido)
 - [ ] 4.5 Mensajes de error traducidos para la API
 
 ### Hito 5 — Cuentas y suscripción
