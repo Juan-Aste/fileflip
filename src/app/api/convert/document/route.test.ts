@@ -39,9 +39,16 @@ describe("POST /api/convert/document", () => {
     expect(officeToPdf).not.toHaveBeenCalled();
   });
 
-  it("only converts to PDF", async () => {
+  it("only converts office documents to PDF", async () => {
     const res = await POST(request(rtf, "a.rtf", "docx"));
     expect(res.status).toBe(415);
+  });
+
+  it("converts PDF to Word, and explains scanned PDFs", async () => {
+    const { makePdf } = await import("../../../../../tests/helpers/pdf");
+    const res = await POST(request(new Blob([(await makePdf([300])).slice()]), "scan.pdf", "docx"));
+    expect(res.status).toBe(422);
+    expect(await res.json()).toEqual({ error: "pdfHasNoText" });
   });
 
   it("rejects files over the free limit", async () => {

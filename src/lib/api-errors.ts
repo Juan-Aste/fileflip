@@ -8,6 +8,7 @@ export const apiErrorCodes = [
   "rateLimited",
   "conversionFailed",
   "serviceUnavailable",
+  "pdfHasNoText",
   // Client-side only: the device can't run it and the server can't either.
   "browserUnsupported",
 ] as const;
@@ -22,6 +23,7 @@ const status: Record<ApiErrorCode, number> = {
   rateLimited: 429,
   conversionFailed: 422,
   serviceUnavailable: 503,
+  pdfHasNoText: 422,
   browserUnsupported: 400,
 };
 

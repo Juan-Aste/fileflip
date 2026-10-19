@@ -96,7 +96,8 @@
     "saved": "{percent} menor",
     "progress": "Progresso de {name}",
     "downloadAll": "Baixar tudo em ZIP ({count})",
-    "processedOnServer": "Processado no nosso servidor (apagado em até 1 hora)"
+    "processedOnServer": "Processado no nosso servidor (apagado em até 1 hora)",
+    "pdfToWordNote": "PDF para Word mantém o texto, os títulos e os parágrafos. Colunas, tabelas e imagens podem mudar ou não ser incluídas."
   },
   "ImageOptions": {
     "title": "Opções",
@@ -127,7 +128,8 @@
     "rateLimited": "Muitas conversões seguidas. Espere um minuto.",
     "conversionFailed": "Não foi possível converter este arquivo.",
     "serviceUnavailable": "O serviço está indisponível. Tente mais tarde.",
-    "browserUnsupported": "Seu navegador não consegue converter este arquivo. Tente uma versão recente do Chrome, Edge, Firefox ou Safari."
+    "browserUnsupported": "Seu navegador não consegue converter este arquivo. Tente uma versão recente do Chrome, Edge, Firefox ou Safari.",
+    "pdfHasNoText": "Este PDF é uma imagem digitalizada: não tem texto para passar para o Word."
   },
   "Tools": {
     "merge-pdf": {

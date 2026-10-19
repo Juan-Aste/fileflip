@@ -96,7 +96,8 @@
     "saved": "减小 {percent}",
     "progress": "{name} 的进度",
     "downloadAll": "全部下载为 ZIP（{count}）",
-    "processedOnServer": "已在我们的服务器上处理（1 小时内删除）"
+    "processedOnServer": "已在我们的服务器上处理（1 小时内删除）",
+    "pdfToWordNote": "PDF 转 Word 会保留文字、标题和段落。分栏、表格和图片可能会改变或不被包含。"
   },
   "ImageOptions": {
     "title": "选项",
@@ -127,7 +128,8 @@
     "rateLimited": "连续转换次数过多，请稍等一分钟。",
     "conversionFailed": "无法转换此文件。",
     "serviceUnavailable": "服务暂时不可用，请稍后再试。",
-    "browserUnsupported": "你的浏览器无法转换此文件。请使用最新版的 Chrome、Edge、Firefox 或 Safari。"
+    "browserUnsupported": "你的浏览器无法转换此文件。请使用最新版的 Chrome、Edge、Firefox 或 Safari。",
+    "pdfHasNoText": "此 PDF 是扫描图像，没有可转换为 Word 的文字。"
   },
   "Tools": {
     "merge-pdf": {

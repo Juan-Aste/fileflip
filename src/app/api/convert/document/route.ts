@@ -3,18 +3,39 @@ import { canConvertDocumentOnServer } from "@/config/server-capabilities";
 import { apiError } from "@/lib/api-errors";
 import { GotenbergError, officeToPdf } from "@/lib/server/gotenberg";
 import { attachment } from "@/lib/server/http";
+import { PdfHasNoTextError, pdfToDocx } from "@/lib/server/pdf-to-docx";
 import { readUpload } from "@/lib/server/upload";
 
 export const runtime = "nodejs";
 // LibreOffice can take a while on big spreadsheets or presentations.
 export const maxDuration = 120;
 
-/** Office documents (Word, Excel, PowerPoint, OpenDocument, RTF, TXT, CSV) → PDF via Gotenberg. */
+/**
+ * Office documents (Word, Excel, PowerPoint, OpenDocument, RTF, TXT, CSV) →
+ * PDF via Gotenberg, and PDF → Word (text extraction). In memory only.
+ */
 export async function POST(request: Request) {
   // TODO(5.7): use the signed-in user's plan.
   const upload = await readUpload(request, "free", canConvertDocumentOnServer);
   if (upload instanceof Response) return upload;
   const { file, bytes, from, to } = upload;
+
+  if (from === "pdf") {
+    try {
+      const docx = await pdfToDocx(bytes);
+      return new Response(new Uint8Array(docx), {
+        headers: {
+          "Content-Type": formats.docx.mime,
+          "Content-Disposition": attachment(outputFilename(file.name, "docx")),
+          "Cache-Control": "no-store",
+        },
+      });
+    } catch (error) {
+      if (error instanceof PdfHasNoTextError) return apiError("pdfHasNoText");
+      console.error("pdf to docx failed", error);
+      return apiError("conversionFailed");
+    }
+  }
 
   try {
     // A neutral name with the real extension: LibreOffice picks its import

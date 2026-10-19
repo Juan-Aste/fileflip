@@ -14,5 +14,5 @@ export function canConvertImageOnServer(from: FormatId, to: FormatId) {
 export const officeInputs = (Object.keys(formats) as FormatId[]).filter((f) => formats[f].category === "document");
 
 export function canConvertDocumentOnServer(from: FormatId, to: FormatId) {
-  return to === "pdf" && officeInputs.includes(from);
+  return (to === "pdf" && officeInputs.includes(from)) || (from === "pdf" && to === "docx");
 }

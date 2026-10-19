@@ -96,7 +96,8 @@
     "saved": "{percent} plus léger",
     "progress": "Progression de {name}",
     "downloadAll": "Tout télécharger en ZIP ({count})",
-    "processedOnServer": "Traité sur notre serveur (supprimé sous 1 heure)"
+    "processedOnServer": "Traité sur notre serveur (supprimé sous 1 heure)",
+    "pdfToWordNote": "Le PDF vers Word conserve le texte, les titres et les paragraphes. Les colonnes, tableaux et images peuvent changer ou être omis."
   },
   "ImageOptions": {
     "title": "Options",
@@ -127,7 +128,8 @@
     "rateLimited": "Trop de conversions d'affilée. Patientez une minute.",
     "conversionFailed": "Impossible de convertir ce fichier.",
     "serviceUnavailable": "Le service est indisponible. Réessayez plus tard.",
-    "browserUnsupported": "Votre navigateur ne peut pas convertir ce fichier. Essayez une version récente de Chrome, Edge, Firefox ou Safari."
+    "browserUnsupported": "Votre navigateur ne peut pas convertir ce fichier. Essayez une version récente de Chrome, Edge, Firefox ou Safari.",
+    "pdfHasNoText": "Ce PDF est une image numérisée : il ne contient pas de texte à mettre dans Word."
   },
   "Tools": {
     "merge-pdf": {

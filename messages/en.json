@@ -96,7 +96,8 @@
     "saved": "{percent} smaller",
     "progress": "{name} progress",
     "downloadAll": "Download all as ZIP ({count})",
-    "processedOnServer": "Processed on our server (deleted within 1 hour)"
+    "processedOnServer": "Processed on our server (deleted within 1 hour)",
+    "pdfToWordNote": "PDF to Word keeps the text, headings and paragraphs. Columns, tables and images may change or be left out."
   },
   "ImageOptions": {
     "title": "Options",
@@ -127,7 +128,8 @@
     "rateLimited": "Too many conversions in a row. Please wait a minute.",
     "conversionFailed": "This file couldn't be converted.",
     "serviceUnavailable": "The service is unavailable. Please try again later.",
-    "browserUnsupported": "Your browser can't convert this file. Try a recent version of Chrome, Edge, Firefox or Safari."
+    "browserUnsupported": "Your browser can't convert this file. Try a recent version of Chrome, Edge, Firefox or Safari.",
+    "pdfHasNoText": "This PDF is a scanned image: it has no text to put into Word."
   },
   "Tools": {
     "merge-pdf": {
