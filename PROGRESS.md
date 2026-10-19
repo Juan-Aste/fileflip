@@ -564,7 +564,7 @@
 - Accesibilidad: auditoría con axe-core (WCAG 2 A/AA) en portada, herramienta, conversión, cola larga, precios, login, privacidad y portada en chino, en modo claro y oscuro. En oscuro fallaba el contraste de los botones (índigo claro con texto blanco): nuevo token `brand-solid` / `brand-solid-hover` para fondos sólidos detrás de texto blanco. Ahora todas las páginas pasan sin violaciones en ambos temas.
 - Modo oscuro revisado con capturas.
 - Rendimiento: JS de primera carga 103–139 kB por página; los códecs pesados (libheif ~2 MB, pdf.js ~1,2 MB, AVIF/WEBP/JPEG WASM) se descargan solo al usarlos.
-- `npm run lint`, `npm run build` (≈570 páginas estáticas) y `npm test` (38 archivos, 231 tests) pasan; CI de GitHub en verde.
+- `npm run lint`, `npm run build` (≈570 páginas estáticas) y `npm test` (40 archivos, 231 tests) pasan; CI de GitHub en verde.
 
 ## PROYECTO TERMINADO
 
