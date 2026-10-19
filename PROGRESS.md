@@ -110,6 +110,16 @@
 **Qué sigue**
 - 1.5: utilidades de formato por idioma.
 
+## 2026-10-19 — Sesión 5 (tarea 1.5: formato por idioma)
+
+**Qué se hizo**
+- `src/lib/format.ts`: `formatNumber`, `formatBytes` (pasos de 1024, unidades localizadas), `formatCurrency`, `formatDate`, `formatPercent`, con etiquetas Intl por idioma (`es-419`, `en-US`, `pt-BR`, `fr-FR`, `zh-CN`).
+- Para monedas locales (ARS, MXN, CLP, COP, UYU, PEN, BRL) se usa la convención del país cuando el idioma coincide: un argentino en español ve "$ 4.990"; en inglés ve "ARS 4,990".
+- Tests en `src/lib/format.test.ts`.
+
+**Qué sigue**
+- Hito 2, tarea 2.1: registro de formatos y detección por magic bytes.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
