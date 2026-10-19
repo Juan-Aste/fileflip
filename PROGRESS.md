@@ -455,6 +455,16 @@
 **Qué sigue**
 - Hito 6: 6.1 componente `<AdSlot>`.
 
+## 2026-10-19 — Sesión 5 (tarea 6.1: componente AdSlot)
+
+**Qué se hizo**
+- `src/components/ads/AdSlot.tsx`: anuncio discreto con etiqueta "Publicidad" visible, ubicaciones `sidebar` (300×600) y `result` (horizontal). Carga el script de AdSense con `lazyOnload` solo cuando hay que mostrar un anuncio; `data-ad-slot` desde `NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR` / `_RESULT` (agregadas a `.env.example`).
+- `ad-mode.ts` (con tests): nunca para Pro, nada hasta saber el plan (evita que un Pro vea un anuncio por un instante), placeholder "Espacio publicitario" si falta `NEXT_PUBLIC_ADSENSE_CLIENT`.
+- Traducciones en el namespace `Ads`.
+
+**Qué sigue**
+- 6.2: ubicaciones (lateral en escritorio y debajo del resultado).
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

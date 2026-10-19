@@ -297,5 +297,9 @@
   "Billing": {
     "monthly": "FileFlip Pro monthly",
     "yearly": "FileFlip Pro yearly"
+  },
+  "Ads": {
+    "label": "Advertisement",
+    "placeholder": "Ad space"
   }
 }

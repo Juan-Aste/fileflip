@@ -99,7 +99,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 5.7 Aplicar límites Pro (tamaño y lote) en cliente y servidor
 
 ### Hito 6 — Publicidad
-- [ ] 6.1 Componente `<AdSlot>` (placeholder sin `NEXT_PUBLIC_ADSENSE_CLIENT`, oculto para Pro)
+- [x] 6.1 Componente `<AdSlot>` (placeholder sin `NEXT_PUBLIC_ADSENSE_CLIENT`, oculto para Pro)
 - [ ] 6.2 Ubicaciones: lateral en escritorio y debajo del resultado; nunca cerca del botón de descarga
 
 ### Hito 7 — SEO y páginas de cola larga

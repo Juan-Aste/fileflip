@@ -297,5 +297,9 @@
   "Billing": {
     "monthly": "FileFlip Pro 月付",
     "yearly": "FileFlip Pro 年付"
+  },
+  "Ads": {
+    "label": "广告",
+    "placeholder": "广告位"
   }
 }
