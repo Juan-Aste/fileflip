@@ -115,6 +115,7 @@ export default function Converter() {
                       value={imageOptions}
                       onChange={setImageOptions}
                       showQuality={lossyFormats.includes(selected.to)}
+                      pdfSource={detected.includes("pdf")}
                     />
                   )}
                   <div className="flex flex-wrap gap-3">

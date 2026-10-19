@@ -80,7 +80,7 @@ export function useFileQueue() {
       }
       for (const item of queue) {
         try {
-          const { blob, engine } = await convertFile(item.file, item.format as FormatId, to, {
+          const { blob, engine, filename } = await convertFile(item.file, item.format as FormatId, to, {
             ...options,
             onProgress: (progress) =>
               update(item.id, { job: { status: "working", progress } }),
@@ -90,7 +90,7 @@ export function useFileQueue() {
               status: "done",
               blob,
               url: URL.createObjectURL(blob),
-              name: outputFilename(item.file.name, to),
+              name: filename ?? outputFilename(item.file.name, to),
               engine,
             },
           });

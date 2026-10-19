@@ -109,7 +109,11 @@
     "percent": "Porcentagem do tamanho original",
     "width": "Largura máxima (px)",
     "height": "Altura máxima (px)",
-    "fitHint": "A proporção é mantida e a imagem nunca é ampliada."
+    "fitHint": "A proporção é mantida e a imagem nunca é ampliada.",
+    "resolution": "Resolução",
+    "dpi72": "72 DPI (tela, leve)",
+    "dpi150": "150 DPI (recomendado)",
+    "dpi300": "300 DPI (impressão)"
   },
   "ProcessingBadge": {
     "browser": "Processado no seu aparelho: seu arquivo não sai do seu computador",

@@ -10,7 +10,12 @@ export interface EncodeOptions {
 
 export interface ImageOptions extends EncodeOptions {
   resize?: Resize;
+  /** Render resolution when the source is a PDF. */
+  dpi?: number;
 }
+
+export const PDF_DPI_CHOICES = [72, 150, 300] as const;
+export const DEFAULT_PDF_DPI = 150;
 
 export const DEFAULT_QUALITY = 82;
 

@@ -1,6 +1,11 @@
 "use client";
 
-import { findConversion, formats, type Conversion, type FormatId } from "@/config/formats";
+import {
+  findConversion,
+  formats,
+  type Conversion,
+  type FormatId,
+} from "@/config/formats";
 import { limits } from "@/config/limits";
 import { canConvertImageOnServer } from "@/config/server-capabilities";
 import { browserSupportsImaging, currentDeviceBudget } from "./capabilities";
@@ -15,13 +20,21 @@ export interface ConvertOptions extends ImageOptions {
 
 export interface ConvertResult {
   blob: Blob;
+  /** Overrides the default output name (e.g. a ZIP of PDF pages). */
+  filename?: string;
   /** Where it actually ran (browser conversions may fall back to the server). */
   engine: "browser" | "server";
 }
 
 /** Whether this build can run a conversion yet (formats are enabled as engines land). */
 export function isRunnable(conversion: Conversion): boolean {
-  if (conversion.to === "pdf" && formats[conversion.from].category === "image") return true;
+  if (conversion.to === "pdf" && formats[conversion.from].category === "image")
+    return true;
+  if (
+    conversion.from === "pdf" &&
+    (conversion.to === "jpg" || conversion.to === "png")
+  )
+    return true;
   if (conversion.engine === "browser") {
     return (
       canConvertImageInBrowser(conversion.to) ||
@@ -42,26 +55,44 @@ export async function convertFile(
   { onProgress, ...options }: ConvertOptions = {},
 ): Promise<ConvertResult> {
   const conversion = findConversion(from, to);
-  if (!conversion || !isRunnable(conversion)) throw new ConversionError("unsupportedFormat");
+  if (!conversion || !isRunnable(conversion))
+    throw new ConversionError("unsupportedFormat");
 
   if (to === "pdf" && formats[from].category === "image") {
     const { imagesToPdfFile } = await import("./pdf/client");
-    return { blob: await imagesToPdfFile([{ file, format: from }], {}, onProgress), engine: "browser" };
+    return {
+      blob: await imagesToPdfFile([{ file, format: from }], {}, onProgress),
+      engine: "browser",
+    };
   }
+
+  if (from === "pdf" && (to === "jpg" || to === "png"))
+    return pdfPagesToImages(file, to, options, onProgress);
 
   // TODO(5.7): use the signed-in user's plan.
   const serverOk =
-    canConvertImageOnServer(from, to) && file.size <= limits.free.serverMaxFileBytes;
+    canConvertImageOnServer(from, to) &&
+    file.size <= limits.free.serverMaxFileBytes;
   const server = async (): Promise<ConvertResult> => ({
-    blob: await convertOnServer("/api/convert/image", file, to, options, onProgress),
+    blob: await convertOnServer(
+      "/api/convert/image",
+      file,
+      to,
+      options,
+      onProgress,
+    ),
     engine: "server",
   });
 
   const localOk =
-    canConvertImageInBrowser(to) && browserSupportsImaging() && file.size <= currentDeviceBudget();
+    canConvertImageInBrowser(to) &&
+    browserSupportsImaging() &&
+    file.size <= currentDeviceBudget();
   if (!localOk) {
     if (serverOk) return server();
-    throw new ConversionError(file.size > currentDeviceBudget() ? "fileTooLarge" : "browserUnsupported");
+    throw new ConversionError(
+      file.size > currentDeviceBudget() ? "fileTooLarge" : "browserUnsupported",
+    );
   }
 
   try {
@@ -70,9 +101,39 @@ export async function convertFile(
   } catch (error) {
     // Out of memory, missing codec support, corrupt decode...: let the server try.
     if (serverOk) {
-      console.warn("Local conversion failed, falling back to the server", error);
+      console.warn(
+        "Local conversion failed, falling back to the server",
+        error,
+      );
       return server();
     }
     throw error;
   }
+}
+
+/** One image per page; several pages come back as a ZIP. */
+async function pdfPagesToImages(
+  file: Blob,
+  to: "jpg" | "png",
+  options: ImageOptions,
+  onProgress?: (progress: number) => void,
+): Promise<ConvertResult> {
+  const { pdfToImages, pageImageName } = await import("./pdf/to-images");
+  const name = (file as File).name ?? "document.pdf";
+  const pages = await pdfToImages(file, to, options, (p) =>
+    onProgress?.(p * 0.95),
+  );
+  if (pages.length === 1) return { blob: pages[0].blob, engine: "browser" };
+  const { zipBlobs } = await import("./zip");
+  const zip = await zipBlobs(
+    pages.map((p) => ({
+      blob: p.blob,
+      name: pageImageName(name, p.page, pages.length, to),
+    })),
+  );
+  return {
+    blob: zip,
+    engine: "browser",
+    filename: name.replace(/\.pdf$/i, "") + `-${to}.zip`,
+  };
 }

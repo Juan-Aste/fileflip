@@ -109,7 +109,11 @@
     "percent": "Percentage of the original size",
     "width": "Max width (px)",
     "height": "Max height (px)",
-    "fitHint": "Aspect ratio is kept and images are never enlarged."
+    "fitHint": "Aspect ratio is kept and images are never enlarged.",
+    "resolution": "Resolution",
+    "dpi72": "72 DPI (screen, small)",
+    "dpi150": "150 DPI (recommended)",
+    "dpi300": "300 DPI (print)"
   },
   "ProcessingBadge": {
     "browser": "Processed on your device: your file never leaves your computer",
