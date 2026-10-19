@@ -602,3 +602,23 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
 - No quedan tareas sin marcar en PLAN.md y la especificación no tiene puntos sin cubrir. Verificado: `npm ci`, `npm run lint`, `npm run build` y `npm test` (40 archivos, 231 tests) pasan en `dev`.
 - Se avisó al dueño que la rutina horaria ya no tiene trabajo y conviene pausarla. Las próximas ejecuciones que encuentren el mismo estado no deben volver a notificar.
+
+## Inicio de la fase 2
+
+## 2026-10-19 23:30 UTC — Fase 2, tarea 2A.1 (plan y medición base)
+
+**Qué se hizo**
+- PLAN.md: nueva sección "Fase 2" con las tareas de los hitos 2A (rendimiento), 2B (diseño) y 2C (panel de administración).
+- `scripts/perf/lighthouse.sh`: medición reproducible con Lighthouse en modo móvil (mediana de N corridas) de portada, conversión de imagen, conversión PDF, herramienta PDF, cola larga y precios. Lighthouse no se agrega a las dependencias del proyecto (se instala aparte; ver el encabezado del script).
+- Medición base en `docs/perf/2026-10-19-baseline.md`.
+
+**Mediciones (base, móvil, mediana de 3)**
+- Rendimiento 99 en todas las páginas medidas; accesibilidad 100; SEO 100 (precios 91).
+- FCP 0,8–0,9 s, LCP 2,0–2,1 s, TBT 60–90 ms, CLS 0, JS transferido 142–151 kB.
+- La meta (≥ 90) ya se cumple; el margen está en el LCP (77 % "render delay" por CSS + JS inicial), en el JS compartido (~103 kB) y en detalles: favicon 404, meta description de precios fuera del `<head>` (streaming de metadatos en páginas dinámicas), prefetch de `/login` y consulta de sesión en cada carga.
+
+**Decisiones**
+- Medir siempre en el puerto 3000 (o con `NEXT_PUBLIC_SITE_URL` igual a la URL medida): si no, Lighthouse marca el canonical como inválido.
+
+**Qué sigue**
+- 2A.2: correcciones rápidas detectadas en la medición.

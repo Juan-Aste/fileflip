@@ -113,3 +113,51 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 8.1 Dockerfile multi-etapa para standalone (con sharp)
 - [x] 8.2 DEPLOY.md: Railway con servicio app + Gotenberg por red privada, MongoDB, variables, dominios, webhooks
 - [x] 8.3 Revisión final: accesibilidad, modo oscuro, rendimiento (carga diferida de WASM), lint/build/tests
+
+---
+
+## Fase 2
+
+La fase 1 está terminada y probada por el dueño. La fase 2 mejora rendimiento, diseño y agrega un panel de administración, sin romper nada de lo existente (si una mejora rompe algo, se revierte). Orden de hitos: 2A → 2B → 2C. Medición base: `docs/perf/2026-10-19-baseline.md` (script `scripts/perf/lighthouse.sh`).
+
+### Hito 2A — Rendimiento
+Meta: Lighthouse móvil ≥ 90 en portada y páginas de conversión, sin empeorar accesibilidad ni SEO.
+- [x] 2A.1 Medición base con Lighthouse (móvil) de portada, conversión de imagen, conversión/herramienta PDF, cola larga y precios; script reproducible y resultados en `docs/perf/`
+- [ ] 2A.2 Correcciones rápidas de la medición: favicon provisorio (sin 404), metadatos de páginas dinámicas en el `<head>` (precios), evitar el prefetch innecesario de `/login` y la consulta de sesión que no hace falta en la primera pintura
+- [ ] 2A.3 Analizar el bundle con `@next/bundle-analyzer` (script `npm run analyze`) y documentar qué entra en el JS inicial de cada tipo de página
+- [ ] 2A.4 Reducir el JS inicial: componentes de servidor donde se pueda (header, footer, secciones estáticas), import dinámico de las herramientas PDF y de paneles que no están a la vista (opciones, ZIP), y verificar que pdf.js/pdf-lib/fflate/códecs no entren al bundle de la portada
+- [ ] 2A.5 Revisar SSG/ISR: conversiones, cola larga y legales estáticas en los 5 idiomas; precios con el mínimo dinamismo posible; solo cuenta y API por pedido
+- [ ] 2A.6 Sin saltos de diseño: espacio reservado para anuncios (también mientras se carga el plan), imágenes con `next/image` y tamaños, y `next/font` preparado (subconjuntos, `display: swap`)
+- [ ] 2A.7 Caché larga e inmutable para `.wasm` y workers con hash (`headers()` en `next.config.ts`), y precarga del códec al elegir formato o al pasar el mouse por la herramienta
+- [ ] 2A.8 Workers: reutilizar el worker, lotes con concurrencia limitada según `navigator.hardwareConcurrency` (pool), liberar memoria (`revokeObjectURL`, `ImageBitmap.close`) + tests del pool
+- [ ] 2A.9 Servidor: índices en MongoDB para las consultas actuales y del panel, timeouts razonables hacia Gotenberg, respuestas sin copias innecesarias de buffers
+- [ ] 2A.10 Medición final de 2A (mismas páginas y método) y comparación en `docs/perf/`
+
+### Hito 2B — Diseño
+Meta: aspecto profesional, moderno, confiable y propio; interfaz limpia. Capturas con Playwright (360 px y 1280 px, claro y oscuro) revisadas después de cada tarea; finales en `docs/screenshots/`.
+- [ ] 2B.1 Identidad visual en `docs/design.md`: paleta claro/oscuro con contraste AA, tipografías (títulos con personalidad + texto legible, vía `next/font`), espaciado, radios, sombras; tokens como variables CSS en Tailwind
+- [ ] 2B.2 Aplicar los tokens y las fuentes en todo el sitio (globals.css, componentes base: botones, tarjetas, inputs, insignias)
+- [ ] 2B.3 Logo de FileFlip en SVG (ícono original + texto), favicon/íconos de app e imagen Open Graph por idioma
+- [ ] 2B.4 Header y footer nuevos con navegación móvil cómoda (menú accesible) e íconos lucide-react
+- [ ] 2B.5 Portada: hero con la zona para arrastrar como protagonista, mensaje de privacidad y accesos rápidos a las conversiones más usadas
+- [ ] 2B.6 Portada: "Cómo funciona" en 3 pasos y preguntas frecuentes (con FAQ schema)
+- [ ] 2B.7 Conversor: estados vacío, arrastrando, procesando con progreso, listo y error
+- [ ] 2B.8 Tarjetas de archivo: miniatura, nombre, peso antes/después, ahorro en %, botón de descarga muy claro y separado de los anuncios
+- [ ] 2B.9 Herramientas PDF, páginas de conversión y de cola larga con el nuevo diseño
+- [ ] 2B.10 Precios, login, cuenta, legales, contacto y 404 con el nuevo diseño
+- [ ] 2B.11 Microinteracciones y transiciones que respetan `prefers-reduced-motion`; revisión responsive 360/768/1280 en todas las páginas
+- [ ] 2B.12 Capturas finales en `docs/screenshots/` y nueva medición de Lighthouse (no empeorar 2A)
+
+### Hito 2C — Panel de administración
+Ruta `/[locale]/admin`, solo para usuarios logueados con email en `ADMIN_EMAILS`; los demás reciben 404 (protección en el servidor: layout y cada API).
+- [ ] 2C.1 Control de acceso: `ADMIN_EMAILS` (en `.env.example` y "Pendiente del dueño"), `isAdmin`/`requireAdmin`, layout del panel con 404 para no admins, tests (admin, no admin, anónimo)
+- [ ] 2C.2 Datos que faltan en los registros, respetando la privacidad: duración y tipo de error de cada conversión, herramienta usada, beacon de visitas (idioma, país si está disponible, página de cola larga; nunca IP completa ni nombre de archivo) + tests
+- [ ] 2C.3 Selector de período (hoy, 7 días, 30 días, 12 meses, personalizado) y período anterior para comparar + tests
+- [ ] 2C.4 Agregaciones de conversiones: por día, total y comparación, top 10 por herramienta/par de formatos, navegador vs servidor (tests con MongoDB en memoria)
+- [ ] 2C.5 Agregaciones de errores por tipo, tiempo promedio de conversión, tamaño total procesado y archivos temporales actuales (tests)
+- [ ] 2C.6 Agregaciones de visitas por idioma, país y páginas de cola larga (tests)
+- [ ] 2C.7 Agregaciones de usuarios (nuevos por día, total), suscripciones Pro activas, altas y bajas, MRR por moneda (tests)
+- [ ] 2C.8 API del panel (protegida) y página con tarjetas de resumen y selector de período
+- [ ] 2C.9 Gráficos livianos cargados solo en el panel (línea de conversiones por día, barras de top 10, etc.)
+- [ ] 2C.10 Exportar a CSV las tablas principales + tests
+- [ ] 2C.11 Revisión final de la fase 2: lint, build, tests, mediciones finales y "FASE 2 TERMINADA" en PROGRESS.md
