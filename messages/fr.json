@@ -315,5 +315,8 @@
     "privacyServer": "Les documents sont convertis sur notre serveur avec LibreOffice, via une connexion chiffrée, et supprimés automatiquement sous 1 heure.",
     "relatedTitle": "Autres conversions",
     "linkLabel": "{from} en {to}"
+  },
+  "Longtail": {
+    "faqTitle": "Questions fréquentes"
   }
 }

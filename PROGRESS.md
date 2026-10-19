@@ -496,6 +496,18 @@
 **Qué sigue**
 - 7.3: archivo de datos de cola larga y plantilla con FAQ y datos estructurados.
 
+## 2026-10-19 — Sesión 5 (tarea 7.3: páginas de cola larga)
+
+**Qué se hizo**
+- `src/content/longtail.ts`: archivo de datos de páginas de cola larga (id, idioma, slug, título, meta, introducción, widget — conversor con formatos/opciones prefijados o una herramienta —, secciones, FAQ y traducciones opcionales). Para agregar una página basta con sumar una entrada: la toman el router, el sitemap y el selector de idioma. `faqJsonLd` genera los datos estructurados FAQPage.
+- Plantilla `LongtailView` en `[slug]/page.tsx`: H1, introducción, herramienta, secciones, FAQ desplegable y `<script type="application/ld+json">` (con `<` escapado). Metadatos propios, canonical y hreflang solo hacia las traducciones que existan. Las páginas regionales existen únicamente en su idioma (otros idiomas → 404); el selector de idioma lleva a la portada del otro idioma si no hay traducción.
+- El conversor acepta opciones de imagen prefijadas (`options`).
+- Primera página: `/es/heic-a-jpg-desde-iphone` (HEIC→JPG calidad 90, cómo convertir en lote, cómo configurar el iPhone, 4 preguntas).
+- Tests del archivo de datos (ids/slugs únicos, sin choques con herramientas/conversiones, meta ≤170 caracteres, ≥3 preguntas, conversiones existentes, traducciones coherentes), del sitemap y del cambio de idioma. Probado en el servidor: título, canonical, JSON-LD, conversión HEIC→JPG y `/en/...` → 404.
+
+**Qué sigue**
+- 7.4: el resto de las páginas de cola larga (AFIP, foto DNI, WhatsApp, SAT, gov.br).
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

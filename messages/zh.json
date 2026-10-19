@@ -315,5 +315,8 @@
     "privacyServer": "文档通过加密连接在我们的服务器上用 LibreOffice 转换，并在 1 小时内自动删除。",
     "relatedTitle": "其他转换",
     "linkLabel": "{from} 转 {to}"
+  },
+  "Longtail": {
+    "faqTitle": "常见问题"
   }
 }

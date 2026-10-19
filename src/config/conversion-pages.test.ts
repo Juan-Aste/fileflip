@@ -32,6 +32,11 @@ describe("conversion slugs", () => {
   it("are translated when switching language", () => {
     expect(translatePathname("/heic-a-jpg", "es", "fr")).toBe("/heic-en-jpg");
   });
+
+  it("sends regional pages without a translation to the home page", () => {
+    expect(translatePathname("/heic-a-jpg-desde-iphone", "es", "en")).toBe("/");
+    expect(translatePathname("/heic-a-jpg-desde-iphone", "es", "es")).toBe("/heic-a-jpg-desde-iphone");
+  });
 });
 
 describe("relatedConversions", () => {

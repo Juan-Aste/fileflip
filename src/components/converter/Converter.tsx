@@ -21,14 +21,17 @@ interface Props {
   /** Conversion pages preselect their formats. */
   from?: FormatId;
   to?: FormatId;
+  /** Preset image options (e.g. an ID-photo size on a long-tail page). */
+  options?: ImageOptions;
 }
 
-export default function Converter({ from, to }: Props = {}) {
+export default function Converter({ from, to, options }: Props = {}) {
   const t = useTranslations("Converter");
   const { items, add, remove, clear, convertAll } = useFileQueue();
   const [target, setTarget] = useState<FormatId | null>(to ?? null);
   const [imageOptions, setImageOptions] = useState<ImageOptions>({
     quality: DEFAULT_QUALITY,
+    ...options,
   });
 
   const detected = items

@@ -315,5 +315,8 @@
     "privacyServer": "Los documentos se convierten en nuestro servidor con LibreOffice, por conexión cifrada, y se borran automáticamente en menos de 1 hora.",
     "relatedTitle": "Otras conversiones",
     "linkLabel": "{from} a {to}"
+  },
+  "Longtail": {
+    "faqTitle": "Preguntas frecuentes"
   }
 }

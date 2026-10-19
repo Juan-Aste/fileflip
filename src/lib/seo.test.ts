@@ -29,6 +29,12 @@ describe("sitemapEntries", () => {
     });
   });
 
+  it("includes long-tail pages only in their own language", () => {
+    const urls = entries.map((e) => e.url);
+    expect(urls).toContain("https://fileflip.app/es/heic-a-jpg-desde-iphone");
+    expect(urls).not.toContain("https://fileflip.app/en/heic-a-jpg-desde-iphone");
+  });
+
   it("leaves out private pages", () => {
     expect(entries.some((e) => /\/(account|login)/.test(e.url))).toBe(false);
   });

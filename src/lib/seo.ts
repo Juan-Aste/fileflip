@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { conversionPages, conversionSlug } from "@/config/conversion-pages";
 import { availableTools, tools } from "@/config/tools";
+import { longtailPages, longtailTranslation } from "@/content/longtail";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 
 export function siteUrl() {
@@ -29,7 +30,7 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
     ...availableTools.map((id) => ({ path: (l: Locale) => `/${tools[id].slugs[l]}`, priority: 0.9 })),
     ...conversionPages.map((c) => ({ path: (l: Locale) => `/${conversionSlug(c, l)}`, priority: 0.8 })),
   ];
-  return pages.flatMap(({ path, priority }) =>
+  const localized = pages.flatMap(({ path, priority }) =>
     locales.map((locale) => ({
       url: `${base}/${locale}${path(locale)}`,
       changeFrequency: "monthly" as const,
@@ -37,4 +38,18 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
       alternates: { languages: Object.fromEntries(locales.map((l) => [l, `${base}/${l}${path(l)}`])) },
     })),
   );
+  // Long-tail pages exist only in the languages they were written in.
+  const longtail = longtailPages.map((page) => {
+    const versions = locales.flatMap((l) => {
+      const t = longtailTranslation(page, l);
+      return t ? [[l, `${base}/${l}/${t.slug}`] as const] : [];
+    });
+    return {
+      url: `${base}/${page.locale}/${page.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+      alternates: { languages: Object.fromEntries(versions) },
+    };
+  });
+  return [...localized, ...longtail];
 }

@@ -18,6 +18,13 @@ import {
   tools,
   type ToolInfo,
 } from "@/config/tools";
+import {
+  faqJsonLd,
+  longtailFromSlug,
+  longtailPages,
+  longtailTranslation,
+  type LongtailPage,
+} from "@/content/longtail";
 import { Link } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { alternatesFor } from "@/lib/seo";
@@ -26,7 +33,8 @@ type Params = { locale: string; slug: string };
 
 type Page =
   | { kind: "tool"; tool: ToolInfo }
-  | { kind: "conversion"; conversion: Conversion };
+  | { kind: "conversion"; conversion: Conversion }
+  | { kind: "longtail"; page: LongtailPage };
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) => [
@@ -35,6 +43,9 @@ export function generateStaticParams() {
       locale,
       slug: conversionSlug(c, locale),
     })),
+    ...longtailPages
+      .filter((page) => page.locale === locale)
+      .map((page) => ({ locale, slug: page.slug })),
   ]);
 }
 
@@ -46,10 +57,12 @@ function resolve({ locale, slug }: Params): Page | undefined {
   const tool = toolFromSlug(locale as Locale, decoded);
   if (tool && availableTools.includes(tool.id)) return { kind: "tool", tool };
   const conversion = conversionFromSlug(locale as Locale, decoded);
-  return conversion ? { kind: "conversion", conversion } : undefined;
+  if (conversion) return { kind: "conversion", conversion };
+  const page = longtailFromSlug(locale as Locale, decoded);
+  return page ? { kind: "longtail", page } : undefined;
 }
 
-const slugFor = (page: Page, locale: Locale) =>
+const slugFor = (page: Exclude<Page, { kind: "longtail" }>, locale: Locale) =>
   page.kind === "tool"
     ? page.tool.slugs[locale]
     : conversionSlug(page.conversion, locale);
@@ -62,6 +75,21 @@ export async function generateMetadata({
   const p = await params;
   const page = resolve(p);
   if (!page) return {};
+  if (page.kind === "longtail") {
+    const lt = page.page;
+    const versions = routing.locales.flatMap((l) => {
+      const t = longtailTranslation(lt, l);
+      return t ? [[l, `/${l}/${t.slug}`] as const] : [];
+    });
+    return {
+      title: `${lt.metaTitle} — FileFlip`,
+      description: lt.metaDescription,
+      alternates: {
+        canonical: `/${lt.locale}/${lt.slug}`,
+        languages: Object.fromEntries(versions),
+      },
+    };
+  }
   const alternates = alternatesFor(
     p.locale as Locale,
     (l) => `/${slugFor(page, l)}`,
@@ -105,8 +133,10 @@ export default async function SlugPage({
     <WithSidebarAd>
       {page.kind === "tool" ? (
         <ToolView tool={page.tool} />
-      ) : (
+      ) : page.kind === "conversion" ? (
         <ConversionView conversion={page.conversion} />
+      ) : (
+        <LongtailView page={page.page} />
       )}
     </WithSidebarAd>
   );
@@ -196,5 +226,63 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
         </nav>
       )}
     </div>
+  );
+}
+
+async function LongtailView({ page }: { page: LongtailPage }) {
+  const t = await getTranslations("Longtail");
+  const { widget } = page;
+  return (
+    <article className="mx-auto flex max-w-3xl flex-col gap-8 py-12">
+      <script
+        type="application/ld+json"
+        // JSON.stringify output is safe here; "<" is escaped to keep </script> out.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqJsonLd(page)).replace(/</g, "\\u003c"),
+        }}
+      />
+      <header className="flex flex-col gap-3">
+        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
+          {page.title}
+        </h1>
+        {page.intro.map((p) => (
+          <p key={p} className="text-muted">
+            {p}
+          </p>
+        ))}
+      </header>
+      {widget.kind === "converter" ? (
+        <Converter from={widget.from} to={widget.to} options={widget.options} />
+      ) : (
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-center">
+            <ProcessingBadge engine={tools[widget.tool].engine} />
+          </div>
+          <ToolComponent id={widget.tool} />
+        </div>
+      )}
+      {page.sections.map((section) => (
+        <section key={section.heading} className="flex flex-col gap-2">
+          <h2 className="text-2xl font-bold">{section.heading}</h2>
+          {section.body.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
+        </section>
+      ))}
+      <section aria-labelledby="faq" className="flex flex-col gap-3">
+        <h2 id="faq" className="text-2xl font-bold">
+          {t("faqTitle")}
+        </h2>
+        {page.faq.map(({ q, a }) => (
+          <details
+            key={q}
+            className="rounded-xl border border-border bg-surface px-4 py-3"
+          >
+            <summary className="cursor-pointer font-medium">{q}</summary>
+            <p className="mt-2 text-sm text-muted">{a}</p>
+          </details>
+        ))}
+      </section>
+    </article>
   );
 }
