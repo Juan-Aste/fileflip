@@ -1,0 +1,397 @@
+{
+  "Metadata": {
+    "title": "FileFlip — Convert files and images for free",
+    "description": "Convert images and documents with no watermarks and no sign-up. Whatever can be done on your device stays there."
+  },
+  "Common": {
+    "appName": "FileFlip",
+    "skipToContent": "Skip to content",
+    "loading": "Loading…",
+    "close": "Close",
+    "download": "Download",
+    "cancel": "Cancel",
+    "retry": "Try again"
+  },
+  "Header": {
+    "homeLink": "FileFlip home",
+    "nav": {
+      "tools": "Tools",
+      "pricing": "Pricing",
+      "login": "Sign in",
+      "account": "My account"
+    },
+    "mainNav": "Main navigation"
+  },
+  "LocaleSwitcher": {
+    "label": "Language"
+  },
+  "Theme": {
+    "toggle": "Change theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "Footer": {
+    "tagline": "Fast, private file conversion.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "pricing": "Pricing",
+    "copyright": "© {year} FileFlip. No watermarks, no sign-up required."
+  },
+  "HomePage": {
+    "title": "Convert your files without them ever leaving your computer",
+    "tagline": "Images and PDFs are processed right in your browser: faster, more private and free. No watermarks, no account needed.",
+    "cta": "Choose files",
+    "features": {
+      "heading": "Why FileFlip?",
+      "privacy": {
+        "title": "Actually private",
+        "body": "Your images and PDFs are never uploaded — everything happens on your device."
+      },
+      "speed": {
+        "title": "Seriously fast",
+        "body": "No waiting for uploads or downloads. Conversion starts instantly."
+      },
+      "free": {
+        "title": "Free, no sign-up",
+        "body": "No watermarks, no mandatory accounts and no hidden limits."
+      },
+      "office": {
+        "title": "Office documents too",
+        "body": "Word, Excel and PowerPoint are converted on our server and deleted within 1 hour."
+      }
+    },
+    "badge": "Your files never leave your device",
+    "steps": {
+      "heading": "It's that simple",
+      "drop": "Drop your file",
+      "pick": "Pick a format",
+      "download": "Download the result"
+    }
+  },
+  "Errors": {
+    "generic": "Something went wrong. Please try again.",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you're looking for doesn't exist or has moved.",
+    "backHome": "Back to home"
+  },
+  "Converter": {
+    "dropTitle": "Drop your files here",
+    "dropHint": "or click to choose them from your device",
+    "dropActive": "Drop to add them",
+    "inputLabel": "Choose files to convert",
+    "fileList": "Selected files",
+    "filesCount": "{count, plural, one {# file} other {# files}}",
+    "detecting": "Detecting…",
+    "unsupported": "Unsupported format",
+    "remove": "Remove {name}",
+    "clear": "Remove all",
+    "convertTo": "Convert to",
+    "noCommonOutput": "These files don't share an output format. Convert them separately.",
+    "convert": "Convert",
+    "converting": "Converting…",
+    "convertAgain": "Convert again",
+    "sizeChange": "{before} → {after}",
+    "saved": "{percent} smaller",
+    "progress": "{name} progress",
+    "downloadAll": "Download all as ZIP ({count})",
+    "processedOnServer": "Processed on our server (deleted within 1 hour)",
+    "pdfToWordNote": "PDF to Word keeps the text, headings and paragraphs. Columns, tables and images may change or be left out."
+  },
+  "ImageOptions": {
+    "title": "Options",
+    "quality": "Quality",
+    "qualityHint": "Lower quality = smaller file.",
+    "size": "Size",
+    "sizeNone": "Original",
+    "sizePercent": "Percentage",
+    "sizeFit": "Max width / height",
+    "percent": "Percentage of the original size",
+    "width": "Max width (px)",
+    "height": "Max height (px)",
+    "fitHint": "Aspect ratio is kept and images are never enlarged.",
+    "resolution": "Resolution",
+    "dpi72": "72 DPI (screen, small)",
+    "dpi150": "150 DPI (recommended)",
+    "dpi300": "300 DPI (print)",
+    "sizeCover": "Exact size (crops)",
+    "widthExact": "Width (px)",
+    "heightExact": "Height (px)",
+    "coverHint": "The image is cropped from the center to exactly this size."
+  },
+  "ProcessingBadge": {
+    "browser": "Processed on your device: your file never leaves your computer",
+    "server": "Processed on our server and deleted within 1 hour"
+  },
+  "ApiErrors": {
+    "fileTooLarge": "The file is too large.",
+    "tooManyFiles": "Too many files in one batch.",
+    "unsupportedFormat": "This format can't be converted this way.",
+    "invalidRequest": "The request is not valid.",
+    "rateLimited": "Too many conversions in a row. Please wait a minute.",
+    "conversionFailed": "This file couldn't be converted.",
+    "serviceUnavailable": "The service is unavailable. Please try again later.",
+    "browserUnsupported": "Your browser can't convert this file. Try a recent version of Chrome, Edge, Firefox or Safari.",
+    "pdfHasNoText": "This PDF is a scanned image: it has no text to put into Word.",
+    "signInRequired": "Please sign in to continue.",
+    "paymentsUnavailable": "Payments aren't available in your country yet. Check back soon."
+  },
+  "Tools": {
+    "merge-pdf": {
+      "title": "Merge PDF",
+      "description": "Combine several PDFs into one, in any order. Your files are never uploaded.",
+      "action": "Merge PDF"
+    },
+    "split-pdf": {
+      "title": "Split PDF",
+      "description": "Split a PDF into several files or extract just the pages you need.",
+      "action": "Split PDF"
+    },
+    "rotate-pdf": {
+      "title": "Rotate PDF",
+      "description": "Turn the pages of a PDF and save it the right way up.",
+      "action": "Rotate PDF"
+    },
+    "organize-pdf": {
+      "title": "Organize PDF pages",
+      "description": "Reorder, rotate or delete PDF pages with thumbnails.",
+      "action": "Save PDF"
+    },
+    "images-to-pdf": {
+      "title": "Images to PDF",
+      "description": "Turn JPG, PNG, HEIC and other photos into a single PDF.",
+      "action": "Create PDF"
+    },
+    "compress-pdf": {
+      "title": "Compress PDF",
+      "description": "Make your PDFs smaller to send them by email or WhatsApp.",
+      "action": "Compress PDF"
+    }
+  },
+  "ToolUi": {
+    "moveUp": "Move {name} up",
+    "moveDown": "Move {name} down",
+    "onlyPdf": "PDF only",
+    "needMore": "Add at least {count} files.",
+    "pages": "{count, plural, one {# page} other {# pages}}",
+    "working": "Processing…",
+    "result": "Your file is ready",
+    "startOver": "Start over",
+    "splitMode": "How do you want to split it?",
+    "splitEach": "Every page as its own PDF",
+    "splitRanges": "One PDF per range",
+    "splitExtract": "Extract pages into one PDF",
+    "ranges": "Pages",
+    "rangesHint": "Example: 1-3, 5, 8- (8- = page 8 to the end)",
+    "rangesInvalid": "Check the pages: they must be between 1 and {count}.",
+    "rotation": "Rotation",
+    "rotateRight": "90° clockwise",
+    "rotate180": "180°",
+    "rotateLeft": "90° counterclockwise",
+    "rotateScope": "Pages to rotate",
+    "allPages": "All",
+    "somePages": "Only some",
+    "brokenPdf": "This PDF couldn't be read. Is it damaged or password-protected?",
+    "loadingPages": "Generating thumbnails…",
+    "dragHint": "Drag the thumbnails to reorder them, or use the buttons.",
+    "pageLabel": "Page {n}",
+    "rotatePage": "Rotate page {n}",
+    "deletePage": "Delete page {n}",
+    "movePageLeft": "Move page {n} earlier",
+    "movePageRight": "Move page {n} later",
+    "restorePages": "Restore all",
+    "pageSize": "Page size",
+    "pageFit": "Same as image",
+    "pageA4": "A4",
+    "pageLetter": "Letter",
+    "margin": "Margin",
+    "marginNone": "No margin",
+    "marginSmall": "Small",
+    "marginLarge": "Large",
+    "onlyImages": "Images only",
+    "needOne": "Add at least one image.",
+    "level": "Compression level",
+    "levelLow": "Low (best quality)",
+    "levelRecommended": "Recommended",
+    "levelStrong": "Strong (smallest file)",
+    "reduced": "{before} → {after} ({percent} smaller)",
+    "alreadyOptimized": "This PDF is already optimized: we couldn't make it smaller."
+  },
+  "Email": {
+    "subject": "Your FileFlip sign-in link",
+    "preheader": "Sign in with one click, no password.",
+    "heading": "Sign in to FileFlip",
+    "body": "Click the button to sign in. The link is valid for 24 hours and can only be used once.",
+    "button": "Sign in",
+    "fallback": "If the button doesn't work, copy and paste this link into your browser:",
+    "ignore": "If you didn't ask for this email, you can ignore it: nobody can sign in without this link."
+  },
+  "Login": {
+    "title": "Sign in",
+    "subtitle": "You don't need an account to convert. Sign in to manage your Pro plan.",
+    "google": "Continue with Google",
+    "or": "or",
+    "emailLabel": "Your email",
+    "emailPlaceholder": "you@email.com",
+    "emailSubmit": "Email me a link",
+    "noMethods": "Sign-in isn't configured yet.",
+    "error": "We couldn't sign you in. Please try again.",
+    "verifyTitle": "Check your email",
+    "verifyBody": "We sent you a sign-in link. It may take a minute; check your spam folder too.",
+    "privacyNote": "We only use your email to sign you in and about your subscription."
+  },
+  "Account": {
+    "title": "My account",
+    "signedInAs": "Signed in as {email}",
+    "plan": "Your plan",
+    "planFree": "Free",
+    "planPro": "Pro",
+    "freeBody": "Every tool at no cost, with limits on server conversions.",
+    "upgrade": "Upgrade to Pro",
+    "signOut": "Sign out",
+    "planProBody": "Thanks for supporting FileFlip. You have higher limits and no ads.",
+    "billing": "{amount} per {period, select, yearly {year} other {month}}",
+    "nextPayment": "Next charge: {date}",
+    "paidUntil": "Your Pro stays active until {date}. You won't be charged again.",
+    "cancel": "Cancel subscription",
+    "cancelConfirm": "Are you sure you want to cancel? You'll keep Pro until the end of the paid period.",
+    "cancelled": "Subscription cancelled.",
+    "checkoutDone": "Thank you! We're confirming your payment; it may take a few minutes.",
+    "paused": "Your subscription is paused. Please check your payment method in Mercado Pago."
+  },
+  "Pricing": {
+    "country": "Country",
+    "otherCountry": "Other country (USD)",
+    "title": "Simple pricing",
+    "subtitle": "Everything works for free, no account needed. Pro is for people who convert a lot and would rather not see ads.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "save": "Save {percent}",
+    "perMonth": "/mo",
+    "perYear": "/yr",
+    "free": "Free",
+    "freePrice": "$0",
+    "freeCta": "Start converting",
+    "pro": "Pro",
+    "proCta": "Upgrade to Pro",
+    "current": "Your current plan",
+    "features": {
+      "allTools": "Every tool, no watermarks",
+      "device": "Unlimited conversions on your device",
+      "serverFree": "Documents up to {size}, {count} per batch",
+      "serverPro": "Documents up to {size}, {count} per batch",
+      "browserPro": "Images and PDFs up to {size} on your device",
+      "noAds": "No ads",
+      "support": "You help keep FileFlip going"
+    },
+    "intlNote": "Payments from your country are coming soon. Meanwhile, everything stays free.",
+    "billedVia": "Secure payment with {provider}. Cancel anytime from My account.",
+    "faqTitle": "FAQ",
+    "faq": {
+      "q1": "Do I need Pro to convert?",
+      "a1": "No. Every tool works for free without an account. Pro only raises the limits and removes ads.",
+      "q2": "Can I cancel anytime?",
+      "a2": "Yes, from My account in one click. You keep Pro until the end of the period you already paid for.",
+      "q3": "Why is the price in my currency?",
+      "a3": "We charge in local currency where Mercado Pago operates, so you don't pay currency conversion fees."
+    },
+    "billingPeriod": "Billing period"
+  },
+  "Billing": {
+    "monthly": "FileFlip Pro monthly",
+    "yearly": "FileFlip Pro yearly"
+  },
+  "Ads": {
+    "label": "Advertisement",
+    "placeholder": "Ad space"
+  },
+  "ConversionPage": {
+    "title": "Convert {from} to {to}",
+    "metaTitle": "Convert {from} to {to} online for free",
+    "description": "Convert {from} to {to} in seconds, for free, with no watermarks and no sign-up.",
+    "howTitle": "How to convert {from} to {to}",
+    "step1": "Drop your {from} file or choose it from your device.",
+    "step2": "Pick {to} and adjust quality or size if you like.",
+    "step3": "Click Convert and download your {to} file.",
+    "privacyTitle": "Private and fast",
+    "privacyBrowser": "Your {from} files are converted right in your browser: they are never uploaded, so the conversion is private and very fast.",
+    "privacyServer": "Documents are converted on our server with LibreOffice over an encrypted connection, and automatically deleted within 1 hour.",
+    "relatedTitle": "Other conversions",
+    "linkLabel": "{from} to {to}"
+  },
+  "Longtail": {
+    "faqTitle": "Frequently asked questions"
+  },
+  "Legal": {
+    "updated": "Last updated: {date}",
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "Privacy is at the core of FileFlip. This page explains what data we handle, why, and for how long.",
+      "sections": [
+        {
+          "heading": "Files processed on your device",
+          "body": "Images and PDFs you convert, compress, merge, split or reorder are processed inside your browser. Those files are never sent to our servers and we have no access to them."
+        },
+        {
+          "heading": "Files processed on our server",
+          "body": "Office documents (Word, Excel, PowerPoint, OpenDocument, RTF, TXT), PDF to Word and, only when your browser can't do it, some images are processed on our server over an encrypted connection. They are processed in memory or temporary storage and deleted within 1 hour at most. We don't look at them, share them or use them for anything else."
+        },
+        {
+          "heading": "Data we store",
+          "body": "For each conversion we only store metadata: input and output format, size, date, whether it ran in the browser or on the server and, if you are signed in, your user. Never the file's name or content. If you create an account we store your email (and your name and picture if you sign in with Google) and your subscription status."
+        },
+        {
+          "heading": "Payments",
+          "body": "Pro payments are processed by Mercado Pago (or another payment provider in some countries). We never receive or store your card details; only the subscription id and status."
+        },
+        {
+          "heading": "Cookies and local storage",
+          "body": "We use necessary cookies to remember your language, your country for pricing and your session, and local storage for the light or dark theme. Free-plan users see Google AdSense ads, which may use their own cookies; you can manage them in Google's ad settings."
+        },
+        {
+          "heading": "Your rights",
+          "body": "You can ask to access, correct or delete your data and your account through the contact page. Cancelling a subscription doesn't delete the account; if you want it deleted, ask us and we will."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of use",
+      "intro": "By using FileFlip you accept these terms. They are written to be clear; if anything is unclear, write to us.",
+      "sections": [
+        {
+          "heading": "The service",
+          "body": "FileFlip converts, compresses and organizes files. Basic features are free and need no account. The Pro plan raises limits and removes ads."
+        },
+        {
+          "heading": "Your files",
+          "body": "Your files remain yours. Only upload or process files you have the right to use. We claim no rights over them."
+        },
+        {
+          "heading": "Acceptable use",
+          "body": "Don't use FileFlip for illegal activities, to send malware or to overload the service (for example with massive automated uploads). We may limit usage to protect the service."
+        },
+        {
+          "heading": "Pro subscription",
+          "body": "Pro is billed in advance, monthly or yearly, in local currency where available. You can cancel anytime from My account: it won't renew and you keep Pro until the end of the paid period."
+        },
+        {
+          "heading": "No warranty",
+          "body": "We do our best to make conversions accurate, but the service is provided “as is”. Some complex formats may not convert perfectly; always keep your original files."
+        },
+        {
+          "heading": "Changes",
+          "body": "We may update these terms. If a change is important, we'll announce it on the site."
+        }
+      ]
+    },
+    "contact": {
+      "title": "Contact",
+      "intro": "Got a question, found a bug or want to request a new format? Write to us.",
+      "emailLabel": "Email",
+      "missing": "The contact address isn't configured yet.",
+      "topics": "If you're reporting a problem, tell us which browser and what kind of file you were using. Never email us private documents.",
+      "privacy": "To request deletion of your data or account, write to us from the email you signed up with."
+    }
+  }
+}

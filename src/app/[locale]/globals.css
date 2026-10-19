@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* Dark mode follows the `.dark` class set on <html> by the theme script. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #f8fafc;
+  --surface: #ffffff;
+  --foreground: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --brand: #4f46e5;
+  --brand-strong: #4338ca;
+  --brand-soft: #eef2ff;
+  /* Solid fills behind white text (buttons): AA contrast in both themes. */
+  --brand-solid: #4f46e5;
+  --brand-solid-hover: #4338ca;
+}
+
+.dark {
+  --background: #0b1020;
+  --surface: #121a2e;
+  --foreground: #e2e8f0;
+  --muted: #94a3b8;
+  --border: #1e293b;
+  --brand: #818cf8;
+  --brand-strong: #a5b4fc;
+  --brand-soft: #1e1b4b;
+  --brand-solid: #4f46e5;
+  --brand-solid-hover: #4338ca;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-solid: var(--brand-solid);
+  --color-brand-solid-hover: var(--brand-solid-hover);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+}

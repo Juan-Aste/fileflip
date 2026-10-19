@@ -1,0 +1,56 @@
+{
+  "name": "fileflip",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@auth/mongodb-adapter": "^3.11.3",
+    "@jsquash/avif": "^2.1.1",
+    "@jsquash/jpeg": "^1.6.0",
+    "@jsquash/png": "^3.1.1",
+    "@jsquash/webp": "^1.5.0",
+    "docx": "^9.12.0",
+    "fflate": "^0.8.3",
+    "gifenc": "^1.0.3",
+    "libheif-js": "^1.23.5",
+    "mongodb": "^6.21.0",
+    "mongoose": "^9.11.2",
+    "next": "15.5.28",
+    "next-auth": "^5.0.0-beta.32",
+    "next-intl": "^4.14.9",
+    "nodemailer": "^8.0.11",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.4.299",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "server-only": "^0.0.1",
+    "sharp": "^0.35.5",
+    "utif2": "^4.1.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@formatjs/icu-messageformat-parser": "^3.5.21",
+    "@tailwindcss/postcss": "^4.1.13",
+    "@types/node": "^20.19.0",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "eslint": "^9.35.0",
+    "eslint-config-next": "15.5.28",
+    "mongodb-memory-server": "^11.3.0",
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}

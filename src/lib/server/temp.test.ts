@@ -1,0 +1,42 @@
+import { existsSync } from "node:fs";
+import { mkdir, mkdtemp, utimes, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+import { sweepTempFiles, withTempDir } from "./temp";
+
+describe("sweepTempFiles", () => {
+  it("removes only entries older than the TTL", async () => {
+    const root = await mkdtemp(join(tmpdir(), "sweep-"));
+    const old = join(root, "old.bin");
+    const fresh = join(root, "fresh.bin");
+    await writeFile(old, "x");
+    await writeFile(fresh, "x");
+    await mkdir(join(root, "old-dir"));
+    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60_000);
+    await utimes(old, twoHoursAgo, twoHoursAgo);
+    await utimes(join(root, "old-dir"), twoHoursAgo, twoHoursAgo);
+
+    expect(await sweepTempFiles(root, 60 * 60_000)).toBe(2);
+    expect(existsSync(old)).toBe(false);
+    expect(existsSync(fresh)).toBe(true);
+  });
+
+  it("ignores a missing folder", async () => {
+    expect(await sweepTempFiles(join(tmpdir(), "does-not-exist-123"))).toBe(0);
+  });
+});
+
+describe("withTempDir", () => {
+  it("always deletes the directory, even on errors", async () => {
+    let dir = "";
+    await expect(
+      withTempDir(async (d) => {
+        dir = d;
+        await writeFile(join(d, "upload"), "data");
+        throw new Error("boom");
+      }),
+    ).rejects.toThrow("boom");
+    expect(existsSync(dir)).toBe(false);
+  });
+});
