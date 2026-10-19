@@ -14,6 +14,7 @@ interface Props {
 export default function FileRow({ item, onRemove }: Props) {
   const t = useTranslations("Converter");
   const tc = useTranslations("Common");
+  const te = useTranslations("ApiErrors");
   const locale = useLocale() as Locale;
   const { file, format, job } = item;
 
@@ -23,7 +24,7 @@ export default function FileRow({ item, onRemove }: Props) {
   } else if (format === undefined) {
     status = t("detecting");
   } else if (job?.status === "error") {
-    status = <span className="text-red-600 dark:text-red-400">{t("failed")}</span>;
+    status = <span className="text-red-600 dark:text-red-400">{te(job.code)}</span>;
   } else if (job?.status === "done") {
     const ratio = 1 - job.blob.size / file.size;
     status = (
@@ -32,6 +33,11 @@ export default function FileRow({ item, onRemove }: Props) {
           before: formatBytes(file.size, locale),
           after: formatBytes(job.blob.size, locale),
         })}
+        {job.engine === "server" && (
+          <span className="ml-2" title={t("processedOnServer")}>
+            ☁️<span className="sr-only">{t("processedOnServer")}</span>
+          </span>
+        )}
         {ratio > 0.01 && (
           <span className="ml-2 font-medium text-emerald-600 dark:text-emerald-400">
             {t("saved", { percent: formatPercent(ratio, locale) })}

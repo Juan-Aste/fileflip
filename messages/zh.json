@@ -92,11 +92,11 @@
     "convert": "转换",
     "converting": "正在转换…",
     "convertAgain": "重新转换",
-    "failed": "无法转换此文件。",
     "sizeChange": "{before} → {after}",
     "saved": "减小 {percent}",
     "progress": "{name} 的进度",
-    "downloadAll": "全部下载为 ZIP（{count}）"
+    "downloadAll": "全部下载为 ZIP（{count}）",
+    "processedOnServer": "已在我们的服务器上处理（1 小时内删除）"
   },
   "ImageOptions": {
     "title": "选项",
@@ -114,5 +114,15 @@
   "ProcessingBadge": {
     "browser": "在你的设备上处理：文件不会离开你的电脑",
     "server": "在我们的服务器上处理，1 小时内删除"
+  },
+  "ApiErrors": {
+    "fileTooLarge": "文件太大。",
+    "tooManyFiles": "一次批量的文件太多。",
+    "unsupportedFormat": "此格式无法这样转换。",
+    "invalidRequest": "请求无效。",
+    "rateLimited": "连续转换次数过多，请稍等一分钟。",
+    "conversionFailed": "无法转换此文件。",
+    "serviceUnavailable": "服务暂时不可用，请稍后再试。",
+    "browserUnsupported": "你的浏览器无法转换此文件。请使用最新版的 Chrome、Edge、Firefox 或 Safari。"
   }
 }

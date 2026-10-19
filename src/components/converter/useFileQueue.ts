@@ -2,13 +2,15 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { outputFilename, type FormatId } from "@/config/formats";
+import type { ApiErrorCode } from "@/lib/api-errors";
 import { convertFile, type ConvertOptions } from "@/lib/convert";
+import { errorCode } from "@/lib/convert-error";
 import { detectFileFormat } from "@/lib/detect";
 
 export type JobState =
   | { status: "working"; progress: number }
-  | { status: "done"; blob: Blob; url: string; name: string }
-  | { status: "error" };
+  | { status: "done"; blob: Blob; url: string; name: string; engine: "browser" | "server" }
+  | { status: "error"; code: ApiErrorCode };
 
 export interface QueuedFile {
   id: string;
@@ -78,7 +80,7 @@ export function useFileQueue() {
       }
       for (const item of queue) {
         try {
-          const blob = await convertFile(item.file, item.format as FormatId, to, {
+          const { blob, engine } = await convertFile(item.file, item.format as FormatId, to, {
             ...options,
             onProgress: (progress) =>
               update(item.id, { job: { status: "working", progress } }),
@@ -89,11 +91,12 @@ export function useFileQueue() {
               blob,
               url: URL.createObjectURL(blob),
               name: outputFilename(item.file.name, to),
+              engine,
             },
           });
         } catch (error) {
           console.error(error);
-          update(item.id, { job: { status: "error" } });
+          update(item.id, { job: { status: "error", code: errorCode(error) } });
         }
       }
     },

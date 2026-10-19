@@ -92,11 +92,11 @@
     "convert": "Convert",
     "converting": "Converting…",
     "convertAgain": "Convert again",
-    "failed": "This file couldn't be converted.",
     "sizeChange": "{before} → {after}",
     "saved": "{percent} smaller",
     "progress": "{name} progress",
-    "downloadAll": "Download all as ZIP ({count})"
+    "downloadAll": "Download all as ZIP ({count})",
+    "processedOnServer": "Processed on our server (deleted within 1 hour)"
   },
   "ImageOptions": {
     "title": "Options",
@@ -114,5 +114,15 @@
   "ProcessingBadge": {
     "browser": "Processed on your device: your file never leaves your computer",
     "server": "Processed on our server and deleted within 1 hour"
+  },
+  "ApiErrors": {
+    "fileTooLarge": "The file is too large.",
+    "tooManyFiles": "Too many files in one batch.",
+    "unsupportedFormat": "This format can't be converted this way.",
+    "invalidRequest": "The request is not valid.",
+    "rateLimited": "Too many conversions in a row. Please wait a minute.",
+    "conversionFailed": "This file couldn't be converted.",
+    "serviceUnavailable": "The service is unavailable. Please try again later.",
+    "browserUnsupported": "Your browser can't convert this file. Try a recent version of Chrome, Edge, Firefox or Safari."
   }
 }

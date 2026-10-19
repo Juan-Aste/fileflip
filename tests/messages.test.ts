@@ -56,3 +56,11 @@ describe("message files", () => {
     },
   );
 });
+
+describe("API error messages", () => {
+  it("has a translation for every API error code", async () => {
+    const { apiErrorCodes } = await import("@/lib/api-errors");
+    const keys = Object.keys(reference).filter((k) => k.startsWith("ApiErrors."));
+    expect(keys.map((k) => k.slice("ApiErrors.".length)).sort()).toEqual([...apiErrorCodes].sort());
+  });
+});
