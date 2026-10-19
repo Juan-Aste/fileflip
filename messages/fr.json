@@ -188,6 +188,16 @@
     "deletePage": "Supprimer la page {n}",
     "movePageLeft": "Déplacer la page {n} avant",
     "movePageRight": "Déplacer la page {n} après",
-    "restorePages": "Tout restaurer"
+    "restorePages": "Tout restaurer",
+    "pageSize": "Format de page",
+    "pageFit": "Comme l'image",
+    "pageA4": "A4",
+    "pageLetter": "Lettre US",
+    "margin": "Marge",
+    "marginNone": "Sans marge",
+    "marginSmall": "Petite",
+    "marginLarge": "Grande",
+    "onlyImages": "Images uniquement",
+    "needOne": "Ajoutez au moins une image."
   }
 }

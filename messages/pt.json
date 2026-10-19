@@ -188,6 +188,16 @@
     "deletePage": "Excluir página {n}",
     "movePageLeft": "Mover página {n} para antes",
     "movePageRight": "Mover página {n} para depois",
-    "restorePages": "Restaurar todas"
+    "restorePages": "Restaurar todas",
+    "pageSize": "Tamanho da página",
+    "pageFit": "Igual à imagem",
+    "pageA4": "A4",
+    "pageLetter": "Carta",
+    "margin": "Margem",
+    "marginNone": "Sem margem",
+    "marginSmall": "Pequena",
+    "marginLarge": "Grande",
+    "onlyImages": "Só imagens",
+    "needOne": "Adicione pelo menos uma imagem."
   }
 }

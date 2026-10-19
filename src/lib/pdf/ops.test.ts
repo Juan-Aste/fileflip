@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { makePdf, pageWidths as widths } from "../../../tests/helpers/pdf";
 import { PDFDocument } from "pdf-lib";
-import { mergePdfs, organizePdf, pageCount, rotatePdf, splitPdf } from "./ops";
+import sharp from "sharp";
+import { imagesToPdf, mergePdfs, organizePdf, pageCount, rotatePdf, splitPdf } from "./ops";
 
 describe("mergePdfs", () => {
   it("concatenates pages in file order", async () => {
@@ -62,5 +63,30 @@ describe("organizePdf", () => {
 
   it("refuses to produce an empty PDF", async () => {
     await expect(organizePdf(await makePdf([100]), [])).rejects.toThrow();
+  });
+});
+
+describe("imagesToPdf", () => {
+  const image = async (width: number, height: number, type: "jpg" | "png") => {
+    const img = sharp({ create: { width, height, channels: 3, background: "#3366cc" } });
+    const bytes = new Uint8Array(await (type === "jpg" ? img.jpeg() : img.png()).toBuffer());
+    return { bytes, type };
+  };
+  const sizes = async (bytes: Uint8Array) =>
+    (await PDFDocument.load(bytes)).getPages().map((p) => [Math.round(p.getWidth()), Math.round(p.getHeight())]);
+
+  it("makes one page per image sized to the image", async () => {
+    const pdf = await imagesToPdf([await image(400, 300, "jpg"), await image(100, 200, "png")]);
+    expect(await sizes(pdf)).toEqual([[400, 300], [100, 200]]);
+  });
+
+  it("uses A4 in the orientation of each image", async () => {
+    const pdf = await imagesToPdf([await image(400, 300, "jpg"), await image(300, 400, "jpg")], { pageSize: "a4", margin: 20 });
+    expect(await sizes(pdf)).toEqual([[842, 595], [595, 842]]);
+  });
+
+  it("adds margins around fitted pages", async () => {
+    const pdf = await imagesToPdf([await image(100, 100, "png")], { margin: 10 });
+    expect(await sizes(pdf)).toEqual([[120, 120]]);
   });
 });

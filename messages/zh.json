@@ -188,6 +188,16 @@
     "deletePage": "删除第 {n} 页",
     "movePageLeft": "将第 {n} 页前移",
     "movePageRight": "将第 {n} 页后移",
-    "restorePages": "全部恢复"
+    "restorePages": "全部恢复",
+    "pageSize": "页面尺寸",
+    "pageFit": "与图片相同",
+    "pageA4": "A4",
+    "pageLetter": "Letter",
+    "margin": "页边距",
+    "marginNone": "无边距",
+    "marginSmall": "小",
+    "marginLarge": "大",
+    "onlyImages": "仅限图片",
+    "needOne": "请至少添加一张图片。"
   }
 }

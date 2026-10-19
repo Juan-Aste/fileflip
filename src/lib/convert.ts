@@ -1,6 +1,6 @@
 "use client";
 
-import { findConversion, type Conversion, type FormatId } from "@/config/formats";
+import { findConversion, formats, type Conversion, type FormatId } from "@/config/formats";
 import { limits } from "@/config/limits";
 import { canConvertImageOnServer } from "@/config/server-capabilities";
 import { browserSupportsImaging, currentDeviceBudget } from "./capabilities";
@@ -21,6 +21,7 @@ export interface ConvertResult {
 
 /** Whether this build can run a conversion yet (formats are enabled as engines land). */
 export function isRunnable(conversion: Conversion): boolean {
+  if (conversion.to === "pdf" && formats[conversion.from].category === "image") return true;
   if (conversion.engine === "browser") {
     return (
       canConvertImageInBrowser(conversion.to) ||
@@ -42,6 +43,11 @@ export async function convertFile(
 ): Promise<ConvertResult> {
   const conversion = findConversion(from, to);
   if (!conversion || !isRunnable(conversion)) throw new ConversionError("unsupportedFormat");
+
+  if (to === "pdf" && formats[from].category === "image") {
+    const { imagesToPdfFile } = await import("./pdf/client");
+    return { blob: await imagesToPdfFile([{ file, format: from }], {}, onProgress), engine: "browser" };
+  }
 
   // TODO(5.7): use the signed-in user's plan.
   const serverOk =

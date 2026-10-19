@@ -188,6 +188,16 @@
     "deletePage": "Delete page {n}",
     "movePageLeft": "Move page {n} earlier",
     "movePageRight": "Move page {n} later",
-    "restorePages": "Restore all"
+    "restorePages": "Restore all",
+    "pageSize": "Page size",
+    "pageFit": "Same as image",
+    "pageA4": "A4",
+    "pageLetter": "Letter",
+    "margin": "Margin",
+    "marginNone": "No margin",
+    "marginSmall": "Small",
+    "marginLarge": "Large",
+    "onlyImages": "Images only",
+    "needOne": "Add at least one image."
   }
 }

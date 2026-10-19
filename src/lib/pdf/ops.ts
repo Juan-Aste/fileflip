@@ -91,3 +91,48 @@ export async function organizePdf(bytes: Uint8Array, specs: readonly PageSpec[])
   });
   return save(out);
 }
+
+export type PageSize = "fit" | "a4" | "letter";
+
+const PAGE_SIZES: Record<Exclude<PageSize, "fit">, [number, number]> = {
+  a4: [595.28, 841.89],
+  letter: [612, 792],
+};
+
+export interface PdfImage {
+  bytes: Uint8Array;
+  type: "jpg" | "png";
+}
+
+/**
+ * One image per page. "fit" makes each page the image's size (at 72 DPI-ish
+ * points); A4/Letter pick the orientation that matches the image and center it.
+ */
+export async function imagesToPdf(
+  images: readonly PdfImage[],
+  { pageSize = "fit", margin = 0 }: { pageSize?: PageSize; margin?: number } = {},
+  onProgress?: Progress,
+): Promise<Uint8Array> {
+  if (!images.length) throw new Error("No images");
+  const doc = await PDFDocument.create({ updateMetadata: false });
+  for (const [i, image] of images.entries()) {
+    const embedded = image.type === "jpg" ? await doc.embedJpg(image.bytes) : await doc.embedPng(image.bytes);
+    const { width, height } = embedded;
+    let pageW = width + margin * 2;
+    let pageH = height + margin * 2;
+    if (pageSize !== "fit") {
+      const [short, long] = PAGE_SIZES[pageSize];
+      [pageW, pageH] = width > height ? [long, short] : [short, long];
+    }
+    const scale = Math.min(1, (pageW - margin * 2) / width, (pageH - margin * 2) / height);
+    const page = doc.addPage([pageW, pageH]);
+    page.drawImage(embedded, {
+      x: (pageW - width * scale) / 2,
+      y: (pageH - height * scale) / 2,
+      width: width * scale,
+      height: height * scale,
+    });
+    onProgress?.((i + 1) / images.length);
+  }
+  return save(doc);
+}

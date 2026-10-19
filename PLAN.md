@@ -78,7 +78,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 3.1 Worker PDF con pdf-lib: unir PDFs
 - [x] 3.2 Dividir y rotar páginas
 - [x] 3.3 Reordenar páginas con miniaturas (pdf.js)
-- [ ] 3.4 Imágenes→PDF
+- [x] 3.4 Imágenes→PDF
 - [ ] 3.5 PDF→JPG/PNG con pdf.js
 - [ ] 3.6 Comprimir PDF (re-muestreo de imágenes en el navegador; respaldo en servidor)
 

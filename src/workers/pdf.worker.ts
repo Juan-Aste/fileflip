@@ -1,11 +1,14 @@
 /// <reference lib="webworker" />
 import {
+  imagesToPdf,
   mergePdfs,
   organizePdf,
   pageCount,
   rotatePdf,
   splitPdf,
+  type PageSize,
   type PageSpec,
+  type PdfImage,
   type Rotation,
 } from "@/lib/pdf/ops";
 import { exposeHandlers } from "@/lib/worker-rpc";
@@ -22,6 +25,13 @@ exposeHandlers({
   },
   rotate: async ({ bytes, rotation, pages }: { bytes: Uint8Array; rotation: Rotation; pages?: number[] }) => {
     const result = await rotatePdf(bytes, rotation, pages);
+    return { result, transfer: [result.buffer] };
+  },
+  images: async (
+    { images, pageSize, margin }: { images: PdfImage[]; pageSize: PageSize; margin: number },
+    onProgress,
+  ) => {
+    const result = await imagesToPdf(images, { pageSize, margin }, onProgress);
     return { result, transfer: [result.buffer] };
   },
   organize: async ({ bytes, specs }: { bytes: Uint8Array; specs: PageSpec[] }) => {
