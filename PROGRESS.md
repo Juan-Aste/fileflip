@@ -622,3 +622,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Qué sigue**
 - 2A.2: correcciones rápidas detectadas en la medición.
+
+## 2026-10-19 23:40 UTC — Fase 2, tarea 2A.2 (correcciones rápidas)
+
+**Qué se hizo**
+- Favicon provisorio `src/app/icon.svg` (Next lo enlaza en todas las páginas); el definitivo llega con el logo en 2B.3. Ya no hay 404 de `/favicon.ico`.
+- `htmlLimitedBots: /.*/` en `next.config.ts`: los metadatos van siempre en el `<head>`, también en páginas dinámicas (precios). SEO de precios: 91 → 100.
+- El enlace "Iniciar sesión / Mi cuenta" del header ya no hace prefetch (se veía en todas las páginas y casi nadie lo usa).
+- La consulta de sesión (`/api/auth/session`) se hace cuando el navegador está libre (`requestIdleCallback`, máx. 2 s; `setTimeout` como respaldo) en vez de competir con la carga inicial.
+
+**Mediciones (1 corrida, móvil)**
+- Sin cambios en rendimiento (99 en todas); SEO 100 en todas las páginas (antes precios 91). LCP 1,8–2,1 s, TBT 60–100 ms, CLS 0.
+- Buenas prácticas 96 solo en este entorno: sin `AUTH_SECRET` local, `/api/auth/session` responde 500 y aparece en la consola. Con las variables de producción no ocurre.
+
+**Qué sigue**
+- 2A.3: análisis del bundle.

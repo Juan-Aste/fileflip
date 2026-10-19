@@ -123,7 +123,7 @@ La fase 1 está terminada y probada por el dueño. La fase 2 mejora rendimiento,
 ### Hito 2A — Rendimiento
 Meta: Lighthouse móvil ≥ 90 en portada y páginas de conversión, sin empeorar accesibilidad ni SEO.
 - [x] 2A.1 Medición base con Lighthouse (móvil) de portada, conversión de imagen, conversión/herramienta PDF, cola larga y precios; script reproducible y resultados en `docs/perf/`
-- [ ] 2A.2 Correcciones rápidas de la medición: favicon provisorio (sin 404), metadatos de páginas dinámicas en el `<head>` (precios), evitar el prefetch innecesario de `/login` y la consulta de sesión que no hace falta en la primera pintura
+- [x] 2A.2 Correcciones rápidas de la medición: favicon provisorio (sin 404), metadatos de páginas dinámicas en el `<head>` (precios), evitar el prefetch innecesario de `/login` y la consulta de sesión que no hace falta en la primera pintura
 - [ ] 2A.3 Analizar el bundle con `@next/bundle-analyzer` (script `npm run analyze`) y documentar qué entra en el JS inicial de cada tipo de página
 - [ ] 2A.4 Reducir el JS inicial: componentes de servidor donde se pueda (header, footer, secciones estáticas), import dinámico de las herramientas PDF y de paneles que no están a la vista (opciones, ZIP), y verificar que pdf.js/pdf-lib/fflate/códecs no entren al bundle de la portada
 - [ ] 2A.5 Revisar SSG/ISR: conversiones, cola larga y legales estáticas en los 5 idiomas; precios con el mínimo dinamismo posible; solo cuenta y API por pedido

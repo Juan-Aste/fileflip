@@ -6,6 +6,9 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 const nextConfig: NextConfig = {
   // Standalone output for the Railway Docker image (see DEPLOY.md, milestone 8).
   output: "standalone",
+  // Always put <title>/<meta> in the <head>, also on dynamic pages (pricing):
+  // streamed metadata ends up in <body>, which some crawlers and tools miss.
+  htmlLimitedBots: /.*/,
   webpack(config, { webpack }) {
     // The multithreaded AVIF encoder only runs on cross-origin-isolated pages
     // (we are not) and its self-spawning pthread worker creates a circular
