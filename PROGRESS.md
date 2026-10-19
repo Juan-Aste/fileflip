@@ -637,3 +637,15 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Qué sigue**
 - 2A.3: análisis del bundle.
+
+## 2026-10-19 23:50 UTC — Fase 2, tarea 2A.3 (análisis del bundle)
+
+**Qué se hizo**
+- `@next/bundle-analyzer` (dependencia de desarrollo) y `npm run analyze` (`ANALYZE=true next build`); informes en `.next/analyze/`.
+- Resultado documentado en `docs/perf/bundle.md`. Hallazgos principales: el selector de idioma arrastra a todas las páginas los datos de cola larga y los registros de slugs (~6 kB gzip); `[slug]` carga las 6 herramientas PDF en cualquier página; el conversor incluye de entrada el panel de opciones y el anuncio. pdf.js, libheif, códecs WASM, pdf-lib y fflate ya están fuera del JS inicial; ninguna librería de servidor entra al cliente.
+
+**Decisiones**
+- La precompilación de mensajes de next-intl (ahorraría ~12 kB del parser ICU) necesita Next 16: no se migra en esta fase.
+
+**Qué sigue**
+- 2A.4: aplicar las reducciones.
