@@ -486,6 +486,16 @@
 **Qué sigue**
 - 7.2: hreflang global, `sitemap.ts` multi-idioma y `robots.ts`.
 
+## 2026-10-19 — Sesión 5 (tarea 7.2: hreflang, sitemap y robots)
+
+**Qué se hizo**
+- `src/lib/seo.ts`: `siteUrl()`, `alternatesFor()` (canonical + hreflang de los 5 idiomas + `x-default` → español) y `sitemapEntries()` (portada, precios, herramientas y conversiones en todos los idiomas, cada URL con sus traducciones `xhtml:link`). Tests.
+- `src/app/sitemap.ts` (525 URLs) y `src/app/robots.ts` (permite todo salvo `/api/`, cuentas y login; apunta al sitemap). Portada, precios, herramientas y conversiones usan `alternatesFor`.
+- Verificado con el servidor: `/robots.txt`, `/sitemap.xml` y etiquetas `canonical`/`alternate` en el HTML.
+
+**Qué sigue**
+- 7.3: archivo de datos de cola larga y plantilla con FAQ y datos estructurados.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

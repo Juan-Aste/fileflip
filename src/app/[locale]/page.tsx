@@ -1,8 +1,15 @@
 import { use } from "react";
+import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import WithSidebarAd from "@/components/ads/WithSidebarAd";
 import Converter from "@/components/converter/Converter";
+import type { Locale } from "@/i18n/routing";
+import { alternatesFor } from "@/lib/seo";
+
+export function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  return params.then(({ locale }) => ({ alternates: alternatesFor(locale as Locale, () => "") }));
+}
 
 const features = [
   { key: "privacy", icon: "🔒" },

@@ -20,6 +20,7 @@ import {
 } from "@/config/tools";
 import { Link } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
+import { alternatesFor } from "@/lib/seo";
 
 type Params = { locale: string; slug: string };
 
@@ -61,12 +62,10 @@ export async function generateMetadata({
   const p = await params;
   const page = resolve(p);
   if (!page) return {};
-  const alternates = {
-    canonical: `/${p.locale}/${slugFor(page, p.locale as Locale)}`,
-    languages: Object.fromEntries(
-      routing.locales.map((l) => [l, `/${l}/${slugFor(page, l)}`]),
-    ),
-  };
+  const alternates = alternatesFor(
+    p.locale as Locale,
+    (l) => `/${slugFor(page, l)}`,
+  );
   if (page.kind === "tool") {
     const t = await getTranslations({
       locale: p.locale,

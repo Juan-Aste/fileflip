@@ -3,7 +3,8 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { auth } from "@/auth";
 import PricingCards from "@/components/pricing/PricingCards";
 import RegionSelector from "@/components/pricing/RegionSelector";
-import { routing } from "@/i18n/routing";
+import type { Locale } from "@/i18n/routing";
+import { alternatesFor } from "@/lib/seo";
 import { planForUser } from "@/lib/billing";
 import { providerForRegion } from "@/lib/payments/providers";
 import { currentRegion } from "@/lib/server/region";
@@ -19,10 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${t("title")} — FileFlip Pro`,
     description: t("subtitle"),
-    alternates: {
-      canonical: `/${locale}/pricing`,
-      languages: Object.fromEntries(routing.locales.map((l) => [l, `/${l}/pricing`])),
-    },
+    alternates: alternatesFor(locale as Locale, () => "/pricing"),
   };
 }
 
