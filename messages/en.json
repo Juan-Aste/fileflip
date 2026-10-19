@@ -322,5 +322,76 @@
   },
   "Longtail": {
     "faqTitle": "Frequently asked questions"
+  },
+  "Legal": {
+    "updated": "Last updated: {date}",
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "Privacy is at the core of FileFlip. This page explains what data we handle, why, and for how long.",
+      "sections": [
+        {
+          "heading": "Files processed on your device",
+          "body": "Images and PDFs you convert, compress, merge, split or reorder are processed inside your browser. Those files are never sent to our servers and we have no access to them."
+        },
+        {
+          "heading": "Files processed on our server",
+          "body": "Office documents (Word, Excel, PowerPoint, OpenDocument, RTF, TXT), PDF to Word and, only when your browser can't do it, some images are processed on our server over an encrypted connection. They are processed in memory or temporary storage and deleted within 1 hour at most. We don't look at them, share them or use them for anything else."
+        },
+        {
+          "heading": "Data we store",
+          "body": "For each conversion we only store metadata: input and output format, size, date, whether it ran in the browser or on the server and, if you are signed in, your user. Never the file's name or content. If you create an account we store your email (and your name and picture if you sign in with Google) and your subscription status."
+        },
+        {
+          "heading": "Payments",
+          "body": "Pro payments are processed by Mercado Pago (or another payment provider in some countries). We never receive or store your card details; only the subscription id and status."
+        },
+        {
+          "heading": "Cookies and local storage",
+          "body": "We use necessary cookies to remember your language, your country for pricing and your session, and local storage for the light or dark theme. Free-plan users see Google AdSense ads, which may use their own cookies; you can manage them in Google's ad settings."
+        },
+        {
+          "heading": "Your rights",
+          "body": "You can ask to access, correct or delete your data and your account through the contact page. Cancelling a subscription doesn't delete the account; if you want it deleted, ask us and we will."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of use",
+      "intro": "By using FileFlip you accept these terms. They are written to be clear; if anything is unclear, write to us.",
+      "sections": [
+        {
+          "heading": "The service",
+          "body": "FileFlip converts, compresses and organizes files. Basic features are free and need no account. The Pro plan raises limits and removes ads."
+        },
+        {
+          "heading": "Your files",
+          "body": "Your files remain yours. Only upload or process files you have the right to use. We claim no rights over them."
+        },
+        {
+          "heading": "Acceptable use",
+          "body": "Don't use FileFlip for illegal activities, to send malware or to overload the service (for example with massive automated uploads). We may limit usage to protect the service."
+        },
+        {
+          "heading": "Pro subscription",
+          "body": "Pro is billed in advance, monthly or yearly, in local currency where available. You can cancel anytime from My account: it won't renew and you keep Pro until the end of the paid period."
+        },
+        {
+          "heading": "No warranty",
+          "body": "We do our best to make conversions accurate, but the service is provided “as is”. Some complex formats may not convert perfectly; always keep your original files."
+        },
+        {
+          "heading": "Changes",
+          "body": "We may update these terms. If a change is important, we'll announce it on the site."
+        }
+      ]
+    },
+    "contact": {
+      "title": "Contact",
+      "intro": "Got a question, found a bug or want to request a new format? Write to us.",
+      "emailLabel": "Email",
+      "missing": "The contact address isn't configured yet.",
+      "topics": "If you're reporting a problem, tell us which browser and what kind of file you were using. Never email us private documents.",
+      "privacy": "To request deletion of your data or account, write to us from the email you signed up with."
+    }
   }
 }

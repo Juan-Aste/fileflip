@@ -27,6 +27,9 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
   const pages: { path: LocalizedPath; priority: number }[] = [
     { path: () => "", priority: 1 },
     { path: () => "/pricing", priority: 0.6 },
+    { path: () => "/privacy", priority: 0.3 },
+    { path: () => "/terms", priority: 0.3 },
+    { path: () => "/contact", priority: 0.3 },
     ...availableTools.map((id) => ({ path: (l: Locale) => `/${tools[id].slugs[l]}`, priority: 0.9 })),
     ...conversionPages.map((c) => ({ path: (l: Locale) => `/${conversionSlug(c, l)}`, priority: 0.8 })),
   ];

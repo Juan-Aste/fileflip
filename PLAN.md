@@ -107,7 +107,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 7.2 hreflang, `sitemap.ts` multi-idioma y `robots.ts`
 - [x] 7.3 Archivo de datos de cola larga (`src/content/longtail.ts`) y plantilla con texto, FAQ y FAQ schema
 - [x] 7.4 Primeras páginas: HEIC a JPG desde iPhone, comprimir PDF para AFIP, foto tamaño DNI, reducir PDF para WhatsApp, foto para el SAT, PDF para gov.br
-- [ ] 7.5 Páginas legales y de contacto: privacidad, términos, contacto (traducidas)
+- [x] 7.5 Páginas legales y de contacto: privacidad, términos, contacto (traducidas)
 
 ### Hito 8 — Deploy (preparado, sin deploy real)
 - [ ] 8.1 Dockerfile multi-etapa para standalone (con sharp)

@@ -322,5 +322,76 @@
   },
   "Longtail": {
     "faqTitle": "Preguntas frecuentes"
+  },
+  "Legal": {
+    "updated": "Última actualización: {date}",
+    "privacy": {
+      "title": "Política de privacidad",
+      "intro": "En FileFlip la privacidad es el centro del producto. Esta página explica qué datos tratamos, por qué y por cuánto tiempo.",
+      "sections": [
+        {
+          "heading": "Archivos procesados en tu dispositivo",
+          "body": "Las imágenes y los PDF que conviertes, comprimes, unes, divides o reordenas se procesan dentro de tu navegador. Esos archivos no se envían a nuestros servidores y no tenemos acceso a ellos."
+        },
+        {
+          "heading": "Archivos procesados en nuestro servidor",
+          "body": "Los documentos de oficina (Word, Excel, PowerPoint, OpenDocument, RTF, TXT), PDF a Word y, solo si tu navegador no puede hacerlo, algunas imágenes se procesan en nuestro servidor por una conexión cifrada. Se procesan en memoria o en almacenamiento temporal y se eliminan en un máximo de 1 hora. No los miramos, no los compartimos y no los usamos para nada más."
+        },
+        {
+          "heading": "Datos que guardamos",
+          "body": "Para cada conversión guardamos solo metadatos: formato de entrada y salida, tamaño, fecha, si se hizo en el navegador o en el servidor y, si iniciaste sesión, tu usuario. Nunca el nombre ni el contenido del archivo. Si creas una cuenta guardamos tu correo electrónico (y tu nombre e imagen si entras con Google), y el estado de tu suscripción."
+        },
+        {
+          "heading": "Pagos",
+          "body": "Los pagos del plan Pro los procesa Mercado Pago (u otro proveedor de pagos en algunos países). No recibimos ni guardamos los datos de tu tarjeta; solo el identificador y el estado de la suscripción."
+        },
+        {
+          "heading": "Cookies y almacenamiento local",
+          "body": "Usamos cookies necesarias para recordar tu idioma, tu país para los precios y tu sesión, y almacenamiento local para el tema claro u oscuro. Para usuarios del plan gratuito mostramos anuncios de Google AdSense, que puede usar cookies propias; puedes gestionarlas en la configuración de anuncios de Google."
+        },
+        {
+          "heading": "Tus derechos",
+          "body": "Puedes pedir acceso, corrección o eliminación de tus datos y de tu cuenta escribiéndonos desde la página de contacto. Cancelar la suscripción no borra la cuenta; si quieres eliminarla, pídelo y lo haremos."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Términos de uso",
+      "intro": "Al usar FileFlip aceptas estos términos. Están escritos para ser claros; si algo no se entiende, escríbenos.",
+      "sections": [
+        {
+          "heading": "El servicio",
+          "body": "FileFlip convierte, comprime y organiza archivos. Las funciones básicas son gratuitas y no requieren cuenta. El plan Pro amplía los límites y quita la publicidad."
+        },
+        {
+          "heading": "Tus archivos",
+          "body": "Tus archivos siguen siendo tuyos. Solo debes subir o procesar archivos que tengas derecho a usar. No reclamamos ningún derecho sobre ellos."
+        },
+        {
+          "heading": "Uso aceptable",
+          "body": "No uses FileFlip para actividades ilegales, para enviar malware ni para sobrecargar el servicio (por ejemplo, con envíos automatizados masivos). Podemos limitar el uso para proteger el servicio."
+        },
+        {
+          "heading": "Suscripción Pro",
+          "body": "El plan Pro se cobra por adelantado, mensual o anualmente, en moneda local donde esté disponible. Puedes cancelarlo cuando quieras desde Mi cuenta: no se renovará y mantendrás Pro hasta el final del período pagado."
+        },
+        {
+          "heading": "Sin garantías",
+          "body": "Hacemos lo posible para que las conversiones sean exactas, pero el servicio se ofrece “tal cual”. Algunos formatos complejos pueden no convertirse perfectamente; conserva siempre tus archivos originales."
+        },
+        {
+          "heading": "Cambios",
+          "body": "Podemos actualizar estos términos. Si el cambio es importante, lo avisaremos en el sitio."
+        }
+      ]
+    },
+    "contact": {
+      "title": "Contacto",
+      "intro": "¿Tienes una pregunta, encontraste un error o quieres pedir un formato nuevo? Escríbenos.",
+      "emailLabel": "Correo",
+      "missing": "La dirección de contacto todavía no está configurada.",
+      "topics": "Cuéntanos qué navegador y qué tipo de archivo usabas si nos escribes por un problema. Nunca nos envíes documentos privados por correo.",
+      "privacy": "Para pedir la eliminación de tus datos o de tu cuenta, escríbenos desde el correo con el que te registraste."
+    }
   }
 }

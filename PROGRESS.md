@@ -526,13 +526,24 @@
 **Qué sigue**
 - 7.5: páginas de privacidad, términos y contacto.
 
+## 2026-10-19 — Sesión 5 (tarea 7.5: privacidad, términos y contacto)
+
+**Qué se hizo**
+- `/[locale]/privacy`, `/[locale]/terms` y `/[locale]/contact`, traducidas a los 5 idiomas (namespace `Legal`; secciones como arrays leídos con `t.raw`). La política de privacidad describe lo que el producto realmente hace: archivos del navegador nunca suben; los de servidor se procesan en memoria/temporal y se borran en ≤1 hora; en Mongo solo metadatos; cuentas (email, Google), pagos vía Mercado Pago sin datos de tarjeta; cookies (idioma, país, sesión, tema) y AdSense para el plan gratuito; derechos de acceso/borrado (menciona LGPD en portugués y RGPD en francés).
+- Contacto con `NEXT_PUBLIC_CONTACT_EMAIL` (nuevo en `.env.example`); sin configurar muestra "La dirección de contacto todavía no está configurada".
+- Footer con enlaces a Precios, Privacidad, Términos y Contacto; las tres páginas entran al sitemap con hreflang.
+
+**Qué sigue**
+- Hito 8: 8.1 Dockerfile multi-etapa.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
 - Crear cuenta de Mercado Pago y obtener credenciales de prueba (`MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`). Ojo: cada cuenta de Mercado Pago cobra solo en la moneda de su país; para vender en varios países hace falta una cuenta (y un token `MP_ACCESS_TOKEN_XX`) por país.
 - En cada cuenta de Mercado Pago, configurar el webhook (Tus integraciones → Webhooks) apuntando a `https://<dominio>/api/webhooks/mercadopago` con el evento "Planes y suscripciones", y copiar la clave secreta en `MP_WEBHOOK_SECRET` (o `MP_WEBHOOK_SECRET_XX` por país).
 - Elegir proveedor de pagos internacional (por ejemplo Lemon Squeezy o Paddle) para usuarios fuera de los países de Mercado Pago.
-- Cuenta de Google AdSense (`NEXT_PUBLIC_ADSENSE_CLIENT`).
+- Cuenta de Google AdSense (`NEXT_PUBLIC_ADSENSE_CLIENT`, y los IDs de bloque `NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR` / `_RESULT`).
+- Revisar con un abogado la política de privacidad y los términos (`messages/*.json`, namespace `Legal`): falta la razón social/responsable, la jurisdicción y datos de contacto legales. Configurar `NEXT_PUBLIC_CONTACT_EMAIL`.
 - Proyecto en Railway y base MongoDB (Railway o Atlas).
 - Revisar los precios del plan Pro por país en `src/config/pricing.ts` (son orientativos).
 - (Opcional) Poner Cloudflare delante de Railway para tener la cabecera de país `cf-ipcountry`; sin eso, el país se deduce del idioma del navegador y del selector manual.
