@@ -549,6 +549,15 @@
 **Qué sigue**
 - 8.2: DEPLOY.md.
 
+## 2026-10-19 — Sesión 5 (tarea 8.2: DEPLOY.md)
+
+**Qué se hizo**
+- `DEPLOY.md`: arquitectura en Railway (servicio `app` con el Dockerfile, `gotenberg` desde la imagen `gotenberg/gotenberg:8` sin dominio público, MongoDB), red privada (`GOTENBERG_URL=http://gotenberg.railway.internal:3000`, `MONGODB_URI=${{MongoDB.MONGO_URL}}`), tabla de variables (cuáles son obligatorias, que las `NEXT_PUBLIC_*` se fijan al construir), healthcheck `/api/health`, dominio propio, Cloudflare opcional para el país, configuración de Google OAuth, SMTP, webhooks de Mercado Pago por país y AdSense, checklist del primer deploy, desarrollo local con docker compose y notas de escalado.
+- No se hizo ningún deploy real.
+
+**Qué sigue**
+- 8.3: revisión final (accesibilidad, modo oscuro, rendimiento, lint/build/tests).
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

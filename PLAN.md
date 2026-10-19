@@ -111,5 +111,5 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 
 ### Hito 8 — Deploy (preparado, sin deploy real)
 - [x] 8.1 Dockerfile multi-etapa para standalone (con sharp)
-- [ ] 8.2 DEPLOY.md: Railway con servicio app + Gotenberg por red privada, MongoDB, variables, dominios, webhooks
+- [x] 8.2 DEPLOY.md: Railway con servicio app + Gotenberg por red privada, MongoDB, variables, dominios, webhooks
 - [ ] 8.3 Revisión final: accesibilidad, modo oscuro, rendimiento (carga diferida de WASM), lint/build/tests
