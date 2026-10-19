@@ -202,6 +202,12 @@
     "marginSmall": "Pequena",
     "marginLarge": "Grande",
     "onlyImages": "Só imagens",
-    "needOne": "Adicione pelo menos uma imagem."
+    "needOne": "Adicione pelo menos uma imagem.",
+    "level": "Nível de compressão",
+    "levelLow": "Baixa (melhor qualidade)",
+    "levelRecommended": "Recomendada",
+    "levelStrong": "Forte (arquivo mais leve)",
+    "reduced": "{before} → {after} ({percent} menor)",
+    "alreadyOptimized": "Este PDF já está otimizado: não conseguimos reduzi-lo mais."
   }
 }

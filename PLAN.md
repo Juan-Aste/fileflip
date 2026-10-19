@@ -80,7 +80,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 3.3 Reordenar páginas con miniaturas (pdf.js)
 - [x] 3.4 Imágenes→PDF
 - [x] 3.5 PDF→JPG/PNG con pdf.js
-- [ ] 3.6 Comprimir PDF (re-muestreo de imágenes en el navegador; respaldo en servidor)
+- [x] 3.6 Comprimir PDF (re-muestreo de imágenes en el navegador; respaldo en servidor)
 
 ### Hito 4 — Conversión de documentos en el servidor
 - [ ] 4.1 Cliente Gotenberg (`src/lib/gotenberg.ts`) y ruta API Word/Excel/PowerPoint/ODT/ODS/RTF/TXT/CSV→PDF

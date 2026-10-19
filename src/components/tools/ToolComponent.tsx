@@ -1,6 +1,7 @@
 "use client";
 
 import type { ToolId } from "@/config/tools";
+import CompressPdfTool from "./CompressPdfTool";
 import ImagesToPdfTool from "./ImagesToPdfTool";
 import MergePdfTool from "./MergePdfTool";
 import OrganizePdfTool from "./OrganizePdfTool";
@@ -13,6 +14,7 @@ const components: Partial<Record<ToolId, React.ComponentType>> = {
   "rotate-pdf": RotatePdfTool,
   "organize-pdf": OrganizePdfTool,
   "images-to-pdf": ImagesToPdfTool,
+  "compress-pdf": CompressPdfTool,
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {

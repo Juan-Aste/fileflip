@@ -4,6 +4,7 @@ import type { FormatId } from "@/config/formats";
 import { jpegOrientation } from "@/lib/image/exif";
 import { convertImage } from "@/lib/image/client";
 import { createWorkerClient } from "@/lib/worker-rpc";
+import type { CompressionLevel, CompressResult } from "./compress";
 import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
 
 const call = createWorkerClient(
@@ -78,4 +79,10 @@ export async function imagesToPdfFile(
     { transfer: images.map((im) => im.bytes.buffer), onProgress: (p) => onProgress?.(0.5 + p * 0.5) },
   );
   return pdfBlob(result);
+}
+
+export async function compressPdfFile(file: Blob, level: CompressionLevel, onProgress?: (p: number) => void) {
+  const bytes = await bytesOf(file);
+  const result = await call<CompressResult>("compress", { bytes, level }, { transfer: [bytes.buffer], onProgress });
+  return { blob: pdfBlob(result.bytes), imagesRecompressed: result.imagesRecompressed };
 }

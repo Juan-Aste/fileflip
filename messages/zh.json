@@ -202,6 +202,12 @@
     "marginSmall": "小",
     "marginLarge": "大",
     "onlyImages": "仅限图片",
-    "needOne": "请至少添加一张图片。"
+    "needOne": "请至少添加一张图片。",
+    "level": "压缩级别",
+    "levelLow": "低（画质最好）",
+    "levelRecommended": "推荐",
+    "levelStrong": "强（文件最小）",
+    "reduced": "{before} → {after}（减小 {percent}）",
+    "alreadyOptimized": "此 PDF 已经过优化，无法再缩小。"
   }
 }

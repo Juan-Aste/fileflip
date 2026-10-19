@@ -11,6 +11,8 @@ import {
   type PdfImage,
   type Rotation,
 } from "@/lib/pdf/ops";
+import { compressPdf, type CompressionLevel } from "@/lib/pdf/compress";
+import { browserRecompress } from "@/lib/pdf/recompress-browser";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
 exposeHandlers({
@@ -33,6 +35,10 @@ exposeHandlers({
   ) => {
     const result = await imagesToPdf(images, { pageSize, margin }, onProgress);
     return { result, transfer: [result.buffer] };
+  },
+  compress: async ({ bytes, level }: { bytes: Uint8Array; level: CompressionLevel }, onProgress) => {
+    const result = await compressPdf(bytes, level, browserRecompress, onProgress);
+    return { result, transfer: [result.bytes.buffer] };
   },
   organize: async ({ bytes, specs }: { bytes: Uint8Array; specs: PageSpec[] }) => {
     const result = await organizePdf(bytes, specs);

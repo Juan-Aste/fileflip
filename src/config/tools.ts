@@ -62,7 +62,7 @@ export const tools: Record<ToolId, ToolInfo> = {
 };
 
 /** Tools with a working implementation (pages for the rest are not generated yet). */
-export const availableTools: readonly ToolId[] = ["merge-pdf", "split-pdf", "rotate-pdf", "organize-pdf", "images-to-pdf"];
+export const availableTools: readonly ToolId[] = toolIds;
 
 export function toolFromSlug(locale: Locale, slug: string): ToolInfo | undefined {
   return Object.values(tools).find((t) => t.slugs[locale] === slug);

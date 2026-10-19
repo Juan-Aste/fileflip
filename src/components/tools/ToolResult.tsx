@@ -9,10 +9,12 @@ interface Props {
   blob: Blob;
   filename: string;
   onReset: () => void;
+  /** Extra line under the file name (e.g. size savings). */
+  note?: React.ReactNode;
 }
 
 /** Download card shown when a tool finishes. */
-export default function ToolResult({ blob, filename, onReset }: Props) {
+export default function ToolResult({ blob, filename, onReset, note }: Props) {
   const t = useTranslations("ToolUi");
   const tc = useTranslations("Common");
   const locale = useLocale() as Locale;
@@ -31,6 +33,7 @@ export default function ToolResult({ blob, filename, onReset }: Props) {
       <p className="text-sm text-muted">
         {filename} · {formatBytes(blob.size, locale)}
       </p>
+      {note && <p className="text-sm font-medium">{note}</p>}
       <div className="flex flex-wrap justify-center gap-3">
         <a
           href={url}
