@@ -96,5 +96,18 @@
     "sizeChange": "{before} → {after}",
     "saved": "{percent} plus léger",
     "progress": "Progression de {name}"
+  },
+  "ImageOptions": {
+    "title": "Options",
+    "quality": "Qualité",
+    "qualityHint": "Qualité plus faible = fichier plus léger.",
+    "size": "Taille",
+    "sizeNone": "Originale",
+    "sizePercent": "Pourcentage",
+    "sizeFit": "Largeur / hauteur max.",
+    "percent": "Pourcentage de la taille d'origine",
+    "width": "Largeur max. (px)",
+    "height": "Hauteur max. (px)",
+    "fitHint": "Les proportions sont conservées et l'image n'est jamais agrandie."
   }
 }

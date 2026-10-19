@@ -96,5 +96,18 @@
     "sizeChange": "{before} → {after}",
     "saved": "减小 {percent}",
     "progress": "{name} 的进度"
+  },
+  "ImageOptions": {
+    "title": "选项",
+    "quality": "质量",
+    "qualityHint": "质量越低，文件越小。",
+    "size": "尺寸",
+    "sizeNone": "原始尺寸",
+    "sizePercent": "百分比",
+    "sizeFit": "最大宽度 / 高度",
+    "percent": "原始尺寸的百分比",
+    "width": "最大宽度（像素）",
+    "height": "最大高度（像素）",
+    "fitHint": "保持宽高比，不会放大图片。"
   }
 }

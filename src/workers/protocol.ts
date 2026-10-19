@@ -1,12 +1,12 @@
 import type { FormatId } from "@/config/formats";
-import type { EncodeOptions } from "@/lib/image/codecs";
+import type { ImageOptions } from "@/lib/image/options";
 
 export interface ImageJob {
   id: number;
   buffer: ArrayBuffer;
   from: FormatId;
   to: FormatId;
-  options: EncodeOptions;
+  options: ImageOptions;
 }
 
 export type ImageWorkerMessage =

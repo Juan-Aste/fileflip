@@ -4,20 +4,26 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { commonOutputs, formats, type FormatId } from "@/config/formats";
 import { isRunnable } from "@/lib/convert";
+import { DEFAULT_QUALITY, lossyFormats, type ImageOptions } from "@/lib/image/options";
 import Dropzone from "./Dropzone";
 import FileRow from "./FileRow";
+import ImageOptionsPanel from "./ImageOptionsPanel";
 import { useFileQueue } from "./useFileQueue";
 
 export default function Converter() {
   const t = useTranslations("Converter");
   const { items, add, remove, clear, convertAll } = useFileQueue();
   const [target, setTarget] = useState<FormatId | null>(null);
+  const [imageOptions, setImageOptions] = useState<ImageOptions>({
+    quality: DEFAULT_QUALITY,
+  });
 
   const detected = items.filter((i) => i.format).map((i) => i.format as FormatId);
   const detecting = items.some((i) => i.format === undefined);
   const working = items.some((i) => i.job?.status === "working");
   const outputs = commonOutputs(detected).filter(isRunnable);
   const selected = outputs.find((o) => o.to === target) ?? outputs[0];
+  const imageOutput = selected && formats[selected.to].category === "image";
 
   return (
     <div className="flex flex-col gap-4">
@@ -75,10 +81,17 @@ export default function Converter() {
                       ))}
                     </div>
                   </fieldset>
+                  {imageOutput && (
+                    <ImageOptionsPanel
+                      value={imageOptions}
+                      onChange={setImageOptions}
+                      showQuality={lossyFormats.includes(selected.to)}
+                    />
+                  )}
                   <button
                     type="button"
                     disabled={working || !selected}
-                    onClick={() => selected && convertAll(selected.to)}
+                    onClick={() => selected && convertAll(selected.to, imageOutput ? imageOptions : {})}
                     className="self-start rounded-xl bg-brand px-6 py-3 font-semibold text-white transition hover:bg-brand-strong disabled:opacity-50"
                   >
                     {working ? t("converting") : t("convert")}

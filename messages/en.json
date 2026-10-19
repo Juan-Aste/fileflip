@@ -96,5 +96,18 @@
     "sizeChange": "{before} → {after}",
     "saved": "{percent} smaller",
     "progress": "{name} progress"
+  },
+  "ImageOptions": {
+    "title": "Options",
+    "quality": "Quality",
+    "qualityHint": "Lower quality = smaller file.",
+    "size": "Size",
+    "sizeNone": "Original",
+    "sizePercent": "Percentage",
+    "sizeFit": "Max width / height",
+    "percent": "Percentage of the original size",
+    "width": "Max width (px)",
+    "height": "Max height (px)",
+    "fitHint": "Aspect ratio is kept and images are never enlarged."
   }
 }

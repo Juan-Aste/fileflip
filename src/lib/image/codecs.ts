@@ -1,14 +1,8 @@
 // WASM codecs (Squoosh via @jsquash). Each one is imported only when first
 // needed, so a user converting to WEBP never downloads the AVIF encoder.
 import type { FormatId } from "@/config/formats";
+import { DEFAULT_QUALITY, type EncodeOptions } from "./options";
 import { flattenAlpha, type RawImage } from "./pixels";
-
-export interface EncodeOptions {
-  /** 1–100; ignored by lossless formats. */
-  quality?: number;
-}
-
-export const DEFAULT_QUALITY = 82;
 
 type Encoder = (image: RawImage, options: EncodeOptions) => Promise<ArrayBuffer>;
 type Decoder = (buffer: ArrayBuffer) => Promise<RawImage>;

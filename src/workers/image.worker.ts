@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 import { formats } from "@/config/formats";
 import { decoders, encoders } from "@/lib/image/codecs";
+import { computeSize, isSameSize, type Resize } from "@/lib/image/dimensions";
 import type { RawImage } from "@/lib/image/pixels";
 import type { ImageJob, ImageWorkerMessage } from "./protocol";
 
@@ -26,13 +27,28 @@ async function decode(job: ImageJob): Promise<RawImage> {
   }
 }
 
+async function resize(image: RawImage, request: Resize | undefined): Promise<RawImage> {
+  const target = computeSize(image, request ?? { mode: "none" });
+  if (isSameSize(image, target)) return image;
+  const source = await createImageBitmap(
+    new ImageData(new Uint8ClampedArray(image.data), image.width, image.height),
+  );
+  const canvas = new OffscreenCanvas(target.width, target.height);
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("No 2D context");
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(source, 0, 0, target.width, target.height);
+  source.close();
+  return ctx.getImageData(0, 0, target.width, target.height);
+}
+
 self.onmessage = async (event: MessageEvent<ImageJob>) => {
   const job = event.data;
   try {
     const encoder = encoders[job.to];
     if (!encoder) throw new Error(`No encoder for ${job.to}`);
     post({ id: job.id, type: "progress", progress: 0.1 });
-    const image = await decode(job);
+    const image = await resize(await decode(job), job.options.resize);
     post({ id: job.id, type: "progress", progress: 0.4 });
     const buffer = await encoder(image, job.options);
     post(

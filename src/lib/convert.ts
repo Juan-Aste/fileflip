@@ -1,10 +1,10 @@
 "use client";
 
 import { findConversion, type Conversion, type FormatId } from "@/config/formats";
-import type { EncodeOptions } from "@/lib/image/codecs";
+import type { ImageOptions } from "@/lib/image/options";
 import { canConvertImageInBrowser, convertImage } from "@/lib/image/client";
 
-export interface ConvertOptions extends EncodeOptions {
+export interface ConvertOptions extends ImageOptions {
   onProgress?: (progress: number) => void;
 }
 

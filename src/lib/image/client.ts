@@ -2,7 +2,7 @@
 
 import { formats, type FormatId } from "@/config/formats";
 import type { ImageJob, ImageWorkerMessage } from "@/workers/protocol";
-import { encoders, type EncodeOptions } from "./codecs";
+import { browserImageOutputs, type ImageOptions } from "./options";
 
 export interface ImageResult {
   blob: Blob;
@@ -58,14 +58,14 @@ function getWorker() {
 }
 
 export function canConvertImageInBrowser(to: FormatId) {
-  return to in encoders && typeof Worker !== "undefined";
+  return browserImageOutputs.includes(to) && typeof Worker !== "undefined";
 }
 
 export async function convertImage(
   file: Blob,
   from: FormatId,
   to: FormatId,
-  options: EncodeOptions = {},
+  options: ImageOptions = {},
   onProgress?: (progress: number) => void,
 ): Promise<ImageResult> {
   const buffer = await file.arrayBuffer();
