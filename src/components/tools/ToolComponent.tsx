@@ -1,20 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import type { ToolId } from "@/config/tools";
-import CompressPdfTool from "./CompressPdfTool";
-import ImagesToPdfTool from "./ImagesToPdfTool";
-import MergePdfTool from "./MergePdfTool";
-import OrganizePdfTool from "./OrganizePdfTool";
-import RotatePdfTool from "./RotatePdfTool";
-import SplitPdfTool from "./SplitPdfTool";
 
+// One chunk per tool: a page only downloads the tool it shows. They are still
+// server-rendered, so there is no layout shift while the chunk loads.
 const components: Partial<Record<ToolId, React.ComponentType>> = {
-  "merge-pdf": MergePdfTool,
-  "split-pdf": SplitPdfTool,
-  "rotate-pdf": RotatePdfTool,
-  "organize-pdf": OrganizePdfTool,
-  "images-to-pdf": ImagesToPdfTool,
-  "compress-pdf": CompressPdfTool,
+  "merge-pdf": dynamic(() => import("./MergePdfTool")),
+  "split-pdf": dynamic(() => import("./SplitPdfTool")),
+  "rotate-pdf": dynamic(() => import("./RotatePdfTool")),
+  "organize-pdf": dynamic(() => import("./OrganizePdfTool")),
+  "images-to-pdf": dynamic(() => import("./ImagesToPdfTool")),
+  "compress-pdf": dynamic(() => import("./CompressPdfTool")),
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import AdSlot from "@/components/ads/AdSlot";
 import { saveBlob } from "@/lib/download";
 import { useTranslations } from "next-intl";
@@ -12,10 +13,12 @@ import {
   type ImageOptions,
 } from "@/lib/image/options";
 import Dropzone from "./Dropzone";
-import FileRow from "./FileRow";
-import ImageOptionsPanel from "./ImageOptionsPanel";
 import ProcessingBadge from "./ProcessingBadge";
 import { useFileQueue } from "./useFileQueue";
+
+// Only shown once files are added: keep them out of the initial bundle.
+const FileRow = dynamic(() => import("./FileRow"));
+const ImageOptionsPanel = dynamic(() => import("./ImageOptionsPanel"));
 
 interface Props {
   /** Conversion pages preselect their formats. */

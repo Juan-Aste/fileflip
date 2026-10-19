@@ -649,3 +649,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Qué sigue**
 - 2A.4: aplicar las reducciones.
+
+## 2026-10-20 00:10 UTC — Fase 2, tarea 2A.4 (menos JS inicial)
+
+**Qué se hizo**
+- `LocaleSwitcher`: las tablas de slugs (`src/config/routes.ts` con herramientas, conversiones y todo `src/content/longtail.ts`) se importan recién al cambiar de idioma, con precarga al pasar el mouse o enfocar el selector. Chunk del layout (todas las páginas): 9 → 2,7 kB gzip.
+- `ToolComponent`: `next/dynamic` por herramienta; cada página descarga solo su herramienta (siguen renderizándose en el servidor, sin saltos). `[slug]`: First Load 139 → 132 kB.
+- `Converter`: `FileRow` e `ImageOptionsPanel` con `next/dynamic` (solo aparecen al agregar archivos). Chunk del conversor: 12 → 8,3 kB gzip.
+- Header, footer y las secciones de las páginas ya eran componentes de servidor; los únicos clientes del layout son el selector de idioma, el botón de tema y el enlace de cuenta.
+- Verificado en Chromium (Playwright) con `next start`: PNG → WEBP desde la portada y descarga; unir 2 PDF (2 + 3 páginas → 5) en `/es/unir-pdf` (HTML del servidor incluye la herramienta); cambio de idioma `/es/unir-pdf` → `/en/merge-pdf` y `/es/heic-a-jpg-desde-iphone` → `/pt/heic-para-jpg-do-iphone`; sin errores de página.
+
+**Mediciones (1 corrida, móvil)**
+- JS transferido: portada 142 → 136 kB, conversiones 150 → 137 kB, herramienta PDF 151 → 144 kB, precios 147 → 141 kB.
+- Rendimiento 98–99, accesibilidad y SEO 100, CLS 0, LCP 1,7–2,1 s, TBT 70–80 ms.
+
+**Qué sigue**
+- 2A.5: revisar SSG/ISR.
