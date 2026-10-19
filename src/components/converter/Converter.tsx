@@ -1,22 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { commonOutputs, formats, type FormatId } from "@/config/formats";
-import type { Locale } from "@/i18n/routing";
-import { formatBytes } from "@/lib/format";
+import { isRunnable } from "@/lib/convert";
 import Dropzone from "./Dropzone";
+import FileRow from "./FileRow";
 import { useFileQueue } from "./useFileQueue";
 
 export default function Converter() {
   const t = useTranslations("Converter");
-  const locale = useLocale() as Locale;
-  const { items, add, remove, clear } = useFileQueue();
+  const { items, add, remove, clear, convertAll } = useFileQueue();
   const [target, setTarget] = useState<FormatId | null>(null);
 
   const detected = items.filter((i) => i.format).map((i) => i.format as FormatId);
   const detecting = items.some((i) => i.format === undefined);
-  const outputs = commonOutputs(detected);
+  const working = items.some((i) => i.job?.status === "working");
+  const outputs = commonOutputs(detected).filter(isRunnable);
   const selected = outputs.find((o) => o.to === target) ?? outputs[0];
 
   return (
@@ -43,31 +43,7 @@ export default function Converter() {
 
           <ul className="divide-y divide-border">
             {items.map((item) => (
-              <li key={item.id} className="flex items-center gap-3 py-2.5">
-                <span className="min-w-14 rounded-md bg-brand-soft px-2 py-0.5 text-center text-xs font-bold text-brand">
-                  {item.format ? formats[item.format].label : item.format === null ? "?" : "…"}
-                </span>
-                <span className="min-w-0 flex-1 truncate" title={item.file.name}>
-                  {item.file.name}
-                </span>
-                <span className="shrink-0 text-sm text-muted">
-                  {item.format === null ? (
-                    <span className="text-red-600 dark:text-red-400">{t("unsupported")}</span>
-                  ) : item.format === undefined ? (
-                    t("detecting")
-                  ) : (
-                    formatBytes(item.file.size, locale)
-                  )}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => remove(item.id)}
-                  aria-label={t("remove", { name: item.file.name })}
-                  className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted hover:bg-brand-soft hover:text-foreground"
-                >
-                  ✕
-                </button>
-              </li>
+              <FileRow key={item.id} item={item} onRemove={() => remove(item.id)} />
             ))}
           </ul>
 
@@ -101,9 +77,11 @@ export default function Converter() {
                   </fieldset>
                   <button
                     type="button"
+                    disabled={working || !selected}
+                    onClick={() => selected && convertAll(selected.to)}
                     className="self-start rounded-xl bg-brand px-6 py-3 font-semibold text-white transition hover:bg-brand-strong disabled:opacity-50"
                   >
-                    {t("convert")}
+                    {working ? t("converting") : t("convert")}
                   </button>
                 </>
               )}

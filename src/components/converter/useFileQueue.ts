@@ -1,46 +1,104 @@
 "use client";
 
-import { useCallback, useState } from "react";
-import type { FormatId } from "@/config/formats";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { outputFilename, type FormatId } from "@/config/formats";
+import { convertFile, type ConvertOptions } from "@/lib/convert";
 import { detectFileFormat } from "@/lib/detect";
+
+export type JobState =
+  | { status: "working"; progress: number }
+  | { status: "done"; blob: Blob; url: string; name: string }
+  | { status: "error" };
 
 export interface QueuedFile {
   id: string;
   file: File;
   /** undefined while detecting, null when unsupported. */
   format: FormatId | null | undefined;
+  job?: JobState;
 }
 
 let nextId = 0;
 
-/** Files picked by the user, with their detected real format. */
+const revoke = (item: QueuedFile) => {
+  if (item.job?.status === "done") URL.revokeObjectURL(item.job.url);
+};
+
+/** Files picked by the user, their detected real format and conversion state. */
 export function useFileQueue() {
   const [items, setItems] = useState<QueuedFile[]>([]);
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
 
-  const add = useCallback((files: Iterable<File>) => {
-    const added = [...files].map((file) => ({
-      id: `f${nextId++}`,
-      file,
-      format: undefined,
-    }));
-    setItems((prev) => [...prev, ...added]);
-    for (const item of added) {
-      detectFileFormat(item.file)
-        .catch(() => null)
-        .then((format) =>
-          setItems((prev) =>
-            prev.map((p) => (p.id === item.id ? { ...p, format } : p)),
-          ),
-        );
-    }
+  // Free object URLs when the component goes away.
+  useEffect(() => () => itemsRef.current.forEach(revoke), []);
+
+  const update = useCallback((id: string, patch: Partial<QueuedFile>) => {
+    setItems((prev) => prev.map((p) => (p.id === id ? { ...p, ...patch } : p)));
   }, []);
 
-  const remove = useCallback(
-    (id: string) => setItems((prev) => prev.filter((p) => p.id !== id)),
-    [],
+  const add = useCallback(
+    (files: Iterable<File>) => {
+      const added = [...files].map((file) => ({
+        id: `f${nextId++}`,
+        file,
+        format: undefined,
+      }));
+      setItems((prev) => [...prev, ...added]);
+      for (const item of added) {
+        detectFileFormat(item.file)
+          .catch(() => null)
+          .then((format) => update(item.id, { format }));
+      }
+    },
+    [update],
   );
 
-  const clear = useCallback(() => setItems([]), []);
+  const remove = useCallback((id: string) => {
+    setItems((prev) => {
+      prev.filter((p) => p.id === id).forEach(revoke);
+      return prev.filter((p) => p.id !== id);
+    });
+  }, []);
 
-  return { items, add, remove, clear };
+  const clear = useCallback(() => {
+    setItems((prev) => {
+      prev.forEach(revoke);
+      return [];
+    });
+  }, []);
+
+  /** Converts every supported file to `to`, one after another. */
+  const convertAll = useCallback(
+    async (to: FormatId, options: Omit<ConvertOptions, "onProgress"> = {}) => {
+      const queue = itemsRef.current.filter((i) => i.format);
+      for (const item of queue) revoke(item);
+      for (const item of queue) {
+        update(item.id, { job: { status: "working", progress: 0 } });
+      }
+      for (const item of queue) {
+        try {
+          const blob = await convertFile(item.file, item.format as FormatId, to, {
+            ...options,
+            onProgress: (progress) =>
+              update(item.id, { job: { status: "working", progress } }),
+          });
+          update(item.id, {
+            job: {
+              status: "done",
+              blob,
+              url: URL.createObjectURL(blob),
+              name: outputFilename(item.file.name, to),
+            },
+          });
+        } catch (error) {
+          console.error(error);
+          update(item.id, { job: { status: "error" } });
+        }
+      }
+    },
+    [update],
+  );
+
+  return { items, add, remove, clear, convertAll };
 }

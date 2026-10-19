@@ -89,6 +89,12 @@
     "clear": "Quitar todo",
     "convertTo": "Convertir a",
     "noCommonOutput": "Estos archivos no tienen un formato de salida en común. Conviértelos por separado.",
-    "convert": "Convertir"
+    "convert": "Convertir",
+    "converting": "Convirtiendo…",
+    "convertAgain": "Convertir de nuevo",
+    "failed": "No se pudo convertir este archivo.",
+    "sizeChange": "{before} → {after}",
+    "saved": "{percent} menos",
+    "progress": "Progreso de {name}"
   }
 }

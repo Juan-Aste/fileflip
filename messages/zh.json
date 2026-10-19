@@ -89,6 +89,12 @@
     "clear": "全部移除",
     "convertTo": "转换为",
     "noCommonOutput": "这些文件没有共同的输出格式，请分别转换。",
-    "convert": "转换"
+    "convert": "转换",
+    "converting": "正在转换…",
+    "convertAgain": "重新转换",
+    "failed": "无法转换此文件。",
+    "sizeChange": "{before} → {after}",
+    "saved": "减小 {percent}",
+    "progress": "{name} 的进度"
   }
 }
