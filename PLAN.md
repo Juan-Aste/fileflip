@@ -57,7 +57,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 0.6 Commitear `package-lock.json` (generado por CI o con acceso a npm) y cambiar CI a `npm ci`
 
 ### Hito 1 — Internacionalización y layout base
-- [ ] 1.1 next-intl: `src/i18n/routing.ts`, `request.ts`, middleware con detección de idioma y cookie, rutas `app/[locale]/`
+- [x] 1.1 next-intl: `src/i18n/routing.ts`, `request.ts`, middleware con detección de idioma y cookie, rutas `app/[locale]/`
 - [ ] 1.2 `messages/{es,en,pt,fr,zh}.json` con textos base y test de paridad de claves
 - [ ] 1.3 Layout: header con logo, selector de idioma (nombres nativos, mantiene la página), footer, modo claro/oscuro
 - [ ] 1.4 Portada con el mensaje central de privacidad y velocidad (todo traducido)

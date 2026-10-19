@@ -8,5 +8,8 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["src/**/*.test.ts", "tests/**/*.test.ts"],
+    // next-intl imports "next/server" without an extension, which Node ESM
+    // cannot resolve; inlining lets Vite resolve it.
+    server: { deps: { inline: ["next-intl"] } },
   },
 });
