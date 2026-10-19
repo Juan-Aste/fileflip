@@ -301,5 +301,19 @@
   "Ads": {
     "label": "广告",
     "placeholder": "广告位"
+  },
+  "ConversionPage": {
+    "title": "将 {from} 转换为 {to}",
+    "metaTitle": "免费在线将 {from} 转换为 {to}",
+    "description": "几秒钟内将 {from} 转换为 {to}，免费、无水印、无需注册。",
+    "howTitle": "如何将 {from} 转换为 {to}",
+    "step1": "拖入你的 {from} 文件，或从设备中选择。",
+    "step2": "选择 {to}，可按需调整质量或尺寸。",
+    "step3": "点击“转换”，然后下载 {to} 文件。",
+    "privacyTitle": "私密又快速",
+    "privacyBrowser": "你的 {from} 文件直接在浏览器中转换，从不上传，因此转换既私密又快速。",
+    "privacyServer": "文档通过加密连接在我们的服务器上用 LibreOffice 转换，并在 1 小时内自动删除。",
+    "relatedTitle": "其他转换",
+    "linkLabel": "{from} 转 {to}"
   }
 }

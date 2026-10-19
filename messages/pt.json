@@ -301,5 +301,19 @@
   "Ads": {
     "label": "Publicidade",
     "placeholder": "Espaço publicitário"
+  },
+  "ConversionPage": {
+    "title": "Converter {from} para {to}",
+    "metaTitle": "Converter {from} para {to} grátis online",
+    "description": "Converta {from} para {to} em segundos, de graça, sem marca d'água e sem cadastro.",
+    "howTitle": "Como converter {from} para {to}",
+    "step1": "Arraste seu arquivo {from} ou escolha no seu aparelho.",
+    "step2": "Escolha {to} e, se quiser, ajuste a qualidade ou o tamanho.",
+    "step3": "Clique em Converter e baixe seu arquivo {to}.",
+    "privacyTitle": "Privado e rápido",
+    "privacyBrowser": "Seus arquivos {from} são convertidos direto no navegador: nunca são enviados pela internet, então a conversão é privada e muito rápida.",
+    "privacyServer": "Os documentos são convertidos no nosso servidor com LibreOffice, por conexão criptografada, e apagados automaticamente em menos de 1 hora.",
+    "relatedTitle": "Outras conversões",
+    "linkLabel": "{from} para {to}"
   }
 }

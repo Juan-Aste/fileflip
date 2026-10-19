@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/routing";
+import { conversionFromSlug, conversionSlug } from "./conversion-pages";
 import { toolFromSlug } from "./tools";
 
 /**
@@ -8,6 +9,9 @@ import { toolFromSlug } from "./tools";
 export function translatePathname(pathname: string, from: Locale, to: Locale): string {
   const match = pathname.match(/^\/([^/]+)$/);
   if (!match) return pathname;
-  const tool = toolFromSlug(from, decodeURIComponent(match[1]));
-  return tool ? `/${tool.slugs[to]}` : pathname;
+  const slug = decodeURIComponent(match[1]);
+  const tool = toolFromSlug(from, slug);
+  if (tool) return `/${tool.slugs[to]}`;
+  const conversion = conversionFromSlug(from, slug);
+  return conversion ? `/${conversionSlug(conversion, to)}` : pathname;
 }

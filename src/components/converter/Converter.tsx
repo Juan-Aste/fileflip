@@ -17,10 +17,16 @@ import ImageOptionsPanel from "./ImageOptionsPanel";
 import ProcessingBadge from "./ProcessingBadge";
 import { useFileQueue } from "./useFileQueue";
 
-export default function Converter() {
+interface Props {
+  /** Conversion pages preselect their formats. */
+  from?: FormatId;
+  to?: FormatId;
+}
+
+export default function Converter({ from, to }: Props = {}) {
   const t = useTranslations("Converter");
   const { items, add, remove, clear, convertAll } = useFileQueue();
-  const [target, setTarget] = useState<FormatId | null>(null);
+  const [target, setTarget] = useState<FormatId | null>(to ?? null);
   const [imageOptions, setImageOptions] = useState<ImageOptions>({
     quality: DEFAULT_QUALITY,
   });
@@ -51,7 +57,18 @@ export default function Converter() {
       <div className="flex justify-center">
         <ProcessingBadge engine={selected?.engine ?? "browser"} />
       </div>
-      <Dropzone onFiles={add} compact={items.length > 0} />
+      <Dropzone
+        onFiles={add}
+        compact={items.length > 0}
+        accept={
+          from
+            ? [
+                formats[from].mime,
+                ...formats[from].extensions.map((e) => `.${e}`),
+              ].join(",")
+            : undefined
+        }
+      />
 
       {items.length > 0 && (
         <section

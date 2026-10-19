@@ -301,5 +301,19 @@
   "Ads": {
     "label": "Publicité",
     "placeholder": "Espace publicitaire"
+  },
+  "ConversionPage": {
+    "title": "Convertir {from} en {to}",
+    "metaTitle": "Convertir {from} en {to} gratuitement en ligne",
+    "description": "Convertissez {from} en {to} en quelques secondes, gratuitement, sans filigrane ni inscription.",
+    "howTitle": "Comment convertir {from} en {to}",
+    "step1": "Déposez votre fichier {from} ou choisissez-le sur votre appareil.",
+    "step2": "Choisissez {to} et ajustez la qualité ou la taille si besoin.",
+    "step3": "Cliquez sur Convertir et téléchargez votre fichier {to}.",
+    "privacyTitle": "Confidentiel et rapide",
+    "privacyBrowser": "Vos fichiers {from} sont convertis directement dans votre navigateur : ils ne sont jamais envoyés, la conversion est donc confidentielle et très rapide.",
+    "privacyServer": "Les documents sont convertis sur notre serveur avec LibreOffice, via une connexion chiffrée, et supprimés automatiquement sous 1 heure.",
+    "relatedTitle": "Autres conversions",
+    "linkLabel": "{from} en {to}"
   }
 }

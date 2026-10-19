@@ -475,6 +475,17 @@
 **Qué sigue**
 - Hito 7: 7.1 páginas por conversión con slugs traducidos.
 
+## 2026-10-19 — Sesión 5 (tarea 7.1: páginas por conversión)
+
+**Qué se hizo**
+- `src/config/conversion-pages.ts`: slug traducido para cada conversión del registro (`/es/jpg-a-webp`, `/en/jpg-to-webp`, `/pt/jpg-para-webp`, `/fr/jpg-en-webp`, `/zh/jpg-to-webp`; DOCX/XLSX/PPTX como `word`/`excel`/`powerpoint`: `/es/word-a-pdf`, `/pt/pdf-para-word`), búsqueda inversa y conversiones relacionadas (misma entrada o misma salida). Tests: unicidad por idioma, sin choques con herramientas, ida y vuelta.
+- `[slug]/page.tsx` ahora sirve herramientas y conversiones: título/descripción/metadatos traducidos ("Convertir HEIC a JPG gratis online"), canonical + hreflang, conversor con el formato de entrada (filtro del selector de archivos) y de salida preseleccionados, pasos "Cómo convertir…", texto de privacidad según el motor y enlaces internos a conversiones relacionadas.
+- El selector de idioma traduce también los slugs de conversiones (`/es/heic-a-jpg` → `/fr/heic-en-jpg`).
+- El build genera 550 páginas estáticas (~1 min). Probado: HEIC → JPG desde `/es/heic-a-jpg` y cambio a francés.
+
+**Qué sigue**
+- 7.2: hreflang global, `sitemap.ts` multi-idioma y `robots.ts`.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
