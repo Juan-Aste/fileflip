@@ -558,6 +558,35 @@
 **Qué sigue**
 - 8.3: revisión final (accesibilidad, modo oscuro, rendimiento, lint/build/tests).
 
+## 2026-10-19 — Sesión 5 (tarea 8.3: revisión final)
+
+**Qué se hizo**
+- Accesibilidad: auditoría con axe-core (WCAG 2 A/AA) en portada, herramienta, conversión, cola larga, precios, login, privacidad y portada en chino, en modo claro y oscuro. En oscuro fallaba el contraste de los botones (índigo claro con texto blanco): nuevo token `brand-solid` / `brand-solid-hover` para fondos sólidos detrás de texto blanco. Ahora todas las páginas pasan sin violaciones en ambos temas.
+- Modo oscuro revisado con capturas.
+- Rendimiento: JS de primera carga 103–139 kB por página; los códecs pesados (libheif ~2 MB, pdf.js ~1,2 MB, AVIF/WEBP/JPEG WASM) se descargan solo al usarlos.
+- `npm run lint`, `npm run build` (≈570 páginas estáticas) y `npm test` (38 archivos, 231 tests) pasan; CI de GitHub en verde.
+
+## PROYECTO TERMINADO
+
+Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
+- **Conversión en el navegador** (Web Workers + WASM con carga diferida): JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC (entrada) y SVG → raster; calidad, redimensionado, tamaño exacto con recorte; compresión en el mismo formato; lotes con ZIP; detección por magic bytes; respaldo automático al servidor (sharp) si el navegador no puede o el archivo excede la memoria del dispositivo.
+- **PDF en el navegador**: unir, dividir, rotar, ordenar con miniaturas, imágenes → PDF (respeta EXIF), PDF → JPG/PNG, comprimir PDF.
+- **Servidor**: documentos de oficina → PDF con Gotenberg/LibreOffice, PDF → Word (pdf.js + docx), límites por plan, rate limiting por IP, solo metadatos en MongoDB, temporales con borrado ≤1 h.
+- **Cuentas y pagos**: Auth.js (Google + magic link traducido), plan Pro mensual/anual con precios en moneda local para AR/BR/MX/CL/CO/UY/PE vía Mercado Pago (preapproval + webhook firmado), USD para el resto detrás de una interfaz de proveedor intercambiable, cancelación desde Mi cuenta, límites Pro aplicados en cliente y servidor.
+- **Publicidad** discreta con `<AdSlot>` (lateral en escritorio y debajo del resultado; nunca para Pro).
+- **i18n y SEO**: es/en/pt/fr/zh con slugs traducidos, hreflang, sitemap (≈530 URLs), robots, una página por conversión, 7 páginas de cola larga con FAQ schema (archivo de datos `src/content/longtail.ts`), páginas legales y de contacto.
+- **Deploy** preparado: Dockerfile verificado, `/api/health`, `DEPLOY.md` para Railway.
+
+**Lo que el dueño debe configurar manualmente** (detalle en "Pendiente del dueño" y en DEPLOY.md):
+1. Proyecto en Railway con los servicios `app`, `gotenberg` y MongoDB; variables de `.env.example`; dominio.
+2. `AUTH_SECRET`, credenciales de Google OAuth y un proveedor SMTP para los magic links.
+3. Cuentas de Mercado Pago por país (tokens `MP_ACCESS_TOKEN_XX`) y sus webhooks/secretos; empezar con credenciales de prueba.
+4. Elegir e integrar un proveedor de pagos internacional (Lemon Squeezy, Paddle…) en `src/lib/payments/providers.ts`.
+5. Cuenta de Google AdSense y los IDs de bloques.
+6. Revisar precios (`src/config/pricing.ts`) y textos legales con un abogado; configurar `NEXT_PUBLIC_CONTACT_EMAIL`.
+7. Opcional: Cloudflare delante de Railway para detectar el país por IP.
+8. Revisar a mano el arrastrar y soltar de miniaturas en "Ordenar PDF" (no se pudo automatizar).
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

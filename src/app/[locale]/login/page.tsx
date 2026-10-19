@@ -89,7 +89,7 @@ export default async function LoginPage({ params, searchParams }: Props) {
             />
             <button
               type="submit"
-              className="rounded-xl bg-brand px-4 py-3 font-semibold text-white hover:bg-brand-strong"
+              className="rounded-xl bg-brand-solid px-4 py-3 font-semibold text-white hover:bg-brand-solid-hover"
             >
               {t("emailSubmit")}
             </button>

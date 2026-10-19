@@ -40,7 +40,7 @@ export default function ToolResult({ blob, filename, onReset, note }: Props) {
           <a
             href={url}
             download={filename}
-            className="rounded-xl bg-brand px-6 py-3 font-semibold text-white hover:bg-brand-strong"
+            className="rounded-xl bg-brand-solid px-6 py-3 font-semibold text-white hover:bg-brand-solid-hover"
           >
             {tc("download")}
           </a>

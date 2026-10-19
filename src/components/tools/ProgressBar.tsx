@@ -9,7 +9,7 @@ export default function ProgressBar({ value, label }: { value: number; label: st
       className="h-2 overflow-hidden rounded-full bg-brand-soft"
     >
       <div
-        className="h-full rounded-full bg-brand transition-[width] duration-300"
+        className="h-full rounded-full bg-brand-solid transition-[width] duration-300"
         style={{ width: `${Math.max(4, value * 100)}%` }}
       />
     </div>

@@ -63,7 +63,7 @@ export default function FileRow({ item, onRemove }: Props) {
           <a
             href={job.url}
             download={job.name}
-            className="shrink-0 rounded-lg bg-brand px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-strong"
+            className="shrink-0 rounded-lg bg-brand-solid px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-solid-hover"
           >
             {tc("download")}
           </a>
@@ -88,7 +88,7 @@ export default function FileRow({ item, onRemove }: Props) {
           className="h-1.5 overflow-hidden rounded-full bg-brand-soft"
         >
           <div
-            className="h-full animate-pulse rounded-full bg-brand transition-[width] duration-500"
+            className="h-full animate-pulse rounded-full bg-brand-solid transition-[width] duration-500"
             style={{ width: `${Math.max(5, job.progress * 100)}%` }}
           />
         </div>

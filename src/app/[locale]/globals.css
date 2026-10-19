@@ -12,6 +12,9 @@
   --brand: #4f46e5;
   --brand-strong: #4338ca;
   --brand-soft: #eef2ff;
+  /* Solid fills behind white text (buttons): AA contrast in both themes. */
+  --brand-solid: #4f46e5;
+  --brand-solid-hover: #4338ca;
 }
 
 .dark {
@@ -23,6 +26,8 @@
   --brand: #818cf8;
   --brand-strong: #a5b4fc;
   --brand-soft: #1e1b4b;
+  --brand-solid: #4f46e5;
+  --brand-solid-hover: #4338ca;
   color-scheme: dark;
 }
 
@@ -35,6 +40,8 @@
   --color-brand: var(--brand);
   --color-brand-strong: var(--brand-strong);
   --color-brand-soft: var(--brand-soft);
+  --color-brand-solid: var(--brand-solid);
+  --color-brand-solid-hover: var(--brand-solid-hover);
 }
 
 body {

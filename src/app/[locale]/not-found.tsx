@@ -9,7 +9,7 @@ export default function NotFound() {
       <p className="text-muted">{t("notFoundBody")}</p>
       <Link
         href="/"
-        className="rounded-lg bg-brand px-4 py-2 font-medium text-white hover:bg-brand-strong"
+        className="rounded-lg bg-brand-solid px-4 py-2 font-medium text-white hover:bg-brand-solid-hover"
       >
         {t("backHome")}
       </Link>

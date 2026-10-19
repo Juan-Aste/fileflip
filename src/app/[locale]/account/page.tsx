@@ -79,7 +79,7 @@ export default async function AccountPage({ params, searchParams }: Props) {
             <p className="text-sm text-muted">{t("freeBody")}</p>
             <Link
               href="/pricing"
-              className="mt-2 self-start rounded-xl bg-brand px-5 py-2.5 font-semibold text-white hover:bg-brand-strong"
+              className="mt-2 self-start rounded-xl bg-brand-solid px-5 py-2.5 font-semibold text-white hover:bg-brand-solid-hover"
             >
               {t("upgrade")}
             </Link>

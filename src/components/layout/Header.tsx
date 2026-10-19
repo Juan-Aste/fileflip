@@ -18,7 +18,7 @@ export default function Header() {
         >
           <span
             aria-hidden="true"
-            className="grid h-8 w-8 place-items-center rounded-lg bg-brand text-white"
+            className="grid h-8 w-8 place-items-center rounded-lg bg-brand-solid text-white"
           >
             ⇄
           </span>

@@ -42,7 +42,7 @@ export default function HomePage({
         </p>
         <a
           href="#converter"
-          className="rounded-xl bg-brand px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          className="rounded-xl bg-brand-solid px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-brand-solid-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         >
           {t("cta")}
         </a>
@@ -64,7 +64,7 @@ export default function HomePage({
               key={step}
               className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-5"
             >
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand text-lg font-bold text-white">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-solid text-lg font-bold text-white">
                 {i + 1}
               </span>
               <span className="font-medium">{t(`steps.${step}`)}</span>

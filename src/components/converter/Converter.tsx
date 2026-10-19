@@ -124,7 +124,7 @@ export default function Converter({ from, to, options }: Props = {}) {
                             onChange={() => setTarget(o.to)}
                             className="peer sr-only"
                           />
-                          <span className="block rounded-lg border border-border px-3 py-1.5 text-sm font-semibold transition peer-checked:border-brand peer-checked:bg-brand peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-brand">
+                          <span className="block rounded-lg border border-border px-3 py-1.5 text-sm font-semibold transition peer-checked:border-brand peer-checked:bg-brand-solid peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-brand">
                             {formats[o.to].label}
                           </span>
                         </label>
@@ -153,7 +153,7 @@ export default function Converter({ from, to, options }: Props = {}) {
                         selected &&
                         convertAll(selected.to, imageOutput ? imageOptions : {})
                       }
-                      className="self-start rounded-xl bg-brand px-6 py-3 font-semibold text-white transition hover:bg-brand-strong disabled:opacity-50"
+                      className="self-start rounded-xl bg-brand-solid px-6 py-3 font-semibold text-white transition hover:bg-brand-solid-hover disabled:opacity-50"
                     >
                       {working ? t("converting") : t("convert")}
                     </button>

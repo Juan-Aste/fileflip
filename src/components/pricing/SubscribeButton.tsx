@@ -46,7 +46,7 @@ export default function SubscribeButton({ period, signedIn }: { period: BillingP
         type="button"
         onClick={start}
         disabled={busy}
-        className="w-full rounded-xl bg-brand px-5 py-3 font-semibold text-white transition hover:bg-brand-strong disabled:opacity-60"
+        className="w-full rounded-xl bg-brand-solid px-5 py-3 font-semibold text-white transition hover:bg-brand-solid-hover disabled:opacity-60"
       >
         {t("proCta")}
       </button>
