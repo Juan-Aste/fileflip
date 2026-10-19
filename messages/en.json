@@ -211,5 +211,14 @@
     "levelStrong": "Strong (smallest file)",
     "reduced": "{before} → {after} ({percent} smaller)",
     "alreadyOptimized": "This PDF is already optimized: we couldn't make it smaller."
+  },
+  "Email": {
+    "subject": "Your FileFlip sign-in link",
+    "preheader": "Sign in with one click, no password.",
+    "heading": "Sign in to FileFlip",
+    "body": "Click the button to sign in. The link is valid for 24 hours and can only be used once.",
+    "button": "Sign in",
+    "fallback": "If the button doesn't work, copy and paste this link into your browser:",
+    "ignore": "If you didn't ask for this email, you can ignore it: nobody can sign in without this link."
   }
 }

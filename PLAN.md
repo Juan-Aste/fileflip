@@ -90,7 +90,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 4.5 Mensajes de error traducidos para la API
 
 ### Hito 5 — Cuentas y suscripción
-- [ ] 5.1 Auth.js v5: Google + email magic link (adaptador MongoDB), email traducido
+- [x] 5.1 Auth.js v5: Google + email magic link (adaptador MongoDB), email traducido
 - [ ] 5.2 Páginas de login y "Mi cuenta"
 - [ ] 5.3 Config de precios por país (`src/config/pricing.ts`), detección de país (cabecera geo / idioma) + selector manual + tests
 - [ ] 5.4 Interfaz `PaymentProvider` intercambiable; implementación Mercado Pago (preapproval) en modo prueba; stub internacional (USD)

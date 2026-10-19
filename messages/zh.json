@@ -211,5 +211,14 @@
     "levelStrong": "强（文件最小）",
     "reduced": "{before} → {after}（减小 {percent}）",
     "alreadyOptimized": "此 PDF 已经过优化，无法再缩小。"
+  },
+  "Email": {
+    "subject": "你的 FileFlip 登录链接",
+    "preheader": "一键登录，无需密码。",
+    "heading": "登录 FileFlip",
+    "body": "点击按钮即可登录。链接 24 小时内有效，且只能使用一次。",
+    "button": "登录",
+    "fallback": "如果按钮无法使用，请将此链接复制到浏览器中打开：",
+    "ignore": "如果你没有请求此邮件，可以忽略：没有此链接，任何人都无法登录。"
   }
 }

@@ -211,5 +211,14 @@
     "levelStrong": "Fuerte (archivo más liviano)",
     "reduced": "{before} → {after} ({percent} menos)",
     "alreadyOptimized": "Este PDF ya está optimizado: no pudimos reducirlo más."
+  },
+  "Email": {
+    "subject": "Tu enlace para entrar a FileFlip",
+    "preheader": "Entra con un clic, sin contraseña.",
+    "heading": "Entra a FileFlip",
+    "body": "Haz clic en el botón para iniciar sesión. El enlace vale por 24 horas y solo se puede usar una vez.",
+    "button": "Iniciar sesión",
+    "fallback": "Si el botón no funciona, copia y pega este enlace en tu navegador:",
+    "ignore": "Si no pediste este correo, puedes ignorarlo: nadie podrá entrar sin este enlace."
   }
 }

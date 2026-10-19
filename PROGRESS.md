@@ -363,6 +363,19 @@
 **Qué sigue**
 - Hito 5: 5.1 Auth.js v5 con Google + magic link.
 
+## 2026-10-19 — Sesión 5 (tarea 5.1: Auth.js)
+
+**Qué se hizo**
+- `next-auth@5` (beta.32) con `@auth/mongodb-adapter` (driver `mongodb@6`, cliente propio en `src/lib/mongo-client.ts`, creado de forma diferida) y `nodemailer`. Configuración en `src/auth.ts`, ruta `/api/auth/[...nextauth]`.
+- Proveedores: Google (solo si hay `AUTH_GOOGLE_ID`/`AUTH_GOOGLE_SECRET`) y email con magic link (si hay `EMAIL_SERVER`; sin SMTP, el enlace se imprime en el log en desarrollo o con `AUTH_EMAIL_LOG_LINKS=true` para staging). `getAuthProviders()` le dirá a la página de login qué mostrar.
+- Email traducido (`src/lib/email/magic-link.ts`, namespace `Email`): el idioma sale de la página desde donde se pidió el enlace (`callbackUrl` /pt/... → portugués); HTML con estilos en línea y versión texto; URL escapada. Tests.
+- Sesión en base de datos con MongoDB (JWT si no hay `MONGODB_URI`); el callback de sesión expone solo id, nombre, email e imagen (no el token de sesión).
+- Páginas propias: `signIn`/`error` → `/login`, `verifyRequest` → `/login/verify` (se crean en 5.2).
+- Verificado de punta a punta con MongoDB en memoria: pedir el enlace → enlace en el log → abrirlo crea el usuario y la sesión y redirige a `/pt/conta`.
+
+**Qué sigue**
+- 5.2: páginas de login y "Mi cuenta".
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
