@@ -12,14 +12,19 @@ export type Resize =
 /** Hard cap so a typo (e.g. 100000 px) can't exhaust the device's memory. */
 export const MAX_SIDE = 16384;
 
-/** Target size for a resize request. Never upscales in "fit" mode. */
-export function computeSize(source: Size, resize: Resize): Size {
+/**
+ * Target size for a resize request. "fit" never upscales raster images;
+ * vector sources (SVG) pass `upscale` since they stay sharp at any size.
+ */
+export function computeSize(source: Size, resize: Resize, { upscale = false } = {}): Size {
   let scale = 1;
   if (resize.mode === "percent") {
     scale = Math.max(1, Math.min(resize.percent, 400)) / 100;
   } else if (resize.mode === "fit") {
-    if (resize.width && resize.width > 0) scale = Math.min(scale, resize.width / source.width);
-    if (resize.height && resize.height > 0) scale = Math.min(scale, resize.height / source.height);
+    const limits = [];
+    if (resize.width && resize.width > 0) limits.push(resize.width / source.width);
+    if (resize.height && resize.height > 0) limits.push(resize.height / source.height);
+    if (limits.length) scale = Math.min(...limits, upscale ? Infinity : 1);
   }
   // Shrinks proportionally if the result would exceed the cap.
   scale = Math.min(scale, MAX_SIDE / Math.max(source.width, source.height));

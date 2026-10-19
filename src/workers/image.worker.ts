@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 import { formats } from "@/config/formats";
 import { decoders, encoders } from "@/lib/image/codecs";
+import { resizeRaw } from "@/lib/image/canvas";
 import { computeSize, isSameSize, type Resize } from "@/lib/image/dimensions";
 import type { RawImage } from "@/lib/image/pixels";
 import type { ImageJob, ImageWorkerMessage } from "./protocol";
@@ -10,6 +11,10 @@ const post = (msg: ImageWorkerMessage, transfer: Transferable[] = []) =>
 
 /** Native decoding first (fast, handles most formats), WASM as fallback. */
 async function decode(job: ImageJob): Promise<RawImage> {
+  // Already rasterized on the main thread (SVG).
+  if (job.pixels) {
+    return { ...job.pixels, data: new Uint8ClampedArray(job.buffer) };
+  }
   try {
     const bitmap = await createImageBitmap(
       new Blob([job.buffer], { type: formats[job.from].mime }),
@@ -29,17 +34,7 @@ async function decode(job: ImageJob): Promise<RawImage> {
 
 async function resize(image: RawImage, request: Resize | undefined): Promise<RawImage> {
   const target = computeSize(image, request ?? { mode: "none" });
-  if (isSameSize(image, target)) return image;
-  const source = await createImageBitmap(
-    new ImageData(new Uint8ClampedArray(image.data), image.width, image.height),
-  );
-  const canvas = new OffscreenCanvas(target.width, target.height);
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("No 2D context");
-  ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(source, 0, 0, target.width, target.height);
-  source.close();
-  return ctx.getImageData(0, 0, target.width, target.height);
+  return isSameSize(image, target) ? image : resizeRaw(image, target);
 }
 
 self.onmessage = async (event: MessageEvent<ImageJob>) => {

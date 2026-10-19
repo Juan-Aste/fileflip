@@ -23,6 +23,13 @@ describe("computeSize", () => {
     expect(computeSize({ width: 800, height: 600 }, { mode: "fit", width: 1920 })).toEqual({ width: 800, height: 600 });
   });
 
+  it("upscales vector sources when asked", () => {
+    expect(computeSize({ width: 24, height: 12 }, { mode: "fit", width: 480 }, { upscale: true })).toEqual({
+      width: 480,
+      height: 240,
+    });
+  });
+
   it("ignores empty or invalid box sides", () => {
     expect(computeSize(photo, { mode: "fit" })).toEqual(photo);
     expect(computeSize(photo, { mode: "fit", width: 0, height: -5 })).toEqual(photo);

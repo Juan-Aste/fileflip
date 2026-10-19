@@ -7,6 +7,8 @@ export interface ImageJob {
   from: FormatId;
   to: FormatId;
   options: ImageOptions;
+  /** Set when `buffer` holds raw RGBA pixels instead of an encoded file. */
+  pixels?: { width: number; height: number };
 }
 
 export type ImageWorkerMessage =

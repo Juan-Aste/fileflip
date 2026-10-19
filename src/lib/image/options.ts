@@ -18,4 +18,13 @@ export const DEFAULT_QUALITY = 82;
 export const lossyFormats: readonly FormatId[] = ["jpg", "webp", "avif"];
 
 /** Formats the image worker can encode. */
-export const browserImageOutputs: readonly FormatId[] = ["jpg", "png", "webp", "avif"];
+export const browserImageOutputs: readonly FormatId[] = [
+  "jpg",
+  "png",
+  "webp",
+  "avif",
+  "gif",
+  "bmp",
+  "tiff",
+  "ico",
+];

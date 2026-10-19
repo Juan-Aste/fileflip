@@ -2,7 +2,9 @@
 
 import { formats, type FormatId } from "@/config/formats";
 import type { ImageJob, ImageWorkerMessage } from "@/workers/protocol";
+import { computeSize } from "./dimensions";
 import { browserImageOutputs, type ImageOptions } from "./options";
+import { svgIntrinsicSize } from "./svg";
 
 export interface ImageResult {
   blob: Blob;
@@ -61,6 +63,31 @@ export function canConvertImageInBrowser(to: FormatId) {
   return browserImageOutputs.includes(to) && typeof Worker !== "undefined";
 }
 
+/**
+ * Workers have no DOM to render SVG, so it is rasterized here, directly at
+ * the requested size (vectors stay sharp when enlarged).
+ */
+async function rasterizeSvg(file: Blob, options: ImageOptions) {
+  const size = computeSize(svgIntrinsicSize(await file.text()), options.resize ?? { mode: "none" }, {
+    upscale: true,
+  });
+  const url = URL.createObjectURL(new Blob([file], { type: "image/svg+xml" }));
+  try {
+    const img = new Image(size.width, size.height);
+    img.src = url;
+    await img.decode();
+    const canvas = document.createElement("canvas");
+    canvas.width = size.width;
+    canvas.height = size.height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("No 2D context");
+    ctx.drawImage(img, 0, 0, size.width, size.height);
+    return ctx.getImageData(0, 0, size.width, size.height);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 export async function convertImage(
   file: Blob,
   from: FormatId,
@@ -68,11 +95,22 @@ export async function convertImage(
   options: ImageOptions = {},
   onProgress?: (progress: number) => void,
 ): Promise<ImageResult> {
-  const buffer = await file.arrayBuffer();
+  let job: Omit<ImageJob, "id">;
+  if (from === "svg") {
+    const raster = await rasterizeSvg(file, options);
+    job = {
+      buffer: raster.data.buffer as ArrayBuffer,
+      pixels: { width: raster.width, height: raster.height },
+      from,
+      to,
+      options: { ...options, resize: { mode: "none" } },
+    };
+  } else {
+    job = { buffer: await file.arrayBuffer(), from, to, options };
+  }
   const id = nextJob++;
   return new Promise((resolve, reject) => {
     pending.set(id, { resolve, reject, onProgress, to });
-    const job: ImageJob = { id, buffer, from, to, options };
-    getWorker().postMessage(job, [buffer]);
+    getWorker().postMessage({ ...job, id }, [job.buffer]);
   });
 }
