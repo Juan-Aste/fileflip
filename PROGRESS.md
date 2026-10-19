@@ -392,6 +392,21 @@
 **Qué sigue**
 - 5.3: configuración de precios por país, detección de país y selector manual.
 
+## 2026-10-19 — Sesión 5 (tarea 5.3: precios por país)
+
+**Qué se hizo**
+- `src/config/pricing.ts` (archivo fácil de editar): precio mensual y anual del Pro en moneda local para AR (ARS 4.500 / 45.000), BR (R$ 19,90 / 199), MX (MXN 79 / 790), CL (CLP 3.990 / 39.900), CO (COP 16.900 / 169.000), UY (UYU 179 / 1.790) y PE (S/ 14,90 / 149) vía Mercado Pago; resto del mundo USD 4,99 / 49 vía el proveedor internacional.
+- Detección de región: cookie de elección manual (`ff_country`) → cabecera de geolocalización del hosting/CDN (`cf-ipcountry`, `x-country-code`, `x-geo-country`, `cloudfront-viewer-country`) → región del idioma del navegador (`es-AR`, `pt` → BR) → internacional. `currentRegion()` para el servidor.
+- `RegionSelector`: selector manual con nombres de países localizados (`Intl.DisplayNames`) que guarda la cookie un año y refresca la página. Se usa en la página de precios (5.6).
+- Tests de configuración, mapeo de países, idioma y prioridad de la detección.
+
+**Decisiones**
+- Railway no agrega una cabecera de país propia; si se pone Cloudflare delante, `cf-ipcountry` funciona sin cambios. Sin CDN se usa el idioma del navegador + selector manual. Anotado en "Pendiente del dueño".
+- Precios iniciales orientativos (~US$ 4–5/mes); el dueño debe revisarlos.
+
+**Qué sigue**
+- 5.4: interfaz `PaymentProvider` y Mercado Pago (preapproval) en modo prueba.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
@@ -399,3 +414,5 @@
 - Elegir proveedor de pagos internacional (por ejemplo Lemon Squeezy o Paddle) para usuarios fuera de los países de Mercado Pago.
 - Cuenta de Google AdSense (`NEXT_PUBLIC_ADSENSE_CLIENT`).
 - Proyecto en Railway y base MongoDB (Railway o Atlas).
+- Revisar los precios del plan Pro por país en `src/config/pricing.ts` (son orientativos).
+- (Opcional) Poner Cloudflare delante de Railway para tener la cabecera de país `cf-ipcountry`; sin eso, el país se deduce del idioma del navegador y del selector manual.

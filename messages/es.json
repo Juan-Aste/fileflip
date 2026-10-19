@@ -244,5 +244,9 @@
     "freeBody": "Todas las herramientas sin costo, con límites en las conversiones de servidor.",
     "upgrade": "Pasar a Pro",
     "signOut": "Cerrar sesión"
+  },
+  "Pricing": {
+    "country": "País",
+    "otherCountry": "Otro país (USD)"
   }
 }

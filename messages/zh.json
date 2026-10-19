@@ -244,5 +244,9 @@
     "freeBody": "所有工具免费使用，服务器转换有一定限制。",
     "upgrade": "升级到 Pro",
     "signOut": "退出登录"
+  },
+  "Pricing": {
+    "country": "国家/地区",
+    "otherCountry": "其他国家/地区（美元）"
   }
 }

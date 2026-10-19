@@ -244,5 +244,9 @@
     "freeBody": "Every tool at no cost, with limits on server conversions.",
     "upgrade": "Upgrade to Pro",
     "signOut": "Sign out"
+  },
+  "Pricing": {
+    "country": "Country",
+    "otherCountry": "Other country (USD)"
   }
 }
