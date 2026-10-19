@@ -1,5 +1,13 @@
 /// <reference lib="webworker" />
-import { mergePdfs, pageCount, rotatePdf, splitPdf, type Rotation } from "@/lib/pdf/ops";
+import {
+  mergePdfs,
+  organizePdf,
+  pageCount,
+  rotatePdf,
+  splitPdf,
+  type PageSpec,
+  type Rotation,
+} from "@/lib/pdf/ops";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
 exposeHandlers({
@@ -14,6 +22,10 @@ exposeHandlers({
   },
   rotate: async ({ bytes, rotation, pages }: { bytes: Uint8Array; rotation: Rotation; pages?: number[] }) => {
     const result = await rotatePdf(bytes, rotation, pages);
+    return { result, transfer: [result.buffer] };
+  },
+  organize: async ({ bytes, specs }: { bytes: Uint8Array; specs: PageSpec[] }) => {
+    const result = await organizePdf(bytes, specs);
     return { result, transfer: [result.buffer] };
   },
 });

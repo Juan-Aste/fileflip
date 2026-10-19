@@ -180,6 +180,14 @@
     "rotateScope": "要旋转的页面",
     "allPages": "全部",
     "somePages": "部分页面",
-    "brokenPdf": "无法读取此 PDF。它是否已损坏或受密码保护？"
+    "brokenPdf": "无法读取此 PDF。它是否已损坏或受密码保护？",
+    "loadingPages": "正在生成缩略图…",
+    "dragHint": "拖动缩略图调整顺序，或使用按钮。",
+    "pageLabel": "第 {n} 页",
+    "rotatePage": "旋转第 {n} 页",
+    "deletePage": "删除第 {n} 页",
+    "movePageLeft": "将第 {n} 页前移",
+    "movePageRight": "将第 {n} 页后移",
+    "restorePages": "全部恢复"
   }
 }

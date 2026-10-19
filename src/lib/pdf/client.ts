@@ -1,7 +1,7 @@
 "use client";
 
 import { createWorkerClient } from "@/lib/worker-rpc";
-import type { Rotation } from "./ops";
+import type { PageSpec, Rotation } from "./ops";
 
 const call = createWorkerClient(
   () => new Worker(new URL("../../workers/pdf.worker.ts", import.meta.url), { type: "module" }),
@@ -34,5 +34,11 @@ export async function splitPdfFile(file: Blob, groups: number[][], onProgress?: 
 export async function rotatePdfFile(file: Blob, rotation: Rotation, pages?: number[]) {
   const bytes = await bytesOf(file);
   const result = await call<Uint8Array>("rotate", { bytes, rotation, pages }, { transfer: [bytes.buffer] });
+  return pdfBlob(result);
+}
+
+export async function organizePdfFile(file: Blob, specs: PageSpec[]) {
+  const bytes = await bytesOf(file);
+  const result = await call<Uint8Array>("organize", { bytes, specs }, { transfer: [bytes.buffer] });
   return pdfBlob(result);
 }

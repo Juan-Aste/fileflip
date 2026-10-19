@@ -180,6 +180,14 @@
     "rotateScope": "Pages à pivoter",
     "allPages": "Toutes",
     "somePages": "Seulement certaines",
-    "brokenPdf": "Impossible de lire ce PDF. Est-il endommagé ou protégé par un mot de passe ?"
+    "brokenPdf": "Impossible de lire ce PDF. Est-il endommagé ou protégé par un mot de passe ?",
+    "loadingPages": "Génération des miniatures…",
+    "dragHint": "Faites glisser les miniatures pour changer l'ordre, ou utilisez les boutons.",
+    "pageLabel": "Page {n}",
+    "rotatePage": "Pivoter la page {n}",
+    "deletePage": "Supprimer la page {n}",
+    "movePageLeft": "Déplacer la page {n} avant",
+    "movePageRight": "Déplacer la page {n} après",
+    "restorePages": "Tout restaurer"
   }
 }

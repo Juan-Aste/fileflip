@@ -180,6 +180,14 @@
     "rotateScope": "Pages to rotate",
     "allPages": "All",
     "somePages": "Only some",
-    "brokenPdf": "This PDF couldn't be read. Is it damaged or password-protected?"
+    "brokenPdf": "This PDF couldn't be read. Is it damaged or password-protected?",
+    "loadingPages": "Generating thumbnails…",
+    "dragHint": "Drag the thumbnails to reorder them, or use the buttons.",
+    "pageLabel": "Page {n}",
+    "rotatePage": "Rotate page {n}",
+    "deletePage": "Delete page {n}",
+    "movePageLeft": "Move page {n} earlier",
+    "movePageRight": "Move page {n} later",
+    "restorePages": "Restore all"
   }
 }

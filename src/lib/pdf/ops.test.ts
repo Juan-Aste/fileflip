@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { makePdf, pageWidths as widths } from "../../../tests/helpers/pdf";
 import { PDFDocument } from "pdf-lib";
-import { mergePdfs, pageCount, rotatePdf, splitPdf } from "./ops";
+import { mergePdfs, organizePdf, pageCount, rotatePdf, splitPdf } from "./ops";
 
 describe("mergePdfs", () => {
   it("concatenates pages in file order", async () => {
@@ -46,5 +46,21 @@ describe("rotatePdf", () => {
     const once = await rotatePdf(await makePdf([100, 200]), 270, [1]);
     expect(await angles(once)).toEqual([0, 270]);
     expect(await angles(await rotatePdf(once, 180, [1]))).toEqual([0, 90]);
+  });
+});
+
+describe("organizePdf", () => {
+  it("reorders, rotates and drops pages", async () => {
+    const out = await organizePdf(await makePdf([100, 200, 300]), [
+      { index: 2, rotation: 90 },
+      { index: 0, rotation: 0 },
+    ]);
+    expect(await widths(out)).toEqual([300, 100]);
+    const doc = await PDFDocument.load(out);
+    expect(doc.getPages().map((p) => p.getRotation().angle)).toEqual([90, 0]);
+  });
+
+  it("refuses to produce an empty PDF", async () => {
+    await expect(organizePdf(await makePdf([100]), [])).rejects.toThrow();
   });
 });

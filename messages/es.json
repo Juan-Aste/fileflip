@@ -180,6 +180,14 @@
     "rotateScope": "Páginas a girar",
     "allPages": "Todas",
     "somePages": "Solo algunas",
-    "brokenPdf": "No se pudo leer este PDF. ¿Está dañado o protegido con contraseña?"
+    "brokenPdf": "No se pudo leer este PDF. ¿Está dañado o protegido con contraseña?",
+    "loadingPages": "Generando miniaturas…",
+    "dragHint": "Arrastra las miniaturas para cambiar el orden, o usa los botones.",
+    "pageLabel": "Página {n}",
+    "rotatePage": "Girar página {n}",
+    "deletePage": "Eliminar página {n}",
+    "movePageLeft": "Mover página {n} antes",
+    "movePageRight": "Mover página {n} después",
+    "restorePages": "Restaurar todas"
   }
 }

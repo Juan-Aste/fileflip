@@ -71,3 +71,23 @@ export async function rotatePdf(
   }
   return save(doc);
 }
+
+export interface PageSpec {
+  /** 0-based page in the source document. */
+  index: number;
+  /** Extra clockwise rotation. */
+  rotation: 0 | Rotation;
+}
+
+/** Rebuilds a document with pages reordered, rotated or removed. */
+export async function organizePdf(bytes: Uint8Array, specs: readonly PageSpec[]): Promise<Uint8Array> {
+  if (!specs.length) throw new Error("A PDF needs at least one page");
+  const src = await load(bytes);
+  const out = await PDFDocument.create({ updateMetadata: false });
+  const pages = await out.copyPages(src, specs.map((s) => s.index));
+  pages.forEach((page, i) => {
+    page.setRotation(degrees((page.getRotation().angle + specs[i].rotation) % 360));
+    out.addPage(page);
+  });
+  return save(out);
+}
