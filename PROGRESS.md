@@ -598,3 +598,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Proyecto en Railway y base MongoDB (Railway o Atlas).
 - Revisar los precios del plan Pro por país en `src/config/pricing.ts` (son orientativos).
 - (Opcional) Poner Cloudflare delante de Railway para tener la cabecera de país `cf-ipcountry`; sin eso, el país se deduce del idioma del navegador y del selector manual.
+
+## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
+- No quedan tareas sin marcar en PLAN.md y la especificación no tiene puntos sin cubrir. Verificado: `npm ci`, `npm run lint`, `npm run build` y `npm test` (40 archivos, 231 tests) pasan en `dev`.
+- Se avisó al dueño que la rutina horaria ya no tiene trabajo y conviene pausarla. Las próximas ejecuciones que encuentren el mismo estado no deben volver a notificar.
