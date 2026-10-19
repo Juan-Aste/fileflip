@@ -102,6 +102,14 @@
 **Qué sigue**
 - 1.4: portada con el mensaje central de privacidad y velocidad.
 
+## 2026-10-19 — Sesión 5 (tarea 1.4: portada)
+
+**Qué se hizo**
+- Portada con insignia "Tus archivos no salen de tu dispositivo", titular y bajada sobre privacidad y velocidad, botón que lleva a `#converter` (el conversor se monta ahí en 2.2), pasos "arrastra → elige → descarga" y 4 ventajas. Todo desde `messages/*.json`.
+
+**Qué sigue**
+- 1.5: utilidades de formato por idioma.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

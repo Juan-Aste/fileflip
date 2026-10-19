@@ -61,6 +61,13 @@
         "title": "Documents bureautiques aussi",
         "body": "Word, Excel et PowerPoint sont convertis sur notre serveur et supprimés sous 1 heure."
       }
+    },
+    "badge": "Vos fichiers ne quittent pas votre appareil",
+    "steps": {
+      "heading": "Aussi simple que ça",
+      "drop": "Déposez votre fichier",
+      "pick": "Choisissez le format",
+      "download": "Téléchargez le résultat"
     }
   },
   "Errors": {

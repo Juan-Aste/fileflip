@@ -61,6 +61,13 @@
         "title": "Documentos do Office também",
         "body": "Word, Excel e PowerPoint são convertidos no nosso servidor e apagados em até 1 hora."
       }
+    },
+    "badge": "Seus arquivos não saem do seu aparelho",
+    "steps": {
+      "heading": "Simples assim",
+      "drop": "Arraste seu arquivo",
+      "pick": "Escolha o formato",
+      "download": "Baixe o resultado"
     }
   },
   "Errors": {

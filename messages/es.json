@@ -61,6 +61,13 @@
         "title": "También documentos de oficina",
         "body": "Word, Excel y PowerPoint se convierten en nuestro servidor y se borran en 1 hora."
       }
+    },
+    "badge": "Tus archivos no salen de tu dispositivo",
+    "steps": {
+      "heading": "Así de fácil",
+      "drop": "Arrastra tu archivo",
+      "pick": "Elige el formato",
+      "download": "Descarga el resultado"
     }
   },
   "Errors": {

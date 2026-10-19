@@ -61,6 +61,13 @@
         "title": "Office documents too",
         "body": "Word, Excel and PowerPoint are converted on our server and deleted within 1 hour."
       }
+    },
+    "badge": "Your files never leave your device",
+    "steps": {
+      "heading": "It's that simple",
+      "drop": "Drop your file",
+      "pick": "Pick a format",
+      "download": "Download the result"
     }
   },
   "Errors": {
