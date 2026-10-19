@@ -106,7 +106,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 7.1 Páginas por conversión con slugs traducidos (`/es/jpg-a-webp`, `/en/jpg-to-webp`, ...) y metadatos traducidos
 - [x] 7.2 hreflang, `sitemap.ts` multi-idioma y `robots.ts`
 - [x] 7.3 Archivo de datos de cola larga (`src/content/longtail.ts`) y plantilla con texto, FAQ y FAQ schema
-- [ ] 7.4 Primeras páginas: HEIC a JPG desde iPhone, comprimir PDF para AFIP, foto tamaño DNI, reducir PDF para WhatsApp, foto para el SAT, PDF para gov.br
+- [x] 7.4 Primeras páginas: HEIC a JPG desde iPhone, comprimir PDF para AFIP, foto tamaño DNI, reducir PDF para WhatsApp, foto para el SAT, PDF para gov.br
 - [ ] 7.5 Páginas legales y de contacto: privacidad, términos, contacto (traducidas)
 
 ### Hito 8 — Deploy (preparado, sin deploy real)

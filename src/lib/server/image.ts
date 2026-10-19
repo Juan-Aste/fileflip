@@ -28,7 +28,9 @@ export async function convertImageOnServer(
   const open = () => sharp(buffer, { limitInputPixels: MAX_INPUT_PIXELS, density: from === "svg" ? 144 : undefined });
   const size = await targetSize(open(), resize, from === "svg");
   // .rotate() applies the EXIF orientation, as browsers do when decoding.
-  const image = open().rotate().resize(size.width, size.height, { fit: "fill" });
+  // "cover" crops the center to the exact size; otherwise the ratio is already kept.
+  const fit = resize?.mode === "cover" ? "cover" : "fill";
+  const image = open().rotate().resize(size.width, size.height, { fit });
 
   switch (to) {
     case "jpg":

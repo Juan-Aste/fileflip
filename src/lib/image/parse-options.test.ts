@@ -14,6 +14,15 @@ describe("parseImageOptions", () => {
     });
   });
 
+  it("accepts exact-size crops only with both sides", () => {
+    expect(parseImageOptions({ resize: { mode: "cover", width: 472, height: 472 } }).resize).toEqual({
+      mode: "cover",
+      width: 472,
+      height: 472,
+    });
+    expect(parseImageOptions({ resize: { mode: "cover", width: 472 } }).resize).toEqual({ mode: "none" });
+  });
+
   it("falls back to defaults for junk", () => {
     for (const junk of [null, "x", 42, { quality: "high" }, { quality: -1 }, { resize: { mode: "evil" } }]) {
       expect(parseImageOptions(junk)).toEqual({ quality: DEFAULT_QUALITY, resize: { mode: "none" } });

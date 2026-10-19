@@ -14,6 +14,8 @@ export function parseImageOptions(raw: unknown): ImageOptions {
   let resize: Resize = { mode: "none" };
   if (r.mode === "percent" && positive(r.percent)) {
     resize = { mode: "percent", percent: Math.min(400, positive(r.percent)!) };
+  } else if (r.mode === "cover" && positive(r.width) && positive(r.height)) {
+    resize = { mode: "cover", width: positive(r.width)!, height: positive(r.height)! };
   } else if (r.mode === "fit" && (positive(r.width) || positive(r.height))) {
     resize = { mode: "fit", width: positive(r.width), height: positive(r.height) };
   }

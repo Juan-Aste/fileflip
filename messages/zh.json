@@ -114,7 +114,11 @@
     "resolution": "分辨率",
     "dpi72": "72 DPI（屏幕，体积小）",
     "dpi150": "150 DPI（推荐）",
-    "dpi300": "300 DPI（打印）"
+    "dpi300": "300 DPI（打印）",
+    "sizeCover": "精确尺寸（裁剪）",
+    "widthExact": "宽度（像素）",
+    "heightExact": "高度（像素）",
+    "coverHint": "图片会从中心裁剪为正好这个尺寸。"
   },
   "ProcessingBadge": {
     "browser": "在你的设备上处理：文件不会离开你的电脑",

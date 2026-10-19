@@ -68,7 +68,12 @@ export function canConvertImageInBrowser(to: FormatId) {
  * the requested size (vectors stay sharp when enlarged).
  */
 async function rasterizeSvg(file: Blob, options: ImageOptions) {
-  const size = computeSize(svgIntrinsicSize(await file.text()), options.resize ?? { mode: "none" }, {
+  // A vector has no pixels to crop: "cover" just fits it into the box.
+  const resize =
+    options.resize?.mode === "cover"
+      ? { mode: "fit" as const, width: options.resize.width, height: options.resize.height }
+      : options.resize;
+  const size = computeSize(svgIntrinsicSize(await file.text()), resize ?? { mode: "none" }, {
     upscale: true,
   });
   const url = URL.createObjectURL(new Blob([file], { type: "image/svg+xml" }));

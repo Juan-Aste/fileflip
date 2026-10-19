@@ -114,7 +114,11 @@
     "resolution": "Résolution",
     "dpi72": "72 DPI (écran, léger)",
     "dpi150": "150 DPI (recommandé)",
-    "dpi300": "300 DPI (impression)"
+    "dpi300": "300 DPI (impression)",
+    "sizeCover": "Taille exacte (recadre)",
+    "widthExact": "Largeur (px)",
+    "heightExact": "Hauteur (px)",
+    "coverHint": "L'image est recadrée depuis le centre pour avoir exactement cette taille."
   },
   "ProcessingBadge": {
     "browser": "Traité sur votre appareil : votre fichier ne quitte pas votre ordinateur",

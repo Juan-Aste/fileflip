@@ -9,9 +9,8 @@ import {
 } from "./formats";
 
 describe("format registry", () => {
-  it("only offers valid outputs for images, never the same format", () => {
+  it("only offers valid outputs for images", () => {
     const outs = outputsFor("png").map((c) => c.to);
-    expect(outs).not.toContain("png");
     expect(outs).toEqual(expect.arrayContaining(["jpg", "webp", "avif", "ico", "pdf"]));
     expect(outs).not.toContain("docx");
   });
@@ -52,12 +51,22 @@ describe("format registry", () => {
   });
 });
 
+describe("same-format re-encoding", () => {
+  it("lets JPG/PNG/WEBP/AVIF be compressed or resized into themselves", () => {
+    expect(findConversion("jpg", "jpg")).toBeDefined();
+    expect(findConversion("webp", "webp")).toBeDefined();
+    expect(findConversion("gif", "gif")).toBeUndefined();
+    expect(findConversion("tiff", "tiff")).toBeUndefined();
+  });
+});
+
 describe("commonOutputs", () => {
   it("intersects the outputs of a mixed batch", () => {
     const outs = commonOutputs(["png", "heic", "png"]).map((c) => c.to);
     expect(outs).toContain("jpg");
     expect(outs).toContain("pdf");
-    expect(outs).not.toContain("png");
+    expect(outs).toContain("png");
+    expect(commonOutputs(["gif"]).map((c) => c.to)).not.toContain("gif");
   });
 
   it("is empty when nothing is shared or there are no files", () => {

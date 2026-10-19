@@ -2,7 +2,7 @@
 import { formats } from "@/config/formats";
 import { decoders, encoders } from "@/lib/image/codecs";
 import { resizeRaw } from "@/lib/image/canvas";
-import { computeSize, isSameSize, type Resize } from "@/lib/image/dimensions";
+import { computeSize, coverCrop, isSameSize, type Resize } from "@/lib/image/dimensions";
 import type { RawImage } from "@/lib/image/pixels";
 import type { ImageJob, ImageWorkerMessage } from "./protocol";
 
@@ -34,6 +34,7 @@ async function decode(job: ImageJob): Promise<RawImage> {
 
 async function resize(image: RawImage, request: Resize | undefined): Promise<RawImage> {
   const target = computeSize(image, request ?? { mode: "none" });
+  if (request?.mode === "cover") return resizeRaw(image, target, coverCrop(image, target));
   return isSameSize(image, target) ? image : resizeRaw(image, target);
 }
 

@@ -25,6 +25,13 @@ describe("convertImageOnServer", () => {
     expect(await sharp(out).metadata()).toMatchObject({ width: 40, height: 20, format: "webp" });
   });
 
+  it("crops to an exact size", async () => {
+    const out = await convertImageOnServer(await png(), "png", "jpg", {
+      resize: { mode: "cover", width: 30, height: 30 },
+    });
+    expect(await sharp(out).metadata()).toMatchObject({ width: 30, height: 30 });
+  });
+
   it("flattens transparency over white for JPG", async () => {
     const out = await convertImageOnServer(await png(), "png", "jpg");
     const { data } = await sharp(out).raw().toBuffer({ resolveWithObject: true });

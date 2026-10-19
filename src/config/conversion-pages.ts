@@ -16,7 +16,7 @@ export function conversionSlug(conversion: Pick<Conversion, "from" | "to">, loca
 }
 
 const bySlug = new Map<string, Conversion>();
-for (const c of conversions) {
+for (const c of conversions.filter((c) => c.from !== c.to)) {
   for (const locale of Object.keys(connector) as Locale[]) bySlug.set(`${locale}:${conversionSlug(c, locale)}`, c);
 }
 
@@ -24,13 +24,13 @@ export function conversionFromSlug(locale: Locale, slug: string): Conversion | u
   return bySlug.get(`${locale}:${slug}`);
 }
 
-/** Every conversion with a page. */
-export const conversionPages: readonly Conversion[] = conversions;
+/** Every conversion with a page (same-format compression lives on the converter). */
+export const conversionPages: readonly Conversion[] = conversions.filter((c) => c.from !== c.to);
 
 /** Other conversions to link to: same input or same output. */
 export function relatedConversions(conversion: Conversion, max = 8): Conversion[] {
-  const sameFrom = conversions.filter((c) => c.from === conversion.from && c.to !== conversion.to);
-  const sameTo = conversions.filter((c) => c.to === conversion.to && c.from !== conversion.from);
+  const sameFrom = conversionPages.filter((c) => c.from === conversion.from && c.to !== conversion.to);
+  const sameTo = conversionPages.filter((c) => c.to === conversion.to && c.from !== conversion.from);
   const out: Conversion[] = [];
   for (let i = 0; out.length < max && (i < sameFrom.length || i < sameTo.length); i++) {
     if (sameFrom[i]) out.push(sameFrom[i]);

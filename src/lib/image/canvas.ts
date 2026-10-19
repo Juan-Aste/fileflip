@@ -13,10 +13,16 @@ function context(size: Size) {
 const toBitmap = (image: RawImage) =>
   createImageBitmap(new ImageData(new Uint8ClampedArray(image.data), image.width, image.height));
 
-export async function resizeRaw(image: RawImage, size: Size): Promise<RawImage> {
+/** Scales the image to `size`; with `crop`, only that source rectangle is used. */
+export async function resizeRaw(
+  image: RawImage,
+  size: Size,
+  crop?: { x: number; y: number; width: number; height: number },
+): Promise<RawImage> {
   const source = await toBitmap(image);
   const ctx = context(size);
-  ctx.drawImage(source, 0, 0, size.width, size.height);
+  const c = crop ?? { x: 0, y: 0, width: image.width, height: image.height };
+  ctx.drawImage(source, c.x, c.y, c.width, c.height, 0, 0, size.width, size.height);
   source.close();
   return ctx.getImageData(0, 0, size.width, size.height);
 }

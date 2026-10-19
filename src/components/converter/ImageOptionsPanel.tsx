@@ -15,6 +15,8 @@ interface Props {
   showQuality: boolean;
   /** PDF sources choose a render resolution instead of a resize. */
   pdfSource?: boolean;
+  /** Start expanded (e.g. when a page presets the options). */
+  defaultOpen?: boolean;
 }
 
 const input =
@@ -27,6 +29,7 @@ export default function ImageOptionsPanel({
   onChange,
   showQuality,
   pdfSource = false,
+  defaultOpen = false,
 }: Props) {
   const t = useTranslations("ImageOptions");
   const id = useId();
@@ -34,7 +37,7 @@ export default function ImageOptionsPanel({
   const setResize = (next: Resize) => onChange({ ...value, resize: next });
 
   return (
-    <details className="group rounded-xl border border-border px-4 py-3">
+    <details open={defaultOpen} className="group rounded-xl border border-border px-4 py-3">
       <summary className="cursor-pointer text-sm font-medium">
         {t("title")}
       </summary>
@@ -101,7 +104,9 @@ export default function ImageOptionsPanel({
                     ? { mode, percent: 50 }
                     : mode === "fit"
                       ? { mode, width: 1920 }
-                      : { mode },
+                      : mode === "cover"
+                        ? { mode, width: 1080, height: 1080 }
+                        : { mode },
                 );
               }}
               className={input}
@@ -109,6 +114,7 @@ export default function ImageOptionsPanel({
               <option value="none">{t("sizeNone")}</option>
               <option value="percent">{t("sizePercent")}</option>
               <option value="fit">{t("sizeFit")}</option>
+              <option value="cover">{t("sizeCover")}</option>
             </select>
 
             {resize.mode === "percent" && (
@@ -133,41 +139,47 @@ export default function ImageOptionsPanel({
               </label>
             )}
 
-            {resize.mode === "fit" && (
+            {(resize.mode === "fit" || resize.mode === "cover") && (
               <>
                 <div className="grid grid-cols-2 gap-2">
                   <label className="text-xs text-muted">
-                    {t("width")}
+                    {resize.mode === "cover" ? t("widthExact") : t("width")}
                     <input
                       type="number"
                       min={1}
                       value={resize.width ?? ""}
-                      onChange={(e) =>
-                        setResize({
-                          ...resize,
-                          width: toNumber(e.target.value),
-                        })
-                      }
+                      onChange={(e) => {
+                        const width = toNumber(e.target.value);
+                        setResize(
+                          resize.mode === "cover"
+                            ? { ...resize, width: width ?? 1 }
+                            : { ...resize, width },
+                        );
+                      }}
                       className={`${input} mt-1 text-foreground`}
                     />
                   </label>
                   <label className="text-xs text-muted">
-                    {t("height")}
+                    {resize.mode === "cover" ? t("heightExact") : t("height")}
                     <input
                       type="number"
                       min={1}
                       value={resize.height ?? ""}
-                      onChange={(e) =>
-                        setResize({
-                          ...resize,
-                          height: toNumber(e.target.value),
-                        })
-                      }
+                      onChange={(e) => {
+                        const height = toNumber(e.target.value);
+                        setResize(
+                          resize.mode === "cover"
+                            ? { ...resize, height: height ?? 1 }
+                            : { ...resize, height },
+                        );
+                      }}
                       className={`${input} mt-1 text-foreground`}
                     />
                   </label>
                 </div>
-                <p className="text-xs text-muted">{t("fitHint")}</p>
+                <p className="text-xs text-muted">
+                  {resize.mode === "cover" ? t("coverHint") : t("fitHint")}
+                </p>
               </>
             )}
           </div>

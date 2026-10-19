@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { computeSize, MAX_SIDE } from "./dimensions";
+import { computeSize, coverCrop, MAX_SIDE } from "./dimensions";
 
 const photo = { width: 4000, height: 3000 };
 
@@ -41,5 +41,20 @@ describe("computeSize", () => {
       width: MAX_SIDE,
       height: MAX_SIDE / 2,
     });
+  });
+});
+
+describe("cover", () => {
+  it("always returns the exact size, even when upscaling", () => {
+    expect(computeSize(photo, { mode: "cover", width: 472, height: 472 })).toEqual({ width: 472, height: 472 });
+    expect(computeSize({ width: 100, height: 50 }, { mode: "cover", width: 400, height: 400 })).toEqual({
+      width: 400,
+      height: 400,
+    });
+  });
+
+  it("crops the center of the source to the target ratio", () => {
+    expect(coverCrop(photo, { width: 472, height: 472 })).toEqual({ x: 500, y: 0, width: 3000, height: 3000 });
+    expect(coverCrop({ width: 300, height: 600 }, { width: 300, height: 300 })).toEqual({ x: 0, y: 150, width: 300, height: 300 });
   });
 });

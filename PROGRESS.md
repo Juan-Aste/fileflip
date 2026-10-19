@@ -508,6 +508,24 @@
 **Qué sigue**
 - 7.4: el resto de las páginas de cola larga (AFIP, foto DNI, WhatsApp, SAT, gov.br).
 
+## 2026-10-19 — Sesión 5 (tarea 7.4: primeras páginas de cola larga)
+
+**Qué se hizo**
+- Páginas nuevas en `src/content/longtail.ts`:
+  - `/es/comprimir-pdf-para-afip` (AFIP/ARCA, herramienta Comprimir PDF, consejos de escaneo).
+  - `/es/foto-tamano-dni` (foto tipo carnet 4×4 cm = 472×472 px a 300 DPI, recorte central; aclara que para el DNI argentino la foto se toma en el trámite).
+  - `/es/reducir-pdf-para-whatsapp` (Comprimir PDF).
+  - `/es/convertir-foto-para-el-sat` (JPG liviano: máx. 1600 px, calidad 80).
+  - `/pt/pdf-para-gov-br` (Imagens para PDF para RG/CNH/comprovantes).
+  - `/pt/heic-para-jpg-do-iphone`, traducción de la página de HEIC en español (hreflang entre ambas y el selector de idioma las conecta).
+- Nuevo modo de tamaño "Tamaño exacto (recorta)" (`cover`): recorte central a un tamaño exacto en el navegador (`coverCrop` + canvas), en el servidor (sharp `fit: cover`) y en el panel de opciones; las opciones prefijadas por una página abren el panel. Tests.
+- **Corrección:** JPG/PNG/WEBP/AVIF ahora se pueden recodificar en el mismo formato (comprimir o redimensionar un JPG a JPG), que es un uso central y antes no se ofrecía. Las páginas de conversión no incluyen esos pares (`/es/jpg-a-jpg` no existe).
+- Sin datos inventados: donde el límite de tamaño depende del trámite (AFIP, SAT, gov.br), el texto dice que lo indica cada formulario.
+- Probado: las 6 páginas responden con su título; foto vertical 800×1200 → JPG 472×472 desde `/es/foto-tamano-dni`.
+
+**Qué sigue**
+- 7.5: páginas de privacidad, términos y contacto.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

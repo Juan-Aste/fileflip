@@ -114,7 +114,11 @@
     "resolution": "Resolution",
     "dpi72": "72 DPI (screen, small)",
     "dpi150": "150 DPI (recommended)",
-    "dpi300": "300 DPI (print)"
+    "dpi300": "300 DPI (print)",
+    "sizeCover": "Exact size (crops)",
+    "widthExact": "Width (px)",
+    "heightExact": "Height (px)",
+    "coverHint": "The image is cropped from the center to exactly this size."
   },
   "ProcessingBadge": {
     "browser": "Processed on your device: your file never leaves your computer",

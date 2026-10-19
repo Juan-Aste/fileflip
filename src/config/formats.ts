@@ -76,11 +76,14 @@ export interface Conversion {
   engine: Engine;
 }
 
+/** Formats that can be re-encoded into themselves to compress or resize. */
+export const recompressible: readonly FormatId[] = ["jpg", "png", "webp", "avif"];
+
 function buildConversions(): Conversion[] {
   const list: Conversion[] = [];
   for (const from of imageInputs) {
     for (const to of imageOutputs) {
-      if (to !== from) list.push({ from, to, engine: "browser" });
+      if (to !== from || recompressible.includes(from)) list.push({ from, to, engine: "browser" });
     }
     list.push({ from, to: "pdf", engine: "browser" });
   }
