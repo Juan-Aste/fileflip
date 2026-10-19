@@ -129,7 +129,9 @@
     "conversionFailed": "无法转换此文件。",
     "serviceUnavailable": "服务暂时不可用，请稍后再试。",
     "browserUnsupported": "你的浏览器无法转换此文件。请使用最新版的 Chrome、Edge、Firefox 或 Safari。",
-    "pdfHasNoText": "此 PDF 是扫描图像，没有可转换为 Word 的文字。"
+    "pdfHasNoText": "此 PDF 是扫描图像，没有可转换为 Word 的文字。",
+    "signInRequired": "请先登录。",
+    "paymentsUnavailable": "你所在的国家/地区暂不支持付款，敬请期待。"
   },
   "Tools": {
     "merge-pdf": {
@@ -248,5 +250,9 @@
   "Pricing": {
     "country": "国家/地区",
     "otherCountry": "其他国家/地区（美元）"
+  },
+  "Billing": {
+    "monthly": "FileFlip Pro 月付",
+    "yearly": "FileFlip Pro 年付"
   }
 }

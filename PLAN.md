@@ -93,7 +93,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 5.1 Auth.js v5: Google + email magic link (adaptador MongoDB), email traducido
 - [x] 5.2 Páginas de login y "Mi cuenta"
 - [x] 5.3 Config de precios por país (`src/config/pricing.ts`), detección de país (cabecera geo / idioma) + selector manual + tests
-- [ ] 5.4 Interfaz `PaymentProvider` intercambiable; implementación Mercado Pago (preapproval) en modo prueba; stub internacional (USD)
+- [x] 5.4 Interfaz `PaymentProvider` intercambiable; implementación Mercado Pago (preapproval) en modo prueba; stub internacional (USD)
 - [ ] 5.5 Webhook de Mercado Pago con verificación de firma y actualización de estado de suscripción
 - [ ] 5.6 Página de precios (mensual/anual) y cancelación desde "Mi cuenta"
 - [ ] 5.7 Aplicar límites Pro (tamaño y lote) en cliente y servidor

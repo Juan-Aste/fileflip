@@ -407,10 +407,23 @@
 **Qué sigue**
 - 5.4: interfaz `PaymentProvider` y Mercado Pago (preapproval) en modo prueba.
 
+## 2026-10-19 — Sesión 5 (tarea 5.4: proveedor de pagos y Mercado Pago)
+
+**Qué se hizo**
+- Interfaz `PaymentProvider` (`src/lib/payments/types.ts`): crear suscripción (devuelve URL de checkout), consultar y cancelar; errores `notConfigured` / `rejected` / `unavailable`.
+- Mercado Pago (`mercadopago.ts`): API de suscripciones sin plan (`POST /preapproval` con `auto_recurring` en moneda local, 1 o 12 meses, `external_reference` = id de usuario, `X-Idempotency-Key`), consulta y cancelación (`PUT status=cancelled`), mapeo de estados (`authorized` → activa). Credenciales por país (`MP_ACCESS_TOKEN_AR`, `_BR`...) con `MP_ACCESS_TOKEN` como respaldo. Tests con `fetch` simulado.
+- Proveedor internacional: punto de enchufe en `providers.ts` (`INTL_PAYMENT_PROVIDER`), todavía sin implementar. Proveedor simulado (`mock.ts`) para desarrollo/demos (`PAYMENTS_MOCK=true`): su "checkout" es `/api/billing/mock-checkout`, que activa la suscripción.
+- Modelo `Subscription` y lógica en `src/lib/billing.ts`: alta pendiente, aplicar estados del proveedor (activa → `currentPeriodEnd`), plan del usuario (Pro mientras está activa y, tras cancelar, hasta el fin del período pagado), cancelación. Tests con MongoDB en memoria.
+- APIs: `POST /api/billing/subscribe` (requiere sesión; región detectada; descripción traducida; vuelve a `/[locale]/account?checkout=done`), `POST /api/billing/cancel`. Nuevos códigos de error traducidos `signInRequired` y `paymentsUnavailable`.
+- Verificado con el servidor real y pago simulado: suscripción anual desde `pt-BR` → BRL 199 → activa hasta 2027 → cancelación 204.
+
+**Qué sigue**
+- 5.5: webhook de Mercado Pago con verificación de firma.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
-- Crear cuenta de Mercado Pago y obtener credenciales de prueba (`MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`).
+- Crear cuenta de Mercado Pago y obtener credenciales de prueba (`MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`). Ojo: cada cuenta de Mercado Pago cobra solo en la moneda de su país; para vender en varios países hace falta una cuenta (y un token `MP_ACCESS_TOKEN_XX`) por país.
 - Elegir proveedor de pagos internacional (por ejemplo Lemon Squeezy o Paddle) para usuarios fuera de los países de Mercado Pago.
 - Cuenta de Google AdSense (`NEXT_PUBLIC_ADSENSE_CLIENT`).
 - Proyecto en Railway y base MongoDB (Railway o Atlas).

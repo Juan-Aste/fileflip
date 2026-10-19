@@ -129,7 +129,9 @@
     "conversionFailed": "This file couldn't be converted.",
     "serviceUnavailable": "The service is unavailable. Please try again later.",
     "browserUnsupported": "Your browser can't convert this file. Try a recent version of Chrome, Edge, Firefox or Safari.",
-    "pdfHasNoText": "This PDF is a scanned image: it has no text to put into Word."
+    "pdfHasNoText": "This PDF is a scanned image: it has no text to put into Word.",
+    "signInRequired": "Please sign in to continue.",
+    "paymentsUnavailable": "Payments aren't available in your country yet. Check back soon."
   },
   "Tools": {
     "merge-pdf": {
@@ -248,5 +250,9 @@
   "Pricing": {
     "country": "Country",
     "otherCountry": "Other country (USD)"
+  },
+  "Billing": {
+    "monthly": "FileFlip Pro monthly",
+    "yearly": "FileFlip Pro yearly"
   }
 }

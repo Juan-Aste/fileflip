@@ -129,7 +129,9 @@
     "conversionFailed": "Impossible de convertir ce fichier.",
     "serviceUnavailable": "Le service est indisponible. Réessayez plus tard.",
     "browserUnsupported": "Votre navigateur ne peut pas convertir ce fichier. Essayez une version récente de Chrome, Edge, Firefox ou Safari.",
-    "pdfHasNoText": "Ce PDF est une image numérisée : il ne contient pas de texte à mettre dans Word."
+    "pdfHasNoText": "Ce PDF est une image numérisée : il ne contient pas de texte à mettre dans Word.",
+    "signInRequired": "Connectez-vous pour continuer.",
+    "paymentsUnavailable": "Les paiements ne sont pas encore disponibles dans votre pays. Revenez bientôt."
   },
   "Tools": {
     "merge-pdf": {
@@ -248,5 +250,9 @@
   "Pricing": {
     "country": "Pays",
     "otherCountry": "Autre pays (USD)"
+  },
+  "Billing": {
+    "monthly": "FileFlip Pro mensuel",
+    "yearly": "FileFlip Pro annuel"
   }
 }
