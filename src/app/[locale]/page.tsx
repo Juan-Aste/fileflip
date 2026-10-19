@@ -11,9 +11,9 @@ export default function HomePage({
   const t = useTranslations("HomePage");
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8 text-center">
+    <div className="flex flex-col items-center justify-center gap-4 p-8 text-center">
       <h1 className="text-4xl font-bold tracking-tight">{t("title")}</h1>
       <p className="text-lg opacity-80">{t("tagline")}</p>
-    </main>
+    </div>
   );
 }

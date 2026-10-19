@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import { themeInitScript } from "@/components/layout/theme";
 import "./globals.css";
 
 type Props = Readonly<{
@@ -33,10 +36,28 @@ export default async function LocaleLayout({ children, params }: Props) {
   // Enables static rendering for this locale.
   setRequestLocale(locale);
 
+  const t = await getTranslations({ locale, namespace: "Common" });
+
   return (
-    <html lang={locale}>
-      <body className="antialiased">
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+    // The theme script toggles the `dark` class before hydration.
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body className="flex min-h-screen flex-col antialiased">
+        <NextIntlClientProvider>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-brand focus:px-4 focus:py-2 focus:text-white"
+          >
+            {t("skipToContent")}
+          </a>
+          <Header />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
