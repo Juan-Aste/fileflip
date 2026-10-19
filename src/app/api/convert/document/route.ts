@@ -1,0 +1,35 @@
+import { formats, outputFilename } from "@/config/formats";
+import { canConvertDocumentOnServer } from "@/config/server-capabilities";
+import { apiError } from "@/lib/api-errors";
+import { GotenbergError, officeToPdf } from "@/lib/server/gotenberg";
+import { attachment } from "@/lib/server/http";
+import { readUpload } from "@/lib/server/upload";
+
+export const runtime = "nodejs";
+// LibreOffice can take a while on big spreadsheets or presentations.
+export const maxDuration = 120;
+
+/** Office documents (Word, Excel, PowerPoint, OpenDocument, RTF, TXT, CSV) → PDF via Gotenberg. */
+export async function POST(request: Request) {
+  // TODO(5.7): use the signed-in user's plan.
+  const upload = await readUpload(request, "free", canConvertDocumentOnServer);
+  if (upload instanceof Response) return upload;
+  const { file, bytes, from, to } = upload;
+
+  try {
+    // A neutral name with the real extension: LibreOffice picks its import
+    // filter from it, and user-supplied names never reach the service.
+    const pdf = await officeToPdf({ name: `document.${formats[from].extensions[0]}`, bytes });
+    return new Response(pdf.slice().buffer, {
+      headers: {
+        "Content-Type": formats[to].mime,
+        "Content-Disposition": attachment(outputFilename(file.name, to)),
+        "Cache-Control": "no-store",
+      },
+    });
+  } catch (error) {
+    console.error("document conversion failed", error);
+    if (error instanceof GotenbergError && error.reason !== "failed") return apiError("serviceUnavailable");
+    return apiError("conversionFailed");
+  }
+}

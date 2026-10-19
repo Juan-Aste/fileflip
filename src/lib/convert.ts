@@ -7,7 +7,7 @@ import {
   type FormatId,
 } from "@/config/formats";
 import { limits } from "@/config/limits";
-import { canConvertImageOnServer } from "@/config/server-capabilities";
+import { canConvertDocumentOnServer, canConvertImageOnServer } from "@/config/server-capabilities";
 import { browserSupportsImaging, currentDeviceBudget } from "./capabilities";
 import { ConversionError } from "./convert-error";
 import { canConvertImageInBrowser, convertImage } from "./image/client";
@@ -41,7 +41,7 @@ export function isRunnable(conversion: Conversion): boolean {
       canConvertImageOnServer(conversion.from, conversion.to)
     );
   }
-  return false;
+  return canConvertDocumentOnServer(conversion.from, conversion.to);
 }
 
 /**
@@ -68,6 +68,17 @@ export async function convertFile(
 
   if (from === "pdf" && (to === "jpg" || to === "png"))
     return pdfPagesToImages(file, to, options, onProgress);
+
+  if (conversion.engine === "server") {
+    // TODO(5.7): use the signed-in user's plan.
+    if (file.size > limits.free.serverMaxFileBytes) {
+      throw new ConversionError("fileTooLarge");
+    }
+    return {
+      blob: await convertOnServer("/api/convert/document", file, to, {}, onProgress),
+      engine: "server",
+    };
+  }
 
   // TODO(5.7): use the signed-in user's plan.
   const serverOk =
