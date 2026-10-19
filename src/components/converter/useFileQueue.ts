@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { outputFilename, type FormatId } from "@/config/formats";
+import { findConversion, outputFilename, type FormatId } from "@/config/formats";
+import { limits } from "@/config/limits";
 import type { ApiErrorCode } from "@/lib/api-errors";
 import { convertFile, type ConvertOptions } from "@/lib/convert";
 import { errorCode } from "@/lib/convert-error";
@@ -78,7 +79,16 @@ export function useFileQueue() {
       for (const item of queue) {
         update(item.id, { job: { status: "working", progress: 0 } });
       }
+      let serverJobs = 0;
       for (const item of queue) {
+        // Server conversions cost us money: free batches are capped.
+        if (findConversion(item.format as FormatId, to)?.engine === "server") {
+          // TODO(5.7): use the signed-in user's plan.
+          if (++serverJobs > limits.free.serverMaxBatch) {
+            update(item.id, { job: { status: "error", code: "tooManyFiles" } });
+            continue;
+          }
+        }
         try {
           const { blob, engine, filename } = await convertFile(item.file, item.format as FormatId, to, {
             ...options,

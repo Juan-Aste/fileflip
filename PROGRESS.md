@@ -329,6 +329,20 @@
 **Qué sigue**
 - 4.3: validación, límites por plan y rate limiting por IP.
 
+## 2026-10-19 — Sesión 5 (tarea 4.3: validación, límites y rate limiting)
+
+**Qué se hizo**
+- Validación por magic bytes y límites de tamaño por plan ya estaban en `readUpload` (tareas 2.9/4.1) y `src/config/limits.ts` (con tests).
+- `src/lib/server/rate-limit.ts`: limitador de ventana deslizante en memoria por IP (`RATE_LIMIT_PER_MINUTE`, 20 por defecto), IP real desde `X-Forwarded-For`/`X-Real-IP` (proxy de Railway). Solo para anónimos; responde 429 `rateLimited` con `Retry-After`. Tests con reloj simulado y del flujo completo en `upload.test.ts`.
+- Límite de lote en el cliente: en conversiones de servidor, los archivos que superan `serverMaxBatch` (5 gratis) se marcan con "Demasiados archivos en un mismo lote" sin subirlos.
+- Verificado con el servidor real: 20 conversiones seguidas OK, la 21.ª y 22.ª → 429.
+
+**Decisiones**
+- Rate limit en memoria (una instancia en Railway). Si se escalan réplicas, mover el contador a MongoDB o Redis.
+
+**Qué sigue**
+- 4.4: almacenamiento temporal con borrado ≤1 hora y metadatos en Mongo.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

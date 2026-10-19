@@ -3,6 +3,7 @@ import { formats, type FormatId } from "@/config/formats";
 import { limits, type Plan } from "@/config/limits";
 import { apiError } from "@/lib/api-errors";
 import { detectFormat } from "@/lib/detect";
+import { clientIp, conversionLimiter } from "./rate-limit";
 
 export interface Upload {
   file: File;
@@ -22,7 +23,14 @@ export async function readUpload(
   request: Request,
   plan: Plan,
   allowed: (from: FormatId, to: FormatId) => boolean,
+  { signedIn = false }: { signedIn?: boolean } = {},
 ): Promise<Upload | Response> {
+  // Anonymous users are rate limited per IP; accounts are trusted more.
+  if (!signedIn) {
+    const waitMs = conversionLimiter.hit(clientIp(request));
+    if (waitMs > 0) return apiError("rateLimited", { "Retry-After": String(Math.ceil(waitMs / 1000)) });
+  }
+
   const maxBytes = limits[plan].serverMaxFileBytes;
   // Reject obviously oversized bodies before buffering them.
   const declared = Number(request.headers.get("content-length") ?? 0);
