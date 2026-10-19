@@ -124,5 +124,47 @@
     "conversionFailed": "This file couldn't be converted.",
     "serviceUnavailable": "The service is unavailable. Please try again later.",
     "browserUnsupported": "Your browser can't convert this file. Try a recent version of Chrome, Edge, Firefox or Safari."
+  },
+  "Tools": {
+    "merge-pdf": {
+      "title": "Merge PDF",
+      "description": "Combine several PDFs into one, in any order. Your files are never uploaded.",
+      "action": "Merge PDF"
+    },
+    "split-pdf": {
+      "title": "Split PDF",
+      "description": "Split a PDF into several files or extract just the pages you need.",
+      "action": "Split PDF"
+    },
+    "rotate-pdf": {
+      "title": "Rotate PDF",
+      "description": "Turn the pages of a PDF and save it the right way up.",
+      "action": "Rotate PDF"
+    },
+    "organize-pdf": {
+      "title": "Organize PDF pages",
+      "description": "Reorder, rotate or delete PDF pages with thumbnails.",
+      "action": "Save PDF"
+    },
+    "images-to-pdf": {
+      "title": "Images to PDF",
+      "description": "Turn JPG, PNG, HEIC and other photos into a single PDF.",
+      "action": "Create PDF"
+    },
+    "compress-pdf": {
+      "title": "Compress PDF",
+      "description": "Make your PDFs smaller to send them by email or WhatsApp.",
+      "action": "Compress PDF"
+    }
+  },
+  "ToolUi": {
+    "moveUp": "Move {name} up",
+    "moveDown": "Move {name} down",
+    "onlyPdf": "PDF only",
+    "needMore": "Add at least {count} files.",
+    "pages": "{count, plural, one {# page} other {# pages}}",
+    "working": "Processing…",
+    "result": "Your file is ready",
+    "startOver": "Start over"
   }
 }

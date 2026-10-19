@@ -75,7 +75,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 2.9 Detección de capacidad/tamaño y respaldo automático al servidor (API con sharp)
 
 ### Hito 3 — Operaciones PDF en el navegador
-- [ ] 3.1 Worker PDF con pdf-lib: unir PDFs
+- [x] 3.1 Worker PDF con pdf-lib: unir PDFs
 - [ ] 3.2 Dividir y rotar páginas
 - [ ] 3.3 Reordenar páginas con miniaturas (pdf.js)
 - [ ] 3.4 Imágenes→PDF

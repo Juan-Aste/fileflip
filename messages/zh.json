@@ -124,5 +124,47 @@
     "conversionFailed": "无法转换此文件。",
     "serviceUnavailable": "服务暂时不可用，请稍后再试。",
     "browserUnsupported": "你的浏览器无法转换此文件。请使用最新版的 Chrome、Edge、Firefox 或 Safari。"
+  },
+  "Tools": {
+    "merge-pdf": {
+      "title": "合并 PDF",
+      "description": "按任意顺序将多个 PDF 合并为一个。文件不会上传。",
+      "action": "合并 PDF"
+    },
+    "split-pdf": {
+      "title": "拆分 PDF",
+      "description": "把一个 PDF 拆分成多个文件，或只提取需要的页面。",
+      "action": "拆分 PDF"
+    },
+    "rotate-pdf": {
+      "title": "旋转 PDF",
+      "description": "旋转 PDF 页面并以正确方向保存。",
+      "action": "旋转 PDF"
+    },
+    "organize-pdf": {
+      "title": "整理 PDF 页面",
+      "description": "通过缩略图重新排序、旋转或删除 PDF 页面。",
+      "action": "保存 PDF"
+    },
+    "images-to-pdf": {
+      "title": "图片转 PDF",
+      "description": "把 JPG、PNG、HEIC 等照片合成一个 PDF。",
+      "action": "生成 PDF"
+    },
+    "compress-pdf": {
+      "title": "压缩 PDF",
+      "description": "减小 PDF 体积，方便通过邮件或 WhatsApp 发送。",
+      "action": "压缩 PDF"
+    }
+  },
+  "ToolUi": {
+    "moveUp": "上移 {name}",
+    "moveDown": "下移 {name}",
+    "onlyPdf": "仅限 PDF",
+    "needMore": "请至少添加 {count} 个文件。",
+    "pages": "{count, plural, other {# 页}}",
+    "working": "处理中…",
+    "result": "文件已准备好",
+    "startOver": "重新开始"
   }
 }

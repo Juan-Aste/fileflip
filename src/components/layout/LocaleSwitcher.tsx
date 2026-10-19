@@ -1,27 +1,22 @@
 "use client";
 
 import { useTransition } from "react";
-import { useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
+import { translatePathname } from "@/config/routes";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { localeNames, routing, type Locale } from "@/i18n/routing";
 
 export default function LocaleSwitcher() {
   const t = useTranslations("LocaleSwitcher");
-  const locale = useLocale();
+  const locale = useLocale() as Locale;
   const router = useRouter();
   const pathname = usePathname();
-  const params = useParams();
   const [pending, startTransition] = useTransition();
 
   function onChange(next: Locale) {
     startTransition(() => {
-      // Same page in the new locale; params keep dynamic segments intact.
-      router.replace(
-        // @ts-expect-error -- pathname and params always match the current route.
-        { pathname, params },
-        { locale: next },
-      );
+      // Same page in the new locale, with its translated slug.
+      router.replace(translatePathname(pathname, locale, next), { locale: next });
     });
   }
 

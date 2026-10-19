@@ -6,9 +6,12 @@ import { useTranslations } from "next-intl";
 interface Props {
   onFiles: (files: File[]) => void;
   compact?: boolean;
+  /** Hint for the file picker, e.g. "application/pdf" (content is still verified). */
+  accept?: string;
+  multiple?: boolean;
 }
 
-export default function Dropzone({ onFiles, compact = false }: Props) {
+export default function Dropzone({ onFiles, compact = false, accept, multiple = true }: Props) {
   const t = useTranslations("Converter");
   const inputId = useId();
   const input = useRef<HTMLInputElement>(null);
@@ -53,7 +56,8 @@ export default function Dropzone({ onFiles, compact = false }: Props) {
         ref={input}
         id={inputId}
         type="file"
-        multiple
+        multiple={multiple}
+        accept={accept}
         aria-label={t("inputLabel")}
         className="sr-only"
         onChange={(e) => {

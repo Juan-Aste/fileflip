@@ -124,5 +124,47 @@
     "conversionFailed": "Impossible de convertir ce fichier.",
     "serviceUnavailable": "Le service est indisponible. Réessayez plus tard.",
     "browserUnsupported": "Votre navigateur ne peut pas convertir ce fichier. Essayez une version récente de Chrome, Edge, Firefox ou Safari."
+  },
+  "Tools": {
+    "merge-pdf": {
+      "title": "Fusionner des PDF",
+      "description": "Combinez plusieurs PDF en un seul, dans l'ordre de votre choix. Sans envoyer vos fichiers.",
+      "action": "Fusionner"
+    },
+    "split-pdf": {
+      "title": "Diviser un PDF",
+      "description": "Séparez un PDF en plusieurs fichiers ou extrayez uniquement les pages utiles.",
+      "action": "Diviser"
+    },
+    "rotate-pdf": {
+      "title": "Pivoter un PDF",
+      "description": "Faites pivoter les pages d'un PDF et enregistrez-le dans le bon sens.",
+      "action": "Pivoter"
+    },
+    "organize-pdf": {
+      "title": "Organiser les pages d'un PDF",
+      "description": "Réorganisez, pivotez ou supprimez des pages à l'aide des miniatures.",
+      "action": "Enregistrer le PDF"
+    },
+    "images-to-pdf": {
+      "title": "Images en PDF",
+      "description": "Transformez vos photos JPG, PNG, HEIC et autres en un seul PDF.",
+      "action": "Créer le PDF"
+    },
+    "compress-pdf": {
+      "title": "Compresser un PDF",
+      "description": "Allégez vos PDF pour les envoyer par e-mail ou WhatsApp.",
+      "action": "Compresser"
+    }
+  },
+  "ToolUi": {
+    "moveUp": "Monter {name}",
+    "moveDown": "Descendre {name}",
+    "onlyPdf": "PDF uniquement",
+    "needMore": "Ajoutez au moins {count} fichiers.",
+    "pages": "{count, plural, one {# page} other {# pages}}",
+    "working": "Traitement…",
+    "result": "Votre fichier est prêt",
+    "startOver": "Recommencer"
   }
 }
