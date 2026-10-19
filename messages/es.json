@@ -75,5 +75,20 @@
     "notFoundTitle": "Página no encontrada",
     "notFoundBody": "La página que buscas no existe o fue movida.",
     "backHome": "Volver al inicio"
+  },
+  "Converter": {
+    "dropTitle": "Arrastra tus archivos aquí",
+    "dropHint": "o haz clic para elegirlos desde tu dispositivo",
+    "dropActive": "Suelta para agregarlos",
+    "inputLabel": "Elegir archivos para convertir",
+    "fileList": "Archivos seleccionados",
+    "filesCount": "{count, plural, one {# archivo} other {# archivos}}",
+    "detecting": "Detectando…",
+    "unsupported": "Formato no compatible",
+    "remove": "Quitar {name}",
+    "clear": "Quitar todo",
+    "convertTo": "Convertir a",
+    "noCommonOutput": "Estos archivos no tienen un formato de salida en común. Conviértelos por separado.",
+    "convert": "Convertir"
   }
 }

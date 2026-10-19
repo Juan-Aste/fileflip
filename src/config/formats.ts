@@ -115,3 +115,12 @@ export function outputFilename(filename: string, to: FormatId): string {
   const base = dot > 0 ? filename.slice(0, dot) : filename;
   return `${base || "file"}.${formats[to].extensions[0]}`;
 }
+
+/** Outputs every input can be converted to (for a batch), keeping display order. */
+export function commonOutputs(inputs: readonly FormatId[]): Conversion[] {
+  if (inputs.length === 0) return [];
+  const [first, ...rest] = [...new Set(inputs)];
+  return outputsFor(first).filter((c) =>
+    rest.every((from) => findConversion(from, c.to)),
+  );
+}

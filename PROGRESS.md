@@ -130,6 +130,16 @@
 **Qué sigue**
 - 2.2: componente de arrastrar y soltar que detecta el tipo y muestra solo salidas válidas.
 
+## 2026-10-19 — Sesión 5 (tarea 2.2: arrastrar y soltar)
+
+**Qué se hizo**
+- `src/components/converter/`: `Dropzone` (arrastrar y soltar o clic, accesible con `<label>` sobre un input oculto), `useFileQueue` (cola de archivos con detección real por magic bytes) y `Converter` (lista con formato detectado, tamaño localizado, quitar/limpiar, y botones de formato de salida). Con varios archivos se muestran solo las salidas comunes (`commonOutputs` en `formats.ts`, con tests); los archivos no compatibles se marcan y se ignoran.
+- Montado en la portada en `#converter`. Probado con Playwright (Chromium): PNG detectado con sus 8 salidas, archivo binario marcado como no compatible.
+- El botón "Convertir" todavía no hace nada: se conecta en 2.3.
+
+**Qué sigue**
+- 2.3: worker de imágenes con @jsquash y progreso.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

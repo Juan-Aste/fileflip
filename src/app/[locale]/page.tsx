@@ -1,6 +1,7 @@
 import { use } from "react";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import Converter from "@/components/converter/Converter";
 
 const features = [
   { key: "privacy", icon: "🔒" },
@@ -39,7 +40,9 @@ export default function HomePage({
         </a>
       </section>
 
-      <section id="converter" aria-label={t("cta")} className="scroll-mt-24" />
+      <section id="converter" aria-label={t("cta")} className="scroll-mt-24">
+        <Converter />
+      </section>
 
       <section aria-labelledby="steps-heading" className="py-12">
         <h2 id="steps-heading" className="mb-8 text-center text-2xl font-bold">

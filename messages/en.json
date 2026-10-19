@@ -75,5 +75,20 @@
     "notFoundTitle": "Page not found",
     "notFoundBody": "The page you're looking for doesn't exist or has moved.",
     "backHome": "Back to home"
+  },
+  "Converter": {
+    "dropTitle": "Drop your files here",
+    "dropHint": "or click to choose them from your device",
+    "dropActive": "Drop to add them",
+    "inputLabel": "Choose files to convert",
+    "fileList": "Selected files",
+    "filesCount": "{count, plural, one {# file} other {# files}}",
+    "detecting": "Detecting…",
+    "unsupported": "Unsupported format",
+    "remove": "Remove {name}",
+    "clear": "Remove all",
+    "convertTo": "Convert to",
+    "noCommonOutput": "These files don't share an output format. Convert them separately.",
+    "convert": "Convert"
   }
 }

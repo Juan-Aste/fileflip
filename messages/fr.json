@@ -75,5 +75,20 @@
     "notFoundTitle": "Page introuvable",
     "notFoundBody": "La page que vous cherchez n'existe pas ou a été déplacée.",
     "backHome": "Retour à l'accueil"
+  },
+  "Converter": {
+    "dropTitle": "Déposez vos fichiers ici",
+    "dropHint": "ou cliquez pour les choisir sur votre appareil",
+    "dropActive": "Relâchez pour les ajouter",
+    "inputLabel": "Choisir des fichiers à convertir",
+    "fileList": "Fichiers sélectionnés",
+    "filesCount": "{count, plural, one {# fichier} other {# fichiers}}",
+    "detecting": "Détection…",
+    "unsupported": "Format non pris en charge",
+    "remove": "Retirer {name}",
+    "clear": "Tout retirer",
+    "convertTo": "Convertir en",
+    "noCommonOutput": "Ces fichiers n'ont aucun format de sortie en commun. Convertissez-les séparément.",
+    "convert": "Convertir"
   }
 }

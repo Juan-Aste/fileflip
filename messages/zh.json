@@ -75,5 +75,20 @@
     "notFoundTitle": "页面未找到",
     "notFoundBody": "你要找的页面不存在或已被移动。",
     "backHome": "返回首页"
+  },
+  "Converter": {
+    "dropTitle": "把文件拖到这里",
+    "dropHint": "或点击从设备中选择",
+    "dropActive": "松开即可添加",
+    "inputLabel": "选择要转换的文件",
+    "fileList": "已选文件",
+    "filesCount": "{count, plural, other {# 个文件}}",
+    "detecting": "正在识别…",
+    "unsupported": "不支持的格式",
+    "remove": "移除 {name}",
+    "clear": "全部移除",
+    "convertTo": "转换为",
+    "noCommonOutput": "这些文件没有共同的输出格式，请分别转换。",
+    "convert": "转换"
   }
 }

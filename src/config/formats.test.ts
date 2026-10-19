@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  commonOutputs,
   findConversion,
   formatFromExtension,
   formats,
@@ -48,5 +49,20 @@ describe("format registry", () => {
     expect(outputFilename("my.report.docx", "pdf")).toBe("my.report.pdf");
     expect(outputFilename(".hidden", "png")).toBe(".hidden.png");
     expect(outputFilename("", "png")).toBe("file.png");
+  });
+});
+
+describe("commonOutputs", () => {
+  it("intersects the outputs of a mixed batch", () => {
+    const outs = commonOutputs(["png", "heic", "png"]).map((c) => c.to);
+    expect(outs).toContain("jpg");
+    expect(outs).toContain("pdf");
+    expect(outs).not.toContain("png");
+  });
+
+  it("is empty when nothing is shared or there are no files", () => {
+    expect(commonOutputs(["docx", "png"]).map((c) => c.to)).toEqual(["pdf"]);
+    expect(commonOutputs(["docx", "pdf"])).toEqual([]);
+    expect(commonOutputs([])).toEqual([]);
   });
 });

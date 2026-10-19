@@ -65,7 +65,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 
 ### Hito 2 — Núcleo de conversión de imágenes en el navegador
 - [x] 2.1 Registro de formatos y conversiones (`src/config/conversions.ts`): entradas, salidas válidas, dónde se procesa; detección de tipo por magic bytes + tests
-- [ ] 2.2 Componente de arrastrar y soltar: detecta tipo y muestra solo salidas válidas
+- [x] 2.2 Componente de arrastrar y soltar: detecta tipo y muestra solo salidas válidas
 - [ ] 2.3 Worker de imágenes con @jsquash (JPG/PNG/WEBP/AVIF) cargado de forma diferida, con progreso
 - [ ] 2.4 Opciones de calidad y redimensionado + tests de la lógica de dimensiones
 - [ ] 2.5 Formatos extra en el navegador: GIF, BMP, ICO (salida), TIFF (entrada), SVG→PNG
