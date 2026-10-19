@@ -1,10 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { saveBlob } from "@/lib/download";
 import { useTranslations } from "next-intl";
 import { commonOutputs, formats, type FormatId } from "@/config/formats";
 import { isRunnable } from "@/lib/convert";
-import { DEFAULT_QUALITY, lossyFormats, type ImageOptions } from "@/lib/image/options";
+import {
+  DEFAULT_QUALITY,
+  lossyFormats,
+  type ImageOptions,
+} from "@/lib/image/options";
 import Dropzone from "./Dropzone";
 import FileRow from "./FileRow";
 import ImageOptionsPanel from "./ImageOptionsPanel";
@@ -19,12 +24,26 @@ export default function Converter() {
     quality: DEFAULT_QUALITY,
   });
 
-  const detected = items.filter((i) => i.format).map((i) => i.format as FormatId);
+  const detected = items
+    .filter((i) => i.format)
+    .map((i) => i.format as FormatId);
   const detecting = items.some((i) => i.format === undefined);
   const working = items.some((i) => i.job?.status === "working");
   const outputs = commonOutputs(detected).filter(isRunnable);
   const selected = outputs.find((o) => o.to === target) ?? outputs[0];
   const imageOutput = selected && formats[selected.to].category === "image";
+  const done = items.flatMap((i) => (i.job?.status === "done" ? [i.job] : []));
+  const [zipping, setZipping] = useState(false);
+
+  async function downloadAll() {
+    setZipping(true);
+    try {
+      const { zipBlobs } = await import("@/lib/zip");
+      saveBlob(await zipBlobs(done), "fileflip.zip");
+    } finally {
+      setZipping(false);
+    }
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -53,7 +72,11 @@ export default function Converter() {
 
           <ul className="divide-y divide-border">
             {items.map((item) => (
-              <FileRow key={item.id} item={item} onRemove={() => remove(item.id)} />
+              <FileRow
+                key={item.id}
+                item={item}
+                onRemove={() => remove(item.id)}
+              />
             ))}
           </ul>
 
@@ -66,7 +89,9 @@ export default function Converter() {
               ) : (
                 <>
                   <fieldset>
-                    <legend className="mb-2 text-sm font-medium">{t("convertTo")}</legend>
+                    <legend className="mb-2 text-sm font-medium">
+                      {t("convertTo")}
+                    </legend>
                     <div className="flex flex-wrap gap-2">
                       {outputs.map((o) => (
                         <label key={o.to} className="cursor-pointer">
@@ -92,14 +117,29 @@ export default function Converter() {
                       showQuality={lossyFormats.includes(selected.to)}
                     />
                   )}
-                  <button
-                    type="button"
-                    disabled={working || !selected}
-                    onClick={() => selected && convertAll(selected.to, imageOutput ? imageOptions : {})}
-                    className="self-start rounded-xl bg-brand px-6 py-3 font-semibold text-white transition hover:bg-brand-strong disabled:opacity-50"
-                  >
-                    {working ? t("converting") : t("convert")}
-                  </button>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      type="button"
+                      disabled={working || !selected}
+                      onClick={() =>
+                        selected &&
+                        convertAll(selected.to, imageOutput ? imageOptions : {})
+                      }
+                      className="self-start rounded-xl bg-brand px-6 py-3 font-semibold text-white transition hover:bg-brand-strong disabled:opacity-50"
+                    >
+                      {working ? t("converting") : t("convert")}
+                    </button>
+                    {done.length > 1 && !working && (
+                      <button
+                        type="button"
+                        onClick={downloadAll}
+                        disabled={zipping}
+                        className="rounded-xl border-2 border-brand px-6 py-3 font-semibold text-brand transition hover:bg-brand-soft disabled:opacity-50"
+                      >
+                        {t("downloadAll", { count: done.length })}
+                      </button>
+                    )}
+                  </div>
                 </>
               )}
             </div>

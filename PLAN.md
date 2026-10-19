@@ -71,7 +71,7 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 2.5 Formatos extra en el navegador: GIF, BMP, ICO (salida), TIFF (entrada), SVG→PNG
 - [x] 2.6 HEIC (entrada) con libheif-js/heic2any en worker
 - [x] 2.7 Insignia "Se procesa en tu dispositivo" / "en nuestro servidor" por herramienta
-- [ ] 2.8 Lotes y descarga ZIP (client-zip o fflate)
+- [x] 2.8 Lotes y descarga ZIP (client-zip o fflate)
 - [ ] 2.9 Detección de capacidad/tamaño y respaldo automático al servidor (API con sharp)
 
 ### Hito 3 — Operaciones PDF en el navegador

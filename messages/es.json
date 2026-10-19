@@ -95,7 +95,8 @@
     "failed": "No se pudo convertir este archivo.",
     "sizeChange": "{before} → {after}",
     "saved": "{percent} menos",
-    "progress": "Progreso de {name}"
+    "progress": "Progreso de {name}",
+    "downloadAll": "Descargar todo en ZIP ({count})"
   },
   "ImageOptions": {
     "title": "Opciones",

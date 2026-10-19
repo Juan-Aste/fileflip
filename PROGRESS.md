@@ -202,6 +202,16 @@
 **Qué sigue**
 - 2.8: lotes con descarga ZIP.
 
+## 2026-10-19 — Sesión 5 (tarea 2.8: lotes y ZIP)
+
+**Qué se hizo**
+- `src/lib/zip.ts` con `fflate`: ZIP sin recomprimir (los archivos convertidos ya están comprimidos, así es mucho más rápido), nombres únicos estilo explorador ("a.jpg", "a (1).jpg"). Tests en `zip.test.ts`.
+- Botón "Descargar todo en ZIP (n)" cuando hay 2+ resultados; el módulo ZIP se importa al hacer clic. `src/lib/download.ts` con `saveBlob`.
+- Probado en Chromium: PNG + TIFF + HEIC + PNG repetido → JPG → `fileflip.zip` con 4 archivos y nombre duplicado renombrado.
+
+**Qué sigue**
+- 2.9: detección de capacidad/tamaño y respaldo automático al servidor (API con sharp).
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

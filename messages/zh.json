@@ -95,7 +95,8 @@
     "failed": "无法转换此文件。",
     "sizeChange": "{before} → {after}",
     "saved": "减小 {percent}",
-    "progress": "{name} 的进度"
+    "progress": "{name} 的进度",
+    "downloadAll": "全部下载为 ZIP（{count}）"
   },
   "ImageOptions": {
     "title": "选项",
