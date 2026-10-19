@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { parse, TYPE, type MessageFormatElement } from "@formatjs/icu-messageformat-parser";
 import { describe, expect, it } from "vitest";
 import { defaultLocale, locales } from "@/i18n/routing";
 
@@ -23,9 +24,18 @@ function flatten(messages: Messages, prefix = ""): Record<string, string> {
   );
 }
 
-// ICU placeholders such as {year} or {count, plural, ...}.
+// ICU arguments ({year}, {count, plural, ...}), including nested ones.
 function placeholders(text: string): string[] {
-  return [...text.matchAll(/\{(\w+)/g)].map((m) => m[1]).sort();
+  const names = new Set<string>();
+  const walk = (elements: MessageFormatElement[]) => {
+    for (const el of elements) {
+      if ("value" in el && el.type !== TYPE.literal) names.add(String(el.value));
+      if ("options" in el) Object.values(el.options).forEach((o) => walk(o.value));
+      if (el.type === TYPE.tag) walk(el.children);
+    }
+  };
+  walk(parse(text));
+  return [...names].sort();
 }
 
 const reference = flatten(load(defaultLocale));
@@ -38,6 +48,12 @@ describe("message files", () => {
       expect(keys).toEqual(Object.keys(reference).sort());
     },
   );
+
+  it.each(locales)("%s only has valid ICU messages", (locale) => {
+    for (const [key, text] of Object.entries(flatten(load(locale)))) {
+      expect(() => parse(text), key).not.toThrow();
+    }
+  });
 
   it.each(locales)("%s has no empty strings", (locale) => {
     const empty = Object.entries(flatten(load(locale)))

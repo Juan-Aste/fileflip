@@ -430,6 +430,19 @@
 **Qué sigue**
 - 5.6: página de precios y cancelación desde "Mi cuenta".
 
+## 2026-10-19 — Sesión 5 (tarea 5.6: página de precios y cancelación)
+
+**Qué se hizo**
+- `/[locale]/pricing` (dinámica por país): tarjetas Gratis / Pro con precio en moneda local formateado según el país, selector mensual/anual con el ahorro calculado, límites reales tomados de `limits.ts`, selector de país, nota de Mercado Pago, preguntas frecuentes y hreflang. Si no hay proveedor de pagos para la región (fuera de LatAm sin proveedor internacional ni mock), muestra "Muy pronto podrás pagar desde tu país" en lugar del botón.
+- `SubscribeButton`: sin sesión lleva al login y vuelve a precios; con sesión crea la suscripción y redirige al checkout.
+- "Mi cuenta": plan actual, monto y período, próximo cobro, estado pausado, aviso tras volver del checkout ("Estamos confirmando tu pago") y botón "Cancelar suscripción" con confirmación; tras cancelar muestra "Tu Pro sigue activo hasta el …".
+- Header y footer enlazan a Precios. `ChoiceGroup` admite leyenda solo para lectores de pantalla.
+- El test de mensajes ahora analiza ICU de verdad (`@formatjs/icu-messageformat-parser`): valida la sintaxis de todos los mensajes y compara los argumentos, incluidos los de `select`/`plural`.
+- Probado en Chromium (es-AR, pago simulado): precios en ARS → login con magic link → vuelta a precios → Pro mensual $ 4.500 → cuenta con próximo cobro → cancelar → "activo hasta el 19 de noviembre de 2026"; cambiar país a "Otro país" muestra USD.
+
+**Qué sigue**
+- 5.7: aplicar los límites Pro en cliente y servidor.
+
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
 - Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).

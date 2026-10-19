@@ -1,21 +1,26 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { auth, signOut } from "@/auth";
+import CancelSubscriptionButton from "@/components/pricing/CancelSubscriptionButton";
 import { Link, redirect } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
+import { currentSubscription, planFromSubscription } from "@/lib/billing";
+import { formatCurrency, formatDate } from "@/lib/format";
 
 // Depends on the visitor's session.
 export const dynamic = "force-dynamic";
 
-type Props = { params: Promise<{ locale: string }> };
+type Props = { params: Promise<{ locale: string }>; searchParams: Promise<{ checkout?: string }> };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Account" });
   return { title: `${t("title")} — FileFlip`, robots: { index: false } };
 }
 
-export default async function AccountPage({ params }: Props) {
+export default async function AccountPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const { checkout } = await searchParams;
   setRequestLocale(locale);
   const session = await auth();
   if (!session?.user) {
@@ -23,6 +28,9 @@ export default async function AccountPage({ params }: Props) {
     return null;
   }
   const t = await getTranslations("Account");
+  const sub = process.env.MONGODB_URI ? await currentSubscription(session.user.id ?? "").catch(() => null) : null;
+  const plan = planFromSubscription(sub);
+  const loc = locale as Locale;
 
   async function logout() {
     "use server";
@@ -36,18 +44,47 @@ export default async function AccountPage({ params }: Props) {
         <p className="mt-1 text-muted">{t("signedInAs", { email: session.user.email ?? "" })}</p>
       </header>
 
-      <section aria-labelledby="plan" className="rounded-2xl border border-border bg-surface p-6">
+      {checkout === "done" && plan !== "pro" && (
+        <p role="status" className="rounded-xl bg-brand-soft px-4 py-3 text-sm">
+          {t("checkoutDone")}
+        </p>
+      )}
+
+      <section aria-labelledby="plan" className="flex flex-col gap-2 rounded-2xl border border-border bg-surface p-6">
         <h2 id="plan" className="text-sm font-medium text-muted">
           {t("plan")}
         </h2>
-        <p className="mt-1 text-2xl font-bold">{t("planFree")}</p>
-        <p className="mt-2 text-sm text-muted">{t("freeBody")}</p>
-        <Link
-          href="/pricing"
-          className="mt-4 inline-block rounded-xl bg-brand px-5 py-2.5 font-semibold text-white hover:bg-brand-strong"
-        >
-          {t("upgrade")}
-        </Link>
+        <p className="text-2xl font-bold">{plan === "pro" ? t("planPro") : t("planFree")}</p>
+        {plan === "pro" && sub ? (
+          <>
+            <p className="text-sm text-muted">{t("planProBody")}</p>
+            <p className="text-sm">
+              {t("billing", { amount: formatCurrency(sub.amount, sub.currency, loc), period: sub.period })}
+            </p>
+            {sub.status === "active" && sub.currentPeriodEnd && (
+              <p className="text-sm">{t("nextPayment", { date: formatDate(sub.currentPeriodEnd, loc) })}</p>
+            )}
+            {sub.status === "paused" && <p className="text-sm text-amber-700 dark:text-amber-300">{t("paused")}</p>}
+            {sub.status === "cancelled" && sub.currentPeriodEnd && (
+              <p className="text-sm">{t("paidUntil", { date: formatDate(sub.currentPeriodEnd, loc) })}</p>
+            )}
+            {sub.status === "active" && (
+              <div className="mt-2">
+                <CancelSubscriptionButton />
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            <p className="text-sm text-muted">{t("freeBody")}</p>
+            <Link
+              href="/pricing"
+              className="mt-2 self-start rounded-xl bg-brand px-5 py-2.5 font-semibold text-white hover:bg-brand-strong"
+            >
+              {t("upgrade")}
+            </Link>
+          </>
+        )}
       </section>
 
       <form action={logout}>

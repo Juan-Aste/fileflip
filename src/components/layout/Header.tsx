@@ -31,6 +31,12 @@ export default function Header() {
           >
             {t("nav.tools")}
           </Link>
+          <Link
+            href="/pricing"
+            className="hidden rounded-lg px-3 py-2 text-sm text-muted hover:text-foreground md:block"
+          >
+            {t("nav.pricing")}
+          </Link>
           <AccountLink />
           <LocaleSwitcher />
           <ThemeToggle />

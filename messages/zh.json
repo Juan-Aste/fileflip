@@ -245,11 +245,54 @@
     "planPro": "Pro",
     "freeBody": "所有工具免费使用，服务器转换有一定限制。",
     "upgrade": "升级到 Pro",
-    "signOut": "退出登录"
+    "signOut": "退出登录",
+    "planProBody": "感谢你支持 FileFlip。你享有更高的限制且没有广告。",
+    "billing": "{amount} 每{period, select, yearly {年} other {月}}",
+    "nextPayment": "下次扣款：{date}",
+    "paidUntil": "你的 Pro 在 {date} 前保持有效，之后不会再扣款。",
+    "cancel": "取消订阅",
+    "cancelConfirm": "确定要取消吗？已付费周期结束前你仍可使用 Pro。",
+    "cancelled": "订阅已取消。",
+    "checkoutDone": "谢谢！我们正在确认你的付款，可能需要几分钟。",
+    "paused": "你的订阅已暂停，请在 Mercado Pago 检查付款方式。"
   },
   "Pricing": {
     "country": "国家/地区",
-    "otherCountry": "其他国家/地区（美元）"
+    "otherCountry": "其他国家/地区（美元）",
+    "title": "简单的价格",
+    "subtitle": "所有功能免费，无需账户。Pro 适合经常转换、并且不想看到广告的用户。",
+    "monthly": "月付",
+    "yearly": "年付",
+    "save": "节省 {percent}",
+    "perMonth": "/月",
+    "perYear": "/年",
+    "free": "免费",
+    "freePrice": "$0",
+    "freeCta": "开始转换",
+    "pro": "Pro",
+    "proCta": "升级到 Pro",
+    "current": "你当前的方案",
+    "features": {
+      "allTools": "所有工具，无水印",
+      "device": "在设备上转换，不限次数",
+      "serverFree": "文档最大 {size}，每批 {count} 个",
+      "serverPro": "文档最大 {size}，每批 {count} 个",
+      "browserPro": "设备上处理的图片和 PDF 最大 {size}",
+      "noAds": "无广告",
+      "support": "支持 FileFlip 持续运营"
+    },
+    "intlNote": "即将支持在你所在的国家/地区付款。在此之前，所有功能依然免费。",
+    "billedVia": "通过 {provider} 安全付款。可随时在“我的账户”中取消。",
+    "faqTitle": "常见问题",
+    "faq": {
+      "q1": "转换文件需要 Pro 吗？",
+      "a1": "不需要。所有工具都免费，无需账户。Pro 只是提高限制并去除广告。",
+      "q2": "可以随时取消吗？",
+      "a2": "可以，在“我的账户”中一键取消。已付费的周期结束前仍可使用 Pro。",
+      "q3": "为什么价格是我的本地货币？",
+      "a3": "在 Mercado Pago 运营的国家，我们以当地货币收费，免去你的货币兑换费用。"
+    },
+    "billingPeriod": "计费周期"
   },
   "Billing": {
     "monthly": "FileFlip Pro 月付",

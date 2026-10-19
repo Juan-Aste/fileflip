@@ -245,11 +245,54 @@
     "planPro": "Pro",
     "freeBody": "Tous les outils gratuitement, avec des limites sur les conversions serveur.",
     "upgrade": "Passer à Pro",
-    "signOut": "Se déconnecter"
+    "signOut": "Se déconnecter",
+    "planProBody": "Merci de soutenir FileFlip. Vous profitez de limites plus élevées et d'aucune publicité.",
+    "billing": "{amount} par {period, select, yearly {an} other {mois}}",
+    "nextPayment": "Prochain prélèvement : {date}",
+    "paidUntil": "Votre Pro reste actif jusqu'au {date}. Vous ne serez plus prélevé.",
+    "cancel": "Résilier l'abonnement",
+    "cancelConfirm": "Voulez-vous vraiment résilier ? Vous gardez Pro jusqu'à la fin de la période payée.",
+    "cancelled": "Abonnement résilié.",
+    "checkoutDone": "Merci ! Nous confirmons votre paiement ; cela peut prendre quelques minutes.",
+    "paused": "Votre abonnement est en pause. Vérifiez votre moyen de paiement sur Mercado Pago."
   },
   "Pricing": {
     "country": "Pays",
-    "otherCountry": "Autre pays (USD)"
+    "otherCountry": "Autre pays (USD)",
+    "title": "Des prix simples",
+    "subtitle": "Tout fonctionne gratuitement et sans compte. Pro, c'est pour ceux qui convertissent beaucoup et préfèrent ne pas voir de publicité.",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "save": "Économisez {percent}",
+    "perMonth": "/mois",
+    "perYear": "/an",
+    "free": "Gratuit",
+    "freePrice": "0 $",
+    "freeCta": "Commencer à convertir",
+    "pro": "Pro",
+    "proCta": "Passer à Pro",
+    "current": "Votre offre actuelle",
+    "features": {
+      "allTools": "Tous les outils, sans filigrane",
+      "device": "Conversions illimitées sur votre appareil",
+      "serverFree": "Documents jusqu'à {size}, {count} par lot",
+      "serverPro": "Documents jusqu'à {size}, {count} par lot",
+      "browserPro": "Images et PDF jusqu'à {size} sur votre appareil",
+      "noAds": "Sans publicité",
+      "support": "Vous aidez FileFlip à continuer"
+    },
+    "intlNote": "Le paiement depuis votre pays arrive bientôt. En attendant, tout reste gratuit.",
+    "billedVia": "Paiement sécurisé avec {provider}. Résiliez quand vous voulez depuis Mon compte.",
+    "faqTitle": "Questions fréquentes",
+    "faq": {
+      "q1": "Ai-je besoin de Pro pour convertir ?",
+      "a1": "Non. Tous les outils sont gratuits et sans compte. Pro augmente seulement les limites et retire la publicité.",
+      "q2": "Puis-je résilier à tout moment ?",
+      "a2": "Oui, depuis Mon compte en un clic. Vous gardez Pro jusqu'à la fin de la période déjà payée.",
+      "q3": "Pourquoi le prix est-il dans ma devise ?",
+      "a3": "Nous facturons en devise locale là où Mercado Pago opère, pour vous éviter les frais de change."
+    },
+    "billingPeriod": "Période de facturation"
   },
   "Billing": {
     "monthly": "FileFlip Pro mensuel",
