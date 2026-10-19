@@ -52,9 +52,9 @@ Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin
 - [x] 0.1 Crear `main` con README mínimo y rama `dev`
 - [x] 0.2 PLAN.md, PROGRESS.md, `.env.example`, `docker-compose.yml` (MongoDB + Gotenberg), `.gitignore`
 - [x] 0.3 Scaffolding con create-next-app (App Router, TS, Tailwind, ESLint, `src/`), `output: "standalone"`; `npm run lint` y `npm run build` pasan
-- [ ] 0.4 Estructura de carpetas (`src/lib`, `src/components`, `src/workers`, `src/config`, `src/models`) y conexión Mongoose con caché (`src/lib/db.ts`)
-- [ ] 0.5 Vitest configurado con un test de ejemplo y script `npm test`
-- [ ] 0.6 Commitear `package-lock.json` (generado por CI o con acceso a npm) y cambiar CI a `npm ci`
+- [x] 0.4 Estructura de carpetas (`src/lib`, `src/components`, `src/workers`, `src/config`, `src/models`) y conexión Mongoose con caché (`src/lib/db.ts`)
+- [x] 0.5 Vitest configurado con un test de ejemplo y script `npm test`
+- [x] 0.6 Commitear `package-lock.json` (generado por CI o con acceso a npm) y cambiar CI a `npm ci`
 
 ### Hito 1 — Internacionalización y layout base
 - [ ] 1.1 next-intl: `src/i18n/routing.ts`, `request.ts`, middleware con detección de idioma y cookie, rutas `app/[locale]/`
