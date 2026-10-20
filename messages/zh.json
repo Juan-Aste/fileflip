@@ -352,7 +352,8 @@
       "q3": "为什么价格是我的本地货币？",
       "a3": "在 Mercado Pago 运营的国家，我们以当地货币收费，免去你的货币兑换费用。"
     },
-    "billingPeriod": "计费周期"
+    "billingPeriod": "计费周期",
+    "recommended": "推荐"
   },
   "Billing": {
     "monthly": "FileFlip Pro 月付",

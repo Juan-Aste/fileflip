@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { CalendarClock, CircleCheck, LogOut, PauseCircle, Sparkles } from "lucide-react";
 import { auth, signOut } from "@/auth";
 import CancelSubscriptionButton from "@/components/pricing/CancelSubscriptionButton";
 import { Link, redirect } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { currentSubscription, planFromSubscription } from "@/lib/billing";
 import { formatCurrency, formatDate } from "@/lib/format";
-import { buttonPrimary } from "@/components/ui/styles";
+import { badge, buttonPrimary, buttonSecondary, card } from "@/components/ui/styles";
 
 // Depends on the visitor's session.
 export const dynamic = "force-dynamic";
@@ -38,37 +39,67 @@ export default async function AccountPage({ params, searchParams }: Props) {
     await signOut({ redirectTo: `/${locale}` });
   }
 
+  const email = session.user.email ?? "";
+
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6 px-4 py-12">
-      <header>
-        <h1 className="text-3xl font-extrabold tracking-tight">{t("title")}</h1>
-        <p className="mt-1 text-muted">{t("signedInAs", { email: session.user.email ?? "" })}</p>
+      <header className="flex items-center gap-4">
+        <span
+          aria-hidden="true"
+          className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brand-solid font-display text-2xl font-extrabold text-white uppercase shadow-lift"
+        >
+          {email.charAt(0) || "?"}
+        </span>
+        <div className="min-w-0">
+          <h1 className="text-3xl font-extrabold tracking-tight">{t("title")}</h1>
+          <p className="mt-1 truncate text-muted">{t("signedInAs", { email })}</p>
+        </div>
       </header>
 
       {checkout === "done" && plan !== "pro" && (
-        <p role="status" className="rounded-xl bg-brand-soft px-4 py-3 text-sm">
+        <p role="status" className="flex items-start gap-2 rounded-xl bg-brand-soft px-4 py-3 text-sm text-brand">
+          <CircleCheck aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
           {t("checkoutDone")}
         </p>
       )}
 
-      <section aria-labelledby="plan" className="flex flex-col gap-2 rounded-2xl border border-border bg-surface shadow-card p-6">
+      <section aria-labelledby="plan" className={`flex flex-col gap-3 p-6 sm:p-8 ${plan === "pro" ? "rounded-2xl border-2 border-brand bg-surface shadow-lift" : card}`}>
         <h2 id="plan" className="text-sm font-medium text-muted">
           {t("plan")}
         </h2>
-        <p className="text-2xl font-bold">{plan === "pro" ? t("planPro") : t("planFree")}</p>
+        <p className="flex items-center gap-3">
+          <span className="font-display text-3xl font-extrabold">{plan === "pro" ? t("planPro") : t("planFree")}</span>
+          {plan === "pro" && (
+            <span className={badge}>
+              <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
+              FileFlip Pro
+            </span>
+          )}
+        </p>
         {plan === "pro" && sub ? (
           <>
-            <p className="text-sm text-muted">{t("planProBody")}</p>
-            <p className="text-sm">
-              {t("billing", { amount: formatCurrency(sub.amount, sub.currency, loc), period: sub.period })}
-            </p>
-            {sub.status === "active" && sub.currentPeriodEnd && (
-              <p className="text-sm">{t("nextPayment", { date: formatDate(sub.currentPeriodEnd, loc) })}</p>
-            )}
-            {sub.status === "paused" && <p className="text-sm text-warning">{t("paused")}</p>}
-            {sub.status === "cancelled" && sub.currentPeriodEnd && (
-              <p className="text-sm">{t("paidUntil", { date: formatDate(sub.currentPeriodEnd, loc) })}</p>
-            )}
+            <p className="text-muted">{t("planProBody")}</p>
+            <ul className="flex flex-col gap-2 rounded-xl bg-surface-2 px-4 py-3 text-sm">
+              <li>{t("billing", { amount: formatCurrency(sub.amount, sub.currency, loc), period: sub.period })}</li>
+              {sub.status === "active" && sub.currentPeriodEnd && (
+                <li className="flex items-center gap-2">
+                  <CalendarClock aria-hidden="true" className="h-4 w-4 text-muted" />
+                  {t("nextPayment", { date: formatDate(sub.currentPeriodEnd, loc) })}
+                </li>
+              )}
+              {sub.status === "paused" && (
+                <li className="flex items-center gap-2 text-warning">
+                  <PauseCircle aria-hidden="true" className="h-4 w-4" />
+                  {t("paused")}
+                </li>
+              )}
+              {sub.status === "cancelled" && sub.currentPeriodEnd && (
+                <li className="flex items-center gap-2">
+                  <CalendarClock aria-hidden="true" className="h-4 w-4 text-muted" />
+                  {t("paidUntil", { date: formatDate(sub.currentPeriodEnd, loc) })}
+                </li>
+              )}
+            </ul>
             {sub.status === "active" && (
               <div className="mt-2">
                 <CancelSubscriptionButton />
@@ -77,11 +108,9 @@ export default async function AccountPage({ params, searchParams }: Props) {
           </>
         ) : (
           <>
-            <p className="text-sm text-muted">{t("freeBody")}</p>
-            <Link
-              href="/pricing"
-              className={`mt-2 self-start ${buttonPrimary}`}
-            >
+            <p className="text-muted">{t("freeBody")}</p>
+            <Link href="/pricing" className={`mt-2 self-start ${buttonPrimary}`}>
+              <Sparkles aria-hidden="true" className="h-5 w-5" />
               {t("upgrade")}
             </Link>
           </>
@@ -89,7 +118,8 @@ export default async function AccountPage({ params, searchParams }: Props) {
       </section>
 
       <form action={logout}>
-        <button type="submit" className="rounded-xl border border-border px-5 py-2.5 font-semibold hover:bg-brand-soft">
+        <button type="submit" className={buttonSecondary}>
+          <LogOut aria-hidden="true" className="h-4 w-4" />
           {t("signOut")}
         </button>
       </form>

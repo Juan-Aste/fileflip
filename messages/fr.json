@@ -352,7 +352,8 @@
       "q3": "Pourquoi le prix est-il dans ma devise ?",
       "a3": "Nous facturons en devise locale là où Mercado Pago opère, pour vous éviter les frais de change."
     },
-    "billingPeriod": "Période de facturation"
+    "billingPeriod": "Période de facturation",
+    "recommended": "Recommandé"
   },
   "Billing": {
     "monthly": "FileFlip Pro mensuel",

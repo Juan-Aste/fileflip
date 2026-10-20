@@ -352,7 +352,8 @@
       "q3": "Why is the price in my currency?",
       "a3": "We charge in local currency where Mercado Pago operates, so you don't pay currency conversion fees."
     },
-    "billingPeriod": "Billing period"
+    "billingPeriod": "Billing period",
+    "recommended": "Recommended"
   },
   "Billing": {
     "monthly": "FileFlip Pro monthly",

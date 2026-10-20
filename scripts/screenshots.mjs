@@ -2,7 +2,8 @@
 // running `next start`. Usage:
 //   node scripts/screenshots.mjs [outDir] [path ...]
 // BASE_URL defaults to http://localhost:3000; CHROME_PATH defaults to the
-// Playwright Chromium preinstalled in the cloud environment.
+// Playwright Chromium preinstalled in the cloud environment. SESSION_TOKEN, if
+// set, is sent as the Auth.js session cookie (for pages behind login).
 import { mkdirSync } from "node:fs";
 import { chromium } from "playwright-core";
 
@@ -21,6 +22,9 @@ for (const scheme of ["light", "dark"]) {
       colorScheme: scheme,
       deviceScaleFactor: 1,
     });
+    if (process.env.SESSION_TOKEN) {
+      await context.addCookies([{ name: "authjs.session-token", value: process.env.SESSION_TOKEN, url: base }]);
+    }
     const page = await context.newPage();
     for (const path of paths) {
       await page.goto(base + path, { waitUntil: "networkidle" });

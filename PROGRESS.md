@@ -895,3 +895,16 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Playwright en `/es/unir-pdf` (360/1280, claro/oscuro): 2 PDF (2 + 3 páginas) + un TXT rechazado → unir → resultado → descarga con 5 páginas; `/es/dividir-pdf` con un PDF roto muestra el nuevo aviso de error; sin errores de página y sin desborde horizontal a 360 px. Capturas revisadas (se corrigió el apretado de la lista en móvil).
 - Lint, build y tests (255) pasan. First Load JS de `[slug]`: 135 kB.
+
+## 2026-10-20 01:25 UTC — Fase 2, tarea 2B.10a (precios, login y Mi cuenta)
+
+**Qué se hizo**
+- 2B.10 se dividió en 2B.10a (precios, login, cuenta) y 2B.10b (legales, contacto y 404).
+- Precios: `PageHero` con ícono, tarjetas con `card`, precios grandes en `font-display`, viñetas con check de lucide en círculo verde, tarjeta Pro con borde de marca, `shadow-lift` y etiqueta "Recomendado" (`Pricing.recommended`, 5 idiomas); el botón del plan gratis usa `buttonSecondary`. Las preguntas usan `FaqList` (ahora la página publica también su FAQ schema).
+- Login: `PageHero`, botón de Google con su "G" oficial (lo piden sus pautas de marca), separador "o" con líneas, botón de enlace con ícono `Mail`, error con borde y nota de privacidad con escudo. "Revisa tu correo": `PageHero` con `MailCheck` en lugar del emoji.
+- Mi cuenta: inicial del correo en un cuadrado de marca, tarjeta del plan (Pro con borde de marca e insignia), datos de cobro con íconos, "Pasar a Pro" con ícono y "Cerrar sesión" como botón secundario con `LogOut`.
+- `scripts/screenshots.mjs` acepta `SESSION_TOKEN` (cookie `authjs.session-token`) para capturar páginas con sesión. Sin `MONGODB_URI` la sesión es JWT: se genera con `encode` de `@auth/core/jwt` y el mismo `AUTH_SECRET` del `next start`.
+
+**Verificación**
+- Capturas de `/es/pricing`, `/es/login` (sin métodos, con Google + correo y con error), `/es/login/verify` y `/es/account` (con sesión simulada) a 360/1280 en claro y oscuro, revisadas. `/es/pricing` trae un único `FAQPage`.
+- Lint, build, typecheck y tests (255) pasan.

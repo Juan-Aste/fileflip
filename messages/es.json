@@ -352,7 +352,8 @@
       "q3": "¿Por qué el precio está en mi moneda?",
       "a3": "Cobramos en moneda local en los países donde opera Mercado Pago, para que no pagues comisiones por cambio de moneda."
     },
-    "billingPeriod": "Período de facturación"
+    "billingPeriod": "Período de facturación",
+    "recommended": "Recomendado"
   },
   "Billing": {
     "monthly": "FileFlip Pro mensual",
