@@ -1190,3 +1190,14 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Búsqueda insensible a mayúsculas de "fileflip" en todo el repo (sin `node_modules`, `.next`, bitácoras ni tests): solo queda el nombre de la base en el `MONGODB_URI` de ejemplo (interno, a propósito). Las entradas antiguas de PLAN.md/PROGRESS.md se dejan como registro histórico.
+
+## 2026-10-20 22:15 UTC — Fase 3, tarea 3.0.3 (logo, íconos y Open Graph de Fileflect) — HITO 3.0 TERMINADO
+
+**Qué se hizo**
+- Marca nueva: una hoja partida por una línea de espejo; la mitad derecha es el reflejo de la izquierda con los colores invertidos (blanco/mandarina) sobre el cuadrado verde azulado de siempre. Wordmark "File" + "flect" (en `brand`). Misma paleta y tipografía de `docs/design.md` (nueva sección "Logo").
+- Trazos en un solo lugar: `src/components/brand/mark.ts` (usado por `LogoMark` en header/footer y por la imagen Open Graph de cada idioma); `src/app/icon.svg` (favicon) y `public/logo.svg` (viewBox ampliado a 160 por el nombre más largo) repiten los mismos `path`.
+- `scripts/brand/icons.mjs` regenera con sharp `apple-icon.png` (180, a sangre), `icon-192.png` e `icon-512.png`.
+
+**Verificación**
+- Capturas con Playwright de la portada a 1280 px (claro) y 360 px (oscuro) y de la imagen Open Graph en español revisadas; recortes guardados en `docs/screenshots/brand-*.webp`.
+- Lint, typecheck, build y tests (321) pasan.

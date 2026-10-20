@@ -99,3 +99,10 @@ No se animan el título ni el contenido de la primera pintura: retrasaría el LC
 ## Foco
 
 Anillo global de 2 px con el token `ring` y separación de 2 px en `:focus-visible`.
+
+## Logo
+
+- **Marca**: cuadrado de esquinas redondeadas (`rx` 8 sobre 32) en `brand` (`#0b6f6a`) con una hoja partida por una línea de espejo: la mitad izquierda es blanca con la esquina doblada en mandarina; la derecha es su reflejo con los colores invertidos. Es el "reflect" de Fileflect: el mismo archivo, transformado.
+- **Wordmark**: "File" en `foreground` + "flect" en `brand`, Bricolage Grotesque 800, sin otros acentos.
+- Fuente única de los trazos: `src/components/brand/mark.ts` (lo usan `LogoMark` y la imagen Open Graph); `src/app/icon.svg` y `public/logo.svg` repiten los mismos `path`. Los PNG (`apple-icon.png` a sangre, `icon-192/512.png`) se regeneran con `node scripts/brand/icons.mjs`.
+- Tamaño mínimo de la marca: 16 px (favicon). No rotar, no cambiar colores, no separar las mitades más allá de la línea de espejo.

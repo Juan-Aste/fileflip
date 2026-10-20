@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { MARK } from "@/components/brand/mark";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -41,20 +42,11 @@ export default async function OpengraphImage({ params }: { params: Promise<{ loc
       >
         <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
           <svg width="96" height="96" viewBox="0 0 32 32">
-            <rect width="32" height="32" rx="8" fill="#0b6f6a" />
-            <path
-              d="M9 7.5A1.5 1.5 0 0 1 10.5 6H19l5 5v13.5a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 9 24.5z"
-              fill="#fff"
-            />
-            <path d="M19 6v3.5a1.5 1.5 0 0 0 1.5 1.5H24z" fill="#f26b3a" />
-            <path
-              d="M12.5 16.5h7l-2.2-2.2M20.5 20.5h-7l2.2 2.2"
-              fill="none"
-              stroke="#0b6f6a"
-              strokeWidth="1.9"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+            <rect width="32" height="32" rx="8" fill={MARK.tile} />
+            <path d={MARK.leftHalf} fill={MARK.light} />
+            <path d={MARK.leftFold} fill={MARK.accent} />
+            <path d={MARK.rightHalf} fill={MARK.accent} />
+            <path d={MARK.rightFold} fill={MARK.light} />
           </svg>
           <div style={{ display: "flex", fontSize: 64, fontWeight: 800, letterSpacing: -2 }}>
             File<span style={{ color: "#0b6f6a" }}>flect</span>
