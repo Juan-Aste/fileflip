@@ -152,7 +152,8 @@
     "statusDone": "{count, plural, one {Done: # file converted} other {Done: # files converted}}",
     "statusErrors": "{count, plural, one {# file couldn't be converted} other {# files couldn't be converted}}",
     "statusErrorsHint": "Check the reason on each file. You can remove it and try again.",
-    "statusDoneHint": "Download each file with its button."
+    "statusDoneHint": "Download each file with its button.",
+    "larger": "{percent} larger"
   },
   "ImageOptions": {
     "title": "Options",

@@ -120,7 +120,7 @@ export default function Converter({ from, to, options }: Props = {}) {
 
           <QueueStatus summary={summary} />
 
-          <ul className="divide-y divide-border">
+          <ul className="flex flex-col gap-2">
             {items.map((item) => (
               <FileRow
                 key={item.id}

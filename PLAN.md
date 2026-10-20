@@ -142,7 +142,7 @@ Meta: aspecto profesional, moderno, confiable y propio; interfaz limpia. Captura
 - [x] 2B.5 Portada: hero con la zona para arrastrar como protagonista, mensaje de privacidad y accesos rápidos a las conversiones más usadas
 - [x] 2B.6 Portada: "Cómo funciona" en 3 pasos y preguntas frecuentes (con FAQ schema)
 - [x] 2B.7 Conversor: estados vacío, arrastrando, procesando con progreso, listo y error
-- [ ] 2B.8 Tarjetas de archivo: miniatura, nombre, peso antes/después, ahorro en %, botón de descarga muy claro y separado de los anuncios
+- [x] 2B.8 Tarjetas de archivo: miniatura, nombre, peso antes/después, ahorro en %, botón de descarga muy claro y separado de los anuncios
 - [ ] 2B.9 Herramientas PDF, páginas de conversión y de cola larga con el nuevo diseño
 - [ ] 2B.10 Precios, login, cuenta, legales, contacto y 404 con el nuevo diseño
 - [ ] 2B.11 Microinteracciones y transiciones que respetan `prefers-reduced-motion`; revisión responsive 360/768/1280 en todas las páginas

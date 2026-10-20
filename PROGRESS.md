@@ -856,3 +856,15 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Playwright en `/es` (360/1280, claro/oscuro): vacío, arrastrando (evento `dragover` simulado), procesando (2 PNG 2400×1800 + 1 PNG roto → WEBP) y resultado (2 listos con descarga, 1 con error y aviso rojo); sin errores de página. Capturas revisadas.
 - Lint, build y tests (252) pasan. First Load JS: portada 135 kB (+1 kB por los íconos de la zona para arrastrar).
+
+## 2026-10-20 01:25 UTC — Fase 2, tarea 2B.8 (tarjetas de archivo)
+
+**Qué se hizo**
+- `FileRow` ahora es una tarjeta: miniatura de 56 px, nombre (el del resultado cuando terminó), formatos "PNG → WEBP", estado y peso antes → después con el ahorro en una pastilla verde ("85 % menos"; si crece, "N % más" en gris). Borde verde cuando está lista y rojo con fondo `danger-soft` cuando falla.
+- Botón "Descargar" con ícono, bien visible: a la derecha en escritorio y a todo el ancho debajo de la información en móvil; el nombre del archivo va como texto para lectores de pantalla (hay varios botones "Descargar"). Quitar (X) arriba a la derecha en móvil. El anuncio sigue debajo de toda la tarjeta de resultados, lejos de los botones.
+- Miniatura (`src/components/converter/preview.ts`, `previewSource`): muestra el resultado si el navegador puede dibujarlo; si no, el original (JPG, PNG, WEBP, AVIF, GIF, BMP, ICO, SVG y ≤ 25 MB); si no, un ícono del tipo de archivo. Si la imagen no se puede decodificar (archivo roto) cae al ícono. La URL del original se crea solo cuando se muestra y se libera al desmontar o cambiar a la del resultado. Tests en `preview.test.ts`.
+- Mensaje nuevo `Converter.larger` en los 5 idiomas.
+
+**Verificación**
+- Playwright en `/es` (360/1280, claro/oscuro) con 2 PNG reales y 1 roto → WEBP: miniaturas del resultado, ahorro, descarga y tarjeta de error con ícono; sin errores de página. Capturas revisadas.
+- Lint, build y tests (255) pasan. First Load JS de la portada sin cambios (135 kB; la tarjeta se carga diferida).

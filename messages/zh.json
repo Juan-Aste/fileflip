@@ -152,7 +152,8 @@
     "statusDone": "完成：已转换 {count} 个文件",
     "statusErrors": "{count} 个文件转换失败",
     "statusErrorsHint": "请查看每个文件的失败原因。可以移除后重试。",
-    "statusDoneHint": "点击每个文件的按钮即可下载。"
+    "statusDoneHint": "点击每个文件的按钮即可下载。",
+    "larger": "增大 {percent}"
   },
   "ImageOptions": {
     "title": "选项",

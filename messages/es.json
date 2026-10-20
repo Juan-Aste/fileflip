@@ -152,7 +152,8 @@
     "statusDone": "{count, plural, one {Listo: # archivo convertido} other {Listo: # archivos convertidos}}",
     "statusErrors": "{count, plural, one {# archivo no se pudo convertir} other {# archivos no se pudieron convertir}}",
     "statusErrorsHint": "Revisa el motivo en cada archivo. Puedes quitarlo y volver a intentar.",
-    "statusDoneHint": "Descarga cada archivo con su botón."
+    "statusDoneHint": "Descarga cada archivo con su botón.",
+    "larger": "{percent} más"
   },
   "ImageOptions": {
     "title": "Opciones",
