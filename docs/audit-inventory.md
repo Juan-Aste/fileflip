@@ -72,8 +72,8 @@ Script: `node scripts/audit/browser.mjs [--json salida.json] [--only jpg,png]` c
 | `empty.png` | ✅ "Formato no compatible" al detectar (no se ofrece convertir) |
 | `truncated.pdf`, `garbage.pdf` → JPG | ✅ "No se pudo convertir este archivo." en el navegador |
 | `text-as.jpg` | ✅ se detecta como TXT por contenido y se ofrece TXT → PDF (servidor), correcto |
-| `truncated.png`, `garbage.png` | ⚠️ el navegador falla y **reintenta en el servidor** (sube el archivo roto); el servidor responde 422 y se muestra "No se pudo convertir" (en la auditoría, con el servidor bloqueado, "servicio no disponible"). Funciona, pero sube un archivo que nunca se va a poder convertir → tarea 3A.3c |
-| `truncated.jpg` | ❌ **se convierte sin aviso**: el decodificador JPEG del navegador tolera el corte y devuelve una imagen con la parte faltante en gris. El servidor (sharp) sí lo rechaza → tarea 3A.3c |
+| `truncated.png`, `garbage.png` | ✅ (corregido en 3A.3c) "El archivo está dañado o incompleto." sin subir nada. Antes: el navegador fallaba y reintentaba en el servidor con el archivo roto |
+| `truncated.jpg` | ✅ (corregido en 3A.3c) mismo mensaje. Antes: se convertía sin aviso, con la parte faltante en gris (el decodificador del navegador tolera el corte) |
 
 ### Herramientas PDF (3A.3b)
 

@@ -11,6 +11,7 @@ import { canConvertDocumentOnServer, canConvertImageOnServer } from "@/config/se
 import { browserSupportsImaging, currentDeviceBudget } from "./capabilities";
 import { ConversionError } from "./convert-error";
 import { canConvertImageInBrowser, convertImage } from "./image/client";
+import { isDamagedImage } from "./image/integrity";
 import type { ImageOptions } from "./image/options";
 import { convertOnServer } from "./server-client";
 
@@ -60,6 +61,11 @@ export async function convertFile(
   const conversion = findConversion(from, to);
   if (!conversion || !isRunnable(conversion))
     throw new ConversionError("unsupportedFormat");
+
+  // Cut or damaged JPEG/PNG: lenient decoders would hide it (or the server
+  // would get a useless upload), so stop here with a clear message.
+  if ((from === "jpg" || from === "png") && isDamagedImage(new Uint8Array(await file.arrayBuffer()), from))
+    throw new ConversionError("fileDamaged");
 
   if (to === "pdf" && formats[from].category === "image") {
     const { imagesToPdfFile } = await import("./pdf/client");

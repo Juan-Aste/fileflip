@@ -190,6 +190,7 @@
     "serviceUnavailable": "服务暂时不可用，请稍后再试。",
     "browserUnsupported": "你的浏览器无法转换此文件。请使用最新版的 Chrome、Edge、Firefox 或 Safari。",
     "pdfHasNoText": "此 PDF 是扫描图像，没有可转换为 Word 的文字。",
+    "fileDamaged": "文件已损坏或不完整，请换一个副本再试。",
     "signInRequired": "请先登录。",
     "paymentsUnavailable": "你所在的国家/地区暂不支持付款，敬请期待。"
   },

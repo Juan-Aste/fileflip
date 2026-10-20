@@ -190,6 +190,7 @@
     "serviceUnavailable": "Le service est indisponible. Réessayez plus tard.",
     "browserUnsupported": "Votre navigateur ne peut pas convertir ce fichier. Essayez une version récente de Chrome, Edge, Firefox ou Safari.",
     "pdfHasNoText": "Ce PDF est une image numérisée : il ne contient pas de texte à mettre dans Word.",
+    "fileDamaged": "Ce fichier est endommagé ou incomplet. Essayez avec une autre copie.",
     "signInRequired": "Connectez-vous pour continuer.",
     "paymentsUnavailable": "Les paiements ne sont pas encore disponibles dans votre pays. Revenez bientôt."
   },

@@ -1268,3 +1268,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Lint y tests pasan; sin cambios en `src/`.
+
+## 2026-10-20 22:40 UTC — Fase 3, tarea 3A.3c (JPEG/PNG dañados en el navegador)
+
+**Qué se hizo**
+- `src/lib/image/integrity.ts`: recorrido estructural de JPEG (segmentos hasta EOI, saltando los datos de cada SOS, relleno `FF` y marcadores RST; una miniatura EXIF con su propio `FFD9` no engaña porque va dentro del APP1) y de PNG (firma, IHDR primero, cada chunk dentro del archivo hasta IEND). No mira píxeles; costo lineal.
+- `convertFile` lo aplica a toda entrada JPG/PNG antes de convertir (en el navegador, en el respaldo del servidor y en imagen → PDF del conversor) y corta con el nuevo código `fileDamaged` (422): "El archivo está dañado o incompleto. Prueba con otra copia." en los 5 idiomas.
+- 7 tests unitarios (progresivo, EXIF + datos después de EOI, miniatura embebida, truncados, basura, vacío).
+
+**Decisiones**
+- Solo JPEG y PNG: son los únicos donde la auditoría encontró el problema y su estructura se valida barato. Para el resto de formatos se mantiene el respaldo al servidor cuando falla el navegador (puede ser falta de memoria o de soporte, no daño).
+- Un JPEG con bytes extra después de EOI se acepta (lo hacen cámaras y apps).
+
+**Verificación**
+- `scripts/audit/browser.mjs`: 88/88 ✅ y los 3 corruptos de imagen ahora muestran el error sin pedir el servidor.
+- Lint, typecheck, build y tests (433) pasan.
