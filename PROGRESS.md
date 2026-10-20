@@ -1087,3 +1087,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Tests nuevos (4) con MongoDB en memoria: usuarios por día desde el id, activas/altas/bajas (las `pending` no cuentan), MRR por moneda con planes anuales y período vacío.
 - Lint, typecheck, build y tests (302) pasan.
+
+## 2026-10-20 03:24 UTC — Fase 2, tarea 2C.8 (API del panel y tarjetas de resumen)
+
+**Qué se hizo**
+- `adminStats(period)` (`src/lib/admin/stats/index.ts`) junta en paralelo conversiones, calidad, visitas, cuentas y archivos temporales.
+- `GET /api/admin/stats?period=…&from=…&to=…`: protegida con `requireAdminApi` (404 `{ error: "notFound" }` para anónimos y no admins), `Cache-Control: no-store`, `stats: null` sin `MONGODB_URI` y 503 si falla la base. Pensada para el CSV y usos externos; la página no la llama, consulta directo en el servidor.
+- Página `/[locale]/admin`: 9 tarjetas de resumen (`StatCard`, `SummaryCards`, componentes de servidor sin JS en el cliente): conversiones (con variación vs. período anterior, exitosas/fallidas, navegador/servidor), visitas, usuarios nuevos (y total), Pro activas (altas/bajas), MRR por moneda (con el código de moneda para no confundir ARS con USD), datos procesados, tiempo promedio (por motor), fallidas (% de intentos) y archivos temporales del servidor. Aviso de error si la consulta falla.
+- `formatDuration` en `src/lib/admin/format.ts` (ms / s / min, formato es-419).
+
+**Verificación**
+- Tests nuevos (3): API 404 para anónimo y no admin, 200 con las estadísticas del período para admin (MongoDB en memoria); `formatDuration`.
+- Con `next start`, MongoDB en memoria con datos de ejemplo y una sesión de base de datos: anónimo → 404 en página y API, admin → 200. Capturas a 360 px (claro) y 1280 px (oscuro) revisadas.
+- Lint, typecheck, build y tests (305) pasan.
+
+**Siguiente**: 2C.9 (gráficos livianos solo en el panel).

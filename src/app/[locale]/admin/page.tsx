@@ -1,9 +1,11 @@
 import { setRequestLocale } from "next-intl/server";
 import PeriodSelector from "@/components/admin/PeriodSelector";
+import SummaryCards from "@/components/admin/SummaryCards";
 import { formatDate } from "@/lib/format";
 import { resolvePeriod } from "@/lib/admin/period";
 import { requireAdminPage } from "@/lib/admin/access";
 import { adminTranslator } from "@/lib/admin/messages";
+import { adminStats, type AdminStats } from "@/lib/admin/stats";
 
 // Depends on the visitor's session.
 export const dynamic = "force-dynamic";
@@ -22,6 +24,16 @@ export default async function AdminPage({ params, searchParams }: Props) {
   // Layouts and pages render in parallel: check here too.
   const session = await requireAdminPage();
   const t = adminTranslator();
+  let stats: AdminStats | null = null;
+  let failed = false;
+  if (process.env.MONGODB_URI) {
+    try {
+      stats = await adminStats(period);
+    } catch (error) {
+      console.error("Admin stats failed", error);
+      failed = true;
+    }
+  }
   return (
     <div className="flex flex-col gap-6">
       <header>
@@ -37,6 +49,12 @@ export default async function AdminPage({ params, searchParams }: Props) {
         </p>
       </section>
       {!process.env.MONGODB_URI && <p className="rounded-xl bg-brand-soft px-4 py-3 text-sm text-brand">{t("noDatabase")}</p>}
+      {failed && (
+        <p role="alert" className="rounded-xl bg-danger-soft px-4 py-3 text-sm text-danger">
+          {t("summary.error")}
+        </p>
+      )}
+      {stats && <SummaryCards stats={stats} />}
     </div>
   );
 }

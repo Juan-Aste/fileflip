@@ -16,6 +16,32 @@
       "to": "Hasta",
       "range": "Del {from} al {to} (UTC)",
       "previous": "Comparado con {from} – {to}"
+    },
+    "summary": {
+      "title": "Resumen",
+      "conversions": "Conversiones",
+      "conversionsDetail": "{succeeded} exitosas · {failed} fallidas",
+      "engines": "Navegador {browser} · servidor {server}",
+      "visits": "Visitas",
+      "newUsers": "Usuarios nuevos",
+      "totalUsers": "{total} registrados en total",
+      "activePro": "Suscripciones Pro activas",
+      "subscriptionsDetail": "{new} altas · {cancelled} bajas en el período",
+      "mrr": "MRR (ingreso mensual recurrente)",
+      "mrrNone": "Sin suscripciones activas",
+      "processed": "Datos procesados",
+      "processedDetail": "{output} generados",
+      "avgDuration": "Tiempo promedio de conversión",
+      "avgDurationDetail": "Navegador {browser} · servidor {server}",
+      "errors": "Conversiones fallidas",
+      "errorRate": "{rate} de los intentos",
+      "temp": "Archivos temporales en el servidor",
+      "tempDetail": "{bytes} · el más antiguo hace {age}",
+      "tempEmpty": "Ninguno ahora mismo",
+      "vsPrevious": "{change} vs. período anterior",
+      "noPrevious": "Sin datos del período anterior",
+      "notAvailable": "—",
+      "error": "No se pudieron cargar las estadísticas. Revisa la conexión con MongoDB."
     }
   }
 }
