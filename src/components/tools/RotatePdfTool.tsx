@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { rotatePdfFile } from "@/lib/pdf/client";
 import type { Rotation } from "@/lib/pdf/ops";
 import { parsePageRanges } from "@/lib/pdf/ranges";
+import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
 import RangesInput from "./RangesInput";
@@ -87,9 +88,9 @@ export default function RotatePdfTool() {
             />
           )}
           {failed && (
-            <p role="alert" className="text-sm text-danger">
+            <ToolAlert>
               {te("conversionFailed")}
-            </p>
+            </ToolAlert>
           )}
           <PrimaryButton onClick={run} disabled={!ready || working}>
             {working ? t("working") : tt("action")}

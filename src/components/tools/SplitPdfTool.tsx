@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { splitPdfFile } from "@/lib/pdf/client";
 import { parsePageRanges, rangeLabel } from "@/lib/pdf/ranges";
+import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
@@ -97,9 +98,9 @@ export default function SplitPdfTool() {
           )}
           {progress !== null && <ProgressBar value={progress} label={t("working")} />}
           {failed && (
-            <p role="alert" className="text-sm text-danger">
+            <ToolAlert>
               {te("conversionFailed")}
-            </p>
+            </ToolAlert>
           )}
           <PrimaryButton onClick={run} disabled={!groups || progress !== null}>
             {progress !== null ? t("working") : tt("action")}

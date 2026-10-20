@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/routing";
 import { formatBytes, formatPercent } from "@/lib/format";
 import { compressPdfFile } from "@/lib/pdf/client";
 import type { CompressionLevel } from "@/lib/pdf/compress";
+import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
@@ -83,9 +84,9 @@ export default function CompressPdfTool() {
           />
           {progress !== null && <ProgressBar value={progress} label={t("working")} />}
           {failed && (
-            <p role="alert" className="text-sm text-danger">
+            <ToolAlert>
               {te("conversionFailed")}
-            </p>
+            </ToolAlert>
           )}
           <PrimaryButton onClick={run} disabled={progress !== null}>
             {progress !== null ? t("working") : tt("action")}

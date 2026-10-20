@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { organizePdfFile } from "@/lib/pdf/client";
 import type { PageSpec } from "@/lib/pdf/ops";
+import ToolAlert from "./ToolAlert";
 import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
 import SinglePdfInput from "./SinglePdfInput";
@@ -181,9 +182,9 @@ export default function OrganizePdfTool() {
             })}
           </ol>
           {failed && (
-            <p role="alert" className="text-sm text-danger">
+            <ToolAlert>
               {te("conversionFailed")}
-            </p>
+            </ToolAlert>
           )}
           <div className="flex flex-wrap gap-3">
             <PrimaryButton onClick={run} disabled={!pages.length || working}>

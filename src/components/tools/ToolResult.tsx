@@ -5,7 +5,8 @@ import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "@/i18n/routing";
 import AdSlot from "@/components/ads/AdSlot";
 import { formatBytes } from "@/lib/format";
-import { buttonPrimary } from "@/components/ui/styles";
+import { CheckCircle2, Download, FileText, RotateCcw } from "lucide-react";
+import { buttonPrimary, buttonSecondary } from "@/components/ui/styles";
 
 interface Props {
   blob: Blob;
@@ -25,31 +26,26 @@ export default function ToolResult({ blob, filename, onReset, note }: Props) {
 
   return (
     <>
-      <div
-        role="status"
-        className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-surface shadow-card p-6 text-center"
-      >
-        <span aria-hidden="true" className="text-4xl">
-          ✅
+      <div className="flex flex-col items-center gap-4 rounded-2xl border border-success/30 bg-surface p-6 text-center shadow-card sm:p-8">
+        <span className="grid h-14 w-14 place-items-center rounded-full bg-success-soft text-success">
+          <CheckCircle2 aria-hidden="true" className="h-8 w-8" />
         </span>
-        <p className="text-lg font-semibold">{t("result")}</p>
-        <p className="text-sm text-muted">
-          {filename} · {formatBytes(blob.size, locale)}
+        <p role="status" className="font-display text-xl font-bold">
+          {t("result")}
         </p>
-        {note && <p className="text-sm font-medium">{note}</p>}
-        <div className="flex flex-wrap justify-center gap-3">
-          <a
-            href={url}
-            download={filename}
-            className={buttonPrimary}
-          >
+        <p className="flex max-w-full items-center gap-2 rounded-xl bg-surface-2 px-3 py-2 text-sm">
+          <FileText aria-hidden="true" className="h-4 w-4 shrink-0 text-muted" />
+          <span className="truncate font-medium">{filename}</span>
+          <span className="shrink-0 text-muted tabular-nums">{formatBytes(blob.size, locale)}</span>
+        </p>
+        {note && <p className="text-sm font-medium text-success">{note}</p>}
+        <div className="flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row">
+          <a href={url} download={filename} className={`${buttonPrimary} w-full sm:w-auto`}>
+            <Download aria-hidden="true" className="h-5 w-5" />
             {tc("download")}
           </a>
-          <button
-            type="button"
-            onClick={onReset}
-            className="rounded-xl border border-border px-6 py-3 font-semibold hover:bg-brand-soft"
-          >
+          <button type="button" onClick={onReset} className={`${buttonSecondary} w-full sm:w-auto`}>
+            <RotateCcw aria-hidden="true" className="h-4 w-4" />
             {t("startOver")}
           </button>
         </div>

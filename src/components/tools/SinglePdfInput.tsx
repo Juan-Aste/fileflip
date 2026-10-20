@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import Dropzone from "@/components/converter/Dropzone";
+import ToolAlert from "./ToolAlert";
 import FileList from "./FileList";
 import type { useSinglePdf } from "./useSinglePdf";
 
@@ -16,9 +17,9 @@ export default function SinglePdfInput({ pdf }: { pdf: ReturnType<typeof useSing
           <FileList files={pdf.files} onRemove={pdf.remove} rejectLabel={t("onlyPdf")} />
           {pdf.pages !== null && <p className="pb-3 text-sm text-muted">{t("pages", { count: pdf.pages })}</p>}
           {pdf.broken && (
-            <p role="alert" className="pb-3 text-sm text-danger">
+            <ToolAlert className="mb-3">
               {t("brokenPdf")}
-            </p>
+            </ToolAlert>
           )}
         </div>
       )}

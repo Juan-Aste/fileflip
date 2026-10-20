@@ -883,3 +883,15 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Capturas de `/es/jpg-a-webp`, `/es/word-a-pdf`, `/es/unir-pdf` y `/es/heic-a-jpg-desde-iphone` (360/1280, claro/oscuro) revisadas. Se detectó y corrigió un desborde horizontal a 360 px causado por el resplandor del encabezado (`scrollWidth` = 360 en portada, conversiones, herramientas y cola larga).
 - Lint, build y tests (255) pasan. First Load JS de `[slug]` sin cambios (135 kB).
 - Pendiente menor: el paso 2 de las conversiones de documentos dice "ajusta la calidad o el tamaño", que no aplica a Word → PDF; se revisa con los textos en 2B.10/2B.11.
+
+## 2026-10-20 02:00 UTC — Fase 2, tarea 2B.9b (interior de las herramientas PDF) — 2B.9 TERMINADA
+
+**Qué se hizo**
+- `FileList` (unir, imágenes a PDF y herramientas de un solo PDF): cada archivo es una tarjeta con ícono de tipo (desde `sm`), nombre, formato y peso en una línea sin cortes, número de orden solo cuando se puede reordenar, flechas `ChevronUp/Down` y `X` de lucide; los archivos rechazados van en rojo con ícono de alerta (antes el motivo se ocultaba en móvil).
+- `ProgressBar`: bloque de marca con spinner (`motion-safe`), etiqueta y porcentaje sobre la barra.
+- `ToolAlert` (nuevo): errores de las 6 herramientas con ícono, borde y fondo `danger-soft`, `role="alert"`.
+- `ToolResult`: ícono de éxito en círculo verde, título "Tu archivo está listo" (`role="status"`), nombre y peso del archivo en una pastilla, "Descargar" con ícono (a todo el ancho en móvil) y "Empezar de nuevo" como botón secundario. El anuncio sigue debajo de la tarjeta, separado de la descarga.
+
+**Verificación**
+- Playwright en `/es/unir-pdf` (360/1280, claro/oscuro): 2 PDF (2 + 3 páginas) + un TXT rechazado → unir → resultado → descarga con 5 páginas; `/es/dividir-pdf` con un PDF roto muestra el nuevo aviso de error; sin errores de página y sin desborde horizontal a 360 px. Capturas revisadas (se corrigió el apretado de la lista en móvil).
+- Lint, build y tests (255) pasan. First Load JS de `[slug]`: 135 kB.

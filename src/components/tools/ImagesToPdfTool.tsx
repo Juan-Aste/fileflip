@@ -6,6 +6,7 @@ import Dropzone from "@/components/converter/Dropzone";
 import { formats, type FormatId } from "@/config/formats";
 import { imagesToPdfFile } from "@/lib/pdf/client";
 import type { PageSize } from "@/lib/pdf/ops";
+import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import FileList from "./FileList";
 import PrimaryButton from "./PrimaryButton";
@@ -83,9 +84,9 @@ export default function ImagesToPdfTool() {
             />
             {progress !== null && <ProgressBar value={progress} label={t("working")} />}
             {failed && (
-              <p role="alert" className="text-sm text-danger">
+              <ToolAlert>
                 {te("conversionFailed")}
-              </p>
+              </ToolAlert>
             )}
             {!ready.length && !detecting && <p className="text-sm text-muted">{t("needOne")}</p>}
             <PrimaryButton onClick={run} disabled={!ready.length || detecting || progress !== null}>
