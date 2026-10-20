@@ -31,7 +31,8 @@ export async function POST(request: Request) {
 
   try {
     const output = await convertImageOnServer(
-      Buffer.from(bytes),
+      // A view over the upload, not a copy.
+      Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength),
       from,
       to,
       options,
@@ -44,7 +45,7 @@ export async function POST(request: Request) {
       outputSize: output.length,
       success: true,
     });
-    return new Response(new Uint8Array(output), {
+    return new Response(output as Uint8Array<ArrayBuffer>, {
       headers: {
         "Content-Type": formats[to].mime,
         "Content-Disposition": attachment(outputFilename(file.name, to)),

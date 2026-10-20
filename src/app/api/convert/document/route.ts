@@ -33,7 +33,7 @@ export async function POST(request: Request) {
         outputSize: docx.length,
         success: true,
       });
-      return new Response(new Uint8Array(docx), {
+      return new Response(docx as Uint8Array<ArrayBuffer>, {
         headers: {
           "Content-Type": formats.docx.mime,
           "Content-Disposition": attachment(outputFilename(file.name, "docx")),
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
       outputSize: pdf.length,
       success: true,
     });
-    return new Response(pdf.slice().buffer, {
+    return new Response(pdf as Uint8Array<ArrayBuffer>, {
       headers: {
         "Content-Type": formats[to].mime,
         "Content-Disposition": attachment(outputFilename(file.name, to)),

@@ -724,3 +724,22 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Qué sigue**
 - 2A.9: índices de MongoDB, timeouts hacia Gotenberg y buffers en el servidor.
+
+## 2026-10-20 00:40 UTC — Fase 2, tarea 2A.9 (servidor: índices, timeouts, buffers)
+
+**Qué se hizo**
+- Índices de Auth.js (`src/lib/server/indexes.ts`, creados al arrancar el servidor desde `instrumentation-node.ts` si hay `MONGODB_URI`; idempotente y nunca tira el servidor): `sessions.sessionToken` único (se consulta en cada `/api/auth/session`), `sessions.userId`, `accounts.{provider, providerAccountId}` único y `accounts.userId`, `users.email` único (parcial, solo si es texto), `verification_tokens.{identifier, token}` único, y TTL sobre `expires` en sesiones y tokens de magic link (MongoDB borra los vencidos solo).
+- `Subscription`: índice compuesto `{userId, status, createdAt: -1}` (reemplaza al de `userId` solo; lo usan `currentSubscription` y la cancelación) y, para el panel, `createdAt` y `cancelledAt` (sparse). `ConversionLog` ya tenía `createdAt` (TTL de 1 año, sirve para los rangos de fechas del panel) y `userId`; el resto de índices del panel se ajusta en 2C cuando existan las consultas.
+- Gotenberg: el timeout del cliente es configurable (`GOTENBERG_TIMEOUT_MS`, por defecto 95 s) y queda apenas por encima de `--api-timeout=90s` de Gotenberg (docker-compose y DEPLOY.md, antes 60 s y 120 s, inconsistentes): así un trabajo lento termina con el error de Gotenberg y Gotenberg no sigue trabajando en pedidos ya abandonados. `maxDuration` de la ruta sigue en 120 s.
+- Menos copias de buffers: la subida de imágenes llega a sharp como vista (`Buffer.from(buffer, offset, length)`) en vez de copiarse; las respuestas de imagen, DOCX y PDF se envían sin `new Uint8Array(...)`/`.slice()`; el archivo hacia Gotenberg tampoco se copia. (pdf.js sí necesita su copia: se queda.)
+- Tests: `src/lib/server/indexes.test.ts` con MongoDB en memoria (crea los índices, idempotente, email único pero opcional, no lanza si un índice falla, índices declarados en `Subscription`).
+
+**Verificación**
+- `next start` con MongoDB en memoria: los índices aparecen en `sessions`, `users`, `accounts`, `verification_tokens` y `subscriptions`; `POST /api/convert/image` PNG → BMP responde 200 con un BMP válido de 800×600 y queda registrado en `conversionlogs`.
+- `npm run lint`, `npm run build` y `npm test` (43 archivos, 244 tests) pasan.
+
+**Decisiones**
+- `GOTENBERG_TIMEOUT_MS` documentada en `.env.example` y DEPLOY.md (opcional). En Railway hay que cambiar el comando de inicio de Gotenberg a `--api-timeout=90s` (DEPLOY.md ya lo indica).
+
+**Qué sigue**
+- 2A.10: medición final de 2A.
