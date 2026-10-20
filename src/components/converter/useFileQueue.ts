@@ -11,7 +11,7 @@ import { useSessionInfo } from "@/components/session/SessionInfo";
 import type { ApiErrorCode } from "@/lib/api-errors";
 import { deviceConcurrency, runLimited } from "@/lib/concurrency";
 import { convertFile, type ConvertOptions } from "@/lib/convert";
-import { errorCode } from "@/lib/convert-error";
+import { ConversionError, errorCode } from "@/lib/convert-error";
 import { detectFileFormat } from "@/lib/detect";
 import { reportConversion } from "@/lib/stats-client";
 
@@ -99,6 +99,8 @@ export function useFileQueue() {
       }
 
       const convertOne = async (item: QueuedFile) => {
+        const start = performance.now();
+        const durationMs = () => Math.round(performance.now() - start);
         try {
           const { blob, engine, filename } = await convertFile(
             item.file,
@@ -119,6 +121,7 @@ export function useFileQueue() {
               size: item.file.size,
               outputSize: blob.size,
               success: true,
+              durationMs: durationMs(),
             });
           }
           update(item.id, {
@@ -132,13 +135,21 @@ export function useFileQueue() {
           });
         } catch (error) {
           console.error(error);
-          reportConversion({
-            from: item.format as FormatId,
-            to,
-            size: item.file.size,
-            success: false,
-          });
-          update(item.id, { job: { status: "error", code: errorCode(error) } });
+          const code = errorCode(error);
+          // The API already logged the failures it saw.
+          const fromServer = error instanceof ConversionError && error.loggedByServer;
+          if (!fromServer) {
+            reportConversion({
+              from: item.format as FormatId,
+              to,
+              size: item.file.size,
+              success: false,
+              durationMs: durationMs(),
+              errorCode: code,
+              ...(isServer(item) ? { engine: "server" as const } : {}),
+            });
+          }
+          update(item.id, { job: { status: "error", code } });
         }
       };
 

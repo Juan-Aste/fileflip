@@ -981,3 +981,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Tests nuevos (6): admin, usuario no admin, anónimo y `ADMIN_EMAILS` vacío, para página y API.
 - Con `next start` y sesiones JWT simuladas: anónimo → 404, no admin → 404 (sin "administración" en el HTML), admin → 200.
 - Lint, typecheck, build y tests (261) pasan.
+
+## 2026-10-20 02:40 UTC — Fase 2, tarea 2C.2a (duración, error y herramienta en el registro de conversiones)
+
+**Qué se hizo**
+- 2C.2 se dividió en 2C.2a (registro de conversiones), 2C.2b (uso de las herramientas PDF) y 2C.2c (beacon de visitas).
+- `ConversionLog`: campos nuevos `tool` (`"convert"` o el id de la herramienta PDF; por defecto `"convert"`), `durationMs` y `errorCode` (solo códigos de `apiErrorCodes`, nunca texto). Sin índices nuevos: el panel filtra por `createdAt`, que ya tiene índice (TTL).
+- APIs de conversión (imagen y documentos): miden la duración de la conversión (sin contar la subida) y guardan el código de error (`conversionFailed`, `serviceUnavailable`, `pdfHasNoText`).
+- Navegador: el conversor informa `durationMs` y, en los fallos, `errorCode`. Para no contar dos veces, `ConversionError.loggedByServer` marca los fallos que la API ya registró (`isLoggedByServerCode`); los rechazos previos a convertir (tamaño, límite de pedidos, formato) los informa el navegador con `engine: "server"`.
+- `parseConversionEntry`: valida duración (0–1 h), herramienta y código de error. Solo acepta `engine: "server"` del navegador en fallos, así nadie puede inflar las conversiones exitosas del servidor.
+
+**Verificación**
+- Tests nuevos: validación de los campos, guardado en MongoDB en memoria, registro de duración/error sin el nombre del archivo en la API de documentos, `isLoggedByServerCode`.
+- Playwright (`next start`): convertir un PNG a WEBP envía `{"from":"png","to":"webp","size":228,"outputSize":90,"success":true,"durationMs":26}`.
+- Lint, typecheck, build y tests (270) pasan.
