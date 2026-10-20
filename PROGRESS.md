@@ -1065,3 +1065,12 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Tests nuevos (6): errores por código, promedios, bytes y período vacío con MongoDB en memoria; `tempUsage` con subcarpetas y con carpeta inexistente.
 - Lint, typecheck, build y tests (294) pasan.
+
+## 2026-10-20 03:16 UTC — Fase 2, tarea 2C.6 (agregaciones de visitas)
+
+**Qué se hizo**
+- `src/lib/admin/stats/visits.ts`: `visitStats(period)`, un `aggregate` sobre `PageView` con `$match` por `createdAt` (índice TTL) y `$facet`: visitas por día/mes (huecos en 0), por idioma, por país (top 20; sin cabecera geo cuenta como `unknown`), por tipo de página y top 10 de páginas de cola larga (id independiente del idioma). Total del período anterior con `countDocuments` para la comparación.
+
+**Verificación**
+- Tests nuevos (4) con MongoDB en memoria: totales y comparación, agrupación por idioma/país/tipo, ranking de cola larga con tope de 10 y período vacío.
+- Lint, typecheck, build y tests (298) pasan.
