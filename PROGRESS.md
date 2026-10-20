@@ -812,3 +812,22 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Playwright a 360 px (claro/oscuro): abre, Escape cierra, al ir a Precios desde el menú navega y queda cerrado. Capturas de `/es`, `/zh`, `/es/pdf-a-jpg` revisadas. Lint, build y tests pasan.
+
+## 2026-10-20 01:35 UTC — Fase 2, tarea 2B.5 (hero de la portada)
+
+**Qué se hizo**
+- Portada: el hero ahora contiene directamente el conversor (la zona para arrastrar es lo primero que se ve después del título; se quitó el botón "Elegir archivos" que solo bajaba hasta él). Insignia de privacidad con `ShieldCheck`, h1 más grande (hasta `text-6xl`), resplandor suave de marca detrás (decorativo, CSS puro).
+- Accesos rápidos: "Conversiones populares" (8 pastillas con flecha, `popularConversions`) debajo del conversor, dentro de la columna principal para no dejar un hueco al lado del anuncio lateral.
+- `ProcessingBadge`: íconos `Lock`/`Cloud` de lucide en lugar de emojis.
+- Fuente de títulos sin `preload` (ver mediciones). Sigue con `display: swap` y fallback ajustado: CLS 0.
+
+**Mediciones (Lighthouse móvil, portada, 2 corridas)**
+- Con las fuentes precargadas (2B.1–2B.4): rendimiento 97, LCP 2,4–2,5 s (el render delay del h1 subía porque las dos fuentes, ~60 kB, competían con CSS/JS). Con `display: optional` no mejoraba.
+- Sin precargar la fuente de títulos: rendimiento 98–99, LCP 2,2–2,3 s, TBT 50–80 ms, CLS 0; accesibilidad y SEO 100.
+- First Load JS de la portada según `next build`: 134 kB (antes 128), pero los chunks que realmente se descargan son los mismos (verificado comparando las dos versiones: solo cambia el chunk de la página, 178 → 194 B); la diferencia es cómo Next cuenta el `Link` cliente que ahora usa la página.
+
+**Pendiente para 2B.7**
+- La zona para arrastrar sigue con el diseño viejo (emoji de carpeta); se rediseña con sus estados en 2B.7.
+
+**Verificación**
+- Capturas de `/es` (360/1280, claro/oscuro) revisadas. Lint, build y tests (245) pasan.

@@ -1,3 +1,4 @@
+import { Cloud, Lock } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { Engine } from "@/config/formats";
 
@@ -15,7 +16,11 @@ export default function ProcessingBadge({ engine }: { engine: Engine }) {
     <p
       className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium ring-1 ${styles[engine]}`}
     >
-      <span aria-hidden="true">{engine === "browser" ? "🔒" : "☁️"}</span>
+      {engine === "browser" ? (
+        <Lock aria-hidden="true" className="h-4 w-4 shrink-0" />
+      ) : (
+        <Cloud aria-hidden="true" className="h-4 w-4 shrink-0" />
+      )}
       {t(engine)}
     </p>
   );

@@ -139,7 +139,7 @@ Meta: aspecto profesional, moderno, confiable y propio; interfaz limpia. Captura
 - [x] 2B.2 Aplicar los tokens y las fuentes en todo el sitio (globals.css, componentes base: botones, tarjetas, inputs, insignias)
 - [x] 2B.3 Logo de FileFlip en SVG (ícono original + texto), favicon/íconos de app e imagen Open Graph por idioma
 - [x] 2B.4 Header y footer nuevos con navegación móvil cómoda (menú accesible) e íconos lucide-react
-- [ ] 2B.5 Portada: hero con la zona para arrastrar como protagonista, mensaje de privacidad y accesos rápidos a las conversiones más usadas
+- [x] 2B.5 Portada: hero con la zona para arrastrar como protagonista, mensaje de privacidad y accesos rápidos a las conversiones más usadas
 - [ ] 2B.6 Portada: "Cómo funciona" en 3 pasos y preguntas frecuentes (con FAQ schema)
 - [ ] 2B.7 Conversor: estados vacío, arrastrando, procesando con progreso, listo y error
 - [ ] 2B.8 Tarjetas de archivo: miniatura, nombre, peso antes/después, ahorro en %, botón de descarga muy claro y separado de los anuncios
