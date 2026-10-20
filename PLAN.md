@@ -1,4 +1,4 @@
-# PLAN de FileFlip
+# PLAN de Fileflect (antes FileFlip)
 
 Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin marcas de agua, sin registro obligatorio. **Todo lo que se pueda se procesa en el dispositivo del usuario** (privacidad + velocidad); solo los documentos de oficina van al servidor.
 
@@ -181,7 +181,7 @@ Principios (resumen): una herramienta solo cuenta si procesa archivos reales de 
 
 ### Hito 3.0 — Cambio de nombre a Fileflect
 - [x] 3.0.1 Textos: reemplazar "FileFlip" por "Fileflect" en `messages/*.json` (5 idiomas + admin), metadatos, títulos, Open Graph, manifest, emails de login, descripciones de pagos de Mercado Pago, panel de admin, páginas legales y nombres de descarga (CSV, ZIP); `package.json` (name); `EMAIL_FROM` por defecto en `.env.example` = "Fileflect <no-reply@example.com>"; tests actualizados
-- [ ] 3.0.2 Documentación: README, DEPLOY.md, docs/design.md y encabezados de PLAN.md/PROGRESS.md; búsqueda insensible a mayúsculas en todo el repo para confirmar que no queda "FileFlip" visible (solo nombres internos del repo y URLs de GitHub); "Pendiente del dueño": verificar disponibilidad del nombre/dominio/marca/redes y, si quiere, renombrar el repo
+- [x] 3.0.2 Documentación: README, DEPLOY.md, docs/design.md y encabezados de PLAN.md/PROGRESS.md; búsqueda insensible a mayúsculas en todo el repo para confirmar que no queda "FileFlip" visible (solo nombres internos del repo y URLs de GitHub); "Pendiente del dueño": verificar disponibilidad del nombre/dominio/marca/redes y, si quiere, renombrar el repo
 - [ ] 3.0.3 Logo SVG, favicon/íconos de app e imágenes Open Graph con el nombre Fileflect, respetando `docs/design.md`; capturas con Playwright (360/1280, claro/oscuro) revisadas
 
 ### Hito 3A — Auditoría y comparación

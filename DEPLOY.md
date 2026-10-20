@@ -1,6 +1,6 @@
-# Deploy de FileFlip en Railway
+# Deploy de Fileflect en Railway
 
-Este documento explica cómo publicar FileFlip en [Railway](https://railway.com). El repositorio ya trae todo lo necesario (`Dockerfile`, salida `standalone` de Next.js, endpoint de salud); **no se hizo ningún deploy real**.
+Este documento explica cómo publicar Fileflect en [Railway](https://railway.com). El repositorio ya trae todo lo necesario (`Dockerfile`, salida `standalone` de Next.js, endpoint de salud); **no se hizo ningún deploy real**.
 
 ## Arquitectura
 
@@ -102,9 +102,9 @@ npm run dev
 Para probar la imagen de producción en local:
 
 ```bash
-docker build -t fileflip --build-arg NEXT_PUBLIC_SITE_URL=http://localhost:3000 .
+docker build -t fileflect --build-arg NEXT_PUBLIC_SITE_URL=http://localhost:3000 .
 docker run --rm -p 3000:3000 --env-file .env.local \
-  -e GOTENBERG_URL=http://host.docker.internal:3001 fileflip
+  -e GOTENBERG_URL=http://host.docker.internal:3001 fileflect
 ```
 
 ## Notas de escalado

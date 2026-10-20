@@ -1,4 +1,4 @@
-# PROGRESS — Bitácora de FileFlip
+# PROGRESS — Bitácora de Fileflect (antes FileFlip)
 
 ## 2026-10-19 — Sesión 1 (primera ejecución)
 
@@ -599,6 +599,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Revisar los precios del plan Pro por país en `src/config/pricing.ts` (son orientativos).
 - Panel de administración: definir `ADMIN_EMAILS` (correos separados por comas) con el correo con el que inicias sesión; vacío = nadie entra (todos reciben 404). Se entra en `/es/admin`.
 - (Opcional) Poner Cloudflare delante de Railway para tener la cabecera de país `cf-ipcountry`; sin eso, el país se deduce del idioma del navegador y del selector manual.
+- **Fase 3 — nombre Fileflect**: verificar que el nombre esté disponible (dominio, p. ej. fileflect.com/.app, registro de marca en los países objetivo, usuarios en redes) antes de invertir en él; actualizar `NEXT_PUBLIC_SITE_URL` y `EMAIL_FROM` con el dominio nuevo; si se quiere, renombrar el repo de GitHub `Juan-Aste/fileflip` (GitHub redirige las URLs viejas) y el servicio de Railway. El nombre de la base en `MONGODB_URI` puede quedar como está.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
 - No quedan tareas sin marcar en PLAN.md y la especificación no tiene puntos sin cubrir. Verificado: `npm ci`, `npm run lint`, `npm run build` y `npm test` (40 archivos, 231 tests) pasan en `dev`.
@@ -1180,3 +1181,12 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Lint, typecheck, build y tests (321) pasan. `grep "Flip"` en `src/`, `public/` y `messages/` solo encuentra datos de tests.
+
+## 2026-10-20 22:00 UTC — Fase 3, tarea 3.0.2 (documentación con el nombre Fileflect)
+
+**Qué se hizo**
+- README, DEPLOY.md (incluido el nombre de la imagen Docker de ejemplo), `docs/design.md` (la idea del acento pasa a ser el "reflejo": *file* + *reflect*) y los títulos de PLAN.md y PROGRESS.md.
+- "Pendiente del dueño": verificar disponibilidad del nombre/dominio/marca/redes, actualizar `NEXT_PUBLIC_SITE_URL` y `EMAIL_FROM`, y opcionalmente renombrar el repo.
+
+**Verificación**
+- Búsqueda insensible a mayúsculas de "fileflip" en todo el repo (sin `node_modules`, `.next`, bitácoras ni tests): solo queda el nombre de la base en el `MONGODB_URI` de ejemplo (interno, a propósito). Las entradas antiguas de PLAN.md/PROGRESS.md se dejan como registro histórico.

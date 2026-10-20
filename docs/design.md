@@ -1,4 +1,4 @@
-# Identidad visual de FileFlip
+# Identidad visual de Fileflect
 
 Guía corta para que todo el sitio se vea igual. Los valores viven como variables CSS en
 `src/app/[locale]/globals.css` y se usan desde Tailwind (`bg-surface`, `text-muted`,
@@ -10,7 +10,7 @@ Guía corta para que todo el sitio se vea igual. Los valores viven como variable
 "Papel y tinta" con un verde azulado profundo de marca: transmite calma, confianza y
 privacidad (el archivo no sale del dispositivo), lejos del índigo/violeta genérico de las
 plantillas SaaS. Un acento mandarina, usado con moderación, da calidez y marca el
-"flip" (la transformación del archivo).
+"reflejo" (la transformación del archivo: Fileflect = *file* + *reflect*).
 
 ## Paleta
 
