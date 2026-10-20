@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import Dropzone from "@/components/converter/Dropzone";
 import { formats, type FormatId } from "@/config/formats";
+import type { ApiErrorCode } from "@/lib/api-errors";
+import { errorCode, InputFileError } from "@/lib/convert-error";
 import { imagesToPdfFile } from "@/lib/pdf/client";
 import type { PageSize } from "@/lib/pdf/ops";
 import ToolAlert from "./ToolAlert";
@@ -27,10 +29,10 @@ export default function ImagesToPdfTool() {
   const [margin, setMargin] = useState<keyof typeof MARGINS>("small");
   const [progress, setProgress] = useState<number | null>(null);
   const [result, setResult] = useState<Blob | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [failure, setFailure] = useState<{ code: ApiErrorCode; file?: string } | null>(null);
 
   async function run() {
-    setFailed(false);
+    setFailure(null);
     setProgress(0);
     try {
       const inputs = ready.map((f) => ({ file: f.file, format: f.format as FormatId }));
@@ -44,7 +46,8 @@ export default function ImagesToPdfTool() {
       );
     } catch (error) {
       console.error(error);
-      setFailed(true);
+      const file = error instanceof InputFileError ? ready[error.index]?.file.name : undefined;
+      setFailure({ code: errorCode(error), file });
     } finally {
       setProgress(null);
     }
@@ -91,9 +94,9 @@ export default function ImagesToPdfTool() {
               ]}
             />
             {progress !== null && <ProgressBar value={progress} label={t("working")} />}
-            {failed && (
+            {failure && (
               <ToolAlert>
-                {te("conversionFailed")}
+                {failure.file ? `${failure.file}: ${te(failure.code)}` : te(failure.code)}
               </ToolAlert>
             )}
             {!ready.length && !detecting && <p className="text-sm text-muted">{t("needOne")}</p>}

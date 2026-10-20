@@ -15,6 +15,16 @@ export class ConversionError extends Error {
   }
 }
 
+/** A failure caused by one of several input files (its position in the list). */
+export class InputFileError extends ConversionError {
+  constructor(
+    code: ApiErrorCode,
+    readonly index: number,
+  ) {
+    super(code);
+  }
+}
+
 export function errorCode(error: unknown): ApiErrorCode {
   return error instanceof ConversionError && isApiErrorCode(error.code) ? error.code : "conversionFailed";
 }

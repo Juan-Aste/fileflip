@@ -1283,3 +1283,16 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - `scripts/audit/browser.mjs`: 88/88 ✅ y los 3 corruptos de imagen ahora muestran el error sin pedir el servidor.
 - Lint, typecheck, build y tests (433) pasan.
+
+## 2026-10-20 22:50 UTC — Fase 3, tarea 3A.3d (Imágenes a PDF colgado con un PNG truncado)
+
+**Qué se hizo**
+- Causa: `embedPng` de pdf-lib entra en un bucle infinito con un PNG truncado (reproducido en Node; con el IDAT alterado pero completo sí lanza un error). El worker de PDF quedaba ocupado y la interfaz en 75 %.
+- `toPdfImage` (en `src/lib/pdf/client.ts`) valida JPEG y PNG con `isDamagedImage` antes de incrustarlos (un JPEG cortado se incrustaba sin aviso). Cada falla se envuelve en `InputFileError` (nuevo, en `convert-error.ts`, con el índice del archivo).
+- "Imágenes a PDF" muestra el código real traducido y el nombre del archivo culpable ("truncated.png: El archivo está dañado o incompleto…") en lugar del genérico. Imagen → PDF del conversor ya quedaba cubierto por 3A.3c.
+
+**Pendiente para 3B**
+- El motor de trabajos genérico debe tener un tiempo máximo por trabajo y terminar el worker si se excede (una librería puede colgarse con entradas raras que la validación no detecte).
+
+**Verificación**
+- `scripts/audit/pdf-tools.mjs` 19/19 ✅; `scripts/audit/browser.mjs` sin regresiones. Lint, typecheck, build y tests (434) pasan.

@@ -1,8 +1,10 @@
 "use client";
 
 import type { FormatId } from "@/config/formats";
+import { ConversionError, InputFileError, errorCode } from "@/lib/convert-error";
 import { jpegOrientation } from "@/lib/image/exif";
 import { convertImage } from "@/lib/image/client";
+import { isDamagedImage } from "@/lib/image/integrity";
 import { createWorkerClient } from "@/lib/worker-rpc";
 import type { CompressionLevel, CompressResult } from "./compress";
 import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
@@ -52,12 +54,14 @@ const PNG_SOURCES: readonly FormatId[] = ["png", "gif", "ico", "svg"];
 
 /** Gets an image into a form pdf-lib can embed (JPG or PNG, upright). */
 async function toPdfImage(file: Blob, format: FormatId): Promise<PdfImage> {
-  if (format === "jpg") {
+  if (format === "jpg" || format === "png") {
     const bytes = await bytesOf(file);
+    // pdf-lib embeds cut JPEGs silently and can hang on a cut PNG.
+    if (isDamagedImage(bytes, format)) throw new ConversionError("fileDamaged");
+    if (format === "png") return { bytes, type: "png" };
     if (jpegOrientation(bytes) === 1) return { bytes, type: "jpg" };
     // Re-encode so the EXIF rotation is baked into the pixels.
   }
-  if (format === "png") return { bytes: await bytesOf(file), type: "png" };
   const type = PNG_SOURCES.includes(format) ? "png" : "jpg";
   const { blob } = await convertImage(file, format, type, { quality: 92 });
   return { bytes: await bytesOf(blob), type };
@@ -70,7 +74,11 @@ export async function imagesToPdfFile(
 ) {
   const images: PdfImage[] = [];
   for (const [i, { file, format }] of files.entries()) {
-    images.push(await toPdfImage(file, format));
+    try {
+      images.push(await toPdfImage(file, format));
+    } catch (error) {
+      throw new InputFileError(errorCode(error), i);
+    }
     onProgress?.(((i + 1) / files.length) * 0.5);
   }
   const result = await call<Uint8Array>(

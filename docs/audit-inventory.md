@@ -102,6 +102,6 @@ Tiempos: 0,07–0,3 s por operación; imágenes a PDF con HEIC 0,9 s. Ninguna he
 |---|---|
 | Unir con `garbage.pdf` o `truncated.pdf` | ✅ "No se pudo convertir este archivo." al ejecutar (no se detecta al cargar: pdf-lib abre el archivo y falla recién al copiar las páginas) |
 | Dividir / Ordenar con `garbage.pdf`, Rotar / Comprimir con `truncated.pdf` | ✅ al cargar: "No se pudo leer este PDF. ¿Está dañado o protegido con contraseña?" y la acción no se ofrece |
-| Imágenes a PDF con `image.png` + `truncated.png` | ❌ **se queda colgado en "Procesando… 75 %"** sin error ni salida → tarea 3A.3d. Afecta también a imagen → PDF en el conversor, que usa la misma función |
+| Imágenes a PDF con `image.png` + `truncated.png` | ✅ (corregido en 3A.3d) "truncated.png: El archivo está dañado o incompleto." Antes se quedaba colgado en "Procesando… 75 %": pdf-lib entra en un bucle infinito al incrustar un PNG truncado (reproducido en Node) |
 
 Mejora posible (no es falla): en "Unir PDF" los PDF dañados podrían marcarse al cargarlos, como en las herramientas de un solo PDF; se anota para 3B (errores claros en el motor de trabajos).
