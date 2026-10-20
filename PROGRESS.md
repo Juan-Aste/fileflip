@@ -1296,3 +1296,15 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - `scripts/audit/pdf-tools.mjs` 19/19 ✅; `scripts/audit/browser.mjs` sin regresiones. Lint, typecheck, build y tests (434) pasan.
+
+## 2026-10-20 22:58 UTC — Fase 3, tarea 3A.4 (comparación con la competencia)
+
+**Qué se hizo**
+- `docs/audit-competitors.md`: relevamiento con WebFetch de fileflip.org (~80 herramientas en 10 categorías), iLovePDF (33 herramientas PDF) y CloudConvert (cantidad de formatos por categoría). Tabla de qué tenemos y qué no, y conclusiones para 3A.5.
+- Solo funcionalidades; no se copió texto ni diseño.
+
+**Hallazgos**
+- Fileflect ya iguala o supera a fileflip.org en conversión de imágenes y en las PDF básicas; los huecos grandes son desarrolladores/utilidades (baratos), PDF avanzado (marca de agua, numerar, proteger), audio/video, 3D y CAD.
+- La portada de fileflip.org no detalla formatos: sus pares se dedujeron de los nombres de las herramientas.
+
+**Siguiente**: 3A.5 (`docs/audit.md` con la tabla completa y la lista priorizada, y `docs/dependencies.md`).
