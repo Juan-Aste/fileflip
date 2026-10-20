@@ -1022,3 +1022,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Tests nuevos (6): clasificación de rutas y API con MongoDB en memoria (guarda idioma, país y página; nunca la IP; no cuenta admin; 400 con cuerpo inválido).
 - Playwright (`next start`): la portada y la navegación a precios envían `{"path":"/es"}` y `{"path":"/es/pricing"}`.
 - Lint, typecheck, build, `check:static` y tests (274) pasan. JS compartido sin cambios (103 kB).
+
+## 2026-10-20 03:25 UTC — Fase 2, tarea 2C.3 (selector de período)
+
+**Qué se hizo**
+- `src/lib/admin/period.ts`: `resolvePeriod({ period, from, to })` → inicio, fin (exclusivo), período anterior de la misma duración y granularidad (`day`/`month`). Opciones: hoy, 7 días, 30 días (por defecto y ante cualquier valor inválido), 12 meses (meses calendario hasta el actual, comparados con los 12 anteriores) y personalizado (fechas `YYYY-MM-DD` inclusivas; más de 92 días se grafica por mes; tope de ~3 años). Además `bucketKeys` (todas las claves del período para graficar los días sin datos como 0), `change` (variación vs. el período anterior) y `parseDay`.
+- `PeriodSelector` (componente de servidor, sin JavaScript en el cliente): enlaces para las opciones fijas y un formulario GET con dos fechas para el personalizado. La página del panel muestra el rango elegido y el de comparación.
+
+**Decisiones**
+- Todas las fechas del panel son UTC (los días empiezan a las 00:00 UTC); las agregaciones de MongoDB usarán la misma convención. Se indica "(UTC)" junto al rango.
+
+**Verificación**
+- Tests nuevos (8) de períodos, comparación y validación de fechas.
+- Capturas del panel con sesión de admin simulada a 360 px (claro) y 1280 px (oscuro) revisadas; el enlace "7 días" navega bien.
+- Lint, typecheck, build y tests (282) pasan.
+
+**Siguiente**: 2C.4 (agregaciones de conversiones).

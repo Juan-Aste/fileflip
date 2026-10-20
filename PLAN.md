@@ -161,7 +161,7 @@ Ruta `/[locale]/admin`, solo para usuarios logueados con email en `ADMIN_EMAILS`
   - [x] 2C.2a Registro de conversiones: duración, código de error y herramienta; el navegador informa duración y error sin duplicar los fallos que ya registra el servidor + tests
   - [x] 2C.2b Las herramientas PDF del navegador (unir, dividir, rotar, ordenar, imágenes a PDF, comprimir) informan su uso (herramienta, tamaño, duración, resultado) + tests
   - [x] 2C.2c Beacon de visitas: idioma, país (solo de la cabecera geo, sin IP), tipo de página y slug de cola larga; modelo con TTL de 1 año y API con validación + tests
-- [ ] 2C.3 Selector de período (hoy, 7 días, 30 días, 12 meses, personalizado) y período anterior para comparar + tests
+- [x] 2C.3 Selector de período (hoy, 7 días, 30 días, 12 meses, personalizado) y período anterior para comparar + tests
 - [ ] 2C.4 Agregaciones de conversiones: por día, total y comparación, top 10 por herramienta/par de formatos, navegador vs servidor (tests con MongoDB en memoria)
 - [ ] 2C.5 Agregaciones de errores por tipo, tiempo promedio de conversión, tamaño total procesado y archivos temporales actuales (tests)
 - [ ] 2C.6 Agregaciones de visitas por idioma, país y páginas de cola larga (tests)
