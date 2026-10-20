@@ -600,6 +600,10 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Panel de administración: definir `ADMIN_EMAILS` (correos separados por comas) con el correo con el que inicias sesión; vacío = nadie entra (todos reciben 404). Se entra en `/es/admin`.
 - (Opcional) Poner Cloudflare delante de Railway para tener la cabecera de país `cf-ipcountry`; sin eso, el país se deduce del idioma del navegador y del selector manual.
 - **Fase 3 — nombre Fileflect**: verificar que el nombre esté disponible (dominio, p. ej. fileflect.com/.app, registro de marca en los países objetivo, usuarios en redes) antes de invertir en él; actualizar `NEXT_PUBLIC_SITE_URL` y `EMAIL_FROM` con el dominio nuevo; si se quiere, renombrar el repo de GitHub `Juan-Aste/fileflip` (GitHub redirige las URLs viejas) y el servicio de Railway. El nombre de la base en `MONGODB_URI` puede quedar como está.
+- **Fase 3 — licencias (decisiones del dueño)**, ver `docs/audit.md` §4:
+  - Audio/video en formatos heredados (AVI, WMV, FLV, 3GP): solo con `@ffmpeg/core` publicado, que es **GPL-2.0-or-later**. Sin aprobación se usa WebCodecs + mediabunny (MPL-2.0) para MP4/WebM/MOV/MKV y audio común.
+  - Quitar fondo con `@imgly/background-removal` (**AGPL-3.0**, mejor calidad). Sin aprobación se intenta MediaPipe (Apache-2.0, enfocado en personas).
+  - MOBI/AZW (solo con Calibre, GPL-3.0) y DWG (LibreDWG GPL-3.0 u ODA comercial): descartados salvo que el dueño decida otra cosa.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
 - No quedan tareas sin marcar en PLAN.md y la especificación no tiene puntos sin cubrir. Verificado: `npm ci`, `npm run lint`, `npm run build` y `npm test` (40 archivos, 231 tests) pasan en `dev`.
@@ -1324,3 +1328,10 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Solo documentación; sin cambios en `src/`.
+
+## 2026-10-20 23:35 UTC — Fase 3, tarea 3A.6 (plan de 3B a 3E) — HITO 3A TERMINADO
+
+- PLAN.md: tareas detalladas de 3B (8: registro, categorías, buscador, motor de trabajos, interfaz genérica, plantilla de página, tests de navegador, Lighthouse), 3C (44 tareas en el orden de prioridad acordado, con "comprimir imagen"/peso objetivo adelantadas por valor/costo), 3D (5) y 3E (1).
+- "Pendiente del dueño": decisiones de licencia (ffmpeg GPL, quitar fondo AGPL, MOBI, DWG).
+
+**Siguiente**: 3B.1 (registro único de herramientas).

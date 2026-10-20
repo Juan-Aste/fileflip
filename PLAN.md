@@ -193,4 +193,98 @@ Principios (resumen): una herramienta solo cuenta si procesa archivos reales de 
 - [x] 3A.3d Corregir "Imágenes a PDF" (y imagen → PDF del conversor): con un PNG truncado entre los archivos se queda colgado en 75 % sin error; debe fallar con un mensaje claro (idealmente indicando qué archivo) y liberar el estado; test unitario + `scripts/audit/pdf-tools.mjs` sin fallas
 - [x] 3A.4 Comparación con fileflip.org y 2–3 competidores (solo funcionalidades: categorías, herramientas, formatos), con WebFetch
 - [x] 3A.5 `docs/audit.md`: tabla herramienta/par de formatos (¿lo tenemos?, ¿funciona?, ¿competencia?, navegador/servidor, motor propuesto, licencia, dificultad, riesgos, tests) + ideas propias para LatAm + lista priorizada; `docs/dependencies.md` con las licencias actuales
-- [ ] 3A.6 Escribir en PLAN.md las tareas detalladas de 3B a 3E según la auditoría y el orden de prioridad acordado
+- [x] 3A.6 Escribir en PLAN.md las tareas detalladas de 3B a 3E según la auditoría y el orden de prioridad acordado
+
+### Hito 3B — Base del catálogo
+Antes de sumar herramientas. Todo lo visible (buscador, categorías, páginas, sitemap, selector) sale del registro, y el registro solo publica herramientas con estado `verified`.
+- [ ] 3B.1 Registro único (`src/config/catalog.ts`): id, categoría, formatos de entrada/salida, dónde corre (navegador/servidor), motor, límites (tamaño, páginas, lote, tiempo máximo), estado (`draft`/`verified`), ícono y slugs traducidos; migrar las 6 herramientas PDF y el conversor; `generateStaticParams`, sitemap, `translatePathname` y `ToolComponent` leen solo las `verified`; tests: slugs únicos entre herramientas, conversiones y cola larga; cada herramienta verificada tiene textos en los 5 idiomas y componente
+- [ ] 3B.2 Categorías: página por categoría con slug traducido (`/es/herramientas/pdf`, `/en/tools/pdf`…) y página "Todas las herramientas" con filtros por categoría; enlaces en header/footer; sitemap; tests de rutas
+- [ ] 3B.3 Buscador: diálogo accesible (combobox ARIA) con atajo `Ctrl/⌘+K` y `/`, búsqueda sin acentos sobre nombre, palabras clave y formatos en el idioma actual, índice construido del registro sin cargar motores; botón visible en el header; tests de la función de búsqueda
+- [ ] 3B.4 Motor de trabajos genérico (`src/lib/jobs/`): ejecutar una tarea en un worker con progreso, cancelación (`AbortSignal` → `worker.terminate()`), **tiempo máximo por trabajo** que termina el worker, cola por lotes con concurrencia limitada (reusar el pool), errores con códigos traducidos y liberación de object URLs; tests
+- [ ] 3B.5 Interfaz genérica de herramienta (`ToolShell`): entrada de archivos o de texto, opciones, ejecutar, lista de resultados con descarga individual o ZIP, estados vacío/procesando/listo/error como el conversor; límites reales visibles; tests de la lógica de estado
+- [ ] 3B.6 Plantilla de página de herramienta: encabezado, herramienta, "qué hace", límites (del registro), preguntas frecuentes con FAQ schema, datos estructurados `SoftwareApplication` y herramientas relacionadas; textos en `messages/*.json` (`Catalog.<id>`); test de que cada herramienta verificada tiene introducción y ≥ 3 preguntas en los 5 idiomas
+- [ ] 3B.7 Infraestructura de tests de navegador: `tests/e2e/` con utilidades comunes (levantar `next start`, Chromium del entorno, subir un fixture, esperar la descarga, validadores independientes de imagen/PDF/ZIP/JSON/CSV/texto) y `npm run test:e2e`; migrar los scripts de `scripts/audit/` a esa base; una prueba por herramienta registrada
+- [ ] 3B.8 Cierre de 3B: Lighthouse móvil de portada, una categoría y una herramienta (≥ 90, CLS 0) en `docs/perf/`
+
+### Hito 3C — Herramientas
+Por cada herramienta: procesamiento real, interfaz y textos en los 5 idiomas, página con metadatos y FAQ, tests unitarios con archivos válidos y corruptos que validan la salida, prueba de navegador, límites documentados, licencias en `docs/dependencies.md`, estado `verified` solo al final.
+
+Datos y desarrolladores
+- [ ] 3C.1 JSON ↔ CSV y JSON ↔ TSV (papaparse, MIT): aplanado de objetos anidados, delimitador detectado (`,` `;` tab), BOM, comillas y saltos de línea
+- [ ] 3C.2 JSON ↔ YAML (js-yaml, límite de alias) y JSON ↔ TOML (smol-toml)
+- [ ] 3C.3 JSON ↔ XML (fast-xml-parser, sin resolver entidades: test de XXE y "billion laughs")
+- [ ] 3C.4 Formateador y validador de JSON, XML y YAML (sangría, minificar, error con línea y columna)
+- [ ] 3C.5 Base64 de texto (UTF-8) y de archivos (ida y vuelta con bytes idénticos, data URL) + codificar/decodificar URL
+- [ ] 3C.6 Hashes MD5, SHA-1, SHA-256, SHA-512 de texto y archivos (hash-wasm, por bloques); vectores conocidos y comparación con `crypto` de Node
+- [ ] 3C.7 Generador de UUID (v4, v7, en lote) y conversor de timestamps (Unix s/ms ↔ fecha, zonas horarias)
+
+Utilidades
+- [ ] 3C.8 Generador de QR (texto, URL, Wi-Fi, contacto; PNG y SVG; qrcode, MIT) y lector de QR desde imagen (jsQR, Apache-2.0); test: generar y volver a leer
+- [ ] 3C.9 Generador de contraseñas (sin sesgo) y contador de palabras/caracteres con mayúsculas/minúsculas (`Intl.Segmenter`, también chino)
+- [ ] 3C.10 Selector y conversor de colores (HEX, RGB, HSL, OKLCH, contraste AA) y conversor de unidades
+
+Imágenes (las más buscadas primero)
+- [ ] 3C.11 "Comprimir imagen" con página propia (JPG, PNG, WEBP, AVIF; niveles simples; antes/después; lotes) y "comprimir a un peso objetivo" (búsqueda de calidad + reducción de tamaño si no alcanza; presets de trámites)
+- [ ] 3C.12 "Redimensionar imagen" con página propia (píxeles, porcentaje, presets de redes sociales)
+- [ ] 3C.13 Rotar/voltear y quitar metadatos EXIF/GPS (aplicando antes la orientación; exifr para mostrar qué se quita)
+- [ ] 3C.14 Recortar imagen con proporciones fijas (accesible con teclado)
+- [ ] 3C.15 Marca de agua (texto o imagen) y agregar texto a una imagen
+- [ ] 3C.16 Paquete de favicon (PNG 16–512, ICO multi-tamaño, manifest, ZIP), SVG → PNG/JPG con página propia (sin ejecutar scripts del SVG) y HEIF como entrada
+
+Subtítulos
+- [ ] 3C.17 SRT ↔ VTT ↔ ASS/SSA, desplazar tiempos y ajustar FPS (detección de codificación; aviso de estilos que se pierden)
+
+PDF
+- [ ] 3C.18 Eliminar páginas y extraer páginas (con miniaturas)
+- [ ] 3C.19 Numerar páginas y marca de agua de texto (posición, tamaño, opacidad; páginas rotadas)
+- [ ] 3C.20 PDF → texto (pdf.js; aviso si no tiene texto: sugerir OCR) y recortar márgenes (CropBox)
+- [ ] 3C.21 Firmar PDF dibujando la firma o subiendo una foto (aclarando que no es firma digital certificada)
+- [ ] 3C.22 Proteger con contraseña y quitar la contraseña conociéndola (qpdf-wasm, ISC/Apache-2.0)
+- [ ] 3C.23 Extraer imágenes de un PDF (ZIP)
+
+Fuentes y documentos
+- [ ] 3C.24 TTF/OTF ↔ WOFF/WOFF2 (fonteditor-core + wawoff2, confirmar licencias; fixture de fuente propia)
+- [ ] 3C.25 Markdown ↔ HTML en el navegador (marked + turndown, saneado con dompurify) y Markdown → PDF (Gotenberg)
+- [ ] 3C.26 HTML → PDF con Gotenberg sin acceso a red externa (protección SSRF), fixture PPT generado en el test y PDF/A (Gotenberg)
+- [ ] 3C.27 Hojas de cálculo XLSX ↔ CSV ↔ ODS en el navegador (SheetJS CE desde el tarball oficial o exceljs; límite de celdas; elegir hoja)
+
+Archivos comprimidos
+- [ ] 3C.28 Crear ZIP, TAR y TAR.GZ (fflate + escritor TAR propio; test leyendo la salida con `tar` del sistema)
+- [ ] 3C.29 Extraer ZIP, TAR y TAR.GZ con protecciones (zip bomb por tamaño y cantidad de entradas en streaming, zip slip, symlinks); fixtures maliciosos generados por script
+- [ ] 3C.30 Extraer 7Z y RAR (solo lectura) con libarchive.js y las mismas protecciones
+
+OCR
+- [ ] 3C.31 Imagen → texto con tesseract.js (datos de idioma servidos desde nuestro dominio, solo el idioma pedido: es, en, pt, fr, zh)
+- [ ] 3C.32 PDF escaneado → PDF con texto buscable y → texto (límite de páginas)
+
+Libros electrónicos
+- [ ] 3C.33 EPUB → HTML/TXT (navegador, saneado, sin XXE) y EPUB → PDF (Gotenberg)
+- [ ] 3C.34 HTML/Markdown → EPUB (generador propio; `mimetype` correcto)
+
+Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo aprobación del dueño)
+- [ ] 3C.35 Detección de capacidades del navegador (qué códecs puede leer/escribir) y conversión de audio entre los formatos disponibles (WAV, MP3, AAC/M4A, OGG/Opus, FLAC, AIFF); límites de tamaño/duración
+- [ ] 3C.36 Audio: recortar, unir, cambiar bitrate/frecuencia/canales y normalizar volumen
+- [ ] 3C.37 Video: convertir entre MP4, WebM, MOV y MKV según el navegador, y extraer audio
+- [ ] 3C.38 Video: comprimir, recortar, cambiar resolución y velocidad, video → GIF (gifenc) y unir
+
+3D y CAD
+- [ ] 3C.39 Modelos 3D con three.js (MIT, cargado solo en esas páginas): STL ↔ OBJ ↔ PLY ↔ GLB/glTF con visor y límite de vértices
+- [ ] 3C.40 Entradas 3MF, COLLADA y FBX (solo lectura; sin anunciar salidas que no existen) e imagen → litofanía (STL)
+- [ ] 3C.41 DXF → SVG/PNG/PDF con dxf-parser (MIT) y aviso de entidades omitidas; DWG documentado como no viable
+
+Ideas propias y quitar fondo
+- [ ] 3C.42 Foto carnet por país (tamaños oficiales AR, BR, MX, CL, CO, PE, UY; guía de rostro; hoja 10×15 con copias)
+- [ ] 3C.43 Escanear documento desde el celular (foto → recorte de perspectiva → PDF en blanco y negro)
+- [ ] 3C.44 Quitar fondo solo con licencia aceptable (MediaPipe Apache-2.0 u onnxruntime-web + modelo Apache-2.0); si no hay calidad suficiente, anotarlo y no publicar
+
+Mediciones: Lighthouse móvil (≥ 90, CLS 0) después de 3C.10, 3C.23, 3C.34 y 3C.44, en `docs/perf/`.
+
+### Hito 3D — Experiencia de usuario del catálogo
+- [ ] 3D.1 Portada que escale a 100+ herramientas: buscador visible, categorías claras, herramientas populares, sin abrumar en móvil
+- [ ] 3D.2 Enlaces internos entre herramientas relacionadas (misma categoría, mismos formatos) generados del registro
+- [ ] 3D.3 Accesibilidad y teclado completos; capturas Playwright 360/1280, claro/oscuro, de una muestra de páginas nuevas en `docs/screenshots/`
+- [ ] 3D.4 Panel de admin: uso y errores por herramienta y por categoría (con tests de agregación)
+- [ ] 3D.5 Medición final de Lighthouse de la fase 3
+
+### Hito 3E — Informe final
+- [ ] 3E.1 `docs/report-phase3.md`: herramientas verificadas, formatos de entrada y salida, matriz generada desde el registro y los tests, pruebas y resultados, limitaciones, descartes y motivos, dependencias y licencias, rendimiento, seguridad, diseño y SEO, y lo que debe decidir el dueño; "FASE 3 TERMINADA" en PROGRESS.md
