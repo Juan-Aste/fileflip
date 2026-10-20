@@ -1335,3 +1335,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - "Pendiente del dueño": decisiones de licencia (ffmpeg GPL, quitar fondo AGPL, MOBI, DWG).
 
 **Siguiente**: 3B.1 (registro único de herramientas).
+
+## 2026-10-20 23:50 UTC — Fase 3, tarea 3B.1 (registro único de herramientas)
+
+**Qué se hizo**
+- `src/config/tools.ts` pasa a ser el registro del catálogo (en vez de un `catalog.ts` nuevo, para no duplicar): categorías (`toolCategories`: image, pdf, document, data, developer, utility, subtitle, font, archive, ocr, ebook, audio, video, 3d, cad) y, por herramienta, categoría, formatos de entrada/salida, dónde corre, librerías, límites (`files` single/multiple y `timeoutMs` para el motor de trabajos de 3B.4) y estado `draft`/`verified`.
+- `availableTools` = solo las `verified`; `toolFromSlug` solo resuelve publicadas, así páginas, sitemap, footer, `translatePathname` y el beacon de visitas ignoran los borradores. Nuevas `toolsInCategory` y `conversionCategory` (categoría de cada página de conversión de `formats.ts`, que sigue siendo el registro de pares del conversor).
+- `ToolComponent` exige un componente por herramienta (`Record`, lo controla TypeScript).
+- Tests: solo se publican las verificadas; categorías, formatos, librerías y límites válidos; título/descripción/acción en los 5 idiomas; **ningún slug choca entre herramientas, conversiones y cola larga** en cada idioma.
+
+**Convenciones**
+- Una herramienta nueva entra como `draft` y pasa a `verified` cuando tiene procesamiento real, tests que validan la salida, prueba de navegador y textos en los 5 idiomas.
+- Los límites de tamaño y de lote siguen saliendo del plan (`limits.ts`); el registro solo agrega lo propio de cada herramienta.
+
+**Verificación**
+- Lint, typecheck, tests (440), build y `check:static` (547 páginas, igual que antes) pasan; `scripts/audit/pdf-tools.mjs` 19/19.
