@@ -709,3 +709,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Qué sigue**
 - 2A.8: pool de workers con concurrencia limitada y liberación de memoria.
+
+## 2026-10-20 00:20 UTC — Fase 2, tarea 2A.8 (pool de workers y memoria)
+
+**Qué se hizo**
+- `src/lib/concurrency.ts`: `batchConcurrency` (núcleos − 1, máximo 4; 1 con `deviceMemory` ≤ 2 GB y máximo 2 con ≤ 4 GB; 1 si no hay datos) y `runLimited` (procesa una lista con N tareas en vuelo como máximo, en orden de inicio). Tests en `concurrency.test.ts`.
+- Pool de workers de imagen (`src/lib/image/client.ts`): los workers se reutilizan entre archivos y conversiones; un lote se reparte en hasta `deviceConcurrency()` workers (se crean a demanda, primero se usa uno libre); pasado el límite, el trabajo va al menos ocupado. Si un worker se cae, solo fallan sus trabajos y se descarta. Un worker nuevo recibe las precargas de códec ya pedidas (2A.7).
+- `useFileQueue.convertAll`: las conversiones del navegador corren en paralelo con `runLimited(deviceConcurrency())`; las del servidor siguen de a una (hay rate limit por IP) en un carril aparte, en paralelo con el del navegador. El tope de lote del servidor del plan gratis se aplica igual que antes (los que exceden quedan con "tooManyFiles").
+- Memoria: `ImageBitmap.close()` en `finally` (worker y `canvas.ts`), así no quedan bitmaps abiertos si falla el dibujo. Las URL de objetos ya se liberaban (`revokeObjectURL` al quitar, limpiar, reconvertir o desmontar; miniaturas PDF y descargas también).
+- Tests del pool en `src/lib/image/preload.test.ts` (4 núcleos → 3 workers, el 4.º trabajo se encola, los workers se reutilizan).
+
+**Verificación (Chromium, 4 núcleos, `next start`)**
+- 6 PNG → WEBP en `/es/png-a-webp`: 3 workers, 6 descargas + "Descargar todo", ~0,4 s en total. HEIC → AVIF y PNG → WEBP individuales siguen funcionando.
+
+**Qué sigue**
+- 2A.9: índices de MongoDB, timeouts hacia Gotenberg y buffers en el servidor.

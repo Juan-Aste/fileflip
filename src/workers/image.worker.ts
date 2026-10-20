@@ -19,12 +19,15 @@ async function decode(job: ImageJob): Promise<RawImage> {
     const bitmap = await createImageBitmap(
       new Blob([job.buffer], { type: formats[job.from].mime }),
     );
-    const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
-    const ctx = canvas.getContext("2d");
-    if (!ctx) throw new Error("No 2D context");
-    ctx.drawImage(bitmap, 0, 0);
-    bitmap.close();
-    return ctx.getImageData(0, 0, canvas.width, canvas.height);
+    try {
+      const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("No 2D context");
+      ctx.drawImage(bitmap, 0, 0);
+      return ctx.getImageData(0, 0, canvas.width, canvas.height);
+    } finally {
+      bitmap.close();
+    }
   } catch (nativeError) {
     const decoder = decoders[job.from];
     if (!decoder) throw nativeError;
