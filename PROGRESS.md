@@ -950,3 +950,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Capturas de portada, conversión de imagen y de documento, herramienta PDF, cola larga, precios y legales a 360/768/1280 (claro/oscuro) revisadas.
 - Sin desborde horizontal a 360, 768 y 1024 px en 20 páginas (portada, conversiones, las 6 herramientas PDF salvo rotar, cola larga, precios, login, legales, contacto, 404 y otros idiomas).
 - Lint, build y tests (255) pasan.
+
+## 2026-10-20 02:35 UTC — Fase 2, tarea 2B.12 (capturas finales y Lighthouse) — HITO 2B TERMINADO
+
+**Qué se hizo**
+- Capturas finales en `docs/screenshots/` (48 imágenes WebP de página completa, 2,6 MB): portada (es y en), JPG → WEBP, Word → PDF, Unir PDF, cola larga HEIC, precios, login (con Google y correo), privacidad, contacto, 404 y Mi cuenta (sesión simulada), a 360 y 1280 px en claro y oscuro. Se guardan en WebP (calidad 75) para no inflar el repositorio.
+- Medición en `docs/perf/2026-10-20-2B-final.md`. El Lighthouse del contenedor ahora es la 13.5, así que se volvió a medir el commit de 2A con la misma versión para comparar.
+
+**Mediciones (Lighthouse 13.5 móvil, mediana de 3)**
+- 2B: rendimiento 97–99 (portada 98), accesibilidad 100, SEO 100, CLS 0, LCP 2,2–2,4 s, FCP 1,2 s, JS 142–149 KB.
+- 2A con la misma versión: rendimiento 99, SEO 92, LCP 1,6–2,1 s, FCP 0,8 s, JS 136–144 KB.
+- La meta (≥ 90 sin empeorar accesibilidad ni SEO) se mantiene. El costo del diseño (FCP +0,4 s) viene de la fuente de texto precargada; quitar la precarga empeoró todo (rendimiento 96, CLS > 0) y se revirtió.
+
+**Verificación**
+- Lint, build y tests (255) pasan.

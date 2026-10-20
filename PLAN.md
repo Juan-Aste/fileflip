@@ -152,7 +152,7 @@ Meta: aspecto profesional, moderno, confiable y propio; interfaz limpia. Captura
 - [x] 2B.11 Microinteracciones y transiciones que respetan `prefers-reduced-motion`; revisión responsive 360/768/1280 en todas las páginas (dividida)
   - [x] 2B.11a Microinteracciones (aparición de resultados, avisos y menú, check de éxito, íconos de descarga, desplazamiento suave) que respetan `prefers-reduced-motion`
   - [x] 2B.11b Revisión responsive 360/768/1280 de todas las páginas y detalles pendientes (hueco junto al anuncio lateral en la portada, texto del paso 2 en conversiones de documentos, "Opciones" del conversor, unidades de bytes)
-- [ ] 2B.12 Capturas finales en `docs/screenshots/` y nueva medición de Lighthouse (no empeorar 2A)
+- [x] 2B.12 Capturas finales en `docs/screenshots/` y nueva medición de Lighthouse (no empeorar 2A)
 
 ### Hito 2C — Panel de administración
 Ruta `/[locale]/admin`, solo para usuarios logueados con email en `ADMIN_EMAILS`; los demás reciben 404 (protección en el servidor: layout y cada API).
