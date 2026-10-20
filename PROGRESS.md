@@ -787,3 +787,13 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Capturas de `/es/unir-pdf`, `/es/pricing` y `/es/login` (360/1280, claro/oscuro) revisadas. (Ojo al medir: si queda un `next start` viejo corriendo, sirve HTML con hashes de CSS que ya no existen y las capturas salen sin estilos.)
 - `npm run lint`, `npm run build` y `npm test` pasan.
+
+## 2026-10-20 00:55 UTC — Fase 2, tarea 2B.3 (logo, íconos y Open Graph)
+
+**Qué se hizo**
+- Logo original: hoja con la esquina doblada en mandarina y dos flechas de "flip" sobre un cuadrado verde azulado redondeado. `src/components/brand/LogoMark.tsx` (SVG en línea, usado en el header con el texto "File**Flip**" en Bricolage), `public/logo.svg` (ícono + texto) y `src/app/icon.svg` (favicon).
+- Íconos PNG generados con sharp desde el SVG: `src/app/apple-icon.png` (180), `public/icon-192.png` y `public/icon-512.png`; `src/app/manifest.ts` (`/manifest.webmanifest`, color de tema `#0b6f6a`).
+- Imagen Open Graph por idioma: `src/app/[locale]/opengraph-image.tsx` (1200×630, estática por idioma en el build) con logo, el título de la portada traducido y los formatos; Bricolage 800 en WOFF (paquete `@fontsource/bricolage-grotesque`, satori no lee WOFF2). En chino va solo la marca y los formatos (la fuente no tiene glifos CJK). `twitter:card` = `summary_large_image`. Todas las páginas heredan `og:image` de su idioma.
+
+**Verificación**
+- HTML con `<link rel="icon">`, `apple-touch-icon`, `manifest` y `og:image` absolutos; imágenes OG de es/pt/zh revisadas a ojo. Lint, build y tests pasan.

@@ -1,12 +1,12 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import LogoMark from "@/components/brand/LogoMark";
 import AccountLink from "./AccountLink";
 import LocaleSwitcher from "./LocaleSwitcher";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   const t = useTranslations("Header");
-  const tc = useTranslations("Common");
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-surface/85 backdrop-blur">
@@ -14,15 +14,12 @@ export default function Header() {
         <Link
           href="/"
           aria-label={t("homeLink")}
-          className="flex items-center gap-2 text-lg font-bold tracking-tight"
+          className="flex items-center gap-2 font-display text-xl font-extrabold tracking-tight"
         >
-          <span
-            aria-hidden="true"
-            className="grid h-8 w-8 place-items-center rounded-lg bg-brand-solid text-white"
-          >
-            ⇄
+          <LogoMark className="h-8 w-8" />
+          <span>
+            File<span className="text-brand">Flip</span>
           </span>
-          {tc("appName")}
         </Link>
         <nav aria-label={t("mainNav")} className="flex items-center gap-2">
           <Link
