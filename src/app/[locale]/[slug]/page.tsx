@@ -5,7 +5,12 @@ import WithSidebarAd from "@/components/ads/WithSidebarAd";
 import Converter from "@/components/converter/Converter";
 import ProcessingBadge from "@/components/converter/ProcessingBadge";
 import ToolComponent from "@/components/tools/ToolComponent";
+import { Cloud, ShieldCheck } from "lucide-react";
+import ToolIcon from "@/components/tools/ToolIcon";
 import FaqList from "@/components/ui/FaqList";
+import PageHero from "@/components/ui/PageHero";
+import PillLink from "@/components/ui/PillLink";
+import { card } from "@/components/ui/styles";
 import {
   conversionFromSlug,
   conversionPages,
@@ -25,7 +30,6 @@ import {
   longtailTranslation,
   type LongtailPage,
 } from "@/content/longtail";
-import { Link } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { alternatesFor } from "@/lib/seo";
 
@@ -145,17 +149,11 @@ export default async function SlugPage({
 async function ToolView({ tool }: { tool: ToolInfo }) {
   const t = await getTranslations(`Tools.${tool.id}`);
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-6 py-12">
-      <header className="flex flex-col items-center gap-3 text-center">
-        <span aria-hidden="true" className="text-5xl">
-          {tool.icon}
-        </span>
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-          {t("title")}
-        </h1>
-        <p className="max-w-xl text-muted">{t("description")}</p>
+    <div className="mx-auto flex max-w-3xl flex-col gap-8 py-12">
+      <PageHero icon={<ToolIcon id={tool.id} className="h-7 w-7" />} title={t("title")}>
+        <p className="max-w-xl text-lg text-muted text-pretty">{t("description")}</p>
         <ProcessingBadge engine={tool.engine} />
-      </header>
+      </PageHero>
       <ToolComponent id={tool.id} />
     </div>
   );
@@ -170,56 +168,64 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
   };
   const related = relatedConversions(conversion);
   const steps = ["step1", "step2", "step3"] as const;
+  const PrivacyIcon = conversion.engine === "browser" ? ShieldCheck : Cloud;
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-10 py-12">
-      <header className="flex flex-col items-center gap-3 text-center">
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-          {t("title", names)}
-        </h1>
-        <p className="max-w-xl text-muted">{t("description", names)}</p>
-      </header>
+    <div className="mx-auto flex max-w-3xl flex-col gap-12 py-12">
+      <PageHero title={t("title", names)}>
+        <p className="max-w-xl text-lg text-muted text-pretty">{t("description", names)}</p>
+      </PageHero>
       <Converter from={conversion.from} to={conversion.to} />
 
-      <section aria-labelledby="how" className="flex flex-col gap-3">
+      <section aria-labelledby="how" className="flex flex-col gap-5">
         <h2 id="how" className="text-2xl font-bold">
           {t("howTitle", names)}
         </h2>
-        <ol className="list-decimal space-y-1 pl-6">
-          {steps.map((s) => (
-            <li key={s}>{t(s, names)}</li>
+        <ol className="grid gap-3 sm:grid-cols-3">
+          {steps.map((s, i) => (
+            <li key={s} className={`${card} flex flex-col gap-3 p-5`}>
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-solid font-display font-bold text-white">
+                {i + 1}
+              </span>
+              <span className="text-sm">{t(s, names)}</span>
+            </li>
           ))}
         </ol>
       </section>
 
-      <section aria-labelledby="privacy" className="flex flex-col gap-2">
-        <h2 id="privacy" className="text-2xl font-bold">
-          {t("privacyTitle")}
-        </h2>
-        <p className="text-muted">
-          {conversion.engine === "browser"
-            ? t("privacyBrowser", names)
-            : t("privacyServer")}
-        </p>
+      <section
+        aria-labelledby="privacy"
+        className="flex flex-col gap-4 rounded-2xl border border-brand/20 bg-brand-soft p-6 sm:flex-row sm:items-start"
+      >
+        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-surface text-brand shadow-card">
+          <PrivacyIcon aria-hidden="true" className="h-6 w-6" />
+        </span>
+        <div className="flex flex-col gap-1">
+          <h2 id="privacy" className="text-xl font-bold">
+            {t("privacyTitle")}
+          </h2>
+          <p className="text-foreground/80">
+            {conversion.engine === "browser"
+              ? t("privacyBrowser", names)
+              : t("privacyServer")}
+          </p>
+        </div>
       </section>
 
       {related.length > 0 && (
-        <nav aria-labelledby="related" className="flex flex-col gap-3">
+        <nav aria-labelledby="related" className="flex flex-col gap-4">
           <h2 id="related" className="text-2xl font-bold">
             {t("relatedTitle")}
           </h2>
           <ul className="flex flex-wrap gap-2">
             {related.map((c) => (
               <li key={`${c.from}-${c.to}`}>
-                <Link
-                  href={`/${conversionSlug(c, locale)}`}
-                  className="block rounded-lg border border-border bg-surface px-3 py-1.5 text-sm hover:border-brand"
-                >
+                <PillLink href={`/${conversionSlug(c, locale)}`}>
                   {t("linkLabel", {
                     from: formats[c.from].label,
                     to: formats[c.to].label,
                   })}
-                </Link>
+                </PillLink>
               </li>
             ))}
           </ul>
@@ -232,18 +238,19 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
 async function LongtailView({ page }: { page: LongtailPage }) {
   const t = await getTranslations("Longtail");
   const { widget } = page;
+  const [lead, ...intro] = page.intro;
   return (
-    <article className="mx-auto flex max-w-3xl flex-col gap-8 py-12">
-      <header className="flex flex-col gap-3">
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
-          {page.title}
-        </h1>
-        {page.intro.map((p) => (
-          <p key={p} className="text-muted">
-            {p}
-          </p>
-        ))}
-      </header>
+    <article className="mx-auto flex max-w-3xl flex-col gap-10 py-12">
+      <PageHero title={page.title}>
+        {lead && <p className="max-w-2xl text-lg text-muted text-pretty">{lead}</p>}
+      </PageHero>
+      {intro.length > 0 && (
+        <div className="flex flex-col gap-3 leading-relaxed text-foreground/85">
+          {intro.map((p) => (
+            <p key={p}>{p}</p>
+          ))}
+        </div>
+      )}
       {widget.kind === "converter" ? (
         <Converter from={widget.from} to={widget.to} options={widget.options} />
       ) : (
@@ -255,14 +262,16 @@ async function LongtailView({ page }: { page: LongtailPage }) {
         </div>
       )}
       {page.sections.map((section) => (
-        <section key={section.heading} className="flex flex-col gap-2">
+        <section key={section.heading} className="flex flex-col gap-3">
           <h2 className="text-2xl font-bold">{section.heading}</h2>
           {section.body.map((p) => (
-            <p key={p}>{p}</p>
+            <p key={p} className="leading-relaxed text-foreground/85">
+              {p}
+            </p>
           ))}
         </section>
       ))}
-      <section aria-labelledby="faq" className="flex flex-col gap-3">
+      <section aria-labelledby="faq" className="flex flex-col gap-4">
         <h2 id="faq" className="text-2xl font-bold">
           {t("faqTitle")}
         </h2>

@@ -868,3 +868,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Playwright en `/es` (360/1280, claro/oscuro) con 2 PNG reales y 1 roto → WEBP: miniaturas del resultado, ahorro, descarga y tarjeta de error con ícono; sin errores de página. Capturas revisadas.
 - Lint, build y tests (255) pasan. First Load JS de la portada sin cambios (135 kB; la tarjeta se carga diferida).
+
+## 2026-10-20 01:45 UTC — Fase 2, tarea 2B.9a (páginas de herramientas, conversión y cola larga)
+
+**Qué se hizo**
+- 2B.9 se dividió en 2B.9a (páginas) y 2B.9b (interior de las herramientas PDF).
+- `src/components/ui/PageHero.tsx`: encabezado centrado común (ícono opcional en cuadrado de marca, h1 hasta `text-5xl`, resplandor suave como en la portada). Lo usan las herramientas PDF, las conversiones y la cola larga.
+- Herramientas PDF: íconos lucide (`src/components/tools/ToolIcon.tsx`: Layers, Scissors, RotateCw, LayoutGrid, Images, FileArchive) en lugar de emojis; se quitó `icon` de `src/config/tools.ts` (la configuración no depende de React).
+- Conversiones: pasos en 3 tarjetas numeradas, bloque de privacidad destacado (escudo en el navegador, nube en el servidor) y "Otras conversiones" con `PillLink` (pastilla con flecha, también en los accesos rápidos de la portada).
+- Cola larga: el primer párrafo de la intro va como entradilla bajo el título; secciones con mejor interlineado.
+- Corrección (venía de la fase 1): en las páginas de conversión de servidor (p. ej. Word → PDF) la insignia decía "Se procesa en tu dispositivo" hasta agregar un archivo; ahora usa el motor de la conversión de la página.
+
+**Verificación**
+- Capturas de `/es/jpg-a-webp`, `/es/word-a-pdf`, `/es/unir-pdf` y `/es/heic-a-jpg-desde-iphone` (360/1280, claro/oscuro) revisadas. Se detectó y corrigió un desborde horizontal a 360 px causado por el resplandor del encabezado (`scrollWidth` = 360 en portada, conversiones, herramientas y cola larga).
+- Lint, build y tests (255) pasan. First Load JS de `[slug]` sin cambios (135 kB).
+- Pendiente menor: el paso 2 de las conversiones de documentos dice "ajusta la calidad o el tamaño", que no aplica a Word → PDF; se revisa con los textos en 2B.10/2B.11.

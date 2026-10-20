@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import AdSlot from "@/components/ads/AdSlot";
 import { saveBlob } from "@/lib/download";
 import { useTranslations } from "next-intl";
-import { commonOutputs, formats, type FormatId } from "@/config/formats";
+import { commonOutputs, findConversion, formats, type FormatId } from "@/config/formats";
 import { isRunnable } from "@/lib/convert";
 import { canConvertImageInBrowser, preloadImageCodecs } from "@/lib/image/client";
 import {
@@ -85,7 +85,9 @@ export default function Converter({ from, to, options }: Props = {}) {
       onFocus={to ? () => preload([from], to) : undefined}
     >
       <div className="flex justify-center">
-        <ProcessingBadge engine={selected?.engine ?? "browser"} />
+        <ProcessingBadge
+          engine={selected?.engine ?? (from && to ? findConversion(from, to)?.engine : undefined) ?? "browser"}
+        />
       </div>
       <Dropzone
         onFiles={add}

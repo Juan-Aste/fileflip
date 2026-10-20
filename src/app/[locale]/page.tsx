@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import {
-  ArrowRight,
   Download,
   FileText,
   Gift,
@@ -16,10 +15,10 @@ import {
 import WithSidebarAd from "@/components/ads/WithSidebarAd";
 import Converter from "@/components/converter/Converter";
 import FaqList from "@/components/ui/FaqList";
+import PillLink from "@/components/ui/PillLink";
 import { badge, card } from "@/components/ui/styles";
 import { conversionSlug, popularConversions } from "@/config/conversion-pages";
 import { formats } from "@/config/formats";
-import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { alternatesFor } from "@/lib/seo";
 
@@ -83,16 +82,9 @@ export default function HomePage({
               <ul className="flex flex-wrap justify-center gap-2">
                 {popularConversions.map((c) => (
                   <li key={`${c.from}-${c.to}`}>
-                    <Link
-                      href={`/${conversionSlug(c, locale as Locale)}`}
-                      className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3.5 py-1.5 text-sm font-medium shadow-card transition hover:border-brand hover:text-brand"
-                    >
+                    <PillLink href={`/${conversionSlug(c, locale as Locale)}`}>
                       {tc("linkLabel", { from: formats[c.from].label, to: formats[c.to].label })}
-                      <ArrowRight
-                        aria-hidden="true"
-                        className="h-3.5 w-3.5 text-muted transition group-hover:translate-x-0.5 group-hover:text-brand"
-                      />
-                    </Link>
+                    </PillLink>
                   </li>
                 ))}
               </ul>
