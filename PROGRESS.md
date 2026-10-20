@@ -935,3 +935,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Playwright en `/es/png-a-webp` convirtiendo un PNG: con movimiento normal el botón de descarga anima `rise 0.24s` y `scroll-behavior: smooth`; con `reducedMotion: reduce` la duración es 0,01 ms y el desplazamiento `auto`; el estado final es el mismo (captura revisada). Sin errores de página.
 - Lint, build y tests (255) pasan.
+
+## 2026-10-20 02:10 UTC — Fase 2, tarea 2B.11b (revisión responsive y detalles) — 2B.11 TERMINADA
+
+**Qué se hizo**
+- Portada en escritorio (≥ 1280 px): "Cómo funciona" pasó a la columna principal junto al anuncio lateral, así ya no queda el hueco de ~250 px que dejaba el anuncio reservado (600 px) al lado de los accesos rápidos. En pantallas menores no cambia nada (el anuncio lateral solo existe desde `xl`).
+- Footer a 768 px: 3 columnas (marca arriba a todo el ancho) en lugar de 2 con "FileFlip" sola debajo.
+- Conversiones de servidor (Word → PDF, PDF → Word…): el paso 2 ahora dice "Comprueba que esté elegido {to} como formato de salida" (`ConversionPage.step2Document`, 5 idiomas) en vez de hablar de calidad o tamaño, que no aplican.
+- Panel "Opciones" del conversor con ícono, chevron que gira y aparición suave (antes tenía el triángulo nativo del navegador).
+- `formatBytes`: los tamaños de menos de 1 kB se muestran como "938 B" (Intl escribía "938 byte"); tests actualizados.
+- `scripts/screenshots.mjs` acepta `WIDTHS=360,768,1280`.
+
+**Verificación**
+- Capturas de portada, conversión de imagen y de documento, herramienta PDF, cola larga, precios y legales a 360/768/1280 (claro/oscuro) revisadas.
+- Sin desborde horizontal a 360, 768 y 1024 px en 20 páginas (portada, conversiones, las 6 herramientas PDF salvo rotar, cola larga, precios, login, legales, contacto, 404 y otros idiomas).
+- Lint, build y tests (255) pasan.

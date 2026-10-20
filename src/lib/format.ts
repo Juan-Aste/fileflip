@@ -27,6 +27,8 @@ export function formatBytes(bytes: number, locale: Locale) {
     value /= 1024;
     unit++;
   }
+  // Intl spells plain bytes out ("512 byte"); "B" matches kB/MB next to it.
+  if (unit === 0) return `${formatNumber(value, locale, { maximumFractionDigits: 0 })} B`;
   return formatNumber(value, locale, {
     style: "unit",
     unit: UNITS[unit],

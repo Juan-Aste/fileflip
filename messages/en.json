@@ -370,6 +370,7 @@
     "howTitle": "How to convert {from} to {to}",
     "step1": "Drop your {from} file or choose it from your device.",
     "step2": "Pick {to} and adjust quality or size if you like.",
+    "step2Document": "Make sure {to} is selected as the output format.",
     "step3": "Click Convert and download your {to} file.",
     "privacyTitle": "Private and fast",
     "privacyBrowser": "Your {from} files are converted right in your browser: they are never uploaded, so the conversion is private and very fast.",

@@ -2,6 +2,7 @@
 
 import { useId } from "react";
 import { useTranslations } from "next-intl";
+import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import {
   DEFAULT_PDF_DPI,
   PDF_DPI_CHOICES,
@@ -39,10 +40,15 @@ export default function ImageOptionsPanel({
 
   return (
     <details open={defaultOpen} className="group rounded-xl border border-border px-4 py-3">
-      <summary className="cursor-pointer text-sm font-medium">
+      <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-medium [&::-webkit-details-marker]:hidden">
+        <SlidersHorizontal aria-hidden="true" className="h-4 w-4 text-muted" />
         {t("title")}
+        <ChevronDown
+          aria-hidden="true"
+          className="ml-auto h-4 w-4 text-muted transition-transform duration-200 group-open:rotate-180"
+        />
       </summary>
-      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+      <div className="mt-3 grid gap-4 group-open:animate-rise sm:grid-cols-2">
         {showQuality && (
           <div>
             <label

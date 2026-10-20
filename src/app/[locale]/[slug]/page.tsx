@@ -167,7 +167,8 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
     to: formats[conversion.to].label,
   };
   const related = relatedConversions(conversion);
-  const steps = ["step1", "step2", "step3"] as const;
+  // Server (document) conversions have no quality or size options.
+  const steps = ["step1", conversion.engine === "browser" ? "step2" : "step2Document", "step3"] as const;
   const PrivacyIcon = conversion.engine === "browser" ? ShieldCheck : Cloud;
 
   return (

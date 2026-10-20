@@ -19,8 +19,8 @@ export default function Footer() {
 
   return (
     <footer className="mt-16 border-t border-border bg-surface">
-      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-4 py-12 text-sm lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-        <div className="col-span-2 flex flex-col gap-3 lg:col-span-1">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-10 px-4 py-12 text-sm md:grid-cols-3 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="col-span-2 flex flex-col gap-3 md:col-span-3 lg:col-span-1">
           <Link href="/" className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight">
             <LogoMark className="h-7 w-7" />
             <span>

@@ -370,6 +370,7 @@
     "howTitle": "Cómo convertir {from} a {to}",
     "step1": "Arrastra tu archivo {from} o elígelo desde tu dispositivo.",
     "step2": "Elige {to} y, si quieres, ajusta la calidad o el tamaño.",
+    "step2Document": "Comprueba que esté elegido {to} como formato de salida.",
     "step3": "Haz clic en Convertir y descarga tu archivo {to}.",
     "privacyTitle": "Privado y rápido",
     "privacyBrowser": "Tus archivos {from} se convierten directamente en tu navegador: nunca se suben a internet, así que la conversión es privada y muy rápida.",

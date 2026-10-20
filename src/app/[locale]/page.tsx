@@ -89,41 +89,41 @@ export default function HomePage({
                 ))}
               </ul>
             </nav>
+            {/* Inside the ad column's row so the sticky ad doesn't leave a gap beside it on wide screens. */}
+            <section aria-labelledby="how-heading" className="pt-16 sm:pt-20">
+              <div className="mb-10 text-center">
+                <h2 id="how-heading" className="text-3xl font-bold">
+                  {t("how.heading")}
+                </h2>
+                <p className="mt-2 text-muted">{t("how.subtitle")}</p>
+              </div>
+              <div className="relative">
+                {/* Dashed line joining the step cards on wide screens; decorative. */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute top-11 right-[16%] left-[16%] hidden border-t-2 border-dashed border-border-strong sm:block"
+                />
+                <ol className="relative grid gap-4 sm:grid-cols-3 sm:gap-6">
+                  {steps.map(({ key, Icon }, i) => (
+                    <li key={key} className={`${card} relative flex flex-col gap-3 p-6`}>
+                      <div className="flex items-center gap-3">
+                        <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-solid font-display text-lg font-bold text-white ring-4 ring-surface">
+                          {i + 1}
+                        </span>
+                        <Icon aria-hidden="true" className="h-5 w-5 text-accent-strong" />
+                      </div>
+                      <h3 className="text-lg font-bold">{t(`how.${key}.title`)}</h3>
+                      <p className="text-sm text-muted">{t(`how.${key}.body`)}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </section>
           </WithSidebarAd>
         </section>
       </section>
 
       <div className="mx-auto max-w-6xl px-4">
-        <section aria-labelledby="how-heading" className="py-12 sm:py-16">
-          <div className="mb-10 text-center">
-            <h2 id="how-heading" className="text-3xl font-bold">
-              {t("how.heading")}
-            </h2>
-            <p className="mt-2 text-muted">{t("how.subtitle")}</p>
-          </div>
-          <div className="relative">
-            {/* Dashed line joining the step cards on wide screens; decorative. */}
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute top-11 right-[16%] left-[16%] hidden border-t-2 border-dashed border-border-strong sm:block"
-            />
-            <ol className="relative grid gap-4 sm:grid-cols-3 sm:gap-6">
-              {steps.map(({ key, Icon }, i) => (
-                <li key={key} className={`${card} relative flex flex-col gap-3 p-6`}>
-                  <div className="flex items-center gap-3">
-                    <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-solid font-display text-lg font-bold text-white ring-4 ring-surface">
-                      {i + 1}
-                    </span>
-                    <Icon aria-hidden="true" className="h-5 w-5 text-accent-strong" />
-                  </div>
-                  <h3 className="text-lg font-bold">{t(`how.${key}.title`)}</h3>
-                  <p className="text-sm text-muted">{t(`how.${key}.body`)}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
         <section aria-labelledby="features-heading" className="py-12 sm:py-16">
           <h2 id="features-heading" className="mb-10 text-center text-3xl font-bold">
             {t("features.heading")}
