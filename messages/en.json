@@ -46,7 +46,8 @@
       "tools": "PDF tools",
       "conversions": "Popular conversions",
       "company": "Fileflect"
-    }
+    },
+    "allTools": "All tools"
   },
   "HomePage": {
     "title": "Convert your files without them ever leaving your computer",
@@ -454,5 +455,79 @@
       "write": "Send an email"
     },
     "contents": "Contents"
+  },
+  "Catalog": {
+    "allTitle": "All tools",
+    "allDescription": "Convert, compress and edit images, PDFs and documents. Almost everything runs on your device, free and without watermarks.",
+    "categoriesNav": "Categories",
+    "toolsHeading": "Tools",
+    "conversionsHeading": "Conversions",
+    "conversionsFrom": "From {format}",
+    "toolCount": "{count, plural, one {# tool} other {# tools}}",
+    "conversionCount": "{count, plural, one {# conversion} other {# conversions}}",
+    "seeCategory": "See everything in {category}",
+    "categoryTitle": "{category} tools",
+    "categories": {
+      "image": {
+        "name": "Images",
+        "description": "Convert between JPG, PNG, WEBP, AVIF, HEIC and more, and compress or resize your photos in the browser."
+      },
+      "pdf": {
+        "name": "PDF",
+        "description": "Merge, split, rotate, organize and compress PDFs, or turn images into a PDF, without uploading your files."
+      },
+      "document": {
+        "name": "Documents",
+        "description": "Turn Word, Excel, PowerPoint, OpenDocument and text files into PDF, or a PDF into Word."
+      },
+      "data": {
+        "name": "Data",
+        "description": "Convert data between JSON, CSV, XML, YAML and TOML."
+      },
+      "developer": {
+        "name": "Developers",
+        "description": "Developer tools: encode, decode, format and hash."
+      },
+      "utility": {
+        "name": "Utilities",
+        "description": "Quick everyday utilities."
+      },
+      "subtitle": {
+        "name": "Subtitles",
+        "description": "Convert and sync subtitles."
+      },
+      "font": {
+        "name": "Fonts",
+        "description": "Convert fonts for the web."
+      },
+      "archive": {
+        "name": "Archives",
+        "description": "Create and extract archives safely."
+      },
+      "ocr": {
+        "name": "OCR",
+        "description": "Recognize text in images and scanned PDFs."
+      },
+      "ebook": {
+        "name": "Ebooks",
+        "description": "Convert ebooks."
+      },
+      "audio": {
+        "name": "Audio",
+        "description": "Convert and edit audio on your device."
+      },
+      "video": {
+        "name": "Video",
+        "description": "Convert and edit video on your device."
+      },
+      "3d": {
+        "name": "3D",
+        "description": "Convert and view 3D models."
+      },
+      "cad": {
+        "name": "CAD",
+        "description": "View and convert CAD drawings."
+      }
+    }
   }
 }

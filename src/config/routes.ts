@@ -1,5 +1,6 @@
 import type { Locale } from "@/i18n/routing";
 import { conversionFromSlug, conversionSlug } from "./conversion-pages";
+import { allToolsSlugs, categoryFromSlug, categorySlug } from "./categories";
 import { toolFromSlug } from "./tools";
 import { longtailFromSlug, longtailTranslation } from "@/content/longtail";
 
@@ -11,6 +12,9 @@ export function translatePathname(pathname: string, from: Locale, to: Locale): s
   const match = pathname.match(/^\/([^/]+)$/);
   if (!match) return pathname;
   const slug = decodeURIComponent(match[1]);
+  if (slug === allToolsSlugs[from]) return `/${allToolsSlugs[to]}`;
+  const category = categoryFromSlug(from, slug);
+  if (category) return `/${categorySlug(category, to)}`;
   const tool = toolFromSlug(from, slug);
   if (tool) return `/${tool.slugs[to]}`;
   const conversion = conversionFromSlug(from, slug);

@@ -46,7 +46,8 @@
       "tools": "Herramientas PDF",
       "conversions": "Conversiones populares",
       "company": "Fileflect"
-    }
+    },
+    "allTools": "Todas las herramientas"
   },
   "HomePage": {
     "title": "Convierte tus archivos sin que salgan de tu computadora",
@@ -454,5 +455,79 @@
       "write": "Escribir un correo"
     },
     "contents": "Contenido"
+  },
+  "Catalog": {
+    "allTitle": "Todas las herramientas",
+    "allDescription": "Convierte, comprime y edita imágenes, PDF y documentos. Casi todo se procesa en tu dispositivo, gratis y sin marcas de agua.",
+    "categoriesNav": "Categorías",
+    "toolsHeading": "Herramientas",
+    "conversionsHeading": "Conversiones",
+    "conversionsFrom": "Desde {format}",
+    "toolCount": "{count, plural, one {# herramienta} other {# herramientas}}",
+    "conversionCount": "{count, plural, one {# conversión} other {# conversiones}}",
+    "seeCategory": "Ver todo en {category}",
+    "categoryTitle": "{category}: herramientas online",
+    "categories": {
+      "image": {
+        "name": "Imágenes",
+        "description": "Convierte entre JPG, PNG, WEBP, AVIF, HEIC y más, comprime y cambia el tamaño de tus fotos en el navegador."
+      },
+      "pdf": {
+        "name": "PDF",
+        "description": "Une, divide, rota, ordena y comprime PDF, o crea PDF a partir de imágenes, sin subir tus archivos."
+      },
+      "document": {
+        "name": "Documentos",
+        "description": "Pasa Word, Excel, PowerPoint, OpenDocument y texto a PDF, o un PDF a Word."
+      },
+      "data": {
+        "name": "Datos",
+        "description": "Convierte datos entre JSON, CSV, XML, YAML y TOML."
+      },
+      "developer": {
+        "name": "Desarrolladores",
+        "description": "Herramientas para desarrolladores: codificar, decodificar, formatear y calcular hashes."
+      },
+      "utility": {
+        "name": "Utilidades",
+        "description": "Utilidades rápidas para el día a día."
+      },
+      "subtitle": {
+        "name": "Subtítulos",
+        "description": "Convierte y sincroniza subtítulos."
+      },
+      "font": {
+        "name": "Fuentes",
+        "description": "Convierte fuentes tipográficas para la web."
+      },
+      "archive": {
+        "name": "Archivos comprimidos",
+        "description": "Crea y extrae archivos comprimidos de forma segura."
+      },
+      "ocr": {
+        "name": "OCR",
+        "description": "Reconoce el texto de imágenes y PDF escaneados."
+      },
+      "ebook": {
+        "name": "Libros electrónicos",
+        "description": "Convierte libros electrónicos."
+      },
+      "audio": {
+        "name": "Audio",
+        "description": "Convierte y edita audio en tu dispositivo."
+      },
+      "video": {
+        "name": "Video",
+        "description": "Convierte y edita video en tu dispositivo."
+      },
+      "3d": {
+        "name": "3D",
+        "description": "Convierte y visualiza modelos 3D."
+      },
+      "cad": {
+        "name": "CAD",
+        "description": "Visualiza y convierte planos CAD."
+      }
+    }
   }
 }

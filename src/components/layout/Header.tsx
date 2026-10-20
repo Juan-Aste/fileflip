@@ -1,5 +1,7 @@
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { allToolsSlugs } from "@/config/categories";
 import { Link } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import LogoMark from "@/components/brand/LogoMark";
 import AccountLink from "./AccountLink";
 import LocaleSwitcher from "./LocaleSwitcher";
@@ -11,6 +13,7 @@ const navLink =
 
 export default function Header() {
   const t = useTranslations("Header");
+  const toolsHref = `/${allToolsSlugs[useLocale() as Locale]}`;
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-surface/90 backdrop-blur">
@@ -27,7 +30,7 @@ export default function Header() {
         </Link>
 
         <nav aria-label={t("mainNav")} className="ml-auto hidden items-center gap-1 md:flex">
-          <Link href="/" className={navLink}>
+          <Link href={toolsHref} className={navLink}>
             {t("nav.tools")}
           </Link>
           <Link href="/pricing" className={navLink}>
@@ -42,7 +45,7 @@ export default function Header() {
           <ThemeToggle />
           <MobileMenu>
             <nav aria-label={t("mainNav")} className="flex flex-col">
-              <Link href="/" className={`${navLink} !py-3 !text-base`}>
+              <Link href={toolsHref} className={`${navLink} !py-3 !text-base`}>
                 {t("nav.tools")}
               </Link>
               <Link href="/pricing" className={`${navLink} !py-3 !text-base`}>

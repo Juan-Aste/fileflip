@@ -46,7 +46,8 @@
       "tools": "PDF 工具",
       "conversions": "常用转换",
       "company": "Fileflect"
-    }
+    },
+    "allTools": "全部工具"
   },
   "HomePage": {
     "title": "转换文件，文件不离开你的电脑",
@@ -454,5 +455,79 @@
       "write": "发送邮件"
     },
     "contents": "目录"
+  },
+  "Catalog": {
+    "allTitle": "全部工具",
+    "allDescription": "转换、压缩和编辑图片、PDF 和文档。几乎所有处理都在你的设备上完成，免费且无水印。",
+    "categoriesNav": "分类",
+    "toolsHeading": "工具",
+    "conversionsHeading": "格式转换",
+    "conversionsFrom": "从 {format}",
+    "toolCount": "{count} 个工具",
+    "conversionCount": "{count} 种转换",
+    "seeCategory": "查看{category}的全部内容",
+    "categoryTitle": "{category}工具",
+    "categories": {
+      "image": {
+        "name": "图片",
+        "description": "在浏览器中转换 JPG、PNG、WEBP、AVIF、HEIC 等格式，并压缩或调整照片尺寸。"
+      },
+      "pdf": {
+        "name": "PDF",
+        "description": "合并、拆分、旋转、整理和压缩 PDF，或将图片生成 PDF，无需上传文件。"
+      },
+      "document": {
+        "name": "文档",
+        "description": "将 Word、Excel、PowerPoint、OpenDocument 和文本转换为 PDF，或将 PDF 转为 Word。"
+      },
+      "data": {
+        "name": "数据",
+        "description": "在 JSON、CSV、XML、YAML 和 TOML 之间转换数据。"
+      },
+      "developer": {
+        "name": "开发者",
+        "description": "开发者工具：编码、解码、格式化和计算哈希。"
+      },
+      "utility": {
+        "name": "实用工具",
+        "description": "日常快捷工具。"
+      },
+      "subtitle": {
+        "name": "字幕",
+        "description": "转换和同步字幕。"
+      },
+      "font": {
+        "name": "字体",
+        "description": "为网页转换字体。"
+      },
+      "archive": {
+        "name": "压缩文件",
+        "description": "安全地创建和解压压缩文件。"
+      },
+      "ocr": {
+        "name": "OCR",
+        "description": "识别图片和扫描版 PDF 中的文字。"
+      },
+      "ebook": {
+        "name": "电子书",
+        "description": "转换电子书。"
+      },
+      "audio": {
+        "name": "音频",
+        "description": "在你的设备上转换和编辑音频。"
+      },
+      "video": {
+        "name": "视频",
+        "description": "在你的设备上转换和编辑视频。"
+      },
+      "3d": {
+        "name": "3D",
+        "description": "转换和查看 3D 模型。"
+      },
+      "cad": {
+        "name": "CAD",
+        "description": "查看和转换 CAD 图纸。"
+      }
+    }
   }
 }

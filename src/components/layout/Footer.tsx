@@ -1,6 +1,7 @@
 import { ShieldCheck } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import LogoMark from "@/components/brand/LogoMark";
+import { allToolsSlugs } from "@/config/categories";
 import { conversionSlug, popularConversions } from "@/config/conversion-pages";
 import { formats } from "@/config/formats";
 import { availableTools, tools } from "@/config/tools";
@@ -46,6 +47,11 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href={`/${allToolsSlugs[locale]}`} className={`${linkClass} font-semibold`}>
+                {t("allTools")}
+              </Link>
+            </li>
           </ul>
         </nav>
 

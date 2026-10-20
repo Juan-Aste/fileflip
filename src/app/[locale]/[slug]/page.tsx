@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import WithSidebarAd from "@/components/ads/WithSidebarAd";
+import { AllToolsView, CategoryView } from "@/components/catalog/CatalogViews";
 import Converter from "@/components/converter/Converter";
 import ProcessingBadge from "@/components/converter/ProcessingBadge";
 import ToolComponent from "@/components/tools/ToolComponent";
@@ -11,6 +12,12 @@ import FaqList from "@/components/ui/FaqList";
 import PageHero from "@/components/ui/PageHero";
 import PillLink from "@/components/ui/PillLink";
 import { card } from "@/components/ui/styles";
+import {
+  allToolsSlugs,
+  categoryFromSlug,
+  categorySlug,
+  publishedCategories,
+} from "@/config/categories";
 import {
   conversionFromSlug,
   conversionPages,
@@ -22,6 +29,7 @@ import {
   availableTools,
   toolFromSlug,
   tools,
+  type ToolCategory,
   type ToolInfo,
 } from "@/config/tools";
 import {
@@ -36,12 +44,16 @@ import { alternatesFor } from "@/lib/seo";
 type Params = { locale: string; slug: string };
 
 type Page =
+  | { kind: "all" }
+  | { kind: "category"; category: ToolCategory }
   | { kind: "tool"; tool: ToolInfo }
   | { kind: "conversion"; conversion: Conversion }
   | { kind: "longtail"; page: LongtailPage };
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) => [
+    { locale, slug: allToolsSlugs[locale] },
+    ...publishedCategories.map((c) => ({ locale, slug: categorySlug(c, locale) })),
     ...availableTools.map((id) => ({ locale, slug: tools[id].slugs[locale] })),
     ...conversionPages.map((c) => ({
       locale,
@@ -58,6 +70,9 @@ export const dynamicParams = false;
 
 function resolve({ locale, slug }: Params): Page | undefined {
   const decoded = decodeURIComponent(slug);
+  if (decoded === allToolsSlugs[locale as Locale]) return { kind: "all" };
+  const category = categoryFromSlug(locale as Locale, decoded);
+  if (category) return { kind: "category", category };
   const tool = toolFromSlug(locale as Locale, decoded);
   if (tool && availableTools.includes(tool.id)) return { kind: "tool", tool };
   const conversion = conversionFromSlug(locale as Locale, decoded);
@@ -66,10 +81,18 @@ function resolve({ locale, slug }: Params): Page | undefined {
   return page ? { kind: "longtail", page } : undefined;
 }
 
-const slugFor = (page: Exclude<Page, { kind: "longtail" }>, locale: Locale) =>
-  page.kind === "tool"
-    ? page.tool.slugs[locale]
-    : conversionSlug(page.conversion, locale);
+function slugFor(page: Exclude<Page, { kind: "longtail" }>, locale: Locale): string {
+  switch (page.kind) {
+    case "all":
+      return allToolsSlugs[locale];
+    case "category":
+      return categorySlug(page.category, locale);
+    case "tool":
+      return page.tool.slugs[locale];
+    case "conversion":
+      return conversionSlug(page.conversion, locale);
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -98,6 +121,18 @@ export async function generateMetadata({
     p.locale as Locale,
     (l) => `/${slugFor(page, l)}`,
   );
+  if (page.kind === "all" || page.kind === "category") {
+    const t = await getTranslations({ locale: p.locale, namespace: "Catalog" });
+    if (page.kind === "all") {
+      return { title: `${t("allTitle")} — Fileflect`, description: t("allDescription"), alternates };
+    }
+    const name = t(`categories.${page.category}.name`);
+    return {
+      title: `${t("categoryTitle", { category: name })} — Fileflect`,
+      description: t(`categories.${page.category}.description`),
+      alternates,
+    };
+  }
   if (page.kind === "tool") {
     const t = await getTranslations({
       locale: p.locale,
@@ -135,7 +170,11 @@ export default async function SlugPage({
   setRequestLocale(p.locale);
   return (
     <WithSidebarAd>
-      {page.kind === "tool" ? (
+      {page.kind === "all" ? (
+        <AllToolsView />
+      ) : page.kind === "category" ? (
+        <CategoryView category={page.category} />
+      ) : page.kind === "tool" ? (
         <ToolView tool={page.tool} />
       ) : page.kind === "conversion" ? (
         <ConversionView conversion={page.conversion} />

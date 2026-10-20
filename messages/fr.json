@@ -46,7 +46,8 @@
       "tools": "Outils PDF",
       "conversions": "Conversions populaires",
       "company": "Fileflect"
-    }
+    },
+    "allTools": "Tous les outils"
   },
   "HomePage": {
     "title": "Convertissez vos fichiers sans qu'ils quittent votre ordinateur",
@@ -454,5 +455,79 @@
       "write": "Envoyer un e-mail"
     },
     "contents": "Sommaire"
+  },
+  "Catalog": {
+    "allTitle": "Tous les outils",
+    "allDescription": "Convertissez, compressez et modifiez images, PDF et documents. Presque tout est traité sur votre appareil, gratuitement et sans filigrane.",
+    "categoriesNav": "Catégories",
+    "toolsHeading": "Outils",
+    "conversionsHeading": "Conversions",
+    "conversionsFrom": "Depuis {format}",
+    "toolCount": "{count, plural, one {# outil} other {# outils}}",
+    "conversionCount": "{count, plural, one {# conversion} other {# conversions}}",
+    "seeCategory": "Tout voir dans {category}",
+    "categoryTitle": "Outils {category}",
+    "categories": {
+      "image": {
+        "name": "Images",
+        "description": "Convertissez entre JPG, PNG, WEBP, AVIF, HEIC et plus, et compressez ou redimensionnez vos photos dans le navigateur."
+      },
+      "pdf": {
+        "name": "PDF",
+        "description": "Fusionnez, divisez, pivotez, organisez et compressez des PDF, ou créez un PDF à partir d'images, sans envoyer vos fichiers."
+      },
+      "document": {
+        "name": "Documents",
+        "description": "Transformez Word, Excel, PowerPoint, OpenDocument et texte en PDF, ou un PDF en Word."
+      },
+      "data": {
+        "name": "Données",
+        "description": "Convertissez des données entre JSON, CSV, XML, YAML et TOML."
+      },
+      "developer": {
+        "name": "Développeurs",
+        "description": "Outils pour développeurs : encoder, décoder, formater et calculer des empreintes."
+      },
+      "utility": {
+        "name": "Utilitaires",
+        "description": "Utilitaires rapides du quotidien."
+      },
+      "subtitle": {
+        "name": "Sous-titres",
+        "description": "Convertissez et synchronisez des sous-titres."
+      },
+      "font": {
+        "name": "Polices",
+        "description": "Convertissez des polices pour le web."
+      },
+      "archive": {
+        "name": "Archives",
+        "description": "Créez et extrayez des archives en toute sécurité."
+      },
+      "ocr": {
+        "name": "OCR",
+        "description": "Reconnaissez le texte des images et des PDF numérisés."
+      },
+      "ebook": {
+        "name": "Livres numériques",
+        "description": "Convertissez des livres numériques."
+      },
+      "audio": {
+        "name": "Audio",
+        "description": "Convertissez et modifiez de l'audio sur votre appareil."
+      },
+      "video": {
+        "name": "Vidéo",
+        "description": "Convertissez et modifiez de la vidéo sur votre appareil."
+      },
+      "3d": {
+        "name": "3D",
+        "description": "Convertissez et affichez des modèles 3D."
+      },
+      "cad": {
+        "name": "CAO",
+        "description": "Affichez et convertissez des plans CAO."
+      }
+    }
   }
 }

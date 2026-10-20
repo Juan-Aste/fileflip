@@ -1350,3 +1350,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Lint, typecheck, tests (440), build y `check:static` (547 páginas, igual que antes) pasan; `scripts/audit/pdf-tools.mjs` 19/19.
+
+## 2026-10-21 00:10 UTC — Fase 3, tarea 3B.2 (páginas de categoría y "Todas las herramientas")
+
+**Qué se hizo**
+- `src/config/categories.ts`: slug de "Todas las herramientas" (`/es/herramientas`, `/en/tools`, `/pt/ferramentas`, `/fr/outils`, `/zh/tools`) y de cada categoría en cada idioma (`/es/herramientas-pdf`, `/en/pdf-tools`, `/pt/ferramentas-de-imagem`, `/fr/outils-documents`…; zh usa los de en, como las herramientas). Solo se publican categorías con herramientas o páginas de conversión (hoy: imágenes, PDF, documentos).
+- `CatalogViews.tsx`: página de categoría (herramientas en tarjetas + conversiones, agrupadas por formato de entrada si son más de 16) y página "Todas las herramientas" con secciones por categoría y filtros (navegación por categorías con `aria-current`). `CategoryIcon` con íconos lucide por categoría.
+- Rutas en el `[slug]` existente (un solo segmento, en vez de `/herramientas/pdf` del plan: reutiliza `translatePathname`, el selector de idioma y el sitemap sin rutas nuevas). Metadatos traducidos con hreflang, sitemap (+20 URL: 567 páginas estáticas) y enlaces en el header ("Herramientas" ahora lleva a `/herramientas`) y el footer.
+- Textos en el namespace `Catalog` (5 idiomas) con nombre y descripción de las 15 categorías.
+- Tests (`categories.test.ts`): slugs únicos y seguros, solo categorías con contenido, cada conversión en una sola categoría, traducción de rutas y sitemap; el test de choques de slugs incluye categorías.
+
+**Pendiente**
+- El beacon de visitas cuenta las páginas de catálogo como "otras"; se ajusta con el panel por categoría (3D.4).
+
+**Verificación**
+- Lint, typecheck, tests (445), build y `check:static` pasan; `pdf-tools.mjs` 19/19. Capturas 360/1280 claro/oscuro revisadas (`docs/screenshots/es_herramientas*.webp`).

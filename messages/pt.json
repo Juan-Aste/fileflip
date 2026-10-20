@@ -46,7 +46,8 @@
       "tools": "Ferramentas de PDF",
       "conversions": "Conversões populares",
       "company": "Fileflect"
-    }
+    },
+    "allTools": "Todas as ferramentas"
   },
   "HomePage": {
     "title": "Converta seus arquivos sem que eles saiam do seu computador",
@@ -454,5 +455,79 @@
       "write": "Enviar um e-mail"
     },
     "contents": "Conteúdo"
+  },
+  "Catalog": {
+    "allTitle": "Todas as ferramentas",
+    "allDescription": "Converta, comprima e edite imagens, PDFs e documentos. Quase tudo é processado no seu dispositivo, grátis e sem marca d'água.",
+    "categoriesNav": "Categorias",
+    "toolsHeading": "Ferramentas",
+    "conversionsHeading": "Conversões",
+    "conversionsFrom": "De {format}",
+    "toolCount": "{count, plural, one {# ferramenta} other {# ferramentas}}",
+    "conversionCount": "{count, plural, one {# conversão} other {# conversões}}",
+    "seeCategory": "Ver tudo em {category}",
+    "categoryTitle": "{category}: ferramentas online",
+    "categories": {
+      "image": {
+        "name": "Imagens",
+        "description": "Converta entre JPG, PNG, WEBP, AVIF, HEIC e outros, e comprima ou redimensione suas fotos no navegador."
+      },
+      "pdf": {
+        "name": "PDF",
+        "description": "Junte, divida, gire, organize e comprima PDFs, ou crie PDFs a partir de imagens, sem enviar seus arquivos."
+      },
+      "document": {
+        "name": "Documentos",
+        "description": "Transforme Word, Excel, PowerPoint, OpenDocument e texto em PDF, ou um PDF em Word."
+      },
+      "data": {
+        "name": "Dados",
+        "description": "Converta dados entre JSON, CSV, XML, YAML e TOML."
+      },
+      "developer": {
+        "name": "Desenvolvedores",
+        "description": "Ferramentas para desenvolvedores: codificar, decodificar, formatar e calcular hashes."
+      },
+      "utility": {
+        "name": "Utilitários",
+        "description": "Utilitários rápidos para o dia a dia."
+      },
+      "subtitle": {
+        "name": "Legendas",
+        "description": "Converta e sincronize legendas."
+      },
+      "font": {
+        "name": "Fontes",
+        "description": "Converta fontes tipográficas para a web."
+      },
+      "archive": {
+        "name": "Arquivos compactados",
+        "description": "Crie e extraia arquivos compactados com segurança."
+      },
+      "ocr": {
+        "name": "OCR",
+        "description": "Reconheça o texto de imagens e PDFs digitalizados."
+      },
+      "ebook": {
+        "name": "E-books",
+        "description": "Converta e-books."
+      },
+      "audio": {
+        "name": "Áudio",
+        "description": "Converta e edite áudio no seu dispositivo."
+      },
+      "video": {
+        "name": "Vídeo",
+        "description": "Converta e edite vídeo no seu dispositivo."
+      },
+      "3d": {
+        "name": "3D",
+        "description": "Converta e visualize modelos 3D."
+      },
+      "cad": {
+        "name": "CAD",
+        "description": "Visualize e converta desenhos CAD."
+      }
+    }
   }
 }

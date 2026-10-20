@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { longtailPages } from "@/content/longtail";
 import { locales } from "@/i18n/routing";
+import { allToolsSlugs, categorySlug, publishedCategories } from "./categories";
 import { conversionPages, conversionSlug } from "./conversion-pages";
 import { formats } from "./formats";
 import { translatePathname } from "./routes";
@@ -70,9 +71,11 @@ describe("tool slugs", () => {
     }
   });
 
-  it("never collide with conversion or long-tail pages", () => {
+  it("never collide with catalog, conversion or long-tail pages", () => {
     for (const locale of locales) {
       const all = [
+        allToolsSlugs[locale],
+        ...publishedCategories.map((c) => categorySlug(c, locale)),
         ...availableTools.map((id) => tools[id].slugs[locale]),
         ...conversionPages.map((c) => conversionSlug(c, locale)),
         ...longtailPages.filter((p) => p.locale === locale).map((p) => p.slug),
