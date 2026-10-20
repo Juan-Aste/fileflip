@@ -12,6 +12,7 @@ import RangesInput from "./RangesInput";
 import SinglePdfInput from "./SinglePdfInput";
 import ToolResult from "./ToolResult";
 import { useSinglePdf } from "./useSinglePdf";
+import { trackTool } from "@/lib/stats-client";
 
 export default function RotatePdfTool() {
   const t = useTranslations("ToolUi");
@@ -33,7 +34,15 @@ export default function RotatePdfTool() {
     setFailed(false);
     setWorking(true);
     try {
-      setResult(await rotatePdfFile(pdf.file, Number(rotation) as Rotation, pages));
+      const file = pdf.file;
+      setResult(
+        await trackTool(
+          "rotate-pdf",
+          { from: "pdf", to: "pdf", files: [file] },
+          () => rotatePdfFile(file, Number(rotation) as Rotation, pages),
+          (b) => b.size,
+        ),
+      );
     } catch (error) {
       console.error(error);
       setFailed(true);

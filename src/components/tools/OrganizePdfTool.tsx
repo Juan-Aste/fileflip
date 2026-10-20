@@ -11,6 +11,7 @@ import SinglePdfInput from "./SinglePdfInput";
 import ToolResult from "./ToolResult";
 import { usePdfThumbnails } from "./usePdfThumbnails";
 import { useSinglePdf } from "./useSinglePdf";
+import { trackTool } from "@/lib/stats-client";
 
 const pageButton =
   "grid h-7 w-7 place-items-center rounded-md text-sm text-muted hover:bg-brand-soft hover:text-foreground disabled:opacity-30";
@@ -52,7 +53,10 @@ export default function OrganizePdfTool() {
     setFailed(false);
     setWorking(true);
     try {
-      setResult(await organizePdfFile(pdf.file, pages));
+      const file = pdf.file;
+      setResult(
+        await trackTool("organize-pdf", { from: "pdf", to: "pdf", files: [file] }, () => organizePdfFile(file, pages), (b) => b.size),
+      );
     } catch (error) {
       console.error(error);
       setFailed(true);

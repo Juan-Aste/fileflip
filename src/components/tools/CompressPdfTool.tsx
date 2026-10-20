@@ -13,6 +13,7 @@ import ProgressBar from "./ProgressBar";
 import SinglePdfInput from "./SinglePdfInput";
 import ToolResult from "./ToolResult";
 import { useSinglePdf } from "./useSinglePdf";
+import { trackTool } from "@/lib/stats-client";
 
 export default function CompressPdfTool() {
   const t = useTranslations("ToolUi");
@@ -30,7 +31,14 @@ export default function CompressPdfTool() {
     setFailed(false);
     setProgress(0);
     try {
-      setResult((await compressPdfFile(pdf.file, level, setProgress)).blob);
+      const file = pdf.file;
+      const { blob } = await trackTool(
+        "compress-pdf",
+        { from: "pdf", to: "pdf", files: [file] },
+        () => compressPdfFile(file, level, setProgress),
+        (r) => r.blob.size,
+      );
+      setResult(blob);
     } catch (error) {
       console.error(error);
       setFailed(true);

@@ -994,4 +994,15 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Tests nuevos: validación de los campos, guardado en MongoDB en memoria, registro de duración/error sin el nombre del archivo en la API de documentos, `isLoggedByServerCode`.
 - Playwright (`next start`): convertir un PNG a WEBP envía `{"from":"png","to":"webp","size":228,"outputSize":90,"success":true,"durationMs":26}`.
-- Lint, typecheck, build y tests (270) pasan.
+- Lint, typecheck, build y tests (266) pasan.
+
+## 2026-10-20 02:55 UTC — Fase 2, tarea 2C.2b (uso de las herramientas PDF)
+
+**Qué se hizo**
+- `trackTool(tool, { from, to, files }, run, outputSize)` en `src/lib/stats-client.ts`: ejecuta la herramienta, mide la duración y envía por el mismo beacon (`/api/stats`) la herramienta, los formatos, el tamaño total de entrada, el de salida y si funcionó (si falla, `errorCode: "conversionFailed"` y vuelve a lanzar el error).
+- Las 6 herramientas PDF lo usan: unir, dividir (salida = suma de las partes), rotar, ordenar, imágenes a PDF (`from` = formato de la primera imagen) y comprimir. Se registran con `from`/`to` = `pdf` y `tool` = id de la herramienta, así el panel puede separarlas del conversor de formatos.
+
+**Verificación**
+- Tests de `trackTool` (éxito y fallo, sin nombres de archivo).
+- Playwright (`next start`): unir 2 PDF envía `{"tool":"merge-pdf","from":"pdf","to":"pdf","size":1176,"outputSize":510,"success":true,"durationMs":99}` y la herramienta sigue funcionando.
+- Lint, typecheck, build y tests pasan.

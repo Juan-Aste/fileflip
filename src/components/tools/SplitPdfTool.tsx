@@ -12,6 +12,7 @@ import RangesInput from "./RangesInput";
 import SinglePdfInput from "./SinglePdfInput";
 import ToolResult from "./ToolResult";
 import { useSinglePdf } from "./useSinglePdf";
+import { trackTool } from "@/lib/stats-client";
 
 type Mode = "each" | "ranges" | "extract";
 
@@ -44,7 +45,13 @@ export default function SplitPdfTool() {
     setProgress(0);
     try {
       const base = baseName(pdf.file.name);
-      const outputs = await splitPdfFile(pdf.file, groups, setProgress);
+      const file = pdf.file;
+      const outputs = await trackTool(
+        "split-pdf",
+        { from: "pdf", to: "pdf", files: [file] },
+        () => splitPdfFile(file, groups, setProgress),
+        (parts) => parts.reduce((sum, b) => sum + b.size, 0),
+      );
       if (outputs.length === 1) {
         setResult({ blob: outputs[0], name: `${base}-${rangeLabel(groups[0])}.pdf` });
       } else {

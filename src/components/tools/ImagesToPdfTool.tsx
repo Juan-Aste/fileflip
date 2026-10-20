@@ -13,6 +13,7 @@ import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
 import ToolResult from "./ToolResult";
 import { useToolFiles } from "./useToolFiles";
+import { trackTool } from "@/lib/stats-client";
 
 const ACCEPTED = (Object.keys(formats) as FormatId[]).filter((f) => formats[f].category === "image");
 const MARGINS = { none: 0, small: 18, large: 42 } as const;
@@ -33,7 +34,14 @@ export default function ImagesToPdfTool() {
     setProgress(0);
     try {
       const inputs = ready.map((f) => ({ file: f.file, format: f.format as FormatId }));
-      setResult(await imagesToPdfFile(inputs, { pageSize, margin: MARGINS[margin] }, setProgress));
+      setResult(
+        await trackTool(
+          "images-to-pdf",
+          { from: inputs[0].format, to: "pdf", files: inputs.map((i) => i.file) },
+          () => imagesToPdfFile(inputs, { pageSize, margin: MARGINS[margin] }, setProgress),
+          (b) => b.size,
+        ),
+      );
     } catch (error) {
       console.error(error);
       setFailed(true);

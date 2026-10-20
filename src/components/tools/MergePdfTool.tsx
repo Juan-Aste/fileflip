@@ -10,6 +10,7 @@ import ProgressBar from "./ProgressBar";
 import ToolResult from "./ToolResult";
 import { useToolFiles } from "./useToolFiles";
 import { buttonPrimary } from "@/components/ui/styles";
+import { trackTool } from "@/lib/stats-client";
 
 const ACCEPTED = ["pdf"] as const;
 
@@ -26,7 +27,10 @@ export default function MergePdfTool() {
     setFailed(false);
     setProgress(0);
     try {
-      setResult(await mergePdfFiles(ready.map((f) => f.file), setProgress));
+      const inputs = ready.map((f) => f.file);
+      setResult(
+        await trackTool("merge-pdf", { from: "pdf", to: "pdf", files: inputs }, () => mergePdfFiles(inputs, setProgress), (b) => b.size),
+      );
     } catch (error) {
       console.error(error);
       setFailed(true);
