@@ -743,3 +743,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Qué sigue**
 - 2A.10: medición final de 2A.
+
+## 2026-10-20 00:55 UTC — Fase 2, tarea 2A.10 (medición final de 2A) — HITO 2A TERMINADO
+
+**Qué se hizo**
+- Medición final con el mismo método que la base (`scripts/perf/lighthouse.sh`, móvil, mediana de 3; la portada con 5 corridas extra por dispersión de TBT). Resultado y comparación en `docs/perf/2026-10-20-2A-final.md`.
+
+**Mediciones (antes → después)**
+- Rendimiento: 99 → 99 en las 6 páginas; accesibilidad 100; SEO 100 en todas (precios 91 → 100).
+- JS transferido: portada 142 → 137 kB, conversiones y cola larga 150 → 138 kB, herramienta PDF 151 → 145 kB, precios 147 → 142 kB.
+- LCP 1,7–2,1 s (antes 2,0–2,1 s), TBT 60–110 ms (ruido de ±40 ms), CLS 0 (también al cargar sesión, resultados y anuncios).
+- Meta del hito (≥ 90 móvil en portada y conversiones sin empeorar accesibilidad/SEO): cumplida.
+
+**Qué sigue**
+- Hito 2B (diseño), empezando por 2B.1: identidad visual y `docs/design.md`.

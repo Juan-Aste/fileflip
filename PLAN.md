@@ -131,7 +131,7 @@ Meta: Lighthouse móvil ≥ 90 en portada y páginas de conversión, sin empeora
 - [x] 2A.7 Caché larga e inmutable para `.wasm` y workers con hash (`headers()` en `next.config.ts`), y precarga del códec al elegir formato o al pasar el mouse por la herramienta
 - [x] 2A.8 Workers: reutilizar el worker, lotes con concurrencia limitada según `navigator.hardwareConcurrency` (pool), liberar memoria (`revokeObjectURL`, `ImageBitmap.close`) + tests del pool
 - [x] 2A.9 Servidor: índices en MongoDB para las consultas actuales y del panel, timeouts razonables hacia Gotenberg, respuestas sin copias innecesarias de buffers
-- [ ] 2A.10 Medición final de 2A (mismas páginas y método) y comparación en `docs/perf/`
+- [x] 2A.10 Medición final de 2A (mismas páginas y método) y comparación en `docs/perf/`
 
 ### Hito 2B — Diseño
 Meta: aspecto profesional, moderno, confiable y propio; interfaz limpia. Capturas con Playwright (360 px y 1280 px, claro y oscuro) revisadas después de cada tarea; finales en `docs/screenshots/`.
