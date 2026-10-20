@@ -170,3 +170,24 @@ Ruta `/[locale]/admin`, solo para usuarios logueados con email en `ADMIN_EMAILS`
 - [x] 2C.9 Gráficos livianos cargados solo en el panel (línea de conversiones por día, barras de top 10, etc.)
 - [x] 2C.10 Exportar a CSV las tablas principales + tests
 - [x] 2C.11 Revisión final de la fase 2: lint, build, tests, mediciones finales y "FASE 2 TERMINADA" en PROGRESS.md
+
+---
+
+## Fase 3
+
+Cambio de nombre a **Fileflect** y ampliación del catálogo de herramientas para competir con sitios como fileflip.org. Orden de hitos: 3.0 → 3A → 3B → 3C → 3D → 3E. Las tareas de 3B a 3E se escriben en detalle cuando termine la auditoría (3A), a partir de `docs/audit.md`.
+
+Principios (resumen): una herramienta solo cuenta si procesa archivos reales de punta a punta, con tests que validan el archivo de salida; un formato solo se muestra si hay un motor que lo lee/genera y un fixture que lo prueba; primero el navegador (WASM/JS en workers, carga diferida), servidor solo si hace falta; nunca servicios de terceros; nada de librerías de conversión en el bundle de la portada; Lighthouse móvil ≥ 90 y CLS 0 al final de cada hito; licencias en `docs/dependencies.md` (sin GPL/AGPL sin aprobación del dueño); límites, cancelación, limpieza y protecciones (zip bomb, zip slip, XXE) en todas las herramientas; sin COOP/COEP en todo el sitio.
+
+### Hito 3.0 — Cambio de nombre a Fileflect
+- [ ] 3.0.1 Textos: reemplazar "FileFlip" por "Fileflect" en `messages/*.json` (5 idiomas + admin), metadatos, títulos, Open Graph, manifest, emails de login, descripciones de pagos de Mercado Pago, panel de admin, páginas legales y nombres de descarga (CSV, ZIP); `package.json` (name); `EMAIL_FROM` por defecto en `.env.example` = "Fileflect <no-reply@example.com>"; tests actualizados
+- [ ] 3.0.2 Documentación: README, DEPLOY.md, docs/design.md y encabezados de PLAN.md/PROGRESS.md; búsqueda insensible a mayúsculas en todo el repo para confirmar que no queda "FileFlip" visible (solo nombres internos del repo y URLs de GitHub); "Pendiente del dueño": verificar disponibilidad del nombre/dominio/marca/redes y, si quiere, renombrar el repo
+- [ ] 3.0.3 Logo SVG, favicon/íconos de app e imágenes Open Graph con el nombre Fileflect, respetando `docs/design.md`; capturas con Playwright (360/1280, claro/oscuro) revisadas
+
+### Hito 3A — Auditoría y comparación
+- [ ] 3A.1 Fixtures: script reproducible `scripts/fixtures/generate.mjs` que crea en `tests/fixtures/` archivos pequeños (< 200 KB) de cada formato actual (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, SVG, HEIC, PDF de varias páginas, DOCX, XLSX, PPTX, ODT, ODS, RTF, TXT, CSV) más corruptos/truncados; sin derechos de autor ni datos personales; `tests/fixtures/README.md` con el origen de cada uno
+- [ ] 3A.2 Inventario en el servidor: tests de integración que pasan cada fixture por las APIs actuales (respaldo de imágenes con sharp, documentos → PDF y PDF → Word con Gotenberg simulado o real si está disponible) y validan la salida; anotar funciona/falla/incompleto
+- [ ] 3A.3 Inventario en el navegador: script Playwright (`scripts/audit/browser.mjs`) que sube cada fixture al conversor y a cada herramienta PDF, descarga la salida y la valida con una librería independiente (tipo y dimensiones de imagen con sharp, páginas con pdf-lib); resultados en `docs/audit-inventory.md`; las fallas se agregan como tareas aparte
+- [ ] 3A.4 Comparación con fileflip.org y 2–3 competidores (solo funcionalidades: categorías, herramientas, formatos), con WebFetch
+- [ ] 3A.5 `docs/audit.md`: tabla herramienta/par de formatos (¿lo tenemos?, ¿funciona?, ¿competencia?, navegador/servidor, motor propuesto, licencia, dificultad, riesgos, tests) + ideas propias para LatAm + lista priorizada; `docs/dependencies.md` con las licencias actuales
+- [ ] 3A.6 Escribir en PLAN.md las tareas detalladas de 3B a 3E según la auditoría y el orden de prioridad acordado

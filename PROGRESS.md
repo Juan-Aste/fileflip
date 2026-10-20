@@ -1160,3 +1160,9 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - `MONGODB_URI` en producción: sin base de datos el panel muestra un aviso y no hay estadísticas.
 - (Opcional) Cloudflare u otro CDN delante de Railway para que las visitas tengan país (`cf-ipcountry`); sin eso aparecen como "Desconocido".
 - Mirar el panel con datos reales y decidir si hace falta algo más (por ejemplo, conversión del MRR a una sola moneda).
+
+## Inicio de la fase 3
+
+## 2026-10-20 21:40 UTC — Fase 3: plan
+
+- PLAN.md: nueva sección "Fase 3" con las tareas de los hitos 3.0 (cambio de nombre a Fileflect) y 3A (auditoría y comparación). Las tareas de 3B–3E se detallan al terminar la auditoría (tarea 3A.6).
