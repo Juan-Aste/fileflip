@@ -908,3 +908,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Capturas de `/es/pricing`, `/es/login` (sin métodos, con Google + correo y con error), `/es/login/verify` y `/es/account` (con sesión simulada) a 360/1280 en claro y oscuro, revisadas. `/es/pricing` trae un único `FAQPage`.
 - Lint, build, typecheck y tests (255) pasan.
+
+## 2026-10-20 01:40 UTC — Fase 2, tarea 2B.10b (legales, contacto y 404) — 2B.10 TERMINADA
+
+**Qué se hizo**
+- Privacidad y términos (`LegalPage`): `PageHero` con ícono (escudo / documento), fecha de actualización como insignia, índice "Contenido" con enlaces a cada sección (fijo al costado en escritorio, arriba en móvil) y secciones numeradas dentro de una tarjeta con separadores. Mensaje nuevo `Legal.contents` en los 5 idiomas.
+- Contacto: `PageHero`, tarjeta central con el correo y botón "Escribir un correo" (`Legal.contact.write`, 5 idiomas), y dos tarjetas con ícono para "qué contarnos" y "borrar tus datos".
+- 404: `PageHero` con ícono, botón "Volver al inicio" con ícono y accesos a las conversiones populares (para no dejar al visitante sin salida).
+- Corrección (venía de antes): las URL desconocidas se renderizan con el "error shell" de Next en el cliente, donde el script de tema del `<head>` no se ejecuta, así que el 404 salía siempre en claro. `ThemeToggle` ahora vuelve a aplicar el tema al montarse.
+
+**Nota**
+- `NEXT_PUBLIC_CONTACT_EMAIL` se fija en el build (la página de contacto es estática): hay que definirla antes de `next build` en Railway.
+
+**Verificación**
+- Capturas de `/es/privacy`, `/zh/terms`, `/es/contact` y `/es/no-existe` (360/1280, claro/oscuro) revisadas; el 404 ahora respeta el modo oscuro. Sin desborde horizontal a 360 px en precios, login, legales, contacto y 404.
+- Lint, build y tests (255) pasan.

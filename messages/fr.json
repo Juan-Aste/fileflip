@@ -448,7 +448,9 @@
       "emailLabel": "E-mail",
       "missing": "L'adresse de contact n'est pas encore configurée.",
       "topics": "Pour signaler un problème, indiquez le navigateur et le type de fichier utilisés. Ne nous envoyez jamais de documents privés par e-mail.",
-      "privacy": "Pour demander la suppression de vos données ou de votre compte, écrivez-nous depuis l'adresse e-mail utilisée lors de l'inscription."
-    }
+      "privacy": "Pour demander la suppression de vos données ou de votre compte, écrivez-nous depuis l'adresse e-mail utilisée lors de l'inscription.",
+      "write": "Envoyer un e-mail"
+    },
+    "contents": "Sommaire"
   }
 }

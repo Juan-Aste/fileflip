@@ -448,7 +448,9 @@
       "emailLabel": "Email",
       "missing": "The contact address isn't configured yet.",
       "topics": "If you're reporting a problem, tell us which browser and what kind of file you were using. Never email us private documents.",
-      "privacy": "To request deletion of your data or account, write to us from the email you signed up with."
-    }
+      "privacy": "To request deletion of your data or account, write to us from the email you signed up with.",
+      "write": "Send an email"
+    },
+    "contents": "Contents"
   }
 }

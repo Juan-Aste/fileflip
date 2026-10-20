@@ -20,7 +20,13 @@ export default function ThemeToggle() {
   const t = useTranslations("Theme");
   const [theme, setTheme] = useState<Theme>("system");
 
-  useEffect(() => setTheme(readTheme()), []);
+  // Also re-apply on mount: pages rendered on the client (the 404 for unknown
+  // URLs uses Next's error shell) never run the inline theme script.
+  useEffect(() => {
+    const saved = readTheme();
+    setTheme(saved);
+    applyTheme(saved);
+  }, []);
 
   // Keep following the OS while in "system" mode.
   useEffect(() => {

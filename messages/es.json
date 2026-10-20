@@ -448,7 +448,9 @@
       "emailLabel": "Correo",
       "missing": "La dirección de contacto todavía no está configurada.",
       "topics": "Cuéntanos qué navegador y qué tipo de archivo usabas si nos escribes por un problema. Nunca nos envíes documentos privados por correo.",
-      "privacy": "Para pedir la eliminación de tus datos o de tu cuenta, escríbenos desde el correo con el que te registraste."
-    }
+      "privacy": "Para pedir la eliminación de tus datos o de tu cuenta, escríbenos desde el correo con el que te registraste.",
+      "write": "Escribir un correo"
+    },
+    "contents": "Contenido"
   }
 }

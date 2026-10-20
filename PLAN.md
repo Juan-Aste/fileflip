@@ -146,9 +146,9 @@ Meta: aspecto profesional, moderno, confiable y propio; interfaz limpia. Captura
 - [x] 2B.9 Herramientas PDF, páginas de conversión y de cola larga con el nuevo diseño (dividida)
   - [x] 2B.9a Diseño de las páginas: encabezado común (`PageHero`), íconos lucide de herramientas, pasos en tarjetas, bloque de privacidad y enlaces relacionados en las páginas de conversión, texto y FAQ de cola larga
   - [x] 2B.9b Interior de las herramientas PDF: lista de archivos, opciones, progreso, resultado y descarga con el nuevo diseño (estados como en el conversor)
-- [ ] 2B.10 Precios, login, cuenta, legales, contacto y 404 con el nuevo diseño (dividida)
+- [x] 2B.10 Precios, login, cuenta, legales, contacto y 404 con el nuevo diseño (dividida)
   - [x] 2B.10a Precios, login (y "revisa tu correo") y Mi cuenta
-  - [ ] 2B.10b Legales (privacidad y términos), contacto y 404
+  - [x] 2B.10b Legales (privacidad y términos), contacto y 404
 - [ ] 2B.11 Microinteracciones y transiciones que respetan `prefers-reduced-motion`; revisión responsive 360/768/1280 en todas las páginas
 - [ ] 2B.12 Capturas finales en `docs/screenshots/` y nueva medición de Lighthouse (no empeorar 2A)
 
