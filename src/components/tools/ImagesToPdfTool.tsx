@@ -58,7 +58,7 @@ export default function ImagesToPdfTool() {
     <div className="flex flex-col gap-4">
       <Dropzone onFiles={add} compact={files.length > 0} accept="image/*,.heic,.heif" />
       {files.length > 0 && (
-        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 sm:p-6">
+        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface shadow-card p-4 sm:p-6">
           <FileList files={files} onRemove={remove} onMove={move} rejectLabel={t("onlyImages")} />
           <div className="flex flex-col gap-4 border-t border-border pt-4">
             <ChoiceGroup
@@ -83,7 +83,7 @@ export default function ImagesToPdfTool() {
             />
             {progress !== null && <ProgressBar value={progress} label={t("working")} />}
             {failed && (
-              <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+              <p role="alert" className="text-sm text-danger">
                 {te("conversionFailed")}
               </p>
             )}

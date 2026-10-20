@@ -76,7 +76,7 @@ export default function SplitPdfTool() {
     <div className="flex flex-col gap-4">
       <SinglePdfInput pdf={pdf} />
       {pdf.pages !== null && (
-        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 sm:p-6">
+        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface shadow-card p-4 sm:p-6">
           <ChoiceGroup
             legend={t("splitMode")}
             value={mode}
@@ -97,7 +97,7 @@ export default function SplitPdfTool() {
           )}
           {progress !== null && <ProgressBar value={progress} label={t("working")} />}
           {failed && (
-            <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+            <p role="alert" className="text-sm text-danger">
               {te("conversionFailed")}
             </p>
           )}

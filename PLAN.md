@@ -136,7 +136,7 @@ Meta: Lighthouse móvil ≥ 90 en portada y páginas de conversión, sin empeora
 ### Hito 2B — Diseño
 Meta: aspecto profesional, moderno, confiable y propio; interfaz limpia. Capturas con Playwright (360 px y 1280 px, claro y oscuro) revisadas después de cada tarea; finales en `docs/screenshots/`.
 - [x] 2B.1 Identidad visual en `docs/design.md`: paleta claro/oscuro con contraste AA, tipografías (títulos con personalidad + texto legible, vía `next/font`), espaciado, radios, sombras; tokens como variables CSS en Tailwind
-- [ ] 2B.2 Aplicar los tokens y las fuentes en todo el sitio (globals.css, componentes base: botones, tarjetas, inputs, insignias)
+- [x] 2B.2 Aplicar los tokens y las fuentes en todo el sitio (globals.css, componentes base: botones, tarjetas, inputs, insignias)
 - [ ] 2B.3 Logo de FileFlip en SVG (ícono original + texto), favicon/íconos de app e imagen Open Graph por idioma
 - [ ] 2B.4 Header y footer nuevos con navegación móvil cómoda (menú accesible) e íconos lucide-react
 - [ ] 2B.5 Portada: hero con la zona para arrastrar como protagonista, mensaje de privacidad y accesos rápidos a las conversiones más usadas

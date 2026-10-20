@@ -6,6 +6,7 @@ import { Link, redirect } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { currentSubscription, planFromSubscription } from "@/lib/billing";
 import { formatCurrency, formatDate } from "@/lib/format";
+import { buttonPrimary } from "@/components/ui/styles";
 
 // Depends on the visitor's session.
 export const dynamic = "force-dynamic";
@@ -50,7 +51,7 @@ export default async function AccountPage({ params, searchParams }: Props) {
         </p>
       )}
 
-      <section aria-labelledby="plan" className="flex flex-col gap-2 rounded-2xl border border-border bg-surface p-6">
+      <section aria-labelledby="plan" className="flex flex-col gap-2 rounded-2xl border border-border bg-surface shadow-card p-6">
         <h2 id="plan" className="text-sm font-medium text-muted">
           {t("plan")}
         </h2>
@@ -64,7 +65,7 @@ export default async function AccountPage({ params, searchParams }: Props) {
             {sub.status === "active" && sub.currentPeriodEnd && (
               <p className="text-sm">{t("nextPayment", { date: formatDate(sub.currentPeriodEnd, loc) })}</p>
             )}
-            {sub.status === "paused" && <p className="text-sm text-amber-700 dark:text-amber-300">{t("paused")}</p>}
+            {sub.status === "paused" && <p className="text-sm text-warning">{t("paused")}</p>}
             {sub.status === "cancelled" && sub.currentPeriodEnd && (
               <p className="text-sm">{t("paidUntil", { date: formatDate(sub.currentPeriodEnd, loc) })}</p>
             )}
@@ -79,7 +80,7 @@ export default async function AccountPage({ params, searchParams }: Props) {
             <p className="text-sm text-muted">{t("freeBody")}</p>
             <Link
               href="/pricing"
-              className="mt-2 self-start rounded-xl bg-brand-solid px-5 py-2.5 font-semibold text-white hover:bg-brand-solid-hover"
+              className={`mt-2 self-start ${buttonPrimary}`}
             >
               {t("upgrade")}
             </Link>

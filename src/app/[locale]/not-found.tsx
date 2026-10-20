@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { buttonPrimary } from "@/components/ui/styles";
 
 export default function NotFound() {
   const t = useTranslations("Errors");
@@ -9,7 +10,7 @@ export default function NotFound() {
       <p className="text-muted">{t("notFoundBody")}</p>
       <Link
         href="/"
-        className="rounded-lg bg-brand-solid px-4 py-2 font-medium text-white hover:bg-brand-solid-hover"
+        className={buttonPrimary}
       >
         {t("backHome")}
       </Link>

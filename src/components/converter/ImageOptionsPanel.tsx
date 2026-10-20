@@ -8,6 +8,7 @@ import {
   type ImageOptions,
 } from "@/lib/image/options";
 import type { Resize } from "@/lib/image/dimensions";
+import { field } from "@/components/ui/styles";
 
 interface Props {
   value: ImageOptions;
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const input =
-  "h-9 w-full rounded-lg border border-border bg-background px-2.5 text-sm focus-visible:outline-2 focus-visible:outline-brand";
+  `h-9 w-full text-sm ${field}`;
 
 const toNumber = (v: string) => (v === "" ? undefined : Math.max(1, Number(v)));
 

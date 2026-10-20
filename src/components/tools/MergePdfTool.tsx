@@ -8,6 +8,7 @@ import FileList from "./FileList";
 import ProgressBar from "./ProgressBar";
 import ToolResult from "./ToolResult";
 import { useToolFiles } from "./useToolFiles";
+import { buttonPrimary } from "@/components/ui/styles";
 
 const ACCEPTED = ["pdf"] as const;
 
@@ -50,12 +51,12 @@ export default function MergePdfTool() {
     <div className="flex flex-col gap-4">
       <Dropzone onFiles={add} compact={files.length > 0} accept="application/pdf,.pdf" />
       {files.length > 0 && (
-        <div className="rounded-2xl border border-border bg-surface p-4 sm:p-6">
+        <div className="rounded-2xl border border-border bg-surface shadow-card p-4 sm:p-6">
           <FileList files={files} onRemove={remove} onMove={move} rejectLabel={t("onlyPdf")} />
           <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4">
             {progress !== null && <ProgressBar value={progress} label={t("working")} />}
             {failed && (
-              <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+              <p role="alert" className="text-sm text-danger">
                 {te("conversionFailed")}
               </p>
             )}
@@ -64,7 +65,7 @@ export default function MergePdfTool() {
               type="button"
               onClick={run}
               disabled={ready.length < 2 || detecting || progress !== null}
-              className="self-start rounded-xl bg-brand-solid px-6 py-3 font-semibold text-white transition hover:bg-brand-solid-hover disabled:opacity-50"
+              className={`self-start ${buttonPrimary}`}
             >
               {progress !== null ? t("working") : tt("action")}
             </button>

@@ -5,6 +5,7 @@ import { formats } from "@/config/formats";
 import type { Locale } from "@/i18n/routing";
 import { formatBytes, formatPercent } from "@/lib/format";
 import type { QueuedFile } from "./useFileQueue";
+import { buttonPrimarySmall } from "@/components/ui/styles";
 
 interface Props {
   item: QueuedFile;
@@ -20,11 +21,11 @@ export default function FileRow({ item, onRemove }: Props) {
 
   let status: React.ReactNode;
   if (format === null) {
-    status = <span className="text-red-600 dark:text-red-400">{t("unsupported")}</span>;
+    status = <span className="text-danger">{t("unsupported")}</span>;
   } else if (format === undefined) {
     status = t("detecting");
   } else if (job?.status === "error") {
-    status = <span className="text-red-600 dark:text-red-400">{te(job.code)}</span>;
+    status = <span className="text-danger">{te(job.code)}</span>;
   } else if (job?.status === "done") {
     const ratio = 1 - job.blob.size / file.size;
     status = (
@@ -39,7 +40,7 @@ export default function FileRow({ item, onRemove }: Props) {
           </span>
         )}
         {ratio > 0.01 && (
-          <span className="ml-2 font-medium text-emerald-600 dark:text-emerald-400">
+          <span className="ml-2 font-medium text-success">
             {t("saved", { percent: formatPercent(ratio, locale) })}
           </span>
         )}
@@ -63,7 +64,7 @@ export default function FileRow({ item, onRemove }: Props) {
           <a
             href={job.url}
             download={job.name}
-            className="shrink-0 rounded-lg bg-brand-solid px-3 py-1.5 text-sm font-semibold text-white hover:bg-brand-solid-hover"
+            className={`shrink-0 ${buttonPrimarySmall}`}
           >
             {tc("download")}
           </a>

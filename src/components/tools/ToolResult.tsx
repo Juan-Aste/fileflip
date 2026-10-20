@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "@/i18n/routing";
 import AdSlot from "@/components/ads/AdSlot";
 import { formatBytes } from "@/lib/format";
+import { buttonPrimary } from "@/components/ui/styles";
 
 interface Props {
   blob: Blob;
@@ -26,7 +27,7 @@ export default function ToolResult({ blob, filename, onReset, note }: Props) {
     <>
       <div
         role="status"
-        className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-surface p-6 text-center"
+        className="flex flex-col items-center gap-3 rounded-2xl border border-border bg-surface shadow-card p-6 text-center"
       >
         <span aria-hidden="true" className="text-4xl">
           ✅
@@ -40,7 +41,7 @@ export default function ToolResult({ blob, filename, onReset, note }: Props) {
           <a
             href={url}
             download={filename}
-            className="rounded-xl bg-brand-solid px-6 py-3 font-semibold text-white hover:bg-brand-solid-hover"
+            className={buttonPrimary}
           >
             {tc("download")}
           </a>

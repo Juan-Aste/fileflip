@@ -16,6 +16,7 @@ import {
 import Dropzone from "./Dropzone";
 import ProcessingBadge from "./ProcessingBadge";
 import { useFileQueue } from "./useFileQueue";
+import { buttonPrimary, choicePill } from "@/components/ui/styles";
 
 // Only shown once files are added: keep them out of the initial bundle.
 const FileRow = dynamic(() => import("./FileRow"));
@@ -99,7 +100,7 @@ export default function Converter({ from, to, options }: Props = {}) {
       {items.length > 0 && (
         <section
           aria-label={t("fileList")}
-          className="rounded-2xl border border-border bg-surface p-4 sm:p-6"
+          className="rounded-2xl border border-border bg-surface shadow-card p-4 sm:p-6"
         >
           <div className="mb-3 flex items-center justify-between">
             <h2 className="font-semibold">
@@ -147,7 +148,7 @@ export default function Converter({ from, to, options }: Props = {}) {
                             onChange={() => setTarget(o.to)}
                             className="peer sr-only"
                           />
-                          <span className="block rounded-lg border border-border px-3 py-1.5 text-sm font-semibold transition peer-checked:border-brand peer-checked:bg-brand-solid peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-brand">
+                          <span className={choicePill}>
                             {formats[o.to].label}
                           </span>
                         </label>
@@ -155,7 +156,7 @@ export default function Converter({ from, to, options }: Props = {}) {
                     </div>
                   </fieldset>
                   {selected.from === "pdf" && selected.to === "docx" && (
-                    <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-900 dark:bg-amber-950 dark:text-amber-200">
+                    <p className="rounded-lg bg-warning-soft px-3 py-2 text-sm text-warning">
                       {t("pdfToWordNote")}
                     </p>
                   )}
@@ -176,7 +177,7 @@ export default function Converter({ from, to, options }: Props = {}) {
                         selected &&
                         convertAll(selected.to, imageOutput ? imageOptions : {})
                       }
-                      className="self-start rounded-xl bg-brand-solid px-6 py-3 font-semibold text-white transition hover:bg-brand-solid-hover disabled:opacity-50"
+                      className={`self-start ${buttonPrimary}`}
                     >
                       {working ? t("converting") : t("convert")}
                     </button>

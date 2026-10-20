@@ -3,9 +3,9 @@ import type { Engine } from "@/config/formats";
 
 const styles: Record<Engine, string> = {
   browser:
-    "bg-emerald-50 text-emerald-800 ring-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:ring-emerald-900",
+    "bg-success-soft text-success ring-success/30",
   server:
-    "bg-amber-50 text-amber-900 ring-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:ring-amber-900",
+    "bg-warning-soft text-warning ring-warning/30",
 };
 
 /** Tells users where their file is processed: the core privacy promise. */

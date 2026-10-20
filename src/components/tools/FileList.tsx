@@ -35,7 +35,7 @@ export default function FileList({ files, onRemove, onMove, rejectLabel }: Props
           </span>
           <span className="hidden shrink-0 text-sm text-muted sm:inline">
             {item.format === null ? (
-              <span className="text-red-600 dark:text-red-400">{rejectLabel}</span>
+              <span className="text-danger">{rejectLabel}</span>
             ) : (
               formatBytes(item.file.size, locale)
             )}

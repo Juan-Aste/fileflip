@@ -47,7 +47,7 @@ export default function CompressPdfTool() {
         filename={pdf.file.name.replace(/(\.pdf)?$/i, "-compressed.pdf")}
         note={
           saved > 0.01 ? (
-            <span className="text-emerald-600 dark:text-emerald-400">
+            <span className="text-success">
               {t("reduced", {
                 before: formatBytes(before, locale),
                 after: formatBytes(result.size, locale),
@@ -70,7 +70,7 @@ export default function CompressPdfTool() {
     <div className="flex flex-col gap-4">
       <SinglePdfInput pdf={pdf} />
       {pdf.pages !== null && (
-        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 sm:p-6">
+        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface shadow-card p-4 sm:p-6">
           <ChoiceGroup
             legend={t("level")}
             value={level}
@@ -83,7 +83,7 @@ export default function CompressPdfTool() {
           />
           {progress !== null && <ProgressBar value={progress} label={t("working")} />}
           {failed && (
-            <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+            <p role="alert" className="text-sm text-danger">
               {te("conversionFailed")}
             </p>
           )}

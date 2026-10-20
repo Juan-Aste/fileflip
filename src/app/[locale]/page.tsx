@@ -6,6 +6,7 @@ import WithSidebarAd from "@/components/ads/WithSidebarAd";
 import Converter from "@/components/converter/Converter";
 import type { Locale } from "@/i18n/routing";
 import { alternatesFor } from "@/lib/seo";
+import { buttonPrimary } from "@/components/ui/styles";
 
 export function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   return params.then(({ locale }) => ({ alternates: alternatesFor(locale as Locale, () => "") }));
@@ -42,7 +43,7 @@ export default function HomePage({
         </p>
         <a
           href="#converter"
-          className="rounded-xl bg-brand-solid px-6 py-3 text-base font-semibold text-white shadow-sm transition hover:bg-brand-solid-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          className={buttonPrimary}
         >
           {t("cta")}
         </a>
@@ -62,7 +63,7 @@ export default function HomePage({
           {steps.map((step, i) => (
             <li
               key={step}
-              className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-5"
+              className="flex items-center gap-4 rounded-2xl border border-border bg-surface shadow-card p-5"
             >
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-solid text-lg font-bold text-white">
                 {i + 1}
@@ -81,7 +82,7 @@ export default function HomePage({
           {features.map(({ key, icon }) => (
             <li
               key={key}
-              className="rounded-2xl border border-border bg-surface p-6"
+              className="rounded-2xl border border-border bg-surface shadow-card p-6"
             >
               <span aria-hidden="true" className="text-3xl">
                 {icon}

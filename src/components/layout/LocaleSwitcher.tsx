@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { localeNames, routing, type Locale } from "@/i18n/routing";
+import { field } from "@/components/ui/styles";
 
 export default function LocaleSwitcher() {
   const t = useTranslations("LocaleSwitcher");
@@ -33,7 +34,7 @@ export default function LocaleSwitcher() {
         onChange={(e) => onChange(e.target.value as Locale)}
         onPointerEnter={loadRoutes}
         onFocus={loadRoutes}
-        className="h-9 cursor-pointer rounded-lg border border-border bg-surface px-2.5 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-brand disabled:opacity-60"
+        className={`h-9 cursor-pointer text-sm disabled:opacity-60 ${field}`}
       >
         {routing.locales.map((l) => (
           <option key={l} value={l} lang={l}>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { auth, getAuthProviders, signIn } from "@/auth";
 import { redirect } from "@/i18n/navigation";
+import { buttonPrimary, buttonSecondary, field } from "@/components/ui/styles";
 
 // Depends on the visitor's session.
 export const dynamic = "force-dynamic";
@@ -49,9 +50,9 @@ export default async function LoginPage({ params, searchParams }: Props) {
         <p className="mt-2 text-muted">{t("subtitle")}</p>
       </header>
 
-      <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6">
+      <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface shadow-card p-6">
         {error && (
-          <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+          <p role="alert" className="rounded-lg bg-danger-soft px-3 py-2 text-sm text-danger">
             {t("error")}
           </p>
         )}
@@ -59,7 +60,7 @@ export default async function LoginPage({ params, searchParams }: Props) {
           <form action={google}>
             <button
               type="submit"
-              className="flex w-full items-center justify-center gap-3 rounded-xl border border-border bg-background px-4 py-3 font-semibold hover:bg-brand-soft"
+              className={`w-full gap-3 ${buttonSecondary}`}
             >
               <span aria-hidden="true" className="font-bold text-brand">
                 G
@@ -85,11 +86,11 @@ export default async function LoginPage({ params, searchParams }: Props) {
               required
               autoComplete="email"
               placeholder={t("emailPlaceholder")}
-              className="h-11 rounded-xl border border-border bg-background px-3 focus-visible:outline-2 focus-visible:outline-brand"
+              className={`h-11 ${field}`}
             />
             <button
               type="submit"
-              className="rounded-xl bg-brand-solid px-4 py-3 font-semibold text-white hover:bg-brand-solid-hover"
+              className={buttonPrimary}
             >
               {t("emailSubmit")}
             </button>

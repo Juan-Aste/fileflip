@@ -773,3 +773,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Capturas de portada y `/es/jpg-a-webp` (360/1280, claro/oscuro) revisadas: fuentes y colores aplicados. Problema ya existente: a 360 px el header desborda (el botón de tema queda cortado) → se corrige en 2B.4.
 - `npm run lint`, `npm run build` y `npm test` (244 tests) pasan.
+
+## 2026-10-20 00:40 UTC — Fase 2, tarea 2B.2 (tokens en los componentes base)
+
+**Qué se hizo**
+- `src/components/ui/styles.ts`: clases compartidas `buttonPrimary`, `buttonPrimarySmall`, `buttonSecondary`, `buttonDanger`, `field` (inputs y selects), `choicePill` (radios con forma de pastilla), `card` y `badge`. Se usan en el conversor, las herramientas PDF, precios, cuenta, login, 404, selector de idioma y de país.
+- Se quitaron todos los colores sueltos de Tailwind (`red-*`, `emerald-*`, `amber-*`): errores con `text-danger`, ahorro con `text-success`, avisos con `bg-warning-soft text-warning`, insignias de procesamiento con `success-soft`/`warning-soft`. Contrastes medidos (todos ≥ AA, ver `docs/design.md`).
+- Tarjetas con `shadow-card`; botones con hover elevado (`shadow-lift`) y pulsación (`active:translate-y-px`), que se apagan con `prefers-reduced-motion`.
+
+**Convención**
+- Componentes nuevos: usar `@/components/ui/styles` y los tokens; nada de colores de Tailwind sueltos.
+
+**Verificación**
+- Capturas de `/es/unir-pdf`, `/es/pricing` y `/es/login` (360/1280, claro/oscuro) revisadas. (Ojo al medir: si queda un `next start` viejo corriendo, sirve HTML con hashes de CSS que ya no existen y las capturas salen sin estilos.)
+- `npm run lint`, `npm run build` y `npm test` pasan.

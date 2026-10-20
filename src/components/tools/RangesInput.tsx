@@ -2,6 +2,7 @@
 
 import { useId } from "react";
 import { useTranslations } from "next-intl";
+import { field } from "@/components/ui/styles";
 
 interface Props {
   value: string;
@@ -29,9 +30,9 @@ export default function RangesInput({ value, onChange, valid, pageCount, placeho
         aria-invalid={invalid}
         aria-describedby={`${id}-hint`}
         inputMode="numeric"
-        className="h-10 rounded-lg border border-border bg-background px-3 focus-visible:outline-2 focus-visible:outline-brand aria-invalid:border-red-500"
+        className={`h-10 ${field}`}
       />
-      <span id={`${id}-hint`} className={`text-xs ${invalid ? "text-red-600 dark:text-red-400" : "text-muted"}`}>
+      <span id={`${id}-hint`} className={`text-xs ${invalid ? "text-danger" : "text-muted"}`}>
         {invalid ? t("rangesInvalid", { count: pageCount }) : t("rangesHint")}
       </span>
     </div>

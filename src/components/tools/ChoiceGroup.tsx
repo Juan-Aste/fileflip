@@ -1,6 +1,7 @@
 "use client";
 
 import { useId } from "react";
+import { choicePill } from "@/components/ui/styles";
 
 interface Props<T extends string> {
   legend: string;
@@ -28,7 +29,7 @@ export default function ChoiceGroup<T extends string>({ legend, value, options, 
               onChange={() => onChange(o.value)}
               className="peer sr-only"
             />
-            <span className="block rounded-lg border border-border px-3 py-1.5 text-sm font-medium transition peer-checked:border-brand peer-checked:bg-brand-solid peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-brand">
+            <span className={choicePill}>
               {o.label}
             </span>
           </label>

@@ -21,7 +21,7 @@ export default async function ContactPage({ params }: Props) {
         <h1 className="text-3xl font-extrabold tracking-tight">{t("title")}</h1>
         <p className="text-lg">{t("intro")}</p>
       </header>
-      <div className="rounded-2xl border border-border bg-surface p-6">
+      <div className="rounded-2xl border border-border bg-surface shadow-card p-6">
         <p className="text-sm font-medium text-muted">{t("emailLabel")}</p>
         {email ? (
           <a href={`mailto:${email}`} className="text-xl font-semibold text-brand hover:underline">

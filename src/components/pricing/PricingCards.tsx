@@ -20,7 +20,7 @@ interface Props {
 function Feature({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex gap-2">
-      <span aria-hidden="true" className="text-emerald-600 dark:text-emerald-400">
+      <span aria-hidden="true" className="text-success">
         ✓
       </span>
       <span>{children}</span>
@@ -48,7 +48,7 @@ export default function PricingCards({ region, signedIn, isPro, paymentsAvailabl
         ]}
       />
       <div className="grid w-full gap-6 md:grid-cols-2">
-        <section className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6">
+        <section className="flex flex-col gap-4 rounded-2xl border border-border bg-surface shadow-card p-6">
           <h2 className="text-xl font-bold">{t("free")}</h2>
           <p className="text-4xl font-extrabold">{formatCurrency(0, price.currency, locale)}</p>
           <ul className="flex flex-1 flex-col gap-2 text-sm">
