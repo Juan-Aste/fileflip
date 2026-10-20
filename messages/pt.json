@@ -72,11 +72,50 @@
       }
     },
     "badge": "Seus arquivos não saem do seu aparelho",
-    "steps": {
-      "heading": "Simples assim",
-      "drop": "Arraste seu arquivo",
-      "pick": "Escolha o formato",
-      "download": "Baixe o resultado"
+    "how": {
+      "heading": "Como funciona",
+      "subtitle": "Três passos, sem instalar nada e sem criar conta.",
+      "drop": {
+        "title": "Arraste seu arquivo",
+        "body": "Solte imagens ou PDFs na área acima, ou toque nela para escolher. Você pode adicionar vários de uma vez."
+      },
+      "pick": {
+        "title": "Escolha o formato",
+        "body": "Selecione o formato de saída e, se quiser, ajuste a qualidade ou o tamanho."
+      },
+      "download": {
+        "title": "Baixe o resultado",
+        "body": "A conversão acontece no seu dispositivo em segundos. Baixe cada arquivo ou todos juntos em um ZIP."
+      }
+    },
+    "faq": {
+      "heading": "Perguntas frequentes",
+      "items": {
+        "free": {
+          "q": "O FileFlip é grátis?",
+          "a": "Sim. Você pode converter sem pagar, sem criar conta e sem marca d'água. O plano Pro é opcional: remove os anúncios e amplia os limites."
+        },
+        "upload": {
+          "q": "Meus arquivos são enviados para algum servidor?",
+          "a": "Imagens e PDFs são processados direto no seu navegador e não saem do seu dispositivo. Só os documentos de escritório (Word, Excel, PowerPoint) são convertidos no nosso servidor e apagados em menos de 1 hora."
+        },
+        "formats": {
+          "q": "Quais formatos posso converter?",
+          "a": "Imagens JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC e SVG; ferramentas para juntar, dividir, girar, organizar e comprimir PDF; imagens para PDF e PDF para imagem; e documentos do Word, Excel e PowerPoint para PDF."
+        },
+        "mobile": {
+          "q": "Funciona no celular?",
+          "a": "Sim. O FileFlip funciona no navegador do celular ou tablet, sem instalar nenhum aplicativo. Por exemplo, você pode passar fotos HEIC do iPhone para JPG."
+        },
+        "batch": {
+          "q": "Posso converter vários arquivos de uma vez?",
+          "a": "Sim. Adicione vários arquivos de uma vez e baixe-os separadamente ou todos juntos em um arquivo ZIP."
+        },
+        "quality": {
+          "q": "Perco qualidade ao converter?",
+          "a": "Você decide: dá para ajustar a qualidade nos formatos com compressão (JPG, WEBP, AVIF). Formatos sem perda, como PNG, mantêm a imagem exatamente igual."
+        }
+      }
     }
   },
   "Errors": {

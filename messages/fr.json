@@ -72,11 +72,50 @@
       }
     },
     "badge": "Vos fichiers ne quittent pas votre appareil",
-    "steps": {
-      "heading": "Aussi simple que ça",
-      "drop": "Déposez votre fichier",
-      "pick": "Choisissez le format",
-      "download": "Téléchargez le résultat"
+    "how": {
+      "heading": "Comment ça marche",
+      "subtitle": "Trois étapes, rien à installer et sans créer de compte.",
+      "drop": {
+        "title": "Déposez votre fichier",
+        "body": "Déposez des images ou des PDF dans la zone ci-dessus, ou touchez-la pour les choisir. Vous pouvez en ajouter plusieurs à la fois."
+      },
+      "pick": {
+        "title": "Choisissez le format",
+        "body": "Sélectionnez le format de sortie et, si vous le souhaitez, ajustez la qualité ou la taille."
+      },
+      "download": {
+        "title": "Téléchargez le résultat",
+        "body": "La conversion se fait sur votre appareil en quelques secondes. Téléchargez chaque fichier ou tous ensemble dans un ZIP."
+      }
+    },
+    "faq": {
+      "heading": "Questions fréquentes",
+      "items": {
+        "free": {
+          "q": "FileFlip est-il gratuit ?",
+          "a": "Oui. Vous pouvez convertir sans payer, sans compte et sans filigrane. L'offre Pro est facultative : elle supprime les publicités et augmente les limites."
+        },
+        "upload": {
+          "q": "Mes fichiers sont-ils envoyés sur un serveur ?",
+          "a": "Les images et les PDF sont traités directement dans votre navigateur et ne quittent jamais votre appareil. Seuls les documents bureautiques (Word, Excel, PowerPoint) sont convertis sur notre serveur, puis supprimés en moins d'une heure."
+        },
+        "formats": {
+          "q": "Quels formats puis-je convertir ?",
+          "a": "Les images JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC et SVG ; des outils pour fusionner, diviser, faire pivoter, organiser et compresser des PDF ; des images en PDF et des PDF en images ; et les documents Word, Excel et PowerPoint en PDF."
+        },
+        "mobile": {
+          "q": "Est-ce que ça marche sur mobile ?",
+          "a": "Oui. FileFlip fonctionne dans le navigateur de votre téléphone ou tablette, sans application à installer. Par exemple, vous pouvez convertir des photos HEIC d'iPhone en JPG."
+        },
+        "batch": {
+          "q": "Puis-je convertir plusieurs fichiers à la fois ?",
+          "a": "Oui. Ajoutez plusieurs fichiers d'un coup et téléchargez-les un par un ou tous ensemble dans un fichier ZIP."
+        },
+        "quality": {
+          "q": "Est-ce que je perds en qualité ?",
+          "a": "C'est vous qui décidez : vous pouvez régler la qualité des formats compressés (JPG, WEBP, AVIF). Les formats sans perte comme le PNG conservent l'image telle quelle."
+        }
+      }
     }
   },
   "Errors": {

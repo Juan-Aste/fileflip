@@ -2,10 +2,21 @@ import { use } from "react";
 import type { Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import { ArrowRight, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  Download,
+  FileText,
+  Gift,
+  Lock,
+  ShieldCheck,
+  SlidersHorizontal,
+  Upload,
+  Zap,
+} from "lucide-react";
 import WithSidebarAd from "@/components/ads/WithSidebarAd";
 import Converter from "@/components/converter/Converter";
-import { badge } from "@/components/ui/styles";
+import FaqList from "@/components/ui/FaqList";
+import { badge, card } from "@/components/ui/styles";
 import { conversionSlug, popularConversions } from "@/config/conversion-pages";
 import { formats } from "@/config/formats";
 import { Link } from "@/i18n/navigation";
@@ -17,13 +28,19 @@ export function generateMetadata({ params }: { params: Promise<{ locale: string 
 }
 
 const features = [
-  { key: "privacy", icon: "🔒" },
-  { key: "speed", icon: "⚡" },
-  { key: "free", icon: "🎁" },
-  { key: "office", icon: "📄" },
+  { key: "privacy", Icon: Lock },
+  { key: "speed", Icon: Zap },
+  { key: "free", Icon: Gift },
+  { key: "office", Icon: FileText },
 ] as const;
 
-const steps = ["drop", "pick", "download"] as const;
+const steps = [
+  { key: "drop", Icon: Upload },
+  { key: "pick", Icon: SlidersHorizontal },
+  { key: "download", Icon: Download },
+] as const;
+
+const faqKeys = ["free", "upload", "formats", "mobile", "batch", "quality"] as const;
 
 export default function HomePage({
   params,
@@ -85,48 +102,62 @@ export default function HomePage({
       </section>
 
       <div className="mx-auto max-w-6xl px-4">
-      <section aria-labelledby="steps-heading" className="py-12">
-        <h2 id="steps-heading" className="mb-8 text-center text-2xl font-bold">
-          {t("steps.heading")}
-        </h2>
-        <ol className="grid gap-4 sm:grid-cols-3">
-          {steps.map((step, i) => (
-            <li
-              key={step}
-              className="flex items-center gap-4 rounded-2xl border border-border bg-surface shadow-card p-5"
-            >
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-solid text-lg font-bold text-white">
-                {i + 1}
-              </span>
-              <span className="font-medium">{t(`steps.${step}`)}</span>
-            </li>
-          ))}
-        </ol>
-      </section>
+        <section aria-labelledby="how-heading" className="py-12 sm:py-16">
+          <div className="mb-10 text-center">
+            <h2 id="how-heading" className="text-3xl font-bold">
+              {t("how.heading")}
+            </h2>
+            <p className="mt-2 text-muted">{t("how.subtitle")}</p>
+          </div>
+          <div className="relative">
+            {/* Dashed line joining the step cards on wide screens; decorative. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute top-11 right-[16%] left-[16%] hidden border-t-2 border-dashed border-border-strong sm:block"
+            />
+            <ol className="relative grid gap-4 sm:grid-cols-3 sm:gap-6">
+              {steps.map(({ key, Icon }, i) => (
+                <li key={key} className={`${card} relative flex flex-col gap-3 p-6`}>
+                  <div className="flex items-center gap-3">
+                    <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-solid font-display text-lg font-bold text-white ring-4 ring-surface">
+                      {i + 1}
+                    </span>
+                    <Icon aria-hidden="true" className="h-5 w-5 text-accent-strong" />
+                  </div>
+                  <h3 className="text-lg font-bold">{t(`how.${key}.title`)}</h3>
+                  <p className="text-sm text-muted">{t(`how.${key}.body`)}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
 
-      <section aria-labelledby="features-heading" className="py-12">
-        <h2 id="features-heading" className="mb-8 text-center text-2xl font-bold">
-          {t("features.heading")}
-        </h2>
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map(({ key, icon }) => (
-            <li
-              key={key}
-              className="rounded-2xl border border-border bg-surface shadow-card p-6"
-            >
-              <span aria-hidden="true" className="text-3xl">
-                {icon}
-              </span>
-              <h3 className="mt-3 font-semibold">
-                {t(`features.${key}.title`)}
-              </h3>
-              <p className="mt-1 text-sm text-muted">
-                {t(`features.${key}.body`)}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </section>
+        <section aria-labelledby="features-heading" className="py-12 sm:py-16">
+          <h2 id="features-heading" className="mb-10 text-center text-3xl font-bold">
+            {t("features.heading")}
+          </h2>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {features.map(({ key, Icon }) => (
+              <li key={key} className={`${card} p-6`}>
+                <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-soft text-brand">
+                  <Icon aria-hidden="true" className="h-6 w-6" />
+                </span>
+                <h3 className="mt-4 font-bold">{t(`features.${key}.title`)}</h3>
+                <p className="mt-1 text-sm text-muted">{t(`features.${key}.body`)}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section aria-labelledby="faq-heading" className="mx-auto max-w-3xl py-12 sm:py-16">
+          <h2 id="faq-heading" className="mb-8 text-center text-3xl font-bold">
+            {t("faq.heading")}
+          </h2>
+          <FaqList
+            locale={locale}
+            items={faqKeys.map((k) => ({ q: t(`faq.items.${k}.q`), a: t(`faq.items.${k}.a`) }))}
+          />
+        </section>
       </div>
     </div>
   );

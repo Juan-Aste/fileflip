@@ -5,6 +5,7 @@ import WithSidebarAd from "@/components/ads/WithSidebarAd";
 import Converter from "@/components/converter/Converter";
 import ProcessingBadge from "@/components/converter/ProcessingBadge";
 import ToolComponent from "@/components/tools/ToolComponent";
+import FaqList from "@/components/ui/FaqList";
 import {
   conversionFromSlug,
   conversionPages,
@@ -19,7 +20,6 @@ import {
   type ToolInfo,
 } from "@/config/tools";
 import {
-  faqJsonLd,
   longtailFromSlug,
   longtailPages,
   longtailTranslation,
@@ -234,13 +234,6 @@ async function LongtailView({ page }: { page: LongtailPage }) {
   const { widget } = page;
   return (
     <article className="mx-auto flex max-w-3xl flex-col gap-8 py-12">
-      <script
-        type="application/ld+json"
-        // JSON.stringify output is safe here; "<" is escaped to keep </script> out.
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(faqJsonLd(page)).replace(/</g, "\\u003c"),
-        }}
-      />
       <header className="flex flex-col gap-3">
         <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
           {page.title}
@@ -273,15 +266,7 @@ async function LongtailView({ page }: { page: LongtailPage }) {
         <h2 id="faq" className="text-2xl font-bold">
           {t("faqTitle")}
         </h2>
-        {page.faq.map(({ q, a }) => (
-          <details
-            key={q}
-            className="rounded-xl border border-border bg-surface px-4 py-3"
-          >
-            <summary className="cursor-pointer font-medium">{q}</summary>
-            <p className="mt-2 text-sm text-muted">{a}</p>
-          </details>
-        ))}
+        <FaqList items={page.faq} locale={page.locale} />
       </section>
     </article>
   );

@@ -831,3 +831,15 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Capturas de `/es` (360/1280, claro/oscuro) revisadas. Lint, build y tests (245) pasan.
+
+## 2026-10-20 00:55 UTC — Fase 2, tarea 2B.6 (cómo funciona y preguntas frecuentes)
+
+**Qué se hizo**
+- Portada: sección "Cómo funciona" con 3 tarjetas numeradas (ícono lucide, título y explicación corta) unidas por una línea punteada decorativa en escritorio; "¿Por qué FileFlip?" con íconos lucide en lugar de emojis; "Preguntas frecuentes" con 6 preguntas (gratis, privacidad/subida, formatos, celular, lotes, calidad) en los 5 idiomas.
+- `src/components/ui/FaqList.tsx` (componente de servidor, `<details>` nativo sin JS, chevron que gira) que publica también el FAQ schema. Lo usan la portada y las páginas de cola larga (antes cada una armaba su JSON-LD).
+- `src/lib/faq.ts`: `faqPageJsonLd(locale, items)` y `jsonLdString` (escapa `<`); `faqJsonLd` de cola larga delega en él. Tests en `faq.test.ts`.
+- Mensajes: `HomePage.steps` se reemplazó por `HomePage.how.*` y `HomePage.faq.*`.
+
+**Verificación**
+- Capturas de `/es` a 360/1280 en claro y oscuro revisadas. El HTML de `/es` y de `/es/heic-a-jpg-desde-iphone` trae un único `FAQPage`. Lint, build y tests (247) pasan. First Load JS de la portada sin cambios (134 kB).
+- Nota: en escritorio queda un hueco entre los accesos rápidos y "Cómo funciona" por la altura del anuncio lateral reservado (600 px); se revisa en 2B.11.

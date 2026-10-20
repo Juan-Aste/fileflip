@@ -72,11 +72,50 @@
       }
     },
     "badge": "Your files never leave your device",
-    "steps": {
-      "heading": "It's that simple",
-      "drop": "Drop your file",
-      "pick": "Pick a format",
-      "download": "Download the result"
+    "how": {
+      "heading": "How it works",
+      "subtitle": "Three steps, nothing to install and no account needed.",
+      "drop": {
+        "title": "Drop your file",
+        "body": "Drop images or PDFs on the area above, or tap it to pick them. You can add several at once."
+      },
+      "pick": {
+        "title": "Pick a format",
+        "body": "Choose the output format and, if you like, adjust the quality or size."
+      },
+      "download": {
+        "title": "Download the result",
+        "body": "The conversion runs on your device in seconds. Download each file or all of them in a ZIP."
+      }
+    },
+    "faq": {
+      "heading": "Frequently asked questions",
+      "items": {
+        "free": {
+          "q": "Is FileFlip free?",
+          "a": "Yes. You can convert without paying, without an account and without watermarks. The Pro plan is optional: it removes ads and raises the limits."
+        },
+        "upload": {
+          "q": "Are my files uploaded to a server?",
+          "a": "Images and PDFs are processed right in your browser and never leave your device. Only office documents (Word, Excel, PowerPoint) are converted on our server, and they are deleted within 1 hour."
+        },
+        "formats": {
+          "q": "Which formats can I convert?",
+          "a": "JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC and SVG images; tools to merge, split, rotate, organize and compress PDFs; images to PDF and PDF to image; and Word, Excel and PowerPoint documents to PDF."
+        },
+        "mobile": {
+          "q": "Does it work on my phone?",
+          "a": "Yes. FileFlip works in your phone or tablet browser, with no app to install. For example, you can turn iPhone HEIC photos into JPG."
+        },
+        "batch": {
+          "q": "Can I convert several files at once?",
+          "a": "Yes. Add several files at once and download them one by one or all together in a ZIP file."
+        },
+        "quality": {
+          "q": "Will I lose quality?",
+          "a": "You decide: you can adjust the quality of compressed formats (JPG, WEBP, AVIF). Lossless formats such as PNG keep the image exactly as it is."
+        }
+      }
     }
   },
   "Errors": {
