@@ -8,7 +8,8 @@ Filtros: Imágenes, PDF, Herramientas, Utilidades, Desarrolladores, CAD, Video, 
 
 | Categoría | Herramientas | ¿Fileflect lo tiene? |
 |---|---|---|
-| Imágenes | Comprimir, redimensionar, HEIC→JPG, JPG↔PNG, WebP↔JPG, imagen→WebP, BMP→JPG, TIFF→JPG, SVG→PNG | ✅ (y más pares: 88 combinaciones verificadas) |
+| Imágenes | Redimensionar, HEIC→JPG, JPG↔PNG, WebP↔JPG, imagen→WebP, BMP→JPG, TIFF→JPG, SVG→PNG | ✅ (y más pares: 88 combinaciones verificadas) |
+| Imágenes | Comprimir imagen | ⚠️ parcial: el conversor ya recomprime JPG, PNG, WEBP y AVIF al mismo formato con control de calidad (verificado en 3A.3a), pero **no hay una herramienta "Comprimir imagen" con página propia**, ni elección de nivel simple (baja/recomendada/fuerte), ni comparación antes/después, ni "comprimir a un peso exacto" → agregar como herramienta (ver conclusiones) |
 | Imágenes | Recortar, quitar fondo, agregar texto, generador de favicon | ❌ (favicon: solo como salida ICO) |
 | PDF | Unir, dividir, extraer páginas, reordenar, rotar, comprimir, PDF→JPG/PNG, imágenes/JPG/PNG→PDF | ✅ |
 | PDF | Marca de agua, numerar páginas, desbloquear, proteger, PDF/A, PDF→texto | ❌ |
@@ -36,6 +37,6 @@ Categorías con cantidad de formatos: documentos 23 (abw, djvu, doc, docm, docx,
 
 1. **Huecos más baratos de cerrar** (JS puro en el navegador, sin motor pesado): desarrolladores (JSON/Base64/URL/hashes/formateadores), utilidades (QR, contraseñas, contador, mayúsculas, color, unidades), Excel↔CSV, Markdown→PDF/HTML, crear ZIP. Coinciden con las prioridades 1, 2, 7 y 9 del plan.
 2. **PDF**: marca de agua, numerar, eliminar/extraer páginas y PDF→texto salen con pdf-lib/pdf.js (ya cargados); proteger/desbloquear necesita qpdf-wasm (Apache-2.0); firmar dibujando es diferencial para LatAm.
-3. **Imágenes**: recortar, texto, favicon (paquete de tamaños) y quitar metadatos son baratos con canvas; quitar fondo depende de la licencia del modelo.
+3. **Imágenes**: una herramienta **"Comprimir imagen"** con página propia en los 5 idiomas (JPG, PNG, WEBP, AVIF; lotes; niveles simples; tamaño antes/después; opción de peso objetivo exacto) reutiliza los códecs que ya están en el navegador, así que es de las más baratas y de las más buscadas. Recortar, texto, favicon (paquete de tamaños) y quitar metadatos también son baratos con canvas; quitar fondo depende de la licencia del modelo.
 4. **Audio/video, 3D y CAD**: fileflip.org los cubre; requieren ffmpeg.wasm (LGPL, un solo hilo), three.js (MIT) y un parser DXF. DWG probablemente no viable (formato cerrado, motores con licencias restrictivas): se evalúa en 3A.5.
 5. **Lo que nadie de los tres destaca** y encaja con LatAm: foto carnet por país, comprimir a un peso exacto (p. ej. límites de trámites públicos), firmar PDF dibujando. Se proponen en `docs/audit.md`.
