@@ -757,3 +757,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Qué sigue**
 - Hito 2B (diseño), empezando por 2B.1: identidad visual y `docs/design.md`.
+
+## 2026-10-20 00:25 UTC — Fase 2, tarea 2B.1 (identidad visual)
+
+**Qué se hizo**
+- `docs/design.md`: identidad "papel y tinta" con verde azulado de marca (`#0b6f6a` / oscuro `#5fd4c6`) y acento mandarina decorativo; paleta claro/oscuro con contrastes medidos (todos ≥ AA), tipografías, espaciado, radios, sombras, íconos y movimiento.
+- Tokens nuevos en `globals.css` (mismos nombres que antes, más `surface-2`, `border-strong`, `accent*`, `success*`, `warning*`, `danger*`, `ring`, `shadow-card`, `shadow-lift`, `font-display`), anillo de foco global y regla global de `prefers-reduced-motion`.
+- Fuentes: Bricolage Grotesque (títulos) y Figtree (texto) con `next/font/local` desde `@fontsource-variable/*` (`src/app/fonts.ts`; latín, `display: swap`, fallback ajustado). Se instaló también `lucide-react` (se usa desde 2B.2/2B.4).
+- `scripts/screenshots.mjs` (+ `playwright-core` como dependencia de desarrollo): capturas de página completa a 360 y 1280 px en claro y oscuro con el Chromium del sistema.
+
+**Decisiones**
+- Fuentes autoalojadas desde paquetes npm en vez de `next/font/google`: el build (Docker/Railway) no depende de que Google Fonts responda. Peso: ~41 kB + ~20 kB woff2.
+- Se mantienen los nombres de tokens existentes, así el sitio entero adopta la paleta nueva sin tocar componentes; los colores sueltos (`red-*`, `emerald-*`, `amber-*`) se reemplazan en 2B.2.
+
+**Verificación**
+- Capturas de portada y `/es/jpg-a-webp` (360/1280, claro/oscuro) revisadas: fuentes y colores aplicados. Problema ya existente: a 360 px el header desborda (el botón de tema queda cortado) → se corrige en 2B.4.
+- `npm run lint`, `npm run build` y `npm test` (244 tests) pasan.

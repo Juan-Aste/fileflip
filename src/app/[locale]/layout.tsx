@@ -7,6 +7,7 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { SessionInfoProvider } from "@/components/session/SessionInfo";
 import { themeInitScript } from "@/components/layout/theme";
+import { bodyFont, headingFont } from "@/app/fonts";
 import "./globals.css";
 
 type Props = Readonly<{
@@ -42,7 +43,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     // The theme script toggles the `dark` class before hydration.
-    <html lang={locale} suppressHydrationWarning>
+    <html
+      lang={locale}
+      className={`${bodyFont.variable} ${headingFont.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
