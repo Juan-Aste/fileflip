@@ -165,7 +165,7 @@ Ruta `/[locale]/admin`, solo para usuarios logueados con email en `ADMIN_EMAILS`
 - [x] 2C.4 Agregaciones de conversiones: por día, total y comparación, top 10 por herramienta/par de formatos, navegador vs servidor (tests con MongoDB en memoria)
 - [x] 2C.5 Agregaciones de errores por tipo, tiempo promedio de conversión, tamaño total procesado y archivos temporales actuales (tests)
 - [x] 2C.6 Agregaciones de visitas por idioma, país y páginas de cola larga (tests)
-- [ ] 2C.7 Agregaciones de usuarios (nuevos por día, total), suscripciones Pro activas, altas y bajas, MRR por moneda (tests)
+- [x] 2C.7 Agregaciones de usuarios (nuevos por día, total), suscripciones Pro activas, altas y bajas, MRR por moneda (tests)
 - [ ] 2C.8 API del panel (protegida) y página con tarjetas de resumen y selector de período
 - [ ] 2C.9 Gráficos livianos cargados solo en el panel (línea de conversiones por día, barras de top 10, etc.)
 - [ ] 2C.10 Exportar a CSV las tablas principales + tests

@@ -1074,3 +1074,16 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Tests nuevos (4) con MongoDB en memoria: totales y comparación, agrupación por idioma/país/tipo, ranking de cola larga con tope de 10 y período vacío.
 - Lint, typecheck, build y tests (298) pasan.
+
+## 2026-10-20 03:19 UTC — Fase 2, tarea 2C.7 (usuarios, suscripciones y MRR)
+
+**Qué se hizo**
+- `src/lib/admin/stats/accounts.ts`: `accountStats(period)` con consultas en paralelo: total de usuarios (`estimatedDocumentCount`), usuarios nuevos por día/mes y del período anterior, suscripciones activas ahora, altas del período (creadas y que pasaron de `pending`), bajas del período (`cancelledAt`) y MRR por moneda de las suscripciones activas (mensuales + anuales / 12, redondeado a centavos).
+
+**Decisiones**
+- Auth.js no guarda fecha de alta del usuario, pero su `_id` es un ObjectId cuyo inicio es la fecha de creación: los rangos se hacen sobre `_id` (`ObjectId.createFromTime`, usa el índice `_id`) y `$dateToString` agrupa directamente sobre el ObjectId. No hizo falta agregar datos ni índices (`Subscription` ya tiene índices por `status`, `createdAt` y `cancelledAt`).
+- El MRR se informa por moneda, sin convertir (no hay tipos de cambio en el proyecto).
+
+**Verificación**
+- Tests nuevos (4) con MongoDB en memoria: usuarios por día desde el id, activas/altas/bajas (las `pending` no cuentan), MRR por moneda con planes anuales y período vacío.
+- Lint, typecheck, build y tests (302) pasan.
