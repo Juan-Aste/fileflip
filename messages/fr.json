@@ -20,7 +20,11 @@
       "login": "Se connecter",
       "account": "Mon compte"
     },
-    "mainNav": "Navigation principale"
+    "mainNav": "Navigation principale",
+    "menu": {
+      "open": "Ouvrir le menu",
+      "close": "Fermer le menu"
+    }
   },
   "LocaleSwitcher": {
     "label": "Langue"
@@ -37,7 +41,12 @@
     "terms": "Conditions",
     "contact": "Contact",
     "pricing": "Tarifs",
-    "copyright": "© {year} FileFlip. Sans filigrane, sans inscription obligatoire."
+    "copyright": "© {year} FileFlip. Sans filigrane, sans inscription obligatoire.",
+    "headings": {
+      "tools": "Outils PDF",
+      "conversions": "Conversions populaires",
+      "company": "FileFlip"
+    }
   },
   "HomePage": {
     "title": "Convertissez vos fichiers sans qu'ils quittent votre ordinateur",

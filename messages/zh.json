@@ -20,7 +20,11 @@
       "login": "登录",
       "account": "我的账户"
     },
-    "mainNav": "主导航"
+    "mainNav": "主导航",
+    "menu": {
+      "open": "打开菜单",
+      "close": "关闭菜单"
+    }
   },
   "LocaleSwitcher": {
     "label": "语言"
@@ -37,7 +41,12 @@
     "terms": "条款",
     "contact": "联系我们",
     "pricing": "价格",
-    "copyright": "© {year} FileFlip。无水印，无需注册。"
+    "copyright": "© {year} FileFlip。无水印，无需注册。",
+    "headings": {
+      "tools": "PDF 工具",
+      "conversions": "常用转换",
+      "company": "FileFlip"
+    }
   },
   "HomePage": {
     "title": "转换文件，文件不离开你的电脑",

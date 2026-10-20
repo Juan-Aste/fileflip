@@ -797,3 +797,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - HTML con `<link rel="icon">`, `apple-touch-icon`, `manifest` y `og:image` absolutos; imágenes OG de es/pt/zh revisadas a ojo. Lint, build y tests pasan.
+
+## 2026-10-20 01:15 UTC — Fase 2, tarea 2B.4 (header y footer nuevos)
+
+**Qué se hizo**
+- Header: logo nuevo, navegación de escritorio (Herramientas, Precios, cuenta, separador, idioma) y botón de tema con íconos `lucide-react` (Sol/Luna/Monitor; el texto solo desde `lg`). En móvil (< 768 px): logo, tema y botón de menú (`MobileMenu.tsx`, cliente): `aria-expanded`/`aria-controls`, etiqueta "Abrir/Cerrar menú", se cierra con Escape (devuelve el foco al botón), al navegar y al tocar un enlace. El contenido del panel se renderiza en el servidor.
+- Se corrigió el desborde horizontal del header a 360 px (el botón de tema quedaba cortado): `scrollWidth` = 360.
+- Footer: marca + lema + mensaje de privacidad, y columnas "Herramientas PDF", "Conversiones populares" (enlaces traducidos a las páginas de conversión, bueno para SEO interno) y "FileFlip" (precios, legales, contacto). 2 columnas en móvil, 4 en escritorio. Componente de servidor (no suma JS).
+- `popularConversions` en `src/config/conversion-pages.ts` (también para los accesos rápidos de la portada en 2B.5) + test. `AccountLink` acepta `className`.
+- Mensajes nuevos en los 5 idiomas: `Header.menu.{open,close}`, `Footer.headings.{tools,conversions,company}`.
+
+**Mediciones**
+- First Load JS: portada 128 kB, `[slug]` 133 kB (+1 kB por el menú y los íconos).
+
+**Verificación**
+- Playwright a 360 px (claro/oscuro): abre, Escape cierra, al ir a Precios desde el menú navega y queda cerrado. Capturas de `/es`, `/zh`, `/es/pdf-a-jpg` revisadas. Lint, build y tests pasan.

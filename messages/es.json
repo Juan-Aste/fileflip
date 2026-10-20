@@ -20,7 +20,11 @@
       "login": "Iniciar sesión",
       "account": "Mi cuenta"
     },
-    "mainNav": "Navegación principal"
+    "mainNav": "Navegación principal",
+    "menu": {
+      "open": "Abrir menú",
+      "close": "Cerrar menú"
+    }
   },
   "LocaleSwitcher": {
     "label": "Idioma"
@@ -37,7 +41,12 @@
     "terms": "Términos",
     "contact": "Contacto",
     "pricing": "Precios",
-    "copyright": "© {year} FileFlip. Sin marcas de agua, sin registro obligatorio."
+    "copyright": "© {year} FileFlip. Sin marcas de agua, sin registro obligatorio.",
+    "headings": {
+      "tools": "Herramientas PDF",
+      "conversions": "Conversiones populares",
+      "company": "FileFlip"
+    }
   },
   "HomePage": {
     "title": "Convierte tus archivos sin que salgan de tu computadora",

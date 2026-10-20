@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { locales } from "@/i18n/routing";
-import { conversionFromSlug, conversionPages, conversionSlug, relatedConversions } from "./conversion-pages";
+import { conversionFromSlug, conversionPages, conversionSlug, popularConversions, relatedConversions } from "./conversion-pages";
 import { translatePathname } from "./routes";
 import { toolIds, tools } from "./tools";
 
@@ -46,5 +46,13 @@ describe("relatedConversions", () => {
     expect(related.length).toBeLessThanOrEqual(8);
     expect(related.every((c) => c.from === "heic" || c.to === "jpg")).toBe(true);
     expect(related.some((c) => c.from === "heic" && c.to === "jpg")).toBe(false);
+  });
+});
+
+describe("popularConversions", () => {
+  it("lists distinct conversions that all have a page", () => {
+    expect(popularConversions.length).toBeGreaterThanOrEqual(6);
+    for (const c of popularConversions) expect(conversionPages).toContain(c);
+    expect(new Set(popularConversions.map((c) => `${c.from}-${c.to}`)).size).toBe(popularConversions.length);
   });
 });

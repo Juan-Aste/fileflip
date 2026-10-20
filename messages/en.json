@@ -20,7 +20,11 @@
       "login": "Sign in",
       "account": "My account"
     },
-    "mainNav": "Main navigation"
+    "mainNav": "Main navigation",
+    "menu": {
+      "open": "Open menu",
+      "close": "Close menu"
+    }
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -37,7 +41,12 @@
     "terms": "Terms",
     "contact": "Contact",
     "pricing": "Pricing",
-    "copyright": "© {year} FileFlip. No watermarks, no sign-up required."
+    "copyright": "© {year} FileFlip. No watermarks, no sign-up required.",
+    "headings": {
+      "tools": "PDF tools",
+      "conversions": "Popular conversions",
+      "company": "FileFlip"
+    }
   },
   "HomePage": {
     "title": "Convert your files without them ever leaving your computer",

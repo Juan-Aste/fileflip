@@ -38,3 +38,19 @@ export function relatedConversions(conversion: Conversion, max = 8): Conversion[
   }
   return out;
 }
+
+const popularPairs: ReadonlyArray<readonly [FormatId, FormatId]> = [
+  ["heic", "jpg"],
+  ["jpg", "webp"],
+  ["png", "jpg"],
+  ["webp", "jpg"],
+  ["jpg", "pdf"],
+  ["pdf", "jpg"],
+  ["docx", "pdf"],
+  ["png", "webp"],
+];
+
+/** Most-used conversions, for quick links (home page, footer). */
+export const popularConversions: readonly Conversion[] = popularPairs.map(
+  ([from, to]) => conversionPages.find((c) => c.from === from && c.to === to)!,
+);
