@@ -1052,3 +1052,16 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Tests nuevos (6) con MongoDB en memoria: totales y comparación, días UTC con huecos en 0, agrupación mensual de 12 meses, ranking de pares y herramientas, tope de 10 y período vacío.
 - Lint, typecheck, build y tests (288) pasan.
+
+## 2026-10-20 03:13 UTC — Fase 2, tarea 2C.5 (errores, duración, bytes y archivos temporales)
+
+**Qué se hizo**
+- `src/lib/admin/stats/quality.ts`: `qualityStats(period)`, un `aggregate` con `$match` por `createdAt` y `$facet`: fallidas por código de error (las que no tienen código cuentan como `unknown`), duración promedio de las conversiones exitosas con duración (total y por motor: navegador/servidor), bytes de entrada (todos los intentos) y de salida (solo exitosas).
+- `tempUsage(root)` en `src/lib/server/temp.ts`: archivos, bytes y antigüedad del más viejo en la carpeta temporal del servidor ahora mismo (recorre subcarpetas con `readdir({ recursive })`, Node ≥ 20.12; el Dockerfile usa Node 22).
+
+**Decisiones**
+- La duración promedio excluye los fallos (un fallo por tiempo de espera distorsionaría el promedio) y los registros viejos sin duración.
+
+**Verificación**
+- Tests nuevos (6): errores por código, promedios, bytes y período vacío con MongoDB en memoria; `tempUsage` con subcarpetas y con carpeta inexistente.
+- Lint, typecheck, build y tests (294) pasan.

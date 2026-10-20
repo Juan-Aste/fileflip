@@ -45,3 +45,35 @@ export async function sweepTempFiles(root = TEMP_ROOT, maxAgeMs = ttlMs(), now =
   }
   return removed;
 }
+
+export interface TempUsage {
+  /** Files (not folders) currently under `root`. */
+  files: number;
+  bytes: number;
+  /** Age of the oldest file, or null when there are none. */
+  oldestMs: number | null;
+}
+
+/** What is on disk right now under `root` (for the admin panel). */
+export async function tempUsage(root = TEMP_ROOT, now = Date.now()): Promise<TempUsage> {
+  const usage: TempUsage = { files: 0, bytes: 0, oldestMs: null };
+  let entries;
+  try {
+    entries = await readdir(root, { recursive: true, withFileTypes: true });
+  } catch {
+    return usage; // Nothing written yet.
+  }
+  for (const entry of entries) {
+    if (!entry.isFile()) continue;
+    try {
+      const info = await stat(join(entry.parentPath, entry.name));
+      usage.files++;
+      usage.bytes += info.size;
+      const age = Math.max(0, now - info.mtimeMs);
+      usage.oldestMs = Math.max(usage.oldestMs ?? 0, age);
+    } catch {
+      // Removed concurrently: fine.
+    }
+  }
+  return usage;
+}
