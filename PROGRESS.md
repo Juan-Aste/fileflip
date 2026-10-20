@@ -1308,3 +1308,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - La portada de fileflip.org no detalla formatos: sus pares se dedujeron de los nombres de las herramientas.
 
 **Siguiente**: 3A.5 (`docs/audit.md` con la tabla completa y la lista priorizada, y `docs/dependencies.md`).
+
+## 2026-10-20 23:25 UTC — Fase 3, tarea 3A.5 (auditoría y licencias)
+
+**Qué se hizo**
+- `docs/audit.md`: estado verificado de lo existente (sin herramientas rotas tras 3A.3c/3A.3d), tabla de candidatas por categoría (¿tenemos?, competencia, navegador/servidor, motor, licencia, dificultad, riesgos, tests), ideas propias para LatAm (peso objetivo, foto carnet por país, firmar PDF, PDF para WhatsApp, escanear desde el celular), descartes y lista priorizada.
+- `docs/dependencies.md`: licencias de todas las dependencias actuales (incluida libvips LGPL dentro de sharp y LibreOffice/Gotenberg) y de las candidatas.
+
+**Decisiones**
+- Audio/video: **no** usar `@ffmpeg/core` publicado (GPL-2.0-or-later). Propuesta: WebCodecs + mediabunny (MPL-2.0), sin COOP/COEP; AVI/WMV/FLV/3GP quedan sujetos a aprobación del dueño.
+- Quitar fondo: `@imgly/background-removal` es AGPL → alternativa MediaPipe (Apache-2.0) u onnxruntime-web + modelo Apache-2.0.
+- Hojas de cálculo: el paquete `xlsx` de npm quedó en 0.18.5 (con vulnerabilidades conocidas); si se usa SheetJS, desde su tarball oficial 0.20.x (Apache-2.0); alternativa exceljs (MIT, sin ODS).
+- Descartados: MOBI/AZW (Calibre GPL), DWG (formato cerrado, LibreDWG GPL), PDF → Excel/PowerPoint (sin motor de calidad), video en el servidor (costo).
+- "Comprimir imagen" y "peso objetivo" se adelantan: son baratas y muy buscadas.
+
+**Verificación**
+- Solo documentación; sin cambios en `src/`.
