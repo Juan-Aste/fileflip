@@ -3,6 +3,7 @@ import { allToolsSlugs } from "@/config/categories";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import LogoMark from "@/components/brand/LogoMark";
+import SearchButton from "@/components/search/SearchButton";
 import AccountLink from "./AccountLink";
 import LocaleSwitcher from "./LocaleSwitcher";
 import MobileMenu from "./MobileMenu";
@@ -42,6 +43,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <SearchButton />
           <ThemeToggle />
           <MobileMenu>
             <nav aria-label={t("mainNav")} className="flex flex-col">

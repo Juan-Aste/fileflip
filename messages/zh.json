@@ -529,5 +529,22 @@
         "description": "查看和转换 CAD 图纸。"
       }
     }
+  },
+  "Search": {
+    "button": "搜索",
+    "label": "搜索工具",
+    "placeholder": "搜索工具或格式（例如 HEIC 转 JPG）",
+    "noResults": "没有找到与“{query}”相关的内容。",
+    "hint": "输入关键词，搜索所有工具和格式转换。",
+    "close": "关闭",
+    "loading": "加载中…",
+    "error": "无法加载搜索，请检查网络连接。",
+    "results": "{count} 个结果",
+    "kinds": {
+      "tool": "工具",
+      "category": "分类",
+      "conversion": "格式转换",
+      "guide": "指南"
+    }
   }
 }

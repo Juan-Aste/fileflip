@@ -529,5 +529,22 @@
         "description": "Visualiza y convierte planos CAD."
       }
     }
+  },
+  "Search": {
+    "button": "Buscar",
+    "label": "Buscar herramientas",
+    "placeholder": "Busca una herramienta o un formato (p. ej. HEIC a JPG)",
+    "noResults": "No encontramos nada para «{query}».",
+    "hint": "Escribe para buscar entre todas las herramientas y conversiones.",
+    "close": "Cerrar",
+    "loading": "Cargando…",
+    "error": "No se pudo cargar el buscador. Revisa tu conexión.",
+    "results": "{count, plural, =0 {Sin resultados} one {# resultado} other {# resultados}}",
+    "kinds": {
+      "tool": "Herramienta",
+      "category": "Categoría",
+      "conversion": "Conversión",
+      "guide": "Guía"
+    }
   }
 }

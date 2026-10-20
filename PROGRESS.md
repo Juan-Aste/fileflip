@@ -1365,3 +1365,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Lint, typecheck, tests (445), build y `check:static` pasan; `pdf-tools.mjs` 19/19. Capturas 360/1280 claro/oscuro revisadas (`docs/screenshots/es_herramientas*.webp`).
+
+## 2026-10-21 00:30 UTC — Fase 3, tarea 3B.3 (buscador)
+
+**Qué se hizo**
+- `src/lib/search/match.ts`: normalización sin acentos ni mayúsculas (también chino) y búsqueda que exige todas las palabras; puntúa título > descripción/palabras clave y comienzo de palabra > coincidencia interna; herramientas antes que conversiones a igual puntaje.
+- `src/lib/search/index.ts`: índice por idioma generado del registro (todas las herramientas, categorías publicadas, páginas de conversión y guías de cola larga del idioma), con formatos y extensiones como palabras clave.
+- `/api/search-index/[locale]`: JSON **estático** generado en el build (~15 KB en es). Se pide solo al abrir el buscador (o al pasar el mouse/foco por el botón), así que la carga inicial no cambia.
+- `SearchButton` en el header (ícono en móvil, "Buscar Ctrl K" en escritorio) con atajos `Ctrl/⌘+K` y `/` (este último no se activa si se está escribiendo en un campo). El diálogo (`SearchDialog`) se carga con import dinámico al primer uso: `<dialog>` modal nativo (foco atrapado), combobox ARIA con `aria-activedescendant`, flechas, Enter, Escape, clic en el fondo cierra y una línea `role="status"` con la cantidad de resultados. Textos en el namespace `Search` (5 idiomas).
+
+**Problemas encontrados y corregidos**
+- Con `<input type="search">`, Escape borra el texto en vez de cerrar el diálogo: se usa `type="text"` con `enterKeyHint="search"` y Escape manejado a mano.
+- La regla global `:focus-visible` dibujaba un recuadro alrededor del campo: el foco se muestra como subrayado de la fila.
+
+**Verificación**
+- Tests (453, incluidos los de búsqueda y del índice en los 5 idiomas), lint, typecheck, build y `check:static` pasan. `scripts/audit/search.mjs` (nuevo): 12/12 en 360 y 1280 px (el índice no se pide al cargar la página; Ctrl+K, `/`, flechas, Enter navega, Escape cierra, mensaje sin resultados). `pdf-tools.mjs` 19/19.
+
+**Siguiente**: 3B.4 (motor de trabajos genérico en workers).

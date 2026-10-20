@@ -529,5 +529,22 @@
         "description": "Affichez et convertissez des plans CAO."
       }
     }
+  },
+  "Search": {
+    "button": "Rechercher",
+    "label": "Rechercher des outils",
+    "placeholder": "Cherchez un outil ou un format (ex. HEIC en JPG)",
+    "noResults": "Aucun résultat pour « {query} ».",
+    "hint": "Tapez pour chercher parmi tous les outils et conversions.",
+    "close": "Fermer",
+    "loading": "Chargement…",
+    "error": "Impossible de charger la recherche. Vérifiez votre connexion.",
+    "results": "{count, plural, =0 {Aucun résultat} one {# résultat} other {# résultats}}",
+    "kinds": {
+      "tool": "Outil",
+      "category": "Catégorie",
+      "conversion": "Conversion",
+      "guide": "Guide"
+    }
   }
 }
