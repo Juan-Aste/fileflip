@@ -1216,3 +1216,21 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Lint, typecheck y tests (354) pasan. Sin cambios en `src/` (no hace falta build).
+
+## 2026-10-20 22:55 UTC — Fase 3, tarea 3A.2 (inventario del servidor)
+
+**Qué se hizo**
+- `tests/inventory/server.test.ts` (72 casos): cada conversión de servidor de punta a punta por las rutas reales con los fixtures, validando el archivo de salida con un lector independiente (sharp, encabezados BMP/ICO, pdf-lib, DOCX descomprimido con fflate).
+- La conversión de oficina se prueba con LibreOffice local en lugar de Gotenberg (mismo motor; `execFile` sin shell); sin LibreOffice esos casos se saltan (`describe.skipIf`), así el CI sigue pasando.
+- Resultados en `docs/audit-inventory.md` (sección servidor).
+
+**Resultados**
+- Imágenes con sharp: 49/49 pares ✅ (JPG, PNG, WEBP, AVIF, GIF, TIFF, SVG → JPG, PNG, WEBP, AVIF, GIF, TIFF, BMP, ICO). HEIC/BMP/ICO de entrada → 415 en el servidor (solo navegador, como estaba documentado).
+- Oficina → PDF: DOCX, DOC, ODT, RTF, TXT, CSV, XLSX, XLS, ODS, PPTX y ODP ✅ con la cantidad de páginas esperada. PPT sin fixture.
+- PDF → Word ✅ con el texto de todas las páginas; PDF rotos → error claro.
+- Archivos corruptos: 422 `conversionFailed` (decodificación) o 415 `unsupportedFormat` (detección). No se encontraron fallas que corregir en el servidor.
+
+**Verificación**
+- Lint, typecheck y tests (61 archivos, 426 tests) pasan.
+
+**Siguiente**: 3A.3 (inventario en el navegador con Playwright).
