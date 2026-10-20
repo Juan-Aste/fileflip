@@ -1,0 +1,9 @@
+{
+  "Admin": {
+    "metaTitle": "Panel de administración — FileFlip",
+    "title": "Panel de administración",
+    "subtitle": "Estadísticas del sitio. Solo visible para los correos de ADMIN_EMAILS.",
+    "signedInAs": "Conectado como {email}",
+    "noDatabase": "No hay base de datos configurada (MONGODB_URI): no hay estadísticas para mostrar."
+  }
+}

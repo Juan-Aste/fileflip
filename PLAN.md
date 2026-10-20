@@ -156,7 +156,7 @@ Meta: aspecto profesional, moderno, confiable y propio; interfaz limpia. Captura
 
 ### Hito 2C — Panel de administración
 Ruta `/[locale]/admin`, solo para usuarios logueados con email en `ADMIN_EMAILS`; los demás reciben 404 (protección en el servidor: layout y cada API).
-- [ ] 2C.1 Control de acceso: `ADMIN_EMAILS` (en `.env.example` y "Pendiente del dueño"), `isAdmin`/`requireAdmin`, layout del panel con 404 para no admins, tests (admin, no admin, anónimo)
+- [x] 2C.1 Control de acceso: `ADMIN_EMAILS` (en `.env.example` y "Pendiente del dueño"), `isAdmin`/`requireAdmin`, layout del panel con 404 para no admins, tests (admin, no admin, anónimo)
 - [ ] 2C.2 Datos que faltan en los registros, respetando la privacidad: duración y tipo de error de cada conversión, herramienta usada, beacon de visitas (idioma, país si está disponible, página de cola larga; nunca IP completa ni nombre de archivo) + tests
 - [ ] 2C.3 Selector de período (hoy, 7 días, 30 días, 12 meses, personalizado) y período anterior para comparar + tests
 - [ ] 2C.4 Agregaciones de conversiones: por día, total y comparación, top 10 por herramienta/par de formatos, navegador vs servidor (tests con MongoDB en memoria)

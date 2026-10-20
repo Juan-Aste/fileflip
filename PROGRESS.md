@@ -597,6 +597,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Revisar con un abogado la política de privacidad y los términos (`messages/*.json`, namespace `Legal`): falta la razón social/responsable, la jurisdicción y datos de contacto legales. Configurar `NEXT_PUBLIC_CONTACT_EMAIL`.
 - Proyecto en Railway y base MongoDB (Railway o Atlas).
 - Revisar los precios del plan Pro por país en `src/config/pricing.ts` (son orientativos).
+- Panel de administración: definir `ADMIN_EMAILS` (correos separados por comas) con el correo con el que inicias sesión; vacío = nadie entra (todos reciben 404). Se entra en `/es/admin`.
 - (Opcional) Poner Cloudflare delante de Railway para tener la cabecera de país `cf-ipcountry`; sin eso, el país se deduce del idioma del navegador y del selector manual.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
@@ -964,3 +965,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Lint, build y tests (255) pasan.
+
+## 2026-10-20 02:20 UTC — Fase 2, tarea 2C.1 (control de acceso del panel)
+
+**Qué se hizo**
+- `src/lib/admin/access.ts`: `parseAdminEmails`, `isAdminEmail` (sin distinguir mayúsculas), `getAdminSession`, `requireAdminPage` (llama a `notFound()`) y `requireAdminApi` (devuelve una respuesta 404 `{ error: "notFound" }` para no revelar que la API existe).
+- Ruta `/[locale]/admin` con layout y página dinámicos (`force-dynamic`) que verifican en el servidor; la página vuelve a verificar porque layout y página se renderizan en paralelo. Los metadatos solo nombran el panel a los admins (el 404 de los demás no tiene el título del panel); siempre `noindex`.
+- `ADMIN_EMAILS` en `.env.example` y en "Pendiente del dueño".
+
+**Decisiones y convenciones**
+- `getAdminSession` llama a `headers()` antes de `auth().catch(...)`: el `catch` se tragaba la señal de "uso dinámico" de Next y la página podía prerenderizarse como 404 en el build.
+- Mensajes del panel solo en español en `messages/admin.es.json` (namespace `Admin`), leídos con `createTranslator` de next-intl en `src/lib/admin/messages.ts`. No van en `messages/*.json` porque `NextIntlClientProvider` manda todos esos mensajes al navegador en cada página pública, y porque el test de mensajes exige las mismas claves en los 5 idiomas.
+
+**Verificación**
+- Tests nuevos (6): admin, usuario no admin, anónimo y `ADMIN_EMAILS` vacío, para página y API.
+- Con `next start` y sesiones JWT simuladas: anónimo → 404, no admin → 404 (sin "administración" en el HTML), admin → 200.
+- Lint, typecheck, build y tests (261) pasan.
