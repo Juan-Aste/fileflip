@@ -8,7 +8,7 @@ const input = {
   period: "yearly" as const,
   amount: 45000,
   currency: "ARS",
-  reason: "FileFlip Pro anual",
+  reason: "Fileflect Pro anual",
   backUrl: "https://fileflip.app/es/account",
 };
 

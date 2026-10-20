@@ -1,10 +1,10 @@
 {
   "Metadata": {
-    "title": "FileFlip — Convert files and images for free",
+    "title": "Fileflect — Convert files and images for free",
     "description": "Convert images and documents with no watermarks and no sign-up. Whatever can be done on your device stays there."
   },
   "Common": {
-    "appName": "FileFlip",
+    "appName": "Fileflect",
     "skipToContent": "Skip to content",
     "loading": "Loading…",
     "close": "Close",
@@ -13,7 +13,7 @@
     "retry": "Try again"
   },
   "Header": {
-    "homeLink": "FileFlip home",
+    "homeLink": "Fileflect home",
     "nav": {
       "tools": "Tools",
       "pricing": "Pricing",
@@ -41,11 +41,11 @@
     "terms": "Terms",
     "contact": "Contact",
     "pricing": "Pricing",
-    "copyright": "© {year} FileFlip. No watermarks, no sign-up required.",
+    "copyright": "© {year} Fileflect. No watermarks, no sign-up required.",
     "headings": {
       "tools": "PDF tools",
       "conversions": "Popular conversions",
-      "company": "FileFlip"
+      "company": "Fileflect"
     }
   },
   "HomePage": {
@@ -53,7 +53,7 @@
     "tagline": "Images and PDFs are processed right in your browser: faster, more private and free. No watermarks, no account needed.",
     "cta": "Choose files",
     "features": {
-      "heading": "Why FileFlip?",
+      "heading": "Why Fileflect?",
       "privacy": {
         "title": "Actually private",
         "body": "Your images and PDFs are never uploaded — everything happens on your device."
@@ -92,7 +92,7 @@
       "heading": "Frequently asked questions",
       "items": {
         "free": {
-          "q": "Is FileFlip free?",
+          "q": "Is Fileflect free?",
           "a": "Yes. You can convert without paying, without an account and without watermarks. The Pro plan is optional: it removes ads and raises the limits."
         },
         "upload": {
@@ -105,7 +105,7 @@
         },
         "mobile": {
           "q": "Does it work on my phone?",
-          "a": "Yes. FileFlip works in your phone or tablet browser, with no app to install. For example, you can turn iPhone HEIC photos into JPG."
+          "a": "Yes. Fileflect works in your phone or tablet browser, with no app to install. For example, you can turn iPhone HEIC photos into JPG."
         },
         "batch": {
           "q": "Can I convert several files at once?",
@@ -275,9 +275,9 @@
     "alreadyOptimized": "This PDF is already optimized: we couldn't make it smaller."
   },
   "Email": {
-    "subject": "Your FileFlip sign-in link",
+    "subject": "Your Fileflect sign-in link",
     "preheader": "Sign in with one click, no password.",
-    "heading": "Sign in to FileFlip",
+    "heading": "Sign in to Fileflect",
     "body": "Click the button to sign in. The link is valid for 24 hours and can only be used once.",
     "button": "Sign in",
     "fallback": "If the button doesn't work, copy and paste this link into your browser:",
@@ -306,7 +306,7 @@
     "freeBody": "Every tool at no cost, with limits on server conversions.",
     "upgrade": "Upgrade to Pro",
     "signOut": "Sign out",
-    "planProBody": "Thanks for supporting FileFlip. You have higher limits and no ads.",
+    "planProBody": "Thanks for supporting Fileflect. You have higher limits and no ads.",
     "billing": "{amount} per {period, select, yearly {year} other {month}}",
     "nextPayment": "Next charge: {date}",
     "paidUntil": "Your Pro stays active until {date}. You won't be charged again.",
@@ -339,7 +339,7 @@
       "serverPro": "Documents up to {size}, {count} per batch",
       "browserPro": "Images and PDFs up to {size} on your device",
       "noAds": "No ads",
-      "support": "You help keep FileFlip going"
+      "support": "You help keep Fileflect going"
     },
     "intlNote": "Payments from your country are coming soon. Meanwhile, everything stays free.",
     "billedVia": "Secure payment with {provider}. Cancel anytime from My account.",
@@ -356,8 +356,8 @@
     "recommended": "Recommended"
   },
   "Billing": {
-    "monthly": "FileFlip Pro monthly",
-    "yearly": "FileFlip Pro yearly"
+    "monthly": "Fileflect Pro monthly",
+    "yearly": "Fileflect Pro yearly"
   },
   "Ads": {
     "label": "Advertisement",
@@ -385,7 +385,7 @@
     "updated": "Last updated: {date}",
     "privacy": {
       "title": "Privacy policy",
-      "intro": "Privacy is at the core of FileFlip. This page explains what data we handle, why, and for how long.",
+      "intro": "Privacy is at the core of Fileflect. This page explains what data we handle, why, and for how long.",
       "sections": [
         {
           "heading": "Files processed on your device",
@@ -415,11 +415,11 @@
     },
     "terms": {
       "title": "Terms of use",
-      "intro": "By using FileFlip you accept these terms. They are written to be clear; if anything is unclear, write to us.",
+      "intro": "By using Fileflect you accept these terms. They are written to be clear; if anything is unclear, write to us.",
       "sections": [
         {
           "heading": "The service",
-          "body": "FileFlip converts, compresses and organizes files. Basic features are free and need no account. The Pro plan raises limits and removes ads."
+          "body": "Fileflect converts, compresses and organizes files. Basic features are free and need no account. The Pro plan raises limits and removes ads."
         },
         {
           "heading": "Your files",
@@ -427,7 +427,7 @@
         },
         {
           "heading": "Acceptable use",
-          "body": "Don't use FileFlip for illegal activities, to send malware or to overload the service (for example with massive automated uploads). We may limit usage to protect the service."
+          "body": "Don't use Fileflect for illegal activities, to send malware or to overload the service (for example with massive automated uploads). We may limit usage to protect the service."
         },
         {
           "heading": "Pro subscription",

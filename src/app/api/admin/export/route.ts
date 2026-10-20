@@ -26,7 +26,7 @@ export async function GET(request: Request) {
   try {
     const stats = { [source]: await sources[source](period) };
     const lastDay = dayKey(new Date(period.end.getTime() - 1));
-    const filename = `fileflip-${query.table}-${dayKey(period.start)}_${lastDay}.csv`;
+    const filename = `fileflect-${query.table}-${dayKey(period.start)}_${lastDay}.csv`;
     return new Response(tableCsv(query.table, stats as Parameters<typeof tableCsv>[1]), {
       headers: {
         "Content-Type": "text/csv; charset=utf-8",

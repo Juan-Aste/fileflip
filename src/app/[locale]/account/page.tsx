@@ -17,7 +17,7 @@ type Props = { params: Promise<{ locale: string }>; searchParams: Promise<{ chec
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Account" });
-  return { title: `${t("title")} — FileFlip`, robots: { index: false } };
+  return { title: `${t("title")} — Fileflect`, robots: { index: false } };
 }
 
 export default async function AccountPage({ params, searchParams }: Props) {
@@ -72,7 +72,7 @@ export default async function AccountPage({ params, searchParams }: Props) {
           {plan === "pro" && (
             <span className={badge}>
               <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
-              FileFlip Pro
+              Fileflect Pro
             </span>
           )}
         </p>

@@ -6,7 +6,7 @@ import { routing } from "@/i18n/routing";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "FileFlip";
+export const alt = "Fileflect";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -57,7 +57,7 @@ export default async function OpengraphImage({ params }: { params: Promise<{ loc
             />
           </svg>
           <div style={{ display: "flex", fontSize: 64, fontWeight: 800, letterSpacing: -2 }}>
-            File<span style={{ color: "#0b6f6a" }}>Flip</span>
+            File<span style={{ color: "#0b6f6a" }}>flect</span>
           </div>
         </div>
         {title && (

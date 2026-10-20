@@ -86,7 +86,7 @@ export async function generateMetadata({
       return t ? [[l, `/${l}/${t.slug}`] as const] : [];
     });
     return {
-      title: `${lt.metaTitle} — FileFlip`,
+      title: `${lt.metaTitle} — Fileflect`,
       description: lt.metaDescription,
       alternates: {
         canonical: `/${lt.locale}/${lt.slug}`,
@@ -104,7 +104,7 @@ export async function generateMetadata({
       namespace: `Tools.${page.tool.id}`,
     });
     return {
-      title: `${t("title")} — FileFlip`,
+      title: `${t("title")} — Fileflect`,
       description: t("description"),
       alternates,
     };
@@ -118,7 +118,7 @@ export async function generateMetadata({
     to: formats[page.conversion.to].label,
   };
   return {
-    title: `${t("metaTitle", names)} — FileFlip`,
+    title: `${t("metaTitle", names)} — Fileflect`,
     description: t("description", names),
     alternates,
   };

@@ -22,7 +22,7 @@ export default function Header() {
         >
           <LogoMark className="h-8 w-8" />
           <span>
-            File<span className="text-brand">Flip</span>
+            File<span className="text-brand">flect</span>
           </span>
         </Link>
 

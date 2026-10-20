@@ -26,7 +26,7 @@ function config(): NextAuthConfig {
     providers.push(
       Nodemailer({
         server: process.env.EMAIL_SERVER || "smtp://localhost:25",
-        from: process.env.EMAIL_FROM || "FileFlip <no-reply@example.com>",
+        from: process.env.EMAIL_FROM || "Fileflect <no-reply@example.com>",
         async sendVerificationRequest({ identifier, url, provider }) {
           const mail = magicLinkEmail(url, localeFromSignInUrl(url));
           if (!process.env.EMAIL_SERVER) {

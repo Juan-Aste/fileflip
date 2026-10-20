@@ -1166,3 +1166,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 ## 2026-10-20 21:40 UTC — Fase 3: plan
 
 - PLAN.md: nueva sección "Fase 3" con las tareas de los hitos 3.0 (cambio de nombre a Fileflect) y 3A (auditoría y comparación). Las tareas de 3B–3E se detallan al terminar la auditoría (tarea 3A.6).
+
+## 2026-10-20 21:55 UTC — Fase 3, tarea 3.0.1 (textos con el nombre Fileflect)
+
+**Qué se hizo**
+- "FileFlip" → "Fileflect" en `messages/*.json` (5 idiomas + `admin.es.json`), metadatos y títulos de todas las páginas, manifest, imagen Open Graph, email de login, descripciones de los planes de Mercado Pago (salen de `Billing.monthly/yearly`), metadatos de los PDF generados (productor/creador) y del DOCX, `EMAIL_FROM` por defecto (en `auth.ts` y `.env.example`), comentario del Dockerfile.
+- Nombres de descarga: `fileflect.zip`, `fileflect-merged.pdf`, `fileflect-images.pdf`, `fileflect-<tabla>-….csv`. Carpeta temporal del servidor: `<tmp>/fileflect`.
+- El wordmark del header, footer, Open Graph y `public/logo.svg` pasa de "File**Flip**" a "File**flect**" (el rediseño del logo es la tarea 3.0.3).
+- `package.json` y `package-lock.json`: `name` = `fileflect`.
+
+**Decisiones**
+- Se mantienen sin cambios los nombres internos que no ve el usuario: el nombre de la base en `MONGODB_URI` de ejemplo (`/fileflip`, cambiarlo dejaría al deploy actual apuntando a otra base), los emails/dominios ficticios de los tests y las URLs del repo de GitHub.
+
+**Verificación**
+- Lint, typecheck, build y tests (321) pasan. `grep "Flip"` en `src/`, `public/` y `messages/` solo encuentra datos de tests.

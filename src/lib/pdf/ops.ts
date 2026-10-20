@@ -11,8 +11,8 @@ async function load(bytes: Uint8Array) {
 }
 
 async function save(doc: PDFDocument) {
-  doc.setProducer("FileFlip");
-  doc.setCreator("FileFlip");
+  doc.setProducer("Fileflect");
+  doc.setCreator("Fileflect");
   return doc.save({ useObjectStreams: true });
 }
 

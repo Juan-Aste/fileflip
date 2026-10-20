@@ -59,7 +59,7 @@ describe("GET /api/admin/export", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("text/csv; charset=utf-8");
     expect(res.headers.get("cache-control")).toBe("no-store");
-    expect(res.headers.get("content-disposition")).toMatch(/^attachment; filename="fileflip-top-conversions-\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}\.csv"$/);
+    expect(res.headers.get("content-disposition")).toMatch(/^attachment; filename="fileflect-top-conversions-\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}\.csv"$/);
     expect(await res.text()).toBe("tool,from,to,count\r\nconvert,png,webp,2\r\nconvert,heic,jpg,1\r\n");
     const errors = await get("?table=errors&period=7d");
     expect(await errors.text()).toBe("error_code,count\r\nconversionFailed,1\r\n");

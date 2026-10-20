@@ -1,10 +1,10 @@
 {
   "Metadata": {
-    "title": "FileFlip — Convierte archivos e imágenes gratis",
+    "title": "Fileflect — Convierte archivos e imágenes gratis",
     "description": "Convierte imágenes y documentos sin marcas de agua ni registro. Lo que se puede, se procesa en tu dispositivo."
   },
   "Common": {
-    "appName": "FileFlip",
+    "appName": "Fileflect",
     "skipToContent": "Saltar al contenido",
     "loading": "Cargando…",
     "close": "Cerrar",
@@ -13,7 +13,7 @@
     "retry": "Reintentar"
   },
   "Header": {
-    "homeLink": "Inicio de FileFlip",
+    "homeLink": "Inicio de Fileflect",
     "nav": {
       "tools": "Herramientas",
       "pricing": "Precios",
@@ -41,11 +41,11 @@
     "terms": "Términos",
     "contact": "Contacto",
     "pricing": "Precios",
-    "copyright": "© {year} FileFlip. Sin marcas de agua, sin registro obligatorio.",
+    "copyright": "© {year} Fileflect. Sin marcas de agua, sin registro obligatorio.",
     "headings": {
       "tools": "Herramientas PDF",
       "conversions": "Conversiones populares",
-      "company": "FileFlip"
+      "company": "Fileflect"
     }
   },
   "HomePage": {
@@ -53,7 +53,7 @@
     "tagline": "Imágenes y PDF se procesan directamente en tu navegador: más rápido, más privado y gratis. Sin marcas de agua y sin crear una cuenta.",
     "cta": "Elegir archivos",
     "features": {
-      "heading": "¿Por qué FileFlip?",
+      "heading": "¿Por qué Fileflect?",
       "privacy": {
         "title": "Privado de verdad",
         "body": "Tus imágenes y PDF nunca se suben: todo ocurre en tu dispositivo."
@@ -92,7 +92,7 @@
       "heading": "Preguntas frecuentes",
       "items": {
         "free": {
-          "q": "¿FileFlip es gratis?",
+          "q": "¿Fileflect es gratis?",
           "a": "Sí. Puedes convertir sin pagar, sin crear una cuenta y sin marcas de agua. El plan Pro es opcional: quita los anuncios y amplía los límites."
         },
         "upload": {
@@ -105,7 +105,7 @@
         },
         "mobile": {
           "q": "¿Funciona en el celular?",
-          "a": "Sí. FileFlip funciona en el navegador de tu celular o tablet, sin instalar ninguna aplicación. Por ejemplo, puedes pasar fotos HEIC del iPhone a JPG."
+          "a": "Sí. Fileflect funciona en el navegador de tu celular o tablet, sin instalar ninguna aplicación. Por ejemplo, puedes pasar fotos HEIC del iPhone a JPG."
         },
         "batch": {
           "q": "¿Puedo convertir varios archivos a la vez?",
@@ -275,9 +275,9 @@
     "alreadyOptimized": "Este PDF ya está optimizado: no pudimos reducirlo más."
   },
   "Email": {
-    "subject": "Tu enlace para entrar a FileFlip",
+    "subject": "Tu enlace para entrar a Fileflect",
     "preheader": "Entra con un clic, sin contraseña.",
-    "heading": "Entra a FileFlip",
+    "heading": "Entra a Fileflect",
     "body": "Haz clic en el botón para iniciar sesión. El enlace vale por 24 horas y solo se puede usar una vez.",
     "button": "Iniciar sesión",
     "fallback": "Si el botón no funciona, copia y pega este enlace en tu navegador:",
@@ -306,7 +306,7 @@
     "freeBody": "Todas las herramientas sin costo, con límites en las conversiones de servidor.",
     "upgrade": "Pasar a Pro",
     "signOut": "Cerrar sesión",
-    "planProBody": "Gracias por apoyar FileFlip. Disfrutas límites ampliados y sin publicidad.",
+    "planProBody": "Gracias por apoyar Fileflect. Disfrutas límites ampliados y sin publicidad.",
     "billing": "{amount} cada {period, select, yearly {año} other {mes}}",
     "nextPayment": "Próximo cobro: {date}",
     "paidUntil": "Tu Pro sigue activo hasta el {date}. No se te volverá a cobrar.",
@@ -339,7 +339,7 @@
       "serverPro": "Documentos de hasta {size} y {count} por lote",
       "browserPro": "Imágenes y PDF de hasta {size} en tu dispositivo",
       "noAds": "Sin publicidad",
-      "support": "Ayudas a mantener FileFlip"
+      "support": "Ayudas a mantener Fileflect"
     },
     "intlNote": "Muy pronto podrás pagar desde tu país. Mientras tanto, todo sigue gratis.",
     "billedVia": "Pago seguro con {provider}. Cancelas cuando quieras desde Mi cuenta.",
@@ -356,8 +356,8 @@
     "recommended": "Recomendado"
   },
   "Billing": {
-    "monthly": "FileFlip Pro mensual",
-    "yearly": "FileFlip Pro anual"
+    "monthly": "Fileflect Pro mensual",
+    "yearly": "Fileflect Pro anual"
   },
   "Ads": {
     "label": "Publicidad",
@@ -385,7 +385,7 @@
     "updated": "Última actualización: {date}",
     "privacy": {
       "title": "Política de privacidad",
-      "intro": "En FileFlip la privacidad es el centro del producto. Esta página explica qué datos tratamos, por qué y por cuánto tiempo.",
+      "intro": "En Fileflect la privacidad es el centro del producto. Esta página explica qué datos tratamos, por qué y por cuánto tiempo.",
       "sections": [
         {
           "heading": "Archivos procesados en tu dispositivo",
@@ -415,11 +415,11 @@
     },
     "terms": {
       "title": "Términos de uso",
-      "intro": "Al usar FileFlip aceptas estos términos. Están escritos para ser claros; si algo no se entiende, escríbenos.",
+      "intro": "Al usar Fileflect aceptas estos términos. Están escritos para ser claros; si algo no se entiende, escríbenos.",
       "sections": [
         {
           "heading": "El servicio",
-          "body": "FileFlip convierte, comprime y organiza archivos. Las funciones básicas son gratuitas y no requieren cuenta. El plan Pro amplía los límites y quita la publicidad."
+          "body": "Fileflect convierte, comprime y organiza archivos. Las funciones básicas son gratuitas y no requieren cuenta. El plan Pro amplía los límites y quita la publicidad."
         },
         {
           "heading": "Tus archivos",
@@ -427,7 +427,7 @@
         },
         {
           "heading": "Uso aceptable",
-          "body": "No uses FileFlip para actividades ilegales, para enviar malware ni para sobrecargar el servicio (por ejemplo, con envíos automatizados masivos). Podemos limitar el uso para proteger el servicio."
+          "body": "No uses Fileflect para actividades ilegales, para enviar malware ni para sobrecargar el servicio (por ejemplo, con envíos automatizados masivos). Podemos limitar el uso para proteger el servicio."
         },
         {
           "heading": "Suscripción Pro",

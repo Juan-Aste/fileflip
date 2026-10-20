@@ -1,10 +1,10 @@
 {
   "Metadata": {
-    "title": "FileFlip — 免费转换文件和图片",
+    "title": "Fileflect — 免费转换文件和图片",
     "description": "转换图片和文档，无水印、无需注册。能在你设备上完成的处理，都留在你的设备上。"
   },
   "Common": {
-    "appName": "FileFlip",
+    "appName": "Fileflect",
     "skipToContent": "跳到主要内容",
     "loading": "加载中…",
     "close": "关闭",
@@ -13,7 +13,7 @@
     "retry": "重试"
   },
   "Header": {
-    "homeLink": "FileFlip 首页",
+    "homeLink": "Fileflect 首页",
     "nav": {
       "tools": "工具",
       "pricing": "价格",
@@ -41,11 +41,11 @@
     "terms": "条款",
     "contact": "联系我们",
     "pricing": "价格",
-    "copyright": "© {year} FileFlip。无水印，无需注册。",
+    "copyright": "© {year} Fileflect。无水印，无需注册。",
     "headings": {
       "tools": "PDF 工具",
       "conversions": "常用转换",
-      "company": "FileFlip"
+      "company": "Fileflect"
     }
   },
   "HomePage": {
@@ -53,7 +53,7 @@
     "tagline": "图片和 PDF 直接在浏览器中处理：更快、更私密，而且免费。无水印，无需创建账户。",
     "cta": "选择文件",
     "features": {
-      "heading": "为什么选择 FileFlip？",
+      "heading": "为什么选择 Fileflect？",
       "privacy": {
         "title": "真正的隐私",
         "body": "你的图片和 PDF 从不上传，一切都在你的设备上完成。"
@@ -92,7 +92,7 @@
       "heading": "常见问题",
       "items": {
         "free": {
-          "q": "FileFlip 免费吗？",
+          "q": "Fileflect 免费吗？",
           "a": "免费。无需付费、无需注册，也没有水印。Pro 套餐是可选的：去除广告并提高使用上限。"
         },
         "upload": {
@@ -105,7 +105,7 @@
         },
         "mobile": {
           "q": "手机上能用吗？",
-          "a": "可以。FileFlip 在手机或平板的浏览器中即可使用，无需安装任何应用。例如，你可以把 iPhone 的 HEIC 照片转成 JPG。"
+          "a": "可以。Fileflect 在手机或平板的浏览器中即可使用，无需安装任何应用。例如，你可以把 iPhone 的 HEIC 照片转成 JPG。"
         },
         "batch": {
           "q": "可以一次转换多个文件吗？",
@@ -275,9 +275,9 @@
     "alreadyOptimized": "此 PDF 已经过优化，无法再缩小。"
   },
   "Email": {
-    "subject": "你的 FileFlip 登录链接",
+    "subject": "你的 Fileflect 登录链接",
     "preheader": "一键登录，无需密码。",
-    "heading": "登录 FileFlip",
+    "heading": "登录 Fileflect",
     "body": "点击按钮即可登录。链接 24 小时内有效，且只能使用一次。",
     "button": "登录",
     "fallback": "如果按钮无法使用，请将此链接复制到浏览器中打开：",
@@ -306,7 +306,7 @@
     "freeBody": "所有工具免费使用，服务器转换有一定限制。",
     "upgrade": "升级到 Pro",
     "signOut": "退出登录",
-    "planProBody": "感谢你支持 FileFlip。你享有更高的限制且没有广告。",
+    "planProBody": "感谢你支持 Fileflect。你享有更高的限制且没有广告。",
     "billing": "{amount} 每{period, select, yearly {年} other {月}}",
     "nextPayment": "下次扣款：{date}",
     "paidUntil": "你的 Pro 在 {date} 前保持有效，之后不会再扣款。",
@@ -339,7 +339,7 @@
       "serverPro": "文档最大 {size}，每批 {count} 个",
       "browserPro": "设备上处理的图片和 PDF 最大 {size}",
       "noAds": "无广告",
-      "support": "支持 FileFlip 持续运营"
+      "support": "支持 Fileflect 持续运营"
     },
     "intlNote": "即将支持在你所在的国家/地区付款。在此之前，所有功能依然免费。",
     "billedVia": "通过 {provider} 安全付款。可随时在“我的账户”中取消。",
@@ -356,8 +356,8 @@
     "recommended": "推荐"
   },
   "Billing": {
-    "monthly": "FileFlip Pro 月付",
-    "yearly": "FileFlip Pro 年付"
+    "monthly": "Fileflect Pro 月付",
+    "yearly": "Fileflect Pro 年付"
   },
   "Ads": {
     "label": "广告",
@@ -385,7 +385,7 @@
     "updated": "最后更新：{date}",
     "privacy": {
       "title": "隐私政策",
-      "intro": "隐私是 FileFlip 的核心。本页说明我们处理哪些数据、为什么处理以及保留多久。",
+      "intro": "隐私是 Fileflect 的核心。本页说明我们处理哪些数据、为什么处理以及保留多久。",
       "sections": [
         {
           "heading": "在你设备上处理的文件",
@@ -415,11 +415,11 @@
     },
     "terms": {
       "title": "使用条款",
-      "intro": "使用 FileFlip 即表示你接受这些条款。我们尽量写得清楚，如有不明白之处，请联系我们。",
+      "intro": "使用 Fileflect 即表示你接受这些条款。我们尽量写得清楚，如有不明白之处，请联系我们。",
       "sections": [
         {
           "heading": "服务",
-          "body": "FileFlip 提供文件转换、压缩和整理。基础功能免费且无需账户。Pro 方案提高限制并去除广告。"
+          "body": "Fileflect 提供文件转换、压缩和整理。基础功能免费且无需账户。Pro 方案提高限制并去除广告。"
         },
         {
           "heading": "你的文件",
@@ -427,7 +427,7 @@
         },
         {
           "heading": "合理使用",
-          "body": "请勿将 FileFlip 用于违法活动、传播恶意软件或使服务过载（例如大规模自动上传）。为保护服务，我们可能限制使用。"
+          "body": "请勿将 Fileflect 用于违法活动、传播恶意软件或使服务过载（例如大规模自动上传）。为保护服务，我们可能限制使用。"
         },
         {
           "heading": "Pro 订阅",

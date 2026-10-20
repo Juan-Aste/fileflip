@@ -70,7 +70,7 @@ export default function Converter({ from, to, options }: Props = {}) {
     setZipping(true);
     try {
       const { zipBlobs } = await import("@/lib/zip");
-      saveBlob(await zipBlobs(done), "fileflip.zip");
+      saveBlob(await zipBlobs(done), "fileflect.zip");
     } finally {
       setZipping(false);
     }

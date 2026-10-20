@@ -54,7 +54,7 @@ export default function ImagesToPdfTool() {
     return (
       <ToolResult
         blob={result}
-        filename={ready.length === 1 ? ready[0].file.name.replace(/\.[^.]+$/, "") + ".pdf" : "fileflip-images.pdf"}
+        filename={ready.length === 1 ? ready[0].file.name.replace(/\.[^.]+$/, "") + ".pdf" : "fileflect-images.pdf"}
         onReset={() => {
           setResult(null);
           clear();

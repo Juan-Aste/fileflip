@@ -1,4 +1,4 @@
-// FileFlip mark: a page with a tangerine folded corner and two "flip" arrows.
+// Fileflect mark: a page with a tangerine folded corner and two "flip" arrows.
 // Same drawing as src/app/icon.svg and public/logo.svg.
 export default function LogoMark({ className }: { className?: string }) {
   return (

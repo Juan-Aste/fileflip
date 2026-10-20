@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Pricing" });
   return {
-    title: `${t("title")} — FileFlip Pro`,
+    title: `${t("title")} — Fileflect Pro`,
     description: t("subtitle"),
     alternates: alternatesFor(locale as Locale, () => "/pricing"),
   };

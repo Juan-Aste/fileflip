@@ -24,7 +24,7 @@ export default function Footer() {
           <Link href="/" className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight">
             <LogoMark className="h-7 w-7" />
             <span>
-              File<span className="text-brand">Flip</span>
+              File<span className="text-brand">flect</span>
             </span>
           </Link>
           <p className="max-w-xs text-muted">{t("tagline")}</p>

@@ -1,6 +1,6 @@
 {
   "Admin": {
-    "metaTitle": "Panel de administración — FileFlip",
+    "metaTitle": "Panel de administración — Fileflect",
     "title": "Panel de administración",
     "subtitle": "Estadísticas del sitio. Solo visible para los correos de ADMIN_EMAILS.",
     "signedInAs": "Conectado como {email}",

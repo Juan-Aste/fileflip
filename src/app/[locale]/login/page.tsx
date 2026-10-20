@@ -17,7 +17,7 @@ type Props = {
 export async function generateMetadata({ params }: Pick<Props, "params">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Login" });
-  return { title: `${t("title")} — FileFlip`, robots: { index: false } };
+  return { title: `${t("title")} — Fileflect`, robots: { index: false } };
 }
 
 /** Google's "G" mark, as its sign-in branding guidelines ask for. */
