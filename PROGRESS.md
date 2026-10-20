@@ -1135,3 +1135,28 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Tests nuevos (9): escapado y fórmulas, tablas, validación del id de tabla, y la API con MongoDB en memoria (anónimo y no admin → 404, tabla inválida → 400, admin → CSV con los datos del período).
 - Con `next start` y datos de ejemplo: descarga correcta y capturas del panel a 360 px y 1280 px revisadas.
 - Lint, typecheck, build y tests (321) pasan.
+
+## 2026-10-20 04:55 UTC — Fase 2, tarea 2C.11 (revisión final)
+
+**Qué se hizo**
+- Lint, typecheck, build, `check:static` (547 páginas del sitemap estáticas salvo precios) y tests (59 archivos, 321 tests) pasan en `dev`.
+- Medición final con Lighthouse en `docs/perf/2026-10-20-phase2-final.md`.
+- Capturas del panel (`docs/screenshots/es_admin-*.webp`, 360 y 1280 px, claro y oscuro, con datos de ejemplo).
+
+**Mediciones finales (Lighthouse 13.5 móvil, mediana de 3)**
+- Rendimiento 97–98 (portada 98), accesibilidad 100, SEO 100, CLS 0, LCP 2,2–2,6 s, FCP 1,2 s, TBT 40–100 ms, JS 142–149 KB. Igual que al final de 2B: el panel no agrega JS a las páginas públicas.
+
+# FASE 2 TERMINADA
+
+**Resumen**
+- **2A Rendimiento**: medición reproducible (`scripts/perf/lighthouse.sh`), análisis del bundle (`npm run analyze`, `docs/perf/bundle.md`), componentes de servidor e import dinámico de lo pesado (pdf.js, pdf-lib, fflate y códecs fuera de la portada), páginas de conversión, cola larga y legales estáticas en los 5 idiomas, CLS 0 con espacios reservados para anuncios, caché inmutable para `.wasm` y workers, precarga del códec al elegir formato, pool de workers según `hardwareConcurrency` con liberación de memoria, índices de MongoDB y timeouts hacia Gotenberg.
+- **2B Diseño**: identidad visual en `docs/design.md` (paleta clara/oscura AA, Bricolage Grotesque + Figtree, tokens en Tailwind), logo SVG, favicon e imágenes Open Graph por idioma, header/footer y menú móvil nuevos, portada (hero con zona de arrastre, privacidad, accesos rápidos, 3 pasos, FAQ con schema), estados del conversor y tarjetas de archivo, todas las páginas rediseñadas, microinteracciones que respetan `prefers-reduced-motion`. Capturas en `docs/screenshots/`.
+- **2C Panel de administración** (`/es/admin`, 404 para quien no está en `ADMIN_EMAILS`, verificado en el layout, la página y cada API): registro de duración, error y herramienta de cada conversión, uso de las herramientas PDF y beacon de visitas (idioma, país de la cabecera del CDN, tipo de página; sin IP ni nombres de archivo); selector de período con comparación; tarjetas de resumen; gráficos SVG sin JS en el cliente; agregaciones de MongoDB con `$facet` sobre campos con índice; exportación a CSV de las tablas.
+
+**Mediciones de rendimiento**: base 99 / final 97–98 en móvil (ver `docs/perf/2026-10-20-phase2-final.md`), accesibilidad y SEO 100, CLS 0.
+
+**Lo que el dueño debe configurar** (además de lo de la fase 1, ver "Pendiente del dueño")
+- `ADMIN_EMAILS`: correos separados por comas con acceso al panel (vacío = nadie). Se entra en `/es/admin` después de iniciar sesión con uno de esos correos.
+- `MONGODB_URI` en producción: sin base de datos el panel muestra un aviso y no hay estadísticas.
+- (Opcional) Cloudflare u otro CDN delante de Railway para que las visitas tengan país (`cf-ipcountry`); sin eso aparecen como "Desconocido".
+- Mirar el panel con datos reales y decidir si hace falta algo más (por ejemplo, conversión del MRR a una sola moneda).
