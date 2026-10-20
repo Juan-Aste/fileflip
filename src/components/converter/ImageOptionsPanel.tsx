@@ -2,12 +2,14 @@
 
 import { useId } from "react";
 import { useTranslations } from "next-intl";
+import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import {
   DEFAULT_PDF_DPI,
   PDF_DPI_CHOICES,
   type ImageOptions,
 } from "@/lib/image/options";
 import type { Resize } from "@/lib/image/dimensions";
+import { field } from "@/components/ui/styles";
 
 interface Props {
   value: ImageOptions;
@@ -20,7 +22,7 @@ interface Props {
 }
 
 const input =
-  "h-9 w-full rounded-lg border border-border bg-background px-2.5 text-sm focus-visible:outline-2 focus-visible:outline-brand";
+  `h-9 w-full text-sm ${field}`;
 
 const toNumber = (v: string) => (v === "" ? undefined : Math.max(1, Number(v)));
 
@@ -38,10 +40,15 @@ export default function ImageOptionsPanel({
 
   return (
     <details open={defaultOpen} className="group rounded-xl border border-border px-4 py-3">
-      <summary className="cursor-pointer text-sm font-medium">
+      <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-medium [&::-webkit-details-marker]:hidden">
+        <SlidersHorizontal aria-hidden="true" className="h-4 w-4 text-muted" />
         {t("title")}
+        <ChevronDown
+          aria-hidden="true"
+          className="ml-auto h-4 w-4 text-muted transition-transform duration-200 group-open:rotate-180"
+        />
       </summary>
-      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+      <div className="mt-3 grid gap-4 group-open:animate-rise sm:grid-cols-2">
         {showQuality && (
           <div>
             <label

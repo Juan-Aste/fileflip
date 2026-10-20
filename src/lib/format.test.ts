@@ -20,7 +20,7 @@ describe("formatNumber", () => {
 
 describe("formatBytes", () => {
   it("scales units by 1024", () => {
-    expect(n(formatBytes(512, "en"))).toBe("512 byte");
+    expect(n(formatBytes(512, "en"))).toBe("512 B");
     expect(n(formatBytes(1536, "en"))).toBe("1.5 kB");
     expect(n(formatBytes(5 * 1024 * 1024, "en"))).toBe("5 MB");
   });
@@ -30,7 +30,7 @@ describe("formatBytes", () => {
   });
 
   it("never returns negative sizes", () => {
-    expect(n(formatBytes(-10, "en"))).toBe("0 byte");
+    expect(n(formatBytes(-10, "en"))).toBe("0 B");
   });
 });
 

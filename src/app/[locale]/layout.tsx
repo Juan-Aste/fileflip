@@ -3,10 +3,12 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import VisitBeacon from "@/components/analytics/VisitBeacon";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { SessionInfoProvider } from "@/components/session/SessionInfo";
 import { themeInitScript } from "@/components/layout/theme";
+import { bodyFont, headingFont } from "@/app/fonts";
 import "./globals.css";
 
 type Props = Readonly<{
@@ -27,6 +29,7 @@ export async function generateMetadata({
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
     title: t("title"),
     description: t("description"),
+    twitter: { card: "summary_large_image" },
   };
 }
 
@@ -42,7 +45,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     // The theme script toggles the `dark` class before hydration.
-    <html lang={locale} suppressHydrationWarning>
+    <html
+      lang={locale}
+      className={`${bodyFont.variable} ${headingFont.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
@@ -60,6 +67,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             {children}
           </main>
           <Footer />
+          <VisitBeacon />
           </SessionInfoProvider>
         </NextIntlClientProvider>
       </body>

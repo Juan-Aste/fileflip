@@ -13,7 +13,15 @@ export class GotenbergError extends Error {
   }
 }
 
-const DEFAULT_TIMEOUT_MS = 90_000;
+/**
+ * Slightly longer than Gotenberg's own `--api-timeout=90s` (docker-compose,
+ * DEPLOY.md), so a slow LibreOffice job ends with Gotenberg's error and
+ * Gotenberg never keeps working on a request we already dropped.
+ */
+export function gotenbergTimeoutMs() {
+  const fromEnv = Number(process.env.GOTENBERG_TIMEOUT_MS);
+  return fromEnv > 0 ? fromEnv : 95_000;
+}
 
 function baseUrl() {
   const url = process.env.GOTENBERG_URL;
@@ -27,10 +35,10 @@ function baseUrl() {
  */
 export async function officeToPdf(
   file: { name: string; bytes: Uint8Array },
-  { timeoutMs = DEFAULT_TIMEOUT_MS, fetchImpl = fetch }: { timeoutMs?: number; fetchImpl?: typeof fetch } = {},
+  { timeoutMs = gotenbergTimeoutMs(), fetchImpl = fetch }: { timeoutMs?: number; fetchImpl?: typeof fetch } = {},
 ): Promise<Uint8Array> {
   const form = new FormData();
-  form.append("files", new Blob([file.bytes.slice()]), file.name);
+  form.append("files", new Blob([file.bytes as Uint8Array<ArrayBuffer>]), file.name);
 
   let response: Response;
   try {

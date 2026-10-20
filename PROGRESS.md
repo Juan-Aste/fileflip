@@ -597,8 +597,566 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Revisar con un abogado la política de privacidad y los términos (`messages/*.json`, namespace `Legal`): falta la razón social/responsable, la jurisdicción y datos de contacto legales. Configurar `NEXT_PUBLIC_CONTACT_EMAIL`.
 - Proyecto en Railway y base MongoDB (Railway o Atlas).
 - Revisar los precios del plan Pro por país en `src/config/pricing.ts` (son orientativos).
+- Panel de administración: definir `ADMIN_EMAILS` (correos separados por comas) con el correo con el que inicias sesión; vacío = nadie entra (todos reciben 404). Se entra en `/es/admin`.
 - (Opcional) Poner Cloudflare delante de Railway para tener la cabecera de país `cf-ipcountry`; sin eso, el país se deduce del idioma del navegador y del selector manual.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
 - No quedan tareas sin marcar en PLAN.md y la especificación no tiene puntos sin cubrir. Verificado: `npm ci`, `npm run lint`, `npm run build` y `npm test` (40 archivos, 231 tests) pasan en `dev`.
 - Se avisó al dueño que la rutina horaria ya no tiene trabajo y conviene pausarla. Las próximas ejecuciones que encuentren el mismo estado no deben volver a notificar.
+
+## Inicio de la fase 2
+
+## 2026-10-19 23:30 UTC — Fase 2, tarea 2A.1 (plan y medición base)
+
+**Qué se hizo**
+- PLAN.md: nueva sección "Fase 2" con las tareas de los hitos 2A (rendimiento), 2B (diseño) y 2C (panel de administración).
+- `scripts/perf/lighthouse.sh`: medición reproducible con Lighthouse en modo móvil (mediana de N corridas) de portada, conversión de imagen, conversión PDF, herramienta PDF, cola larga y precios. Lighthouse no se agrega a las dependencias del proyecto (se instala aparte; ver el encabezado del script).
+- Medición base en `docs/perf/2026-10-19-baseline.md`.
+
+**Mediciones (base, móvil, mediana de 3)**
+- Rendimiento 99 en todas las páginas medidas; accesibilidad 100; SEO 100 (precios 91).
+- FCP 0,8–0,9 s, LCP 2,0–2,1 s, TBT 60–90 ms, CLS 0, JS transferido 142–151 kB.
+- La meta (≥ 90) ya se cumple; el margen está en el LCP (77 % "render delay" por CSS + JS inicial), en el JS compartido (~103 kB) y en detalles: favicon 404, meta description de precios fuera del `<head>` (streaming de metadatos en páginas dinámicas), prefetch de `/login` y consulta de sesión en cada carga.
+
+**Decisiones**
+- Medir siempre en el puerto 3000 (o con `NEXT_PUBLIC_SITE_URL` igual a la URL medida): si no, Lighthouse marca el canonical como inválido.
+
+**Qué sigue**
+- 2A.2: correcciones rápidas detectadas en la medición.
+
+## 2026-10-19 23:40 UTC — Fase 2, tarea 2A.2 (correcciones rápidas)
+
+**Qué se hizo**
+- Favicon provisorio `src/app/icon.svg` (Next lo enlaza en todas las páginas); el definitivo llega con el logo en 2B.3. Ya no hay 404 de `/favicon.ico`.
+- `htmlLimitedBots: /.*/` en `next.config.ts`: los metadatos van siempre en el `<head>`, también en páginas dinámicas (precios). SEO de precios: 91 → 100.
+- El enlace "Iniciar sesión / Mi cuenta" del header ya no hace prefetch (se veía en todas las páginas y casi nadie lo usa).
+- La consulta de sesión (`/api/auth/session`) se hace cuando el navegador está libre (`requestIdleCallback`, máx. 2 s; `setTimeout` como respaldo) en vez de competir con la carga inicial.
+
+**Mediciones (1 corrida, móvil)**
+- Sin cambios en rendimiento (99 en todas); SEO 100 en todas las páginas (antes precios 91). LCP 1,8–2,1 s, TBT 60–100 ms, CLS 0.
+- Buenas prácticas 96 solo en este entorno: sin `AUTH_SECRET` local, `/api/auth/session` responde 500 y aparece en la consola. Con las variables de producción no ocurre.
+
+**Qué sigue**
+- 2A.3: análisis del bundle.
+
+## 2026-10-19 23:50 UTC — Fase 2, tarea 2A.3 (análisis del bundle)
+
+**Qué se hizo**
+- `@next/bundle-analyzer` (dependencia de desarrollo) y `npm run analyze` (`ANALYZE=true next build`); informes en `.next/analyze/`.
+- Resultado documentado en `docs/perf/bundle.md`. Hallazgos principales: el selector de idioma arrastra a todas las páginas los datos de cola larga y los registros de slugs (~6 kB gzip); `[slug]` carga las 6 herramientas PDF en cualquier página; el conversor incluye de entrada el panel de opciones y el anuncio. pdf.js, libheif, códecs WASM, pdf-lib y fflate ya están fuera del JS inicial; ninguna librería de servidor entra al cliente.
+
+**Decisiones**
+- La precompilación de mensajes de next-intl (ahorraría ~12 kB del parser ICU) necesita Next 16: no se migra en esta fase.
+
+**Qué sigue**
+- 2A.4: aplicar las reducciones.
+
+## 2026-10-20 00:10 UTC — Fase 2, tarea 2A.4 (menos JS inicial)
+
+**Qué se hizo**
+- `LocaleSwitcher`: las tablas de slugs (`src/config/routes.ts` con herramientas, conversiones y todo `src/content/longtail.ts`) se importan recién al cambiar de idioma, con precarga al pasar el mouse o enfocar el selector. Chunk del layout (todas las páginas): 9 → 2,7 kB gzip.
+- `ToolComponent`: `next/dynamic` por herramienta; cada página descarga solo su herramienta (siguen renderizándose en el servidor, sin saltos). `[slug]`: First Load 139 → 132 kB.
+- `Converter`: `FileRow` e `ImageOptionsPanel` con `next/dynamic` (solo aparecen al agregar archivos). Chunk del conversor: 12 → 8,3 kB gzip.
+- Header, footer y las secciones de las páginas ya eran componentes de servidor; los únicos clientes del layout son el selector de idioma, el botón de tema y el enlace de cuenta.
+- Verificado en Chromium (Playwright) con `next start`: PNG → WEBP desde la portada y descarga; unir 2 PDF (2 + 3 páginas → 5) en `/es/unir-pdf` (HTML del servidor incluye la herramienta); cambio de idioma `/es/unir-pdf` → `/en/merge-pdf` y `/es/heic-a-jpg-desde-iphone` → `/pt/heic-para-jpg-do-iphone`; sin errores de página.
+
+**Mediciones (1 corrida, móvil)**
+- JS transferido: portada 142 → 136 kB, conversiones 150 → 137 kB, herramienta PDF 151 → 144 kB, precios 147 → 141 kB.
+- Rendimiento 98–99, accesibilidad y SEO 100, CLS 0, LCP 1,7–2,1 s, TBT 70–80 ms.
+
+**Qué sigue**
+- 2A.5: revisar SSG/ISR.
+
+## 2026-10-20 00:20 UTC — Fase 2, tarea 2A.5 (revisión de SSG)
+
+**Qué se hizo**
+- Revisión del `prerender-manifest`: la portada, las 522 páginas de `[slug]` (herramientas, conversiones y cola larga en los 5 idiomas), privacidad, términos, contacto y "revisa tu correo" son estáticas (SSG, sin revalidación: el contenido sale del código, así que cambia solo con un nuevo deploy). `dynamicParams = false` en `[slug]`: un slug desconocido es 404 sin renderizar.
+- Dinámicas a propósito: precios (precio según el país por cookie/cabecera y estado Pro), login y cuenta (sesión), y las API.
+- `scripts/check-static.mjs` (`npm run check:static`, agregado al CI después del build): toma todas las URL del sitemap generado y falla si alguna no está prerenderizada, salvo precios. Probado que detecta páginas dinámicas (quitando la excepción de precios marca las 5).
+
+**Decisiones**
+- No se usa ISR: no hay contenido que cambie sin deploy. Precios sigue dinámica: hacerla estática obligaría a mover la detección de país al cliente y mostraría primero un precio equivocado; ya mide 99 en Lighthouse.
+
+**Qué sigue**
+- 2A.6: sin saltos de diseño (espacio de anuncios, imágenes, next/font).
+
+## 2026-10-19 23:58 UTC — Fase 2, tarea 2A.6 (sin saltos de diseño)
+
+**Qué se hizo**
+- `AdSlot`: nuevo modo `reserved` mientras se consulta el plan: se reserva el mismo bloque (etiqueta + espacio del anuncio) vacío y oculto para lectores de pantalla, así nada se mueve cuando aparece el anuncio o el marcador. Para Pro el espacio se libera al conocer el plan (no ven anuncios nunca). Tests de `adMode` actualizados.
+- `AccountLink`: las dos etiquetas ("Iniciar sesión" / "Mi cuenta") comparten la misma celda de grid, así el enlace mide lo mismo antes y después de cargar la sesión y el header no se desplaza.
+- Imágenes: la única `<img>` del sitio son las miniaturas (URL `blob:`) de "Ordenar PDF", que ya van dentro de una caja con `aspect-[3/4]`; `next/image` no aplica a URL `blob:`. No hay otras imágenes en las páginas.
+- Fuentes: hoy se usa la pila de fuentes del sistema (sin fuente web, sin salto por fuente). La fuente propia llega en 2B.1 y se cargará con `next/font` (subconjunto `latin`, `display: swap` y fallback ajustado automático); queda anotado como convención.
+- AdSense ya se cargaba con `strategy="lazyOnload"`.
+
+**Mediciones**
+- CLS medido con Playwright (`PerformanceObserver` de `layout-shift`) en portada, conversión de imagen, conversión PDF, herramienta PDF, cola larga y precios, a 360 px y 1366 px: 0 en todas, también después de convertir un PNG en la portada (aparecen resultados y anuncio).
+
+**Qué sigue**
+- 2A.7: caché inmutable para `.wasm`/workers y precarga del códec.
+
+## 2026-10-20 00:05 UTC — Fase 2, tarea 2A.7 (caché de WASM/workers y precarga del códec)
+
+**Qué se hizo**
+- Caché: todos los `.wasm` (`/_next/static/media/*.<hash>.wasm`) y los chunks de los workers (`/_next/static/chunks/<id>.<hash>.js`) ya llevan hash en el nombre y Next los sirve con `Cache-Control: public, max-age=31536000, immutable` (verificado con `curl -I` sobre `next start`, que es lo que corre en Railway). No se agregó `headers()` en `next.config.ts`: Next ignora/sobrescribe cabeceras propias en `/_next/static` y `public/` está vacío.
+- Precarga del códec (`preloadImageCodecs(from, to)` en `src/lib/image/client.ts`): manda un mensaje `preload` al worker compartido (una vez por par), que importa e inicializa el códec (`encoderWarmers`/`decoderWarmers` en `codecs.ts`: @jsquash jpg/png/webp/avif con `init()`, gifenc, utif2 y libheif). Un trabajo que llega mientras se precarga espera esa misma promesa (no compila dos veces). Si la precarga falla, el trabajo carga el códec como antes.
+- `Converter`: precarga al elegir el formato de salida o al agregar archivos (incluido el decodificador HEIC), y en las páginas de conversión cuando el usuario pasa el mouse o enfoca la herramienta. Nada se descarga al cargar la página.
+- `heic.ts`: `loadHeic()` idempotente (promesa compartida).
+- Tests: `src/lib/image/preload.test.ts` (un worker, un mensaje por par, sin Worker no falla; cobertura de los códecs WASM).
+
+**Verificación (Chromium + `next start`)**
+- `/es/jpg-a-webp`: 0 `.wasm` al cargar; al pasar el mouse por la herramienta se descarga `webp_enc_simd.wasm`.
+- Portada: al agregar un HEIC se precarga el códec de la salida por defecto (JPG) y al elegir AVIF el de AVIF; la conversión HEIC → AVIF termina con "Descargar". PNG → WEBP en `/es/png-a-webp` después de la precarga: correcto (8,4 kB → 944 B).
+
+**Qué sigue**
+- 2A.8: pool de workers con concurrencia limitada y liberación de memoria.
+
+## 2026-10-20 00:20 UTC — Fase 2, tarea 2A.8 (pool de workers y memoria)
+
+**Qué se hizo**
+- `src/lib/concurrency.ts`: `batchConcurrency` (núcleos − 1, máximo 4; 1 con `deviceMemory` ≤ 2 GB y máximo 2 con ≤ 4 GB; 1 si no hay datos) y `runLimited` (procesa una lista con N tareas en vuelo como máximo, en orden de inicio). Tests en `concurrency.test.ts`.
+- Pool de workers de imagen (`src/lib/image/client.ts`): los workers se reutilizan entre archivos y conversiones; un lote se reparte en hasta `deviceConcurrency()` workers (se crean a demanda, primero se usa uno libre); pasado el límite, el trabajo va al menos ocupado. Si un worker se cae, solo fallan sus trabajos y se descarta. Un worker nuevo recibe las precargas de códec ya pedidas (2A.7).
+- `useFileQueue.convertAll`: las conversiones del navegador corren en paralelo con `runLimited(deviceConcurrency())`; las del servidor siguen de a una (hay rate limit por IP) en un carril aparte, en paralelo con el del navegador. El tope de lote del servidor del plan gratis se aplica igual que antes (los que exceden quedan con "tooManyFiles").
+- Memoria: `ImageBitmap.close()` en `finally` (worker y `canvas.ts`), así no quedan bitmaps abiertos si falla el dibujo. Las URL de objetos ya se liberaban (`revokeObjectURL` al quitar, limpiar, reconvertir o desmontar; miniaturas PDF y descargas también).
+- Tests del pool en `src/lib/image/preload.test.ts` (4 núcleos → 3 workers, el 4.º trabajo se encola, los workers se reutilizan).
+
+**Verificación (Chromium, 4 núcleos, `next start`)**
+- 6 PNG → WEBP en `/es/png-a-webp`: 3 workers, 6 descargas + "Descargar todo", ~0,4 s en total. HEIC → AVIF y PNG → WEBP individuales siguen funcionando.
+
+**Qué sigue**
+- 2A.9: índices de MongoDB, timeouts hacia Gotenberg y buffers en el servidor.
+
+## 2026-10-20 00:40 UTC — Fase 2, tarea 2A.9 (servidor: índices, timeouts, buffers)
+
+**Qué se hizo**
+- Índices de Auth.js (`src/lib/server/indexes.ts`, creados al arrancar el servidor desde `instrumentation-node.ts` si hay `MONGODB_URI`; idempotente y nunca tira el servidor): `sessions.sessionToken` único (se consulta en cada `/api/auth/session`), `sessions.userId`, `accounts.{provider, providerAccountId}` único y `accounts.userId`, `users.email` único (parcial, solo si es texto), `verification_tokens.{identifier, token}` único, y TTL sobre `expires` en sesiones y tokens de magic link (MongoDB borra los vencidos solo).
+- `Subscription`: índice compuesto `{userId, status, createdAt: -1}` (reemplaza al de `userId` solo; lo usan `currentSubscription` y la cancelación) y, para el panel, `createdAt` y `cancelledAt` (sparse). `ConversionLog` ya tenía `createdAt` (TTL de 1 año, sirve para los rangos de fechas del panel) y `userId`; el resto de índices del panel se ajusta en 2C cuando existan las consultas.
+- Gotenberg: el timeout del cliente es configurable (`GOTENBERG_TIMEOUT_MS`, por defecto 95 s) y queda apenas por encima de `--api-timeout=90s` de Gotenberg (docker-compose y DEPLOY.md, antes 60 s y 120 s, inconsistentes): así un trabajo lento termina con el error de Gotenberg y Gotenberg no sigue trabajando en pedidos ya abandonados. `maxDuration` de la ruta sigue en 120 s.
+- Menos copias de buffers: la subida de imágenes llega a sharp como vista (`Buffer.from(buffer, offset, length)`) en vez de copiarse; las respuestas de imagen, DOCX y PDF se envían sin `new Uint8Array(...)`/`.slice()`; el archivo hacia Gotenberg tampoco se copia. (pdf.js sí necesita su copia: se queda.)
+- Tests: `src/lib/server/indexes.test.ts` con MongoDB en memoria (crea los índices, idempotente, email único pero opcional, no lanza si un índice falla, índices declarados en `Subscription`).
+
+**Verificación**
+- `next start` con MongoDB en memoria: los índices aparecen en `sessions`, `users`, `accounts`, `verification_tokens` y `subscriptions`; `POST /api/convert/image` PNG → BMP responde 200 con un BMP válido de 800×600 y queda registrado en `conversionlogs`.
+- `npm run lint`, `npm run build` y `npm test` (43 archivos, 244 tests) pasan.
+
+**Decisiones**
+- `GOTENBERG_TIMEOUT_MS` documentada en `.env.example` y DEPLOY.md (opcional). En Railway hay que cambiar el comando de inicio de Gotenberg a `--api-timeout=90s` (DEPLOY.md ya lo indica).
+
+**Qué sigue**
+- 2A.10: medición final de 2A.
+
+## 2026-10-20 00:55 UTC — Fase 2, tarea 2A.10 (medición final de 2A) — HITO 2A TERMINADO
+
+**Qué se hizo**
+- Medición final con el mismo método que la base (`scripts/perf/lighthouse.sh`, móvil, mediana de 3; la portada con 5 corridas extra por dispersión de TBT). Resultado y comparación en `docs/perf/2026-10-20-2A-final.md`.
+
+**Mediciones (antes → después)**
+- Rendimiento: 99 → 99 en las 6 páginas; accesibilidad 100; SEO 100 en todas (precios 91 → 100).
+- JS transferido: portada 142 → 137 kB, conversiones y cola larga 150 → 138 kB, herramienta PDF 151 → 145 kB, precios 147 → 142 kB.
+- LCP 1,7–2,1 s (antes 2,0–2,1 s), TBT 60–110 ms (ruido de ±40 ms), CLS 0 (también al cargar sesión, resultados y anuncios).
+- Meta del hito (≥ 90 móvil en portada y conversiones sin empeorar accesibilidad/SEO): cumplida.
+
+**Qué sigue**
+- Hito 2B (diseño), empezando por 2B.1: identidad visual y `docs/design.md`.
+
+## 2026-10-20 00:25 UTC — Fase 2, tarea 2B.1 (identidad visual)
+
+**Qué se hizo**
+- `docs/design.md`: identidad "papel y tinta" con verde azulado de marca (`#0b6f6a` / oscuro `#5fd4c6`) y acento mandarina decorativo; paleta claro/oscuro con contrastes medidos (todos ≥ AA), tipografías, espaciado, radios, sombras, íconos y movimiento.
+- Tokens nuevos en `globals.css` (mismos nombres que antes, más `surface-2`, `border-strong`, `accent*`, `success*`, `warning*`, `danger*`, `ring`, `shadow-card`, `shadow-lift`, `font-display`), anillo de foco global y regla global de `prefers-reduced-motion`.
+- Fuentes: Bricolage Grotesque (títulos) y Figtree (texto) con `next/font/local` desde `@fontsource-variable/*` (`src/app/fonts.ts`; latín, `display: swap`, fallback ajustado). Se instaló también `lucide-react` (se usa desde 2B.2/2B.4).
+- `scripts/screenshots.mjs` (+ `playwright-core` como dependencia de desarrollo): capturas de página completa a 360 y 1280 px en claro y oscuro con el Chromium del sistema.
+
+**Decisiones**
+- Fuentes autoalojadas desde paquetes npm en vez de `next/font/google`: el build (Docker/Railway) no depende de que Google Fonts responda. Peso: ~41 kB + ~20 kB woff2.
+- Se mantienen los nombres de tokens existentes, así el sitio entero adopta la paleta nueva sin tocar componentes; los colores sueltos (`red-*`, `emerald-*`, `amber-*`) se reemplazan en 2B.2.
+
+**Verificación**
+- Capturas de portada y `/es/jpg-a-webp` (360/1280, claro/oscuro) revisadas: fuentes y colores aplicados. Problema ya existente: a 360 px el header desborda (el botón de tema queda cortado) → se corrige en 2B.4.
+- `npm run lint`, `npm run build` y `npm test` (244 tests) pasan.
+
+## 2026-10-20 00:40 UTC — Fase 2, tarea 2B.2 (tokens en los componentes base)
+
+**Qué se hizo**
+- `src/components/ui/styles.ts`: clases compartidas `buttonPrimary`, `buttonPrimarySmall`, `buttonSecondary`, `buttonDanger`, `field` (inputs y selects), `choicePill` (radios con forma de pastilla), `card` y `badge`. Se usan en el conversor, las herramientas PDF, precios, cuenta, login, 404, selector de idioma y de país.
+- Se quitaron todos los colores sueltos de Tailwind (`red-*`, `emerald-*`, `amber-*`): errores con `text-danger`, ahorro con `text-success`, avisos con `bg-warning-soft text-warning`, insignias de procesamiento con `success-soft`/`warning-soft`. Contrastes medidos (todos ≥ AA, ver `docs/design.md`).
+- Tarjetas con `shadow-card`; botones con hover elevado (`shadow-lift`) y pulsación (`active:translate-y-px`), que se apagan con `prefers-reduced-motion`.
+
+**Convención**
+- Componentes nuevos: usar `@/components/ui/styles` y los tokens; nada de colores de Tailwind sueltos.
+
+**Verificación**
+- Capturas de `/es/unir-pdf`, `/es/pricing` y `/es/login` (360/1280, claro/oscuro) revisadas. (Ojo al medir: si queda un `next start` viejo corriendo, sirve HTML con hashes de CSS que ya no existen y las capturas salen sin estilos.)
+- `npm run lint`, `npm run build` y `npm test` pasan.
+
+## 2026-10-20 00:55 UTC — Fase 2, tarea 2B.3 (logo, íconos y Open Graph)
+
+**Qué se hizo**
+- Logo original: hoja con la esquina doblada en mandarina y dos flechas de "flip" sobre un cuadrado verde azulado redondeado. `src/components/brand/LogoMark.tsx` (SVG en línea, usado en el header con el texto "File**Flip**" en Bricolage), `public/logo.svg` (ícono + texto) y `src/app/icon.svg` (favicon).
+- Íconos PNG generados con sharp desde el SVG: `src/app/apple-icon.png` (180), `public/icon-192.png` y `public/icon-512.png`; `src/app/manifest.ts` (`/manifest.webmanifest`, color de tema `#0b6f6a`).
+- Imagen Open Graph por idioma: `src/app/[locale]/opengraph-image.tsx` (1200×630, estática por idioma en el build) con logo, el título de la portada traducido y los formatos; Bricolage 800 en WOFF (paquete `@fontsource/bricolage-grotesque`, satori no lee WOFF2). En chino va solo la marca y los formatos (la fuente no tiene glifos CJK). `twitter:card` = `summary_large_image`. Todas las páginas heredan `og:image` de su idioma.
+
+**Verificación**
+- HTML con `<link rel="icon">`, `apple-touch-icon`, `manifest` y `og:image` absolutos; imágenes OG de es/pt/zh revisadas a ojo. Lint, build y tests pasan.
+
+## 2026-10-20 01:15 UTC — Fase 2, tarea 2B.4 (header y footer nuevos)
+
+**Qué se hizo**
+- Header: logo nuevo, navegación de escritorio (Herramientas, Precios, cuenta, separador, idioma) y botón de tema con íconos `lucide-react` (Sol/Luna/Monitor; el texto solo desde `lg`). En móvil (< 768 px): logo, tema y botón de menú (`MobileMenu.tsx`, cliente): `aria-expanded`/`aria-controls`, etiqueta "Abrir/Cerrar menú", se cierra con Escape (devuelve el foco al botón), al navegar y al tocar un enlace. El contenido del panel se renderiza en el servidor.
+- Se corrigió el desborde horizontal del header a 360 px (el botón de tema quedaba cortado): `scrollWidth` = 360.
+- Footer: marca + lema + mensaje de privacidad, y columnas "Herramientas PDF", "Conversiones populares" (enlaces traducidos a las páginas de conversión, bueno para SEO interno) y "FileFlip" (precios, legales, contacto). 2 columnas en móvil, 4 en escritorio. Componente de servidor (no suma JS).
+- `popularConversions` en `src/config/conversion-pages.ts` (también para los accesos rápidos de la portada en 2B.5) + test. `AccountLink` acepta `className`.
+- Mensajes nuevos en los 5 idiomas: `Header.menu.{open,close}`, `Footer.headings.{tools,conversions,company}`.
+
+**Mediciones**
+- First Load JS: portada 128 kB, `[slug]` 133 kB (+1 kB por el menú y los íconos).
+
+**Verificación**
+- Playwright a 360 px (claro/oscuro): abre, Escape cierra, al ir a Precios desde el menú navega y queda cerrado. Capturas de `/es`, `/zh`, `/es/pdf-a-jpg` revisadas. Lint, build y tests pasan.
+
+## 2026-10-20 01:35 UTC — Fase 2, tarea 2B.5 (hero de la portada)
+
+**Qué se hizo**
+- Portada: el hero ahora contiene directamente el conversor (la zona para arrastrar es lo primero que se ve después del título; se quitó el botón "Elegir archivos" que solo bajaba hasta él). Insignia de privacidad con `ShieldCheck`, h1 más grande (hasta `text-6xl`), resplandor suave de marca detrás (decorativo, CSS puro).
+- Accesos rápidos: "Conversiones populares" (8 pastillas con flecha, `popularConversions`) debajo del conversor, dentro de la columna principal para no dejar un hueco al lado del anuncio lateral.
+- `ProcessingBadge`: íconos `Lock`/`Cloud` de lucide en lugar de emojis.
+- Fuente de títulos sin `preload` (ver mediciones). Sigue con `display: swap` y fallback ajustado: CLS 0.
+
+**Mediciones (Lighthouse móvil, portada, 2 corridas)**
+- Con las fuentes precargadas (2B.1–2B.4): rendimiento 97, LCP 2,4–2,5 s (el render delay del h1 subía porque las dos fuentes, ~60 kB, competían con CSS/JS). Con `display: optional` no mejoraba.
+- Sin precargar la fuente de títulos: rendimiento 98–99, LCP 2,2–2,3 s, TBT 50–80 ms, CLS 0; accesibilidad y SEO 100.
+- First Load JS de la portada según `next build`: 134 kB (antes 128), pero los chunks que realmente se descargan son los mismos (verificado comparando las dos versiones: solo cambia el chunk de la página, 178 → 194 B); la diferencia es cómo Next cuenta el `Link` cliente que ahora usa la página.
+
+**Pendiente para 2B.7**
+- La zona para arrastrar sigue con el diseño viejo (emoji de carpeta); se rediseña con sus estados en 2B.7.
+
+**Verificación**
+- Capturas de `/es` (360/1280, claro/oscuro) revisadas. Lint, build y tests (245) pasan.
+
+## 2026-10-20 00:55 UTC — Fase 2, tarea 2B.6 (cómo funciona y preguntas frecuentes)
+
+**Qué se hizo**
+- Portada: sección "Cómo funciona" con 3 tarjetas numeradas (ícono lucide, título y explicación corta) unidas por una línea punteada decorativa en escritorio; "¿Por qué FileFlip?" con íconos lucide en lugar de emojis; "Preguntas frecuentes" con 6 preguntas (gratis, privacidad/subida, formatos, celular, lotes, calidad) en los 5 idiomas.
+- `src/components/ui/FaqList.tsx` (componente de servidor, `<details>` nativo sin JS, chevron que gira) que publica también el FAQ schema. Lo usan la portada y las páginas de cola larga (antes cada una armaba su JSON-LD).
+- `src/lib/faq.ts`: `faqPageJsonLd(locale, items)` y `jsonLdString` (escapa `<`); `faqJsonLd` de cola larga delega en él. Tests en `faq.test.ts`.
+- Mensajes: `HomePage.steps` se reemplazó por `HomePage.how.*` y `HomePage.faq.*`.
+
+**Verificación**
+- Capturas de `/es` a 360/1280 en claro y oscuro revisadas. El HTML de `/es` y de `/es/heic-a-jpg-desde-iphone` trae un único `FAQPage`. Lint, build y tests (247) pasan. First Load JS de la portada sin cambios (134 kB).
+- Nota: en escritorio queda un hueco entre los accesos rápidos y "Cómo funciona" por la altura del anuncio lateral reservado (600 px); se revisa en 2B.11.
+
+## 2026-10-20 01:10 UTC — Fase 2, tarea 2B.7 (estados del conversor)
+
+**Qué se hizo**
+- `Dropzone` (conversor y herramientas PDF): vacío con ícono `Upload` en círculo de marca, título en `font-display`, ayuda y, en el conversor general, la lista de formatos (`Converter.dropFormats`); arrastrando: fondo `brand-soft`, borde de marca, sombra y escala leve (se apaga con `prefers-reduced-motion`); compacto (con archivos): fila con ícono `FilePlus2` y "Agrega más archivos" (`dropMore`; en las herramientas de un solo PDF sigue el título normal). Sin emojis.
+- `QueueStatus` (carga diferida, solo con archivos): aviso sobre la lista con el estado de la tanda: procesando ("Convirtiendo 1 de 3…", % y barra global), listo (verde, "Listo: N archivos convertidos") o con errores (rojo, cuántos fallaron y qué hacer). Solo el titular es `role="status"` para que el lector de pantalla no lea cada porcentaje.
+- `queueSummary` (`src/components/converter/queue-summary.ts`): cálculo puro del estado y progreso global (los terminados cuentan como 100 %) + tests.
+- `FileRow`: íconos de estado (spinner con `motion-safe:animate-spin` y %, check en verde, alerta en rojo), fila con fondo `danger-soft` cuando falla o el formato no es compatible, ícono de nube de lucide para "procesado en el servidor" y `X` de lucide para quitar. Las tarjetas completas (miniatura, etc.) quedan para 2B.8.
+- Mensajes nuevos en los 5 idiomas: `Converter.dropFormats`, `dropMore`, `statusWorking`, `statusDone`, `statusDoneHint`, `statusErrors`, `statusErrorsHint`.
+
+**Verificación**
+- Playwright en `/es` (360/1280, claro/oscuro): vacío, arrastrando (evento `dragover` simulado), procesando (2 PNG 2400×1800 + 1 PNG roto → WEBP) y resultado (2 listos con descarga, 1 con error y aviso rojo); sin errores de página. Capturas revisadas.
+- Lint, build y tests (252) pasan. First Load JS: portada 135 kB (+1 kB por los íconos de la zona para arrastrar).
+
+## 2026-10-20 01:25 UTC — Fase 2, tarea 2B.8 (tarjetas de archivo)
+
+**Qué se hizo**
+- `FileRow` ahora es una tarjeta: miniatura de 56 px, nombre (el del resultado cuando terminó), formatos "PNG → WEBP", estado y peso antes → después con el ahorro en una pastilla verde ("85 % menos"; si crece, "N % más" en gris). Borde verde cuando está lista y rojo con fondo `danger-soft` cuando falla.
+- Botón "Descargar" con ícono, bien visible: a la derecha en escritorio y a todo el ancho debajo de la información en móvil; el nombre del archivo va como texto para lectores de pantalla (hay varios botones "Descargar"). Quitar (X) arriba a la derecha en móvil. El anuncio sigue debajo de toda la tarjeta de resultados, lejos de los botones.
+- Miniatura (`src/components/converter/preview.ts`, `previewSource`): muestra el resultado si el navegador puede dibujarlo; si no, el original (JPG, PNG, WEBP, AVIF, GIF, BMP, ICO, SVG y ≤ 25 MB); si no, un ícono del tipo de archivo. Si la imagen no se puede decodificar (archivo roto) cae al ícono. La URL del original se crea solo cuando se muestra y se libera al desmontar o cambiar a la del resultado. Tests en `preview.test.ts`.
+- Mensaje nuevo `Converter.larger` en los 5 idiomas.
+
+**Verificación**
+- Playwright en `/es` (360/1280, claro/oscuro) con 2 PNG reales y 1 roto → WEBP: miniaturas del resultado, ahorro, descarga y tarjeta de error con ícono; sin errores de página. Capturas revisadas.
+- Lint, build y tests (255) pasan. First Load JS de la portada sin cambios (135 kB; la tarjeta se carga diferida).
+
+## 2026-10-20 01:45 UTC — Fase 2, tarea 2B.9a (páginas de herramientas, conversión y cola larga)
+
+**Qué se hizo**
+- 2B.9 se dividió en 2B.9a (páginas) y 2B.9b (interior de las herramientas PDF).
+- `src/components/ui/PageHero.tsx`: encabezado centrado común (ícono opcional en cuadrado de marca, h1 hasta `text-5xl`, resplandor suave como en la portada). Lo usan las herramientas PDF, las conversiones y la cola larga.
+- Herramientas PDF: íconos lucide (`src/components/tools/ToolIcon.tsx`: Layers, Scissors, RotateCw, LayoutGrid, Images, FileArchive) en lugar de emojis; se quitó `icon` de `src/config/tools.ts` (la configuración no depende de React).
+- Conversiones: pasos en 3 tarjetas numeradas, bloque de privacidad destacado (escudo en el navegador, nube en el servidor) y "Otras conversiones" con `PillLink` (pastilla con flecha, también en los accesos rápidos de la portada).
+- Cola larga: el primer párrafo de la intro va como entradilla bajo el título; secciones con mejor interlineado.
+- Corrección (venía de la fase 1): en las páginas de conversión de servidor (p. ej. Word → PDF) la insignia decía "Se procesa en tu dispositivo" hasta agregar un archivo; ahora usa el motor de la conversión de la página.
+
+**Verificación**
+- Capturas de `/es/jpg-a-webp`, `/es/word-a-pdf`, `/es/unir-pdf` y `/es/heic-a-jpg-desde-iphone` (360/1280, claro/oscuro) revisadas. Se detectó y corrigió un desborde horizontal a 360 px causado por el resplandor del encabezado (`scrollWidth` = 360 en portada, conversiones, herramientas y cola larga).
+- Lint, build y tests (255) pasan. First Load JS de `[slug]` sin cambios (135 kB).
+- Pendiente menor: el paso 2 de las conversiones de documentos dice "ajusta la calidad o el tamaño", que no aplica a Word → PDF; se revisa con los textos en 2B.10/2B.11.
+
+## 2026-10-20 02:00 UTC — Fase 2, tarea 2B.9b (interior de las herramientas PDF) — 2B.9 TERMINADA
+
+**Qué se hizo**
+- `FileList` (unir, imágenes a PDF y herramientas de un solo PDF): cada archivo es una tarjeta con ícono de tipo (desde `sm`), nombre, formato y peso en una línea sin cortes, número de orden solo cuando se puede reordenar, flechas `ChevronUp/Down` y `X` de lucide; los archivos rechazados van en rojo con ícono de alerta (antes el motivo se ocultaba en móvil).
+- `ProgressBar`: bloque de marca con spinner (`motion-safe`), etiqueta y porcentaje sobre la barra.
+- `ToolAlert` (nuevo): errores de las 6 herramientas con ícono, borde y fondo `danger-soft`, `role="alert"`.
+- `ToolResult`: ícono de éxito en círculo verde, título "Tu archivo está listo" (`role="status"`), nombre y peso del archivo en una pastilla, "Descargar" con ícono (a todo el ancho en móvil) y "Empezar de nuevo" como botón secundario. El anuncio sigue debajo de la tarjeta, separado de la descarga.
+
+**Verificación**
+- Playwright en `/es/unir-pdf` (360/1280, claro/oscuro): 2 PDF (2 + 3 páginas) + un TXT rechazado → unir → resultado → descarga con 5 páginas; `/es/dividir-pdf` con un PDF roto muestra el nuevo aviso de error; sin errores de página y sin desborde horizontal a 360 px. Capturas revisadas (se corrigió el apretado de la lista en móvil).
+- Lint, build y tests (255) pasan. First Load JS de `[slug]`: 135 kB.
+
+## 2026-10-20 01:25 UTC — Fase 2, tarea 2B.10a (precios, login y Mi cuenta)
+
+**Qué se hizo**
+- 2B.10 se dividió en 2B.10a (precios, login, cuenta) y 2B.10b (legales, contacto y 404).
+- Precios: `PageHero` con ícono, tarjetas con `card`, precios grandes en `font-display`, viñetas con check de lucide en círculo verde, tarjeta Pro con borde de marca, `shadow-lift` y etiqueta "Recomendado" (`Pricing.recommended`, 5 idiomas); el botón del plan gratis usa `buttonSecondary`. Las preguntas usan `FaqList` (ahora la página publica también su FAQ schema).
+- Login: `PageHero`, botón de Google con su "G" oficial (lo piden sus pautas de marca), separador "o" con líneas, botón de enlace con ícono `Mail`, error con borde y nota de privacidad con escudo. "Revisa tu correo": `PageHero` con `MailCheck` en lugar del emoji.
+- Mi cuenta: inicial del correo en un cuadrado de marca, tarjeta del plan (Pro con borde de marca e insignia), datos de cobro con íconos, "Pasar a Pro" con ícono y "Cerrar sesión" como botón secundario con `LogOut`.
+- `scripts/screenshots.mjs` acepta `SESSION_TOKEN` (cookie `authjs.session-token`) para capturar páginas con sesión. Sin `MONGODB_URI` la sesión es JWT: se genera con `encode` de `@auth/core/jwt` y el mismo `AUTH_SECRET` del `next start`.
+
+**Verificación**
+- Capturas de `/es/pricing`, `/es/login` (sin métodos, con Google + correo y con error), `/es/login/verify` y `/es/account` (con sesión simulada) a 360/1280 en claro y oscuro, revisadas. `/es/pricing` trae un único `FAQPage`.
+- Lint, build, typecheck y tests (255) pasan.
+
+## 2026-10-20 01:40 UTC — Fase 2, tarea 2B.10b (legales, contacto y 404) — 2B.10 TERMINADA
+
+**Qué se hizo**
+- Privacidad y términos (`LegalPage`): `PageHero` con ícono (escudo / documento), fecha de actualización como insignia, índice "Contenido" con enlaces a cada sección (fijo al costado en escritorio, arriba en móvil) y secciones numeradas dentro de una tarjeta con separadores. Mensaje nuevo `Legal.contents` en los 5 idiomas.
+- Contacto: `PageHero`, tarjeta central con el correo y botón "Escribir un correo" (`Legal.contact.write`, 5 idiomas), y dos tarjetas con ícono para "qué contarnos" y "borrar tus datos".
+- 404: `PageHero` con ícono, botón "Volver al inicio" con ícono y accesos a las conversiones populares (para no dejar al visitante sin salida).
+- Corrección (venía de antes): las URL desconocidas se renderizan con el "error shell" de Next en el cliente, donde el script de tema del `<head>` no se ejecuta, así que el 404 salía siempre en claro. `ThemeToggle` ahora vuelve a aplicar el tema al montarse.
+
+**Nota**
+- `NEXT_PUBLIC_CONTACT_EMAIL` se fija en el build (la página de contacto es estática): hay que definirla antes de `next build` en Railway.
+
+**Verificación**
+- Capturas de `/es/privacy`, `/zh/terms`, `/es/contact` y `/es/no-existe` (360/1280, claro/oscuro) revisadas; el 404 ahora respeta el modo oscuro. Sin desborde horizontal a 360 px en precios, login, legales, contacto y 404.
+- Lint, build y tests (255) pasan.
+
+## 2026-10-20 01:55 UTC — Fase 2, tarea 2B.11a (microinteracciones)
+
+**Qué se hizo**
+- 2B.11 se dividió en 2B.11a (microinteracciones) y 2B.11b (revisión responsive y detalles pendientes).
+- Animaciones solo CSS como tokens de Tailwind en `globals.css`: `animate-rise` (240 ms, aparece subiendo 6 px) y `animate-pop` (320 ms, rebote leve). Se usan en: aviso de estado de la tanda, botón "Descargar" de cada archivo, check de éxito, tarjeta de resultado de las herramientas PDF (con su check), errores de herramientas (`ToolAlert`), panel del menú móvil y la respuesta de una pregunta frecuente al abrirla.
+- Íconos de descarga que bajan 2 px al pasar el mouse; desplazamiento suave para anclas (índice legal) solo con `prefers-reduced-motion: no-preference`.
+- `docs/design.md` (sección "Movimiento") documenta cuándo usar cada animación. Convención: no animar el contenido de la primera pintura (título, hero) para no retrasar el LCP.
+
+**Verificación**
+- Playwright en `/es/png-a-webp` convirtiendo un PNG: con movimiento normal el botón de descarga anima `rise 0.24s` y `scroll-behavior: smooth`; con `reducedMotion: reduce` la duración es 0,01 ms y el desplazamiento `auto`; el estado final es el mismo (captura revisada). Sin errores de página.
+- Lint, build y tests (255) pasan.
+
+## 2026-10-20 02:10 UTC — Fase 2, tarea 2B.11b (revisión responsive y detalles) — 2B.11 TERMINADA
+
+**Qué se hizo**
+- Portada en escritorio (≥ 1280 px): "Cómo funciona" pasó a la columna principal junto al anuncio lateral, así ya no queda el hueco de ~250 px que dejaba el anuncio reservado (600 px) al lado de los accesos rápidos. En pantallas menores no cambia nada (el anuncio lateral solo existe desde `xl`).
+- Footer a 768 px: 3 columnas (marca arriba a todo el ancho) en lugar de 2 con "FileFlip" sola debajo.
+- Conversiones de servidor (Word → PDF, PDF → Word…): el paso 2 ahora dice "Comprueba que esté elegido {to} como formato de salida" (`ConversionPage.step2Document`, 5 idiomas) en vez de hablar de calidad o tamaño, que no aplican.
+- Panel "Opciones" del conversor con ícono, chevron que gira y aparición suave (antes tenía el triángulo nativo del navegador).
+- `formatBytes`: los tamaños de menos de 1 kB se muestran como "938 B" (Intl escribía "938 byte"); tests actualizados.
+- `scripts/screenshots.mjs` acepta `WIDTHS=360,768,1280`.
+
+**Verificación**
+- Capturas de portada, conversión de imagen y de documento, herramienta PDF, cola larga, precios y legales a 360/768/1280 (claro/oscuro) revisadas.
+- Sin desborde horizontal a 360, 768 y 1024 px en 20 páginas (portada, conversiones, las 6 herramientas PDF salvo rotar, cola larga, precios, login, legales, contacto, 404 y otros idiomas).
+- Lint, build y tests (255) pasan.
+
+## 2026-10-20 02:35 UTC — Fase 2, tarea 2B.12 (capturas finales y Lighthouse) — HITO 2B TERMINADO
+
+**Qué se hizo**
+- Capturas finales en `docs/screenshots/` (48 imágenes WebP de página completa, 2,6 MB): portada (es y en), JPG → WEBP, Word → PDF, Unir PDF, cola larga HEIC, precios, login (con Google y correo), privacidad, contacto, 404 y Mi cuenta (sesión simulada), a 360 y 1280 px en claro y oscuro. Se guardan en WebP (calidad 75) para no inflar el repositorio.
+- Medición en `docs/perf/2026-10-20-2B-final.md`. El Lighthouse del contenedor ahora es la 13.5, así que se volvió a medir el commit de 2A con la misma versión para comparar.
+
+**Mediciones (Lighthouse 13.5 móvil, mediana de 3)**
+- 2B: rendimiento 97–99 (portada 98), accesibilidad 100, SEO 100, CLS 0, LCP 2,2–2,4 s, FCP 1,2 s, JS 142–149 KB.
+- 2A con la misma versión: rendimiento 99, SEO 92, LCP 1,6–2,1 s, FCP 0,8 s, JS 136–144 KB.
+- La meta (≥ 90 sin empeorar accesibilidad ni SEO) se mantiene. El costo del diseño (FCP +0,4 s) viene de la fuente de texto precargada; quitar la precarga empeoró todo (rendimiento 96, CLS > 0) y se revirtió.
+
+**Verificación**
+- Lint, build y tests (255) pasan.
+
+## 2026-10-20 02:20 UTC — Fase 2, tarea 2C.1 (control de acceso del panel)
+
+**Qué se hizo**
+- `src/lib/admin/access.ts`: `parseAdminEmails`, `isAdminEmail` (sin distinguir mayúsculas), `getAdminSession`, `requireAdminPage` (llama a `notFound()`) y `requireAdminApi` (devuelve una respuesta 404 `{ error: "notFound" }` para no revelar que la API existe).
+- Ruta `/[locale]/admin` con layout y página dinámicos (`force-dynamic`) que verifican en el servidor; la página vuelve a verificar porque layout y página se renderizan en paralelo. Los metadatos solo nombran el panel a los admins (el 404 de los demás no tiene el título del panel); siempre `noindex`.
+- `ADMIN_EMAILS` en `.env.example` y en "Pendiente del dueño".
+
+**Decisiones y convenciones**
+- `getAdminSession` llama a `headers()` antes de `auth().catch(...)`: el `catch` se tragaba la señal de "uso dinámico" de Next y la página podía prerenderizarse como 404 en el build.
+- Mensajes del panel solo en español en `messages/admin.es.json` (namespace `Admin`), leídos con `createTranslator` de next-intl en `src/lib/admin/messages.ts`. No van en `messages/*.json` porque `NextIntlClientProvider` manda todos esos mensajes al navegador en cada página pública, y porque el test de mensajes exige las mismas claves en los 5 idiomas.
+
+**Verificación**
+- Tests nuevos (6): admin, usuario no admin, anónimo y `ADMIN_EMAILS` vacío, para página y API.
+- Con `next start` y sesiones JWT simuladas: anónimo → 404, no admin → 404 (sin "administración" en el HTML), admin → 200.
+- Lint, typecheck, build y tests (261) pasan.
+
+## 2026-10-20 02:40 UTC — Fase 2, tarea 2C.2a (duración, error y herramienta en el registro de conversiones)
+
+**Qué se hizo**
+- 2C.2 se dividió en 2C.2a (registro de conversiones), 2C.2b (uso de las herramientas PDF) y 2C.2c (beacon de visitas).
+- `ConversionLog`: campos nuevos `tool` (`"convert"` o el id de la herramienta PDF; por defecto `"convert"`), `durationMs` y `errorCode` (solo códigos de `apiErrorCodes`, nunca texto). Sin índices nuevos: el panel filtra por `createdAt`, que ya tiene índice (TTL).
+- APIs de conversión (imagen y documentos): miden la duración de la conversión (sin contar la subida) y guardan el código de error (`conversionFailed`, `serviceUnavailable`, `pdfHasNoText`).
+- Navegador: el conversor informa `durationMs` y, en los fallos, `errorCode`. Para no contar dos veces, `ConversionError.loggedByServer` marca los fallos que la API ya registró (`isLoggedByServerCode`); los rechazos previos a convertir (tamaño, límite de pedidos, formato) los informa el navegador con `engine: "server"`.
+- `parseConversionEntry`: valida duración (0–1 h), herramienta y código de error. Solo acepta `engine: "server"` del navegador en fallos, así nadie puede inflar las conversiones exitosas del servidor.
+
+**Verificación**
+- Tests nuevos: validación de los campos, guardado en MongoDB en memoria, registro de duración/error sin el nombre del archivo en la API de documentos, `isLoggedByServerCode`.
+- Playwright (`next start`): convertir un PNG a WEBP envía `{"from":"png","to":"webp","size":228,"outputSize":90,"success":true,"durationMs":26}`.
+- Lint, typecheck, build y tests (266) pasan.
+
+## 2026-10-20 02:55 UTC — Fase 2, tarea 2C.2b (uso de las herramientas PDF)
+
+**Qué se hizo**
+- `trackTool(tool, { from, to, files }, run, outputSize)` en `src/lib/stats-client.ts`: ejecuta la herramienta, mide la duración y envía por el mismo beacon (`/api/stats`) la herramienta, los formatos, el tamaño total de entrada, el de salida y si funcionó (si falla, `errorCode: "conversionFailed"` y vuelve a lanzar el error).
+- Las 6 herramientas PDF lo usan: unir, dividir (salida = suma de las partes), rotar, ordenar, imágenes a PDF (`from` = formato de la primera imagen) y comprimir. Se registran con `from`/`to` = `pdf` y `tool` = id de la herramienta, así el panel puede separarlas del conversor de formatos.
+
+**Verificación**
+- Tests de `trackTool` (éxito y fallo, sin nombres de archivo).
+- Playwright (`next start`): unir 2 PDF envía `{"tool":"merge-pdf","from":"pdf","to":"pdf","size":1176,"outputSize":510,"success":true,"durationMs":99}` y la herramienta sigue funcionando.
+- Lint, typecheck, build y tests pasan.
+
+## 2026-10-20 03:10 UTC — Fase 2, tarea 2C.2c (beacon de visitas) — 2C.2 TERMINADA
+
+**Qué se hizo**
+- Modelo `PageView` (`src/models/PageView.ts`): `locale`, `country` (opcional), `kind` (`home`, `conversion`, `tool`, `longtail`, `pricing`, `legal`, `account`, `other`), `page` y `createdAt` con índice TTL de 1 año. Sin IP, usuario, cookie ni URL completa.
+- `classifyPath` (`src/lib/server/visits.ts`): convierte la ruta en un id de página independiente del idioma (`/es/jpg-a-webp` y `/en/jpg-to-webp` → `conversion` / `jpg-webp`; herramientas → id de la herramienta; cola larga → id de la página). Las rutas de `/admin` y los idiomas desconocidos no se cuentan.
+- `POST /api/visit`: recibe solo `{ path }`; el país sale de la cabecera geo del CDN (`countryFromHeaders`, nueva en `src/config/pricing.ts` y usada también por `detectRegion`; ignora `XX`/`T1`). La IP solo se usa como clave del limitador en memoria (60/min) y nunca se guarda.
+- `VisitBeacon` (componente cliente en el layout): manda el beacon en `requestIdleCallback` (para no competir con la carga) en cada cambio de ruta; respeta `navigator.doNotTrack` y no cuenta el panel.
+
+**Decisiones**
+- Sin Cloudflare (u otro CDN con cabecera de país) delante de Railway, las visitas no tienen país; el panel lo mostrará como "desconocido".
+
+**Verificación**
+- Tests nuevos (6): clasificación de rutas y API con MongoDB en memoria (guarda idioma, país y página; nunca la IP; no cuenta admin; 400 con cuerpo inválido).
+- Playwright (`next start`): la portada y la navegación a precios envían `{"path":"/es"}` y `{"path":"/es/pricing"}`.
+- Lint, typecheck, build, `check:static` y tests (274) pasan. JS compartido sin cambios (103 kB).
+
+## 2026-10-20 03:25 UTC — Fase 2, tarea 2C.3 (selector de período)
+
+**Qué se hizo**
+- `src/lib/admin/period.ts`: `resolvePeriod({ period, from, to })` → inicio, fin (exclusivo), período anterior de la misma duración y granularidad (`day`/`month`). Opciones: hoy, 7 días, 30 días (por defecto y ante cualquier valor inválido), 12 meses (meses calendario hasta el actual, comparados con los 12 anteriores) y personalizado (fechas `YYYY-MM-DD` inclusivas; más de 92 días se grafica por mes; tope de ~3 años). Además `bucketKeys` (todas las claves del período para graficar los días sin datos como 0), `change` (variación vs. el período anterior) y `parseDay`.
+- `PeriodSelector` (componente de servidor, sin JavaScript en el cliente): enlaces para las opciones fijas y un formulario GET con dos fechas para el personalizado. La página del panel muestra el rango elegido y el de comparación.
+
+**Decisiones**
+- Todas las fechas del panel son UTC (los días empiezan a las 00:00 UTC); las agregaciones de MongoDB usarán la misma convención. Se indica "(UTC)" junto al rango.
+
+**Verificación**
+- Tests nuevos (8) de períodos, comparación y validación de fechas.
+- Capturas del panel con sesión de admin simulada a 360 px (claro) y 1280 px (oscuro) revisadas; el enlace "7 días" navega bien.
+- Lint, typecheck, build y tests (282) pasan.
+
+**Siguiente**: 2C.4 (agregaciones de conversiones).
+
+## 2026-10-20 03:11 UTC — Fase 2, tarea 2C.4 (agregaciones de conversiones)
+
+**Qué se hizo**
+- `src/lib/admin/stats/buckets.ts`: utilidades comunes para las agregaciones del panel: `bucketExpr` (`$dateToString` por día o mes en UTC), `inRange` (`$match` por rango sobre el campo con índice) y `fillBuckets` (completa los días/meses sin datos con 0, usando `bucketKeys`).
+- `src/lib/admin/stats/conversions.ts`: `conversionStats(period)` hace un solo `aggregate` con `$match` por `createdAt` (usa el índice TTL) y `$facet`: total y fallidas, por día/mes, top 10 y navegador vs servidor; en paralelo, `countDocuments` del período anterior para la comparación (`change`).
+- Top 10: las conversiones del conversor se agrupan por par de formatos (`tool: "convert"`, `from`, `to`) y las herramientas PDF por herramienta. Los registros viejos sin `tool` cuentan como `convert` (`$ifNull`).
+
+**Decisiones**
+- "Conversiones" cuenta todos los intentos (exitosos y fallidos); se devuelven también `succeeded` y `failed` para mostrar ambos.
+
+**Verificación**
+- Tests nuevos (6) con MongoDB en memoria: totales y comparación, días UTC con huecos en 0, agrupación mensual de 12 meses, ranking de pares y herramientas, tope de 10 y período vacío.
+- Lint, typecheck, build y tests (288) pasan.
+
+## 2026-10-20 03:13 UTC — Fase 2, tarea 2C.5 (errores, duración, bytes y archivos temporales)
+
+**Qué se hizo**
+- `src/lib/admin/stats/quality.ts`: `qualityStats(period)`, un `aggregate` con `$match` por `createdAt` y `$facet`: fallidas por código de error (las que no tienen código cuentan como `unknown`), duración promedio de las conversiones exitosas con duración (total y por motor: navegador/servidor), bytes de entrada (todos los intentos) y de salida (solo exitosas).
+- `tempUsage(root)` en `src/lib/server/temp.ts`: archivos, bytes y antigüedad del más viejo en la carpeta temporal del servidor ahora mismo (recorre subcarpetas con `readdir({ recursive })`, Node ≥ 20.12; el Dockerfile usa Node 22).
+
+**Decisiones**
+- La duración promedio excluye los fallos (un fallo por tiempo de espera distorsionaría el promedio) y los registros viejos sin duración.
+
+**Verificación**
+- Tests nuevos (6): errores por código, promedios, bytes y período vacío con MongoDB en memoria; `tempUsage` con subcarpetas y con carpeta inexistente.
+- Lint, typecheck, build y tests (294) pasan.
+
+## 2026-10-20 03:16 UTC — Fase 2, tarea 2C.6 (agregaciones de visitas)
+
+**Qué se hizo**
+- `src/lib/admin/stats/visits.ts`: `visitStats(period)`, un `aggregate` sobre `PageView` con `$match` por `createdAt` (índice TTL) y `$facet`: visitas por día/mes (huecos en 0), por idioma, por país (top 20; sin cabecera geo cuenta como `unknown`), por tipo de página y top 10 de páginas de cola larga (id independiente del idioma). Total del período anterior con `countDocuments` para la comparación.
+
+**Verificación**
+- Tests nuevos (4) con MongoDB en memoria: totales y comparación, agrupación por idioma/país/tipo, ranking de cola larga con tope de 10 y período vacío.
+- Lint, typecheck, build y tests (298) pasan.
+
+## 2026-10-20 03:19 UTC — Fase 2, tarea 2C.7 (usuarios, suscripciones y MRR)
+
+**Qué se hizo**
+- `src/lib/admin/stats/accounts.ts`: `accountStats(period)` con consultas en paralelo: total de usuarios (`estimatedDocumentCount`), usuarios nuevos por día/mes y del período anterior, suscripciones activas ahora, altas del período (creadas y que pasaron de `pending`), bajas del período (`cancelledAt`) y MRR por moneda de las suscripciones activas (mensuales + anuales / 12, redondeado a centavos).
+
+**Decisiones**
+- Auth.js no guarda fecha de alta del usuario, pero su `_id` es un ObjectId cuyo inicio es la fecha de creación: los rangos se hacen sobre `_id` (`ObjectId.createFromTime`, usa el índice `_id`) y `$dateToString` agrupa directamente sobre el ObjectId. No hizo falta agregar datos ni índices (`Subscription` ya tiene índices por `status`, `createdAt` y `cancelledAt`).
+- El MRR se informa por moneda, sin convertir (no hay tipos de cambio en el proyecto).
+
+**Verificación**
+- Tests nuevos (4) con MongoDB en memoria: usuarios por día desde el id, activas/altas/bajas (las `pending` no cuentan), MRR por moneda con planes anuales y período vacío.
+- Lint, typecheck, build y tests (302) pasan.
+
+## 2026-10-20 03:24 UTC — Fase 2, tarea 2C.8 (API del panel y tarjetas de resumen)
+
+**Qué se hizo**
+- `adminStats(period)` (`src/lib/admin/stats/index.ts`) junta en paralelo conversiones, calidad, visitas, cuentas y archivos temporales.
+- `GET /api/admin/stats?period=…&from=…&to=…`: protegida con `requireAdminApi` (404 `{ error: "notFound" }` para anónimos y no admins), `Cache-Control: no-store`, `stats: null` sin `MONGODB_URI` y 503 si falla la base. Pensada para el CSV y usos externos; la página no la llama, consulta directo en el servidor.
+- Página `/[locale]/admin`: 9 tarjetas de resumen (`StatCard`, `SummaryCards`, componentes de servidor sin JS en el cliente): conversiones (con variación vs. período anterior, exitosas/fallidas, navegador/servidor), visitas, usuarios nuevos (y total), Pro activas (altas/bajas), MRR por moneda (con el código de moneda para no confundir ARS con USD), datos procesados, tiempo promedio (por motor), fallidas (% de intentos) y archivos temporales del servidor. Aviso de error si la consulta falla.
+- `formatDuration` en `src/lib/admin/format.ts` (ms / s / min, formato es-419).
+
+**Verificación**
+- Tests nuevos (3): API 404 para anónimo y no admin, 200 con las estadísticas del período para admin (MongoDB en memoria); `formatDuration`.
+- Con `next start`, MongoDB en memoria con datos de ejemplo y una sesión de base de datos: anónimo → 404 en página y API, admin → 200. Capturas a 360 px (claro) y 1280 px (oscuro) revisadas.
+- Lint, typecheck, build y tests (305) pasan.
+
+**Siguiente**: 2C.9 (gráficos livianos solo en el panel).
+
+## 2026-10-20 04:30 UTC — Fase 2, tarea 2C.9 (gráficos del panel)
+
+**Qué se hizo**
+- Gráficos SVG renderizados en el servidor, sin librería de gráficos y sin JavaScript en el cliente (la página del panel pesa 1,5 kB; el JS compartido del sitio no cambia, 103 kB):
+  - `LineChart`: línea + área de una sola serie, grilla con valores enteros, etiquetas del eje x en HTML (6 en escritorio, primera/media/última en 360 px) y, por cada día/mes, una columna con tooltip nativo (`<title>`) y línea guía al pasar el mouse.
+  - `BarList`: barras horizontales que son también una tabla (etiqueta, cantidad y % del total listado), así los valores nunca dependen solo del color.
+- Sección "Gráficos" (`Charts`): conversiones, visitas y usuarios nuevos por día (o por mes en 12 meses / rangos largos); top 10 de herramientas y pares de formatos; navegador vs. servidor; fallidas por código de error; visitas por idioma, país (nombres con `Intl.DisplayNames`), tipo de página y top de cola larga.
+- `src/lib/admin/charts.ts` (geometría pura: `niceMax`, `tickCountFor`, `lineGeometry`, `labelIndexes`, `barShares`) y `formatBucket` para las etiquetas de fecha.
+
+**Decisiones**
+- No se agregó Recharts ni otra dependencia: los datos ya llegan agregados del servidor y unos pocos SVG alcanzan; así el panel no carga JS de gráficos y no hay riesgo de que entre al bundle de las páginas públicas.
+
+**Verificación**
+- Tests nuevos (7) de la geometría y de `formatBucket`.
+- `next start` con MongoDB en memoria y datos de ejemplo (600 conversiones, 1500 visitas, 40 usuarios): capturas a 360 px (claro) y 1280 px (oscuro) revisadas; se corrigieron las etiquetas del eje x que se superponían en 360 px y los valores decimales de la grilla.
+- Lint, typecheck, build y tests (312) pasan.
+
+## 2026-10-20 04:45 UTC — Fase 2, tarea 2C.10 (exportar a CSV)
+
+**Qué se hizo**
+- `GET /api/admin/export?table=…&period=…` (mismos parámetros de período que `/api/admin/stats`): descarga una tabla como CSV (`text/csv; charset=utf-8`, `Content-Disposition: attachment`, nombre `fileflip-<tabla>-<desde>_<hasta>.csv`, `no-store`). Protegida con `requireAdminApi` (404 para anónimos y no admins), 400 con tabla desconocida, 503 sin base de datos. Solo ejecuta la agregación que necesita la tabla.
+- Tablas (`src/lib/admin/csv.ts`): `conversions-per-day`, `top-conversions`, `engines`, `errors`, `visits-per-day`, `visits-by-locale`, `visits-by-country`, `visits-by-page-kind`, `top-longtail`, `users-per-day` y `mrr` (esta última solo por la API, no tiene gráfico).
+- Enlace "CSV" (ícono de descarga) en cada gráfico y tabla del panel, con el período elegido.
+
+**Decisiones y convenciones**
+- CSV RFC 4180 con fin de línea CRLF, encabezados en inglés (`snake_case`) y valores crudos (códigos de país, idioma y error, ids de herramienta) para poder procesarlos; las fechas son las claves UTC del panel (`YYYY-MM-DD` o `YYYY-MM`).
+- Protección contra inyección de fórmulas: el texto que empieza con `=`, `+`, `-`, `@`, tab o CR lleva un apóstrofo delante.
+
+**Verificación**
+- Tests nuevos (9): escapado y fórmulas, tablas, validación del id de tabla, y la API con MongoDB en memoria (anónimo y no admin → 404, tabla inválida → 400, admin → CSV con los datos del período).
+- Con `next start` y datos de ejemplo: descarga correcta y capturas del panel a 360 px y 1280 px revisadas.
+- Lint, typecheck, build y tests (321) pasan.
+
+## 2026-10-20 04:55 UTC — Fase 2, tarea 2C.11 (revisión final)
+
+**Qué se hizo**
+- Lint, typecheck, build, `check:static` (547 páginas del sitemap estáticas salvo precios) y tests (59 archivos, 321 tests) pasan en `dev`.
+- Medición final con Lighthouse en `docs/perf/2026-10-20-phase2-final.md`.
+- Capturas del panel (`docs/screenshots/es_admin-*.webp`, 360 y 1280 px, claro y oscuro, con datos de ejemplo).
+
+**Mediciones finales (Lighthouse 13.5 móvil, mediana de 3)**
+- Rendimiento 97–98 (portada 98), accesibilidad 100, SEO 100, CLS 0, LCP 2,2–2,6 s, FCP 1,2 s, TBT 40–100 ms, JS 142–149 KB. Igual que al final de 2B: el panel no agrega JS a las páginas públicas.
+
+# FASE 2 TERMINADA
+
+**Resumen**
+- **2A Rendimiento**: medición reproducible (`scripts/perf/lighthouse.sh`), análisis del bundle (`npm run analyze`, `docs/perf/bundle.md`), componentes de servidor e import dinámico de lo pesado (pdf.js, pdf-lib, fflate y códecs fuera de la portada), páginas de conversión, cola larga y legales estáticas en los 5 idiomas, CLS 0 con espacios reservados para anuncios, caché inmutable para `.wasm` y workers, precarga del códec al elegir formato, pool de workers según `hardwareConcurrency` con liberación de memoria, índices de MongoDB y timeouts hacia Gotenberg.
+- **2B Diseño**: identidad visual en `docs/design.md` (paleta clara/oscura AA, Bricolage Grotesque + Figtree, tokens en Tailwind), logo SVG, favicon e imágenes Open Graph por idioma, header/footer y menú móvil nuevos, portada (hero con zona de arrastre, privacidad, accesos rápidos, 3 pasos, FAQ con schema), estados del conversor y tarjetas de archivo, todas las páginas rediseñadas, microinteracciones que respetan `prefers-reduced-motion`. Capturas en `docs/screenshots/`.
+- **2C Panel de administración** (`/es/admin`, 404 para quien no está en `ADMIN_EMAILS`, verificado en el layout, la página y cada API): registro de duración, error y herramienta de cada conversión, uso de las herramientas PDF y beacon de visitas (idioma, país de la cabecera del CDN, tipo de página; sin IP ni nombres de archivo); selector de período con comparación; tarjetas de resumen; gráficos SVG sin JS en el cliente; agregaciones de MongoDB con `$facet` sobre campos con índice; exportación a CSV de las tablas.
+
+**Mediciones de rendimiento**: base 99 / final 97–98 en móvil (ver `docs/perf/2026-10-20-phase2-final.md`), accesibilidad y SEO 100, CLS 0.
+
+**Lo que el dueño debe configurar** (además de lo de la fase 1, ver "Pendiente del dueño")
+- `ADMIN_EMAILS`: correos separados por comas con acceso al panel (vacío = nadie). Se entra en `/es/admin` después de iniciar sesión con uno de esos correos.
+- `MONGODB_URI` en producción: sin base de datos el panel muestra un aviso y no hay estadísticas.
+- (Opcional) Cloudflare u otro CDN delante de Railway para que las visitas tengan país (`cf-ipcountry`); sin eso aparecen como "Desconocido".
+- Mirar el panel con datos reales y decidir si hace falta algo más (por ejemplo, conversión del MRR a una sola moneda).

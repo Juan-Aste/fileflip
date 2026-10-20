@@ -1,7 +1,13 @@
 import mongoose, { Schema, type InferSchemaType, type Model } from "mongoose";
 import { formats } from "@/config/formats";
+import { toolIds } from "@/config/tools";
+import { apiErrorCodes } from "@/lib/api-errors";
 
 const formatIds = Object.keys(formats);
+
+/** "convert" is the format converter; the rest are the PDF tools. */
+export const conversionTools = ["convert", ...toolIds] as const;
+export type ConversionTool = (typeof conversionTools)[number];
 
 /**
  * Metadata of one conversion, for usage stats and limits. Never the file
@@ -16,6 +22,12 @@ const conversionLogSchema = new Schema(
     size: { type: Number, min: 0, required: true },
     outputSize: { type: Number, min: 0 },
     success: { type: Boolean, required: true },
+    /** Which tool ran it (older entries without it are "convert"). */
+    tool: { type: String, enum: conversionTools, default: "convert" },
+    /** Wall time of the conversion itself, in milliseconds. */
+    durationMs: { type: Number, min: 0 },
+    /** Why it failed (an API error code, never a message). */
+    errorCode: { type: String, enum: apiErrorCodes },
     userId: { type: Schema.Types.ObjectId, ref: "User", index: true },
     createdAt: { type: Date, default: Date.now },
   },

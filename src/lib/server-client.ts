@@ -2,7 +2,7 @@
 
 import type { FormatId } from "@/config/formats";
 import { isApiErrorCode } from "./api-errors";
-import { ConversionError } from "./convert-error";
+import { ConversionError, isLoggedByServerCode } from "./convert-error";
 import type { ImageOptions } from "./image/options";
 
 /**
@@ -39,7 +39,8 @@ export function convertOnServer(
       } catch {
         // Non-JSON error page (proxy, crash): keep the generic code.
       }
-      reject(new ConversionError(isApiErrorCode(code) ? code : "conversionFailed"));
+      const known = isApiErrorCode(code) ? code : "conversionFailed";
+      reject(new ConversionError(known, isLoggedByServerCode(known)));
     };
     xhr.send(form);
   });

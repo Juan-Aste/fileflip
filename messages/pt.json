@@ -20,7 +20,11 @@
       "login": "Entrar",
       "account": "Minha conta"
     },
-    "mainNav": "Navegação principal"
+    "mainNav": "Navegação principal",
+    "menu": {
+      "open": "Abrir menu",
+      "close": "Fechar menu"
+    }
   },
   "LocaleSwitcher": {
     "label": "Idioma"
@@ -37,7 +41,12 @@
     "terms": "Termos",
     "contact": "Contato",
     "pricing": "Preços",
-    "copyright": "© {year} FileFlip. Sem marca d'água, sem cadastro obrigatório."
+    "copyright": "© {year} FileFlip. Sem marca d'água, sem cadastro obrigatório.",
+    "headings": {
+      "tools": "Ferramentas de PDF",
+      "conversions": "Conversões populares",
+      "company": "FileFlip"
+    }
   },
   "HomePage": {
     "title": "Converta seus arquivos sem que eles saiam do seu computador",
@@ -63,11 +72,50 @@
       }
     },
     "badge": "Seus arquivos não saem do seu aparelho",
-    "steps": {
-      "heading": "Simples assim",
-      "drop": "Arraste seu arquivo",
-      "pick": "Escolha o formato",
-      "download": "Baixe o resultado"
+    "how": {
+      "heading": "Como funciona",
+      "subtitle": "Três passos, sem instalar nada e sem criar conta.",
+      "drop": {
+        "title": "Arraste seu arquivo",
+        "body": "Solte imagens ou PDFs na área acima, ou toque nela para escolher. Você pode adicionar vários de uma vez."
+      },
+      "pick": {
+        "title": "Escolha o formato",
+        "body": "Selecione o formato de saída e, se quiser, ajuste a qualidade ou o tamanho."
+      },
+      "download": {
+        "title": "Baixe o resultado",
+        "body": "A conversão acontece no seu dispositivo em segundos. Baixe cada arquivo ou todos juntos em um ZIP."
+      }
+    },
+    "faq": {
+      "heading": "Perguntas frequentes",
+      "items": {
+        "free": {
+          "q": "O FileFlip é grátis?",
+          "a": "Sim. Você pode converter sem pagar, sem criar conta e sem marca d'água. O plano Pro é opcional: remove os anúncios e amplia os limites."
+        },
+        "upload": {
+          "q": "Meus arquivos são enviados para algum servidor?",
+          "a": "Imagens e PDFs são processados direto no seu navegador e não saem do seu dispositivo. Só os documentos de escritório (Word, Excel, PowerPoint) são convertidos no nosso servidor e apagados em menos de 1 hora."
+        },
+        "formats": {
+          "q": "Quais formatos posso converter?",
+          "a": "Imagens JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC e SVG; ferramentas para juntar, dividir, girar, organizar e comprimir PDF; imagens para PDF e PDF para imagem; e documentos do Word, Excel e PowerPoint para PDF."
+        },
+        "mobile": {
+          "q": "Funciona no celular?",
+          "a": "Sim. O FileFlip funciona no navegador do celular ou tablet, sem instalar nenhum aplicativo. Por exemplo, você pode passar fotos HEIC do iPhone para JPG."
+        },
+        "batch": {
+          "q": "Posso converter vários arquivos de uma vez?",
+          "a": "Sim. Adicione vários arquivos de uma vez e baixe-os separadamente ou todos juntos em um arquivo ZIP."
+        },
+        "quality": {
+          "q": "Perco qualidade ao converter?",
+          "a": "Você decide: dá para ajustar a qualidade nos formatos com compressão (JPG, WEBP, AVIF). Formatos sem perda, como PNG, mantêm a imagem exatamente igual."
+        }
+      }
     }
   },
   "Errors": {
@@ -97,7 +145,15 @@
     "progress": "Progresso de {name}",
     "downloadAll": "Baixar tudo em ZIP ({count})",
     "processedOnServer": "Processado no nosso servidor (apagado em até 1 hora)",
-    "pdfToWordNote": "PDF para Word mantém o texto, os títulos e os parágrafos. Colunas, tabelas e imagens podem mudar ou não ser incluídas."
+    "pdfToWordNote": "PDF para Word mantém o texto, os títulos e os parágrafos. Colunas, tabelas e imagens podem mudar ou não ser incluídas.",
+    "dropFormats": "JPG, PNG, WEBP, HEIC, AVIF, PDF, Word e mais",
+    "dropMore": "Adicione mais arquivos",
+    "statusWorking": "Convertendo {done} de {total}…",
+    "statusDone": "{count, plural, one {Pronto: # arquivo convertido} other {Pronto: # arquivos convertidos}}",
+    "statusErrors": "{count, plural, one {# arquivo não pôde ser convertido} other {# arquivos não puderam ser convertidos}}",
+    "statusErrorsHint": "Veja o motivo em cada arquivo. Você pode removê-lo e tentar de novo.",
+    "statusDoneHint": "Baixe cada arquivo pelo seu botão.",
+    "larger": "{percent} maior"
   },
   "ImageOptions": {
     "title": "Opções",
@@ -296,7 +352,8 @@
       "q3": "Por que o preço está na minha moeda?",
       "a3": "Cobramos em moeda local nos países onde o Mercado Pago opera, para você não pagar taxas de câmbio."
     },
-    "billingPeriod": "Período de cobrança"
+    "billingPeriod": "Período de cobrança",
+    "recommended": "Recomendado"
   },
   "Billing": {
     "monthly": "FileFlip Pro mensal",
@@ -313,6 +370,7 @@
     "howTitle": "Como converter {from} para {to}",
     "step1": "Arraste seu arquivo {from} ou escolha no seu aparelho.",
     "step2": "Escolha {to} e, se quiser, ajuste a qualidade ou o tamanho.",
+    "step2Document": "Confira se {to} está escolhido como formato de saída.",
     "step3": "Clique em Converter e baixe seu arquivo {to}.",
     "privacyTitle": "Privado e rápido",
     "privacyBrowser": "Seus arquivos {from} são convertidos direto no navegador: nunca são enviados pela internet, então a conversão é privada e muito rápida.",
@@ -391,7 +449,9 @@
       "emailLabel": "E-mail",
       "missing": "O endereço de contato ainda não foi configurado.",
       "topics": "Se for um problema, conte qual navegador e que tipo de arquivo você estava usando. Nunca nos envie documentos privados por e-mail.",
-      "privacy": "Para pedir a exclusão dos seus dados ou da conta, escreva a partir do e-mail com que você se cadastrou."
-    }
+      "privacy": "Para pedir a exclusão dos seus dados ou da conta, escreva a partir do e-mail com que você se cadastrou.",
+      "write": "Enviar um e-mail"
+    },
+    "contents": "Conteúdo"
   }
 }

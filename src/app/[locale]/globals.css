@@ -3,50 +3,160 @@
 /* Dark mode follows the `.dark` class set on <html> by the theme script. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+ * Design tokens (see docs/design.md). Every text/background pair used in the
+ * UI meets WCAG AA (≥ 4.5:1) in both themes.
+ */
 :root {
-  --background: #f8fafc;
+  /* Warm "paper" neutrals with ink text. */
+  --background: #f6f5f1;
   --surface: #ffffff;
-  --foreground: #0f172a;
-  --muted: #64748b;
-  --border: #e2e8f0;
-  --brand: #4f46e5;
-  --brand-strong: #4338ca;
-  --brand-soft: #eef2ff;
+  --surface-2: #efede7;
+  --foreground: #14181f;
+  --muted: #5a6270;
+  --border: #e2dfd7;
+  --border-strong: #c9c5ba;
+  /* Brand: deep "flip" teal. */
+  --brand: #0b6f6a;
+  --brand-strong: #085954;
+  --brand-soft: #e3f2ef;
   /* Solid fills behind white text (buttons): AA contrast in both themes. */
-  --brand-solid: #4f46e5;
-  --brand-solid-hover: #4338ca;
+  --brand-solid: #0b6f6a;
+  --brand-solid-hover: #085954;
+  /* Accent: tangerine, for highlights and decoration (accent-strong for text). */
+  --accent: #f26b3a;
+  --accent-strong: #b5401a;
+  --accent-soft: #fdebe2;
+  /* Status colors. */
+  --success: #067647;
+  --success-soft: #e7f6ee;
+  --warning: #93370d;
+  --warning-soft: #fffaeb;
+  --danger: #b42318;
+  --danger-soft: #fef3f2;
+  --ring: #0b6f6a;
+  --shadow-color: 30 25 15;
 }
 
 .dark {
-  --background: #0b1020;
-  --surface: #121a2e;
-  --foreground: #e2e8f0;
-  --muted: #94a3b8;
-  --border: #1e293b;
-  --brand: #818cf8;
-  --brand-strong: #a5b4fc;
-  --brand-soft: #1e1b4b;
-  --brand-solid: #4f46e5;
-  --brand-solid-hover: #4338ca;
+  --background: #0e1215;
+  --surface: #161c21;
+  --surface-2: #1d252b;
+  --foreground: #e8ecef;
+  --muted: #9aa5ae;
+  --border: #27323a;
+  --border-strong: #3a4751;
+  --brand: #5fd4c6;
+  --brand-strong: #8ee3d8;
+  --brand-soft: #10302e;
+  --brand-solid: #0b6f6a;
+  --brand-solid-hover: #085954;
+  --accent: #ff8a5c;
+  --accent-strong: #ff8a5c;
+  --accent-soft: #3a1f14;
+  --success: #47cd89;
+  --success-soft: #0f2a1d;
+  --warning: #fdb022;
+  --warning-soft: #2e2208;
+  --danger: #f97066;
+  --danger-soft: #331412;
+  --ring: #5fd4c6;
+  --shadow-color: 0 0 0;
   color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-brand: var(--brand);
   --color-brand-strong: var(--brand-strong);
   --color-brand-soft: var(--brand-soft);
   --color-brand-solid: var(--brand-solid);
   --color-brand-solid-hover: var(--brand-solid-hover);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-ring: var(--ring);
+
+  /* Fonts come from next/font (src/app/fonts.ts) as CSS variables. */
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-display: var(--font-heading), var(--font-body), ui-sans-serif, system-ui,
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+
+  /* Elevation: soft, ink-tinted shadows. */
+  --shadow-card: 0 1px 2px rgb(var(--shadow-color) / 0.06),
+    0 1px 3px rgb(var(--shadow-color) / 0.08);
+  --shadow-lift: 0 4px 8px -2px rgb(var(--shadow-color) / 0.08),
+    0 12px 24px -6px rgb(var(--shadow-color) / 0.14);
+}
+
+/* Microinteractions (see docs/design.md, "Movimiento"); the global
+   reduced-motion rule below turns them into instant changes. */
+@theme {
+  --animate-rise: rise 240ms ease-out both;
+  --animate-pop: pop 320ms ease-out both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
+  @keyframes pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    60% {
+      transform: scale(1.08);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-    "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

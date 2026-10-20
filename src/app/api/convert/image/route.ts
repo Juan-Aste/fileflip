@@ -4,7 +4,7 @@ import { apiError } from "@/lib/api-errors";
 import { parseImageOptions } from "@/lib/image/parse-options";
 import { attachment } from "@/lib/server/http";
 import { convertImageOnServer } from "@/lib/server/image";
-import { logConversion } from "@/lib/server/stats";
+import { elapsedMs, logConversion } from "@/lib/server/stats";
 import { readUpload } from "@/lib/server/upload";
 import { requestPlan } from "@/lib/server/plan";
 
@@ -29,9 +29,11 @@ export async function POST(request: Request) {
     return apiError("invalidRequest");
   }
 
+  const start = performance.now();
   try {
     const output = await convertImageOnServer(
-      Buffer.from(bytes),
+      // A view over the upload, not a copy.
+      Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength),
       from,
       to,
       options,
@@ -43,8 +45,9 @@ export async function POST(request: Request) {
       size: file.size,
       outputSize: output.length,
       success: true,
+      durationMs: elapsedMs(start),
     });
-    return new Response(new Uint8Array(output), {
+    return new Response(output as Uint8Array<ArrayBuffer>, {
       headers: {
         "Content-Type": formats[to].mime,
         "Content-Disposition": attachment(outputFilename(file.name, to)),
@@ -59,6 +62,8 @@ export async function POST(request: Request) {
       engine: "server",
       size: file.size,
       success: false,
+      durationMs: elapsedMs(start),
+      errorCode: "conversionFailed",
     });
     return apiError("conversionFailed");
   }

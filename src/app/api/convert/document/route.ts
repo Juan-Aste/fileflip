@@ -4,7 +4,7 @@ import { apiError } from "@/lib/api-errors";
 import { GotenbergError, officeToPdf } from "@/lib/server/gotenberg";
 import { attachment } from "@/lib/server/http";
 import { PdfHasNoTextError, pdfToDocx } from "@/lib/server/pdf-to-docx";
-import { logConversion } from "@/lib/server/stats";
+import { elapsedMs, logConversion } from "@/lib/server/stats";
 import { readUpload } from "@/lib/server/upload";
 import { requestPlan } from "@/lib/server/plan";
 
@@ -21,6 +21,7 @@ export async function POST(request: Request) {
   const upload = await readUpload(request, plan, canConvertDocumentOnServer, { signedIn });
   if (upload instanceof Response) return upload;
   const { file, bytes, from, to } = upload;
+  const start = performance.now();
 
   if (from === "pdf") {
     try {
@@ -32,8 +33,9 @@ export async function POST(request: Request) {
         size: file.size,
         outputSize: docx.length,
         success: true,
+        durationMs: elapsedMs(start),
       });
-      return new Response(new Uint8Array(docx), {
+      return new Response(docx as Uint8Array<ArrayBuffer>, {
         headers: {
           "Content-Type": formats.docx.mime,
           "Content-Disposition": attachment(outputFilename(file.name, "docx")),
@@ -47,6 +49,8 @@ export async function POST(request: Request) {
         engine: "server",
         size: file.size,
         success: false,
+        durationMs: elapsedMs(start),
+        errorCode: error instanceof PdfHasNoTextError ? "pdfHasNoText" : "conversionFailed",
       });
       if (error instanceof PdfHasNoTextError) return apiError("pdfHasNoText");
       console.error("pdf to docx failed", error);
@@ -68,8 +72,9 @@ export async function POST(request: Request) {
       size: file.size,
       outputSize: pdf.length,
       success: true,
+      durationMs: elapsedMs(start),
     });
-    return new Response(pdf.slice().buffer, {
+    return new Response(pdf as Uint8Array<ArrayBuffer>, {
       headers: {
         "Content-Type": formats[to].mime,
         "Content-Disposition": attachment(outputFilename(file.name, to)),
@@ -78,15 +83,16 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("document conversion failed", error);
+    const code = error instanceof GotenbergError && error.reason !== "failed" ? "serviceUnavailable" : "conversionFailed";
     void logConversion({
       from,
       to,
       engine: "server",
       size: file.size,
       success: false,
+      durationMs: elapsedMs(start),
+      errorCode: code,
     });
-    if (error instanceof GotenbergError && error.reason !== "failed")
-      return apiError("serviceUnavailable");
-    return apiError("conversionFailed");
+    return apiError(code);
   }
 }

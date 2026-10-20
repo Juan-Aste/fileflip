@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { splitPdfFile } from "@/lib/pdf/client";
 import { parsePageRanges, rangeLabel } from "@/lib/pdf/ranges";
+import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
@@ -11,6 +12,7 @@ import RangesInput from "./RangesInput";
 import SinglePdfInput from "./SinglePdfInput";
 import ToolResult from "./ToolResult";
 import { useSinglePdf } from "./useSinglePdf";
+import { trackTool } from "@/lib/stats-client";
 
 type Mode = "each" | "ranges" | "extract";
 
@@ -43,7 +45,13 @@ export default function SplitPdfTool() {
     setProgress(0);
     try {
       const base = baseName(pdf.file.name);
-      const outputs = await splitPdfFile(pdf.file, groups, setProgress);
+      const file = pdf.file;
+      const outputs = await trackTool(
+        "split-pdf",
+        { from: "pdf", to: "pdf", files: [file] },
+        () => splitPdfFile(file, groups, setProgress),
+        (parts) => parts.reduce((sum, b) => sum + b.size, 0),
+      );
       if (outputs.length === 1) {
         setResult({ blob: outputs[0], name: `${base}-${rangeLabel(groups[0])}.pdf` });
       } else {
@@ -76,7 +84,7 @@ export default function SplitPdfTool() {
     <div className="flex flex-col gap-4">
       <SinglePdfInput pdf={pdf} />
       {pdf.pages !== null && (
-        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 sm:p-6">
+        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface shadow-card p-4 sm:p-6">
           <ChoiceGroup
             legend={t("splitMode")}
             value={mode}
@@ -97,9 +105,9 @@ export default function SplitPdfTool() {
           )}
           {progress !== null && <ProgressBar value={progress} label={t("working")} />}
           {failed && (
-            <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+            <ToolAlert>
               {te("conversionFailed")}
-            </p>
+            </ToolAlert>
           )}
           <PrimaryButton onClick={run} disabled={!groups || progress !== null}>
             {progress !== null ? t("working") : tt("action")}

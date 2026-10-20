@@ -11,6 +11,15 @@ export interface ImageJob {
   pixels?: { width: number; height: number };
 }
 
+/** Load the codecs for a conversion before the first file arrives. */
+export interface PreloadRequest {
+  type: "preload";
+  from?: FormatId;
+  to?: FormatId;
+}
+
+export type ImageWorkerRequest = ImageJob | PreloadRequest;
+
 export type ImageWorkerMessage =
   | { id: number; type: "progress"; progress: number }
   | { id: number; type: "done"; buffer: ArrayBuffer; width: number; height: number }

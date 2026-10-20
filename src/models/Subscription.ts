@@ -2,7 +2,7 @@ import mongoose, { Schema, type InferSchemaType, type Model } from "mongoose";
 
 const subscriptionSchema = new Schema(
   {
-    userId: { type: Schema.Types.ObjectId, required: true, index: true },
+    userId: { type: Schema.Types.ObjectId, required: true },
     provider: { type: String, enum: ["mercadopago", "international", "mock"], required: true },
     /** The provider's id (Mercado Pago preapproval id). */
     externalId: { type: String, required: true, unique: true },
@@ -17,6 +17,12 @@ const subscriptionSchema = new Schema(
   },
   { timestamps: true, versionKey: false },
 );
+
+// currentSubscription / cancel: newest subscription of a user by status.
+subscriptionSchema.index({ userId: 1, status: 1, createdAt: -1 });
+// Admin stats: sign-ups and cancellations in a period.
+subscriptionSchema.index({ createdAt: 1 });
+subscriptionSchema.index({ cancelledAt: 1 }, { sparse: true });
 
 export type SubscriptionDoc = InferSchemaType<typeof subscriptionSchema> & { _id: mongoose.Types.ObjectId };
 

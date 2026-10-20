@@ -20,7 +20,11 @@
       "login": "Iniciar sesión",
       "account": "Mi cuenta"
     },
-    "mainNav": "Navegación principal"
+    "mainNav": "Navegación principal",
+    "menu": {
+      "open": "Abrir menú",
+      "close": "Cerrar menú"
+    }
   },
   "LocaleSwitcher": {
     "label": "Idioma"
@@ -37,7 +41,12 @@
     "terms": "Términos",
     "contact": "Contacto",
     "pricing": "Precios",
-    "copyright": "© {year} FileFlip. Sin marcas de agua, sin registro obligatorio."
+    "copyright": "© {year} FileFlip. Sin marcas de agua, sin registro obligatorio.",
+    "headings": {
+      "tools": "Herramientas PDF",
+      "conversions": "Conversiones populares",
+      "company": "FileFlip"
+    }
   },
   "HomePage": {
     "title": "Convierte tus archivos sin que salgan de tu computadora",
@@ -63,11 +72,50 @@
       }
     },
     "badge": "Tus archivos no salen de tu dispositivo",
-    "steps": {
-      "heading": "Así de fácil",
-      "drop": "Arrastra tu archivo",
-      "pick": "Elige el formato",
-      "download": "Descarga el resultado"
+    "how": {
+      "heading": "Cómo funciona",
+      "subtitle": "Tres pasos, sin instalar nada y sin crear una cuenta.",
+      "drop": {
+        "title": "Arrastra tu archivo",
+        "body": "Suelta imágenes o PDF en la zona de arriba, o tócala para elegirlos. Puedes agregar varios a la vez."
+      },
+      "pick": {
+        "title": "Elige el formato",
+        "body": "Selecciona el formato de salida y, si quieres, ajusta la calidad o el tamaño."
+      },
+      "download": {
+        "title": "Descarga el resultado",
+        "body": "La conversión ocurre en tu dispositivo en segundos. Descarga cada archivo o todos juntos en un ZIP."
+      }
+    },
+    "faq": {
+      "heading": "Preguntas frecuentes",
+      "items": {
+        "free": {
+          "q": "¿FileFlip es gratis?",
+          "a": "Sí. Puedes convertir sin pagar, sin crear una cuenta y sin marcas de agua. El plan Pro es opcional: quita los anuncios y amplía los límites."
+        },
+        "upload": {
+          "q": "¿Mis archivos se suben a algún servidor?",
+          "a": "Las imágenes y los PDF se procesan directamente en tu navegador y no salen de tu dispositivo. Solo los documentos de oficina (Word, Excel, PowerPoint) se convierten en nuestro servidor y se borran en menos de 1 hora."
+        },
+        "formats": {
+          "q": "¿Qué formatos puedo convertir?",
+          "a": "Imágenes JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC y SVG; herramientas para unir, dividir, rotar, ordenar y comprimir PDF; imágenes a PDF y PDF a imagen; y documentos de Word, Excel y PowerPoint a PDF."
+        },
+        "mobile": {
+          "q": "¿Funciona en el celular?",
+          "a": "Sí. FileFlip funciona en el navegador de tu celular o tablet, sin instalar ninguna aplicación. Por ejemplo, puedes pasar fotos HEIC del iPhone a JPG."
+        },
+        "batch": {
+          "q": "¿Puedo convertir varios archivos a la vez?",
+          "a": "Sí. Agrega varios archivos de una vez y descárgalos por separado o todos juntos en un archivo ZIP."
+        },
+        "quality": {
+          "q": "¿Pierdo calidad al convertir?",
+          "a": "Tú decides: puedes ajustar la calidad en los formatos con compresión (JPG, WEBP, AVIF). Los formatos sin pérdida, como PNG, mantienen la imagen tal cual."
+        }
+      }
     }
   },
   "Errors": {
@@ -97,7 +145,15 @@
     "progress": "Progreso de {name}",
     "downloadAll": "Descargar todo en ZIP ({count})",
     "processedOnServer": "Procesado en nuestro servidor (se borra en 1 hora)",
-    "pdfToWordNote": "PDF a Word conserva el texto, los títulos y los párrafos. Las columnas, tablas e imágenes pueden cambiar o no incluirse."
+    "pdfToWordNote": "PDF a Word conserva el texto, los títulos y los párrafos. Las columnas, tablas e imágenes pueden cambiar o no incluirse.",
+    "dropFormats": "JPG, PNG, WEBP, HEIC, AVIF, PDF, Word y más",
+    "dropMore": "Agrega más archivos",
+    "statusWorking": "Convirtiendo {done} de {total}…",
+    "statusDone": "{count, plural, one {Listo: # archivo convertido} other {Listo: # archivos convertidos}}",
+    "statusErrors": "{count, plural, one {# archivo no se pudo convertir} other {# archivos no se pudieron convertir}}",
+    "statusErrorsHint": "Revisa el motivo en cada archivo. Puedes quitarlo y volver a intentar.",
+    "statusDoneHint": "Descarga cada archivo con su botón.",
+    "larger": "{percent} más"
   },
   "ImageOptions": {
     "title": "Opciones",
@@ -296,7 +352,8 @@
       "q3": "¿Por qué el precio está en mi moneda?",
       "a3": "Cobramos en moneda local en los países donde opera Mercado Pago, para que no pagues comisiones por cambio de moneda."
     },
-    "billingPeriod": "Período de facturación"
+    "billingPeriod": "Período de facturación",
+    "recommended": "Recomendado"
   },
   "Billing": {
     "monthly": "FileFlip Pro mensual",
@@ -313,6 +370,7 @@
     "howTitle": "Cómo convertir {from} a {to}",
     "step1": "Arrastra tu archivo {from} o elígelo desde tu dispositivo.",
     "step2": "Elige {to} y, si quieres, ajusta la calidad o el tamaño.",
+    "step2Document": "Comprueba que esté elegido {to} como formato de salida.",
     "step3": "Haz clic en Convertir y descarga tu archivo {to}.",
     "privacyTitle": "Privado y rápido",
     "privacyBrowser": "Tus archivos {from} se convierten directamente en tu navegador: nunca se suben a internet, así que la conversión es privada y muy rápida.",
@@ -391,7 +449,9 @@
       "emailLabel": "Correo",
       "missing": "La dirección de contacto todavía no está configurada.",
       "topics": "Cuéntanos qué navegador y qué tipo de archivo usabas si nos escribes por un problema. Nunca nos envíes documentos privados por correo.",
-      "privacy": "Para pedir la eliminación de tus datos o de tu cuenta, escríbenos desde el correo con el que te registraste."
-    }
+      "privacy": "Para pedir la eliminación de tus datos o de tu cuenta, escríbenos desde el correo con el que te registraste.",
+      "write": "Escribir un correo"
+    },
+    "contents": "Contenido"
   }
 }

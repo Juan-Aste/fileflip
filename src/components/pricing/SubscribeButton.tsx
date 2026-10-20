@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import type { BillingPeriod } from "@/config/pricing";
 import { useRouter } from "@/i18n/navigation";
 import { isApiErrorCode, type ApiErrorCode } from "@/lib/api-errors";
+import { buttonPrimary } from "@/components/ui/styles";
 
 /** Starts checkout; anonymous visitors are sent to sign in first. */
 export default function SubscribeButton({ period, signedIn }: { period: BillingPeriod; signedIn: boolean }) {
@@ -46,12 +47,12 @@ export default function SubscribeButton({ period, signedIn }: { period: BillingP
         type="button"
         onClick={start}
         disabled={busy}
-        className="w-full rounded-xl bg-brand-solid px-5 py-3 font-semibold text-white transition hover:bg-brand-solid-hover disabled:opacity-60"
+        className={`w-full ${buttonPrimary}`}
       >
         {t("proCta")}
       </button>
       {error && (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+        <p role="alert" className="text-sm text-danger">
           {te(error)}
         </p>
       )}

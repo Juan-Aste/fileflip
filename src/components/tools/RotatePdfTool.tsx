@@ -5,12 +5,14 @@ import { useTranslations } from "next-intl";
 import { rotatePdfFile } from "@/lib/pdf/client";
 import type { Rotation } from "@/lib/pdf/ops";
 import { parsePageRanges } from "@/lib/pdf/ranges";
+import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
 import RangesInput from "./RangesInput";
 import SinglePdfInput from "./SinglePdfInput";
 import ToolResult from "./ToolResult";
 import { useSinglePdf } from "./useSinglePdf";
+import { trackTool } from "@/lib/stats-client";
 
 export default function RotatePdfTool() {
   const t = useTranslations("ToolUi");
@@ -32,7 +34,15 @@ export default function RotatePdfTool() {
     setFailed(false);
     setWorking(true);
     try {
-      setResult(await rotatePdfFile(pdf.file, Number(rotation) as Rotation, pages));
+      const file = pdf.file;
+      setResult(
+        await trackTool(
+          "rotate-pdf",
+          { from: "pdf", to: "pdf", files: [file] },
+          () => rotatePdfFile(file, Number(rotation) as Rotation, pages),
+          (b) => b.size,
+        ),
+      );
     } catch (error) {
       console.error(error);
       setFailed(true);
@@ -58,7 +68,7 @@ export default function RotatePdfTool() {
     <div className="flex flex-col gap-4">
       <SinglePdfInput pdf={pdf} />
       {pdf.pages !== null && (
-        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 sm:p-6">
+        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface shadow-card p-4 sm:p-6">
           <ChoiceGroup
             legend={t("rotation")}
             value={rotation}
@@ -87,9 +97,9 @@ export default function RotatePdfTool() {
             />
           )}
           {failed && (
-            <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+            <ToolAlert>
               {te("conversionFailed")}
-            </p>
+            </ToolAlert>
           )}
           <PrimaryButton onClick={run} disabled={!ready || working}>
             {working ? t("working") : tt("action")}

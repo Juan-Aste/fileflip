@@ -1,7 +1,8 @@
 "use client";
 
 import { formats, type FormatId } from "@/config/formats";
-import type { ImageJob, ImageWorkerMessage } from "@/workers/protocol";
+import type { ImageJob, ImageWorkerMessage, PreloadRequest } from "@/workers/protocol";
+import { deviceConcurrency } from "@/lib/concurrency";
 import { computeSize } from "./dimensions";
 import { browserImageOutputs, type ImageOptions } from "./options";
 import { svgIntrinsicSize } from "./svg";
@@ -19,16 +20,22 @@ interface Pending {
   to: FormatId;
 }
 
-let worker: Worker | null = null;
+interface Slot {
+  worker: Worker;
+  /** Ids of the jobs this worker is running. */
+  jobs: Set<number>;
+}
+
 let nextJob = 1;
 const pending = new Map<number, Pending>();
+const slots: Slot[] = [];
+const preloads: PreloadRequest[] = [];
 
-/** One shared worker: jobs queue there and the UI thread never blocks. */
-function getWorker() {
-  if (worker) return worker;
-  worker = new Worker(new URL("../../workers/image.worker.ts", import.meta.url), {
+function startWorker(): Slot {
+  const worker = new Worker(new URL("../../workers/image.worker.ts", import.meta.url), {
     type: "module",
   });
+  const slot: Slot = { worker, jobs: new Set() };
   worker.onmessage = (event: MessageEvent<ImageWorkerMessage>) => {
     const msg = event.data;
     const job = pending.get(msg.id);
@@ -38,6 +45,7 @@ function getWorker() {
       return;
     }
     pending.delete(msg.id);
+    slot.jobs.delete(msg.id);
     if (msg.type === "done") {
       job.onProgress?.(1);
       job.resolve({
@@ -50,13 +58,47 @@ function getWorker() {
     }
   };
   worker.onerror = (event) => {
-    // A crashed worker fails every job in flight; the next call starts a new one.
-    for (const job of pending.values()) job.reject(new Error(event.message));
-    pending.clear();
-    worker?.terminate();
-    worker = null;
+    // A crashed worker fails its jobs in flight; later calls start a new one.
+    for (const id of slot.jobs) {
+      pending.get(id)?.reject(new Error(event.message));
+      pending.delete(id);
+    }
+    worker.terminate();
+    slots.splice(slots.indexOf(slot), 1);
   };
-  return worker;
+  // A new worker loads the codecs already asked for.
+  for (const request of preloads) worker.postMessage(request);
+  slots.push(slot);
+  return slot;
+}
+
+/**
+ * Workers are reused across files and conversions. A batch spreads over up to
+ * `deviceConcurrency()` of them (one per free core, fewer on low-memory
+ * phones); beyond that, jobs queue on the least busy one.
+ */
+function pickWorker(): Slot {
+  const idle = slots.find((slot) => slot.jobs.size === 0);
+  if (idle) return idle;
+  if (slots.length < deviceConcurrency()) return startWorker();
+  return slots.reduce((a, b) => (b.jobs.size < a.jobs.size ? b : a));
+}
+
+const preloaded = new Set<string>();
+
+/**
+ * Starts a worker and loads the codecs for `from` → `to` in the background
+ * (once per pair), so the first conversion doesn't wait for the download.
+ */
+export function preloadImageCodecs(from: FormatId | undefined, to: FormatId | undefined) {
+  if (typeof Worker === "undefined" || (!from && !to)) return;
+  const key = `${from ?? ""}>${to ?? ""}`;
+  if (preloaded.has(key)) return;
+  preloaded.add(key);
+  const request: PreloadRequest = { type: "preload", from, to };
+  preloads.push(request);
+  if (slots.length === 0) startWorker();
+  else for (const slot of slots) slot.worker.postMessage(request);
 }
 
 export function canConvertImageInBrowser(to: FormatId) {
@@ -116,6 +158,8 @@ export async function convertImage(
   const id = nextJob++;
   return new Promise((resolve, reject) => {
     pending.set(id, { resolve, reject, onProgress, to });
-    getWorker().postMessage({ ...job, id }, [job.buffer]);
+    const slot = pickWorker();
+    slot.jobs.add(id);
+    slot.worker.postMessage({ ...job, id }, [job.buffer]);
   });
 }

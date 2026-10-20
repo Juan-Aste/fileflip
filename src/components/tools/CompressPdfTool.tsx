@@ -6,12 +6,14 @@ import type { Locale } from "@/i18n/routing";
 import { formatBytes, formatPercent } from "@/lib/format";
 import { compressPdfFile } from "@/lib/pdf/client";
 import type { CompressionLevel } from "@/lib/pdf/compress";
+import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
 import SinglePdfInput from "./SinglePdfInput";
 import ToolResult from "./ToolResult";
 import { useSinglePdf } from "./useSinglePdf";
+import { trackTool } from "@/lib/stats-client";
 
 export default function CompressPdfTool() {
   const t = useTranslations("ToolUi");
@@ -29,7 +31,14 @@ export default function CompressPdfTool() {
     setFailed(false);
     setProgress(0);
     try {
-      setResult((await compressPdfFile(pdf.file, level, setProgress)).blob);
+      const file = pdf.file;
+      const { blob } = await trackTool(
+        "compress-pdf",
+        { from: "pdf", to: "pdf", files: [file] },
+        () => compressPdfFile(file, level, setProgress),
+        (r) => r.blob.size,
+      );
+      setResult(blob);
     } catch (error) {
       console.error(error);
       setFailed(true);
@@ -47,7 +56,7 @@ export default function CompressPdfTool() {
         filename={pdf.file.name.replace(/(\.pdf)?$/i, "-compressed.pdf")}
         note={
           saved > 0.01 ? (
-            <span className="text-emerald-600 dark:text-emerald-400">
+            <span className="text-success">
               {t("reduced", {
                 before: formatBytes(before, locale),
                 after: formatBytes(result.size, locale),
@@ -70,7 +79,7 @@ export default function CompressPdfTool() {
     <div className="flex flex-col gap-4">
       <SinglePdfInput pdf={pdf} />
       {pdf.pages !== null && (
-        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 sm:p-6">
+        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface shadow-card p-4 sm:p-6">
           <ChoiceGroup
             legend={t("level")}
             value={level}
@@ -83,9 +92,9 @@ export default function CompressPdfTool() {
           />
           {progress !== null && <ProgressBar value={progress} label={t("working")} />}
           {failed && (
-            <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+            <ToolAlert>
               {te("conversionFailed")}
-            </p>
+            </ToolAlert>
           )}
           <PrimaryButton onClick={run} disabled={progress !== null}>
             {progress !== null ? t("working") : tt("action")}

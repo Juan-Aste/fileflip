@@ -20,7 +20,11 @@
       "login": "Sign in",
       "account": "My account"
     },
-    "mainNav": "Main navigation"
+    "mainNav": "Main navigation",
+    "menu": {
+      "open": "Open menu",
+      "close": "Close menu"
+    }
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -37,7 +41,12 @@
     "terms": "Terms",
     "contact": "Contact",
     "pricing": "Pricing",
-    "copyright": "© {year} FileFlip. No watermarks, no sign-up required."
+    "copyright": "© {year} FileFlip. No watermarks, no sign-up required.",
+    "headings": {
+      "tools": "PDF tools",
+      "conversions": "Popular conversions",
+      "company": "FileFlip"
+    }
   },
   "HomePage": {
     "title": "Convert your files without them ever leaving your computer",
@@ -63,11 +72,50 @@
       }
     },
     "badge": "Your files never leave your device",
-    "steps": {
-      "heading": "It's that simple",
-      "drop": "Drop your file",
-      "pick": "Pick a format",
-      "download": "Download the result"
+    "how": {
+      "heading": "How it works",
+      "subtitle": "Three steps, nothing to install and no account needed.",
+      "drop": {
+        "title": "Drop your file",
+        "body": "Drop images or PDFs on the area above, or tap it to pick them. You can add several at once."
+      },
+      "pick": {
+        "title": "Pick a format",
+        "body": "Choose the output format and, if you like, adjust the quality or size."
+      },
+      "download": {
+        "title": "Download the result",
+        "body": "The conversion runs on your device in seconds. Download each file or all of them in a ZIP."
+      }
+    },
+    "faq": {
+      "heading": "Frequently asked questions",
+      "items": {
+        "free": {
+          "q": "Is FileFlip free?",
+          "a": "Yes. You can convert without paying, without an account and without watermarks. The Pro plan is optional: it removes ads and raises the limits."
+        },
+        "upload": {
+          "q": "Are my files uploaded to a server?",
+          "a": "Images and PDFs are processed right in your browser and never leave your device. Only office documents (Word, Excel, PowerPoint) are converted on our server, and they are deleted within 1 hour."
+        },
+        "formats": {
+          "q": "Which formats can I convert?",
+          "a": "JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC and SVG images; tools to merge, split, rotate, organize and compress PDFs; images to PDF and PDF to image; and Word, Excel and PowerPoint documents to PDF."
+        },
+        "mobile": {
+          "q": "Does it work on my phone?",
+          "a": "Yes. FileFlip works in your phone or tablet browser, with no app to install. For example, you can turn iPhone HEIC photos into JPG."
+        },
+        "batch": {
+          "q": "Can I convert several files at once?",
+          "a": "Yes. Add several files at once and download them one by one or all together in a ZIP file."
+        },
+        "quality": {
+          "q": "Will I lose quality?",
+          "a": "You decide: you can adjust the quality of compressed formats (JPG, WEBP, AVIF). Lossless formats such as PNG keep the image exactly as it is."
+        }
+      }
     }
   },
   "Errors": {
@@ -97,7 +145,15 @@
     "progress": "{name} progress",
     "downloadAll": "Download all as ZIP ({count})",
     "processedOnServer": "Processed on our server (deleted within 1 hour)",
-    "pdfToWordNote": "PDF to Word keeps the text, headings and paragraphs. Columns, tables and images may change or be left out."
+    "pdfToWordNote": "PDF to Word keeps the text, headings and paragraphs. Columns, tables and images may change or be left out.",
+    "dropFormats": "JPG, PNG, WEBP, HEIC, AVIF, PDF, Word and more",
+    "dropMore": "Add more files",
+    "statusWorking": "Converting {done} of {total}…",
+    "statusDone": "{count, plural, one {Done: # file converted} other {Done: # files converted}}",
+    "statusErrors": "{count, plural, one {# file couldn't be converted} other {# files couldn't be converted}}",
+    "statusErrorsHint": "Check the reason on each file. You can remove it and try again.",
+    "statusDoneHint": "Download each file with its button.",
+    "larger": "{percent} larger"
   },
   "ImageOptions": {
     "title": "Options",
@@ -296,7 +352,8 @@
       "q3": "Why is the price in my currency?",
       "a3": "We charge in local currency where Mercado Pago operates, so you don't pay currency conversion fees."
     },
-    "billingPeriod": "Billing period"
+    "billingPeriod": "Billing period",
+    "recommended": "Recommended"
   },
   "Billing": {
     "monthly": "FileFlip Pro monthly",
@@ -313,6 +370,7 @@
     "howTitle": "How to convert {from} to {to}",
     "step1": "Drop your {from} file or choose it from your device.",
     "step2": "Pick {to} and adjust quality or size if you like.",
+    "step2Document": "Make sure {to} is selected as the output format.",
     "step3": "Click Convert and download your {to} file.",
     "privacyTitle": "Private and fast",
     "privacyBrowser": "Your {from} files are converted right in your browser: they are never uploaded, so the conversion is private and very fast.",
@@ -391,7 +449,9 @@
       "emailLabel": "Email",
       "missing": "The contact address isn't configured yet.",
       "topics": "If you're reporting a problem, tell us which browser and what kind of file you were using. Never email us private documents.",
-      "privacy": "To request deletion of your data or account, write to us from the email you signed up with."
-    }
+      "privacy": "To request deletion of your data or account, write to us from the email you signed up with.",
+      "write": "Send an email"
+    },
+    "contents": "Contents"
   }
 }

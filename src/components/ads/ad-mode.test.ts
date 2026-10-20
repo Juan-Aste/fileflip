@@ -7,8 +7,9 @@ describe("adMode", () => {
     expect(adMode({ plan: "pro", loaded: true })).toBe("hidden");
   });
 
-  it("waits for the session before showing anything", () => {
-    expect(adMode({ client: "ca-pub-1", plan: "free", loaded: false })).toBe("hidden");
+  it("keeps the space empty until the session is known", () => {
+    expect(adMode({ client: "ca-pub-1", plan: "free", loaded: false })).toBe("reserved");
+    expect(adMode({ plan: "free", loaded: false })).toBe("reserved");
   });
 
   it("shows a placeholder without an AdSense client and the ad otherwise", () => {

@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { COUNTRY_COOKIE, pricingRegions, type PricingRegion } from "@/config/pricing";
 import { intlLocale } from "@/lib/format";
 import type { Locale } from "@/i18n/routing";
+import { field } from "@/components/ui/styles";
 
 /** Lets visitors override the detected country (remembered for a year). */
 export default function RegionSelector({ value }: { value: PricingRegion }) {
@@ -31,7 +32,7 @@ export default function RegionSelector({ value }: { value: PricingRegion }) {
         value={value}
         disabled={pending}
         onChange={(e) => onChange(e.target.value as PricingRegion)}
-        className="h-9 rounded-lg border border-border bg-surface px-2.5 focus-visible:outline-2 focus-visible:outline-brand disabled:opacity-60"
+        className={`h-9 disabled:opacity-60 ${field}`}
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>

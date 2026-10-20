@@ -6,6 +6,12 @@ vi.mock("@/lib/server/gotenberg", async (importOriginal) => ({
   officeToPdf: (...args: unknown[]) => officeToPdf(...args),
 }));
 
+const logConversion = vi.fn();
+vi.mock("@/lib/server/stats", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/lib/server/stats")>()),
+  logConversion: (...args: unknown[]) => logConversion(...args),
+}));
+
 let currentPlan: "free" | "pro" = "free";
 vi.mock("@/lib/server/plan", () => ({ requestPlan: async () => ({ plan: currentPlan, signedIn: currentPlan === "pro" }) }));
 
@@ -24,6 +30,7 @@ const rtf = new Blob(["{\\rtf1\\ansi Hola}"]);
 describe("POST /api/convert/document", () => {
   beforeEach(() => {
     officeToPdf.mockReset();
+    logConversion.mockReset();
     currentPlan = "free";
   });
 
@@ -76,5 +83,17 @@ describe("POST /api/convert/document", () => {
     expect((await POST(request(rtf, "a.rtf"))).status).toBe(503);
     officeToPdf.mockRejectedValueOnce(new GotenbergError("failed", "corrupt"));
     expect((await POST(request(rtf, "a.rtf"))).status).toBe(422);
+  });
+
+  it("logs the duration and the error code, never the file name", async () => {
+    officeToPdf.mockResolvedValueOnce(new TextEncoder().encode("%PDF-1.7"));
+    await POST(request(rtf, "Secreto.rtf"));
+    officeToPdf.mockRejectedValueOnce(new GotenbergError("unavailable", "down"));
+    await POST(request(rtf, "Secreto.rtf"));
+    const [ok, failed] = logConversion.mock.calls.map((c) => c[0]);
+    expect(ok).toMatchObject({ from: "rtf", to: "pdf", engine: "server", success: true });
+    expect(ok.durationMs).toBeGreaterThanOrEqual(0);
+    expect(failed).toMatchObject({ success: false, errorCode: "serviceUnavailable" });
+    expect(JSON.stringify(logConversion.mock.calls)).not.toContain("Secreto");
   });
 });

@@ -9,8 +9,9 @@ import {
 import { limits } from "@/config/limits";
 import { useSessionInfo } from "@/components/session/SessionInfo";
 import type { ApiErrorCode } from "@/lib/api-errors";
+import { deviceConcurrency, runLimited } from "@/lib/concurrency";
 import { convertFile, type ConvertOptions } from "@/lib/convert";
-import { errorCode } from "@/lib/convert-error";
+import { ConversionError, errorCode } from "@/lib/convert-error";
 import { detectFileFormat } from "@/lib/detect";
 import { reportConversion } from "@/lib/stats-client";
 
@@ -84,7 +85,11 @@ export function useFileQueue() {
     });
   }, []);
 
-  /** Converts every supported file to `to`, one after another. */
+  /**
+   * Converts every supported file to `to`. Browser conversions run in
+   * parallel, limited to what the device can take; server ones go one after
+   * another (they are rate limited per IP), alongside the browser lane.
+   */
   const convertAll = useCallback(
     async (to: FormatId, options: Omit<ConvertOptions, "onProgress"> = {}) => {
       const queue = itemsRef.current.filter((i) => i.format);
@@ -92,15 +97,10 @@ export function useFileQueue() {
       for (const item of queue) {
         update(item.id, { job: { status: "working", progress: 0 } });
       }
-      let serverJobs = 0;
-      for (const item of queue) {
-        // Server conversions cost us money: free batches are capped.
-        if (findConversion(item.format as FormatId, to)?.engine === "server") {
-          if (++serverJobs > limits[plan].serverMaxBatch) {
-            update(item.id, { job: { status: "error", code: "tooManyFiles" } });
-            continue;
-          }
-        }
+
+      const convertOne = async (item: QueuedFile) => {
+        const start = performance.now();
+        const durationMs = () => Math.round(performance.now() - start);
         try {
           const { blob, engine, filename } = await convertFile(
             item.file,
@@ -121,6 +121,7 @@ export function useFileQueue() {
               size: item.file.size,
               outputSize: blob.size,
               success: true,
+              durationMs: durationMs(),
             });
           }
           update(item.id, {
@@ -134,15 +135,38 @@ export function useFileQueue() {
           });
         } catch (error) {
           console.error(error);
-          reportConversion({
-            from: item.format as FormatId,
-            to,
-            size: item.file.size,
-            success: false,
-          });
-          update(item.id, { job: { status: "error", code: errorCode(error) } });
+          const code = errorCode(error);
+          // The API already logged the failures it saw.
+          const fromServer = error instanceof ConversionError && error.loggedByServer;
+          if (!fromServer) {
+            reportConversion({
+              from: item.format as FormatId,
+              to,
+              size: item.file.size,
+              success: false,
+              durationMs: durationMs(),
+              errorCode: code,
+              ...(isServer(item) ? { engine: "server" as const } : {}),
+            });
+          }
+          update(item.id, { job: { status: "error", code } });
         }
+      };
+
+      const isServer = (item: QueuedFile) =>
+        findConversion(item.format as FormatId, to)?.engine === "server";
+      const browserJobs = queue.filter((item) => !isServer(item));
+      // Server conversions cost us money: free batches are capped.
+      const serverJobs = queue.filter(isServer);
+      const allowed = serverJobs.slice(0, limits[plan].serverMaxBatch);
+      for (const item of serverJobs.slice(allowed.length)) {
+        update(item.id, { job: { status: "error", code: "tooManyFiles" } });
       }
+
+      await Promise.all([
+        runLimited(browserJobs, deviceConcurrency(), convertOne),
+        runLimited(allowed, 1, convertOne),
+      ]);
     },
     [update, plan],
   );

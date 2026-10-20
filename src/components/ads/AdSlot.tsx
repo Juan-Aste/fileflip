@@ -47,6 +47,16 @@ export default function AdSlot({ placement, className = "" }: { placement: AdPla
 
   if (mode === "hidden") return null;
 
+  if (mode === "reserved") {
+    // Same box as the ad (label + slot) so nothing shifts when it fills in.
+    return (
+      <div aria-hidden="true" className={`flex flex-col items-center gap-1 ${className}`}>
+        <span className="invisible text-[11px]">{t("label")}</span>
+        <div className={sizes[placement]} />
+      </div>
+    );
+  }
+
   return (
     <aside aria-label={t("label")} className={`flex flex-col items-center gap-1 ${className}`}>
       <span className="text-[11px] uppercase tracking-wide text-muted">{t("label")}</span>

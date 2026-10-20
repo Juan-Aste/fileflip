@@ -26,7 +26,7 @@ Este documento explica cómo publicar FileFlip en [Railway](https://railway.com)
 1. En Railway: **New Project → Deploy from GitHub repo** y elegir este repositorio (rama `main`, o `dev` para un entorno de pruebas). Railway detecta el `Dockerfile` y lo usa para construir. Renombrar el servicio a `app`.
 2. **+ New → Database → MongoDB** (o usar MongoDB Atlas y pegar su URI).
 3. **+ New → Docker Image** → `gotenberg/gotenberg:8`. Renombrar el servicio a `gotenberg`.
-   - *Settings → Deploy → Custom Start Command*: `gotenberg --api-port=3000 --api-timeout=120s`
+   - *Settings → Deploy → Custom Start Command*: `gotenberg --api-port=3000 --api-timeout=90s`
    - No generar dominio público.
    - Memoria recomendada: 1 GB o más (LibreOffice usa bastante con planillas grandes).
 
@@ -55,6 +55,7 @@ Todas están documentadas en `.env.example`. Las `NEXT_PUBLIC_*` se incrustan en
 | `AUTH_URL` | sí | igual a `NEXT_PUBLIC_SITE_URL` |
 | `MONGODB_URI` | sí | `${{MongoDB.MONGO_URL}}` |
 | `GOTENBERG_URL` | sí | `http://gotenberg.railway.internal:3000` |
+| `GOTENBERG_TIMEOUT_MS` | no | tiempo máximo de espera a Gotenberg (por defecto 95000 ms, apenas más que su `--api-timeout=90s`) |
 | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | no | login con Google (ver §5) |
 | `EMAIL_SERVER`, `EMAIL_FROM` | no* | SMTP para magic links (`smtp://usuario:clave@host:587`). *Sin esto no hay login por email. |
 | `MP_ACCESS_TOKEN` / `MP_ACCESS_TOKEN_AR`… | no | Mercado Pago (un token por país donde se cobra) |

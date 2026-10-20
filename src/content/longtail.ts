@@ -2,6 +2,7 @@ import type { FormatId } from "@/config/formats";
 import type { ToolId } from "@/config/tools";
 import type { ImageOptions } from "@/lib/image/options";
 import type { Locale } from "@/i18n/routing";
+import { faqPageJsonLd } from "@/lib/faq";
 
 // Long-tail landing pages for concrete searches ("HEIC a JPG desde iPhone",
 // "comprimir PDF para AFIP"...). Each one reuses an existing tool, adds
@@ -350,14 +351,5 @@ export function longtailTranslation(page: LongtailPage, locale: Locale): Longtai
 
 /** FAQPage structured data (schema.org) for search engines. */
 export function faqJsonLd(page: LongtailPage) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    inLanguage: page.locale,
-    mainEntity: page.faq.map(({ q, a }) => ({
-      "@type": "Question",
-      name: q,
-      acceptedAnswer: { "@type": "Answer", text: a },
-    })),
-  };
+  return faqPageJsonLd(page.locale, page.faq);
 }

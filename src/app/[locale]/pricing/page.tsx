@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { BadgeCheck } from "lucide-react";
 import { auth } from "@/auth";
 import PricingCards from "@/components/pricing/PricingCards";
 import RegionSelector from "@/components/pricing/RegionSelector";
+import FaqList from "@/components/ui/FaqList";
+import PageHero from "@/components/ui/PageHero";
 import type { Locale } from "@/i18n/routing";
 import { alternatesFor } from "@/lib/seo";
 import { planForUser } from "@/lib/billing";
@@ -42,28 +45,22 @@ export default async function PricingPage({ params }: Props) {
   const isPro = (await planForUser(session?.user?.id)) === "pro";
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-10 px-4 py-12">
-      <header className="flex flex-col items-center gap-3 text-center">
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">{t("title")}</h1>
-        <p className="max-w-2xl text-muted">{t("subtitle")}</p>
+    <div className="mx-auto flex max-w-4xl flex-col gap-12 px-4 py-12">
+      <PageHero icon={<BadgeCheck aria-hidden="true" className="h-7 w-7" />} title={t("title")}>
+        <p className="max-w-2xl text-lg text-muted">{t("subtitle")}</p>
         <RegionSelector value={region} />
-      </header>
+      </PageHero>
       <PricingCards
         region={region}
         signedIn={Boolean(session?.user)}
         isPro={isPro}
         paymentsAvailable={paymentsAvailable(region)}
       />
-      <section aria-labelledby="faq" className="flex flex-col gap-3">
+      <section aria-labelledby="faq" className="flex flex-col gap-4">
         <h2 id="faq" className="text-2xl font-bold">
           {t("faqTitle")}
         </h2>
-        {faq.map((n) => (
-          <details key={n} className="rounded-xl border border-border bg-surface px-4 py-3">
-            <summary className="cursor-pointer font-medium">{t(`faq.q${n}`)}</summary>
-            <p className="mt-2 text-sm text-muted">{t(`faq.a${n}`)}</p>
-          </details>
-        ))}
+        <FaqList locale={locale} items={faq.map((n) => ({ q: t(`faq.q${n}`), a: t(`faq.a${n}`) }))} />
       </section>
     </div>
   );

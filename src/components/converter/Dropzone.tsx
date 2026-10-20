@@ -2,6 +2,7 @@
 
 import { useId, useRef, useState, type DragEvent } from "react";
 import { useTranslations } from "next-intl";
+import { FilePlus2, Upload } from "lucide-react";
 
 interface Props {
   onFiles: (files: File[]) => void;
@@ -34,24 +35,48 @@ export default function Dropzone({ onFiles, compact = false, accept, multiple = 
         if (!e.currentTarget.contains(e.relatedTarget as Node)) setDragging(false);
       }}
       onDrop={onDrop}
-      className={`relative flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed text-center transition ${
-        compact ? "p-5" : "p-10 sm:p-14"
+      className={`group relative flex items-center rounded-2xl border-2 border-dashed transition duration-200 ease-out ${
+        compact
+          ? "flex-row gap-3 px-4 py-3 text-left"
+          : "flex-col justify-center gap-3 p-8 text-center sm:p-12"
       } ${
         dragging
-          ? "border-brand bg-brand-soft"
-          : "border-border bg-surface hover:border-brand"
+          ? "scale-[1.01] border-brand bg-brand-soft shadow-lift"
+          : "border-border-strong bg-surface shadow-card hover:border-brand hover:shadow-lift"
       }`}
     >
-      <span aria-hidden="true" className={compact ? "text-2xl" : "text-5xl"}>
-        📂
-      </span>
-      <label
-        htmlFor={inputId}
-        className="cursor-pointer text-lg font-semibold after:absolute after:inset-0 after:content-['']"
+      <span
+        aria-hidden="true"
+        className={`grid shrink-0 place-items-center rounded-full transition duration-200 ${
+          compact ? "h-9 w-9" : "h-16 w-16"
+        } ${
+          dragging
+            ? "bg-brand-solid text-white"
+            : "bg-brand-soft text-brand group-hover:bg-brand-solid group-hover:text-white"
+        }`}
       >
-        {dragging ? t("dropActive") : t("dropTitle")}
-      </label>
-      {!compact && <p className="text-sm text-muted">{t("dropHint")}</p>}
+        {compact ? (
+          <FilePlus2 className="h-5 w-5" />
+        ) : (
+          <Upload className={`h-7 w-7 transition-transform duration-200 ${dragging ? "-translate-y-0.5" : ""}`} />
+        )}
+      </span>
+      <span className="flex min-w-0 flex-col gap-1">
+        <label
+          htmlFor={inputId}
+          className={`cursor-pointer font-semibold after:absolute after:inset-0 after:rounded-2xl after:content-[''] ${
+            compact ? "text-base" : "font-display text-xl sm:text-2xl"
+          }`}
+        >
+          {dragging ? t("dropActive") : compact && multiple ? t("dropMore") : t("dropTitle")}
+        </label>
+        {!compact && <span className="text-muted">{t("dropHint")}</span>}
+        {!compact && !accept && (
+          <span className="mt-1 text-xs font-medium tracking-wide text-muted uppercase">
+            {t("dropFormats")}
+          </span>
+        )}
+      </span>
       <input
         ref={input}
         id={inputId}

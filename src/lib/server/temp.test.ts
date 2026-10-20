@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { sweepTempFiles, withTempDir } from "./temp";
+import { sweepTempFiles, tempUsage, withTempDir } from "./temp";
 
 describe("sweepTempFiles", () => {
   it("removes only entries older than the TTL", async () => {
@@ -38,5 +38,25 @@ describe("withTempDir", () => {
       }),
     ).rejects.toThrow("boom");
     expect(existsSync(dir)).toBe(false);
+  });
+});
+
+describe("tempUsage", () => {
+  it("counts files and bytes in nested folders and the oldest age", async () => {
+    const root = await mkdtemp(join(tmpdir(), "usage-"));
+    await mkdir(join(root, "job-1"));
+    await writeFile(join(root, "a.bin"), "abc");
+    await writeFile(join(root, "job-1", "b.bin"), "12345");
+    const now = Date.now();
+    const tenMinutesAgo = new Date(now - 10 * 60_000);
+    await utimes(join(root, "job-1", "b.bin"), tenMinutesAgo, tenMinutesAgo);
+
+    const usage = await tempUsage(root, now);
+    expect(usage).toMatchObject({ files: 2, bytes: 8 });
+    expect(usage.oldestMs).toBeGreaterThanOrEqual(10 * 60_000 - 1000);
+  });
+
+  it("reports nothing for a missing folder", async () => {
+    expect(await tempUsage(join(tmpdir(), "does-not-exist-456"))).toEqual({ files: 0, bytes: 0, oldestMs: null });
   });
 });

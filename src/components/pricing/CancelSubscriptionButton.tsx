@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { buttonDanger } from "@/components/ui/styles";
 
 export default function CancelSubscriptionButton() {
   const t = useTranslations("Account");
@@ -27,12 +28,12 @@ export default function CancelSubscriptionButton() {
         type="button"
         onClick={cancel}
         disabled={busy}
-        className="self-start rounded-xl border border-red-300 px-5 py-2.5 text-sm font-semibold text-red-700 hover:bg-red-50 disabled:opacity-60 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-950"
+        className={`self-start ${buttonDanger}`}
       >
         {t("cancel")}
       </button>
       {failed && (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+        <p role="alert" className="text-sm text-danger">
           {te("serviceUnavailable")}
         </p>
       )}

@@ -20,7 +20,11 @@
       "login": "Se connecter",
       "account": "Mon compte"
     },
-    "mainNav": "Navigation principale"
+    "mainNav": "Navigation principale",
+    "menu": {
+      "open": "Ouvrir le menu",
+      "close": "Fermer le menu"
+    }
   },
   "LocaleSwitcher": {
     "label": "Langue"
@@ -37,7 +41,12 @@
     "terms": "Conditions",
     "contact": "Contact",
     "pricing": "Tarifs",
-    "copyright": "© {year} FileFlip. Sans filigrane, sans inscription obligatoire."
+    "copyright": "© {year} FileFlip. Sans filigrane, sans inscription obligatoire.",
+    "headings": {
+      "tools": "Outils PDF",
+      "conversions": "Conversions populaires",
+      "company": "FileFlip"
+    }
   },
   "HomePage": {
     "title": "Convertissez vos fichiers sans qu'ils quittent votre ordinateur",
@@ -63,11 +72,50 @@
       }
     },
     "badge": "Vos fichiers ne quittent pas votre appareil",
-    "steps": {
-      "heading": "Aussi simple que ça",
-      "drop": "Déposez votre fichier",
-      "pick": "Choisissez le format",
-      "download": "Téléchargez le résultat"
+    "how": {
+      "heading": "Comment ça marche",
+      "subtitle": "Trois étapes, rien à installer et sans créer de compte.",
+      "drop": {
+        "title": "Déposez votre fichier",
+        "body": "Déposez des images ou des PDF dans la zone ci-dessus, ou touchez-la pour les choisir. Vous pouvez en ajouter plusieurs à la fois."
+      },
+      "pick": {
+        "title": "Choisissez le format",
+        "body": "Sélectionnez le format de sortie et, si vous le souhaitez, ajustez la qualité ou la taille."
+      },
+      "download": {
+        "title": "Téléchargez le résultat",
+        "body": "La conversion se fait sur votre appareil en quelques secondes. Téléchargez chaque fichier ou tous ensemble dans un ZIP."
+      }
+    },
+    "faq": {
+      "heading": "Questions fréquentes",
+      "items": {
+        "free": {
+          "q": "FileFlip est-il gratuit ?",
+          "a": "Oui. Vous pouvez convertir sans payer, sans compte et sans filigrane. L'offre Pro est facultative : elle supprime les publicités et augmente les limites."
+        },
+        "upload": {
+          "q": "Mes fichiers sont-ils envoyés sur un serveur ?",
+          "a": "Les images et les PDF sont traités directement dans votre navigateur et ne quittent jamais votre appareil. Seuls les documents bureautiques (Word, Excel, PowerPoint) sont convertis sur notre serveur, puis supprimés en moins d'une heure."
+        },
+        "formats": {
+          "q": "Quels formats puis-je convertir ?",
+          "a": "Les images JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC et SVG ; des outils pour fusionner, diviser, faire pivoter, organiser et compresser des PDF ; des images en PDF et des PDF en images ; et les documents Word, Excel et PowerPoint en PDF."
+        },
+        "mobile": {
+          "q": "Est-ce que ça marche sur mobile ?",
+          "a": "Oui. FileFlip fonctionne dans le navigateur de votre téléphone ou tablette, sans application à installer. Par exemple, vous pouvez convertir des photos HEIC d'iPhone en JPG."
+        },
+        "batch": {
+          "q": "Puis-je convertir plusieurs fichiers à la fois ?",
+          "a": "Oui. Ajoutez plusieurs fichiers d'un coup et téléchargez-les un par un ou tous ensemble dans un fichier ZIP."
+        },
+        "quality": {
+          "q": "Est-ce que je perds en qualité ?",
+          "a": "C'est vous qui décidez : vous pouvez régler la qualité des formats compressés (JPG, WEBP, AVIF). Les formats sans perte comme le PNG conservent l'image telle quelle."
+        }
+      }
     }
   },
   "Errors": {
@@ -97,7 +145,15 @@
     "progress": "Progression de {name}",
     "downloadAll": "Tout télécharger en ZIP ({count})",
     "processedOnServer": "Traité sur notre serveur (supprimé sous 1 heure)",
-    "pdfToWordNote": "Le PDF vers Word conserve le texte, les titres et les paragraphes. Les colonnes, tableaux et images peuvent changer ou être omis."
+    "pdfToWordNote": "Le PDF vers Word conserve le texte, les titres et les paragraphes. Les colonnes, tableaux et images peuvent changer ou être omis.",
+    "dropFormats": "JPG, PNG, WEBP, HEIC, AVIF, PDF, Word et plus",
+    "dropMore": "Ajoutez d'autres fichiers",
+    "statusWorking": "Conversion {done} sur {total}…",
+    "statusDone": "{count, plural, one {Terminé : # fichier converti} other {Terminé : # fichiers convertis}}",
+    "statusErrors": "{count, plural, one {# fichier n'a pas pu être converti} other {# fichiers n'ont pas pu être convertis}}",
+    "statusErrorsHint": "Consultez la raison sur chaque fichier. Vous pouvez le retirer et réessayer.",
+    "statusDoneHint": "Téléchargez chaque fichier avec son bouton.",
+    "larger": "{percent} de plus"
   },
   "ImageOptions": {
     "title": "Options",
@@ -296,7 +352,8 @@
       "q3": "Pourquoi le prix est-il dans ma devise ?",
       "a3": "Nous facturons en devise locale là où Mercado Pago opère, pour vous éviter les frais de change."
     },
-    "billingPeriod": "Période de facturation"
+    "billingPeriod": "Période de facturation",
+    "recommended": "Recommandé"
   },
   "Billing": {
     "monthly": "FileFlip Pro mensuel",
@@ -313,6 +370,7 @@
     "howTitle": "Comment convertir {from} en {to}",
     "step1": "Déposez votre fichier {from} ou choisissez-le sur votre appareil.",
     "step2": "Choisissez {to} et ajustez la qualité ou la taille si besoin.",
+    "step2Document": "Vérifiez que {to} est choisi comme format de sortie.",
     "step3": "Cliquez sur Convertir et téléchargez votre fichier {to}.",
     "privacyTitle": "Confidentiel et rapide",
     "privacyBrowser": "Vos fichiers {from} sont convertis directement dans votre navigateur : ils ne sont jamais envoyés, la conversion est donc confidentielle et très rapide.",
@@ -391,7 +449,9 @@
       "emailLabel": "E-mail",
       "missing": "L'adresse de contact n'est pas encore configurée.",
       "topics": "Pour signaler un problème, indiquez le navigateur et le type de fichier utilisés. Ne nous envoyez jamais de documents privés par e-mail.",
-      "privacy": "Pour demander la suppression de vos données ou de votre compte, écrivez-nous depuis l'adresse e-mail utilisée lors de l'inscription."
-    }
+      "privacy": "Pour demander la suppression de vos données ou de votre compte, écrivez-nous depuis l'adresse e-mail utilisée lors de l'inscription.",
+      "write": "Envoyer un e-mail"
+    },
+    "contents": "Sommaire"
   }
 }

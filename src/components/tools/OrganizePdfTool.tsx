@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { organizePdfFile } from "@/lib/pdf/client";
 import type { PageSpec } from "@/lib/pdf/ops";
+import ToolAlert from "./ToolAlert";
 import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
 import SinglePdfInput from "./SinglePdfInput";
 import ToolResult from "./ToolResult";
 import { usePdfThumbnails } from "./usePdfThumbnails";
 import { useSinglePdf } from "./useSinglePdf";
+import { trackTool } from "@/lib/stats-client";
 
 const pageButton =
   "grid h-7 w-7 place-items-center rounded-md text-sm text-muted hover:bg-brand-soft hover:text-foreground disabled:opacity-30";
@@ -51,7 +53,10 @@ export default function OrganizePdfTool() {
     setFailed(false);
     setWorking(true);
     try {
-      setResult(await organizePdfFile(pdf.file, pages));
+      const file = pdf.file;
+      setResult(
+        await trackTool("organize-pdf", { from: "pdf", to: "pdf", files: [file] }, () => organizePdfFile(file, pages), (b) => b.size),
+      );
     } catch (error) {
       console.error(error);
       setFailed(true);
@@ -77,7 +82,7 @@ export default function OrganizePdfTool() {
     <div className="flex flex-col gap-4">
       <SinglePdfInput pdf={pdf} />
       {pdf.pages !== null && (
-        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-4 sm:p-6">
+        <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface shadow-card p-4 sm:p-6">
           {loaded < (pdf.pages ?? 0) && !thumbsFailed && (
             <ProgressBar
               value={loaded / (pdf.pages || 1)}
@@ -181,9 +186,9 @@ export default function OrganizePdfTool() {
             })}
           </ol>
           {failed && (
-            <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+            <ToolAlert>
               {te("conversionFailed")}
-            </p>
+            </ToolAlert>
           )}
           <div className="flex flex-wrap gap-3">
             <PrimaryButton onClick={run} disabled={!pages.length || working}>
