@@ -1006,3 +1006,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Tests de `trackTool` (éxito y fallo, sin nombres de archivo).
 - Playwright (`next start`): unir 2 PDF envía `{"tool":"merge-pdf","from":"pdf","to":"pdf","size":1176,"outputSize":510,"success":true,"durationMs":99}` y la herramienta sigue funcionando.
 - Lint, typecheck, build y tests pasan.
+
+## 2026-10-20 03:10 UTC — Fase 2, tarea 2C.2c (beacon de visitas) — 2C.2 TERMINADA
+
+**Qué se hizo**
+- Modelo `PageView` (`src/models/PageView.ts`): `locale`, `country` (opcional), `kind` (`home`, `conversion`, `tool`, `longtail`, `pricing`, `legal`, `account`, `other`), `page` y `createdAt` con índice TTL de 1 año. Sin IP, usuario, cookie ni URL completa.
+- `classifyPath` (`src/lib/server/visits.ts`): convierte la ruta en un id de página independiente del idioma (`/es/jpg-a-webp` y `/en/jpg-to-webp` → `conversion` / `jpg-webp`; herramientas → id de la herramienta; cola larga → id de la página). Las rutas de `/admin` y los idiomas desconocidos no se cuentan.
+- `POST /api/visit`: recibe solo `{ path }`; el país sale de la cabecera geo del CDN (`countryFromHeaders`, nueva en `src/config/pricing.ts` y usada también por `detectRegion`; ignora `XX`/`T1`). La IP solo se usa como clave del limitador en memoria (60/min) y nunca se guarda.
+- `VisitBeacon` (componente cliente en el layout): manda el beacon en `requestIdleCallback` (para no competir con la carga) en cada cambio de ruta; respeta `navigator.doNotTrack` y no cuenta el panel.
+
+**Decisiones**
+- Sin Cloudflare (u otro CDN con cabecera de país) delante de Railway, las visitas no tienen país; el panel lo mostrará como "desconocido".
+
+**Verificación**
+- Tests nuevos (6): clasificación de rutas y API con MongoDB en memoria (guarda idioma, país y página; nunca la IP; no cuenta admin; 400 con cuerpo inválido).
+- Playwright (`next start`): la portada y la navegación a precios envían `{"path":"/es"}` y `{"path":"/es/pricing"}`.
+- Lint, typecheck, build, `check:static` y tests (274) pasan. JS compartido sin cambios (103 kB).

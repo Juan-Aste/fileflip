@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import VisitBeacon from "@/components/analytics/VisitBeacon";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import { SessionInfoProvider } from "@/components/session/SessionInfo";
@@ -66,6 +67,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             {children}
           </main>
           <Footer />
+          <VisitBeacon />
           </SessionInfoProvider>
         </NextIntlClientProvider>
       </body>

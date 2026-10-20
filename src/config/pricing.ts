@@ -66,12 +66,20 @@ export function regionFromLanguage(acceptLanguage: string | null | undefined): P
  * Picks the pricing region: manual choice (cookie) → hosting geolocation
  * header → browser language → international.
  */
-export function detectRegion(headers: Headers, cookieValue?: string | null): PricingRegion {
-  if (isPricingRegion(cookieValue)) return cookieValue;
+/** ISO country set by the CDN/proxy in front of the app (Cloudflare...), uppercased. */
+export function countryFromHeaders(headers: Headers): string | null {
   for (const name of GEO_HEADERS) {
     const value = headers.get(name);
-    if (value && /^[A-Za-z]{2}$/.test(value)) return regionForCountry(value);
+    // "XX" / "T1" are Cloudflare's unknown / Tor markers.
+    if (value && /^[A-Za-z]{2}$/.test(value) && !/^(xx|t1)$/i.test(value)) return value.toUpperCase();
   }
+  return null;
+}
+
+export function detectRegion(headers: Headers, cookieValue?: string | null): PricingRegion {
+  if (isPricingRegion(cookieValue)) return cookieValue;
+  const country = countryFromHeaders(headers);
+  if (country) return regionForCountry(country);
   return regionFromLanguage(headers.get("accept-language")) ?? "INTL";
 }
 
