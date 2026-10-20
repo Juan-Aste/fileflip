@@ -77,4 +77,31 @@ Script: `node scripts/audit/browser.mjs [--json salida.json] [--only jpg,png]` c
 
 ### Herramientas PDF (3A.3b)
 
-Pendiente.
+Script: `node scripts/audit/pdf-tools.mjs [--json salida.json]` (mismas condiciones: Chromium del entorno, `/api/convert/**` bloqueado). Abre la página de cada herramienta en `/es`, elige opciones como un usuario, descarga y valida con pdf-lib (páginas, rotación, tamaño, imágenes incrustadas) y con pdf.js en Node (el texto "page N of M" de cada página, para comprobar el **orden** real).
+
+| Herramienta | Caso | Resultado |
+|---|---|---|
+| Unir PDF | `document.pdf` (3) + `document-1page.pdf` (1) | ✅ 4 páginas en orden |
+| Unir PDF | mismo par con "Bajar" sobre el primero | ✅ orden invertido respetado |
+| Dividir PDF | cada página en un PDF | ✅ ZIP con 3 PDF de 1 página, en orden |
+| Dividir PDF | extraer "1, 3" en un solo PDF | ✅ 2 páginas (1 y 3) |
+| Dividir PDF | un PDF por rango "1-2, 3" | ✅ ZIP con [1, 2] y [3] |
+| Rotar PDF | todas 90° a la derecha | ✅ rotación 90 en las 3 |
+| Rotar PDF | solo la página 2, 180° | ✅ 0/180/0 |
+| Ordenar PDF | mover la 1, girar la 3, eliminar una | ✅ páginas, orden y giro correctos |
+| Imágenes a PDF | JPG + PNG + HEIC, opciones por defecto | ✅ 3 páginas A4 (horizontal, porque las imágenes lo son), 3 imágenes |
+| Imágenes a PDF | WEBP + GIF, "igual a la imagen", sin margen | ✅ 2 páginas de 160×120 pt |
+| Comprimir PDF | `document-images.pdf`, recomendado | ✅ 2 páginas, imagen conservada, 7,5 KB (antes más grande) |
+| Comprimir PDF | mismo archivo, fuerte | ✅ 2 páginas, 5,3 KB |
+
+Tiempos: 0,07–0,3 s por operación; imágenes a PDF con HEIC 0,9 s. Ninguna herramienta pidió el servidor. Sin errores de JavaScript.
+
+**Archivos corruptos**
+
+| Caso | Resultado |
+|---|---|
+| Unir con `garbage.pdf` o `truncated.pdf` | ✅ "No se pudo convertir este archivo." al ejecutar (no se detecta al cargar: pdf-lib abre el archivo y falla recién al copiar las páginas) |
+| Dividir / Ordenar con `garbage.pdf`, Rotar / Comprimir con `truncated.pdf` | ✅ al cargar: "No se pudo leer este PDF. ¿Está dañado o protegido con contraseña?" y la acción no se ofrece |
+| Imágenes a PDF con `image.png` + `truncated.png` | ❌ **se queda colgado en "Procesando… 75 %"** sin error ni salida → tarea 3A.3d. Afecta también a imagen → PDF en el conversor, que usa la misma función |
+
+Mejora posible (no es falla): en "Unir PDF" los PDF dañados podrían marcarse al cargarlos, como en las herramientas de un solo PDF; se anota para 3B (errores claros en el motor de trabajos).

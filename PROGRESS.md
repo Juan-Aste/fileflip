@@ -1251,3 +1251,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - Lint y tests (426) pasan; sin cambios en `src/`.
+
+## 2026-10-20 22:35 UTC — Fase 3, tarea 3A.3b (inventario de las herramientas PDF)
+
+**Qué se hizo**
+- `scripts/audit/pdf-tools.mjs`: 19 casos con Playwright sobre las 6 herramientas PDF (`/es/unir-pdf`, `dividir-pdf`, `rotar-pdf`, `ordenar-pdf`, `imagenes-a-pdf`, `comprimir-pdf`) eligiendo opciones como un usuario; valida con pdf-lib (páginas, rotación, tamaño, imágenes) y con pdf.js en Node (texto "page N of M" de cada página para comprobar el orden). Servidor bloqueado.
+- Resultados en `docs/audit-inventory.md`.
+
+**Resultados**
+- 12/12 casos válidos ✅ (orden, rangos, rotación por página, tamaños de página, compresión que reduce y conserva la imagen). 6/7 corruptos ✅ con error visible.
+- ❌ "Imágenes a PDF" con un PNG truncado se queda colgado en 75 % → tarea 3A.3d (afecta también a imagen → PDF del conversor).
+
+**Convenciones**
+- Next.js agrega un anunciador de rutas con `role="alert"` vacío fuera de `<main>`: los tests de navegador deben buscar alertas dentro de `main`.
+- En las herramientas, "Páginas" aparece en varias etiquetas: usar `getByRole("textbox", { name: "Páginas" })`.
+
+**Verificación**
+- Lint y tests pasan; sin cambios en `src/`.
