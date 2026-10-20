@@ -42,6 +42,49 @@
       "noPrevious": "Sin datos del período anterior",
       "notAvailable": "—",
       "error": "No se pudieron cargar las estadísticas. Revisa la conexión con MongoDB."
+    },
+    "charts": {
+      "title": "Gráficos",
+      "conversionsPerDay": "Conversiones por día",
+      "conversionsPerMonth": "Conversiones por mes",
+      "visitsPerDay": "Visitas por día",
+      "visitsPerMonth": "Visitas por mes",
+      "usersPerDay": "Usuarios nuevos por día",
+      "usersPerMonth": "Usuarios nuevos por mes",
+      "total": "{total} en total",
+      "topConversions": "Top 10 herramientas y pares de formatos",
+      "errors": "Conversiones fallidas por tipo de error",
+      "byLocale": "Visitas por idioma",
+      "byCountry": "Visitas por país",
+      "byKind": "Visitas por tipo de página",
+      "topLongtail": "Páginas de cola larga más visitadas",
+      "engines": "Navegador vs. servidor",
+      "browser": "Navegador",
+      "server": "Servidor",
+      "empty": "Sin datos en este período.",
+      "label": "Elemento",
+      "count": "Cantidad",
+      "unknownCountry": "Desconocido",
+      "unknownError": "Sin código",
+      "tools": {
+        "convert": "Conversor",
+        "merge-pdf": "Unir PDF",
+        "split-pdf": "Dividir PDF",
+        "rotate-pdf": "Rotar PDF",
+        "organize-pdf": "Ordenar PDF",
+        "images-to-pdf": "Imágenes a PDF",
+        "compress-pdf": "Comprimir PDF"
+      },
+      "kinds": {
+        "home": "Portada",
+        "conversion": "Conversión",
+        "tool": "Herramienta",
+        "longtail": "Cola larga",
+        "pricing": "Precios",
+        "legal": "Legales",
+        "account": "Cuenta",
+        "other": "Otras"
+      }
     }
   }
 }

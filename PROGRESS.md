@@ -1102,3 +1102,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, build y tests (305) pasan.
 
 **Siguiente**: 2C.9 (gráficos livianos solo en el panel).
+
+## 2026-10-20 04:30 UTC — Fase 2, tarea 2C.9 (gráficos del panel)
+
+**Qué se hizo**
+- Gráficos SVG renderizados en el servidor, sin librería de gráficos y sin JavaScript en el cliente (la página del panel pesa 1,5 kB; el JS compartido del sitio no cambia, 103 kB):
+  - `LineChart`: línea + área de una sola serie, grilla con valores enteros, etiquetas del eje x en HTML (6 en escritorio, primera/media/última en 360 px) y, por cada día/mes, una columna con tooltip nativo (`<title>`) y línea guía al pasar el mouse.
+  - `BarList`: barras horizontales que son también una tabla (etiqueta, cantidad y % del total listado), así los valores nunca dependen solo del color.
+- Sección "Gráficos" (`Charts`): conversiones, visitas y usuarios nuevos por día (o por mes en 12 meses / rangos largos); top 10 de herramientas y pares de formatos; navegador vs. servidor; fallidas por código de error; visitas por idioma, país (nombres con `Intl.DisplayNames`), tipo de página y top de cola larga.
+- `src/lib/admin/charts.ts` (geometría pura: `niceMax`, `tickCountFor`, `lineGeometry`, `labelIndexes`, `barShares`) y `formatBucket` para las etiquetas de fecha.
+
+**Decisiones**
+- No se agregó Recharts ni otra dependencia: los datos ya llegan agregados del servidor y unos pocos SVG alcanzan; así el panel no carga JS de gráficos y no hay riesgo de que entre al bundle de las páginas públicas.
+
+**Verificación**
+- Tests nuevos (7) de la geometría y de `formatBucket`.
+- `next start` con MongoDB en memoria y datos de ejemplo (600 conversiones, 1500 visitas, 40 usuarios): capturas a 360 px (claro) y 1280 px (oscuro) revisadas; se corrigieron las etiquetas del eje x que se superponían en 360 px y los valores decimales de la grilla.
+- Lint, typecheck, build y tests (312) pasan.

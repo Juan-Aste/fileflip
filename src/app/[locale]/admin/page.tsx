@@ -1,4 +1,5 @@
 import { setRequestLocale } from "next-intl/server";
+import Charts from "@/components/admin/Charts";
 import PeriodSelector from "@/components/admin/PeriodSelector";
 import SummaryCards from "@/components/admin/SummaryCards";
 import { formatDate } from "@/lib/format";
@@ -55,6 +56,7 @@ export default async function AdminPage({ params, searchParams }: Props) {
         </p>
       )}
       {stats && <SummaryCards stats={stats} />}
+      {stats && <Charts stats={stats} />}
     </div>
   );
 }
