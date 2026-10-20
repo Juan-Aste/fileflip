@@ -1201,3 +1201,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Capturas con Playwright de la portada a 1280 px (claro) y 360 px (oscuro) y de la imagen Open Graph en español revisadas; recortes guardados en `docs/screenshots/brand-*.webp`.
 - Lint, typecheck, build y tests (321) pasan.
+
+## 2026-10-20 22:35 UTC — Fase 3, tarea 3A.1 (fixtures)
+
+**Qué se hizo**
+- `scripts/fixtures/generate.mjs`: genera en `tests/fixtures/` 24 archivos válidos (PNG, JPG, WEBP, AVIF, GIF, TIFF, BMP, ICO, SVG, 3 PDF, TXT, CSV, ODT, DOCX, DOC, RTF, ODS, XLSX, XLS, ODP, PPTX) y 8 corruptos en `tests/fixtures/corrupt/` (truncados, firma válida + basura, contenido que no coincide con la extensión, vacío). Total 768 KB → ~300 KB sin el PPT.
+- Imágenes con sharp desde una imagen RGBA sintética de 160×120 (BMP e ICO con codificadores propios dentro del script); PDF con pdf-lib (fechas fijas); documentos de oficina convertidos con LibreOffice (`execFile`, sin shell, perfil temporal) desde fuentes ODF planas escritas en el script. `photo.heic` se mantiene (sharp no codifica HEIC).
+- `tests/fixtures/README.md` con el origen de cada archivo; `tests/fixtures.test.ts` (33 tests): detección por magic bytes de cada fixture, tamaño < 200 KB, dimensiones 160×120, páginas de los PDF y que los corruptos fallen.
+
+**Hallazgos (para la auditoría)**
+- pdf-lib carga sin error un PDF con encabezado válido y contenido basura (o truncado); el fallo aparece recién al leer las páginas. Las herramientas PDF deben validar leyendo las páginas y mostrar un error claro (se revisa en 3A.3).
+- LibreOffice exporta un PPT mínimo de ~450 KB: no se incluye un fixture `.ppt`; el PPT se probará con el PPTX/ODP o generándolo en el test si hace falta.
+- LibreOffice 24.2 está instalado en este entorno: sirve para probar de verdad la conversión de oficina (la app usa Gotenberg, que también usa LibreOffice).
+
+**Verificación**
+- Lint, typecheck y tests (354) pasan. Sin cambios en `src/` (no hace falta build).

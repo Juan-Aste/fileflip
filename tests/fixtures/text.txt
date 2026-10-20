@@ -1,0 +1,3 @@
+Fileflect sample text.
+Segunda línea con acentos: áéíóú ñ ç ü.
+中文示例
