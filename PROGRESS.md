@@ -1234,3 +1234,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck y tests (61 archivos, 426 tests) pasan.
 
 **Siguiente**: 3A.3 (inventario en el navegador con Playwright).
+
+## 2026-10-20 22:22 UTC — Fase 3, tarea 3A.3a (inventario del conversor en el navegador)
+
+**Qué se hizo**
+- 3A.3 se dividió en 3A.3a (conversor), 3A.3b (herramientas PDF) y 3A.3c (corrección de corruptos).
+- `scripts/audit/browser.mjs`: Playwright con el Chromium del entorno contra `next start`; sube cada fixture al conversor de `/es`, elige cada salida, descarga y valida con lectores independientes (sharp con decodificación de píxeles, encabezados BMP/ICO, pdf-lib, fflate). Bloquea `/api/convert/**` para medir solo el navegador y anota si se pidió el servidor. `--json` guarda los resultados; sale con código 1 si algo falla.
+- Resultados en `docs/audit-inventory.md` (sección navegador).
+
+**Resultados**
+- 88/88 conversiones ✅ en el navegador (10 formatos de entrada × JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, PDF, más PDF → JPG/PNG en ZIP), con las dimensiones correctas. Mediana 0,12 s por imagen.
+- Corruptos: vacío, PDF roto y texto con extensión `.jpg` se manejan bien. Dos fallas → tarea 3A.3c: un JPEG truncado se convierte sin aviso (relleno gris) y los PNG dañados se reintentan en el servidor (sube un archivo inservible; el servidor responde 422).
+
+**Convenciones**
+- El selector de salida aparece un momento después de la detección: el script espera el primer `input[name=target]` antes de decidir que una salida no se ofrece. La fila cambia al nombre de salida al terminar: se ubica por posición (un archivo por carga de página).
+
+**Verificación**
+- Lint y tests (426) pasan; sin cambios en `src/`.

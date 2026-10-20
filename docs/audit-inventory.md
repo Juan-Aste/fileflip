@@ -42,4 +42,39 @@ Tests: `tests/inventory/server.test.ts` (72 casos). Pasan los archivos reales po
 
 ## Navegador (tarea 3A.3)
 
+Script: `node scripts/audit/browser.mjs [--json salida.json] [--only jpg,png]` contra un `next start`. Con Playwright (Chromium del entorno) sube cada fixture al conversor de la portada (`/es`), elige cada salida ofrecida, descarga el resultado y lo valida con lectores independientes del código de la app: sharp (formato, dimensiones y que los píxeles decodifiquen), encabezados BMP/ICO (y cada PNG dentro del ICO), pdf-lib (páginas y tamaño) y fflate (ZIP de PDF → imágenes). **Las peticiones a `/api/convert/**` se bloquean**, así que todo lo que figura ✅ se hizo de verdad en el navegador.
+
+### Conversor de imágenes (3A.3a)
+
+| Entrada \ Salida | JPG | PNG | WEBP | AVIF | GIF | BMP | TIFF | ICO | PDF |
+|---|---|---|---|---|---|---|---|---|---|
+| JPG | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| PNG | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| WEBP | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| AVIF | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| GIF | ✅ | ✅ | ✅ | ✅ | — | ✅ | ✅ | ✅ | ✅ |
+| BMP | ✅ | ✅ | ✅ | ✅ | ✅ | — | ✅ | ✅ | ✅ |
+| TIFF | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | ✅ | ✅ |
+| ICO | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | ✅ |
+| HEIC | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| SVG | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+- 86 pares de imágenes + PDF → JPG y PDF → PNG = **88/88 ✅**, todos sin tocar el servidor. Las dimensiones de salida coinciden con la entrada (160×120; HEIC 120×80; el ICO de entrada se lee en su tamaño mayor, 64×64). "—": recodificar al mismo formato solo se ofrece en JPG/PNG/WEBP/AVIF (donde comprime), a propósito.
+- ICO de salida: ícono cuadrado con varios tamaños (16–128 px según la imagen; la imagen se encaja con relleno transparente), cada uno decodifica. Es lo esperado para un favicon.
+- Imagen → PDF: 1 página del tamaño de la imagen en puntos.
+- PDF → JPG/PNG (`document.pdf`, 3 páginas): ZIP con 3 imágenes de 1239×1754 (A4 a 150 ppp).
+- Tiempo (Chromium sin GPU, 4 núcleos): mediana 0,12 s por imagen; AVIF 0,4 s (0,85 s desde HEIC); PDF de 3 páginas → imágenes 0,9 s. Sin errores de JavaScript en la página.
+
+**Archivos corruptos**
+
+| Archivo | Resultado |
+|---|---|
+| `empty.png` | ✅ "Formato no compatible" al detectar (no se ofrece convertir) |
+| `truncated.pdf`, `garbage.pdf` → JPG | ✅ "No se pudo convertir este archivo." en el navegador |
+| `text-as.jpg` | ✅ se detecta como TXT por contenido y se ofrece TXT → PDF (servidor), correcto |
+| `truncated.png`, `garbage.png` | ⚠️ el navegador falla y **reintenta en el servidor** (sube el archivo roto); el servidor responde 422 y se muestra "No se pudo convertir" (en la auditoría, con el servidor bloqueado, "servicio no disponible"). Funciona, pero sube un archivo que nunca se va a poder convertir → tarea 3A.3c |
+| `truncated.jpg` | ❌ **se convierte sin aviso**: el decodificador JPEG del navegador tolera el corte y devuelve una imagen con la parte faltante en gris. El servidor (sharp) sí lo rechaza → tarea 3A.3c |
+
+### Herramientas PDF (3A.3b)
+
 Pendiente.
