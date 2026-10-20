@@ -1038,3 +1038,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, build y tests (282) pasan.
 
 **Siguiente**: 2C.4 (agregaciones de conversiones).
+
+## 2026-10-20 03:11 UTC — Fase 2, tarea 2C.4 (agregaciones de conversiones)
+
+**Qué se hizo**
+- `src/lib/admin/stats/buckets.ts`: utilidades comunes para las agregaciones del panel: `bucketExpr` (`$dateToString` por día o mes en UTC), `inRange` (`$match` por rango sobre el campo con índice) y `fillBuckets` (completa los días/meses sin datos con 0, usando `bucketKeys`).
+- `src/lib/admin/stats/conversions.ts`: `conversionStats(period)` hace un solo `aggregate` con `$match` por `createdAt` (usa el índice TTL) y `$facet`: total y fallidas, por día/mes, top 10 y navegador vs servidor; en paralelo, `countDocuments` del período anterior para la comparación (`change`).
+- Top 10: las conversiones del conversor se agrupan por par de formatos (`tool: "convert"`, `from`, `to`) y las herramientas PDF por herramienta. Los registros viejos sin `tool` cuentan como `convert` (`$ifNull`).
+
+**Decisiones**
+- "Conversiones" cuenta todos los intentos (exitosos y fallidos); se devuelven también `succeeded` y `failed` para mostrar ambos.
+
+**Verificación**
+- Tests nuevos (6) con MongoDB en memoria: totales y comparación, días UTC con huecos en 0, agrupación mensual de 12 meses, ranking de pares y herramientas, tope de 10 y período vacío.
+- Lint, typecheck, build y tests (288) pasan.
