@@ -168,5 +168,5 @@ Ruta `/[locale]/admin`, solo para usuarios logueados con email en `ADMIN_EMAILS`
 - [x] 2C.7 Agregaciones de usuarios (nuevos por día, total), suscripciones Pro activas, altas y bajas, MRR por moneda (tests)
 - [x] 2C.8 API del panel (protegida) y página con tarjetas de resumen y selector de período
 - [x] 2C.9 Gráficos livianos cargados solo en el panel (línea de conversiones por día, barras de top 10, etc.)
-- [ ] 2C.10 Exportar a CSV las tablas principales + tests
+- [x] 2C.10 Exportar a CSV las tablas principales + tests
 - [ ] 2C.11 Revisión final de la fase 2: lint, build, tests, mediciones finales y "FASE 2 TERMINADA" en PROGRESS.md

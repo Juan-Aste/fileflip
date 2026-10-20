@@ -3,7 +3,8 @@ import Charts from "@/components/admin/Charts";
 import PeriodSelector from "@/components/admin/PeriodSelector";
 import SummaryCards from "@/components/admin/SummaryCards";
 import { formatDate } from "@/lib/format";
-import { resolvePeriod } from "@/lib/admin/period";
+import { dayKey, resolvePeriod } from "@/lib/admin/period";
+import type { CsvTableId } from "@/lib/admin/csv";
 import { requireAdminPage } from "@/lib/admin/access";
 import { adminTranslator } from "@/lib/admin/messages";
 import { adminStats, type AdminStats } from "@/lib/admin/stats";
@@ -21,6 +22,9 @@ export default async function AdminPage({ params, searchParams }: Props) {
   const period = resolvePeriod(await searchParams);
   const day = (d: Date) => formatDate(d, "es", { dateStyle: "medium", timeZone: "UTC" });
   const lastDay = (d: Date) => day(new Date(d.getTime() - 1));
+  const periodQuery =
+    period.preset === "custom" ? `period=custom&from=${dayKey(period.start)}&to=${dayKey(new Date(period.end.getTime() - 1))}` : `period=${period.preset}`;
+  const csvHref = (table: CsvTableId) => `/api/admin/export?table=${table}&${periodQuery}`;
   setRequestLocale(locale);
   // Layouts and pages render in parallel: check here too.
   const session = await requireAdminPage();
@@ -56,7 +60,7 @@ export default async function AdminPage({ params, searchParams }: Props) {
         </p>
       )}
       {stats && <SummaryCards stats={stats} />}
-      {stats && <Charts stats={stats} />}
+      {stats && <Charts stats={stats} csvHref={csvHref} />}
     </div>
   );
 }

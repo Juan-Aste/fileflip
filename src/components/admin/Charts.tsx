@@ -2,6 +2,7 @@ import BarList from "@/components/admin/BarList";
 import LineChart from "@/components/admin/LineChart";
 import { formatNumber } from "@/lib/format";
 import { adminTranslator } from "@/lib/admin/messages";
+import type { CsvTableId } from "@/lib/admin/csv";
 import type { AdminStats } from "@/lib/admin/stats";
 import type { TopConversion } from "@/lib/admin/stats/conversions";
 
@@ -21,7 +22,7 @@ export function conversionLabel(row: Pick<TopConversion, "tool" | "from" | "to">
 }
 
 /** Every chart of the panel; server components only, so nothing here ships JS. */
-export default function Charts({ stats }: { stats: AdminStats }) {
+export default function Charts({ stats, csvHref }: { stats: AdminStats; csvHref: (table: CsvTableId) => string }) {
   const t = adminTranslator();
   const { conversions, quality, visits, accounts } = stats;
   const monthly = conversions.perBucket.length > 0 && conversions.perBucket[0].key.length === 7;
@@ -40,27 +41,32 @@ export default function Charts({ stats }: { stats: AdminStats }) {
             title={per("charts.conversionsPerDay", "charts.conversionsPerMonth")}
             series={conversions.perBucket.map((b) => ({ key: b.key, value: b.total }))}
             summary={total(conversions.total)}
+            csvHref={csvHref("conversions-per-day")}
           />
         </div>
         <LineChart
           title={per("charts.visitsPerDay", "charts.visitsPerMonth")}
           series={visits.perBucket.map((b) => ({ key: b.key, value: b.count }))}
           summary={total(visits.total)}
+          csvHref={csvHref("visits-per-day")}
         />
         <LineChart
           title={per("charts.usersPerDay", "charts.usersPerMonth")}
           series={accounts.newUsersPerBucket.map((b) => ({ key: b.key, value: b.count }))}
           summary={total(accounts.newUsers)}
+          csvHref={csvHref("users-per-day")}
         />
         <BarList
           {...bars}
           title={t("charts.topConversions")}
+          csvHref={csvHref("top-conversions")}
           rows={conversions.top.map((row) => ({ label: conversionLabel(row, toolName), count: row.count }))}
         />
         <div className="flex flex-col gap-3">
           <BarList
             {...bars}
             title={t("charts.engines")}
+            csvHref={csvHref("engines")}
             rows={
               conversions.total
                 ? [
@@ -73,17 +79,20 @@ export default function Charts({ stats }: { stats: AdminStats }) {
           <BarList
             {...bars}
             title={t("charts.errors")}
+            csvHref={csvHref("errors")}
             rows={quality.errors.map((e) => ({ label: e.code === "unknown" ? t("charts.unknownError") : e.code, count: e.count }))}
           />
         </div>
         <BarList
           {...bars}
           title={t("charts.byLocale")}
+          csvHref={csvHref("visits-by-locale")}
           rows={visits.byLocale.map((r) => ({ label: `${displayName(languageNames, r.key)} (${r.key})`, count: r.count }))}
         />
         <BarList
           {...bars}
           title={t("charts.byCountry")}
+          csvHref={csvHref("visits-by-country")}
           rows={visits.byCountry.map((r) => ({
             label: r.key === "unknown" ? t("charts.unknownCountry") : displayName(regionNames, r.key),
             count: r.count,
@@ -92,9 +101,11 @@ export default function Charts({ stats }: { stats: AdminStats }) {
         <BarList
           {...bars}
           title={t("charts.byKind")}
+          csvHref={csvHref("visits-by-page-kind")}
           rows={visits.byKind.map((r) => ({ label: t(`charts.kinds.${r.key}`), count: r.count }))}
         />
-        <BarList {...bars} title={t("charts.topLongtail")} rows={visits.topLongtail.map((r) => ({ label: r.key, count: r.count }))} />
+        <BarList {...bars} title={t("charts.topLongtail")}
+          csvHref={csvHref("top-longtail")} rows={visits.topLongtail.map((r) => ({ label: r.key, count: r.count }))} />
       </div>
     </section>
   );

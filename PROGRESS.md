@@ -1119,3 +1119,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Tests nuevos (7) de la geometría y de `formatBucket`.
 - `next start` con MongoDB en memoria y datos de ejemplo (600 conversiones, 1500 visitas, 40 usuarios): capturas a 360 px (claro) y 1280 px (oscuro) revisadas; se corrigieron las etiquetas del eje x que se superponían en 360 px y los valores decimales de la grilla.
 - Lint, typecheck, build y tests (312) pasan.
+
+## 2026-10-20 04:45 UTC — Fase 2, tarea 2C.10 (exportar a CSV)
+
+**Qué se hizo**
+- `GET /api/admin/export?table=…&period=…` (mismos parámetros de período que `/api/admin/stats`): descarga una tabla como CSV (`text/csv; charset=utf-8`, `Content-Disposition: attachment`, nombre `fileflip-<tabla>-<desde>_<hasta>.csv`, `no-store`). Protegida con `requireAdminApi` (404 para anónimos y no admins), 400 con tabla desconocida, 503 sin base de datos. Solo ejecuta la agregación que necesita la tabla.
+- Tablas (`src/lib/admin/csv.ts`): `conversions-per-day`, `top-conversions`, `engines`, `errors`, `visits-per-day`, `visits-by-locale`, `visits-by-country`, `visits-by-page-kind`, `top-longtail`, `users-per-day` y `mrr` (esta última solo por la API, no tiene gráfico).
+- Enlace "CSV" (ícono de descarga) en cada gráfico y tabla del panel, con el período elegido.
+
+**Decisiones y convenciones**
+- CSV RFC 4180 con fin de línea CRLF, encabezados en inglés (`snake_case`) y valores crudos (códigos de país, idioma y error, ids de herramienta) para poder procesarlos; las fechas son las claves UTC del panel (`YYYY-MM-DD` o `YYYY-MM`).
+- Protección contra inyección de fórmulas: el texto que empieza con `=`, `+`, `-`, `@`, tab o CR lleva un apóstrofo delante.
+
+**Verificación**
+- Tests nuevos (9): escapado y fórmulas, tablas, validación del id de tabla, y la API con MongoDB en memoria (anónimo y no admin → 404, tabla inválida → 400, admin → CSV con los datos del período).
+- Con `next start` y datos de ejemplo: descarga correcta y capturas del panel a 360 px y 1280 px revisadas.
+- Lint, typecheck, build y tests (321) pasan.

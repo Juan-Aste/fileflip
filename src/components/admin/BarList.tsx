@@ -1,3 +1,4 @@
+import { Download } from "lucide-react";
 import { card } from "@/components/ui/styles";
 import { barShares } from "@/lib/admin/charts";
 import { formatNumber, formatPercent } from "@/lib/format";
@@ -9,18 +10,28 @@ type Props = {
   /** Header of the label column, for screen readers. */
   labelHeader: string;
   countHeader: string;
+  /** Download link of the table as CSV. */
+  csvHref?: string;
 };
 
 /**
  * Ranked horizontal bars that are also a table (label, count and share of
  * the listed total), so the values never depend on the bar alone.
  */
-export default function BarList({ title, rows, empty, labelHeader, countHeader }: Props) {
+export default function BarList({ title, rows, empty, labelHeader, countHeader, csvHref }: Props) {
   const shares = barShares(rows);
   const total = rows.reduce((sum, r) => sum + r.count, 0);
   return (
     <figure className={`${card} flex flex-col gap-3 p-4`}>
-      <figcaption className="font-bold">{title}</figcaption>
+      <figcaption className="flex flex-wrap items-baseline justify-between gap-x-3">
+        <span className="font-bold">{title}</span>
+        {csvHref && (
+          <a href={csvHref} download className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:underline">
+            <Download aria-hidden="true" className="size-4" />
+            CSV<span className="sr-only">: {title}</span>
+          </a>
+        )}
+      </figcaption>
       {rows.length === 0 ? (
         <p className="text-sm text-muted">{empty}</p>
       ) : (

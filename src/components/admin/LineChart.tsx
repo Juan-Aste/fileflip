@@ -1,3 +1,4 @@
+import { Download } from "lucide-react";
 import { card } from "@/components/ui/styles";
 import { labelIndexes, lineGeometry } from "@/lib/admin/charts";
 import { formatBucket } from "@/lib/admin/format";
@@ -8,6 +9,8 @@ type Props = {
   series: Array<{ key: string; value: number }>;
   /** Accessible summary, e.g. "120 conversiones en total". */
   summary: string;
+  /** Download link of the data as CSV. */
+  csvHref?: string;
 };
 
 const W = 600;
@@ -18,7 +21,7 @@ const H = 160;
  * The plot stretches to the card width; labels are HTML so they keep their
  * size. Each bucket has a hover column with a native tooltip and a guide line.
  */
-export default function LineChart({ title, series, summary }: Props) {
+export default function LineChart({ title, series, summary, csvHref }: Props) {
   const g = lineGeometry(series, W, H);
   const num = (n: number) => formatNumber(n, "es");
   const labels = labelIndexes(g.points.length);
@@ -26,9 +29,15 @@ export default function LineChart({ title, series, summary }: Props) {
   const column = series.length > 1 ? W / (series.length - 1) : W;
   return (
     <figure className={`${card} flex flex-col gap-3 p-4`}>
-      <figcaption className="flex flex-wrap items-baseline justify-between gap-x-3">
+      <figcaption className="flex flex-wrap items-baseline gap-x-3">
         <span className="font-bold">{title}</span>
-        <span className="text-sm text-muted">{summary}</span>
+        <span className="ml-auto text-sm text-muted">{summary}</span>
+        {csvHref && (
+          <a href={csvHref} download className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:underline">
+            <Download aria-hidden="true" className="size-4" />
+            CSV<span className="sr-only">: {title}</span>
+          </a>
+        )}
       </figcaption>
       <div className="flex gap-2">
         <div aria-hidden="true" className="relative w-8 shrink-0 text-right text-xs tabular-nums text-muted">
