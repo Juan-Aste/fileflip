@@ -145,7 +145,14 @@
     "progress": "{name} progress",
     "downloadAll": "Download all as ZIP ({count})",
     "processedOnServer": "Processed on our server (deleted within 1 hour)",
-    "pdfToWordNote": "PDF to Word keeps the text, headings and paragraphs. Columns, tables and images may change or be left out."
+    "pdfToWordNote": "PDF to Word keeps the text, headings and paragraphs. Columns, tables and images may change or be left out.",
+    "dropFormats": "JPG, PNG, WEBP, HEIC, AVIF, PDF, Word and more",
+    "dropMore": "Add more files",
+    "statusWorking": "Converting {done} of {total}…",
+    "statusDone": "{count, plural, one {Done: # file converted} other {Done: # files converted}}",
+    "statusErrors": "{count, plural, one {# file couldn't be converted} other {# files couldn't be converted}}",
+    "statusErrorsHint": "Check the reason on each file. You can remove it and try again.",
+    "statusDoneHint": "Download each file with its button."
   },
   "ImageOptions": {
     "title": "Options",

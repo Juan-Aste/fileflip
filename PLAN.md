@@ -141,7 +141,7 @@ Meta: aspecto profesional, moderno, confiable y propio; interfaz limpia. Captura
 - [x] 2B.4 Header y footer nuevos con navegación móvil cómoda (menú accesible) e íconos lucide-react
 - [x] 2B.5 Portada: hero con la zona para arrastrar como protagonista, mensaje de privacidad y accesos rápidos a las conversiones más usadas
 - [x] 2B.6 Portada: "Cómo funciona" en 3 pasos y preguntas frecuentes (con FAQ schema)
-- [ ] 2B.7 Conversor: estados vacío, arrastrando, procesando con progreso, listo y error
+- [x] 2B.7 Conversor: estados vacío, arrastrando, procesando con progreso, listo y error
 - [ ] 2B.8 Tarjetas de archivo: miniatura, nombre, peso antes/después, ahorro en %, botón de descarga muy claro y separado de los anuncios
 - [ ] 2B.9 Herramientas PDF, páginas de conversión y de cola larga con el nuevo diseño
 - [ ] 2B.10 Precios, login, cuenta, legales, contacto y 404 con el nuevo diseño

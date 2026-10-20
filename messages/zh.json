@@ -145,7 +145,14 @@
     "progress": "{name} 的进度",
     "downloadAll": "全部下载为 ZIP（{count}）",
     "processedOnServer": "已在我们的服务器上处理（1 小时内删除）",
-    "pdfToWordNote": "PDF 转 Word 会保留文字、标题和段落。分栏、表格和图片可能会改变或不被包含。"
+    "pdfToWordNote": "PDF 转 Word 会保留文字、标题和段落。分栏、表格和图片可能会改变或不被包含。",
+    "dropFormats": "JPG、PNG、WEBP、HEIC、AVIF、PDF、Word 等",
+    "dropMore": "添加更多文件",
+    "statusWorking": "正在转换 {done}/{total}…",
+    "statusDone": "完成：已转换 {count} 个文件",
+    "statusErrors": "{count} 个文件转换失败",
+    "statusErrorsHint": "请查看每个文件的失败原因。可以移除后重试。",
+    "statusDoneHint": "点击每个文件的按钮即可下载。"
   },
   "ImageOptions": {
     "title": "选项",

@@ -15,12 +15,14 @@ import {
 } from "@/lib/image/options";
 import Dropzone from "./Dropzone";
 import ProcessingBadge from "./ProcessingBadge";
+import { queueSummary } from "./queue-summary";
 import { useFileQueue } from "./useFileQueue";
 import { buttonPrimary, choicePill } from "@/components/ui/styles";
 
 // Only shown once files are added: keep them out of the initial bundle.
 const FileRow = dynamic(() => import("./FileRow"));
 const ImageOptionsPanel = dynamic(() => import("./ImageOptionsPanel"));
+const QueueStatus = dynamic(() => import("./QueueStatus"));
 
 /** Loads the image codecs for a conversion in the background. */
 function preload(froms: readonly (FormatId | undefined)[], to: FormatId | undefined) {
@@ -55,6 +57,7 @@ export default function Converter({ from, to, options }: Props = {}) {
   const imageOutput = selected && formats[selected.to].category === "image";
   const done = items.flatMap((i) => (i.job?.status === "done" ? [i.job] : []));
   const [zipping, setZipping] = useState(false);
+  const summary = queueSummary(items);
 
   // Picking an output (or adding files) fetches its codecs right away.
   const preloadTo = selected?.engine === "browser" ? selected.to : undefined;
@@ -114,6 +117,8 @@ export default function Converter({ from, to, options }: Props = {}) {
               {t("clear")}
             </button>
           </div>
+
+          <QueueStatus summary={summary} />
 
           <ul className="divide-y divide-border">
             {items.map((item) => (

@@ -843,3 +843,16 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Capturas de `/es` a 360/1280 en claro y oscuro revisadas. El HTML de `/es` y de `/es/heic-a-jpg-desde-iphone` trae un único `FAQPage`. Lint, build y tests (247) pasan. First Load JS de la portada sin cambios (134 kB).
 - Nota: en escritorio queda un hueco entre los accesos rápidos y "Cómo funciona" por la altura del anuncio lateral reservado (600 px); se revisa en 2B.11.
+
+## 2026-10-20 01:10 UTC — Fase 2, tarea 2B.7 (estados del conversor)
+
+**Qué se hizo**
+- `Dropzone` (conversor y herramientas PDF): vacío con ícono `Upload` en círculo de marca, título en `font-display`, ayuda y, en el conversor general, la lista de formatos (`Converter.dropFormats`); arrastrando: fondo `brand-soft`, borde de marca, sombra y escala leve (se apaga con `prefers-reduced-motion`); compacto (con archivos): fila con ícono `FilePlus2` y "Agrega más archivos" (`dropMore`; en las herramientas de un solo PDF sigue el título normal). Sin emojis.
+- `QueueStatus` (carga diferida, solo con archivos): aviso sobre la lista con el estado de la tanda: procesando ("Convirtiendo 1 de 3…", % y barra global), listo (verde, "Listo: N archivos convertidos") o con errores (rojo, cuántos fallaron y qué hacer). Solo el titular es `role="status"` para que el lector de pantalla no lea cada porcentaje.
+- `queueSummary` (`src/components/converter/queue-summary.ts`): cálculo puro del estado y progreso global (los terminados cuentan como 100 %) + tests.
+- `FileRow`: íconos de estado (spinner con `motion-safe:animate-spin` y %, check en verde, alerta en rojo), fila con fondo `danger-soft` cuando falla o el formato no es compatible, ícono de nube de lucide para "procesado en el servidor" y `X` de lucide para quitar. Las tarjetas completas (miniatura, etc.) quedan para 2B.8.
+- Mensajes nuevos en los 5 idiomas: `Converter.dropFormats`, `dropMore`, `statusWorking`, `statusDone`, `statusDoneHint`, `statusErrors`, `statusErrorsHint`.
+
+**Verificación**
+- Playwright en `/es` (360/1280, claro/oscuro): vacío, arrastrando (evento `dragover` simulado), procesando (2 PNG 2400×1800 + 1 PNG roto → WEBP) y resultado (2 listos con descarga, 1 con error y aviso rojo); sin errores de página. Capturas revisadas.
+- Lint, build y tests (252) pasan. First Load JS: portada 135 kB (+1 kB por los íconos de la zona para arrastrar).

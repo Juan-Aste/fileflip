@@ -145,7 +145,14 @@
     "progress": "Progreso de {name}",
     "downloadAll": "Descargar todo en ZIP ({count})",
     "processedOnServer": "Procesado en nuestro servidor (se borra en 1 hora)",
-    "pdfToWordNote": "PDF a Word conserva el texto, los títulos y los párrafos. Las columnas, tablas e imágenes pueden cambiar o no incluirse."
+    "pdfToWordNote": "PDF a Word conserva el texto, los títulos y los párrafos. Las columnas, tablas e imágenes pueden cambiar o no incluirse.",
+    "dropFormats": "JPG, PNG, WEBP, HEIC, AVIF, PDF, Word y más",
+    "dropMore": "Agrega más archivos",
+    "statusWorking": "Convirtiendo {done} de {total}…",
+    "statusDone": "{count, plural, one {Listo: # archivo convertido} other {Listo: # archivos convertidos}}",
+    "statusErrors": "{count, plural, one {# archivo no se pudo convertir} other {# archivos no se pudieron convertir}}",
+    "statusErrorsHint": "Revisa el motivo en cada archivo. Puedes quitarlo y volver a intentar.",
+    "statusDoneHint": "Descarga cada archivo con su botón."
   },
   "ImageOptions": {
     "title": "Opciones",
