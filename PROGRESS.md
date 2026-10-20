@@ -923,3 +923,15 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Capturas de `/es/privacy`, `/zh/terms`, `/es/contact` y `/es/no-existe` (360/1280, claro/oscuro) revisadas; el 404 ahora respeta el modo oscuro. Sin desborde horizontal a 360 px en precios, login, legales, contacto y 404.
 - Lint, build y tests (255) pasan.
+
+## 2026-10-20 01:55 UTC — Fase 2, tarea 2B.11a (microinteracciones)
+
+**Qué se hizo**
+- 2B.11 se dividió en 2B.11a (microinteracciones) y 2B.11b (revisión responsive y detalles pendientes).
+- Animaciones solo CSS como tokens de Tailwind en `globals.css`: `animate-rise` (240 ms, aparece subiendo 6 px) y `animate-pop` (320 ms, rebote leve). Se usan en: aviso de estado de la tanda, botón "Descargar" de cada archivo, check de éxito, tarjeta de resultado de las herramientas PDF (con su check), errores de herramientas (`ToolAlert`), panel del menú móvil y la respuesta de una pregunta frecuente al abrirla.
+- Íconos de descarga que bajan 2 px al pasar el mouse; desplazamiento suave para anclas (índice legal) solo con `prefers-reduced-motion: no-preference`.
+- `docs/design.md` (sección "Movimiento") documenta cuándo usar cada animación. Convención: no animar el contenido de la primera pintura (título, hero) para no retrasar el LCP.
+
+**Verificación**
+- Playwright en `/es/png-a-webp` convirtiendo un PNG: con movimiento normal el botón de descarga anima `rise 0.24s` y `scroll-behavior: smooth`; con `reducedMotion: reduce` la duración es 0,01 ms y el desplazamiento `auto`; el estado final es el mismo (captura revisada). Sin errores de página.
+- Lint, build y tests (255) pasan.

@@ -22,7 +22,7 @@ export default function FaqList({ items, locale }: { items: readonly FaqItem[]; 
                 className="h-5 w-5 shrink-0 text-muted transition-transform duration-200 group-open:rotate-180"
               />
             </summary>
-            <p className="px-5 pb-4 text-muted">{a}</p>
+            <p className="px-5 pb-4 text-muted group-open:animate-rise">{a}</p>
           </details>
         ))}
       </div>

@@ -48,7 +48,7 @@ export default function MobileMenu({ children }: { children: React.ReactNode }) 
         onClick={(e) => {
           if ((e.target as HTMLElement).closest("a")) setOpen(false);
         }}
-        className="absolute inset-x-0 top-full border-b border-border bg-surface shadow-lift"
+        className="absolute inset-x-0 top-full animate-rise border-b border-border bg-surface shadow-lift"
       >
         <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3">{children}</div>
       </div>

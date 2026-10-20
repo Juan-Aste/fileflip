@@ -18,7 +18,7 @@ export default function QueueStatus({ summary }: { summary: QueueSummary }) {
         : "border-danger/30 bg-danger-soft text-danger";
 
   return (
-    <div className={`mb-4 rounded-xl border px-4 py-3 ${tone}`}>
+    <div className={`mb-4 animate-rise rounded-xl border px-4 py-3 ${tone}`}>
       <div className="flex items-start gap-3">
         {state === "working" ? (
           <LoaderCircle aria-hidden="true" className="mt-0.5 h-5 w-5 shrink-0 motion-safe:animate-spin" />

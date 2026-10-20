@@ -102,6 +102,36 @@
     0 12px 24px -6px rgb(var(--shadow-color) / 0.14);
 }
 
+/* Microinteractions (see docs/design.md, "Movimiento"); the global
+   reduced-motion rule below turns them into instant changes. */
+@theme {
+  --animate-rise: rise 240ms ease-out both;
+  --animate-pop: pop 320ms ease-out both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
+  @keyframes pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    60% {
+      transform: scale(1.08);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

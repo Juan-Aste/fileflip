@@ -104,7 +104,7 @@ export default function FileRow({ item, onRemove }: Props) {
     const ratio = 1 - job.blob.size / file.size;
     status = (
       <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1">
-        <CheckCircle2 aria-hidden="true" className="h-4 w-4 shrink-0 text-success" />
+        <CheckCircle2 aria-hidden="true" className="h-4 w-4 shrink-0 animate-pop text-success" />
         <span className="tabular-nums">
           {t("sizeChange", {
             before: formatBytes(file.size, locale),
@@ -175,9 +175,9 @@ export default function FileRow({ item, onRemove }: Props) {
         <a
           href={job.url}
           download={job.name}
-          className={`${buttonPrimarySmall} w-full py-2.5 sm:w-auto sm:px-4`}
+          className={`group animate-rise ${buttonPrimarySmall} w-full py-2.5 sm:w-auto sm:px-4`}
         >
-          <Download aria-hidden="true" className="h-4 w-4" />
+          <Download aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
           {tc("download")}
           <span className="sr-only"> {job.name}</span>
         </a>

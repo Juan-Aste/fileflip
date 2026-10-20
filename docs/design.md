@@ -85,6 +85,17 @@ Transiciones cortas (150–200 ms, `ease-out`) en hover, foco y cambios de estad
 movimiento se desactiva con `prefers-reduced-motion: reduce` (regla global en
 `globals.css`).
 
+Animaciones disponibles (tokens en `globals.css`, solo CSS, sin JS):
+- `animate-rise` (240 ms, aparece subiendo 6 px): elementos que aparecen por una acción del
+  usuario — aviso de estado de la tanda, botón de descarga, tarjeta de resultado, errores de
+  herramientas, menú móvil y respuesta de una pregunta frecuente al abrirla.
+- `animate-pop` (320 ms, escala con rebote leve): el check de éxito.
+- Íconos de descarga que bajan 2 px al pasar el mouse; flechas de `PillLink` que avanzan.
+- Desplazamiento suave para los anclas (índice de las páginas legales) solo sin
+  `prefers-reduced-motion`.
+
+No se animan el título ni el contenido de la primera pintura: retrasaría el LCP.
+
 ## Foco
 
 Anillo global de 2 px con el token `ring` y separación de 2 px en `:focus-visible`.
