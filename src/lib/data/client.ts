@@ -17,3 +17,8 @@ export const convertJsonToCsv = (input: Input, options: JsonToCsvOptions, job: J
 
 export const convertCsvToJson = (input: Input, options: CsvToJsonOptions, job: JobOptions = {}) =>
   call("csvToJson", { input, options }, job);
+
+/** Conversions without options. */
+export type TextConversion = "jsonToYaml" | "yamlToJson" | "jsonToToml" | "tomlToJson";
+
+export const convertText = (method: TextConversion, input: Input, job: JobOptions = {}) => call(method, { input }, job);

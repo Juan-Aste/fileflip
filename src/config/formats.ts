@@ -26,7 +26,9 @@ export type FormatId =
   | "rtf"
   | "txt"
   | "json"
-  | "tsv";
+  | "tsv"
+  | "yaml"
+  | "toml";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -67,6 +69,8 @@ export const formats: Record<FormatId, FormatInfo> = {
   txt: { id: "txt", label: "TXT", mime: "text/plain", extensions: ["txt"], category: "document" },
   json: { id: "json", label: "JSON", mime: "application/json", extensions: ["json"], category: "data" },
   tsv: { id: "tsv", label: "TSV", mime: "text/tab-separated-values", extensions: ["tsv", "tab"], category: "data" },
+  yaml: { id: "yaml", label: "YAML", mime: "application/yaml", extensions: ["yaml", "yml"], category: "data" },
+  toml: { id: "toml", label: "TOML", mime: "application/toml", extensions: ["toml"], category: "data" },
 };
 
 /** Raster formats we can encode as output in the browser. */

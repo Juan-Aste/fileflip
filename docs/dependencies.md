@@ -28,6 +28,8 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | fflate | 0.8.3 | MIT | ZIP / DOCX | N + S |
 | docx | 9.12.0 | MIT | PDF → Word | S |
 | papaparse | 5.5.3 | MIT | leer y escribir CSV/TSV (JSON ↔ CSV) | N (worker de datos) |
+| yaml | 2.9.1 | ISC | leer y escribir YAML (límite de alias contra "billion laughs") | N (worker de datos) |
+| smol-toml | 1.9.0 | BSD-3-Clause | leer y escribir TOML | N (worker de datos) |
 | sharp | 0.35.5 | Apache-2.0 | respaldo de imágenes | S |
 | └ @img/sharp-libvips-* | 1.3.4 | LGPL-3.0-or-later | libvips precompilada (biblioteca dinámica, sin modificar) | S |
 
@@ -60,8 +62,8 @@ Ver `docs/audit.md`. Resumen de licencias (`npm view`, 2026-10-20):
 
 | Paquete | Licencia | Estado |
 |---|---|---|
-| fast-xml-parser, js-yaml, hash-wasm, qrcode, marked, turndown, three, dxf-parser, exifr, wawoff2, libarchive.js, onnxruntime-web, exceljs | MIT | aceptable |
-| smol-toml, @zip.js/zip.js | BSD-3-Clause | aceptable |
+| fast-xml-parser, hash-wasm, qrcode, marked, turndown, three, dxf-parser, exifr, wawoff2, libarchive.js, onnxruntime-web, exceljs | MIT | aceptable |
+| @zip.js/zip.js | BSD-3-Clause | aceptable |
 | epubjs | BSD-2-Clause | aceptable |
 | jsqr, tesseract.js, @mediapipe/tasks-vision, SheetJS CE (tarball oficial 0.20.x) | Apache-2.0 | aceptable |
 | @neslinesli93/qpdf-wasm, libraw-wasm | ISC (motores qpdf Apache-2.0, LibRaw LGPL-2.1/CDDL) | aceptable |

@@ -193,6 +193,7 @@
     "pdfHasNoText": "This PDF is a scanned image: it has no text to put into Word.",
     "fileDamaged": "This file is damaged or incomplete. Try another copy.",
     "invalidData": "We couldn't read the content. Check that the format is valid (quotes, commas and brackets).",
+    "tomlUnsupported": "TOML can't represent this content: it needs an object at the root and doesn't allow null inside lists.",
     "signInRequired": "Please sign in to continue.",
     "paymentsUnavailable": "Payments aren't available in your country yet. Check back soon.",
     "jobCancelled": "The task was cancelled.",
@@ -310,6 +311,62 @@
         "q3": "Can I get nested objects?",
         "a3": "Yes. Columns like address.city or tags.0 become objects and lists. If a column clashes with another one, it is kept as is so no data is lost."
       }
+    },
+    "json-to-yaml": {
+      "title": "JSON to YAML",
+      "description": "Convert JSON into readable YAML for config files, Kubernetes or CI. In your browser.",
+      "action": "Convert to YAML",
+      "about": "JSON to YAML rewrites your JSON data as block-indented YAML, easier to read and edit by hand in config files, Kubernetes manifests, docker-compose files or CI pipelines. Strings an older YAML reader would take as something else (yes, no, on, 007, dates) are quoted so they keep their type.",
+      "faq": {
+        "q1": "Why are some values quoted?",
+        "a1": "Because without quotes some YAML 1.1 readers would read them differently: yes and on as true, 007 as a number or 2020-01-01 as a date. Quotes make sure they stay text.",
+        "q2": "Are order and types kept?",
+        "a2": "Yes. Keys keep their order, and numbers, booleans and null are written with their YAML type. Long lines are not wrapped.",
+        "q3": "Can I convert several files at once?",
+        "a3": "Yes. Pick several .json files and download each YAML separately or all of them in a ZIP."
+      }
+    },
+    "yaml-to-json": {
+      "title": "YAML to JSON",
+      "description": "Convert YAML (including multiple documents and anchors) into valid JSON. Your files are never uploaded.",
+      "action": "Convert to JSON",
+      "about": "YAML to JSON reads YAML 1.2 files, including ones with several documents separated by ---, anchors and aliases, and merge keys (<<) like those in docker-compose or GitLab CI, and produces indented JSON. Several documents become a list. Custom tags are never executed: they are read as text.",
+      "faq": {
+        "q1": "Is it safe to open an unknown YAML file?",
+        "a1": "Yes. No code runs, and files with too many aliases, which can multiply their size until the device freezes (the billion laughs attack), are rejected with a warning.",
+        "q2": "Why doesn't yes become true?",
+        "a2": "Because in YAML 1.2, the current standard, only true and false are booleans. Likewise, dates stay as text in the JSON.",
+        "q3": "What if there are repeated keys or a syntax error?",
+        "a3": "You will see a warning instead of an incomplete JSON: a repeated key in the same object is an error in YAML."
+      }
+    },
+    "json-to-toml": {
+      "title": "JSON to TOML",
+      "description": "Convert JSON into TOML for config files like pyproject.toml or Cargo.toml. In your browser.",
+      "action": "Convert to TOML",
+      "about": "JSON to TOML turns a JSON object into a TOML file with tables ([section]) and arrays of tables ([[items]]), the config format of tools like Cargo, Poetry, Hugo or pyproject.toml. Keys with spaces or symbols are quoted.",
+      "faq": {
+        "q1": "Which JSON can be converted?",
+        "a1": "An object at the root. TOML doesn't allow a list or a bare value as a document: in that case you will see a warning explaining it.",
+        "q2": "What happens to null values?",
+        "a2": "TOML has no null: keys set to null are left out. A null inside a list can't be represented and you will see a warning.",
+        "q3": "Is any information lost?",
+        "a3": "Apart from nulls, no: strings, numbers, booleans, lists and nested objects are kept, and the TOML reads back the same."
+      }
+    },
+    "toml-to-json": {
+      "title": "TOML to JSON",
+      "description": "Convert TOML files (Cargo.toml, pyproject.toml, config.toml) into JSON. Your files are never uploaded.",
+      "action": "Convert to JSON",
+      "about": "TOML to JSON reads TOML 1.0 files with tables, inline tables, arrays of tables and dates, and produces indented JSON. Use it to process a project's configuration with tools that only understand JSON, or to review its structure.",
+      "faq": {
+        "q1": "How are dates converted?",
+        "a1": "As ISO 8601 text: a date-time becomes 1979-05-27T07:32:00.000Z and a plain date 1979-05-27.",
+        "q2": "What about very large integers?",
+        "a2": "JSON in the browser can't hold integers above 2^53 without losing precision, so such a file is rejected with a warning instead of changing the value.",
+        "q3": "Are my files uploaded to a server?",
+        "a3": "No. The conversion runs in your browser and the file never leaves your device."
+      }
     }
   },
   "ToolUi": {
@@ -379,7 +436,8 @@
     "typed": "Convert numbers, true/false and empty cells",
     "nested": "Rebuild objects from dotted columns",
     "pasteJson": "Or paste your JSON",
-    "pasteCsv": "Or paste your CSV"
+    "pasteCsv": "Or paste your CSV",
+    "paste": "Or paste your {format}"
   },
   "Email": {
     "subject": "Your Fileflect sign-in link",

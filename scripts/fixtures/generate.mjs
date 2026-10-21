@@ -139,6 +139,17 @@ write("data.json", Buffer.from(JSON.stringify(records, null, 2) + "\n", "utf8"))
 // Excel on Windows in Spanish: semicolons, decimal commas and Windows-1252 accents.
 write("table-excel.csv", Buffer.from("nombre;cantidad;precio\r\nCañón;2;3,25\r\nAçaí;1;9,50\r\n", "latin1"));
 write("table.tsv", Buffer.from("name\tqty\nalpha\t1\nbeta\t2\n", "utf8"));
+write(
+  "config.yaml",
+  Buffer.from(
+    "# Sample service config\ndefaults: &defaults\n  retries: 3\n  debug: no\nservice:\n  <<: *defaults\n  name: \"web\"\n  ports: [80, 443]\n  zip: \"007\"\n---\nname: second document\n",
+    "utf8",
+  ),
+);
+write(
+  "config.toml",
+  Buffer.from('title = "Fileflect demo"\n\n[owner]\nname = "Ana"\nsince = 2024-05-27\n\n[[servers]]\nip = "10.0.0.1"\nports = [80, 443]\n\n[[servers]]\nip = "10.0.0.2"\nports = [8080]\n', "utf8"),
+);
 
 
 // --- Office documents through LibreOffice
@@ -227,3 +238,11 @@ writeCorrupt("random-as.docx", Buffer.from(Array.from({ length: 1024 }, (_, i) =
 writeCorrupt("empty.png", Buffer.alloc(0));
 writeCorrupt("broken.json", Buffer.from('[{"id": 1, "name": "Ana"}, {"id": 2, "name": '));
 writeCorrupt("bad-quotes.csv", Buffer.from('name,note\nAna,"unclosed quote\nBeto,ok\n'));
+// "Billion laughs": 9 levels of 9 aliases each.
+writeCorrupt(
+  "alias-bomb.yaml",
+  Buffer.from(
+    ["a: &a [lol, lol, lol, lol, lol, lol, lol, lol, lol]", ..."bcdefghi".split("").map((c, i) => `${c}: &${c} [${Array(9).fill(`*${"abcdefgh"[i]}`).join(", ")}]`)].join("\n") + "\n",
+  ),
+);
+writeCorrupt("broken.toml", Buffer.from('title = "unclosed\n[owner\n'));

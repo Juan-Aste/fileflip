@@ -4,7 +4,7 @@
 // in unit tests.
 
 import Papa from "papaparse";
-import { ConversionError } from "@/lib/convert-error";
+import { invalidData as invalid, isPlainObject, parseJson, toJsonText, type Json } from "./json";
 import { stripBom } from "./text";
 
 export type Delimiter = "," | ";" | "\t";
@@ -13,14 +13,6 @@ export type Delimiter = "," | ";" | "\t";
 export const MAX_COLUMNS = 5_000;
 const MAX_DEPTH = 32;
 const MAX_ARRAY_INDEX = 10_000;
-
-type Json = null | boolean | number | string | Json[] | { [key: string]: Json };
-
-const invalid = () => new ConversionError("invalidData");
-
-function isPlainObject(value: unknown): value is Record<string, Json> {
-  return typeof value === "object" && value !== null && !Array.isArray(value);
-}
 
 /** One record as flat `column → cell` pairs, in key order. */
 export function flatten(value: Json, prefix = "", out = new Map<string, string>(), depth = 0): Map<string, string> {
@@ -57,12 +49,7 @@ export interface JsonToCsvOptions {
 
 /** Converts JSON text (an array of records, one record, or an array of arrays) to CSV text. */
 export function jsonToCsv(text: string, options: JsonToCsvOptions): string {
-  let data: Json;
-  try {
-    data = JSON.parse(stripBom(text));
-  } catch {
-    throw invalid();
-  }
+  let data = parseJson(text);
   // A wrapper like {"items": [...]} with a single array inside: use the array.
   if (isPlainObject(data)) {
     const values = Object.values(data);
@@ -147,7 +134,7 @@ export function csvToJson(text: string, options: CsvToJsonOptions): string {
     // A shorter list in this row ("tags.1" empty): no trailing nulls.
     return unflatten(pairs.filter(([column], i) => (row[i] ?? "") !== "" || !isListItem(column)));
   });
-  return JSON.stringify(records, null, 2) + "\n";
+  return toJsonText(records);
 }
 
 /** Empty and repeated header cells get a name of their own: "", "a", "a" → "column1", "a", "a_2". */

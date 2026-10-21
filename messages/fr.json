@@ -193,6 +193,7 @@
     "pdfHasNoText": "Ce PDF est une image numérisée : il ne contient pas de texte à mettre dans Word.",
     "fileDamaged": "Ce fichier est endommagé ou incomplet. Essayez avec une autre copie.",
     "invalidData": "Impossible de lire le contenu. Vérifiez que le format est valide (guillemets, virgules et accolades).",
+    "tomlUnsupported": "TOML ne peut pas représenter ce contenu : il faut un objet à la racine et null n'est pas permis dans les listes.",
     "signInRequired": "Connectez-vous pour continuer.",
     "paymentsUnavailable": "Les paiements ne sont pas encore disponibles dans votre pays. Revenez bientôt.",
     "jobCancelled": "Le traitement a été annulé.",
@@ -310,6 +311,62 @@
         "q3": "Puis-je obtenir des objets imbriqués ?",
         "a3": "Oui. Les colonnes comme adresse.ville ou tags.0 deviennent des objets et des listes. Si une colonne entre en conflit avec une autre, elle est gardée telle quelle pour ne perdre aucune donnée."
       }
+    },
+    "json-to-yaml": {
+      "title": "JSON en YAML",
+      "description": "Convertissez du JSON en YAML lisible pour les fichiers de configuration, Kubernetes ou la CI. Dans votre navigateur.",
+      "action": "Convertir en YAML",
+      "about": "JSON en YAML réécrit vos données JSON en YAML indenté par blocs, plus facile à lire et à modifier à la main dans les fichiers de configuration, les manifestes Kubernetes, docker-compose ou les pipelines de CI. Les textes qu'un ancien lecteur YAML prendrait pour autre chose (yes, no, on, 007, dates) sont mis entre guillemets pour garder leur type.",
+      "faq": {
+        "q1": "Pourquoi certaines valeurs sont-elles entre guillemets ?",
+        "a1": "Parce que sans guillemets, certains lecteurs YAML 1.1 les liraient autrement : yes et on comme vrai, 007 comme nombre ou 2020-01-01 comme date. Les guillemets garantissent qu'elles restent du texte.",
+        "q2": "L'ordre et les types sont-ils conservés ?",
+        "a2": "Oui. Les clés gardent leur ordre, et les nombres, booléens et null sont écrits avec leur type YAML. Les longues lignes ne sont pas coupées.",
+        "q3": "Puis-je convertir plusieurs fichiers à la fois ?",
+        "a3": "Oui. Choisissez plusieurs fichiers .json et téléchargez chaque YAML séparément ou tous dans un ZIP."
+      }
+    },
+    "yaml-to-json": {
+      "title": "YAML en JSON",
+      "description": "Convertissez du YAML (y compris plusieurs documents et des ancres) en JSON valide. Sans envoyer vos fichiers.",
+      "action": "Convertir en JSON",
+      "about": "YAML en JSON lit les fichiers YAML 1.2, y compris ceux qui contiennent plusieurs documents séparés par ---, des ancres et des alias, et des clés de fusion (<<) comme dans docker-compose ou GitLab CI, et produit un JSON indenté. Plusieurs documents deviennent une liste. Les balises personnalisées ne sont jamais exécutées : elles sont lues comme du texte.",
+      "faq": {
+        "q1": "Est-il sûr d'ouvrir un YAML inconnu ?",
+        "a1": "Oui. Aucun code n'est exécuté, et les fichiers avec trop d'alias, qui peuvent multiplier leur taille jusqu'à bloquer l'appareil (attaque billion laughs), sont refusés avec un message.",
+        "q2": "Pourquoi yes ne devient-il pas true ?",
+        "a2": "Parce qu'en YAML 1.2, la norme actuelle, seuls true et false sont des booléens. De même, les dates restent du texte dans le JSON.",
+        "q3": "Et s'il y a des clés répétées ou une erreur de syntaxe ?",
+        "a3": "Vous verrez un message au lieu d'un JSON incomplet : une clé répétée dans le même objet est une erreur en YAML."
+      }
+    },
+    "json-to-toml": {
+      "title": "JSON en TOML",
+      "description": "Convertissez du JSON en TOML pour les fichiers de configuration comme pyproject.toml ou Cargo.toml. Dans votre navigateur.",
+      "action": "Convertir en TOML",
+      "about": "JSON en TOML transforme un objet JSON en fichier TOML avec des tables ([section]) et des tableaux de tables ([[elements]]), le format de configuration d'outils comme Cargo, Poetry, Hugo ou pyproject.toml. Les clés avec des espaces ou des symboles sont mises entre guillemets.",
+      "faq": {
+        "q1": "Quel JSON peut être converti ?",
+        "a1": "Un objet à la racine. TOML n'accepte ni une liste ni une valeur seule comme document : dans ce cas, un message vous l'explique.",
+        "q2": "Que deviennent les valeurs null ?",
+        "a2": "TOML n'a pas de null : les clés à null sont omises. Un null dans une liste ne peut pas être représenté et un message s'affiche.",
+        "q3": "Des informations sont-elles perdues ?",
+        "a3": "À part les null, non : textes, nombres, booléens, listes et objets imbriqués sont conservés, et le TOML se relit à l'identique."
+      }
+    },
+    "toml-to-json": {
+      "title": "TOML en JSON",
+      "description": "Convertissez des fichiers TOML (Cargo.toml, pyproject.toml, config.toml) en JSON. Sans envoyer vos fichiers.",
+      "action": "Convertir en JSON",
+      "about": "TOML en JSON lit les fichiers TOML 1.0 avec des tables, des tables en ligne, des tableaux de tables et des dates, et produit un JSON indenté. Utile pour traiter la configuration d'un projet avec des outils qui ne comprennent que le JSON, ou pour en vérifier la structure.",
+      "faq": {
+        "q1": "Comment les dates sont-elles converties ?",
+        "a1": "En texte ISO 8601 : une date avec heure devient 1979-05-27T07:32:00.000Z et une date seule 1979-05-27.",
+        "q2": "Et les très grands entiers ?",
+        "a2": "Le JSON du navigateur ne peut pas garder des entiers supérieurs à 2^53 sans perte de précision : ce fichier est donc refusé avec un message plutôt que de modifier la valeur.",
+        "q3": "Mes fichiers sont-ils envoyés à un serveur ?",
+        "a3": "Non. La conversion se fait dans votre navigateur et le fichier ne quitte jamais votre appareil."
+      }
     }
   },
   "ToolUi": {
@@ -379,7 +436,8 @@
     "typed": "Convertir les nombres, true/false et les cellules vides",
     "nested": "Reconstruire les objets à partir des colonnes avec un point",
     "pasteJson": "Ou collez votre JSON",
-    "pasteCsv": "Ou collez votre CSV"
+    "pasteCsv": "Ou collez votre CSV",
+    "paste": "Ou collez votre {format}"
   },
   "Email": {
     "subject": "Votre lien de connexion Fileflect",

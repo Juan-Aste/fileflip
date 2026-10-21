@@ -12,6 +12,8 @@ export const apiErrorCodes = [
   "fileDamaged",
   // Client-side only: a data file (JSON, CSV...) whose content can't be parsed.
   "invalidData",
+  // Client-side only: valid data that TOML can't represent (no root table, null in a list).
+  "tomlUnsupported",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -34,6 +36,7 @@ const status: Record<ApiErrorCode, number> = {
   pdfHasNoText: 422,
   fileDamaged: 422,
   invalidData: 422,
+  tomlUnsupported: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

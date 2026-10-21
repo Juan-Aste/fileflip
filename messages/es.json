@@ -193,6 +193,7 @@
     "pdfHasNoText": "Este PDF es una imagen escaneada: no tiene texto que pasar a Word.",
     "fileDamaged": "El archivo está dañado o incompleto. Prueba con otra copia.",
     "invalidData": "No pudimos leer el contenido. Revisa que el formato sea válido (comillas, comas y llaves).",
+    "tomlUnsupported": "TOML no puede representar este contenido: necesita un objeto en la raíz y no admite null dentro de listas.",
     "signInRequired": "Inicia sesión para continuar.",
     "paymentsUnavailable": "Los pagos todavía no están disponibles en tu país. Vuelve pronto.",
     "jobCancelled": "Se canceló el proceso.",
@@ -310,6 +311,62 @@
         "q3": "¿Puedo obtener objetos anidados?",
         "a3": "Sí. Las columnas como direccion.ciudad o etiquetas.0 se convierten en objetos y listas. Si una columna choca con otra, se deja tal cual para no perder datos."
       }
+    },
+    "json-to-yaml": {
+      "title": "JSON a YAML",
+      "description": "Convierte JSON en YAML legible para archivos de configuración, Kubernetes o CI. En tu navegador.",
+      "action": "Convertir a YAML",
+      "about": "JSON a YAML reescribe tus datos JSON como YAML con sangría de bloques, más fácil de leer y editar a mano en archivos de configuración, manifiestos de Kubernetes, docker-compose o pipelines de CI. Los textos que un lector YAML antiguo tomaría como otra cosa (yes, no, on, 007, fechas) se escriben entre comillas para que no cambien de tipo.",
+      "faq": {
+        "q1": "¿Por qué algunos valores aparecen entre comillas?",
+        "a1": "Porque sin comillas algunos lectores de YAML 1.1 los interpretarían distinto: yes y on como verdadero, 007 como número o 2020-01-01 como fecha. Las comillas garantizan que sigan siendo texto.",
+        "q2": "¿Se mantienen el orden y los tipos?",
+        "a2": "Sí. Las claves conservan su orden y los números, booleanos y null se escriben con su tipo YAML. Las líneas largas no se cortan.",
+        "q3": "¿Puedo convertir varios archivos a la vez?",
+        "a3": "Sí. Elige varios archivos .json y descarga cada YAML por separado o todos en un ZIP."
+      }
+    },
+    "yaml-to-json": {
+      "title": "YAML a JSON",
+      "description": "Convierte YAML (también con varios documentos y anclas) en JSON válido. Sin subir tus archivos.",
+      "action": "Convertir a JSON",
+      "about": "YAML a JSON lee archivos YAML 1.2, incluidos los que tienen varios documentos separados por ---, anclas y alias, y claves de combinación (<<) como las de docker-compose o GitLab CI, y genera JSON con sangría. Varios documentos se convierten en una lista. Las etiquetas personalizadas nunca se ejecutan: se leen como texto.",
+      "faq": {
+        "q1": "¿Es seguro abrir un YAML desconocido?",
+        "a1": "Sí. No se ejecuta código, y los archivos con demasiados alias, que pueden multiplicar su tamaño hasta bloquear el equipo (ataque billion laughs), se rechazan con un aviso.",
+        "q2": "¿Por qué yes no se convierte en true?",
+        "a2": "Porque en YAML 1.2, el estándar actual, solo true y false son booleanos. Del mismo modo, las fechas se mantienen como texto en el JSON.",
+        "q3": "¿Qué pasa si hay claves repetidas o un error de sintaxis?",
+        "a3": "Verás un aviso en lugar de un JSON incompleto: una clave repetida en el mismo objeto es un error en YAML."
+      }
+    },
+    "json-to-toml": {
+      "title": "JSON a TOML",
+      "description": "Convierte JSON en TOML para archivos de configuración como pyproject.toml o Cargo.toml. En tu navegador.",
+      "action": "Convertir a TOML",
+      "about": "JSON a TOML transforma un objeto JSON en un archivo TOML con tablas ([seccion]) y listas de tablas ([[elementos]]), el formato de configuración de herramientas como Cargo, Poetry, Hugo o pyproject.toml. Las claves con espacios o símbolos se escriben entre comillas.",
+      "faq": {
+        "q1": "¿Qué JSON se puede convertir?",
+        "a1": "Un objeto en la raíz. TOML no admite una lista ni un valor suelto como documento: en ese caso verás un aviso que lo explica.",
+        "q2": "¿Qué pasa con los valores null?",
+        "a2": "TOML no tiene null: las claves con null se omiten. Si hay un null dentro de una lista no se puede representar y verás un aviso.",
+        "q3": "¿Se pierde información?",
+        "a3": "Fuera de los null, no: textos, números, booleanos, listas y objetos anidados se conservan, y el TOML se vuelve a leer igual."
+      }
+    },
+    "toml-to-json": {
+      "title": "TOML a JSON",
+      "description": "Convierte archivos TOML (Cargo.toml, pyproject.toml, config.toml) en JSON. Sin subir tus archivos.",
+      "action": "Convertir a JSON",
+      "about": "TOML a JSON lee archivos TOML 1.0 con tablas, tablas en línea, listas de tablas y fechas, y genera un JSON con sangría. Sirve para procesar la configuración de un proyecto con herramientas que solo entienden JSON o para revisar su estructura.",
+      "faq": {
+        "q1": "¿Cómo se convierten las fechas?",
+        "a1": "Como texto ISO 8601: una fecha con hora queda como 1979-05-27T07:32:00.000Z y una fecha sola como 1979-05-27.",
+        "q2": "¿Qué pasa con números enteros muy grandes?",
+        "a2": "JSON en el navegador no puede guardar enteros mayores que 2^53 sin perder precisión, así que ese archivo se rechaza con un aviso en lugar de cambiar el valor.",
+        "q3": "¿Mis archivos se suben a algún servidor?",
+        "a3": "No. La conversión se hace en tu navegador y el archivo nunca sale de tu dispositivo."
+      }
     }
   },
   "ToolUi": {
@@ -379,7 +436,8 @@
     "typed": "Convertir números, true/false y celdas vacías",
     "nested": "Reconstruir objetos desde columnas con punto",
     "pasteJson": "O pega tu JSON",
-    "pasteCsv": "O pega tu CSV"
+    "pasteCsv": "O pega tu CSV",
+    "paste": "O pega tu {format}"
   },
   "Email": {
     "subject": "Tu enlace para entrar a Fileflect",

@@ -1,8 +1,11 @@
-// Data tools (JSON ↔ CSV/TSV) run like a user would on /es: pick a fixture or
-// paste text, download the result and read it back with independent readers.
+// Data tools (JSON ↔ CSV/TSV/YAML/TOML) run like a user would: pick a fixture
+// or paste text, download the result and read it back with independent readers
+// (the YAML and TOML readers are libraries, but not the app's code paths).
 import { readFileSync } from "node:fs";
 import type { Page } from "@playwright/test";
-import { expect, fileOf, fixturePath, readCsv, readJson, runTool, test, toolAlert, waitForResult } from "./support";
+import { parse as parseToml } from "smol-toml";
+import YAML from "yaml";
+import { expect, fileOf, fixturePath, readCsv, readJson, readText, runTool, test, toolAlert, waitForResult } from "./support";
 
 const open = async (page: Page, path: string, files: string[] = []) => {
   await page.goto(path, { waitUntil: "networkidle" });
@@ -90,6 +93,78 @@ test.describe("tool: csv-to-json", () => {
 
   test("broken quoting shows an error", async ({ page }) => {
     await open(page, "/es/csv-a-json", ["corrupt/bad-quotes.csv"]);
+    expect((await runTool(page, "Convertir a JSON")).error).toContain("No pudimos leer el contenido");
+  });
+});
+
+test.describe("tool: json-to-yaml", () => {
+  test("JSON file → YAML that reads back the same, with ambiguous strings quoted", async ({ page }) => {
+    await open(page, "/es/json-a-yaml", ["data.json"]);
+    const out = fileOf(await runTool(page, "Convertir a YAML"));
+    expect(out.name).toBe("data.yaml");
+    const text = readText(out.buf);
+    expect(text).toContain('zip: "007"');
+    expect(YAML.parse(text)).toEqual(JSON.parse(readFileSync(fixturePath("data.json"), "utf8")));
+  });
+
+  test("broken JSON shows an error", async ({ page }) => {
+    await open(page, "/es/json-a-yaml", ["corrupt/broken.json"]);
+    expect((await runTool(page, "Convertir a YAML")).error).toContain("No pudimos leer el contenido");
+  });
+});
+
+test.describe("tool: yaml-to-json", () => {
+  test("multi-document YAML with anchors and merge keys → JSON list", async ({ page }) => {
+    await open(page, "/es/yaml-a-json", ["config.yaml"]);
+    const out = fileOf(await runTool(page, "Convertir a JSON"));
+    expect(out.name).toBe("config.json");
+    expect(readJson(out.buf)).toEqual([
+      {
+        defaults: { retries: 3, debug: "no" },
+        service: { retries: 3, debug: "no", name: "web", ports: [80, 443], zip: "007" },
+      },
+      { name: "second document" },
+    ]);
+  });
+
+  test("an alias bomb is rejected without freezing the page", async ({ page }) => {
+    await open(page, "/es/yaml-a-json", ["corrupt/alias-bomb.yaml"]);
+    expect((await runTool(page, "Convertir a JSON")).error).toContain("No pudimos leer el contenido");
+  });
+});
+
+test.describe("tool: json-to-toml", () => {
+  test("pasted JSON → TOML with tables, nulls left out", async ({ page }) => {
+    await open(page, "/en/json-to-toml");
+    await page.getByRole("textbox", { name: "Or paste your JSON" }).fill('{"title": "Demo", "gone": null, "owner": {"name": "Ana"}, "servers": [{"ip": "10.0.0.1"}]}');
+    const out = fileOf(await runTool(page, "Convert to TOML"));
+    expect(out.name).toBe("data.toml");
+    expect(JSON.parse(JSON.stringify(parseToml(readText(out.buf))))).toEqual({ title: "Demo", owner: { name: "Ana" }, servers: [{ ip: "10.0.0.1" }] });
+  });
+
+  test("a JSON list explains why TOML can't hold it", async ({ page }) => {
+    await open(page, "/es/json-a-toml");
+    await page.getByRole("textbox", { name: "O pega tu JSON" }).fill("[1, 2, 3]");
+    expect((await runTool(page, "Convertir a TOML")).error).toContain("TOML no puede representar este contenido");
+  });
+});
+
+test.describe("tool: toml-to-json", () => {
+  test("TOML file → JSON with dates as ISO text", async ({ page }) => {
+    await open(page, "/es/toml-a-json", ["config.toml"]);
+    const out = fileOf(await runTool(page, "Convertir a JSON"));
+    expect(readJson(out.buf)).toEqual({
+      title: "Fileflect demo",
+      owner: { name: "Ana", since: "2024-05-27" },
+      servers: [
+        { ip: "10.0.0.1", ports: [80, 443] },
+        { ip: "10.0.0.2", ports: [8080] },
+      ],
+    });
+  });
+
+  test("broken TOML shows an error", async ({ page }) => {
+    await open(page, "/es/toml-a-json", ["corrupt/broken.toml"]);
     expect((await runTool(page, "Convertir a JSON")).error).toContain("No pudimos leer el contenido");
   });
 });

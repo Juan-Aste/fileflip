@@ -1,17 +1,22 @@
 /// <reference lib="webworker" />
 import { csvToJson, jsonToCsv, type CsvToJsonOptions, type JsonToCsvOptions } from "@/lib/data/csv";
 import { decodeText } from "@/lib/data/text";
+import { jsonToToml, tomlToJson } from "@/lib/data/toml";
+import { jsonToYaml, yamlToJson } from "@/lib/data/yaml";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
-// Data tools (JSON, CSV...): parsing big files off the main thread keeps the page responsive.
+// Data tools (JSON, CSV, YAML, TOML): parsing big files off the main thread keeps the page responsive.
 const textOf = async (input: Blob | string) =>
   typeof input === "string" ? input : decodeText(new Uint8Array(await input.arrayBuffer()));
 
+type Input<O = undefined> = { input: Blob | string; options: O };
+const text = (convert: (text: string) => string) => async ({ input }: Input) => ({ result: convert(await textOf(input)) });
+
 exposeHandlers({
-  jsonToCsv: async ({ input, options }: { input: Blob | string; options: JsonToCsvOptions }) => ({
-    result: jsonToCsv(await textOf(input), options),
-  }),
-  csvToJson: async ({ input, options }: { input: Blob | string; options: CsvToJsonOptions }) => ({
-    result: csvToJson(await textOf(input), options),
-  }),
+  jsonToCsv: async ({ input, options }: Input<JsonToCsvOptions>) => ({ result: jsonToCsv(await textOf(input), options) }),
+  csvToJson: async ({ input, options }: Input<CsvToJsonOptions>) => ({ result: csvToJson(await textOf(input), options) }),
+  jsonToYaml: text(jsonToYaml),
+  yamlToJson: text(yamlToJson),
+  jsonToToml: text(jsonToToml),
+  tomlToJson: text(tomlToJson),
 });

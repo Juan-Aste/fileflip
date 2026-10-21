@@ -1468,6 +1468,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - La coma decimal (`3,25`) se deja como texto: no se adivina la configuración regional.
 
 **Verificación**
-- 22 tests unitarios de datos (incluida la ida y vuelta, BOM, Windows-1252, XXE no aplica). `tests/e2e/data-tools.spec.ts`: 7 casos (archivo anidado, pegar → TSV, JSON roto, CSV de Excel, lote TSV+CSV, ida y vuelta, comillas rotas), validados con lectores propios (`readCsv`, `readJson`). Lint, typecheck, tests (519), build, `check:static` (582 páginas) y `npm run test:e2e` (124/124) pasan. Capturas revisadas: `/es/json-a-csv` 1280 claro y `/zh/csv-to-json` 360 oscuro.
+- 22 tests unitarios de datos (incluida la ida y vuelta, BOM y Windows-1252). `tests/e2e/data-tools.spec.ts`: 7 casos (archivo anidado, pegar → TSV, JSON roto, CSV de Excel, lote TSV+CSV, ida y vuelta, comillas rotas), validados con lectores propios (`readCsv`, `readJson`). Lint, typecheck, tests (519), build, `check:static` (582 páginas) y `npm run test:e2e` (124/124) pasan. Capturas revisadas: `/es/json-a-csv` 1280 claro y `/zh/csv-to-json` 360 oscuro.
 
 **Siguiente**: 3C.2 (JSON ↔ YAML y JSON ↔ TOML).
+
+## 2026-10-21 02:45 UTC — Fase 3, tarea 3C.2 (JSON ↔ YAML y JSON ↔ TOML)
+
+**Qué se hizo**
+- Cuatro herramientas nuevas en **Datos**: JSON a YAML (`/es/json-a-yaml`), YAML a JSON (`/es/yaml-a-json`), JSON a TOML (`/es/json-a-toml`) y TOML a JSON (`/es/toml-a-json`), con slugs en los 5 idiomas, textos propios (introducción + 3 preguntas) y formatos `yaml` y `toml` en `formats.ts`.
+- `src/lib/data/yaml.ts` con **`yaml` 2.9.1 (ISC)** en lugar de js-yaml: trae el límite de alias (`maxAliasCount`, 100) que frena el "billion laughs"; además se cuentan los valores al convertir (tope de 2 millones y 200 niveles). Lee YAML 1.2, varios documentos (→ lista), anclas, claves `<<`; rechaza claves repetidas y errores de sintaxis; las etiquetas personalizadas (`!!js/function`) no se ejecutan (quedan como texto); `!!binary` → base64; `__proto__` queda como dato. Al escribir, sin cortar líneas largas y **con comillas en los textos que un lector YAML 1.1 cambiaría** (`yes`, `on`, `0o17`, fechas, `007`).
+- `src/lib/data/toml.ts` con **smol-toml 1.9.0 (BSD-3-Clause)**: fechas → texto ISO; enteros > 2^53 se rechazan (el parser no los acepta con pérdida). JSON → TOML omite las claves con `null`; raíz que no es objeto o `null` dentro de una lista → código nuevo `tomlUnsupported` con un mensaje que lo explica (5 idiomas).
+- `src/lib/data/json.ts` (helpers compartidos) y `TextConvertTools.tsx`: un componente genérico para conversiones sin opciones (elegir archivos o pegar, descargar o copiar), reutilizable por las próximas herramientas de datos. `DataTools.paste` con el nombre del formato.
+- Fixtures: `config.yaml`, `config.toml`, `corrupt/alias-bomb.yaml` (9 niveles × 9 alias), `corrupt/broken.toml`.
+
+**Verificación**
+- 15 tests unitarios (ida y vuelta, comillas 1.1/1.2, varios documentos, merge, billion laughs, etiquetas, `__proto__`, binario, claves repetidas, TOML con tablas, nulls, raíz inválida, fechas, enteros grandes). `data-tools.spec.ts`: 15 casos en total (8 nuevos, uno en inglés con texto pegado), validados releyendo la salida con `yaml`/`smol-toml` desde el test.

@@ -1,5 +1,8 @@
 import {
   Braces,
+  FileCode,
+  FileJson,
+  Settings2,
   FileArchive,
   Sheet,
   Images,
@@ -20,6 +23,10 @@ const icons: Record<ToolId, LucideIcon> = {
   "compress-pdf": FileArchive,
   "json-to-csv": Sheet,
   "csv-to-json": Braces,
+  "json-to-yaml": FileCode,
+  "yaml-to-json": FileJson,
+  "json-to-toml": Settings2,
+  "toml-to-json": FileJson,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

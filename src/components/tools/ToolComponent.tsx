@@ -14,6 +14,10 @@ const components: Record<ToolId, React.ComponentType> = {
   "compress-pdf": dynamic(() => import("./CompressPdfTool")),
   "json-to-csv": dynamic(() => import("./JsonToCsvTool")),
   "csv-to-json": dynamic(() => import("./CsvToJsonTool")),
+  "json-to-yaml": dynamic(() => import("./data/TextConvertTools").then((m) => m.JsonToYamlTool)),
+  "yaml-to-json": dynamic(() => import("./data/TextConvertTools").then((m) => m.YamlToJsonTool)),
+  "json-to-toml": dynamic(() => import("./data/TextConvertTools").then((m) => m.JsonToTomlTool)),
+  "toml-to-json": dynamic(() => import("./data/TextConvertTools").then((m) => m.TomlToJsonTool)),
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {
