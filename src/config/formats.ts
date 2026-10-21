@@ -35,7 +35,11 @@ export type FormatId =
   | "srt"
   | "vtt"
   | "ass"
-  | "ssa";
+  | "ssa"
+  | "ttf"
+  | "otf"
+  | "woff"
+  | "woff2";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -85,6 +89,10 @@ export const formats: Record<FormatId, FormatInfo> = {
   vtt: { id: "vtt", label: "VTT", mime: "text/vtt", extensions: ["vtt"], category: "data" },
   ass: { id: "ass", label: "ASS", mime: "text/x-ssa", extensions: ["ass"], category: "data" },
   ssa: { id: "ssa", label: "SSA", mime: "text/x-ssa", extensions: ["ssa"], category: "data" },
+  ttf: { id: "ttf", label: "TTF", mime: "font/ttf", extensions: ["ttf"], category: "data" },
+  otf: { id: "otf", label: "OTF", mime: "font/otf", extensions: ["otf"], category: "data" },
+  woff: { id: "woff", label: "WOFF", mime: "font/woff", extensions: ["woff"], category: "data" },
+  woff2: { id: "woff2", label: "WOFF2", mime: "font/woff2", extensions: ["woff2"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 

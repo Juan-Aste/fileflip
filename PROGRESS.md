@@ -1897,3 +1897,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Convención: un módulo que importa la página nunca debe importar pdf-lib ni otro motor; lo que necesita el worker va en un archivo aparte (como `compress.ts`/`client.ts`).
 - `scripts/perf/lighthouse.sh` suma `/es/recortar-imagen`, `/es/extraer-imagenes-pdf`, `/es/proteger-pdf` y `/es/convertir-fuentes`.
 - Verificación: lint, typecheck, tests, build y `npm run test:e2e` (234/234) pasan.
+
+## 2026-10-21 21:40 UTC — Fase 3, tarea 3C.24 (conversor de fuentes)
+
+**Qué se hizo**
+- **Convertir fuentes** (`/es/convertir-fuentes`, `/en/font-converter`, `/pt/converter-fontes`, `/fr/convertir-polices`): TTF, OTF, WOFF y WOFF2 de entrada; salida **WOFF2** (por defecto), **WOFF** o **TTF/OTF**. Se cambia el contenedor, no los contornos: TrueType sale `.ttf` y CFF sale `.otf` (la FAQ aclara que no convierte OTF → TTF). Con una sola salida web se muestra la regla `@font-face` lista para copiar. Lotes con ZIP (`fileflect-fonts.zip`); si dos archivos dan el mismo nombre (font.ttf y font.otf → font.woff2) el segundo pasa a `font-2.woff2`. Categoría **Fuentes** publicada (`/es/herramientas-de-fuentes`…).
+- Motor `src/lib/font/font.ts` en el worker de datos: WOFF 1.0 propio con fflate (zlib por tabla, solo si achica); WOFF2 con **woff2-encoder** 2.0.0 (MIT; codificador de referencia de Google + Brotli, WASM incrustado ~1 MB) con import diferido. Formatos nuevos `ttf`, `otf`, `woff`, `woff2` en `formats.ts`.
+- Seguridad: máximo 40 MB por fuente y para lo que un WOFF/WOFF2 declare al descomprimirse (**bomba** rechazada antes de inflar; además fflate escribe en un búfer fijo del tamaño declarado), hasta 256 tablas, cada tabla dentro del archivo, y la fuente resultante debe tener `head`, `cmap` y contornos (`glyf`+`loca` o `CFF `/`CFF2`). Colecciones (`ttcf`) no se aceptan.
+- Fixtures propios con `scripts/fixtures/fonts.mjs`: fuente "Fileflect Test" (6 glifos poligonales) como TTF (constructor TrueType del script), OTF (opentype.js, devDependency), WOFF (escritor zlib del script) y WOFF2 (codificador de Google); `corrupt/truncated.woff2` y `corrupt/bomb.woff` (1 GB declarado). fontkit (devDependency, MIT) es el lector independiente de los tests; tipos mínimos en `src/types/fontkit.d.ts`.
+
+**Verificación**
+- 16 tests unitarios: detección; los 4 fixtures se leen igual con fontkit; **las 12 combinaciones** (4 entradas × 3 salidas) dan la misma familia, cantidad de glifos, avance y caja de "A", "ñ" y espacio; WOFF más chico y ida y vuelta byte a byte; truncado, bomba, sfnt cortado, PNG y encabezado WOFF2 de 2 GB rechazados.
+- `font-tools.spec.ts` (3 casos): TTF + OTF → WOFF2 leídos con fontkit y **aceptados por el sanitizador de fuentes de Chromium** (`FontFace.load()`), nombres `font.woff2`/`font-2.woff2`; WOFF → `.ttf` y WOFF2 → `.otf` con sus firmas, TTF → WOFF más chico con la regla `@font-face`; truncado + bomba → error sin descargas. Sin llamadas al servidor.
+- Lint, typecheck, tests (780), build, `check:static` (817 páginas) y `npm run test:e2e` (234/234) pasan. Lighthouse de `/es/convertir-fuentes`: 97, 164 KB (en `docs/perf/2026-10-21-3C23.md`). Captura revisada: 360 px oscuro con el resultado.
+
+**Siguiente**: 3C.25 (Markdown ↔ HTML en el navegador y Markdown → PDF).

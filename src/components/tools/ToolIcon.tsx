@@ -1,6 +1,7 @@
 import {
   Binary,
   FileLock2,
+  CaseSensitive,
   ImageDown,
   LockOpen,
   Signature,
@@ -96,6 +97,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "protect-pdf": FileLock2,
   "unlock-pdf": LockOpen,
   "extract-pdf-images": ImageDown,
+  "font-converter": CaseSensitive,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

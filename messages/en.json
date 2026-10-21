@@ -792,6 +792,22 @@
         "a4": "No. Only each line's start and end times are rewritten; styles, positions, effects and comments stay as they were."
       }
     },
+    "font-converter": {
+      "title": "Convert fonts: TTF, OTF, WOFF and WOFF2",
+      "description": "Convert TTF or OTF fonts to WOFF2 or WOFF for your website, or turn WOFF/WOFF2 back into TTF/OTF to install. Free, in your browser.",
+      "action": "Convert fonts",
+      "about": "The font converter gets typefaces ready for the web and the desktop. WOFF2 compresses the font with Brotli and is usually 30% smaller than WOFF and half the original TTF, so your site loads faster; WOFF covers very old browsers. The other way round, if you only have a WOFF or WOFF2, you get the TTF or OTF to install on Windows, macOS or Linux. Glyphs, metrics and names don’t change: only the wrapper does.",
+      "faq": {
+        "q1": "Is quality lost?",
+        "a1": "No. WOFF and WOFF2 are compressed forms of the same font: back to TTF or OTF you get the same glyphs, metrics, kerning and names.",
+        "q2": "Can I convert OTF to TTF?",
+        "a2": "No: this tool doesn’t change the outline type (CFF ↔ TrueType), only the container. An OTF (CFF) font comes out as .otf; desktop apps install it just like a TTF.",
+        "q3": "Can I use any font on my website?",
+        "a3": "It depends on its license. Many commercial fonts forbid converting them or using them on the web; Google Fonts and other OFL-licensed fonts allow it. Check the license before publishing.",
+        "q4": "Are my fonts uploaded?",
+        "a4": "No. Conversion happens in your browser and the files never leave your device."
+      }
+    },
     "delete-pdf-pages": {
       "title": "Delete pages from a PDF",
       "description": "Remove unwanted pages from a PDF by picking them on thumbnails or by number, without uploading the file.",
@@ -1766,5 +1782,14 @@
     "size": "Signature size: {value}% of the width",
     "prevPage": "Previous page",
     "nextPage": "Next page"
+  },
+  "FontTools": {
+    "target": "Convert to",
+    "targets": {
+      "woff2": "WOFF2 (web, smallest)",
+      "woff": "WOFF (web, older browsers)",
+      "sfnt": "TTF / OTF (to install on a computer)"
+    },
+    "note": "The outline type is kept: a TrueType font comes out as .ttf and an OpenType CFF one as .otf. For the web, the @font-face rule is ready to copy below the result."
   }
 }

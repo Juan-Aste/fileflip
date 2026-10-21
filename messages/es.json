@@ -792,6 +792,22 @@
         "a4": "No. Solo se reescriben los tiempos de inicio y fin de cada línea; estilos, posiciones, efectos y comentarios quedan como estaban."
       }
     },
+    "font-converter": {
+      "title": "Convertir fuentes TTF, OTF, WOFF y WOFF2",
+      "description": "Convierte fuentes TTF u OTF a WOFF2 o WOFF para tu sitio web, o pasa WOFF/WOFF2 a TTF/OTF para instalarlas. Gratis y en tu navegador.",
+      "action": "Convertir fuentes",
+      "about": "Convertir fuentes prepara tipografías para la web y para el escritorio. WOFF2 comprime la fuente con Brotli y suele pesar un 30 % menos que WOFF y la mitad que el TTF original, así tu sitio carga más rápido; WOFF sirve para navegadores muy antiguos. Al revés, si solo tienes un WOFF o WOFF2, obtienes el TTF u OTF para instalarlo en Windows, macOS o Linux. Los glifos, métricas y nombres no cambian: solo cambia el envoltorio.",
+      "faq": {
+        "q1": "¿Se pierde calidad al convertir?",
+        "a1": "No. WOFF y WOFF2 son formas comprimidas de la misma fuente: al volver a TTF u OTF obtienes los mismos glifos, métricas, kerning y nombres.",
+        "q2": "¿Puedo convertir OTF a TTF?",
+        "a2": "No: esta herramienta no cambia el tipo de contornos (CFF ↔ TrueType), solo el contenedor. Una fuente OTF (CFF) sale como .otf; los programas de escritorio la instalan igual que un TTF.",
+        "q3": "¿Puedo usar cualquier fuente en mi sitio?",
+        "a3": "Depende de su licencia. Muchas fuentes comerciales prohíben convertirlas o usarlas en la web; las de Google Fonts y otras con licencia OFL lo permiten. Revisa la licencia antes de publicarla.",
+        "q4": "¿Mis fuentes se suben a internet?",
+        "a4": "No. La conversión se hace en tu navegador y los archivos no salen de tu dispositivo."
+      }
+    },
     "delete-pdf-pages": {
       "title": "Eliminar páginas de un PDF",
       "description": "Quita las páginas que sobran de un PDF eligiéndolas sobre las miniaturas o por número, sin subir el archivo.",
@@ -1766,5 +1782,14 @@
     "size": "Tamaño de la firma: {value} % del ancho",
     "prevPage": "Página anterior",
     "nextPage": "Página siguiente"
+  },
+  "FontTools": {
+    "target": "Convertir a",
+    "targets": {
+      "woff2": "WOFF2 (web, el más liviano)",
+      "woff": "WOFF (web, navegadores antiguos)",
+      "sfnt": "TTF / OTF (para instalar en la computadora)"
+    },
+    "note": "Se conserva el tipo de contornos: una fuente TrueType sale como .ttf y una OpenType CFF como .otf. Para la web, debajo del resultado tienes la regla @font-face lista para copiar."
   }
 }

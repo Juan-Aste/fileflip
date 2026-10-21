@@ -792,6 +792,22 @@
         "a4": "不会。只重写每行的开始和结束时间；样式、位置、特效和注释保持原样。"
       }
     },
+    "font-converter": {
+      "title": "字体转换：TTF、OTF、WOFF、WOFF2",
+      "description": "将 TTF 或 OTF 字体转换为网站使用的 WOFF2 或 WOFF，或把 WOFF/WOFF2 转回 TTF/OTF 进行安装。免费，在浏览器中完成。",
+      "action": "转换字体",
+      "about": "字体转换为网页和桌面准备字体。WOFF2 使用 Brotli 压缩，通常比 WOFF 小 30%，只有原始 TTF 的一半左右，让网站加载更快；WOFF 用于非常旧的浏览器。反过来，如果你只有 WOFF 或 WOFF2 文件，可以得到用于 Windows、macOS 或 Linux 安装的 TTF 或 OTF。字形、度量和名称都不会改变，只改变封装格式。",
+      "faq": {
+        "q1": "转换会损失质量吗？",
+        "a1": "不会。WOFF 和 WOFF2 是同一字体的压缩形式：转回 TTF 或 OTF 后，字形、度量、字距和名称都相同。",
+        "q2": "可以把 OTF 转成 TTF 吗？",
+        "a2": "不可以：本工具不改变轮廓类型（CFF ↔ TrueType），只改变容器。OTF（CFF）字体输出为 .otf，桌面程序可以像 TTF 一样安装。",
+        "q3": "我可以在网站上使用任何字体吗？",
+        "a3": "取决于字体许可。许多商业字体禁止转换或在网页上使用；Google Fonts 和其他 OFL 许可的字体允许。发布前请检查许可。",
+        "q4": "我的字体会被上传吗？",
+        "a4": "不会。转换在浏览器中完成，文件不会离开你的设备。"
+      }
+    },
     "delete-pdf-pages": {
       "title": "删除 PDF 页面",
       "description": "在缩略图上选择或按页码删除 PDF 中多余的页面，无需上传文件。",
@@ -1766,5 +1782,14 @@
     "size": "签名大小：宽度的 {value}%",
     "prevPage": "上一页",
     "nextPage": "下一页"
+  },
+  "FontTools": {
+    "target": "转换为",
+    "targets": {
+      "woff2": "WOFF2（网页，最小）",
+      "woff": "WOFF（网页，旧版浏览器）",
+      "sfnt": "TTF / OTF（安装到电脑）"
+    },
+    "note": "保留轮廓类型：TrueType 字体输出为 .ttf，OpenType CFF 字体输出为 .otf。用于网页时，结果下方有可直接复制的 @font-face 规则。"
   }
 }

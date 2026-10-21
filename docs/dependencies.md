@@ -25,6 +25,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | exifr | 7.1.3 | MIT | lee qué metadatos tiene una foto (GPS, cámara, fecha) para mostrar qué se quita; el borrado es propio | N (worker de herramientas de imagen) |
 | utif2 | 4.1.0 | MIT | lector/escritor TIFF | N (worker) |
 | libheif-js | 1.23.5 | LGPL-3.0 | lector HEIC/HEIF | N (worker, carga diferida, archivo aparte: cumple la LGPL al poder reemplazarse) |
+| woff2-encoder | 2.0.0 | MIT (google/woff2 y Brotli: MIT) | comprimir y descomprimir WOFF2 (codificador de referencia de Google en WASM incrustado, ~1 MB) | N (worker de datos, import diferido: solo el conversor de fuentes) |
 | pdf-lib | 1.17.1 | MIT | crear y editar PDF | N (worker) |
 | @neslinesli93/qpdf-wasm | 0.3.0 | ISC (motor qpdf 12.2: Apache-2.0) | cifrar (AES-256) y descifrar PDF con contraseña; WASM de 1,3 MB que solo descargan "Proteger PDF" y "Quitar contraseña" | N (worker de PDF, import diferido) |
 | pdfjs-dist | 6.4.299 | Apache-2.0 | leer y rasterizar PDF; decodificar las imágenes de "Extraer imágenes de PDF" | N + S |
@@ -62,6 +63,8 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | @next/bundle-analyzer | 15.5.4 | MIT |
 | @formatjs/icu-messageformat-parser | 3.5.21 | MIT |
 | @types/* (incluido @types/papaparse) | — | MIT |
+| fontkit (lector de fuentes independiente en los tests; deps brotli, restructure, unicode-* … MIT) | 2.0.4 | MIT |
+| opentype.js (genera el fixture `font.otf`) | 2.0.0 | MIT |
 
 ## Candidatas evaluadas para la fase 3 (todavía no instaladas)
 

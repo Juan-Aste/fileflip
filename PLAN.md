@@ -245,7 +245,7 @@ PDF
 - [x] 3C.23 Extraer imágenes de un PDF (ZIP)
 
 Fuentes y documentos
-- [ ] 3C.24 TTF/OTF ↔ WOFF/WOFF2 (fonteditor-core + wawoff2, confirmar licencias; fixture de fuente propia)
+- [x] 3C.24 TTF/OTF ↔ WOFF/WOFF2 (fonteditor-core + wawoff2, confirmar licencias; fixture de fuente propia)
 - [ ] 3C.25 Markdown ↔ HTML en el navegador (marked + turndown, saneado con dompurify) y Markdown → PDF (Gotenberg)
 - [ ] 3C.26 HTML → PDF con Gotenberg sin acceso a red externa (protección SSRF), fixture PPT generado en el test y PDF/A (Gotenberg)
 - [ ] 3C.27 Hojas de cálculo XLSX ↔ CSV ↔ ODS en el navegador (SheetJS CE desde el tarball oficial o exceljs; límite de celdas; elegir hoja)

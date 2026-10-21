@@ -792,6 +792,22 @@
         "a4": "Não. Só os tempos de início e fim de cada linha são reescritos; estilos, posições, efeitos e comentários ficam como estavam."
       }
     },
+    "font-converter": {
+      "title": "Converter fontes TTF, OTF, WOFF e WOFF2",
+      "description": "Converta fontes TTF ou OTF para WOFF2 ou WOFF para o seu site, ou transforme WOFF/WOFF2 em TTF/OTF para instalar. Grátis, no seu navegador.",
+      "action": "Converter fontes",
+      "about": "O conversor de fontes prepara tipografias para a web e para o computador. O WOFF2 comprime a fonte com Brotli e costuma ser 30% menor que o WOFF e metade do TTF original, deixando seu site mais rápido; o WOFF atende navegadores muito antigos. No sentido contrário, se você só tem um WOFF ou WOFF2, obtém o TTF ou OTF para instalar no Windows, macOS ou Linux. Glifos, métricas e nomes não mudam: só muda o invólucro.",
+      "faq": {
+        "q1": "A qualidade é perdida?",
+        "a1": "Não. WOFF e WOFF2 são formas comprimidas da mesma fonte: ao voltar para TTF ou OTF você recebe os mesmos glifos, métricas, kerning e nomes.",
+        "q2": "Posso converter OTF para TTF?",
+        "a2": "Não: esta ferramenta não muda o tipo de contorno (CFF ↔ TrueType), só o contêiner. Uma fonte OTF (CFF) sai como .otf; os programas a instalam do mesmo jeito que um TTF.",
+        "q3": "Posso usar qualquer fonte no meu site?",
+        "a3": "Depende da licença. Muitas fontes comerciais proíbem convertê-las ou usá-las na web; as do Google Fonts e outras com licença OFL permitem. Confira a licença antes de publicar.",
+        "q4": "Minhas fontes são enviadas para a internet?",
+        "a4": "Não. A conversão acontece no seu navegador e os arquivos não saem do seu dispositivo."
+      }
+    },
     "delete-pdf-pages": {
       "title": "Excluir páginas de um PDF",
       "description": "Remova páginas de um PDF escolhendo-as nas miniaturas ou pelo número, sem enviar o arquivo.",
@@ -1766,5 +1782,14 @@
     "size": "Tamanho da assinatura: {value} % da largura",
     "prevPage": "Página anterior",
     "nextPage": "Próxima página"
+  },
+  "FontTools": {
+    "target": "Converter para",
+    "targets": {
+      "woff2": "WOFF2 (web, o mais leve)",
+      "woff": "WOFF (web, navegadores antigos)",
+      "sfnt": "TTF / OTF (para instalar no computador)"
+    },
+    "note": "O tipo de contorno é mantido: uma fonte TrueType sai como .ttf e uma OpenType CFF como .otf. Para a web, a regra @font-face fica pronta para copiar abaixo do resultado."
   }
 }

@@ -4,6 +4,7 @@ import type { Decoded, EncodeOptions } from "./base64";
 import type { HashAlgorithm } from "./hash";
 import type { CsvToJsonOptions, JsonToCsvOptions } from "./csv";
 import type { SubtitleFormat, SubtitleResult, SyncOptions } from "@/lib/subtitle/subtitle";
+import type { FontContainer, FontFlavor } from "@/lib/font/font";
 import type { FormatResult, JsonFormatOptions, XmlFormatOptions, YamlFormatOptions } from "./format";
 
 // One data worker, started on first use. Text formats are parsed whole, so a
@@ -63,3 +64,7 @@ export const convertSubtitleInput = (input: Input, to: SubtitleFormat, job: JobO
 /** Subtitles shifted and/or retimed between frame rates, in their own format. */
 export const syncSubtitleInput = (input: Input, options: SyncOptions, job: JobOptions = {}) =>
   call<SubtitleResult & { format: SubtitleFormat }>("syncSubtitles", { input, options }, job);
+
+/** A font in another container (sfnt, WOFF, WOFF2); `flavor` says whether the sfnt is .ttf or .otf. */
+export const convertFontFile = (file: Blob, to: FontContainer, job: JobOptions = {}) =>
+  call<{ bytes: Uint8Array; flavor: FontFlavor }>("convertFont", { input: file, options: { to } }, job);

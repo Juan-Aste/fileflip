@@ -792,6 +792,22 @@
         "a4": "Non. Seuls les temps de début et de fin de chaque ligne sont réécrits ; styles, positions, effets et commentaires restent tels quels."
       }
     },
+    "font-converter": {
+      "title": "Convertir des polices TTF, OTF, WOFF et WOFF2",
+      "description": "Convertissez des polices TTF ou OTF en WOFF2 ou WOFF pour votre site, ou repassez du WOFF/WOFF2 en TTF/OTF pour les installer. Gratuit, dans votre navigateur.",
+      "action": "Convertir les polices",
+      "about": "Le convertisseur de polices prépare vos typographies pour le web et pour l’ordinateur. Le WOFF2 compresse la police avec Brotli : il pèse en général 30 % de moins que le WOFF et moitié moins que le TTF d’origine, pour un site plus rapide ; le WOFF couvre les très anciens navigateurs. Dans l’autre sens, si vous n’avez qu’un WOFF ou un WOFF2, vous obtenez le TTF ou l’OTF à installer sous Windows, macOS ou Linux. Les glyphes, métriques et noms ne changent pas : seule l’enveloppe change.",
+      "faq": {
+        "q1": "La qualité est-elle perdue ?",
+        "a1": "Non. WOFF et WOFF2 sont des formes compressées de la même police : en revenant au TTF ou à l’OTF, vous retrouvez les mêmes glyphes, métriques, crénage et noms.",
+        "q2": "Puis-je convertir un OTF en TTF ?",
+        "a2": "Non : cet outil ne change pas le type de contours (CFF ↔ TrueType), seulement le conteneur. Une police OTF (CFF) sort en .otf ; les logiciels l’installent comme un TTF.",
+        "q3": "Puis-je utiliser n’importe quelle police sur mon site ?",
+        "a3": "Cela dépend de sa licence. Beaucoup de polices commerciales interdisent leur conversion ou leur usage sur le web ; celles de Google Fonts et les autres polices sous licence OFL le permettent. Vérifiez la licence avant de publier.",
+        "q4": "Mes polices sont-elles envoyées sur internet ?",
+        "a4": "Non. La conversion se fait dans votre navigateur et les fichiers ne quittent pas votre appareil."
+      }
+    },
     "delete-pdf-pages": {
       "title": "Supprimer des pages d’un PDF",
       "description": "Retirez les pages inutiles d’un PDF en les choisissant sur les miniatures ou par numéro, sans envoyer le fichier.",
@@ -1766,5 +1782,14 @@
     "size": "Taille de la signature : {value} % de la largeur",
     "prevPage": "Page précédente",
     "nextPage": "Page suivante"
+  },
+  "FontTools": {
+    "target": "Convertir en",
+    "targets": {
+      "woff2": "WOFF2 (web, le plus léger)",
+      "woff": "WOFF (web, anciens navigateurs)",
+      "sfnt": "TTF / OTF (à installer sur l’ordinateur)"
+    },
+    "note": "Le type de contours est conservé : une police TrueType sort en .ttf et une OpenType CFF en .otf. Pour le web, la règle @font-face est prête à copier sous le résultat."
   }
 }

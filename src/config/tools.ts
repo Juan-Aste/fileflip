@@ -78,6 +78,7 @@ export const toolIds = [
   "svg-converter",
   "subtitle-converter",
   "subtitle-sync",
+  "font-converter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -119,6 +120,8 @@ const DATA_MAX_BYTES = 50 * 1024 * 1024;
 const SUBTITLE_MAX_BYTES = 10 * 1024 * 1024;
 /** qpdf holds the PDF and its encrypted copy in WASM memory (max. 2 GB address space). */
 const PDF_PASSWORD_MAX_BYTES = 200 * 1024 * 1024;
+/** Same cap as the font engine (MAX_FONT_BYTES): bigger than any real font. */
+const FONT_MAX_BYTES = 40 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
 
 export const tools: Record<ToolId, ToolInfo> = {
@@ -701,6 +704,17 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: MINUTE, maxFileBytes: SUBTITLE_MAX_BYTES },
     status: "verified",
     slugs: { es: "sincronizar-subtitulos", en: "subtitle-sync", pt: "sincronizar-legendas", fr: "synchroniser-sous-titres", zh: "subtitle-sync" },
+  },
+  "font-converter": {
+    id: "font-converter",
+    category: "font",
+    inputs: ["ttf", "otf", "woff", "woff2"],
+    outputs: ["ttf", "otf", "woff", "woff2"],
+    engine: "browser",
+    libraries: ["woff2-encoder", "fflate"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: FONT_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "convertir-fuentes", en: "font-converter", pt: "converter-fontes", fr: "convertir-polices", zh: "font-converter" },
   },
 };
 

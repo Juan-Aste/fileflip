@@ -50,6 +50,7 @@
     "sharp": "^0.35.5",
     "smol-toml": "^1.9.0",
     "utif2": "^4.1.0",
+    "woff2-encoder": "2.0.0",
     "yaml": "^2.9.1"
   },
   "devDependencies": {
@@ -66,7 +67,9 @@
     "@types/react-dom": "^19.1.0",
     "eslint": "^9.35.0",
     "eslint-config-next": "15.5.28",
+    "fontkit": "2.0.4",
     "mongodb-memory-server": "^11.3.0",
+    "opentype.js": "2.0.0",
     "playwright-core": "1.56.0",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
