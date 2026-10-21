@@ -1,5 +1,6 @@
 /// <reference lib="webworker" />
 import { csvToJson, jsonToCsv, type CsvToJsonOptions, type JsonToCsvOptions } from "@/lib/data/csv";
+import { formatJson, formatXml, formatYaml, type JsonFormatOptions, type XmlFormatOptions, type YamlFormatOptions } from "@/lib/data/format";
 import { decodeText } from "@/lib/data/text";
 import { jsonToToml, tomlToJson } from "@/lib/data/toml";
 import { jsonToXml, xmlToJson } from "@/lib/data/xml";
@@ -22,4 +23,8 @@ exposeHandlers({
   tomlToJson: text(tomlToJson),
   jsonToXml: text(jsonToXml),
   xmlToJson: text(xmlToJson),
+  // Formatters answer with a result (with the error position) instead of throwing.
+  formatJson: async ({ input, options }: Input<JsonFormatOptions>) => ({ result: formatJson(await textOf(input), options) }),
+  formatXml: async ({ input, options }: Input<XmlFormatOptions>) => ({ result: formatXml(await textOf(input), options) }),
+  formatYaml: async ({ input, options }: Input<YamlFormatOptions>) => ({ result: formatYaml(await textOf(input), options) }),
 });

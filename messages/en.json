@@ -396,6 +396,48 @@
         "q3": "Are comments kept?",
         "a3": "No. Comments and processing instructions have no JSON equivalent and are left out; the rest of the content is kept."
       }
+    },
+    "json-formatter": {
+      "title": "JSON formatter and validator",
+      "description": "Validate your JSON, see the line and column of the error, and pretty-print or minify it.",
+      "action": "Format JSON",
+      "about": "The JSON formatter checks that your JSON is valid and, if it is, rewrites it indented with 2 or 4 spaces or tabs, or minifies it into a single line to save space. If there is an error, it tells you the line and column, for example an extra comma before a closing brace. It can also sort keys alphabetically to compare files.",
+      "faq": {
+        "q1": "How do I find the error in my JSON?",
+        "a1": "When formatting, the warning shows the line and column of the first problem. The most common ones are trailing commas, single quotes instead of double quotes and unquoted keys.",
+        "q2": "Does minifying change the data?",
+        "a2": "No. It only removes spaces and line breaks; values, order and types stay the same.",
+        "q3": "What is sorting keys for?",
+        "a3": "To compare two files with the same keys in a different order, or to get cleaner diffs in version control. Lists keep their order."
+      }
+    },
+    "xml-formatter": {
+      "title": "XML formatter and validator",
+      "description": "Validate your XML, see the line and column of the error, and pretty-print or minify it.",
+      "action": "Format XML",
+      "about": "The XML formatter checks that the document is well-formed (closed tags, quoted attributes) and rewrites it indented or minified. Comments, CDATA sections, attributes and references like &amp; are kept as they were. If there is an error, it shows the line and column.",
+      "faq": {
+        "q1": "Which errors does it find?",
+        "a1": "Unclosed or badly nested tags, repeated or unquoted attributes, and characters that aren't allowed. It is a well-formedness check: it does not validate against an XSD or DTD schema.",
+        "q2": "Is anything lost when formatting?",
+        "a2": "Whitespace between tags is replaced by the new indentation, and the DOCTYPE declaration is left out. Content, comments and CDATA are kept.",
+        "q3": "Is it safe with unknown files?",
+        "a3": "Yes. Documents that declare entities (the way in for XXE attacks) are refused with a warning, and nothing is fetched from the internet."
+      }
+    },
+    "yaml-formatter": {
+      "title": "YAML formatter and validator",
+      "description": "Validate your YAML, see the line and column of the error, and re-indent it keeping comments.",
+      "action": "Format YAML",
+      "about": "The YAML formatter validates config files such as docker-compose, Kubernetes or CI pipelines and re-indents them evenly with 2 or 4 spaces. It keeps comments, anchors and every document separated by ---. If there is a syntax error or a repeated key, it shows the line and column.",
+      "faq": {
+        "q1": "Why is there no tab option?",
+        "a1": "Because YAML doesn't allow tabs for indentation: a file indented with tabs is not valid.",
+        "q2": "Are my comments kept?",
+        "a2": "Yes. Full-line and end-of-line comments are kept, as are anchors and aliases.",
+        "q3": "Does it catch repeated keys?",
+        "a3": "Yes. A repeated key at the same level is an error in YAML, and many programs silently take the last one; here you get a warning with its position."
+      }
     }
   },
   "ToolUi": {
@@ -452,7 +494,8 @@
     "preview": "Preview",
     "copy": "Copy",
     "copied": "Copied",
-    "previewTruncated": "The preview only shows the beginning; the downloaded file has everything."
+    "previewTruncated": "The preview only shows the beginning; the downloaded file has everything.",
+    "errorAt": "(line {line}, column {column})"
   },
   "DataTools": {
     "delimiter": "Delimiter",
@@ -466,7 +509,13 @@
     "nested": "Rebuild objects from dotted columns",
     "pasteJson": "Or paste your JSON",
     "pasteCsv": "Or paste your CSV",
-    "paste": "Or paste your {format}"
+    "paste": "Or paste your {format}",
+    "layout": "Layout",
+    "indent2": "2 spaces",
+    "indent4": "4 spaces",
+    "indentTab": "Tabs",
+    "minify": "Minify",
+    "sortKeys": "Sort keys alphabetically"
   },
   "Email": {
     "subject": "Your Fileflect sign-in link",

@@ -396,6 +396,48 @@
         "q3": "¿Se conservan los comentarios?",
         "a3": "No. Los comentarios y las instrucciones de procesamiento no tienen equivalente en JSON y se omiten; el resto del contenido se mantiene."
       }
+    },
+    "json-formatter": {
+      "title": "Formatear y validar JSON",
+      "description": "Valida tu JSON, señala la línea y columna del error, y lo ordena con sangría o lo minifica.",
+      "action": "Formatear JSON",
+      "about": "Formatear JSON revisa que tu JSON sea válido y, si lo es, lo reescribe con sangría de 2 o 4 espacios o con tabulaciones, o lo minifica en una sola línea para ocupar menos. Si hay un error, te dice en qué línea y columna está, por ejemplo una coma de más antes de cerrar una llave. También puede ordenar las claves alfabéticamente para comparar archivos.",
+      "faq": {
+        "q1": "¿Cómo encuentro el error en mi JSON?",
+        "a1": "Al formatear, el aviso indica la línea y la columna del primer problema. Los más comunes son comas al final de una lista, comillas simples en lugar de dobles y claves sin comillas.",
+        "q2": "¿Minificar cambia los datos?",
+        "a2": "No. Solo quita espacios y saltos de línea; los valores, el orden y los tipos son los mismos.",
+        "q3": "¿Para qué sirve ordenar las claves?",
+        "a3": "Para comparar dos archivos con las mismas claves en distinto orden, o para que los cambios se vean mejor en un control de versiones. Las listas mantienen su orden."
+      }
+    },
+    "xml-formatter": {
+      "title": "Formatear y validar XML",
+      "description": "Valida tu XML, señala la línea y columna del error, y lo ordena con sangría o lo minifica.",
+      "action": "Formatear XML",
+      "about": "Formatear XML comprueba que el documento esté bien formado (etiquetas cerradas, atributos con comillas) y lo reescribe con sangría o minificado. Conserva comentarios, secciones CDATA, atributos y referencias como &amp; tal como estaban. Si hay un error, indica la línea y la columna.",
+      "faq": {
+        "q1": "¿Qué errores detecta?",
+        "a1": "Etiquetas sin cerrar o mal anidadas, atributos repetidos o sin comillas, y caracteres no permitidos. Es una validación de buena formación: no compara contra un esquema XSD o DTD.",
+        "q2": "¿Se pierde algo al formatear?",
+        "a2": "Los espacios en blanco entre etiquetas se reemplazan por la nueva sangría, y la declaración DOCTYPE se omite. El contenido, los comentarios y CDATA se mantienen.",
+        "q3": "¿Es seguro con archivos desconocidos?",
+        "a3": "Sí. Los documentos que declaran entidades (vía de ataques XXE) se rechazan con un aviso, y nada se descarga de internet."
+      }
+    },
+    "yaml-formatter": {
+      "title": "Formatear y validar YAML",
+      "description": "Valida tu YAML, señala la línea y columna del error y lo vuelve a indentar conservando los comentarios.",
+      "action": "Formatear YAML",
+      "about": "Formatear YAML valida archivos de configuración como docker-compose, Kubernetes o pipelines de CI y los vuelve a indentar con 2 o 4 espacios de forma uniforme. Conserva los comentarios, las anclas y todos los documentos separados por ---. Si hay un error de sintaxis o una clave repetida, indica la línea y la columna.",
+      "faq": {
+        "q1": "¿Por qué no hay opción de tabulaciones?",
+        "a1": "Porque YAML no permite tabulaciones para la sangría: un archivo indentado con tabulaciones no es válido.",
+        "q2": "¿Se mantienen mis comentarios?",
+        "a2": "Sí. Los comentarios de línea y al final de línea se conservan, igual que las anclas y los alias.",
+        "q3": "¿Detecta claves repetidas?",
+        "a3": "Sí. Una clave repetida en el mismo nivel es un error en YAML y muchos programas toman silenciosamente la última; aquí verás un aviso con la posición."
+      }
     }
   },
   "ToolUi": {
@@ -452,7 +494,8 @@
     "preview": "Vista previa",
     "copy": "Copiar",
     "copied": "Copiado",
-    "previewTruncated": "La vista previa muestra solo el comienzo; el archivo descargado tiene todo."
+    "previewTruncated": "La vista previa muestra solo el comienzo; el archivo descargado tiene todo.",
+    "errorAt": "(línea {line}, columna {column})"
   },
   "DataTools": {
     "delimiter": "Separador",
@@ -466,7 +509,13 @@
     "nested": "Reconstruir objetos desde columnas con punto",
     "pasteJson": "O pega tu JSON",
     "pasteCsv": "O pega tu CSV",
-    "paste": "O pega tu {format}"
+    "paste": "O pega tu {format}",
+    "layout": "Formato",
+    "indent2": "2 espacios",
+    "indent4": "4 espacios",
+    "indentTab": "Tabulaciones",
+    "minify": "Minificar",
+    "sortKeys": "Ordenar las claves alfabéticamente"
   },
   "Email": {
     "subject": "Tu enlace para entrar a Fileflect",

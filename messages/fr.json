@@ -396,6 +396,48 @@
         "q3": "Les commentaires sont-ils conservés ?",
         "a3": "Non. Les commentaires et instructions de traitement n'ont pas d'équivalent en JSON et sont omis ; le reste du contenu est conservé."
       }
+    },
+    "json-formatter": {
+      "title": "Formater et valider du JSON",
+      "description": "Validez votre JSON, voyez la ligne et la colonne de l'erreur, et indentez-le ou minifiez-le.",
+      "action": "Formater le JSON",
+      "about": "Le formateur JSON vérifie que votre JSON est valide et, si c'est le cas, le réécrit avec une indentation de 2 ou 4 espaces ou des tabulations, ou le minifie sur une seule ligne pour gagner de la place. En cas d'erreur, il indique la ligne et la colonne, par exemple une virgule en trop avant une accolade fermante. Il peut aussi trier les clés par ordre alphabétique pour comparer des fichiers.",
+      "faq": {
+        "q1": "Comment trouver l'erreur dans mon JSON ?",
+        "a1": "Lors du formatage, le message indique la ligne et la colonne du premier problème. Les plus fréquents sont les virgules finales, les guillemets simples au lieu de doubles et les clés sans guillemets.",
+        "q2": "La minification modifie-t-elle les données ?",
+        "a2": "Non. Elle supprime seulement les espaces et les retours à la ligne ; les valeurs, l'ordre et les types restent identiques.",
+        "q3": "À quoi sert le tri des clés ?",
+        "a3": "À comparer deux fichiers contenant les mêmes clés dans un ordre différent, ou à obtenir des différences plus lisibles dans un gestionnaire de versions. Les listes gardent leur ordre."
+      }
+    },
+    "xml-formatter": {
+      "title": "Formater et valider du XML",
+      "description": "Validez votre XML, voyez la ligne et la colonne de l'erreur, et indentez-le ou minifiez-le.",
+      "action": "Formater le XML",
+      "about": "Le formateur XML vérifie que le document est bien formé (balises fermées, attributs entre guillemets) et le réécrit indenté ou minifié. Les commentaires, les sections CDATA, les attributs et les références comme &amp; sont conservés tels quels. En cas d'erreur, il indique la ligne et la colonne.",
+      "faq": {
+        "q1": "Quelles erreurs détecte-t-il ?",
+        "a1": "Les balises non fermées ou mal imbriquées, les attributs répétés ou sans guillemets, et les caractères non autorisés. C'est une vérification de bonne formation : il ne valide pas par rapport à un schéma XSD ou DTD.",
+        "q2": "Perd-on quelque chose en formatant ?",
+        "a2": "Les espaces entre les balises sont remplacés par la nouvelle indentation, et la déclaration DOCTYPE est omise. Le contenu, les commentaires et les CDATA sont conservés.",
+        "q3": "Est-ce sûr avec des fichiers inconnus ?",
+        "a3": "Oui. Les documents qui déclarent des entités (porte d'entrée des attaques XXE) sont refusés avec un message, et rien n'est téléchargé depuis Internet."
+      }
+    },
+    "yaml-formatter": {
+      "title": "Formater et valider du YAML",
+      "description": "Validez votre YAML, voyez la ligne et la colonne de l'erreur, et réindentez-le en gardant les commentaires.",
+      "action": "Formater le YAML",
+      "about": "Le formateur YAML valide les fichiers de configuration comme docker-compose, Kubernetes ou les pipelines de CI et les réindente uniformément avec 2 ou 4 espaces. Il conserve les commentaires, les ancres et tous les documents séparés par ---. En cas d'erreur de syntaxe ou de clé répétée, il indique la ligne et la colonne.",
+      "faq": {
+        "q1": "Pourquoi n'y a-t-il pas d'option tabulation ?",
+        "a1": "Parce que YAML n'autorise pas les tabulations pour l'indentation : un fichier indenté avec des tabulations n'est pas valide.",
+        "q2": "Mes commentaires sont-ils conservés ?",
+        "a2": "Oui. Les commentaires sur une ligne entière et en fin de ligne sont conservés, tout comme les ancres et les alias.",
+        "q3": "Détecte-t-il les clés répétées ?",
+        "a3": "Oui. Une clé répétée au même niveau est une erreur en YAML, et beaucoup de programmes prennent la dernière sans prévenir ; ici, un message indique sa position."
+      }
     }
   },
   "ToolUi": {
@@ -452,7 +494,8 @@
     "preview": "Aperçu",
     "copy": "Copier",
     "copied": "Copié",
-    "previewTruncated": "L'aperçu ne montre que le début ; le fichier téléchargé contient tout."
+    "previewTruncated": "L'aperçu ne montre que le début ; le fichier téléchargé contient tout.",
+    "errorAt": "(ligne {line}, colonne {column})"
   },
   "DataTools": {
     "delimiter": "Séparateur",
@@ -466,7 +509,13 @@
     "nested": "Reconstruire les objets à partir des colonnes avec un point",
     "pasteJson": "Ou collez votre JSON",
     "pasteCsv": "Ou collez votre CSV",
-    "paste": "Ou collez votre {format}"
+    "paste": "Ou collez votre {format}",
+    "layout": "Mise en forme",
+    "indent2": "2 espaces",
+    "indent4": "4 espaces",
+    "indentTab": "Tabulations",
+    "minify": "Minifier",
+    "sortKeys": "Trier les clés par ordre alphabétique"
   },
   "Email": {
     "subject": "Votre lien de connexion Fileflect",

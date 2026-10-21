@@ -25,6 +25,16 @@ export class InputFileError extends ConversionError {
   }
 }
 
+/** A syntax error in a text input, with where it is (1-based line and column). */
+export class TextPositionError extends ConversionError {
+  constructor(
+    code: ApiErrorCode,
+    readonly position: { line: number; column: number },
+  ) {
+    super(code);
+  }
+}
+
 export function errorCode(error: unknown): ApiErrorCode {
   return error instanceof ConversionError && isApiErrorCode(error.code) ? error.code : "conversionFailed";
 }

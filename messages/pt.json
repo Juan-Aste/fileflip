@@ -396,6 +396,48 @@
         "q3": "Os comentários são mantidos?",
         "a3": "Não. Comentários e instruções de processamento não têm equivalente em JSON e são omitidos; o resto do conteúdo é mantido."
       }
+    },
+    "json-formatter": {
+      "title": "Formatar e validar JSON",
+      "description": "Valide seu JSON, veja a linha e a coluna do erro e formate com recuo ou minifique.",
+      "action": "Formatar JSON",
+      "about": "Formatar JSON verifica se o seu JSON é válido e, se for, o reescreve com recuo de 2 ou 4 espaços ou com tabulações, ou o minifica em uma única linha para ocupar menos. Se houver um erro, informa a linha e a coluna, por exemplo uma vírgula a mais antes de fechar uma chave. Também pode ordenar as chaves em ordem alfabética para comparar arquivos.",
+      "faq": {
+        "q1": "Como encontro o erro no meu JSON?",
+        "a1": "Ao formatar, o aviso mostra a linha e a coluna do primeiro problema. Os mais comuns são vírgulas no final de uma lista, aspas simples em vez de duplas e chaves sem aspas.",
+        "q2": "Minificar altera os dados?",
+        "a2": "Não. Só remove espaços e quebras de linha; valores, ordem e tipos continuam iguais.",
+        "q3": "Para que serve ordenar as chaves?",
+        "a3": "Para comparar dois arquivos com as mesmas chaves em outra ordem, ou para ver melhor as mudanças no controle de versões. As listas mantêm a ordem."
+      }
+    },
+    "xml-formatter": {
+      "title": "Formatar e validar XML",
+      "description": "Valide seu XML, veja a linha e a coluna do erro e formate com recuo ou minifique.",
+      "action": "Formatar XML",
+      "about": "Formatar XML verifica se o documento está bem formado (tags fechadas, atributos entre aspas) e o reescreve com recuo ou minificado. Comentários, seções CDATA, atributos e referências como &amp; são mantidos como estavam. Se houver um erro, informa a linha e a coluna.",
+      "faq": {
+        "q1": "Que erros ele detecta?",
+        "a1": "Tags não fechadas ou mal aninhadas, atributos repetidos ou sem aspas e caracteres não permitidos. É uma verificação de boa formação: não valida contra um esquema XSD ou DTD.",
+        "q2": "Algo se perde ao formatar?",
+        "a2": "Os espaços em branco entre as tags são trocados pelo novo recuo, e a declaração DOCTYPE é omitida. O conteúdo, os comentários e o CDATA são mantidos.",
+        "q3": "É seguro com arquivos desconhecidos?",
+        "a3": "Sim. Documentos que declaram entidades (porta de entrada de ataques XXE) são recusados com um aviso, e nada é baixado da internet."
+      }
+    },
+    "yaml-formatter": {
+      "title": "Formatar e validar YAML",
+      "description": "Valide seu YAML, veja a linha e a coluna do erro e refaça o recuo mantendo os comentários.",
+      "action": "Formatar YAML",
+      "about": "Formatar YAML valida arquivos de configuração como docker-compose, Kubernetes ou pipelines de CI e refaz o recuo de forma uniforme com 2 ou 4 espaços. Mantém os comentários, as âncoras e todos os documentos separados por ---. Se houver um erro de sintaxe ou uma chave repetida, informa a linha e a coluna.",
+      "faq": {
+        "q1": "Por que não há opção de tabulação?",
+        "a1": "Porque o YAML não permite tabulações no recuo: um arquivo recuado com tabulações não é válido.",
+        "q2": "Meus comentários são mantidos?",
+        "a2": "Sim. Comentários de linha inteira e de fim de linha são mantidos, assim como âncoras e aliases.",
+        "q3": "Ele detecta chaves repetidas?",
+        "a3": "Sim. Uma chave repetida no mesmo nível é um erro em YAML, e muitos programas usam a última sem avisar; aqui você vê um aviso com a posição."
+      }
     }
   },
   "ToolUi": {
@@ -452,7 +494,8 @@
     "preview": "Pré-visualização",
     "copy": "Copiar",
     "copied": "Copiado",
-    "previewTruncated": "A pré-visualização mostra só o começo; o arquivo baixado tem tudo."
+    "previewTruncated": "A pré-visualização mostra só o começo; o arquivo baixado tem tudo.",
+    "errorAt": "(linha {line}, coluna {column})"
   },
   "DataTools": {
     "delimiter": "Separador",
@@ -466,7 +509,13 @@
     "nested": "Reconstruir objetos a partir de colunas com ponto",
     "pasteJson": "Ou cole seu JSON",
     "pasteCsv": "Ou cole seu CSV",
-    "paste": "Ou cole seu {format}"
+    "paste": "Ou cole seu {format}",
+    "layout": "Formato",
+    "indent2": "2 espaços",
+    "indent4": "4 espaços",
+    "indentTab": "Tabulações",
+    "minify": "Minificar",
+    "sortKeys": "Ordenar as chaves em ordem alfabética"
   },
   "Email": {
     "subject": "Seu link para entrar no Fileflect",

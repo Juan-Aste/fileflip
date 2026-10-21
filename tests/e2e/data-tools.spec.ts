@@ -228,3 +228,60 @@ test.describe("tool: xml-to-json", () => {
     expect((await runTool(page, "Convertir a JSON")).error).toContain("No pudimos leer el contenido");
   });
 });
+
+test.describe("tool: json-formatter", () => {
+  test("pasted JSON → sorted and indented, then minified", async ({ page }) => {
+    await open(page, "/es/formatear-json");
+    await page.getByRole("textbox", { name: "O pega tu JSON" }).fill('{"b":[1,2],"a":{"z":true,"y":null}}');
+    await page.locator("label").filter({ hasText: "Ordenar las claves" }).click();
+    const out = fileOf(await runTool(page, "Formatear JSON"));
+    expect(readText(out.buf)).toBe('{\n  "a": {\n    "y": null,\n    "z": true\n  },\n  "b": [\n    1,\n    2\n  ]\n}\n');
+    await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+    await page.getByRole("textbox", { name: "O pega tu JSON" }).fill('{\n  "a" : [ 1 , 2 ]\n}');
+    await choose(page, "Minificar");
+    expect(readText(fileOf(await runTool(page, "Formatear JSON")).buf)).toBe('{"a":[1,2]}\n');
+  });
+
+  test("an error shows its line and column", async ({ page }) => {
+    await open(page, "/es/formatear-json");
+    await page.getByRole("textbox", { name: "O pega tu JSON" }).fill('{\n  "a": 1,\n  "b": 2,\n}');
+    expect((await runTool(page, "Formatear JSON")).error).toContain("(línea 4, columna 1)");
+  });
+});
+
+test.describe("tool: xml-formatter", () => {
+  test("XML file → indented, comments and CDATA kept", async ({ page }) => {
+    await open(page, "/es/formatear-xml", ["catalog.xml"]);
+    await choose(page, "4 espacios");
+    const out = fileOf(await runTool(page, "Formatear XML"));
+    const text = readText(out.buf);
+    expect(text).toContain("<!-- Sample catalog -->");
+    expect(text).toContain('    <book id="1">\n        <title>Café &amp; té</title>');
+    expect(text).toContain("<![CDATA[<b>raw</b>]]>");
+    expect(await domXml(page, text)).toEqual(await domXml(page, readFileSync(fixturePath("catalog.xml"), "utf8")));
+  });
+
+  test("an error shows its line", async ({ page }) => {
+    await open(page, "/en/xml-formatter");
+    await page.getByRole("textbox", { name: "Or paste your XML" }).fill("<a>\n  <b>\n</a>");
+    expect((await runTool(page, "Format XML")).error).toMatch(/\(line 3, column \d+\)/);
+  });
+});
+
+test.describe("tool: yaml-formatter", () => {
+  test("YAML file → re-indented with comments and documents kept", async ({ page }) => {
+    await open(page, "/es/formatear-yaml", ["config.yaml"]);
+    const out = fileOf(await runTool(page, "Formatear YAML"));
+    const text = readText(out.buf);
+    expect(text).toContain("# Sample service config");
+    expect(YAML.parseAllDocuments(text).map((d) => d.toJS())).toEqual(
+      YAML.parseAllDocuments(readFileSync(fixturePath("config.yaml"), "utf8")).map((d) => d.toJS()),
+    );
+  });
+
+  test("a repeated key shows its position", async ({ page }) => {
+    await open(page, "/es/formatear-yaml");
+    await page.getByRole("textbox", { name: "O pega tu YAML" }).fill("a: 1\nb: 2\na: 3\n");
+    expect((await runTool(page, "Formatear YAML")).error).toContain("(línea 3, columna 1)");
+  });
+});

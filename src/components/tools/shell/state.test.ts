@@ -114,3 +114,26 @@ describe("renameExtension", () => {
     expect(renameExtension("", "txt")).toBe("file.txt");
   });
 });
+
+describe("error positions", () => {
+  it("keeps the position when a single input fails", () => {
+    const processing = shellReducer(initialShellState, { type: "start" });
+    const state = shellReducer(processing, {
+      type: "finish",
+      outputs: [{ kind: "error", name: "a.json", code: "invalidData", position: { line: 3, column: 7 } }],
+    });
+    expect(state).toEqual({ status: "error", code: "invalidData", position: { line: 3, column: 7 } });
+  });
+
+  it("drops it when several inputs fail with the same code", () => {
+    const processing = shellReducer(initialShellState, { type: "start" });
+    const state = shellReducer(processing, {
+      type: "finish",
+      outputs: [
+        { kind: "error", name: "a.json", code: "invalidData", position: { line: 3, column: 7 } },
+        { kind: "error", name: "b.json", code: "invalidData", position: { line: 1, column: 1 } },
+      ],
+    });
+    expect(state).toEqual({ status: "error", code: "invalidData" });
+  });
+});

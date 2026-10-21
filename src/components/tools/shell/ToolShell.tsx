@@ -9,6 +9,7 @@ import { useSessionInfo } from "@/components/session/SessionInfo";
 import { buttonPrimary, buttonSecondary, card, field } from "@/components/ui/styles";
 import { limits } from "@/config/limits";
 import type { Locale } from "@/i18n/routing";
+import type { ApiErrorCode } from "@/lib/api-errors";
 import { errorCode } from "@/lib/convert-error";
 import { saveBlob } from "@/lib/download";
 import { formatBytes } from "@/lib/format";
@@ -22,6 +23,7 @@ import {
   initialShellState,
   outputFiles,
   shellReducer,
+  type ErrorPosition,
   type RejectReason,
   type ShellOutput,
 } from "./state";
@@ -85,6 +87,9 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
   const [text, setText] = useState("");
   const controller = useRef<AbortController | null>(null);
   const [urls] = useState(() => createUrlRegistry());
+
+  const errorText = (code: ApiErrorCode, position?: ErrorPosition) =>
+    position ? `${te(code)} ${t("errorAt", { line: position.line, column: position.column })}` : te(code);
 
   const planLimits = limits[plan];
   const maxFiles =
@@ -184,7 +189,7 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
                     </a>
                   </>
                 ) : (
-                  <span className="shrink-0 text-danger">{te(output.code)}</span>
+                  <span className="shrink-0 text-danger">{errorText(output.code, output.position)}</span>
                 )}
               </li>
             ))}
@@ -275,7 +280,7 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
           )}
           {options}
           {processing && <ProgressBar value={state.progress} label={t("working")} />}
-          {state.status === "error" && <ToolAlert>{te(state.code)}</ToolAlert>}
+          {state.status === "error" && <ToolAlert>{errorText(state.code, state.position)}</ToolAlert>}
           <div className="flex flex-wrap gap-3">
             <PrimaryButton onClick={run} disabled={processing || !hasInput}>
               {processing ? t("working") : actionLabel}

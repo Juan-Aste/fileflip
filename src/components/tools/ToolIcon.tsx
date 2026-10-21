@@ -5,6 +5,7 @@ import {
   FileJson,
   Settings2,
   FileArchive,
+  FileCheck,
   Sheet,
   Images,
   Layers,
@@ -30,6 +31,9 @@ const icons: Record<ToolId, LucideIcon> = {
   "toml-to-json": FileJson,
   "json-to-xml": CodeXml,
   "xml-to-json": FileJson,
+  "json-formatter": Braces,
+  "xml-formatter": CodeXml,
+  "yaml-formatter": FileCheck,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

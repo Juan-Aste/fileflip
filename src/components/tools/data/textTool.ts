@@ -1,6 +1,7 @@
 import type { FormatId } from "@/config/formats";
 import { formats } from "@/config/formats";
 import type { ToolId } from "@/config/tools";
+import { TextPositionError } from "@/lib/convert-error";
 import { runBatch } from "@/lib/jobs";
 import type { JobOptions } from "@/lib/jobs";
 import { trackTool } from "@/lib/stats-client";
@@ -44,7 +45,10 @@ export async function runTextTool(
   );
   return results.map((result, i): ShellOutput => {
     const name = renameExtension(inputs[i]?.name ?? pastedName, extension);
-    if (result.status === "error") return { kind: "error", name, code: result.code };
+    if (result.status === "error") {
+      const position = result.error instanceof TextPositionError ? result.error.position : undefined;
+      return { kind: "error", name, code: result.code, ...(position ? { position } : {}) };
+    }
     return {
       kind: "file",
       name,

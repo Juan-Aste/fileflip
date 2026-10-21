@@ -1498,3 +1498,16 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - 8 tests unitarios (atributos, listas, CDATA, referencias, XXE, billion laughs, XML roto, `__proto__`, nombres inválidos, ida y vuelta). `data-tools.spec.ts`: 19 casos; la salida XML se valida con el `DOMParser` del navegador (independiente de la librería). Lint, typecheck, tests (548), build, `check:static` (612 páginas) y `npm run test:e2e` (136/136) pasan.
 
 **Siguiente**: 3C.4 (formateador y validador de JSON, XML y YAML).
+
+## 2026-10-21 03:10 UTC — Fase 3, tarea 3C.4 (formateador y validador de JSON, XML y YAML)
+
+**Qué se hizo**
+- Tres herramientas en la categoría **Desarrolladores** (que ahora se publica: `/es/herramientas-para-desarrolladores`): Formatear y validar JSON (`/es/formatear-json`, `/en/json-formatter`), XML (`/es/formatear-xml`) y YAML (`/es/formatear-yaml`).
+- `src/lib/data/format.ts`: devuelve un resultado en vez de lanzar, con **línea y columna** del primer error. JSON: sangría 2/4/tab o minificado, ordenar claves (recursivo, `__proto__` como dato); la posición sale de un escáner propio (`jsonErrorOffset`) porque cada navegador redacta distinto (y a veces sin posición) el error de `JSON.parse`. XML: buena formación con `XMLValidator` (línea/columna), sangría o minificado con `preserveOrder`, conservando comentarios, CDATA, atributos y referencias tal cual; entidades DTD rechazadas (`xmlEntitiesBlocked`); se omite el DOCTYPE. YAML: sangría 2/4 (YAML no admite tabs ni tiene sentido "minificarlo"), conserva comentarios, anclas y todos los documentos; claves repetidas → error con posición (`prettyErrors: true` hace falta para tener `linePos`).
+- `ToolShell`: los errores pueden llevar `position` (`ShellOutput` y estado de error; se conserva si falla una sola entrada) y se muestran como "… (línea 4, columna 1)" (`ToolUi.errorAt`, 5 idiomas). `TextPositionError` en `convert-error.ts`; `formatText` en el cliente del worker la arma desde el resultado.
+- Problema encontrado por el test de navegador y corregido: el constructor XML partía la línea después de un CDATA, lo que agregaba espacios al texto del elemento; ahora el cierre queda pegado (`]]></note>`).
+
+**Verificación**
+- 21 tests unitarios de formato (offsets de error JSON, posiciones, sangrías, minificado, orden, XML con comentarios/CDATA, entidades, YAML con comentarios/anclas/varios documentos, claves repetidas) + 2 del estado del shell. `data-tools.spec.ts`: 25 casos (6 nuevos; la salida XML se compara con el `DOMParser` del navegador contra el fixture original). Lint, typecheck, tests (574), build, `check:static` (632 páginas) y `npm run test:e2e` (142/142) pasan.
+
+**Siguiente**: 3C.5 (Base64 de texto y archivos + codificar/decodificar URL).

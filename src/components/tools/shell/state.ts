@@ -47,6 +47,12 @@ export function checkInputs<F extends { name: string; size: number }>(
   return result;
 }
 
+/** Where a text input is wrong (1-based), for syntax errors. */
+export interface ErrorPosition {
+  line: number;
+  column: number;
+}
+
 /** One output of a run: a file to download, or the error of one input. */
 export type ShellOutput =
   | {
@@ -56,13 +62,13 @@ export type ShellOutput =
       /** Text outputs shown in the page (with a copy button) besides the download. */
       preview?: string;
     }
-  | { kind: "error"; name: string; code: ApiErrorCode };
+  | { kind: "error"; name: string; code: ApiErrorCode; position?: ErrorPosition };
 
 export type ShellState =
   | { status: "idle" }
   | { status: "processing"; progress: number }
   | { status: "done"; outputs: ShellOutput[] }
-  | { status: "error"; code: ApiErrorCode };
+  | { status: "error"; code: ApiErrorCode; position?: ErrorPosition };
 
 export type ShellAction =
   | { type: "start" }
@@ -86,7 +92,9 @@ export function shellReducer(state: ShellState, action: ShellAction): ShellState
       // A run where every input failed with the same error reads better as one message.
       if (action.outputs.length > 0 && action.outputs.every((o) => o.kind === "error")) {
         const codes = new Set(action.outputs.map((o) => (o.kind === "error" ? o.code : null)));
-        if (codes.size === 1) return { status: "error", code: [...codes][0]! };
+        const only = action.outputs.length === 1 ? action.outputs[0] : undefined;
+        const position = only?.kind === "error" ? only.position : undefined;
+        if (codes.size === 1) return { status: "error", code: [...codes][0]!, ...(position ? { position } : {}) };
       }
       if (action.outputs.length === 0) return { status: "error", code: "conversionFailed" };
       return { status: "done", outputs: action.outputs };

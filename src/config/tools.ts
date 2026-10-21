@@ -42,6 +42,9 @@ export const toolIds = [
   "toml-to-json",
   "json-to-xml",
   "xml-to-json",
+  "json-formatter",
+  "xml-formatter",
+  "yaml-formatter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -231,6 +234,39 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
     status: "verified",
     slugs: { es: "xml-a-json", en: "xml-to-json", pt: "xml-para-json", fr: "xml-en-json", zh: "xml-to-json" },
+  },
+  "json-formatter": {
+    id: "json-formatter",
+    category: "developer",
+    inputs: ["json"],
+    outputs: ["json"],
+    engine: "browser",
+    libraries: ["native JSON"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "formatear-json", en: "json-formatter", pt: "formatar-json", fr: "formater-json", zh: "json-formatter" },
+  },
+  "xml-formatter": {
+    id: "xml-formatter",
+    category: "developer",
+    inputs: ["xml"],
+    outputs: ["xml"],
+    engine: "browser",
+    libraries: ["fast-xml-parser"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "formatear-xml", en: "xml-formatter", pt: "formatar-xml", fr: "formater-xml", zh: "xml-formatter" },
+  },
+  "yaml-formatter": {
+    id: "yaml-formatter",
+    category: "developer",
+    inputs: ["yaml"],
+    outputs: ["yaml"],
+    engine: "browser",
+    libraries: ["yaml"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "formatear-yaml", en: "yaml-formatter", pt: "formatar-yaml", fr: "formater-yaml", zh: "yaml-formatter" },
   },
 };
 
