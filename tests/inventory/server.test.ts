@@ -4,7 +4,8 @@
 //
 // Office → PDF needs LibreOffice: the Gotenberg client is replaced by a local
 // `soffice --convert-to pdf` (the same engine Gotenberg runs). Those cases are
-// skipped when LibreOffice is not installed.
+// skipped when LibreOffice is not installed. SOFFICE names another binary,
+// e.g. a wrapper running the soffice of the Gotenberg image.
 import { execFileSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -16,7 +17,7 @@ import { afterAll, describe, expect, it, vi } from "vitest";
 import { detectFormat } from "@/lib/detect";
 import { serverImageInputs, serverImageOutputs } from "@/config/server-capabilities";
 
-const soffice = ["soffice", "libreoffice"].find((bin) => {
+const soffice = [process.env.SOFFICE, "soffice", "libreoffice"].filter((bin): bin is string => !!bin).find((bin) => {
   try {
     execFileSync(bin, ["--version"], { stdio: "ignore" });
     return true;
@@ -142,6 +143,28 @@ describe.skipIf(!soffice)("server office → PDF (LibreOffice)", () => {
     expect(res.status).toBe(200);
     const pdf = await PDFDocument.load(new Uint8Array(await res.arrayBuffer()));
     expect(pdf.getPageCount()).toBe(pages);
+  });
+
+  // A PowerPoint 97-2003 file is ~450 KB, too big to keep in the fixtures:
+  // it is made here from slides.pptx with the same LibreOffice.
+  it("PPT (made from slides.pptx) → PDF with the 2 slides and their text", { timeout: 180_000 }, async () => {
+    const dir = mkdtempSync(join(work, "ppt-"));
+    writeFileSync(join(dir, "slides.pptx"), fixture("slides.pptx"));
+    execFileSync(soffice!, [`-env:UserInstallation=file://${join(work, "profile")}`, "--headless", "--convert-to", "ppt", "--outdir", dir, join(dir, "slides.pptx")], {
+      stdio: "ignore",
+      timeout: 120_000,
+    });
+    const ppt = new Uint8Array(readFileSync(join(dir, "slides.ppt")));
+    // OLE2 container, not the OOXML zip.
+    expect([...ppt.subarray(0, 4)]).toEqual([0xd0, 0xcf, 0x11, 0xe0]);
+    const res = await post(convertDocument, ppt, "slides.ppt", "pdf");
+    expect(res.status).toBe(200);
+    const bytes = new Uint8Array(await res.arrayBuffer());
+    expect((await PDFDocument.load(bytes)).getPageCount()).toBe(2);
+    const { getDocument } = await import("pdfjs-dist/legacy/build/pdf.mjs");
+    const doc = await getDocument({ data: bytes, verbosity: 0 }).promise;
+    const text = ((await (await doc.getPage(1)).getTextContent()).items as { str?: string }[]).map((t) => t.str ?? "").join(" ");
+    expect(text).toContain("Fileflect slide 1");
   });
 });
 

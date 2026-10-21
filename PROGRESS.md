@@ -2016,3 +2016,16 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Conformidad nivel **b** (aspecto visual), no **a**/**u** (accesible/Unicode). En PDF/A-1b se aplanan transparencias; enlaces y formularios interactivos pueden perderse (FAQ). Límite de tamaño: el de servidor del plan (15 MB gratis, 100 MB Pro).
 
 **Siguiente**: 3C.26c (fixture PPT 97-2003 y prueba PPT → PDF).
+
+## 2026-10-21 23:35 UTC — Fase 3, tarea 3C.26c (PPT → PDF probado)
+
+**Qué se hizo**
+- El PPT (PowerPoint 97-2003) era el único formato de oficina sin probar: LibreOffice lo exporta con ~450 KB, más de lo razonable para `tests/fixtures/`. Ahora `tests/inventory/server.test.ts` lo **genera al correr** desde `slides.pptx` (`soffice --convert-to ppt`), comprueba que sea un contenedor OLE2 y lo pasa por `POST /api/convert/document`: PDF de **2 páginas** con el texto "Fileflect slide 1" (pdf.js).
+- La variable `SOFFICE` permite usar otro binario de LibreOffice (por ejemplo un envoltorio que ejecute el `soffice` de la imagen de Gotenberg: `docker run --rm -u 0 -v /tmp:/tmp --entrypoint soffice gotenberg/gotenberg:8 "$@"`). Los 12 casos de oficina → PDF (DOCX, DOC, ODT, RTF, TXT, CSV, XLSX, XLS, ODS, PPTX, ODP y PPT) pasan con el LibreOffice 24.2 del entorno y con el 26.8 de la imagen de Gotenberg.
+- Actualizados `docs/audit-inventory.md`, `docs/audit.md` y `tests/fixtures/README.md` (PPT probado).
+- 3C.26 queda completa (3C.26a, b y c).
+
+**Verificación**
+- `npx vitest run tests/inventory/server.test.ts` (y con `SOFFICE=<envoltorio>`) → 12 casos de oficina pasan; sin LibreOffice se saltan como antes. Lint, typecheck y tests (812) pasan.
+
+**Siguiente**: 3C.27 (hojas de cálculo XLSX ↔ CSV ↔ ODS en el navegador).

@@ -29,7 +29,7 @@ Tests: `tests/inventory/server.test.ts` (72 casos). Pasan los archivos reales po
 | DOCX, DOC, ODT, RTF, TXT | ✅ PDF de 1 página |
 | XLSX, XLS, ODS, CSV | ✅ PDF de 1 página |
 | PPTX, ODP | ✅ PDF de 2 páginas (una por diapositiva) |
-| PPT | ⚠️ sin fixture (LibreOffice exporta ~450 KB); mismo filtro de importación que PPTX, no probado |
+| PPT | ✅ (3C.26c) generado en el test desde `slides.pptx` con LibreOffice (~450 KB, no se guarda como fixture) → PDF de 2 páginas con el texto de la diapositiva |
 
 - Un archivo aleatorio llamado `.docx` → 415 (la detección por contenido no lo acepta y nunca llega a LibreOffice).
 - Tiempo por documento con LibreOffice local: 0,7–1,3 s (en frío, perfil nuevo).

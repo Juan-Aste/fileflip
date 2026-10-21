@@ -19,7 +19,7 @@ Fecha: 2026-10-20. Reúne el inventario real (`docs/audit-inventory.md`, tareas 
 | Imágenes → PDF | ✅ | ✅ | F, I | N | pdf-lib | MIT | Colgado con PNG truncado corregido en 3A.3d |
 | Comprimir PDF | ✅ | ✅ | F, I | N (respaldo S) | pdf.js + códecs | Apache-2.0 | Solo re-muestrea imágenes |
 | PDF → JPG/PNG (ZIP) | ✅ | ✅ | F, I | N | pdf.js, fflate | Apache-2.0, MIT | |
-| DOCX, DOC, ODT, RTF, TXT, XLSX, XLS, ODS, CSV, PPTX, ODP → PDF | ✅ | ✅ | F, I, C | S | Gotenberg (LibreOffice) | MIT (MPL-2.0) | PPT sin fixture (⚠️ no probado) |
+| DOCX, DOC, ODT, RTF, TXT, XLSX, XLS, ODS, CSV, PPTX, ODP → PDF | ✅ | ✅ | F, I, C | S | Gotenberg (LibreOffice) | MIT (MPL-2.0) | PPT generado en el test (✅ 3C.26c) |
 | PDF → Word | ✅ | ⚠️ | F, I | S | pdf.js + docx | Apache-2.0, MIT | Solo texto; escaneados → OCR (prioridad 8) |
 | Cola larga (DNI, SAT, AFIP, gov.br, WhatsApp, iPhone) | ✅ | ✅ | — | N | reutiliza las anteriores | — | Diferencial LatAm |
 
@@ -107,7 +107,7 @@ Conclusión del inventario: **no hay herramientas rotas** después de 3A.3c/3A.3
 | Markdown → PDF | ❌ | F, C | N + S | marked 18 (MIT) → HTML saneado (dompurify) → Gotenberg | MIT, MPL-2.0/Apache-2.0 | baja | HTML crudo dentro del Markdown: sanear | PDF con el texto de los títulos |
 | Markdown ↔ HTML | ❌ | C | N | marked + turndown 7 | MIT | baja | XSS en la vista previa: sanear siempre | ida y vuelta de títulos, listas y enlaces |
 | XLS, XLSX, ODS, CSV → PDF | ✅ | F, C | S | Gotenberg | MIT | — | — | ya existen |
-| PPT, PPTX, ODP → PDF | ✅ (PPT sin probar) | F, C | S | Gotenberg | MIT | baja | fixture PPT grande (~450 KB): generarlo en el test | PPT generado en el test |
+| PPT, PPTX, ODP → PDF | ✅ (PPT probado en 3C.26c) | F, C | S | Gotenberg | MIT | baja | fixture PPT grande (~450 KB): generarlo en el test | PPT generado en el test |
 | XLSX ↔ CSV ↔ ODS en el navegador | ❌ | F (Excel↔CSV), C | N | SheetJS CE 0.20.x (Apache-2.0) **desde el tarball oficial** (el `xlsx` de npm quedó en 0.18.5 con vulnerabilidades conocidas); alternativa exceljs (MIT, sin ODS) | Apache-2.0 | media | prototype pollution/ReDoS en versiones viejas; hojas enormes → límite de celdas | valores de celdas tras ida y vuelta; varias hojas (elegir hoja) |
 
 ### 2.8 OCR (prioridad 8)

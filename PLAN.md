@@ -249,10 +249,10 @@ Fuentes y documentos
 - [x] 3C.25 Markdown ↔ HTML y Markdown → PDF (dividida):
   - [x] 3C.25a Markdown ↔ HTML en el navegador (marked + turndown + turndown-plugin-gfm, saneado con DOMPurify)
   - [x] 3C.25b Markdown → PDF (HTML saneado de 3C.25a → Gotenberg/Chromium, sin acceso a red externa)
-- [ ] 3C.26 HTML → PDF con Gotenberg sin acceso a red externa (protección SSRF), fixture PPT generado en el test y PDF/A (Gotenberg) (dividida):
+- [x] 3C.26 HTML → PDF con Gotenberg sin acceso a red externa (protección SSRF), fixture PPT generado en el test y PDF/A (Gotenberg) (dividida):
   - [x] 3C.26a HTML → PDF (servidor): HTML del usuario saneado en el servidor con parse5 (sin scripts, eventos, meta/base/link, iframes, objetos ni URLs que no sean `data:`), la misma CSP y Gotenberg endurecido; prueba de SSRF
   - [x] 3C.26b PDF → PDF/A (Gotenberg, PDF/A-1b/2b/3b) con validación de los metadatos `pdfaid` en los tests
-  - [ ] 3C.26c Fixture PPT (97-2003) generado con el LibreOffice de la imagen de Gotenberg y prueba PPT → PDF en el inventario
+  - [x] 3C.26c Fixture PPT (97-2003) generado con el LibreOffice de la imagen de Gotenberg y prueba PPT → PDF en el inventario
 - [ ] 3C.27 Hojas de cálculo XLSX ↔ CSV ↔ ODS en el navegador (SheetJS CE desde el tarball oficial o exceljs; límite de celdas; elegir hoja)
 
 Archivos comprimidos
