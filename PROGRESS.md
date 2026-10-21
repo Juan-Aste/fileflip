@@ -1725,3 +1725,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (682), build, `check:static` (737 páginas) y `npm run test:e2e` (194/194) pasan. Captura revisada: `/es/generador-de-favicon` 360 oscuro con el resultado (8 archivos y botón ZIP).
 
 **Siguiente**: 3C.16b (SVG → PNG/JPG con página propia y HEIF como entrada).
+
+## 2026-10-21 15:25 UTC — Fase 3, tarea 3C.16b (convertir SVG y HEIF como entrada)
+
+**Qué se hizo**
+- **Convertir SVG a PNG, JPG o WEBP** (`/es/convertir-svg`, `/en/svg-converter`, `/pt/converter-svg`, `/fr/convertir-svg`): página propia, distinta de las páginas de conversión `svg-a-png`/`svg-a-jpg` (que siguen existiendo); escala 1×, 2×, 4× o ancho exacto (1–8000 px, con error visible y botón deshabilitado si no es válido), salida PNG/WEBP (con transparencia) o JPG (fondo blanco), en lotes de SVG de hasta 10 MB. Reutiliza `convertImage` del conversor: el SVG se dibuja en un `<img>` directamente al tamaño final (nítido al agrandar) y se codifica en el worker de imágenes. Mensaje por archivo con el tamaño final. Un SVG que el navegador no puede dibujar → `fileDamaged`.
+- **Seguridad del SVG**: dibujado como imagen, **no ejecuta `<script>` ni carga recursos externos** (`<image href>`); probado en el navegador.
+- **HEIF**: la detección ya aceptaba la marca `mif1` y la extensión `.heif` ya estaba asociada al formato HEIC, pero no había archivo de prueba. Nuevo fixture `photo.heif` (generado por script desde `photo.heic` con la marca `mif1`), test unitario del decodificador y prueba de navegador en la página HEIC → JPG y en "Redimensionar imagen". El buscador ya encuentra "heif" (las extensiones son palabras clave).
+- Textos (introducción + 4 preguntas) en los 5 idiomas.
+
+**Verificación**
+- `heic.test.ts`: nuevo caso `.heif` con `mif1` (120×80, azul a la izquierda).
+- `image-tools.spec.ts`: 3 casos nuevos (SVG 160×120 a 2× → PNG 320×240 con el círculo naranja en su lugar, ancho inválido → aviso y botón deshabilitado, 800 px → JPG 800×600; SVG con `<script>` que marca `window.top` y hace `fetch`, más una `<image>` externa → PNG 100×100 con esquina transparente y el cuadrado verde, sin marca y sin llamadas al servidor, y un SVG roto que falla solo; `photo.heif` → JPG 120×80 y redimensionado al 50 % → 60×40).
+- Lint, typecheck, tests (684), build, `check:static` (742 páginas) y `npm run test:e2e` (197/197) pasan. Captura revisada: `/es/convertir-svg` 360 oscuro.
+
+**Siguiente**: 3C.17 (subtítulos SRT ↔ VTT ↔ ASS/SSA, desplazar tiempos y ajustar FPS).

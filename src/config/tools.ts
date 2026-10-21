@@ -65,6 +65,7 @@ export const toolIds = [
   "watermark-image",
   "add-text-to-image",
   "favicon-generator",
+  "svg-converter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -537,6 +538,19 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 2 * MINUTE, maxFileBytes: 25 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "generador-de-favicon", en: "favicon-generator", pt: "gerador-de-favicon", fr: "generateur-favicon", zh: "favicon-generator" },
+  },
+
+  "svg-converter": {
+    id: "svg-converter",
+    category: "image",
+    inputs: ["svg"],
+    outputs: ["png", "jpg", "webp"],
+    engine: "browser",
+    // Rasterized by the browser through an <img> (no scripts, no external resources), encoded in the image worker.
+    libraries: ["canvas", "@jsquash/png", "@jsquash/jpeg", "@jsquash/webp"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: 10 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "convertir-svg", en: "svg-converter", pt: "converter-svg", fr: "convertir-svg", zh: "svg-converter" },
   },
 
 };

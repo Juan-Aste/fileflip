@@ -737,6 +737,22 @@
         "q4": "上传 SVG 安全吗？",
         "a4": "SVG 会在你的浏览器中作为图片绘制，不会执行脚本或加载外部资源，也绝不会发送到任何服务器。"
       }
+    },
+    "svg-converter": {
+      "title": "将 SVG 转换为 PNG、JPG 或 WEBP",
+      "description": "把 SVG 图形批量转换为高分辨率的 PNG、JPG 或 WEBP 图片（2×、4× 或任意宽度）。",
+      "action": "转换 SVG",
+      "about": "SVG 转换可以把矢量标志、图标和插画变成随处可用的图片：社交媒体、文档、演示文稿或不支持 SVG 的网站。由于 SVG 是矢量格式，会直接按所需尺寸绘制，放大后依然清晰：可选择 1×、2×、4× 或以像素为单位的精确宽度。PNG 和 WEBP 保留透明；JPG 会填充为白色。可一次转换多个文件，全部在浏览器中完成。",
+      "faq": {
+        "q1": "放大后会有像素感吗？",
+        "a1": "不会：SVG 会按最终尺寸重新绘制，所以在 2× 或 4× 下线条和文字依然清晰。每边上限为 16384 像素。",
+        "q2": "转换别人制作的 SVG 安全吗？",
+        "a2": "安全。SVG 作为图片绘制：其中的脚本不会执行，也不会加载外部文件。而且它绝不会上传到任何服务器。",
+        "q3": "我的 SVG 使用了特殊字体，文字显示不一样，为什么？",
+        "a3": "如果 SVG 使用的字体没有嵌入文件，浏览器会用系统字体替代。请在编辑器（Inkscape、Illustrator、Figma）中将文字转为轮廓后再导出。",
+        "q4": "1× 时结果是多大？",
+        "a4": "即 SVG 在 width 和 height 属性（或 viewBox）中声明的尺寸。如果都没有声明，则使用 1024 像素。结果信息会显示每张图片的最终尺寸。"
+      }
     }
   },
   "ToolUi": {
@@ -1428,6 +1444,11 @@
     "faviconTransparent": "透明",
     "faviconColor": "纯色",
     "faviconAppName": "网站或应用名称（可选，用于 manifest）",
-    "faviconHint": "你将得到 favicon.ico（16、32 和 48 像素）、16、32、180、192 和 512 像素的 PNG、site.webmanifest，以及包含 head 标签的 favicon-head.html。请使用至少 512 × 512 像素的图片或 SVG。"
+    "faviconHint": "你将得到 favicon.ico（16、32 和 48 像素）、16、32、180、192 和 512 像素的 PNG、site.webmanifest，以及包含 head 标签的 favicon-head.html。请使用至少 512 × 512 像素的图片或 SVG。",
+    "svgScale": "尺寸",
+    "svgByWidth": "指定宽度",
+    "svgWidthInvalid": "请输入 1 到 {max} 像素之间的整数宽度。",
+    "svgHint": "1× 使用 SVG 中声明的尺寸（未声明时为 1024 像素）。JPG 中透明区域会变成白色。",
+    "svgSize": "{name}：{size} 像素"
   }
 }

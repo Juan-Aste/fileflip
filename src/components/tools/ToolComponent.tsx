@@ -42,6 +42,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "watermark-image": dynamic(() => import("./image/OverlayImageTool").then((m) => m.WatermarkImageTool)),
   "add-text-to-image": dynamic(() => import("./image/OverlayImageTool").then((m) => m.AddTextToImageTool)),
   "favicon-generator": dynamic(() => import("./image/FaviconTool")),
+  "svg-converter": dynamic(() => import("./image/SvgConverterTool")),
   "remove-exif": dynamic(() => import("./image/RemoveMetadataTool")),
 };
 

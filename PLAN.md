@@ -229,9 +229,9 @@ Imágenes (las más buscadas primero)
 - [x] 3C.13 Rotar/voltear y quitar metadatos EXIF/GPS (aplicando antes la orientación; exifr para mostrar qué se quita)
 - [x] 3C.14 Recortar imagen con proporciones fijas (accesible con teclado)
 - [x] 3C.15 Marca de agua (texto o imagen) y agregar texto a una imagen
-- [ ] 3C.16 Paquete de favicon, SVG → PNG/JPG con página propia y HEIF como entrada (dividida):
+- [x] 3C.16 Paquete de favicon, SVG → PNG/JPG con página propia y HEIF como entrada (dividida):
   - [x] 3C.16a Generador de favicon: PNG 16, 32, 180 (Apple), 192 y 512 (Android), ICO con 16/32/48, `site.webmanifest` y fragmento HTML; ajustar con márgenes o recortar al cuadrado, fondo transparente o de color; SVG como entrada (rasterizado en `<img>`, sin scripts); descarga individual o ZIP
-  - [ ] 3C.16b SVG → PNG/JPG con página propia (tamaño/escala y fondo; prueba de que un `<script>` del SVG no se ejecuta) y HEIF como entrada (fixture `.heif` y página de conversión si corresponde)
+  - [x] 3C.16b SVG → PNG/JPG con página propia (tamaño/escala y fondo; prueba de que un `<script>` del SVG no se ejecuta) y HEIF como entrada (fixture `.heif` y página de conversión si corresponde)
 
 Subtítulos
 - [ ] 3C.17 SRT ↔ VTT ↔ ASS/SSA, desplazar tiempos y ajustar FPS (detección de codificación; aviso de estilos que se pierden)

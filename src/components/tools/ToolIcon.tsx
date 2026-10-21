@@ -31,6 +31,7 @@ import {
   Crop,
   Stamp,
   AppWindow,
+  PenTool,
   Type,
   type LucideIcon,
 } from "lucide-react";
@@ -74,6 +75,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "watermark-image": Stamp,
   "add-text-to-image": Type,
   "favicon-generator": AppWindow,
+  "svg-converter": PenTool,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

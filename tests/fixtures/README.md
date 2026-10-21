@@ -19,6 +19,7 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `qr.png`, `qr-photo.jpg`, `qr-inverted.png` | qrcode + sharp: QR de un enlace (300 px, limpio) / QR de una red Wi-Fi ficticia girado 12° sobre un fondo con luz despareja y ruido, desenfocado y en JPEG al 70 % / QR claro sobre fondo oscuro con texto UTF-8 |
 | `photo.jpg`, `photo-alpha.png`, `noise.jpg` | sharp: paisaje sintético de 1000×750 con ruido en JPEG al 95 % (para comprimir) / degradado de 360×270 con fondo transparente (círculo opaco) en PNG / grano fuerte de 480×360 en JPEG al 85 % (para llegar a un peso chico hay que achicarlo) |
 | `exif-gps.jpg`, `exif-gps.png`, `exif-gps.webp` | sharp: el paisaje a 320×240 con metadatos inventados (cámara "Fileflect Test Cam 1", fecha, autor, programa y GPS en el Río de la Plata); el JPG guardado de costado con orientación EXIF 6 |
+| `photo.heif` | `generate.mjs`: los mismos bytes que `photo.heic` con la marca principal del `ftyp` cambiada a `mif1` (contenedor HEIF genérico, como lo escriben cámaras que no son iPhone) |
 | `table-excel.csv`, `table.tsv` | CSV como lo guarda Excel en español (punto y coma, coma decimal, Windows-1252) / TSV en UTF-8 |
 | `document.{odt,docx,doc,rtf}` | LibreOffice desde un documento ODF plano escrito en el script |
 | `spreadsheet.{ods,xlsx,xls}` | LibreOffice desde una hoja ODF plana (4 filas × 3 columnas) |

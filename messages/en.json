@@ -737,6 +737,22 @@
         "q4": "Is uploading an SVG safe?",
         "a4": "The SVG is drawn in your browser as an image, without running scripts or loading external resources, and it is never sent to any server."
       }
+    },
+    "svg-converter": {
+      "title": "Convert SVG to PNG, JPG or WEBP",
+      "description": "Turn your SVG graphics into high-resolution PNG, JPG or WEBP images (2×, 4× or any width), in batches.",
+      "action": "Convert SVG",
+      "about": "Convert SVG turns vector logos, icons and illustrations into images you can use anywhere: social media, documents, slides or sites that don't accept SVG. Since an SVG is vector-based, it is drawn directly at the requested size and stays sharp when enlarged: choose 1×, 2×, 4× or an exact width in pixels. PNG and WEBP keep transparency; JPG fills it with white. You can convert many files at once and everything happens in your browser.",
+      "faq": {
+        "q1": "Does it get pixelated if I enlarge it?",
+        "a1": "No: the SVG is drawn again at the final size, so at 2× or 4× lines and text stay sharp. The limit is 16,384 px per side.",
+        "q2": "Is it safe to convert an SVG I didn't make?",
+        "a2": "Yes. The SVG is drawn as an image: any scripts it contains don't run and external files are not loaded. It is also never uploaded to any server.",
+        "q3": "My SVG uses a special font and the text looks different. Why?",
+        "a3": "If the SVG uses a font that isn't embedded in the file, the browser replaces it with a system font. Convert text to outlines in your editor (Inkscape, Illustrator, Figma) before exporting.",
+        "q4": "What size is the result at 1×?",
+        "a4": "The one the SVG declares in its width and height attributes (or its viewBox). If it declares none, 1024 px is used. The result message shows each image's final size."
+      }
     }
   },
   "ToolUi": {
@@ -1428,6 +1444,11 @@
     "faviconTransparent": "Transparent",
     "faviconColor": "Color",
     "faviconAppName": "Site or app name (optional, for the manifest)",
-    "faviconHint": "You get favicon.ico (16, 32 and 48 px), PNGs at 16, 32, 180, 192 and 512 px, site.webmanifest and favicon-head.html with the tags for your head. Use an image of at least 512 × 512 px or an SVG."
+    "faviconHint": "You get favicon.ico (16, 32 and 48 px), PNGs at 16, 32, 180, 192 and 512 px, site.webmanifest and favicon-head.html with the tags for your head. Use an image of at least 512 × 512 px or an SVG.",
+    "svgScale": "Size",
+    "svgByWidth": "Exact width",
+    "svgWidthInvalid": "Enter a whole width between 1 and {max} px.",
+    "svgHint": "1× uses the size declared in the SVG (1024 px if it declares none). In JPG, transparent areas become white.",
+    "svgSize": "{name}: {size} px"
   }
 }

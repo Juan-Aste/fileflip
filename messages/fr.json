@@ -737,6 +737,22 @@
         "q4": "Est-il sûr d'envoyer un SVG ?",
         "a4": "Le SVG est dessiné dans votre navigateur comme une image, sans exécuter de scripts ni charger de ressources externes, et il n'est jamais envoyé à un serveur."
       }
+    },
+    "svg-converter": {
+      "title": "Convertir un SVG en PNG, JPG ou WEBP",
+      "description": "Transformez vos graphiques SVG en images PNG, JPG ou WEBP haute résolution (2×, 4× ou la largeur voulue), par lots.",
+      "action": "Convertir le SVG",
+      "about": "Convertir un SVG transforme logos, icônes et illustrations vectorielles en images utilisables partout : réseaux sociaux, documents, présentations ou sites qui n'acceptent pas le SVG. Comme un SVG est vectoriel, il est dessiné directement à la taille demandée et reste net même agrandi : choisissez 1×, 2×, 4× ou une largeur exacte en pixels. PNG et WEBP gardent la transparence ; le JPG la remplit de blanc. Vous pouvez convertir de nombreux fichiers à la fois et tout se passe dans votre navigateur.",
+      "faq": {
+        "q1": "L'image devient-elle pixelisée si je l'agrandis ?",
+        "a1": "Non : le SVG est redessiné à la taille finale, donc en 2× ou 4× les traits et les textes restent nets. La limite est de 16 384 px par côté.",
+        "q2": "Est-il sûr de convertir un SVG que je n'ai pas créé ?",
+        "a2": "Oui. Le SVG est dessiné comme une image : ses éventuels scripts ne s'exécutent pas et aucun fichier externe n'est chargé. Il n'est jamais envoyé sur un serveur.",
+        "q3": "Mon SVG utilise une police spéciale et le texte change. Pourquoi ?",
+        "a3": "Si le SVG utilise une police non intégrée au fichier, le navigateur la remplace par une police du système. Vectorisez les textes dans votre éditeur (Inkscape, Illustrator, Figma) avant d'exporter.",
+        "q4": "Quelle taille a le résultat en 1× ?",
+        "a4": "Celle que le SVG déclare dans ses attributs width et height (ou son viewBox). S'il n'en déclare aucune, 1024 px sont utilisés. Le message du résultat indique la taille finale de chaque image."
+      }
     }
   },
   "ToolUi": {
@@ -1428,6 +1444,11 @@
     "faviconTransparent": "Transparent",
     "faviconColor": "Couleur",
     "faviconAppName": "Nom du site ou de l'app (facultatif, pour le manifest)",
-    "faviconHint": "Vous obtenez favicon.ico (16, 32 et 48 px), des PNG de 16, 32, 180, 192 et 512 px, site.webmanifest et favicon-head.html avec les balises pour le head. Utilisez une image d'au moins 512 × 512 px ou un SVG."
+    "faviconHint": "Vous obtenez favicon.ico (16, 32 et 48 px), des PNG de 16, 32, 180, 192 et 512 px, site.webmanifest et favicon-head.html avec les balises pour le head. Utilisez une image d'au moins 512 × 512 px ou un SVG.",
+    "svgScale": "Taille",
+    "svgByWidth": "Largeur exacte",
+    "svgWidthInvalid": "Saisissez une largeur entière entre 1 et {max} px.",
+    "svgHint": "1× utilise la taille déclarée dans le SVG (1024 px s'il n'en déclare aucune). En JPG, les zones transparentes deviennent blanches.",
+    "svgSize": "{name} : {size} px"
   }
 }

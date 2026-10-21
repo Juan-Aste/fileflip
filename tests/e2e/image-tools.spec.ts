@@ -521,3 +521,74 @@ test.describe("tool: favicon-generator", () => {
     expect(await page.evaluate(() => (window as unknown as { __svgRan?: boolean }).__svgRan)).toBeUndefined();
   });
 });
+
+test.describe("tool: svg-converter", () => {
+  test("2× PNG at double the declared size; an exact width as JPG", async ({ page }) => {
+    await page.goto("/en/svg-converter", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("image.svg")]);
+    const png = fileOf(await runTool(page, "Convert SVG"));
+    expect(png.name).toBe("image.png");
+    expect(await inspectImage(png.buf)).toMatchObject({ format: "png", width: 320, height: 240 });
+    const px = await rawPixels(png.buf);
+    const at = (x: number) => [...px.subarray((120 * 320 + x) * 4, (120 * 320 + x) * 4 + 3)];
+    expect(at(220)[0]).toBeGreaterThan(200); // the orange circle at 2× (cx 110 → 220)
+    await expect(page.getByText("image.png: 320 × 240 px")).toBeVisible();
+
+    await page.getByRole("button", { name: "Start over" }).click();
+    await pick(page, [fixturePath("image.svg")]);
+    await choose(page, "Exact width");
+    const widthBox = page.getByRole("textbox", { name: "Width (px)" });
+    await widthBox.fill("99999");
+    await expect(page.getByText("Enter a whole width between 1 and 8000 px.")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Convert SVG", exact: true })).toBeDisabled();
+    await widthBox.fill("800");
+    await choose(page, "JPG");
+    const jpg = fileOf(await runTool(page, "Convert SVG"));
+    expect(await inspectImage(jpg.buf)).toMatchObject({ format: "jpg", width: 800, height: 600 });
+  });
+
+  test("an SVG's script never runs; a broken SVG fails alone", async ({ page }) => {
+    const dir = mkdtempSync(join(tmpdir(), "svg-"));
+    const evil = join(dir, "evil.svg");
+    writeFileSync(
+      evil,
+      '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100">' +
+        '<script>window.top.__svgRan = true; fetch("/api/svg-script-ran");</script>' +
+        '<image href="/api/svg-external-image.png" width="10" height="10"/>' +
+        '<rect x="20" y="20" width="60" height="60" fill="#16a34a"/></svg>',
+    );
+    const broken = join(dir, "broken.svg");
+    writeFileSync(broken, "<svg xmlns='http://www.w3.org/2000/svg'><rect width='10'");
+    await page.goto("/es/convertir-svg", { waitUntil: "networkidle" });
+    await pick(page, [evil, broken]);
+    await choose(page, "1×");
+    await page.getByRole("button", { name: "Convertir SVG", exact: true }).click();
+    const items = page.locator("main ul").filter({ has: page.locator("a[download]") }).locator("li");
+    await expect(items).toHaveCount(2, { timeout: 60_000 });
+    await expect(items.nth(1)).toContainText("dañado");
+    const out = fileOf(await waitForResult(page, page.locator('main a[download="evil.png"]'), toolAlert(page)));
+    expect(await inspectImage(out.buf)).toMatchObject({ width: 100, height: 100 });
+    const px = await rawPixels(out.buf);
+    expect(px[3]).toBe(0); // transparent corner
+    expect(px[(50 * 100 + 50) * 4 + 1]).toBeGreaterThan(120); // the green square
+    expect(await page.evaluate(() => (window as unknown as { __svgRan?: boolean }).__svgRan)).toBeUndefined();
+  });
+});
+
+test.describe("HEIF input", () => {
+  test("a .heif file (mif1 brand) converts to JPG and resizes", async ({ page }) => {
+    await page.goto("/en/heic-to-jpg", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.heif")]);
+    await page.getByRole("button", { name: /^Convert/ }).first().click();
+    const jpg = fileOf(await waitForResult(page, page.locator("main a[download]").first(), toolAlert(page)));
+    expect(jpg.name).toBe("photo.jpg");
+    expect(await inspectImage(jpg.buf)).toMatchObject({ format: "jpg", width: 120, height: 80 });
+
+    await page.goto("/en/resize-image", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.heif")]);
+    await choose(page, "By percentage");
+    await page.getByRole("textbox", { name: "Percentage (%)" }).fill("50");
+    const half = fileOf(await runTool(page, "Resize images"));
+    expect(await inspectImage(half.buf)).toMatchObject({ format: "jpg", width: 60, height: 40 });
+  });
+});

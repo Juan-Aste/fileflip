@@ -324,6 +324,14 @@ write("qr-inverted.png", await sharp(Buffer.from(await qrSvg("Olá, 中文 ✓ 1
   write("noise.jpg", await sharp(grain, { raw: { width: NW, height: NH, channels: 3 } }).jpeg({ quality: 85 }).toBuffer());
 }
 
+// --- HEIF: the same HEVC picture as photo.heic in a container declared with
+// the generic brand "mif1" (what cameras other than iPhones write as .heif).
+if (existsSync(join(out, "photo.heic"))) {
+  const heif = Buffer.from(readFileSync(join(out, "photo.heic")));
+  if (heif.toString("ascii", 4, 12) === "ftypheic") heif.write("mif1", 8, "ascii");
+  write("photo.heif", heif);
+}
+
 // --- Broken files for error paths
 const writeCorrupt = (name, bytes) => write(join("corrupt", name), bytes);
 const png = readFileSync(join(out, "image.png"));
