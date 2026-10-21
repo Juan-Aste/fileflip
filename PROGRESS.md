@@ -1511,3 +1511,16 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - 21 tests unitarios de formato (offsets de error JSON, posiciones, sangrías, minificado, orden, XML con comentarios/CDATA, entidades, YAML con comentarios/anclas/varios documentos, claves repetidas) + 2 del estado del shell. `data-tools.spec.ts`: 25 casos (6 nuevos; la salida XML se compara con el `DOMParser` del navegador contra el fixture original). Lint, typecheck, tests (574), build, `check:static` (632 páginas) y `npm run test:e2e` (142/142) pasan.
 
 **Siguiente**: 3C.5 (Base64 de texto y archivos + codificar/decodificar URL).
+
+## 2026-10-21 03:25 UTC — Fase 3, tarea 3C.5 (Base64 y codificar/decodificar URL)
+
+**Qué se hizo**
+- Tres herramientas en **Desarrolladores**: Codificar a Base64 (`/es/codificar-base64`), Decodificar Base64 (`/es/decodificar-base64`) y Codificar y decodificar URL (`/es/codificar-url`). Formatos nuevos `base64` y `bin` (cualquier archivo como bytes).
+- `src/lib/data/base64.ts`: codificación por bloques de 3 × 32 KB (no desborda la pila con archivos grandes y los bloques se concatenan bien), saltos cada 76 caracteres opcionales, data URL con el tipo del archivo; decodificación de Base64 puro o data URL, con saltos de línea, alfabeto seguro para URL y sin relleno; rechaza caracteres ajenos o longitudes imposibles (`invalidData`). `asReadableText` decide si el resultado se muestra como texto. URL: `encodeURIComponent` (valor) o `encodeURI` (URL completa), decodificación con `+` como espacio opcional; `%` mal formado o sustitutos sueltos → `invalidData`.
+- Decodificar elige la extensión por el tipo de la data URL, luego por el contenido (`detectFormat`: PNG, JPG, PDF…), luego `.txt` si es texto legible, si no `.bin`; `foto.png.txt` vuelve a `foto.png`. Codificar nombra la salida `<archivo original>.txt`. `runTextTool` acepta `outputName`.
+- Base64 corre en el worker de datos (archivos de hasta 50 MB); URL en el hilo principal (es inmediato).
+
+**Verificación**
+- 7 tests unitarios (comparación con el Base64 de Node en tamaños que cruzan los bloques, hasta 300 KB aleatorios, ida y vuelta byte a byte, saltos, data URL, alfabeto URL, inválidos, texto legible, URL). `data-tools.spec.ts`: 32 casos (7 nuevos: PNG → Base64 igual al de Node y data URL, texto UTF-8, data URL → PNG idéntico, Base64 de un PDF reconocido por contenido, texto con vista previa, inválido, URL en sus modos y `%` roto). Lint, typecheck, tests (584), build, `check:static` (647 páginas) y `npm run test:e2e` (149/149) pasan.
+
+**Siguiente**: 3C.6 (hashes MD5/SHA de texto y archivos).

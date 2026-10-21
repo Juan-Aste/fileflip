@@ -29,7 +29,9 @@ export type FormatId =
   | "tsv"
   | "yaml"
   | "toml"
-  | "xml";
+  | "xml"
+  | "base64"
+  | "bin";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -73,6 +75,9 @@ export const formats: Record<FormatId, FormatInfo> = {
   yaml: { id: "yaml", label: "YAML", mime: "application/yaml", extensions: ["yaml", "yml"], category: "data" },
   toml: { id: "toml", label: "TOML", mime: "application/toml", extensions: ["toml"], category: "data" },
   xml: { id: "xml", label: "XML", mime: "application/xml", extensions: ["xml"], category: "data" },
+  base64: { id: "base64", label: "Base64", mime: "text/plain", extensions: ["b64", "base64"], category: "data" },
+  /** Any file, as raw bytes (Base64 tools). */
+  bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 
 /** Raster formats we can encode as output in the browser. */

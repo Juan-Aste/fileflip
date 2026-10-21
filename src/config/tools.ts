@@ -45,6 +45,9 @@ export const toolIds = [
   "json-formatter",
   "xml-formatter",
   "yaml-formatter",
+  "base64-encode",
+  "base64-decode",
+  "url-encode",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -267,6 +270,39 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
     status: "verified",
     slugs: { es: "formatear-yaml", en: "yaml-formatter", pt: "formatar-yaml", fr: "formater-yaml", zh: "yaml-formatter" },
+  },
+  "base64-encode": {
+    id: "base64-encode",
+    category: "developer",
+    inputs: ["bin", "txt"],
+    outputs: ["base64"],
+    engine: "browser",
+    libraries: ["native btoa"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "codificar-base64", en: "base64-encode", pt: "codificar-base64", fr: "encoder-base64", zh: "base64-encode" },
+  },
+  "base64-decode": {
+    id: "base64-decode",
+    category: "developer",
+    inputs: ["base64", "txt"],
+    outputs: ["bin"],
+    engine: "browser",
+    libraries: ["native atob"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "decodificar-base64", en: "base64-decode", pt: "decodificar-base64", fr: "decoder-base64", zh: "base64-decode" },
+  },
+  "url-encode": {
+    id: "url-encode",
+    category: "developer",
+    inputs: ["txt"],
+    outputs: ["txt"],
+    engine: "browser",
+    libraries: ["native encodeURIComponent"],
+    limits: { files: "single", timeoutMs: MINUTE },
+    status: "verified",
+    slugs: { es: "codificar-url", en: "url-encode", pt: "codificar-url", fr: "encoder-url", zh: "url-encode" },
   },
 };
 

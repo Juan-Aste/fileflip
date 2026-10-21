@@ -1,5 +1,8 @@
 import {
+  Binary,
   Braces,
+  FileDown,
+  Link2,
   CodeXml,
   FileCode,
   FileJson,
@@ -34,6 +37,9 @@ const icons: Record<ToolId, LucideIcon> = {
   "json-formatter": Braces,
   "xml-formatter": CodeXml,
   "yaml-formatter": FileCheck,
+  "base64-encode": Binary,
+  "base64-decode": FileDown,
+  "url-encode": Link2,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

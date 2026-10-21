@@ -285,3 +285,78 @@ test.describe("tool: yaml-formatter", () => {
     expect((await runTool(page, "Formatear YAML")).error).toContain("(línea 3, columna 1)");
   });
 });
+
+test.describe("tool: base64-encode", () => {
+  test("a PNG file → base64 identical to Node's, and a data URL", async ({ page }) => {
+    const png = readFileSync(fixturePath("image.png"));
+    await open(page, "/es/codificar-base64", ["image.png"]);
+    const out = fileOf(await runTool(page, "Codificar a Base64"));
+    expect(out.name).toBe("image.png.txt");
+    expect(readText(out.buf)).toBe(png.toString("base64"));
+    await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(fixturePath("image.png"));
+    await choose(page, "Data URL");
+    expect(readText(fileOf(await runTool(page, "Codificar a Base64")).buf)).toBe(`data:image/png;base64,${png.toString("base64")}`);
+  });
+
+  test("pasted UTF-8 text", async ({ page }) => {
+    await open(page, "/es/codificar-base64");
+    await page.getByRole("textbox", { name: "O escribe o pega el texto" }).fill("Olá, 中文 ✓");
+    expect(readText(fileOf(await runTool(page, "Codificar a Base64")).buf)).toBe(Buffer.from("Olá, 中文 ✓").toString("base64"));
+  });
+});
+
+test.describe("tool: base64-decode", () => {
+  test("a pasted data URL → the original PNG, byte for byte", async ({ page }) => {
+    const png = readFileSync(fixturePath("image.png"));
+    await open(page, "/es/decodificar-base64");
+    await page.getByRole("textbox", { name: "O pega tu Base64" }).fill(`data:image/png;base64,${png.toString("base64")}`);
+    const out = fileOf(await runTool(page, "Decodificar Base64"));
+    expect(out.name).toBe("decoded.png");
+    expect(out.buf.equals(png)).toBe(true);
+  });
+
+  test("bare base64 of a PDF is recognized by its content", async ({ page }) => {
+    const pdf = readFileSync(fixturePath("document-1page.pdf"));
+    await open(page, "/es/decodificar-base64");
+    await page.getByRole("textbox", { name: "O pega tu Base64" }).fill(pdf.toString("base64").replace(/.{76}/g, "$&\n"));
+    const out = fileOf(await runTool(page, "Decodificar Base64"));
+    expect(out.name).toBe("decoded.pdf");
+    expect(out.buf.equals(pdf)).toBe(true);
+  });
+
+  test("text comes back with a preview, invalid input shows an error", async ({ page }) => {
+    await open(page, "/es/decodificar-base64");
+    await page.getByRole("textbox", { name: "O pega tu Base64" }).fill(Buffer.from("Hola, ñandú").toString("base64"));
+    const out = fileOf(await runTool(page, "Decodificar Base64"));
+    expect(out.name).toBe("decoded.txt");
+    await expect(page.getByRole("textbox", { name: "Vista previa" })).toHaveValue("Hola, ñandú");
+    await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+    await page.getByRole("textbox", { name: "O pega tu Base64" }).fill("esto no es base64!");
+    expect((await runTool(page, "Decodificar Base64")).error).toContain("No pudimos leer el contenido");
+  });
+});
+
+test.describe("tool: url-encode", () => {
+  test("encodes a value and a whole URL, and decodes form text", async ({ page }) => {
+    await open(page, "/es/codificar-url");
+    const box = page.getByRole("textbox", { name: "O escribe o pega el texto" });
+    await box.fill("café con leche & pan/?");
+    expect(readText(fileOf(await runTool(page, "Codificar URL")).buf)).toBe(encodeURIComponent("café con leche & pan/?"));
+    await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+    await box.fill("https://example.com/búsqueda?q=ñ&x=1");
+    await choose(page, "Una URL completa");
+    expect(readText(fileOf(await runTool(page, "Codificar URL")).buf)).toBe("https://example.com/b%C3%BAsqueda?q=%C3%B1&x=1");
+    await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+    await box.fill("caf%C3%A9+con+leche");
+    await choose(page, "Decodificar");
+    expect(readText(fileOf(await runTool(page, "Decodificar URL")).buf)).toBe("café con leche");
+  });
+
+  test("a malformed % sequence shows an error", async ({ page }) => {
+    await open(page, "/es/codificar-url");
+    await page.getByRole("textbox", { name: "O escribe o pega el texto" }).fill("%E0%A4%A");
+    await choose(page, "Decodificar");
+    expect((await runTool(page, "Decodificar URL")).error).toContain("No pudimos leer el contenido");
+  });
+});

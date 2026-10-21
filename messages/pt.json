@@ -438,6 +438,48 @@
         "q3": "Ele detecta chaves repetidas?",
         "a3": "Sim. Uma chave repetida no mesmo nível é um erro em YAML, e muitos programas usam a última sem avisar; aqui você vê um aviso com a posição."
       }
+    },
+    "base64-encode": {
+      "title": "Codificar em Base64",
+      "description": "Converta texto ou qualquer arquivo em Base64 ou em uma data URL para incorporar em HTML, CSS ou JSON.",
+      "action": "Codificar em Base64",
+      "about": "Codificar em Base64 transforma texto (como UTF-8) ou os bytes de qualquer arquivo (imagem, PDF, fonte) em texto Base64, o formato usado para incorporar arquivos em HTML, CSS, JSON ou e-mails. Você pode obter Base64 puro, com quebras de linha a cada 76 caracteres como nos e-mails, ou uma data URL pronta para um atributo src.",
+      "faq": {
+        "q1": "Quanto o resultado ocupa?",
+        "a1": "O Base64 ocupa cerca de 33% a mais que o arquivo original: cada 3 bytes viram 4 caracteres.",
+        "q2": "O Base64 criptografa meus dados?",
+        "a2": "Não. É uma codificação, não uma criptografia: qualquer pessoa pode decodificá-la. Não use para proteger senhas ou informações privadas.",
+        "q3": "O que é uma data URL?",
+        "a3": "É o Base64 precedido do tipo do arquivo, por exemplo data:image/png;base64,…, e pode ser usada diretamente como src de uma imagem ou no CSS."
+      }
+    },
+    "base64-decode": {
+      "title": "Decodificar Base64",
+      "description": "Converta Base64 ou uma data URL de volta no texto ou arquivo original, com o tipo detectado.",
+      "action": "Decodificar Base64",
+      "about": "Decodificar Base64 recupera os bytes originais de um texto Base64 ou de uma data URL e entrega o arquivo para baixar. Detecta o tipo pela data URL ou pelo conteúdo (PNG, JPG, PDF e outros) e escolhe a extensão; se o resultado for texto, ele é mostrado para copiar. Aceita quebras de linha, o alfabeto seguro para URL (- e _) e a falta do preenchimento =.",
+      "faq": {
+        "q1": "Como sei que arquivo havia dentro?",
+        "a1": "Se o Base64 vier em uma data URL, é usado o tipo declarado; caso contrário, ele é reconhecido pelo conteúdo. Se não for possível reconhecer, é baixado como .bin com os bytes exatos.",
+        "q2": "Por que diz que não é Base64 válido?",
+        "a2": "Porque contém caracteres fora do alfabeto Base64 ou falta um pedaço. Verifique se copiou tudo.",
+        "q3": "O arquivo decodificado é idêntico ao original?",
+        "a3": "Sim, byte a byte. A decodificação não recomprime nem altera nada."
+      }
+    },
+    "url-encode": {
+      "title": "Codificar e decodificar URL",
+      "description": "Codifique texto para usar em uma URL (%20, %C3%A7) ou decodifique uma URL em texto legível.",
+      "action": "Codificar URL",
+      "about": "Codificar URL converte espaços, acentos e símbolos em sequências com porcentagem (por exemplo, ç vira %C3%A7) para usá-los com segurança em links e parâmetros. Escolha codificar um valor, que também escapa / ? & e =, ou uma URL completa, que os mantém. O modo decodificar faz o contrário e pode ler + como espaço, como nos formulários.",
+      "faq": {
+        "q1": "Qual a diferença entre um valor e uma URL completa?",
+        "a1": "Em um parâmetro, como o texto de uma busca, é preciso escapar & = ? e / para que não quebrem a URL. Em uma URL completa esses caracteres têm função e ficam como estão.",
+        "q2": "Por que um + vira espaço?",
+        "a2": "Nos formulários web o espaço é enviado como +. Desmarque a opção se no seu texto + significa sinal de mais.",
+        "q3": "E um % malformado?",
+        "a3": "Você verá um aviso: uma sequência como %E0%A4%A está incompleta e não corresponde a nenhum caractere."
+      }
     }
   },
   "ToolUi": {
@@ -515,7 +557,19 @@
     "indent4": "4 espaços",
     "indentTab": "Tabulações",
     "minify": "Minificar",
-    "sortKeys": "Ordenar as chaves em ordem alfabética"
+    "sortKeys": "Ordenar as chaves em ordem alfabética",
+    "pasteText": "Ou digite ou cole o texto",
+    "output": "Resultado",
+    "dataUrl": "Data URL",
+    "wrap76": "Quebras de linha a cada 76 caracteres (e-mail)",
+    "mode": "Modo",
+    "encode": "Codificar",
+    "decode": "Decodificar",
+    "decodeAction": "Decodificar URL",
+    "scope": "O que você vai codificar?",
+    "scopeComponent": "Um valor ou parâmetro",
+    "scopeUrl": "Uma URL completa",
+    "plusIsSpace": "Ler + como espaço (formulários)"
   },
   "Email": {
     "subject": "Seu link para entrar no Fileflect",

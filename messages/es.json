@@ -438,6 +438,48 @@
         "q3": "¿Detecta claves repetidas?",
         "a3": "Sí. Una clave repetida en el mismo nivel es un error en YAML y muchos programas toman silenciosamente la última; aquí verás un aviso con la posición."
       }
+    },
+    "base64-encode": {
+      "title": "Codificar a Base64",
+      "description": "Convierte texto o cualquier archivo en Base64 o en una data URL para incrustarlo en HTML, CSS o JSON.",
+      "action": "Codificar a Base64",
+      "about": "Codificar a Base64 transforma texto (como UTF-8) o los bytes de cualquier archivo (imagen, PDF, fuente) en texto Base64, el formato que se usa para incrustar archivos en HTML, CSS, JSON o correos. Puedes obtener Base64 puro, con saltos de línea cada 76 caracteres como en los correos, o una data URL lista para usar en un atributo src.",
+      "faq": {
+        "q1": "¿Cuánto ocupa el resultado?",
+        "a1": "Base64 ocupa alrededor de un 33 % más que el archivo original: 3 bytes se escriben con 4 caracteres.",
+        "q2": "¿Base64 cifra mis datos?",
+        "a2": "No. Es una codificación, no un cifrado: cualquiera puede decodificarla. No la uses para proteger contraseñas ni información privada.",
+        "q3": "¿Qué es una data URL?",
+        "a3": "Es el Base64 precedido del tipo de archivo, por ejemplo data:image/png;base64,…, y se puede usar directamente como src de una imagen o en un CSS."
+      }
+    },
+    "base64-decode": {
+      "title": "Decodificar Base64",
+      "description": "Convierte Base64 o una data URL de nuevo en el texto o el archivo original, con el tipo detectado.",
+      "action": "Decodificar Base64",
+      "about": "Decodificar Base64 recupera los bytes originales de un texto Base64 o de una data URL y te da el archivo para descargar. Detecta el tipo por la data URL o por el contenido (PNG, JPG, PDF y más) y elige la extensión; si el resultado es texto, lo muestra para copiarlo. Acepta saltos de línea, el alfabeto seguro para URL (- y _) y el relleno = ausente.",
+      "faq": {
+        "q1": "¿Cómo sé qué archivo había dentro?",
+        "a1": "Si el Base64 viene en una data URL, se usa el tipo que declara; si no, se reconoce por su contenido. Si no se puede reconocer, se descarga como .bin con los bytes exactos.",
+        "q2": "¿Por qué dice que no es Base64 válido?",
+        "a2": "Porque contiene caracteres que no pertenecen al alfabeto Base64 o le falta un fragmento. Revisa que lo hayas copiado completo.",
+        "q3": "¿El archivo decodificado es idéntico al original?",
+        "a3": "Sí, byte por byte. La decodificación no recomprime ni cambia nada."
+      }
+    },
+    "url-encode": {
+      "title": "Codificar y decodificar URL",
+      "description": "Codifica texto para usarlo en una URL (%20, %C3%B1) o decodifica una URL a texto legible.",
+      "action": "Codificar URL",
+      "about": "Codificar URL convierte espacios, acentos y símbolos en secuencias con porcentaje (por ejemplo, ñ pasa a %C3%B1) para usarlos de forma segura en enlaces y parámetros. Elige codificar un valor, que escapa también / ? & y =, o una URL completa, que los mantiene. El modo decodificar hace lo contrario y puede leer + como espacio, como en los formularios.",
+      "faq": {
+        "q1": "¿Qué diferencia hay entre un valor y una URL completa?",
+        "a1": "Para un parámetro, como el texto de una búsqueda, hay que escapar & = ? y / para que no rompan la URL. En una URL completa esos caracteres tienen función y se dejan tal cual.",
+        "q2": "¿Por qué un + se convierte en espacio?",
+        "a2": "En los formularios web el espacio se envía como +. Desmarca la opción si en tu texto + significa un signo más.",
+        "q3": "¿Qué pasa con un % mal formado?",
+        "a3": "Verás un aviso: una secuencia como %E0%A4%A está incompleta y no corresponde a ningún carácter."
+      }
     }
   },
   "ToolUi": {
@@ -515,7 +557,19 @@
     "indent4": "4 espacios",
     "indentTab": "Tabulaciones",
     "minify": "Minificar",
-    "sortKeys": "Ordenar las claves alfabéticamente"
+    "sortKeys": "Ordenar las claves alfabéticamente",
+    "pasteText": "O escribe o pega el texto",
+    "output": "Resultado",
+    "dataUrl": "Data URL",
+    "wrap76": "Saltos de línea cada 76 caracteres (correo)",
+    "mode": "Modo",
+    "encode": "Codificar",
+    "decode": "Decodificar",
+    "decodeAction": "Decodificar URL",
+    "scope": "Qué vas a codificar",
+    "scopeComponent": "Un valor o parámetro",
+    "scopeUrl": "Una URL completa",
+    "plusIsSpace": "Leer + como espacio (formularios)"
   },
   "Email": {
     "subject": "Tu enlace para entrar a Fileflect",

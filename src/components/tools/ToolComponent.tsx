@@ -23,6 +23,9 @@ const components: Record<ToolId, React.ComponentType> = {
   "json-formatter": dynamic(() => import("./data/FormatterTools").then((m) => m.JsonFormatterTool)),
   "xml-formatter": dynamic(() => import("./data/FormatterTools").then((m) => m.XmlFormatterTool)),
   "yaml-formatter": dynamic(() => import("./data/FormatterTools").then((m) => m.YamlFormatterTool)),
+  "base64-encode": dynamic(() => import("./data/EncodingTools").then((m) => m.Base64EncodeTool)),
+  "base64-decode": dynamic(() => import("./data/EncodingTools").then((m) => m.Base64DecodeTool)),
+  "url-encode": dynamic(() => import("./data/EncodingTools").then((m) => m.UrlEncodeTool)),
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {

@@ -438,6 +438,48 @@
         "q3": "Détecte-t-il les clés répétées ?",
         "a3": "Oui. Une clé répétée au même niveau est une erreur en YAML, et beaucoup de programmes prennent la dernière sans prévenir ; ici, un message indique sa position."
       }
+    },
+    "base64-encode": {
+      "title": "Encoder en Base64",
+      "description": "Transformez du texte ou n'importe quel fichier en Base64 ou en data URL pour l'intégrer dans du HTML, du CSS ou du JSON.",
+      "action": "Encoder en Base64",
+      "about": "Encoder en Base64 transforme du texte (en UTF-8) ou les octets de n'importe quel fichier (image, PDF, police) en texte Base64, le format utilisé pour intégrer des fichiers dans du HTML, du CSS, du JSON ou des e-mails. Obtenez du Base64 brut, avec des retours à la ligne tous les 76 caractères comme dans les e-mails, ou une data URL prête pour un attribut src.",
+      "faq": {
+        "q1": "Quelle taille fait le résultat ?",
+        "a1": "Le Base64 est environ 33 % plus grand que le fichier d'origine : 3 octets s'écrivent avec 4 caractères.",
+        "q2": "Le Base64 chiffre-t-il mes données ?",
+        "a2": "Non. C'est un encodage, pas un chiffrement : tout le monde peut le décoder. Ne l'utilisez pas pour protéger des mots de passe ou des informations privées.",
+        "q3": "Qu'est-ce qu'une data URL ?",
+        "a3": "C'est le Base64 précédé du type de fichier, par exemple data:image/png;base64,…, utilisable directement comme src d'une image ou dans du CSS."
+      }
+    },
+    "base64-decode": {
+      "title": "Décoder du Base64",
+      "description": "Retransformez du Base64 ou une data URL en texte ou fichier d'origine, avec son type détecté.",
+      "action": "Décoder le Base64",
+      "about": "Décoder du Base64 récupère les octets d'origine d'un texte Base64 ou d'une data URL et vous donne le fichier à télécharger. Le type est détecté grâce à la data URL ou au contenu (PNG, JPG, PDF, etc.) pour choisir l'extension ; si le résultat est du texte, il s'affiche pour être copié. Les retours à la ligne, l'alphabet sûr pour les URL (- et _) et l'absence du remplissage = sont acceptés.",
+      "faq": {
+        "q1": "Comment savoir quel fichier il y avait dedans ?",
+        "a1": "Si le Base64 est dans une data URL, le type déclaré est utilisé ; sinon, il est reconnu par son contenu. S'il n'est pas reconnu, il est téléchargé en .bin avec les octets exacts.",
+        "q2": "Pourquoi est-il indiqué que ce n'est pas du Base64 valide ?",
+        "a2": "Parce qu'il contient des caractères hors de l'alphabet Base64 ou qu'il manque un morceau. Vérifiez que vous l'avez copié en entier.",
+        "q3": "Le fichier décodé est-il identique à l'original ?",
+        "a3": "Oui, octet par octet. Le décodage ne recompresse et ne modifie rien."
+      }
+    },
+    "url-encode": {
+      "title": "Encoder et décoder une URL",
+      "description": "Encodez du texte pour l'utiliser dans une URL (%20, %C3%A9) ou décodez une URL en texte lisible.",
+      "action": "Encoder l'URL",
+      "about": "Encoder une URL transforme les espaces, accents et symboles en séquences avec pourcentage (par exemple é devient %C3%A9) pour les utiliser sans risque dans des liens et des paramètres. Encodez une valeur, qui échappe aussi / ? & et =, ou une URL complète, qui les conserve. Le mode décodage fait l'inverse et peut lire + comme un espace, comme dans les formulaires.",
+      "faq": {
+        "q1": "Quelle différence entre une valeur et une URL complète ?",
+        "a1": "Pour un paramètre, comme le texte d'une recherche, il faut échapper & = ? et / pour qu'ils ne cassent pas l'URL. Dans une URL complète, ces caractères ont un rôle et sont gardés tels quels.",
+        "q2": "Pourquoi un + devient-il un espace ?",
+        "a2": "Les formulaires web envoient les espaces sous forme de +. Décochez l'option si + signifie un signe plus dans votre texte.",
+        "q3": "Et un % mal formé ?",
+        "a3": "Un message s'affiche : une séquence comme %E0%A4%A est incomplète et ne correspond à aucun caractère."
+      }
     }
   },
   "ToolUi": {
@@ -515,7 +557,19 @@
     "indent4": "4 espaces",
     "indentTab": "Tabulations",
     "minify": "Minifier",
-    "sortKeys": "Trier les clés par ordre alphabétique"
+    "sortKeys": "Trier les clés par ordre alphabétique",
+    "pasteText": "Ou saisissez ou collez le texte",
+    "output": "Résultat",
+    "dataUrl": "Data URL",
+    "wrap76": "Retours à la ligne tous les 76 caractères (e-mail)",
+    "mode": "Mode",
+    "encode": "Encoder",
+    "decode": "Décoder",
+    "decodeAction": "Décoder l'URL",
+    "scope": "Que voulez-vous encoder ?",
+    "scopeComponent": "Une valeur ou un paramètre",
+    "scopeUrl": "Une URL complète",
+    "plusIsSpace": "Lire + comme un espace (formulaires)"
   },
   "Email": {
     "subject": "Votre lien de connexion Fileflect",

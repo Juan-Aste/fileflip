@@ -15,6 +15,8 @@ interface TextToolRun {
   to: FormatId;
   /** Name of the output for pasted text. */
   pastedName: string;
+  /** Output name from the input's; by default the extension changes to the output format's. */
+  outputName?: (inputName: string) => string;
   convert: (input: Blob | string, job: JobOptions) => Promise<string>;
 }
 
@@ -26,7 +28,7 @@ interface TextToolRun {
 export async function runTextTool(
   { files, text }: { files: File[]; text: string },
   { signal, onProgress }: ShellContext,
-  { tool, from, to, pastedName, convert }: TextToolRun,
+  { tool, from, to, pastedName, outputName, convert }: TextToolRun,
 ): Promise<ShellOutput[]> {
   const inputs: (File | null)[] = files.length > 0 ? files : [null];
   const extension = formats[to].extensions[0]!;
@@ -44,7 +46,8 @@ export async function runTextTool(
     { signal, onProgress },
   );
   return results.map((result, i): ShellOutput => {
-    const name = renameExtension(inputs[i]?.name ?? pastedName, extension);
+    const inputName = inputs[i]?.name ?? pastedName;
+    const name = outputName ? outputName(inputName) : renameExtension(inputName, extension);
     if (result.status === "error") {
       const position = result.error instanceof TextPositionError ? result.error.position : undefined;
       return { kind: "error", name, code: result.code, ...(position ? { position } : {}) };

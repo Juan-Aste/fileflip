@@ -438,6 +438,48 @@
         "q3": "Does it catch repeated keys?",
         "a3": "Yes. A repeated key at the same level is an error in YAML, and many programs silently take the last one; here you get a warning with its position."
       }
+    },
+    "base64-encode": {
+      "title": "Base64 encode",
+      "description": "Turn text or any file into Base64 or a data URL to embed it in HTML, CSS or JSON.",
+      "action": "Encode to Base64",
+      "about": "Base64 encode turns text (as UTF-8) or the bytes of any file (image, PDF, font) into Base64 text, the format used to embed files in HTML, CSS, JSON or email. Get plain Base64, wrapped every 76 characters as email expects, or a data URL ready for a src attribute.",
+      "faq": {
+        "q1": "How big is the result?",
+        "a1": "Base64 is about 33% larger than the original file: every 3 bytes are written as 4 characters.",
+        "q2": "Does Base64 encrypt my data?",
+        "a2": "No. It is an encoding, not encryption: anyone can decode it. Don't use it to protect passwords or private information.",
+        "q3": "What is a data URL?",
+        "a3": "It is the Base64 preceded by the file type, like data:image/png;base64,…, and it can be used directly as an image src or in CSS."
+      }
+    },
+    "base64-decode": {
+      "title": "Base64 decode",
+      "description": "Turn Base64 or a data URL back into the original text or file, with its type detected.",
+      "action": "Decode Base64",
+      "about": "Base64 decode recovers the original bytes from Base64 text or a data URL and gives you the file to download. It detects the type from the data URL or the content (PNG, JPG, PDF and more) and picks the extension; if the result is text, it is shown so you can copy it. Line breaks, the URL-safe alphabet (- and _) and missing = padding are accepted.",
+      "faq": {
+        "q1": "How do I know which file was inside?",
+        "a1": "If the Base64 comes in a data URL, its declared type is used; otherwise it is recognized from the content. If it can't be recognized, it downloads as .bin with the exact bytes.",
+        "q2": "Why does it say it isn't valid Base64?",
+        "a2": "Because it contains characters outside the Base64 alphabet or a piece is missing. Check that you copied all of it.",
+        "q3": "Is the decoded file identical to the original?",
+        "a3": "Yes, byte for byte. Decoding doesn't recompress or change anything."
+      }
+    },
+    "url-encode": {
+      "title": "URL encode and decode",
+      "description": "Encode text for use in a URL (%20, %C3%B1) or decode a URL back into readable text.",
+      "action": "Encode URL",
+      "about": "URL encode turns spaces, accents and symbols into percent sequences (for example ñ becomes %C3%B1) so they can be used safely in links and parameters. Encode a value, which also escapes / ? & and =, or a whole URL, which keeps them. Decode mode does the opposite and can read + as a space, as in web forms.",
+      "faq": {
+        "q1": "What's the difference between a value and a whole URL?",
+        "a1": "For a parameter, such as search text, & = ? and / must be escaped so they don't break the URL. In a whole URL those characters have a role and are kept as they are.",
+        "q2": "Why does + become a space?",
+        "a2": "Web forms send spaces as +. Uncheck the option if + means a plus sign in your text.",
+        "q3": "What about a malformed %?",
+        "a3": "You will see a warning: a sequence like %E0%A4%A is incomplete and doesn't stand for any character."
+      }
     }
   },
   "ToolUi": {
@@ -515,7 +557,19 @@
     "indent4": "4 spaces",
     "indentTab": "Tabs",
     "minify": "Minify",
-    "sortKeys": "Sort keys alphabetically"
+    "sortKeys": "Sort keys alphabetically",
+    "pasteText": "Or type or paste the text",
+    "output": "Output",
+    "dataUrl": "Data URL",
+    "wrap76": "Line breaks every 76 characters (email)",
+    "mode": "Mode",
+    "encode": "Encode",
+    "decode": "Decode",
+    "decodeAction": "Decode URL",
+    "scope": "What are you encoding?",
+    "scopeComponent": "A value or parameter",
+    "scopeUrl": "A whole URL",
+    "plusIsSpace": "Read + as a space (forms)"
   },
   "Email": {
     "subject": "Your Fileflect sign-in link",
