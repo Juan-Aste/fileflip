@@ -53,6 +53,8 @@ export const toolIds = [
   "timestamp-converter",
   "qr-generator",
   "qr-reader",
+  "password-generator",
+  "word-counter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -374,6 +376,34 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: MINUTE, maxFileBytes: 25 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "leer-codigo-qr", en: "qr-code-reader", pt: "ler-qr-code", fr: "lire-qr-code", zh: "qr-code-reader" },
+  },
+  "password-generator": {
+    id: "password-generator",
+    category: "utility",
+    inputs: [],
+    outputs: ["txt"],
+    engine: "browser",
+    libraries: ["native crypto.getRandomValues"],
+    limits: { files: "none", timeoutMs: MINUTE },
+    status: "verified",
+    slugs: {
+      es: "generador-de-contrasenas",
+      en: "password-generator",
+      pt: "gerador-de-senhas",
+      fr: "generateur-mot-de-passe",
+      zh: "password-generator",
+    },
+  },
+  "word-counter": {
+    id: "word-counter",
+    category: "utility",
+    inputs: ["txt"],
+    outputs: ["txt"],
+    engine: "browser",
+    libraries: ["native Intl.Segmenter"],
+    limits: { files: "none", timeoutMs: MINUTE },
+    status: "verified",
+    slugs: { es: "contador-de-palabras", en: "word-counter", pt: "contador-de-palavras", fr: "compteur-de-mots", zh: "word-counter" },
   },
 };
 

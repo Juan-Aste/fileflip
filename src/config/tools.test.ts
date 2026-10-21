@@ -25,7 +25,7 @@ describe("tool registry", () => {
     expect(availableTools).toEqual(toolIds.filter((id) => tools[id].status === "verified"));
   });
 
-  const generators = new Set<string>(["uuid-generator", "qr-generator"]);
+  const generators = new Set<string>(["uuid-generator", "qr-generator", "password-generator"]);
 
   it("describes every tool with known categories, formats and limits", () => {
     for (const id of toolIds) {

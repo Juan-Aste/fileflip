@@ -552,6 +552,34 @@
         "q3": "Peut-il lire plusieurs codes à la fois ?",
         "a3": "Vous pouvez choisir plusieurs images et obtenir le contenu de chacune ; un code est lu par image."
       }
+    },
+    "password-generator": {
+      "title": "Générateur de mots de passe",
+      "description": "Créez des mots de passe aléatoires et robustes, avec la longueur et les caractères de votre choix.",
+      "action": "Générer des mots de passe",
+      "about": "Le générateur de mots de passe crée des mots de passe aléatoires avec le générateur cryptographique de votre navigateur, sans biais : chaque caractère a la même probabilité. Choisissez la longueur, les majuscules, minuscules, chiffres et symboles, et si vous voulez éviter les caractères qui se ressemblent comme l, 1, O et 0. Chaque mot de passe contient au moins un caractère de chaque type choisi, et sa robustesse s’affiche en bits d’entropie.",
+      "faq": {
+        "q1": "Quelle longueur pour un mot de passe ?",
+        "a1": "Au moins 16 caractères avec lettres, chiffres et symboles (environ 100 bits). Pour le mot de passe principal d’un gestionnaire, 20 ou plus, c’est mieux.",
+        "q2": "Conservez-vous ou voyez-vous les mots de passe générés ?",
+        "a2": "Non. Ils sont générés dans votre navigateur et ne sont jamais envoyés à un serveur. Fermez l’onglet quand vous avez terminé.",
+        "q3": "Que signifient les bits d’entropie ?",
+        "a3": "Ils mesurent le nombre d’essais nécessaires pour le deviner : chaque bit double ce nombre. À partir de 80 bits, un mot de passe aléatoire résiste aux attaques par force brute, même hors ligne."
+      }
+    },
+    "word-counter": {
+      "title": "Compteur de mots et de caractères",
+      "description": "Comptez les mots, caractères, phrases et paragraphes pendant la saisie, et passez le texte en majuscules ou minuscules.",
+      "action": "Compter",
+      "about": "Le compteur de mots affiche instantanément le nombre de mots, de caractères (avec et sans espaces), de phrases, de paragraphes et de lignes de votre texte, ainsi qu’un temps de lecture estimé. Il compte les caractères tels qu’ils s’affichent : un emoji ou une lettre accentuée valent un, et il repère aussi les mots en chinois, qui n’utilise pas d’espaces. Vous pouvez aussi passer le texte en MAJUSCULES, minuscules, Casse De Titre ou Casse de phrase, le copier ou le télécharger.",
+      "faq": {
+        "q1": "Compte-t-il comme Word ou Google Docs ?",
+        "a1": "Presque toujours. Les mots avec trait d’union ou les nombres avec virgule peuvent différer, car chaque logiciel applique ses propres règles ; ici, ce sont les règles Unicode de la langue de la page.",
+        "q2": "Puis-je compter un fichier ?",
+        "a2": "Oui : ouvrez un fichier texte (.txt, .md, .csv, .srt…) et il sera chargé dans la zone. S’il vient de Windows avec des accents dans un autre encodage, celui-ci est détecté automatiquement.",
+        "q3": "Comment le temps de lecture est-il calculé ?",
+        "a3": "Sur la base de 200 mots par minute, arrondi au supérieur."
+      }
     }
   },
   "ToolUi": {
@@ -975,5 +1003,38 @@
     "lightColor": "Couleur du fond",
     "transparent": "Fond transparent",
     "lowContrast": "Avec si peu de contraste entre les couleurs, beaucoup de téléphones ne pourront pas lire le code."
+  },
+  "TextTools": {
+    "length": "Longueur : {length} caractères",
+    "count": "Nombre (jusqu’à {max})",
+    "characters": "Caractères",
+    "upper": "Majuscules (A-Z)",
+    "lower": "Minuscules (a-z)",
+    "digits": "Chiffres (0-9)",
+    "symbols": "Symboles (!#$%…)",
+    "avoidAmbiguous": "Éviter les caractères qui se ressemblent (l, 1, O, 0…)",
+    "strong": "Robuste : {bits} bits d’entropie.",
+    "weak": "Faible : {bits} bits d’entropie. Augmentez la longueur ou ajoutez des types de caractères.",
+    "chooseSet": "Choisissez au moins un type de caractère.",
+    "words": "Mots",
+    "charactersCount": "Caractères",
+    "charactersNoSpaces": "Sans espaces",
+    "sentences": "Phrases",
+    "paragraphs": "Paragraphes",
+    "lines": "Lignes",
+    "readingTime": "Temps de lecture : {minutes, plural, =0 {moins d’une minute} one {# minute} other {# minutes}}.",
+    "textLabel": "Saisissez ou collez votre texte",
+    "openFile": "Ouvrir un fichier",
+    "fileTooLarge": "Le fichier est trop volumineux (2 millions de caractères au maximum).",
+    "changeCase": "Changer la casse",
+    "case": {
+      "upper": "MAJUSCULES",
+      "lower": "minuscules",
+      "title": "Casse De Titre",
+      "sentence": "Casse de phrase"
+    },
+    "copy": "Copier le texte",
+    "copied": "Copié",
+    "download": "Télécharger .txt"
   }
 }

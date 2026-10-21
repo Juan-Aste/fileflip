@@ -8,6 +8,8 @@ import {
   Clock,
   QrCode,
   ScanLine,
+  LockKeyhole,
+  WholeWord,
   CodeXml,
   FileCode,
   FileJson,
@@ -50,6 +52,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "timestamp-converter": Clock,
   "qr-generator": QrCode,
   "qr-reader": ScanLine,
+  "password-generator": LockKeyhole,
+  "word-counter": WholeWord,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

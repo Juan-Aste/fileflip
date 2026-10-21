@@ -552,6 +552,34 @@
         "q3": "¿Puede leer varios códigos a la vez?",
         "a3": "Puedes elegir varias imágenes y obtendrás el contenido de cada una; de cada imagen se lee un código."
       }
+    },
+    "password-generator": {
+      "title": "Generador de contraseñas",
+      "description": "Crea contraseñas seguras y aleatorias con la longitud y los caracteres que elijas.",
+      "action": "Generar contraseñas",
+      "about": "El generador de contraseñas crea claves aleatorias con el generador criptográfico de tu navegador, sin sesgos: cada carácter tiene la misma probabilidad. Elige la longitud, si quieres mayúsculas, minúsculas, números y símbolos, y si prefieres evitar caracteres que se confunden como l, 1, O y 0. Cada contraseña incluye al menos un carácter de cada tipo elegido, y verás su fuerza en bits de entropía.",
+      "faq": {
+        "q1": "¿Qué tan larga debe ser una contraseña?",
+        "a1": "Al menos 16 caracteres con letras, números y símbolos (unos 100 bits). Para la clave principal de un gestor de contraseñas, mejor 20 o más.",
+        "q2": "¿Guardan o ven las contraseñas que genero?",
+        "a2": "No. Se generan en tu navegador y nunca se envían a ningún servidor. Cierra la pestaña cuando termines.",
+        "q3": "¿Qué significan los bits de entropía?",
+        "a3": "Miden cuántos intentos haría falta para adivinarla: cada bit duplica la cantidad. Desde 80 bits una contraseña aleatoria resiste ataques de fuerza bruta incluso fuera de línea."
+      }
+    },
+    "word-counter": {
+      "title": "Contador de palabras y caracteres",
+      "description": "Cuenta palabras, caracteres, oraciones y párrafos mientras escribes, y cambia el texto a mayúsculas o minúsculas.",
+      "action": "Contar",
+      "about": "El contador de palabras muestra al instante cuántas palabras, caracteres (con y sin espacios), oraciones, párrafos y líneas tiene tu texto, y el tiempo aproximado de lectura. Cuenta los caracteres como se ven, así que un emoji o una letra con tilde valen uno, y separa palabras también en chino, que no usa espacios. Además puedes pasar el texto a MAYÚSCULAS, minúsculas, Tipo Título o Tipo oración, copiarlo o descargarlo.",
+      "faq": {
+        "q1": "¿Cuenta igual que Word o Google Docs?",
+        "a1": "Casi siempre coincide. Puede variar en palabras con guion o números con coma, porque cada programa aplica reglas distintas; aquí se usan las reglas de Unicode para el idioma de la página.",
+        "q2": "¿Puedo contar un archivo?",
+        "a2": "Sí: abre un archivo de texto (.txt, .md, .csv, .srt…) y se cargará en el cuadro. Si viene de Windows con acentos en otra codificación, se detecta solo.",
+        "q3": "¿Cómo se calcula el tiempo de lectura?",
+        "a3": "Con un ritmo de 200 palabras por minuto, redondeado hacia arriba."
+      }
     }
   },
   "ToolUi": {
@@ -975,5 +1003,38 @@
     "lightColor": "Color de fondo",
     "transparent": "Fondo transparente",
     "lowContrast": "Con tan poco contraste entre los colores, muchos celulares no podrán leer el código."
+  },
+  "TextTools": {
+    "length": "Longitud: {length} caracteres",
+    "count": "Cantidad (hasta {max})",
+    "characters": "Caracteres",
+    "upper": "Mayúsculas (A-Z)",
+    "lower": "Minúsculas (a-z)",
+    "digits": "Números (0-9)",
+    "symbols": "Símbolos (!#$%…)",
+    "avoidAmbiguous": "Evitar caracteres que se confunden (l, 1, O, 0…)",
+    "strong": "Fuerte: {bits} bits de entropía.",
+    "weak": "Débil: {bits} bits de entropía. Aumenta la longitud o agrega tipos de caracteres.",
+    "chooseSet": "Elige al menos un tipo de carácter.",
+    "words": "Palabras",
+    "charactersCount": "Caracteres",
+    "charactersNoSpaces": "Sin espacios",
+    "sentences": "Oraciones",
+    "paragraphs": "Párrafos",
+    "lines": "Líneas",
+    "readingTime": "Tiempo de lectura: {minutes, plural, =0 {menos de 1 minuto} one {# minuto} other {# minutos}}.",
+    "textLabel": "Escribe o pega tu texto",
+    "openFile": "Abrir archivo",
+    "fileTooLarge": "El archivo es demasiado grande (máximo 2 millones de caracteres).",
+    "changeCase": "Cambiar mayúsculas y minúsculas",
+    "case": {
+      "upper": "MAYÚSCULAS",
+      "lower": "minúsculas",
+      "title": "Tipo Título",
+      "sentence": "Tipo oración"
+    },
+    "copy": "Copiar texto",
+    "copied": "Copiado",
+    "download": "Descargar .txt"
   }
 }

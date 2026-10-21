@@ -552,6 +552,34 @@
         "q3": "Can it read several codes at once?",
         "a3": "You can choose several images and get the content of each; one code is read from each image."
       }
+    },
+    "password-generator": {
+      "title": "Password generator",
+      "description": "Create strong random passwords with the length and characters you choose.",
+      "action": "Generate passwords",
+      "about": "The password generator creates random passwords with your browser's cryptographic random generator, without bias: every character is equally likely. Choose the length, whether to use upper case, lower case, numbers and symbols, and whether to avoid look-alike characters such as l, 1, O and 0. Every password includes at least one character of each chosen type, and you'll see its strength in bits of entropy.",
+      "faq": {
+        "q1": "How long should a password be?",
+        "a1": "At least 16 characters with letters, numbers and symbols (about 100 bits). For the master password of a password manager, 20 or more is better.",
+        "q2": "Do you store or see the passwords I generate?",
+        "a2": "No. They are generated in your browser and never sent to a server. Close the tab when you're done.",
+        "q3": "What do bits of entropy mean?",
+        "a3": "They measure how many guesses it would take: each bit doubles the number. From 80 bits on, a random password withstands brute-force attacks even offline."
+      }
+    },
+    "word-counter": {
+      "title": "Word and character counter",
+      "description": "Count words, characters, sentences and paragraphs as you type, and switch text to upper or lower case.",
+      "action": "Count",
+      "about": "The word counter instantly shows how many words, characters (with and without spaces), sentences, paragraphs and lines your text has, plus an estimated reading time. It counts characters as they appear, so an emoji or an accented letter counts as one, and it finds words in Chinese too, which has no spaces. You can also switch the text to UPPER CASE, lower case, Title Case or Sentence case, copy it or download it.",
+      "faq": {
+        "q1": "Does it count like Word or Google Docs?",
+        "a1": "Almost always. Hyphenated words or numbers with commas may differ, because each program applies its own rules; this one uses the Unicode rules for the page's language.",
+        "q2": "Can I count a file?",
+        "a2": "Yes: open a text file (.txt, .md, .csv, .srt…) and it loads into the box. If it comes from Windows with accents in another encoding, that is detected automatically.",
+        "q3": "How is the reading time calculated?",
+        "a3": "At 200 words per minute, rounded up."
+      }
     }
   },
   "ToolUi": {
@@ -975,5 +1003,38 @@
     "lightColor": "Background color",
     "transparent": "Transparent background",
     "lowContrast": "With this little contrast between the colors, many phones won't be able to read the code."
+  },
+  "TextTools": {
+    "length": "Length: {length} characters",
+    "count": "How many (up to {max})",
+    "characters": "Characters",
+    "upper": "Upper case (A-Z)",
+    "lower": "Lower case (a-z)",
+    "digits": "Numbers (0-9)",
+    "symbols": "Symbols (!#$%…)",
+    "avoidAmbiguous": "Avoid look-alike characters (l, 1, O, 0…)",
+    "strong": "Strong: {bits} bits of entropy.",
+    "weak": "Weak: {bits} bits of entropy. Increase the length or add character types.",
+    "chooseSet": "Choose at least one character type.",
+    "words": "Words",
+    "charactersCount": "Characters",
+    "charactersNoSpaces": "Without spaces",
+    "sentences": "Sentences",
+    "paragraphs": "Paragraphs",
+    "lines": "Lines",
+    "readingTime": "Reading time: {minutes, plural, =0 {under 1 minute} one {# minute} other {# minutes}}.",
+    "textLabel": "Type or paste your text",
+    "openFile": "Open file",
+    "fileTooLarge": "The file is too large (2 million characters at most).",
+    "changeCase": "Change case",
+    "case": {
+      "upper": "UPPER CASE",
+      "lower": "lower case",
+      "title": "Title Case",
+      "sentence": "Sentence case"
+    },
+    "copy": "Copy text",
+    "copied": "Copied",
+    "download": "Download .txt"
   }
 }
