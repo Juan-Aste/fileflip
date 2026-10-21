@@ -7,7 +7,7 @@ import type { Page } from "@playwright/test";
 import exifr from "exifr";
 import jsQR from "jsqr";
 import sharp from "sharp";
-import { expect, fileOf, fixturePath, inspectImage, runTool, test, toolAlert, waitForResult } from "./support";
+import { expect, fileOf, fixturePath, inspectImage, runTool, test, toolAlert, unzipEntries, waitForResult } from "./support";
 
 const choose = (page: Page, label: string) => page.locator("label").filter({ hasText: new RegExp(`^${label}$`) }).first().click();
 const pick = (page: Page, files: string[]) => page.locator('input[type="file"]').setInputFiles(files);
@@ -446,5 +446,78 @@ test.describe("tool: add-text-to-image", () => {
     const mean = async (buf: Buffer | string) => (await sharp(buf).extract(band).stats()).channels.slice(0, 3).reduce((a, c) => a + c.mean, 0);
     expect(await mean(out.buf)).not.toBeCloseTo(await mean(photoPath), 0);
     expect(await changedShare(out.buf, photoPath, { left: 350, top: 20, width: 300, height: 140 })).toBeGreaterThan(0.2);
+  });
+});
+
+/** Entries of an ICO file: side and the embedded PNG. */
+function icoEntries(buf: Buffer) {
+  expect(buf.readUInt16LE(2)).toBe(1);
+  return Array.from({ length: buf.readUInt16LE(4) }, (_, i) => {
+    const at = 6 + i * 16;
+    const size = buf.readUInt32LE(at + 8);
+    const offset = buf.readUInt32LE(at + 12);
+    return { side: buf[at] || 256, png: buf.subarray(offset, offset + size) };
+  });
+}
+
+test.describe("tool: favicon-generator", () => {
+  test("the whole pack from a PNG: ICO sizes, PNG sizes, opaque Apple icon, manifest and ZIP", async ({ page }) => {
+    await page.goto("/en/favicon-generator", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo-alpha.png")]);
+    await page.getByRole("textbox", { name: /Site or app name/ }).fill('My "Site"');
+    await page.getByRole("button", { name: "Create favicon", exact: true }).click();
+    const link = (name: string) => page.locator(`main a[download="${name}"]`).first();
+    const get = async (name: string) => fileOf(await waitForResult(page, link(name), toolAlert(page))).buf;
+
+    const ico = icoEntries(await get("favicon.ico"));
+    expect(ico.map((e) => e.side)).toEqual([16, 32, 48]);
+    for (const e of ico) expect(await inspectImage(e.png)).toMatchObject({ format: "png", width: e.side, height: e.side });
+
+    const sizes: Record<string, number> = {
+      "favicon-16x16.png": 16,
+      "favicon-32x32.png": 32,
+      "apple-touch-icon.png": 180,
+      "android-chrome-192x192.png": 192,
+      "android-chrome-512x512.png": 512,
+    };
+    for (const [name, side] of Object.entries(sizes)) {
+      expect(await inspectImage(await get(name))).toMatchObject({ format: "png", width: side, height: side });
+    }
+    // Transparent background kept (the 4:3 source leaves margins), except on the Apple icon.
+    expect((await rawPixels(await get("android-chrome-512x512.png")))[3]).toBe(0);
+    expect((await sharp(await get("apple-touch-icon.png")).stats()).isOpaque).toBe(true);
+
+    const manifest = JSON.parse((await get("site.webmanifest")).toString("utf8"));
+    expect(manifest.name).toBe('My "Site"');
+    expect(manifest.icons).toHaveLength(2);
+    expect((await get("favicon-head.html")).toString("utf8")).toContain('<link rel="manifest" href="/site.webmanifest">');
+
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Download all/ }).click()]);
+    expect(download.suggestedFilename()).toBe("favicon.zip");
+    const names = unzipEntries(readFileSync((await download.path())!)).map((e) => e.name).sort();
+    expect(names).toEqual(["android-chrome-192x192.png", "android-chrome-512x512.png", "apple-touch-icon.png", "favicon-16x16.png", "favicon-32x32.png", "favicon-head.html", "favicon.ico", "site.webmanifest"]);
+  });
+
+  test("an SVG with a script: rasterized without running it, on a colored background", async ({ page }) => {
+    const dir = mkdtempSync(join(tmpdir(), "favicon-"));
+    const svg = join(dir, "logo.svg");
+    writeFileSync(
+      svg,
+      '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100">' +
+        "<script>window.top.__svgRan = true; fetch('/api/svg-script-ran');</script>" +
+        '<rect width="200" height="100" fill="#1d4ed8"/></svg>',
+    );
+    await page.goto("/es/generador-de-favicon", { waitUntil: "networkidle" });
+    await pick(page, [svg]);
+    await choose(page, "De color");
+    await page.getByLabel("Color", { exact: true }).fill("#ff0000");
+    await page.getByRole("button", { name: "Crear favicon", exact: true }).click();
+    const big = fileOf(await waitForResult(page, page.locator('main a[download="android-chrome-512x512.png"]').first(), toolAlert(page))).buf;
+    const px = await rawPixels(big);
+    expect([...px.subarray(0, 4)]).toEqual([255, 0, 0, 255]); // margin: the chosen background
+    const center = (256 * 512 + 256) * 4;
+    expect(px[center + 2]).toBeGreaterThan(180); // the blue rectangle
+    expect(px[center]).toBeLessThan(60);
+    expect(await page.evaluate(() => (window as unknown as { __svgRan?: boolean }).__svgRan)).toBeUndefined();
   });
 });

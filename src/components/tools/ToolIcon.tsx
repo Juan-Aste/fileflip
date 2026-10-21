@@ -30,6 +30,7 @@ import {
   MapPinOff,
   Crop,
   Stamp,
+  AppWindow,
   Type,
   type LucideIcon,
 } from "lucide-react";
@@ -72,6 +73,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "crop-image": Crop,
   "watermark-image": Stamp,
   "add-text-to-image": Type,
+  "favicon-generator": AppWindow,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

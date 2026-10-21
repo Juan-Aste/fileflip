@@ -1708,3 +1708,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (677), build, `check:static` (732 páginas) y `npm run test:e2e` (192/192) pasan. Capturas revisadas: `/es/marca-de-agua-imagen` 360 oscuro (mosaico en la vista previa) y `/fr/ajouter-texte-image` 1280 claro.
 
 **Siguiente**: 3C.16 (favicon, SVG → PNG/JPG con página propia y HEIF como entrada).
+
+## 2026-10-21 14:50 UTC — Fase 3, tarea 3C.16a (generador de favicon)
+
+**Qué se hizo**
+- 3C.16 se dividió en 3C.16a (favicon) y 3C.16b (SVG → PNG/JPG con página propia y HEIF).
+- **Generador de favicon** (`/es/generador-de-favicon`, `/en/favicon-generator`, `/pt/gerador-de-favicon`, `/fr/generateur-favicon`): desde una imagen (PNG, JPG, WEBP, AVIF, GIF, BMP, TIFF, HEIC; hasta 25 MB) o un **SVG**, genera `favicon.ico` (16, 32 y 48 px, PNG dentro del ICO con el escritor propio `ico.ts`), `favicon-16x16.png`, `favicon-32x32.png`, `apple-touch-icon.png` (180, siempre opaco: iOS pinta de negro la transparencia), `android-chrome-192x192.png`, `android-chrome-512x512.png`, `site.webmanifest` (nombre opcional escapado con `JSON.stringify`, hasta 60 caracteres) y `favicon-head.html` con las 5 etiquetas `<link>`. Descarga individual o "Descargar todo en ZIP" (`favicon.zip`).
+- Opciones: si no es cuadrada, **ajustar con márgenes** o **recortar al cuadrado** (centro); fondo transparente o de color.
+- Todo sale de un "maestro" de 512 × 512 en `OffscreenCanvas` (handler `favicon` del worker de imágenes). El SVG se rasteriza en la página con `<img>` (los workers no tienen DOM), que **no ejecuta scripts ni carga recursos externos**; `rasterizeSvg` de `client.ts` ahora se exporta.
+- Geometría, manifest y fragmento HTML en `src/lib/image/favicon.ts`.
+- Detalle encontrado: `<head>` dentro de un texto traducido rompe ICU (next-intl lo toma como etiqueta de texto enriquecido): los textos dicen "head" sin corchetes.
+
+**Verificación**
+- 4 tests unitarios (márgenes y recorte, manifest con comillas y `</script>` en el nombre, recorte a 60 caracteres, fragmento con todos los archivos).
+- `image-tools.spec.ts`: 2 casos nuevos: PNG transparente 4:3 → ICO leído entrada por entrada (16/32/48, cada PNG con su tamaño), los 5 PNG con su tamaño, margen transparente en el de 512, Apple opaco, manifest con el nombre, etiqueta del manifest y **ZIP** con los 8 archivos; SVG 2:1 con `<script>` que intenta marcar `window.top` y hacer `fetch` → fondo rojo en el margen, rectángulo azul al centro, la marca no existe y el servidor no recibió ninguna llamada.
+- Lint, typecheck, tests (682), build, `check:static` (737 páginas) y `npm run test:e2e` (194/194) pasan. Captura revisada: `/es/generador-de-favicon` 360 oscuro con el resultado (8 archivos y botón ZIP).
+
+**Siguiente**: 3C.16b (SVG → PNG/JPG con página propia y HEIF como entrada).

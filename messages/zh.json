@@ -721,6 +721,22 @@
         "q4": "文字大小取决于照片吗？",
         "a4": "是的：它按图片短边的百分比计算，所以在手机照片和小截图上看起来一样大。"
       }
+    },
+    "favicon-generator": {
+      "title": "Favicon 生成器",
+      "description": "用图片或 SVG 为网站生成 favicon：ICO、Apple 和 Android 用 PNG、manifest 和 HTML 标签。",
+      "action": "生成 favicon",
+      "about": "Favicon 生成器会把你的标志转换成网站需要的所有图标：用于标签页和书签的 favicon.ico（16、32 和 48 像素）、16 和 32 像素的 PNG、iPhone 主屏幕用的 180 像素图标（apple-touch-icon）、Android 用的 192 和 512 像素图标、site.webmanifest 文件，以及可直接粘贴到 head 中的 HTML 片段。支持 PNG、JPG、WEBP、AVIF、GIF、BMP、TIFF、HEIC 和 SVG；如果图片不是正方形，可以留边适配或裁剪。全部在浏览器中生成。",
+      "faq": {
+        "q1": "文件放在哪里？",
+        "a1": "放在网站根目录（与首页同级），并把 favicon-head.html 的内容粘贴到页面的 head 中。如果使用其他文件夹，请修改以“/”开头的路径。",
+        "q2": "为什么 Apple 图标有背景？",
+        "a2": "iPhone 会把主屏幕图标的透明区域填成黑色，因此 apple-touch-icon.png 会使用所选背景（或白色）保存。如果你选择透明背景，其他图标会保留透明。",
+        "q3": "用什么图片最好？",
+        "a3": "SVG 或至少 512 × 512 像素的正方形 PNG，图案简洁、对比鲜明：在 16 像素下，细节和长文字无法辨认。",
+        "q4": "上传 SVG 安全吗？",
+        "a4": "SVG 会在你的浏览器中作为图片绘制，不会执行脚本或加载外部资源，也绝不会发送到任何服务器。"
+      }
     }
   },
   "ToolUi": {
@@ -1404,6 +1420,14 @@
       "bc": "下中",
       "br": "右下"
     },
-    "positionTile": "平铺（整张图片）"
+    "positionTile": "平铺（整张图片）",
+    "faviconFit": "如果图片不是正方形",
+    "faviconContain": "留边适配",
+    "faviconCover": "裁剪为正方形",
+    "faviconBackground": "背景",
+    "faviconTransparent": "透明",
+    "faviconColor": "纯色",
+    "faviconAppName": "网站或应用名称（可选，用于 manifest）",
+    "faviconHint": "你将得到 favicon.ico（16、32 和 48 像素）、16、32、180、192 和 512 像素的 PNG、site.webmanifest，以及包含 head 标签的 favicon-head.html。请使用至少 512 × 512 像素的图片或 SVG。"
   }
 }

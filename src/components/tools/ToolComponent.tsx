@@ -41,6 +41,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "crop-image": dynamic(() => import("./image/CropImageTool")),
   "watermark-image": dynamic(() => import("./image/OverlayImageTool").then((m) => m.WatermarkImageTool)),
   "add-text-to-image": dynamic(() => import("./image/OverlayImageTool").then((m) => m.AddTextToImageTool)),
+  "favicon-generator": dynamic(() => import("./image/FaviconTool")),
   "remove-exif": dynamic(() => import("./image/RemoveMetadataTool")),
 };
 

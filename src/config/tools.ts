@@ -64,6 +64,7 @@ export const toolIds = [
   "crop-image",
   "watermark-image",
   "add-text-to-image",
+  "favicon-generator",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -524,6 +525,18 @@ export const tools: Record<ToolId, ToolInfo> = {
       fr: "ajouter-texte-image",
       zh: "add-text-to-image",
     },
+  },
+
+  "favicon-generator": {
+    id: "favicon-generator",
+    category: "image",
+    inputs: ["png", "jpg", "webp", "avif", "gif", "bmp", "tiff", "heic", "svg"],
+    outputs: ["ico", "png"],
+    engine: "browser",
+    libraries: ["canvas", "@jsquash/png", "own ICO writer", "libheif-js", "utif2"],
+    limits: { files: "single", timeoutMs: 2 * MINUTE, maxFileBytes: 25 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "generador-de-favicon", en: "favicon-generator", pt: "gerador-de-favicon", fr: "generateur-favicon", zh: "favicon-generator" },
   },
 
 };

@@ -721,6 +721,22 @@
         "q4": "O tamanho do texto depende da foto?",
         "a4": "Sim: é uma porcentagem do lado menor da imagem, então o texto fica do mesmo tamanho numa foto do celular e numa captura pequena."
       }
+    },
+    "favicon-generator": {
+      "title": "Gerador de favicon",
+      "description": "Crie o favicon do seu site a partir de uma imagem ou SVG: ICO, PNGs para Apple e Android, manifest e tags HTML.",
+      "action": "Criar favicon",
+      "about": "O gerador de favicon transforma seu logo em todos os ícones de que um site precisa: favicon.ico com 16, 32 e 48 pixels para abas e favoritos, PNGs de 16 e 32 px, o ícone de 180 px para a tela inicial do iPhone (apple-touch-icon), os de 192 e 512 px para Android, o arquivo site.webmanifest e um trecho HTML pronto para colar no head. Aceita PNG, JPG, WEBP, AVIF, GIF, BMP, TIFF, HEIC e SVG; se a imagem não for quadrada, você pode ajustá-la com margens ou cortá-la. Tudo é gerado no seu navegador.",
+      "faq": {
+        "q1": "Onde coloco os arquivos?",
+        "a1": "Na raiz do seu site (junto da página inicial), e cole o conteúdo de favicon-head.html dentro do head das suas páginas. Se usar outra pasta, mude os caminhos que começam com “/”.",
+        "q2": "Por que o ícone da Apple tem fundo?",
+        "a2": "O iPhone pinta de preto as áreas transparentes dos ícones da tela inicial, então o apple-touch-icon.png é salvo com o fundo escolhido (ou branco). Os outros mantêm a transparência se você escolheu fundo transparente.",
+        "q3": "Que imagem usar?",
+        "a3": "Um SVG ou um PNG quadrado de pelo menos 512 × 512 px, com um desenho simples e contrastado: em 16 px detalhes finos e textos longos não aparecem.",
+        "q4": "É seguro enviar um SVG?",
+        "a4": "O SVG é desenhado no seu navegador como imagem, sem executar scripts nem carregar recursos externos, e nunca é enviado a nenhum servidor."
+      }
     }
   },
   "ToolUi": {
@@ -1404,6 +1420,14 @@
       "bc": "Embaixo no centro",
       "br": "Embaixo à direita"
     },
-    "positionTile": "Mosaico (imagem inteira)"
+    "positionTile": "Mosaico (imagem inteira)",
+    "faviconFit": "Se a imagem não for quadrada",
+    "faviconContain": "Ajustar com margens",
+    "faviconCover": "Cortar em quadrado",
+    "faviconBackground": "Fundo",
+    "faviconTransparent": "Transparente",
+    "faviconColor": "Colorido",
+    "faviconAppName": "Nome do site ou app (opcional, para o manifest)",
+    "faviconHint": "Você recebe favicon.ico (16, 32 e 48 px), PNGs de 16, 32, 180, 192 e 512 px, site.webmanifest e favicon-head.html com as tags para o head. Use uma imagem de pelo menos 512 × 512 px ou um SVG."
   }
 }

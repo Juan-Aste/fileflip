@@ -12,6 +12,16 @@ import {
 } from "@/lib/image/compress";
 import { isValidCrop, type Rect } from "@/lib/image/crop-rect";
 import { decodeImage } from "@/lib/image/decode";
+import {
+  FAVICON_MASTER,
+  faviconIcoSizes,
+  faviconPngs,
+  headSnippet,
+  squarePlan,
+  webManifest,
+  type FaviconFit,
+} from "@/lib/image/favicon";
+import { encodeIco } from "@/lib/image/ico";
 import { drawOverlay, type OverlaySpec } from "@/lib/image/overlay";
 import { isDamagedImage } from "@/lib/image/integrity";
 import { DEFAULT_QUALITY } from "@/lib/image/options";
@@ -384,4 +394,63 @@ async function overlay({ input, from, to, spec, logo }: OverlayArgs, onProgress:
   return { result: { buffer, width: image.width, height: image.height }, transfer: [buffer] };
 }
 
-exposeHandlers({ compress, resize, transform, strip, preview, crop, overlay });
+export interface FaviconArgs {
+  /** A raster image, or the pixels of an SVG already rasterized on the page (workers can't render SVG). */
+  input: { blob: Blob; from: FormatId } | { pixels: RawImage };
+  fit: FaviconFit;
+  /** #rrggbb, or null for transparent. */
+  background: string | null;
+  appName: string;
+}
+
+export interface FaviconResult {
+  files: { name: string; buffer: ArrayBuffer; mime: string }[];
+}
+
+async function favicon({ input, fit, background, appName }: FaviconArgs, onProgress: (progress: number) => void) {
+  const image = "pixels" in input ? input.pixels : await decode(await input.blob.arrayBuffer(), input.from);
+  onProgress(0.2);
+  const plan = squarePlan(image.width, image.height, fit);
+  const source = await createImageBitmap(new ImageData(new Uint8ClampedArray(image.data), image.width, image.height));
+  const master = new OffscreenCanvas(FAVICON_MASTER, FAVICON_MASTER);
+  try {
+    const ctx = master.getContext("2d");
+    if (!ctx) throw new Error("No 2D context");
+    ctx.imageSmoothingQuality = "high";
+    if (background) {
+      ctx.fillStyle = background;
+      ctx.fillRect(0, 0, FAVICON_MASTER, FAVICON_MASTER);
+    }
+    const { source: s, target: t } = plan;
+    ctx.drawImage(source, s.x, s.y, s.width, s.height, t.x, t.y, t.width, t.height);
+  } finally {
+    source.close();
+  }
+  const scaled = (side: number, opaque: boolean): RawImage => {
+    const ctx = new OffscreenCanvas(side, side).getContext("2d");
+    if (!ctx) throw new Error("No 2D context");
+    ctx.imageSmoothingQuality = "high";
+    if (opaque) {
+      ctx.fillStyle = background ?? "#ffffff";
+      ctx.fillRect(0, 0, side, side);
+    }
+    ctx.drawImage(master, 0, 0, side, side);
+    return ctx.getImageData(0, 0, side, side);
+  };
+  const png = (image: RawImage) => encoders.png!(image, {});
+  const files: FaviconResult["files"] = [];
+  const ico = await Promise.all(faviconIcoSizes.map(async (size) => ({ size, png: await png(scaled(size, false)) })));
+  files.push({ name: "favicon.ico", buffer: encodeIco(ico), mime: "image/x-icon" });
+  for (const [i, file] of faviconPngs.entries()) {
+    files.push({ name: file.name, buffer: await png(scaled(file.size, file.opaque)), mime: "image/png" });
+    onProgress(0.3 + (0.6 * (i + 1)) / faviconPngs.length);
+  }
+  const text = (s: string) => new TextEncoder().encode(s).buffer as ArrayBuffer;
+  files.push({ name: "site.webmanifest", buffer: text(webManifest(appName, background)), mime: "application/manifest+json" });
+  files.push({ name: "favicon-head.html", buffer: text(headSnippet), mime: "text/html" });
+  onProgress(1);
+  const result: FaviconResult = { files };
+  return { result, transfer: files.map((f) => f.buffer) };
+}
+
+exposeHandlers({ compress, resize, transform, strip, preview, crop, overlay, favicon });
