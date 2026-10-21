@@ -753,6 +753,38 @@
         "q4": "¿Qué tamaño tiene el resultado en 1×?",
         "a4": "El que declara el SVG en sus atributos width y height (o su viewBox). Si no declara ninguno, se usa 1024 px. El mensaje del resultado muestra el tamaño final de cada imagen."
       }
+    },
+    "subtitle-converter": {
+      "title": "Convertir subtítulos SRT, VTT, ASS y SSA",
+      "description": "Convierte subtítulos entre SRT, WebVTT, ASS y SSA conservando tiempos, cursivas y negritas, en lotes y sin subir tus archivos.",
+      "action": "Convertir subtítulos",
+      "about": "Convertir subtítulos pasa tus archivos entre SRT (el más compatible: reproductores, televisores y YouTube), WebVTT (el de los videos en páginas web con HTML5), ASS y SSA (los de Aegisub, con estilos). Los tiempos se mantienen exactos, igual que los saltos de línea, las cursivas, las negritas y los subrayados. Detecta la codificación: un SRT antiguo guardado en Windows-1252 se lee con sus tildes y eñes, y el resultado siempre se guarda en UTF-8. Puedes convertir varios archivos a la vez o pegar el texto.",
+      "faq": {
+        "q1": "¿Se pierde algo al convertir de ASS a SRT?",
+        "a1": "SRT y VTT no tienen fuentes, colores ni posiciones como ASS. Se conservan el texto, los tiempos, las cursivas, las negritas y los subrayados; el resto se quita y te avisamos debajo del resultado cuando pasa.",
+        "q2": "Mis subtítulos muestran símbolos raros en lugar de tildes. ¿Se arregla?",
+        "a2": "Sí, en la mayoría de los casos. Si el archivo no es UTF-8 válido se lee como Windows-1252 (lo habitual en archivos viejos en español o portugués) y el resultado se guarda en UTF-8, que entienden todos los reproductores modernos.",
+        "q3": "¿Qué pasa con los comentarios y los estilos de un archivo VTT?",
+        "a3": "Los bloques NOTE se ignoran porque no son subtítulos. Los bloques STYLE, las posiciones de cada línea y los nombres de quien habla se quitan al convertir a otro formato.",
+        "q4": "¿Mis archivos se suben a algún servidor?",
+        "a4": "No. La conversión se hace en tu navegador; tus subtítulos no salen de tu dispositivo."
+      }
+    },
+    "subtitle-sync": {
+      "title": "Sincronizar subtítulos (adelantar, atrasar y cambiar FPS)",
+      "description": "Adelanta o atrasa todos los subtítulos de un SRT, VTT, ASS o SSA y corrige el desfase entre 23,976, 24, 25 y 30 FPS.",
+      "action": "Sincronizar subtítulos",
+      "about": "Sincronizar subtítulos corrige los archivos que aparecen antes o después de lo que se habla. Escribe cuántos segundos moverlos (un número negativo los adelanta) y, si el desfase va creciendo a lo largo de la película, cambia la velocidad de cuadros: es el caso típico de un subtítulo hecho para 23,976 FPS sobre un video de 25 FPS. Solo cambian los tiempos: el formato, los estilos, las posiciones y los comentarios del archivo quedan intactos. Ningún tiempo queda antes del inicio del video.",
+      "faq": {
+        "q1": "¿Cómo sé cuántos segundos mover?",
+        "a1": "Busca en el video una frase clara, anota en qué segundo se dice y compárala con el tiempo de esa línea en el subtítulo. Si el subtítulo aparece 2 segundos tarde, escribe -2; si aparece antes, un número positivo.",
+        "q2": "Al principio coincide pero al final va desfasado. ¿Qué hago?",
+        "a2": "Es un problema de velocidad de cuadros: el subtítulo se hizo para otra versión del video. Activa \"Cambiar la velocidad de cuadros\" y elige la de origen y la de destino; las combinaciones más comunes son 23,976 ↔ 25 y 25 ↔ 23,976.",
+        "q3": "¿Qué pasa con las líneas que quedarían antes del inicio?",
+        "a3": "Las que terminan antes del segundo cero se eliminan (y te decimos cuántas) y las que lo cruzan empiezan en cero. En un SRT se vuelven a numerar.",
+        "q4": "¿Se pierden los estilos de mi archivo ASS?",
+        "a4": "No. Solo se reescriben los tiempos de inicio y fin de cada línea; estilos, posiciones, efectos y comentarios quedan como estaban."
+      }
     }
   },
   "ToolUi": {
@@ -1081,7 +1113,7 @@
       },
       "subtitle": {
         "name": "Subtítulos",
-        "description": "Convierte y sincroniza subtítulos."
+        "description": "Convierte subtítulos entre SRT, VTT, ASS y SSA y sincronízalos con tu video."
       },
       "font": {
         "name": "Fuentes",
@@ -1450,5 +1482,25 @@
     "svgWidthInvalid": "Escribe un ancho entero entre 1 y {max} px.",
     "svgHint": "1× usa el tamaño declarado en el SVG (1024 px si no declara ninguno). En JPG las zonas transparentes quedan blancas.",
     "svgSize": "{name}: {size} px"
+  },
+  "SubtitleTools": {
+    "paste": "O pega tus subtítulos",
+    "target": "Convertir a",
+    "format": {
+      "srt": "SRT",
+      "vtt": "WebVTT (.vtt)",
+      "ass": "ASS (Advanced SubStation)",
+      "ssa": "SSA (SubStation Alpha)"
+    },
+    "cues": "{count, plural, one {# subtítulo.} other {# subtítulos.}}",
+    "dropped": "{count, plural, one {Se quitó # línea que terminaba antes del inicio.} other {Se quitaron # líneas que terminaban antes del inicio.}}",
+    "lostStyling": "Se quitaron colores, fuentes o posiciones que este formato no admite.",
+    "offset": "Mover los tiempos (segundos)",
+    "offsetHint": "Negativo para adelantar, positivo para atrasar. Ejemplo: -2,5",
+    "offsetInvalid": "Escribe un número de segundos, por ejemplo -2,5 o 1.",
+    "changeFps": "Cambiar la velocidad de cuadros (FPS)",
+    "fpsFrom": "FPS del subtítulo",
+    "fpsTo": "FPS del video",
+    "fpsValue": "{fps} FPS"
   }
 }

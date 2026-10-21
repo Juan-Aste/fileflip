@@ -66,6 +66,8 @@ export const toolIds = [
   "add-text-to-image",
   "favicon-generator",
   "svg-converter",
+  "subtitle-converter",
+  "subtitle-sync",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -103,6 +105,9 @@ const imageInputs: readonly FormatId[] = ["jpg", "png", "webp", "avif", "gif", "
 const MINUTE = 60_000;
 /** Text data is parsed whole: beyond this a tab can run out of memory. */
 const DATA_MAX_BYTES = 50 * 1024 * 1024;
+/** A feature film's subtitles are ~100 KB; this leaves room for long series files. */
+const SUBTITLE_MAX_BYTES = 10 * 1024 * 1024;
+const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
 
 export const tools: Record<ToolId, ToolInfo> = {
   "merge-pdf": {
@@ -552,7 +557,28 @@ export const tools: Record<ToolId, ToolInfo> = {
     status: "verified",
     slugs: { es: "convertir-svg", en: "svg-converter", pt: "converter-svg", fr: "convertir-svg", zh: "svg-converter" },
   },
-
+  "subtitle-converter": {
+    id: "subtitle-converter",
+    category: "subtitle",
+    inputs: subtitleFormats,
+    outputs: subtitleFormats,
+    engine: "browser",
+    libraries: ["own SRT/VTT/ASS parser"],
+    limits: { files: "multiple", timeoutMs: MINUTE, maxFileBytes: SUBTITLE_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "convertir-subtitulos", en: "subtitle-converter", pt: "converter-legendas", fr: "convertir-sous-titres", zh: "subtitle-converter" },
+  },
+  "subtitle-sync": {
+    id: "subtitle-sync",
+    category: "subtitle",
+    inputs: subtitleFormats,
+    outputs: subtitleFormats,
+    engine: "browser",
+    libraries: ["own SRT/VTT/ASS parser"],
+    limits: { files: "multiple", timeoutMs: MINUTE, maxFileBytes: SUBTITLE_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "sincronizar-subtitulos", en: "subtitle-sync", pt: "sincronizar-legendas", fr: "synchroniser-sous-titres", zh: "subtitle-sync" },
+  },
 };
 
 /** Published tools: only verified ones get pages, links and sitemap entries. */

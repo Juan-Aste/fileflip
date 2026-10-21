@@ -20,6 +20,7 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `photo.jpg`, `photo-alpha.png`, `noise.jpg` | sharp: paisaje sintético de 1000×750 con ruido en JPEG al 95 % (para comprimir) / degradado de 360×270 con fondo transparente (círculo opaco) en PNG / grano fuerte de 480×360 en JPEG al 85 % (para llegar a un peso chico hay que achicarlo) |
 | `exif-gps.jpg`, `exif-gps.png`, `exif-gps.webp` | sharp: el paisaje a 320×240 con metadatos inventados (cámara "Fileflect Test Cam 1", fecha, autor, programa y GPS en el Río de la Plata); el JPG guardado de costado con orientación EXIF 6 |
 | `photo.heif` | `generate.mjs`: los mismos bytes que `photo.heic` con la marca principal del `ftyp` cambiada a `mif1` (contenedor HEIF genérico, como lo escriben cámaras que no son iPhone) |
+| `subtitles.{srt,vtt,ass,ssa}`, `subtitles-latin1.srt` | `generate.mjs`: líneas propias con cursiva, negrita, un color, acentos, chino y `&`; el VTT con `NOTE`, `STYLE`, id, ajustes de posición y voz; ASS/SSA con un segundo estilo, un `Comment:` y etiquetas `{\pos}`/`{\c}` / SRT en Windows-1252 con CRLF |
 | `table-excel.csv`, `table.tsv` | CSV como lo guarda Excel en español (punto y coma, coma decimal, Windows-1252) / TSV en UTF-8 |
 | `document.{odt,docx,doc,rtf}` | LibreOffice desde un documento ODF plano escrito en el script |
 | `spreadsheet.{ods,xlsx,xls}` | LibreOffice desde una hoja ODF plana (4 filas × 3 columnas) |
@@ -31,3 +32,4 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `corrupt/broken.json`, `corrupt/bad-quotes.csv` | JSON cortado / CSV con una comilla sin cerrar |
 | `corrupt/xxe.xml`, `corrupt/broken.xml` | Entidad externa que apunta a `/etc/passwd` (XXE) / etiquetas mal cerradas |
 | `corrupt/alias-bomb.yaml`, `corrupt/broken.toml` | "Billion laughs": 9 niveles de 9 alias (se expandiría a ~387 millones de valores) / TOML con texto y tabla sin cerrar |
+| `corrupt/broken.srt` | Bloques sin ninguna línea de tiempos válida |

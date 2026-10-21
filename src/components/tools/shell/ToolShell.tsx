@@ -39,7 +39,7 @@ export type ShellInput =
       maxFileBytes?: number;
       /** Also lets the user paste the content instead of picking a file. */
       paste?: { label: string; placeholder?: string };
-      /** False while the tool is still preparing the picked files (e.g. a preview). */
+      /** False while the tool is still preparing the picked files (e.g. a preview) or its options are invalid. */
       ready?: boolean;
     }
   | { kind: "text"; label: string; placeholder?: string; maxLength?: number }
@@ -260,7 +260,7 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
   const hasText = text.trim().length > 0;
   const hasInput =
     input.kind === "files"
-      ? (files.length > 0 && input.ready !== false) || (!!input.paste && hasText)
+      ? input.ready !== false && (files.length > 0 || (!!input.paste && hasText))
       : input.kind === "text" ? hasText : input.ready !== false;
 
   return (
@@ -296,7 +296,7 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
           {rejected.map((r) => `${r.name}: ${te(r.reason)}`).join(" · ")}
         </ToolAlert>
       )}
-      {(hasInput || files.length > 0 || input.kind === "none" || state.status === "error") && (
+      {(hasInput || files.length > 0 || hasText || input.kind === "none" || state.status === "error") && (
         <div className={`${card} flex flex-col gap-4 p-4 sm:p-6`}>
           {files.length > 0 && (
             <ul className="flex flex-col gap-2">

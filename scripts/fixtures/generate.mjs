@@ -332,6 +332,49 @@ if (existsSync(join(out, "photo.heic"))) {
   write("photo.heif", heif);
 }
 
+// --- Subtitles (our own placeholder lines): italics, bold, a color, accents,
+// Chinese, an ampersand, VTT settings/NOTE/STYLE and ASS styles with overrides.
+write(
+  "subtitles.srt",
+  Buffer.from(
+    '1\n00:00:01,000 --> 00:00:03,500\nHola, ¿cómo estás?\n<i>Ñandú en cursiva</i>\n\n2\n00:00:04,000 --> 00:00:06,250\n<font color="#ff0000">Texto en rojo</font>\nSecond line\n\n3\n00:01:02,003 --> 00:01:05,000\n中文字幕 & <b>negrita</b>\n',
+    "utf8",
+  ),
+);
+write(
+  "subtitles.vtt",
+  Buffer.from(
+    "WEBVTT - Fileflect sample\n\nNOTE A comment that is not a cue\n\nSTYLE\n::cue { color: yellow }\n\nintro\n00:01.000 --> 00:03.500 align:start position:10%\n<v Ana>Hola</v> &amp; bienvenidos\n<i>segunda línea</i>\n\n00:00:04.000 --> 00:00:06.000\nÁrvore &lt;3\n",
+    "utf8",
+  ),
+);
+const assEvents = (marked) =>
+  [
+    `Comment: ${marked}0:00:00.00,0:00:01.00,Default,,0,0,0,,not shown`,
+    `Dialogue: ${marked}0:00:01.00,0:00:03.50,Default,,0,0,0,,Hola, {\\i1}mundo{\\i0}\\NSegunda línea`,
+    `Dialogue: ${marked}0:00:04.00,0:00:06.25,Sign,,0,0,0,,{\\pos(100,50)\\c&H0000FF&}Cartel, con comas`,
+  ].join("\n");
+write(
+  "subtitles.ass",
+  Buffer.from(
+    "[Script Info]\nTitle: Fileflect sample\nScriptType: v4.00+\n\n[V4+ Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\nStyle: Default,Arial,20,&H00FFFFFF,&H0000FFFF,&H00000000,&H80000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1\nStyle: Sign,Arial,30,&H0000FFFF,&H0000FFFF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,2,2,8,10,10,10,1\n\n[Events]\nFormat: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n" +
+      assEvents("0,") +
+      "\n",
+    "utf8",
+  ),
+);
+write(
+  "subtitles.ssa",
+  Buffer.from(
+    "[Script Info]\nTitle: Fileflect sample\nScriptType: v4.00\n\n[V4 Styles]\nFormat: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, TertiaryColour, BackColour, Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding\nStyle: Default,Arial,20,16777215,65535,65535,0,0,0,1,2,2,2,10,10,10,0,1\nStyle: Sign,Arial,30,65535,65535,65535,0,-1,0,1,2,2,6,10,10,10,0,1\n\n[Events]\nFormat: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n" +
+      assEvents("Marked=0,") +
+      "\n",
+    "utf8",
+  ),
+);
+// As saved by old Windows tools in Spanish: Windows-1252 and CRLF.
+write("subtitles-latin1.srt", Buffer.from("1\r\n00:00:00,500 --> 00:00:02,000\r\nCanción de cuna\r\n\r\n2\r\n00:00:02,500 --> 00:00:04,000\r\nAçúcar y piñón\r\n", "latin1"));
+
 // --- Broken files for error paths
 const writeCorrupt = (name, bytes) => write(join("corrupt", name), bytes);
 const png = readFileSync(join(out, "image.png"));
@@ -359,3 +402,4 @@ writeCorrupt("broken.toml", Buffer.from('title = "unclosed\n[owner\n'));
 // XXE: an external entity pointing at a local file.
 writeCorrupt("xxe.xml", Buffer.from('<?xml version="1.0"?>\n<!DOCTYPE r [<!ENTITY x SYSTEM "file:///etc/passwd">]>\n<r>&x;</r>\n'));
 writeCorrupt("broken.xml", Buffer.from("<catalog><book><title>open</book></catalog>\n"));
+writeCorrupt("broken.srt", Buffer.from("1\nthis is not a timing line\nHello\n\n2\n00:00:99,000 -> nope\nBye\n"));

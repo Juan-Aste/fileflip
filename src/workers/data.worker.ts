@@ -7,9 +7,10 @@ import { decodeText } from "@/lib/data/text";
 import { jsonToToml, tomlToJson } from "@/lib/data/toml";
 import { jsonToXml, xmlToJson } from "@/lib/data/xml";
 import { jsonToYaml, yamlToJson } from "@/lib/data/yaml";
+import { convertSubtitles, syncSubtitles, type SubtitleFormat, type SyncOptions } from "@/lib/subtitle/subtitle";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
-// Data tools (JSON, CSV, YAML, TOML, XML): parsing big files off the main thread keeps the page responsive.
+// Data tools (JSON, CSV, YAML, TOML, XML) and subtitles: parsing big files off the main thread keeps the page responsive.
 const textOf = async (input: Blob | string) =>
   typeof input === "string" ? input : decodeText(new Uint8Array(await input.arrayBuffer()));
 
@@ -35,6 +36,8 @@ exposeHandlers({
   hash: async ({ input, options }: Input<{ algorithms: HashAlgorithm[] }>, onProgress: (progress: number) => void) => ({
     result: await hashInput(input, options.algorithms, onProgress),
   }),
+  convertSubtitles: async ({ input, options }: Input<{ to: SubtitleFormat }>) => ({ result: convertSubtitles(await textOf(input), options.to) }),
+  syncSubtitles: async ({ input, options }: Input<SyncOptions>) => ({ result: syncSubtitles(await textOf(input), options) }),
   // Formatters answer with a result (with the error position) instead of throwing.
   formatJson: async ({ input, options }: Input<JsonFormatOptions>) => ({ result: formatJson(await textOf(input), options) }),
   formatXml: async ({ input, options }: Input<XmlFormatOptions>) => ({ result: formatXml(await textOf(input), options) }),

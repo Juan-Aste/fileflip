@@ -234,7 +234,7 @@ Imágenes (las más buscadas primero)
   - [x] 3C.16b SVG → PNG/JPG con página propia (tamaño/escala y fondo; prueba de que un `<script>` del SVG no se ejecuta) y HEIF como entrada (fixture `.heif` y página de conversión si corresponde)
 
 Subtítulos
-- [ ] 3C.17 SRT ↔ VTT ↔ ASS/SSA, desplazar tiempos y ajustar FPS (detección de codificación; aviso de estilos que se pierden)
+- [x] 3C.17 SRT ↔ VTT ↔ ASS/SSA, desplazar tiempos y ajustar FPS (detección de codificación; aviso de estilos que se pierden)
 
 PDF
 - [ ] 3C.18 Eliminar páginas y extraer páginas (con miniaturas)

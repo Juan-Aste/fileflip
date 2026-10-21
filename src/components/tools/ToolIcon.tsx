@@ -1,5 +1,7 @@
 import {
   Binary,
+  Captions,
+  TimerReset,
   Braces,
   FileDown,
   Link2,
@@ -76,6 +78,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "add-text-to-image": Type,
   "favicon-generator": AppWindow,
   "svg-converter": PenTool,
+  "subtitle-converter": Captions,
+  "subtitle-sync": TimerReset,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

@@ -31,7 +31,11 @@ export type FormatId =
   | "toml"
   | "xml"
   | "base64"
-  | "bin";
+  | "bin"
+  | "srt"
+  | "vtt"
+  | "ass"
+  | "ssa";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -77,6 +81,10 @@ export const formats: Record<FormatId, FormatInfo> = {
   xml: { id: "xml", label: "XML", mime: "application/xml", extensions: ["xml"], category: "data" },
   base64: { id: "base64", label: "Base64", mime: "text/plain", extensions: ["b64", "base64"], category: "data" },
   /** Any file, as raw bytes (Base64 tools). */
+  srt: { id: "srt", label: "SRT", mime: "application/x-subrip", extensions: ["srt"], category: "data" },
+  vtt: { id: "vtt", label: "VTT", mime: "text/vtt", extensions: ["vtt"], category: "data" },
+  ass: { id: "ass", label: "ASS", mime: "text/x-ssa", extensions: ["ass"], category: "data" },
+  ssa: { id: "ssa", label: "SSA", mime: "text/x-ssa", extensions: ["ssa"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 

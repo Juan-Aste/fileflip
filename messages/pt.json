@@ -753,6 +753,38 @@
         "q4": "Qual o tamanho do resultado em 1×?",
         "a4": "O que o SVG declara nos atributos width e height (ou no viewBox). Se não declarar nenhum, é usado 1024 px. A mensagem do resultado mostra o tamanho final de cada imagem."
       }
+    },
+    "subtitle-converter": {
+      "title": "Converter legendas SRT, VTT, ASS e SSA",
+      "description": "Converta legendas entre SRT, WebVTT, ASS e SSA mantendo tempos, itálico e negrito, em lotes e sem enviar seus arquivos.",
+      "action": "Converter legendas",
+      "about": "Converter legendas passa seus arquivos entre SRT (o mais compatível: players, TVs e YouTube), WebVTT (usado em vídeos HTML5 em sites), ASS e SSA (os do Aegisub, com estilos). Os tempos continuam exatos, assim como as quebras de linha, o itálico, o negrito e o sublinhado. A codificação é detectada: um SRT antigo salvo em Windows-1252 é lido com seus acentos e cedilhas, e o resultado é sempre salvo em UTF-8. Converta vários arquivos de uma vez ou cole o texto.",
+      "faq": {
+        "q1": "Perco algo ao converter de ASS para SRT?",
+        "a1": "SRT e VTT não têm fontes, cores nem posições como o ASS. Texto, tempos, itálico, negrito e sublinhado são mantidos; o resto é removido e avisamos abaixo do resultado quando isso acontece.",
+        "q2": "Minha legenda mostra símbolos estranhos no lugar dos acentos. Dá para corrigir?",
+        "a2": "Na maioria dos casos, sim. Se o arquivo não é UTF-8 válido, ele é lido como Windows-1252 (comum em legendas antigas em português e espanhol) e o resultado é salvo em UTF-8, que todos os players modernos entendem.",
+        "q3": "O que acontece com comentários e estilos de um arquivo VTT?",
+        "a3": "Os blocos NOTE são ignorados porque não são legendas. Os blocos STYLE, as posições de cada linha e os nomes de quem fala são removidos ao converter para outro formato.",
+        "q4": "Meus arquivos são enviados para algum servidor?",
+        "a4": "Não. A conversão acontece no seu navegador; suas legendas não saem do seu dispositivo."
+      }
+    },
+    "subtitle-sync": {
+      "title": "Sincronizar legendas (adiantar, atrasar e mudar FPS)",
+      "description": "Adiante ou atrase todas as legendas de um SRT, VTT, ASS ou SSA e corrija a dessincronia entre 23,976, 24, 25 e 30 FPS.",
+      "action": "Sincronizar legendas",
+      "about": "Sincronizar legendas corrige arquivos que aparecem antes ou depois da fala. Digite quantos segundos movê-las (um número negativo adianta) e, se a diferença aumenta ao longo do filme, mude a taxa de quadros: é o caso típico de uma legenda feita para 23,976 FPS num vídeo de 25 FPS. Só os tempos mudam: o formato, os estilos, as posições e os comentários do arquivo ficam intactos. Nenhum tempo fica antes do início do vídeo.",
+      "faq": {
+        "q1": "Como sei quantos segundos mover?",
+        "a1": "Procure uma fala clara no vídeo, anote o segundo em que ela é dita e compare com o tempo dessa linha na legenda. Se a legenda aparece 2 segundos atrasada, digite -2; se aparece antes, um número positivo.",
+        "q2": "No começo bate, mas no final fica atrasada. O que faço?",
+        "a2": "É um problema de taxa de quadros: a legenda foi feita para outra versão do vídeo. Ative \"Mudar a taxa de quadros\" e escolha a de origem e a de destino; as combinações mais comuns são 23,976 ↔ 25.",
+        "q3": "O que acontece com as linhas que ficariam antes do início?",
+        "a3": "As que terminam antes do segundo zero são removidas (e dizemos quantas) e as que o cruzam começam em zero. Num SRT elas são renumeradas.",
+        "q4": "Meu arquivo ASS perde os estilos?",
+        "a4": "Não. Só os tempos de início e fim de cada linha são reescritos; estilos, posições, efeitos e comentários ficam como estavam."
+      }
     }
   },
   "ToolUi": {
@@ -1081,7 +1113,7 @@
       },
       "subtitle": {
         "name": "Legendas",
-        "description": "Converta e sincronize legendas."
+        "description": "Converta legendas entre SRT, VTT, ASS e SSA e sincronize-as com seu vídeo."
       },
       "font": {
         "name": "Fontes",
@@ -1450,5 +1482,25 @@
     "svgWidthInvalid": "Digite uma largura inteira entre 1 e {max} px.",
     "svgHint": "1× usa o tamanho declarado no SVG (1024 px se não declarar nenhum). Em JPG, as áreas transparentes ficam brancas.",
     "svgSize": "{name}: {size} px"
+  },
+  "SubtitleTools": {
+    "paste": "Ou cole suas legendas",
+    "target": "Converter para",
+    "format": {
+      "srt": "SRT",
+      "vtt": "WebVTT (.vtt)",
+      "ass": "ASS (Advanced SubStation)",
+      "ssa": "SSA (SubStation Alpha)"
+    },
+    "cues": "{count, plural, one {# legenda.} other {# legendas.}}",
+    "dropped": "{count, plural, one {Foi removida # linha que terminava antes do início.} other {Foram removidas # linhas que terminavam antes do início.}}",
+    "lostStyling": "Cores, fontes ou posições que este formato não aceita foram removidas.",
+    "offset": "Mover os tempos (segundos)",
+    "offsetHint": "Negativo para adiantar, positivo para atrasar. Exemplo: -2,5",
+    "offsetInvalid": "Digite um número de segundos, por exemplo -2,5 ou 1.",
+    "changeFps": "Mudar a taxa de quadros (FPS)",
+    "fpsFrom": "FPS da legenda",
+    "fpsTo": "FPS do vídeo",
+    "fpsValue": "{fps} FPS"
   }
 }

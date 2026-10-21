@@ -3,6 +3,7 @@ import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type { Decoded, EncodeOptions } from "./base64";
 import type { HashAlgorithm } from "./hash";
 import type { CsvToJsonOptions, JsonToCsvOptions } from "./csv";
+import type { SubtitleFormat, SubtitleResult, SyncOptions } from "@/lib/subtitle/subtitle";
 import type { FormatResult, JsonFormatOptions, XmlFormatOptions, YamlFormatOptions } from "./format";
 
 // One data worker, started on first use. Text formats are parsed whole, so a
@@ -54,3 +55,11 @@ const HASH_JOB_TIMEOUT_MS = 10 * 60_000;
 /** Hex digests of a file's bytes, or of text as UTF-8. */
 export const hashFileInput = (input: Input, algorithms: HashAlgorithm[], job: JobOptions = {}) =>
   call<Partial<Record<HashAlgorithm, string>>>("hash", { input, options: { algorithms } }, { timeoutMs: HASH_JOB_TIMEOUT_MS, ...job });
+
+/** Subtitles converted to another format (styling beyond italic/bold/underline is dropped). */
+export const convertSubtitleInput = (input: Input, to: SubtitleFormat, job: JobOptions = {}) =>
+  call<SubtitleResult>("convertSubtitles", { input, options: { to } }, job);
+
+/** Subtitles shifted and/or retimed between frame rates, in their own format. */
+export const syncSubtitleInput = (input: Input, options: SyncOptions, job: JobOptions = {}) =>
+  call<SubtitleResult & { format: SubtitleFormat }>("syncSubtitles", { input, options }, job);

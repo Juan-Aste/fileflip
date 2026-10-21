@@ -1748,3 +1748,26 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Nota de entorno: `pkill -f "next start"` (o `next-server`) dentro de un comando de shell que contiene ese mismo texto mata al propio shell (código 144); usar `pkill -f "^next-server"`.
 
 **Siguiente**: 3C.17 (subtítulos SRT ↔ VTT ↔ ASS/SSA, desplazar tiempos y ajustar FPS).
+
+## 2026-10-21 18:40 UTC — Fase 3, tarea 3C.17 (subtítulos: convertir y sincronizar)
+
+**Qué se hizo**
+- Candado: el `.agent-lock` tenía la hora 14:14 (una ejecución que lo tomó y se cortó sin subir nada); a las 18:08 estaba vencido y esta ejecución lo tomó.
+- **Convertir subtítulos** (`/es/convertir-subtitulos`, `/en/subtitle-converter`, `/pt/converter-legendas`, `/fr/convertir-sous-titres`): SRT, WebVTT, ASS y SSA en cualquier dirección, en lotes o pegando el texto. Se conservan tiempos, saltos de línea, `<i>`, `<b>` y `<u>` (en ASS/SSA como `{\i1}…{\i0}`); colores, fuentes, posiciones, `<font>`, voces `<v>`, ajustes de VTT y estilos ASS distintos de `Default` se quitan y **se avisa** debajo del resultado ("Se quitaron colores, fuentes o posiciones…"), junto con la cantidad de subtítulos.
+- **Sincronizar subtítulos** (`/es/sincronizar-subtitulos`, `/en/subtitle-sync`, `/pt/sincronizar-legendas`, `/fr/synchroniser-sous-titres`): desplazar en segundos (acepta `-2,5` y `1.5`; inválido → aviso y botón deshabilitado; 0 sin cambio de FPS → deshabilitado) y/o cambiar la velocidad de cuadros (23,976 / 24 / 25 / 29,97 / 30). **Reescribe solo los tiempos en el archivo original**: estilos ASS, `Comment:`, posiciones, ids, ajustes y bloques `NOTE`/`STYLE` de VTT quedan intactos. Nada baja de 0: las líneas que terminan antes se eliminan (con aviso de cuántas) y las que cruzan el 0 empiezan en 0; un SRT se renumera.
+- Motor propio sin dependencias en `src/lib/subtitle/subtitle.ts` (el plan proponía ass-compiler, pero el subconjunto que usamos es chico y así no se agrega nada al bundle), ejecutado en el worker de datos existente (`convertSubtitles`, `syncSubtitles`). Detección del formato por contenido (`WEBVTT`, `[Script Info]` + `[V4 Styles]`/`[V4+ Styles]`, línea de tiempos); codificación con `decodeText` (UTF-8, UTF-16 con BOM o Windows-1252), salida siempre UTF-8. Al escribir: VTT escapa `&`, `<`, `>` salvo las tres etiquetas; una línea vacía dentro de un subtítulo se escribe como espacio duro (si no, cortaría el bloque) y `-->` del texto pasa a `->` en SRT/VTT; `{`/`}` del texto pasan a `(`/`)` en ASS.
+- Límites: 10 MB por archivo, 100 000 subtítulos, 1 minuto por trabajo.
+- Formatos nuevos en `formats.ts`: `srt`, `vtt`, `ass`, `ssa` (categoría `data`: solo los usan herramientas). Categoría "Subtítulos" publicada (página `/es/herramientas-de-subtitulos`, etc.) con descripción nueva.
+- `ToolShell`: `ready: false` ahora también deshabilita el botón con texto pegado, y las opciones se muestran apenas hay texto pegado (antes solo si el botón estaba habilitado).
+- Fixtures nuevos (generados por `generate.mjs`): `subtitles.{srt,vtt,ass,ssa}`, `subtitles-latin1.srt` (Windows-1252 + CRLF) y `corrupt/broken.srt`.
+
+**Limitaciones**
+- Codificaciones distintas de UTF-8/UTF-16/Windows-1252 (por ejemplo GBK o Big5 en subtítulos chinos antiguos) se leen mal; lo dice la pregunta frecuente en chino.
+- No se convierten formatos de imagen (SUP/IDX+SUB) ni MicroDVD (`.sub` por cuadros); SBV/TTML quedan para más adelante si hace falta.
+
+**Verificación**
+- 33 tests unitarios: lectura de cada fixture (SRT con `<font>`, VTT con NOTE/STYLE/id/ajustes/voz/entidades, ASS y SSA con comas en el texto y `Comment:`), Windows-1252, archivos sin subtítulos, escritura de cada formato, **ida y vuelta de los 16 pares**, aviso de estilos solo si cambia el formato, desplazamiento negativo y FPS, sincronización en el lugar de SRT/VTT/ASS.
+- `subtitle-tools.spec.ts` (5 casos): SRT + ASS → VTT leídos con **el parser WebVTT de Chromium** (`<track>` → `TextTrack.cues`), Windows-1252 → ASS en UTF-8, VTT → SRT, archivo roto con error, SRT −4 s (línea eliminada, renumerado, `<font>` intacto, botón deshabilitado con 0 y con "abc"), ASS 25 → 23,976 FPS con estilos intactos y VTT pegado +1,5 s conservando `line:0`. Sin llamadas al servidor.
+- Lint, typecheck, tests (719), build, `check:static` (757 páginas) y `npm run test:e2e` (202/202) pasan.
+
+**Siguiente**: 3C.18 (eliminar y extraer páginas de PDF con miniaturas).

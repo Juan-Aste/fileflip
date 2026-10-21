@@ -753,6 +753,38 @@
         "q4": "What size is the result at 1×?",
         "a4": "The one the SVG declares in its width and height attributes (or its viewBox). If it declares none, 1024 px is used. The result message shows each image's final size."
       }
+    },
+    "subtitle-converter": {
+      "title": "Convert SRT, VTT, ASS and SSA subtitles",
+      "description": "Convert subtitles between SRT, WebVTT, ASS and SSA keeping timings, italics and bold, in batches and without uploading your files.",
+      "action": "Convert subtitles",
+      "about": "Subtitle converter moves your files between SRT (the most compatible one: media players, TVs and YouTube), WebVTT (used by HTML5 video on web pages), ASS and SSA (Aegisub formats with styles). Timings stay exact, as do line breaks, italics, bold and underline. The text encoding is detected: an old SRT saved as Windows-1252 is read with its accents, and the result is always saved as UTF-8. Convert several files at once or paste the text.",
+      "faq": {
+        "q1": "Is anything lost when converting ASS to SRT?",
+        "a1": "SRT and VTT have no fonts, colors or positions like ASS does. Text, timings, italics, bold and underline are kept; the rest is removed, and a note below the result tells you when that happens.",
+        "q2": "My subtitles show odd symbols instead of accented letters. Can this fix it?",
+        "a2": "Usually, yes. When a file is not valid UTF-8 it is read as Windows-1252 (common in older European and Latin American files) and the result is saved as UTF-8, which every modern player understands.",
+        "q3": "What happens to comments and styles in a VTT file?",
+        "a3": "NOTE blocks are skipped because they are not subtitles. STYLE blocks, per-cue positions and speaker names are removed when converting to another format.",
+        "q4": "Are my files uploaded to a server?",
+        "a4": "No. The conversion runs in your browser; your subtitles never leave your device."
+      }
+    },
+    "subtitle-sync": {
+      "title": "Sync subtitles (shift timing and change FPS)",
+      "description": "Shift every subtitle in an SRT, VTT, ASS or SSA file earlier or later, and fix drift between 23.976, 24, 25 and 30 FPS.",
+      "action": "Sync subtitles",
+      "about": "Subtitle sync fixes files that show up before or after the words are spoken. Type how many seconds to move them (a negative number makes them earlier) and, if the gap keeps growing during the film, change the frame rate: the classic case is a subtitle made for 23.976 FPS on a 25 FPS video. Only the timings change: the file's format, styles, positions and comments stay untouched. No timing ends up before the start of the video.",
+      "faq": {
+        "q1": "How do I know how many seconds to shift?",
+        "a1": "Find a clear line in the video, note the second it is spoken and compare it with that line's time in the subtitle file. If the subtitle shows up 2 seconds late, type -2; if it shows up early, a positive number.",
+        "q2": "It matches at the start but drifts by the end. What should I do?",
+        "a2": "That is a frame rate problem: the subtitle was made for another release of the video. Turn on \"Change the frame rate\" and choose the source and target rates; the most common pairs are 23.976 ↔ 25.",
+        "q3": "What happens to lines that would land before the start?",
+        "a3": "Lines ending before second zero are removed (we tell you how many) and lines crossing it start at zero. SRT cues are renumbered.",
+        "q4": "Will my ASS file lose its styles?",
+        "a4": "No. Only each line's start and end times are rewritten; styles, positions, effects and comments stay as they were."
+      }
     }
   },
   "ToolUi": {
@@ -1081,7 +1113,7 @@
       },
       "subtitle": {
         "name": "Subtitles",
-        "description": "Convert and sync subtitles."
+        "description": "Convert subtitles between SRT, VTT, ASS and SSA and sync them with your video."
       },
       "font": {
         "name": "Fonts",
@@ -1450,5 +1482,25 @@
     "svgWidthInvalid": "Enter a whole width between 1 and {max} px.",
     "svgHint": "1× uses the size declared in the SVG (1024 px if it declares none). In JPG, transparent areas become white.",
     "svgSize": "{name}: {size} px"
+  },
+  "SubtitleTools": {
+    "paste": "Or paste your subtitles",
+    "target": "Convert to",
+    "format": {
+      "srt": "SRT",
+      "vtt": "WebVTT (.vtt)",
+      "ass": "ASS (Advanced SubStation)",
+      "ssa": "SSA (SubStation Alpha)"
+    },
+    "cues": "{count, plural, one {# subtitle.} other {# subtitles.}}",
+    "dropped": "{count, plural, one {Removed # line that ended before the start.} other {Removed # lines that ended before the start.}}",
+    "lostStyling": "Colors, fonts or positions this format does not support were removed.",
+    "offset": "Shift timings (seconds)",
+    "offsetHint": "Negative to make them earlier, positive to delay them. Example: -2.5",
+    "offsetInvalid": "Type a number of seconds, for example -2.5 or 1.",
+    "changeFps": "Change the frame rate (FPS)",
+    "fpsFrom": "Subtitle FPS",
+    "fpsTo": "Video FPS",
+    "fpsValue": "{fps} FPS"
   }
 }
