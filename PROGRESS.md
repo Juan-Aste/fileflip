@@ -1442,3 +1442,10 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - `npm run test:e2e`: 117/117 (y el conversor 190/190 con `--repeat-each 2`). Lint, typecheck, tests (495), build y `check:static` pasan.
+
+## 2026-10-21 02:20 UTC — Fase 3, tarea 3B.8 (Lighthouse al cierre de 3B) — HITO 3B TERMINADO
+
+- `docs/perf/2026-10-21-3B-final.md`: Lighthouse 13.5 móvil (mediana de 3) en 9 páginas, incluidas "Todas las herramientas", la categoría PDF y "Unir PDF" con la plantilla nueva: rendimiento 97–99, accesibilidad 100, SEO 100, CLS 0, JS 145–152 KB (+3 KB por el botón del buscador).
+- `scripts/perf/lighthouse.sh` mide también esas 3 páginas. Nota: `LIGHTHOUSE` debe ser la ruta a un ejecutable (no `npx …`, el script lo cita como un solo comando).
+
+**Siguiente**: 3C.1 (JSON ↔ CSV/TSV), la primera herramienta sobre `ToolShell`.

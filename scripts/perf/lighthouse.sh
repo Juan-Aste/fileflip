@@ -18,6 +18,9 @@ PAGES=(
   "pdf-tool /es/comprimir-pdf"
   "longtail /es/heic-a-jpg-desde-iphone"
   "pricing /es/pricing"
+  "all-tools /es/herramientas"
+  "category /es/herramientas-pdf"
+  "tool-merge /es/unir-pdf"
 )
 # Warm up the server (first render of each route).
 for p in "${PAGES[@]}"; do curl -s -o /dev/null "$BASE${p#* }"; done
