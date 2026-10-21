@@ -641,6 +641,38 @@
         "q4": "Est-ce que ça marche avec les GIF animés ?",
         "a4": "Seule la première image est redimensionnée. Un outil vidéo vers GIF arrivera plus tard."
       }
+    },
+    "rotate-image": {
+      "title": "Pivoter une image",
+      "description": "Tournez vos photos de 90° ou 180° et retournez-les en miroir, par lots.",
+      "action": "Pivoter les images",
+      "about": "Pivoter une image tourne vos photos de 90° vers la droite, 90° vers la gauche ou 180°, et peut aussi les retourner en miroir (horizontalement) ou de haut en bas (verticalement). L'orientation enregistrée par l'appareil photo est appliquée d'abord : le résultat est exactement ce que vous voyez à l'écran et s'affiche pareil partout. Fonctionne avec JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF et HEIC, par lots, en gardant le format (le HEIC est enregistré en JPG). Tout est traité dans votre navigateur.",
+      "faq": {
+        "q1": "Ma photo s'affiche bien sur mon téléphone mais de travers sur l'ordinateur. Est-ce que ça aide ?",
+        "a1": "Oui. Choisissez « Redresser seulement » : l'orientation enregistrée par l'appareil est appliquée et la photo reste droite partout, sans la tourner davantage.",
+        "q2": "Est-ce que je perds en qualité ?",
+        "a2": "PNG, BMP, TIFF et GIF ne perdent rien. JPG, WEBP et AVIF sont réenregistrés en haute qualité (92), une différence invisible en pratique.",
+        "q3": "Puis-je pivoter et retourner en même temps ?",
+        "a3": "Oui : l'image est d'abord pivotée, puis retournée. Par exemple, 90° à droite avec un retournement horizontal.",
+        "q4": "Les données EXIF sont-elles conservées ?",
+        "a4": "Non : l'image pivotée est enregistrée sans métadonnées, position GPS comprise. Pour supprimer les métadonnées sans toucher à l'image, utilisez « Supprimer les métadonnées EXIF »."
+      }
+    },
+    "remove-exif": {
+      "title": "Supprimer les métadonnées EXIF",
+      "description": "Effacez la position GPS, l'appareil et la date de vos photos sans perte de qualité.",
+      "action": "Supprimer les métadonnées",
+      "about": "Supprimer les métadonnées EXIF efface de vos photos les informations invisibles qui voyagent avec le fichier : la position GPS de la prise de vue, la marque et le modèle de l'appareil ou du téléphone, la date et l'heure, le logiciel utilisé et l'auteur. Avant d'effacer, nous vous montrons ce que contenait chaque photo. En JPG, PNG et WEBP, l'image n'est pas recompressée : les mêmes données d'image sont copiées sans les métadonnées, la qualité est donc identique. Les JPG ne gardent que l'orientation, pour ne pas s'afficher de travers, et le profil colorimétrique. Les HEIC sont enregistrés en JPG sans métadonnées. Tout se passe dans votre navigateur.",
+      "faq": {
+        "q1": "Pourquoi supprimer les métadonnées avant de partager une photo ?",
+        "a1": "Une photo de téléphone peut contenir les coordonnées exactes de votre domicile ou de votre travail. Beaucoup de réseaux sociaux les suppriment, mais l'e-mail, les pièces jointes des messageries et les liens cloud envoient souvent le fichier d'origine.",
+        "q2": "La photo perd-elle en qualité ?",
+        "a2": "Pas en JPG, PNG ni WEBP : les données d'image sont copiées octet par octet. Seuls les HEIC sont réenregistrés, en JPG de haute qualité.",
+        "q3": "Qu'est-ce qui est conservé ?",
+        "a3": "Ce qu'il faut pour bien afficher la photo : l'orientation (en JPG) et le profil colorimétrique. GPS, appareil, dates, logiciel, auteur, miniatures, XMP, IPTC et commentaires sont supprimés.",
+        "q4": "Comment vérifier que la position a disparu ?",
+        "a4": "Repassez la photo nettoyée dans cet outil : il doit indiquer qu'il n'a trouvé aucune métadonnée. Vous pouvez aussi regarder les propriétés du fichier sur votre ordinateur."
+      }
     }
   },
   "ToolUi": {
@@ -1254,6 +1286,20 @@
       "youtubeThumbnail": "Miniature YouTube",
       "linkedinBanner": "Bannière LinkedIn",
       "profilePhoto": "Photo de profil"
-    }
+    },
+    "rotateNone": "Redresser seulement",
+    "flipH": "Retourner horizontalement (miroir)",
+    "flipV": "Retourner verticalement",
+    "orientationHint": "L'orientation enregistrée par l'appareil est appliquée d'abord : la photo tourne telle que vous la voyez.",
+    "rotatedTo": "{name} : {size} px",
+    "foundGps": "position GPS ({latitude}, {longitude})",
+    "foundCamera": "appareil {camera}",
+    "foundDate": "date {date}",
+    "foundSoftware": "logiciel {software}",
+    "foundAuthor": "auteur {author}",
+    "removedFound": "{name} : supprimé {found}.",
+    "removedBytes": "{name} : {size} de métadonnées supprimés (ni position ni données d'appareil).",
+    "nothingFound": "{name} : aucune métadonnée à supprimer.",
+    "heicReencoded": "Enregistré en JPG."
   }
 }

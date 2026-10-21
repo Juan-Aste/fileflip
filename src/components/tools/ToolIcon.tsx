@@ -26,6 +26,8 @@ import {
   Scissors,
   Minimize2,
   Expand,
+  FlipHorizontal2,
+  MapPinOff,
   type LucideIcon,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
@@ -62,6 +64,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "unit-converter": Ruler,
   "compress-image": Minimize2,
   "resize-image": Expand,
+  "rotate-image": FlipHorizontal2,
+  "remove-exif": MapPinOff,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

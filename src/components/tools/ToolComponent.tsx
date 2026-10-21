@@ -37,6 +37,8 @@ const components: Record<ToolId, React.ComponentType> = {
   "unit-converter": dynamic(() => import("./utility/UtilityTools").then((m) => m.UnitConverterTool)),
   "compress-image": dynamic(() => import("./image/CompressImageTool")),
   "resize-image": dynamic(() => import("./image/ResizeImageTool")),
+  "rotate-image": dynamic(() => import("./image/RotateImageTool")),
+  "remove-exif": dynamic(() => import("./image/RemoveMetadataTool")),
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {

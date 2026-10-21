@@ -641,6 +641,38 @@
         "q4": "Funciona com GIF animados?",
         "a4": "Só o primeiro quadro é redimensionado. Uma ferramenta de vídeo para GIF chegará mais adiante."
       }
+    },
+    "rotate-image": {
+      "title": "Girar imagem",
+      "description": "Gire suas fotos 90° ou 180° e espelhe-as, em lotes.",
+      "action": "Girar imagens",
+      "about": "Girar imagem gira suas fotos 90° para a direita, 90° para a esquerda ou 180°, e também pode espelhá-las (horizontal) ou virá-las de cabeça para baixo (vertical). Antes de girar é aplicada a orientação que a câmera salvou, então o resultado fica exatamente como você vê na tela e aparece igual em qualquer programa. Funciona com JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF e HEIC, em lotes, e mantém o formato (HEIC é salvo como JPG). Tudo é processado no seu navegador.",
+      "faq": {
+        "q1": "Minha foto aparece certa no celular, mas de lado no computador. Isso resolve?",
+        "a1": "Sim. Escolha «Só endireitar»: a orientação salva pela câmera é aplicada e a foto fica em pé em qualquer programa, sem girar a mais.",
+        "q2": "A qualidade diminui ao girar?",
+        "a2": "PNG, BMP, TIFF e GIF não perdem nada. JPG, WEBP e AVIF são salvos de novo com qualidade alta (92), uma diferença que na prática não se nota.",
+        "q3": "Posso girar e espelhar ao mesmo tempo?",
+        "a3": "Sim: primeiro a imagem é girada e depois espelhada. Por exemplo, 90° para a direita com espelhamento horizontal.",
+        "q4": "Os dados EXIF são mantidos?",
+        "a4": "Não: ao salvar a imagem girada os metadados são removidos, inclusive a localização GPS. Para remover só os metadados sem mexer na imagem, use «Remover metadados EXIF»."
+      }
+    },
+    "remove-exif": {
+      "title": "Remover metadados EXIF",
+      "description": "Apague a localização GPS, a câmera e a data das suas fotos sem perder qualidade.",
+      "action": "Remover metadados",
+      "about": "Remover metadados EXIF apaga das suas fotos as informações que não aparecem, mas viajam com o arquivo: a localização GPS onde a foto foi tirada, a marca e o modelo da câmera ou do celular, a data e a hora, o programa usado e o autor. Antes de apagar, mostramos o que cada foto tinha. Em JPG, PNG e WEBP a imagem não é comprimida de novo: os mesmos dados da imagem são copiados sem os metadados, então a qualidade é idêntica. Nos JPG fica só a orientação, para a foto não aparecer de lado, e o perfil de cor. Os HEIC são salvos como JPG sem metadados. Tudo acontece no seu navegador.",
+      "faq": {
+        "q1": "Por que remover os metadados antes de compartilhar uma foto?",
+        "a1": "Uma foto do celular pode levar as coordenadas exatas da sua casa ou do seu trabalho. Muitas redes sociais as removem, mas e-mail, anexos em chats e links de nuvem costumam enviar o arquivo original.",
+        "q2": "A foto perde qualidade?",
+        "a2": "Não em JPG, PNG nem WEBP: os dados da imagem são copiados byte a byte. Só os HEIC são salvos de novo, como JPG de alta qualidade.",
+        "q3": "O que é mantido?",
+        "a3": "O necessário para ver a foto corretamente: a orientação (em JPG) e o perfil de cor. GPS, câmera, datas, programa, autor, miniaturas, XMP, IPTC e comentários são removidos.",
+        "q4": "Como confiro que a localização sumiu?",
+        "a4": "Passe a foto limpa de novo por esta ferramenta: ela deve dizer que não encontrou metadados. Você também pode ver as propriedades do arquivo no computador."
+      }
     }
   },
   "ToolUi": {
@@ -1254,6 +1286,20 @@
       "youtubeThumbnail": "Miniatura do YouTube",
       "linkedinBanner": "Banner do LinkedIn",
       "profilePhoto": "Foto de perfil"
-    }
+    },
+    "rotateNone": "Só endireitar",
+    "flipH": "Espelhar horizontalmente",
+    "flipV": "Virar verticalmente",
+    "orientationHint": "Primeiro é aplicada a orientação salva pela câmera, então a foto gira como você a vê.",
+    "rotatedTo": "{name}: {size} px",
+    "foundGps": "localização GPS ({latitude}, {longitude})",
+    "foundCamera": "câmera {camera}",
+    "foundDate": "data {date}",
+    "foundSoftware": "programa {software}",
+    "foundAuthor": "autor {author}",
+    "removedFound": "{name}: removido {found}.",
+    "removedBytes": "{name}: removidos {size} de metadados (sem localização nem dados da câmera).",
+    "nothingFound": "{name}: não tinha metadados para remover.",
+    "heicReencoded": "Salvo como JPG."
   }
 }

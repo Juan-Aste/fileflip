@@ -4,6 +4,7 @@ import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { Page } from "@playwright/test";
+import exifr from "exifr";
 import sharp from "sharp";
 import { expect, fileOf, fixturePath, inspectImage, runTool, test, toolAlert, waitForResult } from "./support";
 
@@ -199,5 +200,92 @@ test.describe("tool: resize-image", () => {
     expect(out.name).toBe("photo-alpha.webp");
     expect(await inspectImage(out.buf)).toMatchObject({ format: "webp", width: 300, height: 300 });
     expect((await rawPixels(out.buf))[3]).toBe(0);
+  });
+});
+
+test.describe("tool: rotate-image", () => {
+  test("90° right moves the transparent corner to the top right; flipping mirrors it", async ({ page }) => {
+    await page.goto("/es/rotar-imagen", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("image.png")]);
+    const right = fileOf(await runTool(page, "Rotar imágenes"));
+    expect(right.name).toBe("image.png");
+    expect(await inspectImage(right.buf)).toMatchObject({ format: "png", width: 120, height: 160 });
+    let px = await rawPixels(right.buf);
+    expect(px[(5 * 120 + 114) * 4 + 3]).toBe(0); // top right: the old top-left corner
+    expect(px[(5 * 120 + 5) * 4 + 3]).toBe(255);
+    await expect(page.getByText("image.png: 120 × 160 px")).toBeVisible();
+
+    await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+    await pick(page, [fixturePath("image.png")]);
+    await choose(page, "Solo enderezar");
+    await page.getByText("Voltear horizontalmente (espejo)").click();
+    const mirrored = fileOf(await runTool(page, "Rotar imágenes"));
+    expect(await inspectImage(mirrored.buf)).toMatchObject({ width: 160, height: 120 });
+    px = await rawPixels(mirrored.buf);
+    expect(px[(5 * 160 + 154) * 4 + 3]).toBe(0);
+    expect(px[(5 * 160 + 5) * 4 + 3]).toBe(255);
+  });
+
+  test("a sideways phone photo is straightened by its EXIF orientation, without the tag", async ({ page }) => {
+    await page.goto("/en/rotate-image", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("exif-gps.jpg"), fixturePath("corrupt/truncated.jpg")]);
+    await choose(page, "Just straighten");
+    await page.getByRole("button", { name: "Rotate images", exact: true }).click();
+    const items = page.locator("main ul").filter({ has: page.locator("a[download]") }).locator("li");
+    await expect(items).toHaveCount(2, { timeout: 60_000 });
+    await expect(items.nth(1)).toContainText("damaged");
+    const out = fileOf(await waitForResult(page, page.locator("main a[download]").first(), toolAlert(page)));
+    // Stored 320×240 with orientation 6 → shown and now saved as 240×320.
+    expect(await inspectImage(out.buf)).toMatchObject({ format: "jpg", width: 240, height: 320 });
+    const meta = await sharp(out.buf).metadata();
+    expect(meta.orientation ?? 1).toBe(1);
+    expect((await exifr.parse(out.buf, { gps: true }).catch(() => undefined))?.latitude).toBeUndefined();
+  });
+});
+
+test.describe("tool: remove-exif", () => {
+  test("JPG: lists what was found, removes GPS and camera, keeps orientation and pixels", async ({ page }) => {
+    const original = readFileSync(fixturePath("exif-gps.jpg"));
+    await page.goto("/es/quitar-metadatos-exif", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("exif-gps.jpg")]);
+    const out = fileOf(await runTool(page, "Quitar metadatos"));
+    expect(out.name).toBe("exif-gps.jpg");
+    await expect(page.getByText(/exif-gps\.jpg: se quitó ubicación GPS \(-34\.60000, -58\.36667\) · cámara Fileflect Test Cam 1 · fecha .*2024 · programa fixture-gen · autor Fixture\./)).toBeVisible();
+    const tags = await exifr.parse(out.buf, { gps: true, xmp: true, iptc: true });
+    expect(tags?.latitude).toBeUndefined();
+    expect(tags?.Make).toBeUndefined();
+    expect(tags?.Artist).toBeUndefined();
+    expect((await sharp(out.buf).metadata()).orientation).toBe(6);
+    // Lossless: the same decoded pixels.
+    expect((await rawPixels(out.buf)).equals(await rawPixels(original))).toBe(true);
+    expect(out.buf.length).toBeLessThan(original.length);
+  });
+
+  test("PNG and WEBP lose their EXIF losslessly; a clean file says so; damaged fails alone", async ({ page }) => {
+    await page.goto("/en/remove-exif-metadata", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("exif-gps.png"), fixturePath("exif-gps.webp"), fixturePath("image.webp"), fixturePath("corrupt/truncated.png")]);
+    await page.getByRole("button", { name: "Remove metadata", exact: true }).click();
+    const items = page.locator("main ul").filter({ has: page.locator("a[download]") }).locator("li");
+    await expect(items).toHaveCount(4, { timeout: 60_000 });
+    await expect(items.nth(3)).toContainText("damaged");
+    const links = page.locator("main a[download]");
+    for (const [i, name] of [[0, "exif-gps.png"], [1, "exif-gps.webp"]] as const) {
+      const out = fileOf(await waitForResult(page, links.nth(i), toolAlert(page)));
+      expect(out.name).toBe(name);
+      expect(out.buf.toString("latin1")).not.toMatch(/eXIf|EXIF/);
+      expect((await rawPixels(out.buf)).equals(await rawPixels(readFileSync(fixturePath(name))))).toBe(true);
+    }
+    await expect(page.getByText(/exif-gps\.png: removed GPS location/)).toBeVisible();
+    await expect(page.getByText("image.webp: had no metadata to remove.")).toBeVisible();
+  });
+
+  test("HEIC is saved as a JPG without metadata", async ({ page }) => {
+    await page.goto("/pt/remover-metadados-exif", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.heic")]);
+    const out = fileOf(await runTool(page, "Remover metadados"));
+    expect(out.name).toBe("photo.jpg");
+    expect((await inspectImage(out.buf)).format).toBe("jpg");
+    expect(await exifr.parse(out.buf).catch(() => undefined)).toBeUndefined();
+    await expect(page.getByText(/Salvo como JPG\./)).toBeVisible();
   });
 });

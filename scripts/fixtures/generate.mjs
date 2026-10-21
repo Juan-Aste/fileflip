@@ -308,6 +308,19 @@ write("qr-inverted.png", await sharp(Buffer.from(await qrSvg("Olá, 中文 ✓ 1
   const NH = 360;
   const grain = Buffer.alloc(NW * NH * 3);
   for (let i = 0; i < grain.length; i++) grain[i] = clamp(128 + Math.sin(i / 7000) * 60 + (rand() - 0.5) * 120);
+  // Photos carrying made-up camera, date, author and GPS metadata (a point in
+  // the Río de la Plata), for the metadata remover. The JPEG is stored sideways
+  // with EXIF orientation 6 (shown 240×320), as phones do.
+  const exif = {
+    IFD0: { Make: "Fileflect", Model: "Test Cam 1", Software: "fixture-gen", Artist: "Fixture" },
+    IFD2: { DateTimeOriginal: "2024:05:01 10:20:30" },
+    IFD3: { GPSLatitudeRef: "S", GPSLatitude: "34/1 36/1 0/1", GPSLongitudeRef: "W", GPSLongitude: "58/1 22/1 0/1" },
+  };
+  const small = () => sharp(photo, { raw: { width: PW, height: PH, channels: 3 } }).resize(320, 240);
+  write("exif-gps.jpg", await small().jpeg({ quality: 85 }).withExif(exif).withMetadata({ orientation: 6 }).toBuffer());
+  write("exif-gps.png", await small().png().withExif(exif).toBuffer());
+  write("exif-gps.webp", await small().webp({ quality: 80 }).withExif(exif).toBuffer());
+
   write("noise.jpg", await sharp(grain, { raw: { width: NW, height: NH, channels: 3 } }).jpeg({ quality: 85 }).toBuffer());
 }
 

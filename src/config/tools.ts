@@ -59,6 +59,8 @@ export const toolIds = [
   "unit-converter",
   "compress-image",
   "resize-image",
+  "rotate-image",
+  "remove-exif",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -454,6 +456,29 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "redimensionar-imagen", en: "resize-image", pt: "redimensionar-imagem", fr: "redimensionner-image", zh: "resize-image" },
+  },
+  "rotate-image": {
+    id: "rotate-image",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "heic"],
+    outputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff"],
+    engine: "browser",
+    libraries: ["canvas", "@jsquash/jpeg", "@jsquash/webp", "@jsquash/avif", "@jsquash/png", "libheif-js", "utif2", "gifenc"],
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "rotar-imagen", en: "rotate-image", pt: "girar-imagem", fr: "pivoter-image", zh: "rotate-image" },
+  },
+  "remove-exif": {
+    id: "remove-exif",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "heic"],
+    outputs: ["jpg", "png", "webp"],
+    engine: "browser",
+    // Own lossless strippers (src/lib/image/metadata.ts); exifr only reads what is removed.
+    libraries: ["exifr", "libheif-js", "@jsquash/jpeg"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: 100 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "quitar-metadatos-exif", en: "remove-exif-metadata", pt: "remover-metadados-exif", fr: "supprimer-metadonnees-exif", zh: "remove-exif-metadata" },
   },
 
 };

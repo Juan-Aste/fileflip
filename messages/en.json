@@ -641,6 +641,38 @@
         "q4": "Does it work with animated GIFs?",
         "a4": "Only the first frame is resized. A video-to-GIF tool for animated GIFs will come later."
       }
+    },
+    "rotate-image": {
+      "title": "Rotate image",
+      "description": "Turn your photos 90° or 180° and mirror them, in batches.",
+      "action": "Rotate images",
+      "about": "Rotate image turns your photos 90° right, 90° left or 180°, and can also mirror them (horizontal flip) or turn them upside down (vertical flip). The orientation saved by the camera is applied first, so the result is exactly what you see on screen and looks the same in every app. It works with JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF and HEIC, in batches, and keeps the format (HEIC is saved as JPG). Everything is processed in your browser.",
+      "faq": {
+        "q1": "My photo looks fine on my phone but sideways on my computer. Does this help?",
+        "a1": "Yes. Choose “Just straighten”: the orientation saved by the camera is applied and the photo stays upright in every app, without turning it further.",
+        "q2": "Do I lose quality when rotating?",
+        "a2": "PNG, BMP, TIFF and GIF lose nothing. JPG, WEBP and AVIF are saved again at high quality (92), a difference you won't notice in practice.",
+        "q3": "Can I rotate and flip at the same time?",
+        "a3": "Yes: the image is rotated first and flipped after. For example, 90° right with a horizontal flip.",
+        "q4": "Is the EXIF data kept?",
+        "a4": "No: saving the rotated image removes the metadata, including GPS location. To remove metadata without touching the image, use “Remove EXIF metadata”."
+      }
+    },
+    "remove-exif": {
+      "title": "Remove EXIF metadata",
+      "description": "Erase GPS location, camera and date from your photos without losing quality.",
+      "action": "Remove metadata",
+      "about": "Remove EXIF metadata erases the information you can't see but that travels with the file: the GPS location where the photo was taken, the camera or phone make and model, the date and time, the software used and the author. Before erasing, we show you what each photo contained. For JPG, PNG and WEBP the image is not compressed again: the same image data is copied without the metadata, so quality is identical. JPGs keep only their orientation, so the photo doesn't show sideways, and their color profile. HEIC files are saved as JPG without metadata. Everything happens in your browser.",
+      "faq": {
+        "q1": "Why remove metadata before sharing a photo?",
+        "a1": "A phone photo can carry the exact coordinates of your home or workplace. Many social networks remove them, but email, chat attachments and cloud links usually send the original file.",
+        "q2": "Does the photo lose quality?",
+        "a2": "Not for JPG, PNG or WEBP: the image data is copied byte for byte. Only HEIC files are saved again, as high-quality JPG.",
+        "q3": "What is kept?",
+        "a3": "What's needed to display the photo correctly: the orientation (JPG) and the color profile. GPS, camera, dates, software, author, thumbnails, XMP, IPTC and comments are removed.",
+        "q4": "How do I check the location is gone?",
+        "a4": "Run the clean photo through this tool again: it should say it found no metadata. You can also check the file's properties on your computer."
+      }
     }
   },
   "ToolUi": {
@@ -1254,6 +1286,20 @@
       "youtubeThumbnail": "YouTube thumbnail",
       "linkedinBanner": "LinkedIn banner",
       "profilePhoto": "Profile photo"
-    }
+    },
+    "rotateNone": "Just straighten",
+    "flipH": "Flip horizontally (mirror)",
+    "flipV": "Flip vertically",
+    "orientationHint": "The orientation saved by the camera is applied first, so the photo turns as you see it.",
+    "rotatedTo": "{name}: {size} px",
+    "foundGps": "GPS location ({latitude}, {longitude})",
+    "foundCamera": "camera {camera}",
+    "foundDate": "date {date}",
+    "foundSoftware": "software {software}",
+    "foundAuthor": "author {author}",
+    "removedFound": "{name}: removed {found}.",
+    "removedBytes": "{name}: removed {size} of metadata (no location or camera data).",
+    "nothingFound": "{name}: had no metadata to remove.",
+    "heicReencoded": "Saved as JPG."
   }
 }

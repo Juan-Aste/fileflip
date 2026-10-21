@@ -1644,3 +1644,27 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (651), build, `check:static` (707 páginas) y `npm run test:e2e` (180/180) pasan. Capturas revisadas: `/es/redimensionar-imagen` 360 oscuro (redes sociales) y `/fr/redimensionner-image` 1280 claro.
 
 **Siguiente**: 3C.13 (rotar/voltear y quitar metadatos EXIF/GPS).
+
+## 2026-10-21 09:50 UTC — Fase 3, tarea 3C.13 (rotar/voltear y quitar metadatos EXIF)
+
+**Qué se hizo**
+- **Rotar imagen** (`/es/rotar-imagen`, `/en/rotate-image`, `/pt/girar-imagem`, `/fr/pivoter-image`): 90° derecha/izquierda, 180° o "Solo enderezar", más volteo horizontal y vertical (primero gira, después voltea). La orientación EXIF se aplica antes (decodificador del navegador), así que el resultado queda como se ve y sin etiqueta de orientación. JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF y HEIC (→ JPG); los formatos con pérdida se vuelven a guardar con calidad 92. Handler `transform` del worker de herramientas de imagen.
+- **Quitar metadatos EXIF** (`/es/quitar-metadatos-exif`, `/en/remove-exif-metadata`, `/pt/remover-metadados-exif`, `/fr/supprimer-metadonnees-exif`): borrado **sin pérdida** propio (`src/lib/image/metadata.ts`):
+  - JPG: conserva tablas/frame/scans, JFIF, perfil ICC y el segmento Adobe; quita EXIF, XMP, IPTC/APPn, comentarios y **todo lo que viene después del EOI** (los celulares agregan ahí imágenes extra con su propio EXIF). Si la foto tenía orientación ≠ 1, escribe un **EXIF mínimo solo con la orientación** (en vez de re-codificar para aplicarla): la foto se sigue viendo derecha y los píxeles son idénticos.
+  - PNG: quita `tEXt`, `zTXt`, `iTXt`, `eXIf` y `tIME`; conserva color (iCCP, sRGB, gAMA…), pHYs y animación.
+  - WEBP: quita los chunks `EXIF` y `XMP `, limpia los bits del VP8X y recalcula el tamaño RIFF.
+  - HEIC: no hay escritor HEIC, se guarda como JPG (calidad 92) sin metadatos, avisado en el resultado.
+  - Antes de borrar se muestra qué tenía cada foto con **exifr 7.1.3 (MIT)**: ubicación GPS, cámara, fecha, programa y autor ("se quitó ubicación GPS (-34.60000, -58.36667) · cámara … · fecha 1 de mayo de 2024 …"); para WEBP se le pasa el bloque EXIF (TIFF) porque exifr no lee WEBP. Archivos dañados → `fileDamaged`.
+- Textos (introducción + 4 preguntas cada una) en los 5 idiomas. Fixtures nuevos: `exif-gps.jpg` (de costado con orientación 6), `exif-gps.png` y `exif-gps.webp` con metadatos inventados.
+
+**Verificación**
+- 9 tests unitarios de `metadata.ts` (JPG con comentario y una imagen agregada tras el EOI: sin GPS/cámara/fecha, orientación 6 conservada, mismos píxeles; JPG derecho sin bloque EXIF; truncados rechazados; PNG; WEBP con tamaño RIFF y flags; resumen y marca no repetida).
+- `image-tools.spec.ts`: 5 casos nuevos (rotación 90° y espejo comprobados por la esquina transparente; JPG de costado enderezado a 240×320 sin orientación ni GPS + JPG truncado; JPG limpio con el mensaje completo, orientación 6 y píxeles idénticos; PNG y WEBP sin EXIF con píxeles idénticos, WEBP sin metadatos → "had no metadata", PNG truncado; HEIC → JPG sin metadatos).
+- Lint, typecheck, tests (662), build sin avisos, `check:static` (717 páginas) y `npm run test:e2e` (185/185) pasan. En una corrida completa de Vitest fallaron por tiempo `indexes.test.ts` y un test de `document/route.test.ts` (MongoDB en memoria con la máquina cargada); repetidos, pasan todos (662/662). Capturas revisadas: `/es/quitar-metadatos-exif` 360 oscuro y `/fr/pivoter-image` 1280 claro.
+
+**Siguiente**: 3C.14 (recortar imagen con proporciones fijas, accesible con teclado).
+
+## 2026-10-21 12:12 UTC — Fin de la ejecución (otra ejecución tomó el candado)
+
+- Hechas en esta ejecución: 3C.11 (comprimir imagen y peso objetivo), 3C.12 (redimensionar imagen) y 3C.13 (rotar/voltear y quitar metadatos EXIF).
+- Esta sesión se demoró entre 3C.12 y 3C.13: la hora del candado (08:37) quedó con más de 3 horas y otra ejecución lo tomó a las 12:03. 3C.13 ya estaba terminada y verificada, así que se subió encima del candado de la otra ejecución **sin tocarlo** (sigue siendo suyo) y esta ejecución se detuvo. Si la otra ejecución empezó también 3C.13, al hacer pull verá la tarea marcada.
