@@ -999,6 +999,22 @@
         "q4": "Meu PDF é enviado para a internet?",
         "a4": "Não. Tudo acontece no seu navegador e o arquivo não sai do seu dispositivo."
       }
+    },
+    "markdown-to-pdf": {
+      "title": "Markdown para PDF",
+      "description": "Converta Markdown (com tabelas, listas de tarefas e código) em um PDF bem diagramado, em A4 ou Carta.",
+      "action": "Converter para PDF",
+      "about": "Markdown para PDF transforma suas notas, README ou documentação escritos em Markdown em um PDF pronto para imprimir ou enviar. Suporta o formato do GitHub: tabelas, tachado, listas de tarefas e blocos de código. Títulos, listas e tabelas são diagramados com margens e tipografia legíveis, e os links continuam funcionando dentro do PDF.",
+      "faq": {
+        "q1": "Quais elementos do Markdown são mantidos?",
+        "a1": "Títulos, negrito, itálico, listas (inclusive de tarefas), tabelas, citações, blocos de código, links e linhas horizontais, no formato do GitHub (GFM). O título do PDF é o primeiro cabeçalho de nível 1.",
+        "q2": "As imagens são incluídas?",
+        "a2": "Só as que estão dentro do próprio Markdown como data URL (data:image/png;base64,…). Imagens com link para a internet ou para arquivos do seu computador não são baixadas: aparece o texto alternativo no lugar. Assim o servidor nunca acessa endereços externos.",
+        "q3": "E o HTML escrito dentro do Markdown?",
+        "a3": "Por segurança só o texto é mantido: tags, scripts, estilos e iframes são removidos antes de gerar o PDF.",
+        "q4": "Meus arquivos são enviados a um servidor?",
+        "a4": "Sim: o PDF é gerado no nosso servidor (não em um serviço de terceiros), por conexão criptografada, e o arquivo é processado em memória sem ser guardado. Se preferir que nada saia do seu aparelho, use Markdown para HTML e imprima a página como PDF no navegador."
+      }
     }
   },
   "ToolUi": {
@@ -1827,6 +1843,10 @@
   "MarkupTools": {
     "fullDocument": "Página HTML completa (com título e estilos legíveis)",
     "sanitizeNote": "O HTML é limpo: scripts, eventos, formulários e links javascript: são removidos, então é seguro publicá-lo.",
-    "htmlNote": "Títulos, negrito, listas, tabelas, blocos de código, links e imagens são mantidos; scripts, estilos e formulários são descartados."
+    "htmlNote": "Títulos, negrito, listas, tabelas, blocos de código, links e imagens são mantidos; scripts, estilos e formulários são descartados.",
+    "pageSize": "Tamanho da página",
+    "pageSize_a4": "A4 (210 × 297 mm)",
+    "pageSize_letter": "Carta (216 × 279 mm)",
+    "pdfNote": "Imagens com link não são baixadas (só as incluídas como data URL) e o HTML escrito no Markdown é reduzido ao texto."
   }
 }

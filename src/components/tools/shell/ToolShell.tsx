@@ -7,6 +7,7 @@ import AdSlot from "@/components/ads/AdSlot";
 import Dropzone from "@/components/converter/Dropzone";
 import { useSessionInfo } from "@/components/session/SessionInfo";
 import { buttonPrimary, buttonSecondary, card, field } from "@/components/ui/styles";
+import type { Engine } from "@/config/formats";
 import { limits } from "@/config/limits";
 import type { Locale } from "@/i18n/routing";
 import type { ApiErrorCode } from "@/lib/api-errors";
@@ -61,6 +62,8 @@ interface Props {
   zipName?: string;
   /** Called with the picked files whenever they change (tools that edit a file before running). */
   onFilesChange?: (files: File[]) => void;
+  /** Tools that upload to our server get the plan's server limits. */
+  engine?: Engine;
 }
 
 interface Picked {
@@ -80,7 +83,7 @@ const PREVIEW_CHARS = 100_000;
  * cancel, then the outputs with individual downloads or one ZIP. Limits shown
  * to the user are the ones enforced (plan limits, or the tool's own).
  */
-export default function ToolShell({ input, actionLabel, options, process, zipName = "fileflect.zip", onFilesChange }: Props) {
+export default function ToolShell({ input, actionLabel, options, process, zipName = "fileflect.zip", onFilesChange, engine = "browser" }: Props) {
   const t = useTranslations("ToolUi");
   const tc = useTranslations("Common");
   const tconv = useTranslations("Converter");
@@ -98,13 +101,10 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
     position ? `${te(code)} ${t("errorAt", { line: position.line, column: position.column })}` : te(code);
 
   const planLimits = limits[plan];
-  const maxFiles =
-    input.kind === "files"
-      ? input.multiple
-        ? Math.min(input.maxFiles ?? Infinity, planLimits.browserMaxBatch)
-        : 1
-      : 0;
-  const maxFileBytes = input.kind === "files" ? Math.min(input.maxFileBytes ?? Infinity, planLimits.browserMaxFileBytes) : 0;
+  const planBatch = engine === "server" ? planLimits.serverMaxBatch : planLimits.browserMaxBatch;
+  const planFileBytes = engine === "server" ? planLimits.serverMaxFileBytes : planLimits.browserMaxFileBytes;
+  const maxFiles = input.kind === "files" ? (input.multiple ? Math.min(input.maxFiles ?? Infinity, planBatch) : 1) : 0;
+  const maxFileBytes = input.kind === "files" ? Math.min(input.maxFileBytes ?? Infinity, planFileBytes) : 0;
 
   const filesListener = useRef(onFilesChange);
   useEffect(() => {

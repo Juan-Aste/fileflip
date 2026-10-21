@@ -1939,3 +1939,33 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Hechas: 3C.22 (proteger / quitar contraseña de PDF), 3C.23 (extraer imágenes de PDF), medición de Lighthouse después de 3C.23 (con una regresión de bundle corregida), 3C.24 (conversor de fuentes) y 3C.25a (Markdown ↔ HTML). 6 herramientas nuevas y la categoría Fuentes publicada. También se corrigió un error de pdf.js que podía marcar como "dañado" un PDF válido en lotes. `npm run test:e2e` 238/238 al cierre.
 
 **Siguiente**: 3C.25b (Markdown → PDF con Gotenberg).
+
+## 2026-10-21 22:40 UTC — Fase 3, tarea 3C.25b (Markdown → PDF)
+
+**Qué se hizo**
+- **Markdown a PDF** (`/es/markdown-a-pdf`, `/en/markdown-to-pdf`, `/pt/markdown-para-pdf`, `/fr/markdown-en-pdf`): archivos `.md`/`.markdown`/`.txt` (lotes) o texto pegado; tamaño de página **A4** (por defecto) o **Carta**. Es la primera herramienta del registro con `engine: "server"`.
+- Ruta nueva `POST /api/convert/markdown`: valida como las demás (`readUpload`: límite de plan, contenido de texto, límite por IP), tope de la herramienta 5 MB, decodifica UTF-8/UTF-16/Windows-1252 (`decodeText`), genera el HTML y lo imprime con **Gotenberg Chromium** (`htmlToPdf` en `gotenberg.ts`, ruta `/forms/chromium/convert/html`, `preferCssPageSize`, `skipNetworkIdleEvent`). Registra la conversión en las estadísticas con `tool: "markdown-to-pdf"`; el navegador solo informa los fallos que el servidor no vio.
+- El Markdown se convierte **en el servidor** (`src/lib/server/markdown-pdf.ts`, marked con renderer propio) y no se acepta HTML del navegador, para que lo que llega a Chromium sea siempre una página inerte:
+  - el HTML escrito dentro del Markdown se reduce a su **texto** (sin etiquetas ni comentarios);
+  - solo se incrustan imágenes `data:image/(png|jpeg|gif|webp);base64`; las demás muestran su texto alternativo; enlaces solo `http(s)`, `mailto` y `#`;
+  - **CSP** en el `<head>` antes de los estilos: `default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:`;
+  - título del PDF = primer `#`; estilos de impresión (márgenes, tablas, código con salto de línea, `@page` con el tamaño).
+- `ToolShell` acepta `engine="server"` y la página de la herramienta muestra los límites de servidor del plan (5 archivos / 15 MB gratis, 50 con Pro; acá el tope real es 5 MB por archivo). `convertOnServer` acepta un `AbortSignal` (cancelar aborta la subida).
+- **Gotenberg endurecido** (docker-compose y DEPLOY.md): `--chromium-disable-javascript=true --chromium-deny-private-ips=true --chromium-deny-public-ips=true`.
+
+**Verificación de SSRF con Gotenberg 8 real (Docker)**
+- Página con `<link>`, `@import`, `background:url()`, `<img>`, `<iframe>`, `<object>` y `fetch()` hacia un servidor de prueba: Gotenberg por defecto **sin CSP → 7 peticiones**; **con nuestra CSP → 0**; Gotenberg con las 3 opciones y sin CSP → 0. Las dos capas funcionan por separado.
+
+**Verificación**
+- 5 tests de `markdown-pdf.test.ts`: CSP antes de `<style>`, título escapado, GFM (tabla, casilla, tachado, enlace), sin `<script>`/`onerror`/`javascript:`/imagen remota; solo `data:` (no SVG, ni `file:`, ni 169.254.169.254); etiquetas anidadas (`<scr<script>ipt>`), `<meta refresh>` y comentarios eliminados. **Impresión con el Chromium local** (el mismo motor que usa Gotenberg): 0 peticiones de red, tamaño Carta 612×792, texto (ñ, tabla, código, 中文) leído con pdf.js. Con `GOTENBERG_URL` definido, además **con Gotenberg real**: A4 595×842, título del PDF y texto.
+- 4 tests de la ruta (nombre del PDF, opciones, Windows-1252, binario/salida inválida/opciones inválidas/archivo > 5 MB sin llamar a Gotenberg ni registrar, 503 → `serviceUnavailable`, 400 → `conversionFailed`) y 2 de `htmlToPdf`.
+- `markdown-pdf.spec.ts`: con Gotenberg real, `document.md` en Carta (título, tamaño y texto validados con pdf-lib y pdf.js; la opción viaja en la petición) y un lote de 2 en inglés (A4, 中文); siempre: un `.md` binario rechazado por la ruta real y una caída simulada del servicio con el mensaje traducido. **El primer caso se salta si no hay `GOTENBERG_URL`** (el CI no corre e2e).
+- Lint, typecheck, tests (798 + 1 saltado sin Gotenberg), build, `check:static` (832 páginas) y `npm run test:e2e` completo con Gotenberg (240/240) pasan. Captura revisada: `/es/markdown-a-pdf` 360 px oscuro con el resultado.
+
+**Limitaciones**
+- Necesita Gotenberg (servidor): si no está, error "servicio no disponible". Imágenes enlazadas no se incluyen (FAQ). Las fuentes son las de la imagen de Gotenberg (Noto, incluida CJK).
+
+**Pendiente del dueño**
+- Actualizar el *Custom Start Command* del servicio `gotenberg` en Railway con las 3 opciones de Chromium (ver DEPLOY.md). Sin ellas la herramienta sigue protegida por la CSP, pero se pierde la segunda capa.
+
+**Siguiente**: 3C.26 (HTML → PDF con Gotenberg, protección SSRF, fixture PPT y PDF/A).

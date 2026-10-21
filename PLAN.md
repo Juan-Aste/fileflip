@@ -246,9 +246,9 @@ PDF
 
 Fuentes y documentos
 - [x] 3C.24 TTF/OTF ↔ WOFF/WOFF2 (fonteditor-core + wawoff2, confirmar licencias; fixture de fuente propia)
-- [ ] 3C.25 Markdown ↔ HTML y Markdown → PDF (dividida):
+- [x] 3C.25 Markdown ↔ HTML y Markdown → PDF (dividida):
   - [x] 3C.25a Markdown ↔ HTML en el navegador (marked + turndown + turndown-plugin-gfm, saneado con DOMPurify)
-  - [ ] 3C.25b Markdown → PDF (HTML saneado de 3C.25a → Gotenberg/Chromium, sin acceso a red externa)
+  - [x] 3C.25b Markdown → PDF (HTML saneado de 3C.25a → Gotenberg/Chromium, sin acceso a red externa)
 - [ ] 3C.26 HTML → PDF con Gotenberg sin acceso a red externa (protección SSRF), fixture PPT generado en el test y PDF/A (Gotenberg)
 - [ ] 3C.27 Hojas de cálculo XLSX ↔ CSV ↔ ODS en el navegador (SheetJS CE desde el tarball oficial o exceljs; límite de celdas; elegir hoja)
 

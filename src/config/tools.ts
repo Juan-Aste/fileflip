@@ -81,6 +81,7 @@ export const toolIds = [
   "font-converter",
   "markdown-to-html",
   "html-to-markdown",
+  "markdown-to-pdf",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -741,6 +742,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: MINUTE, maxFileBytes: MARKUP_MAX_BYTES },
     status: "verified",
     slugs: { es: "html-a-markdown", en: "html-to-markdown", pt: "html-para-markdown", fr: "html-en-markdown", zh: "html-to-markdown" },
+  },
+  "markdown-to-pdf": {
+    id: "markdown-to-pdf",
+    category: "document",
+    inputs: ["md", "txt"],
+    outputs: ["pdf"],
+    engine: "server",
+    libraries: ["marked", "Gotenberg (Chromium)"],
+    // Each file is one request; Gotenberg's own limit is 90 s per job.
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: MARKUP_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "markdown-a-pdf", en: "markdown-to-pdf", pt: "markdown-para-pdf", fr: "markdown-en-pdf", zh: "markdown-to-pdf" },
   },
 };
 

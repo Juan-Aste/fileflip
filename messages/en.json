@@ -999,6 +999,22 @@
         "q4": "Is my PDF uploaded?",
         "a4": "No. Everything happens in your browser and the file never leaves your device."
       }
+    },
+    "markdown-to-pdf": {
+      "title": "Markdown to PDF",
+      "description": "Turn Markdown (with tables, task lists and code) into a well laid out PDF, in A4 or Letter.",
+      "action": "Convert to PDF",
+      "about": "Markdown to PDF turns your notes, READMEs or documentation written in Markdown into a PDF ready to print or send. It supports GitHub flavor: tables, strikethrough, task lists and code blocks. Headings, lists and tables are laid out with readable margins and type, and links keep working inside the PDF.",
+      "faq": {
+        "q1": "Which Markdown elements are kept?",
+        "a1": "Headings, bold, italics, lists (including task lists), tables, quotes, code blocks, links and horizontal rules, in GitHub flavor (GFM). The PDF title is the first level-1 heading.",
+        "q2": "Are images included?",
+        "a2": "Only those embedded in the Markdown itself as data URLs (data:image/png;base64,…). Images linked from the web or from files on your computer are not downloaded: their alt text is shown instead. That way the server never reaches external addresses.",
+        "q3": "What happens to HTML written inside the Markdown?",
+        "a3": "For safety only its text is kept: tags, scripts, styles and iframes are removed before the PDF is made.",
+        "q4": "Are my files uploaded to a server?",
+        "a4": "Yes: the PDF is made on our own server (not a third-party service), over an encrypted connection, and the file is processed in memory without being stored. If you'd rather nothing leaves your device, use Markdown to HTML and print the page as PDF from your browser."
+      }
     }
   },
   "ToolUi": {
@@ -1827,6 +1843,10 @@
   "MarkupTools": {
     "fullDocument": "Complete HTML page (with a title and readable styles)",
     "sanitizeNote": "The HTML is cleaned: scripts, event handlers, forms and javascript: links are removed, so it’s safe to publish.",
-    "htmlNote": "Headings, bold, lists, tables, code blocks, links and images are kept; scripts, styles and forms are dropped."
+    "htmlNote": "Headings, bold, lists, tables, code blocks, links and images are kept; scripts, styles and forms are dropped.",
+    "pageSize": "Page size",
+    "pageSize_a4": "A4 (210 × 297 mm)",
+    "pageSize_letter": "Letter (8.5 × 11 in)",
+    "pdfNote": "Linked images are not downloaded (only those embedded as data URLs) and HTML written in the Markdown is reduced to its text."
   }
 }

@@ -17,8 +17,8 @@ Este documento explica cómo publicar Fileflect en [Railway](https://railway.com
    └───────────────┘  └─────────────────┘
 ```
 
-- **app**: la aplicación Next.js. Convierte imágenes y PDF en el navegador del usuario; en el servidor solo hace documentos de oficina (vía Gotenberg), PDF → Word y el respaldo de imágenes con sharp.
-- **gotenberg**: [Gotenberg 8](https://gotenberg.dev) (LibreOffice por HTTP). **Sin dominio público**: solo la app le habla, por la red privada de Railway.
+- **app**: la aplicación Next.js. Convierte imágenes y PDF en el navegador del usuario; en el servidor solo hace documentos de oficina y Markdown → PDF (vía Gotenberg), PDF → Word y el respaldo de imágenes con sharp.
+- **gotenberg**: [Gotenberg 8](https://gotenberg.dev) (LibreOffice y Chromium por HTTP). **Sin dominio público**: solo la app le habla, por la red privada de Railway.
 - **MongoDB**: usuarios, sesiones, suscripciones y metadatos de conversiones (nunca archivos).
 
 ## 1. Crear el proyecto
@@ -26,7 +26,8 @@ Este documento explica cómo publicar Fileflect en [Railway](https://railway.com
 1. En Railway: **New Project → Deploy from GitHub repo** y elegir este repositorio (rama `main`, o `dev` para un entorno de pruebas). Railway detecta el `Dockerfile` y lo usa para construir. Renombrar el servicio a `app`.
 2. **+ New → Database → MongoDB** (o usar MongoDB Atlas y pegar su URI).
 3. **+ New → Docker Image** → `gotenberg/gotenberg:8`. Renombrar el servicio a `gotenberg`.
-   - *Settings → Deploy → Custom Start Command*: `gotenberg --api-port=3000 --api-timeout=90s`
+   - *Settings → Deploy → Custom Start Command*: `gotenberg --api-port=3000 --api-timeout=90s --chromium-disable-javascript=true --chromium-deny-private-ips=true --chromium-deny-public-ips=true`
+   - Las tres opciones de Chromium son una **protección contra SSRF**: Markdown → PDF imprime con Chromium una página generada por la app, y con ellas Chromium no ejecuta JavaScript ni puede pedir ninguna dirección de red (ni interna de Railway ni de internet). La página ya trae su propia política CSP que bloquea todo; las opciones son una segunda capa. Ambas se verificaron con Gotenberg 8 real (una página con `<img>`, `<link>`, `@import`, `<iframe>`, `<object>` y `fetch` hacia un servidor de prueba: 0 peticiones con CSP o con las opciones; 7 sin ninguna de las dos).
    - No generar dominio público.
    - Memoria recomendada: 1 GB o más (LibreOffice usa bastante con planillas grandes).
 
@@ -72,7 +73,7 @@ Todas están documentadas en `.env.example`. Las `NEXT_PUBLIC_*` se incrustan en
 
 ## 4. Healthcheck y dominio
 
-- *Settings → Deploy → Healthcheck Path*: `/api/health` (responde `{"status":"ok","gotenberg":true|false}`; la app se considera sana aunque Gotenberg esté caído, porque solo afecta a documentos de oficina).
+- *Settings → Deploy → Healthcheck Path*: `/api/health` (responde `{"status":"ok","gotenberg":true|false}`; la app se considera sana aunque Gotenberg esté caído, porque solo afecta a documentos de oficina y Markdown → PDF).
 - *Settings → Networking → Generate Domain* o **Custom Domain** (crear el registro CNAME que indica Railway). Después actualizar `NEXT_PUBLIC_SITE_URL` y `AUTH_URL` y redeployar.
 - Opcional: poner Cloudflare delante para tener la cabecera `cf-ipcountry` (detección de país para los precios). Sin ella, el país se deduce del idioma del navegador y del selector manual.
 

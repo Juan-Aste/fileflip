@@ -13,8 +13,9 @@ export function convertOnServer(
   endpoint: string,
   file: Blob,
   to: FormatId,
-  options: ImageOptions,
+  options: ImageOptions | Record<string, unknown>,
   onProgress?: (progress: number) => void,
+  signal?: AbortSignal,
 ): Promise<Blob> {
   const form = new FormData();
   form.append("file", file, (file as File).name ?? "file");
@@ -28,6 +29,9 @@ export function convertOnServer(
     xhr.upload.onprogress = (e) => e.lengthComputable && onProgress?.((e.loaded / e.total) * 0.7);
     xhr.onprogress = (e) => e.lengthComputable && onProgress?.(0.7 + (e.loaded / e.total) * 0.3);
     xhr.onerror = () => reject(new ConversionError("serviceUnavailable"));
+    xhr.onabort = () => reject(new ConversionError("jobCancelled"));
+    if (signal?.aborted) return reject(new ConversionError("jobCancelled"));
+    signal?.addEventListener("abort", () => xhr.abort(), { once: true });
     xhr.onload = async () => {
       if (xhr.status >= 200 && xhr.status < 300) {
         resolve(xhr.response as Blob);

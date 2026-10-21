@@ -3,6 +3,7 @@ import {
   FileLock2,
   Heading,
   FileCode2,
+  FileText,
   CaseSensitive,
   ImageDown,
   LockOpen,
@@ -102,6 +103,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "font-converter": CaseSensitive,
   "markdown-to-html": FileCode2,
   "html-to-markdown": Heading,
+  "markdown-to-pdf": FileText,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

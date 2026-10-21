@@ -999,6 +999,22 @@
         "q4": "Mon PDF est-il envoyé sur internet ?",
         "a4": "Non. Tout se passe dans votre navigateur et le fichier ne quitte pas votre appareil."
       }
+    },
+    "markdown-to-pdf": {
+      "title": "Markdown en PDF",
+      "description": "Convertissez du Markdown (avec tableaux, listes de tâches et code) en un PDF bien mis en page, en A4 ou Letter.",
+      "action": "Convertir en PDF",
+      "about": "Markdown en PDF transforme vos notes, README ou documentations écrits en Markdown en un PDF prêt à imprimer ou à envoyer. Le format GitHub est pris en charge : tableaux, texte barré, listes de tâches et blocs de code. Titres, listes et tableaux sont mis en page avec des marges et une typographie lisibles, et les liens restent actifs dans le PDF.",
+      "faq": {
+        "q1": "Quels éléments Markdown sont conservés ?",
+        "a1": "Titres, gras, italique, listes (y compris de tâches), tableaux, citations, blocs de code, liens et lignes horizontales, au format GitHub (GFM). Le titre du PDF est le premier titre de niveau 1.",
+        "q2": "Les images sont-elles incluses ?",
+        "a2": "Seulement celles intégrées au Markdown sous forme de data URL (data:image/png;base64,…). Les images liées depuis internet ou depuis des fichiers de votre ordinateur ne sont pas téléchargées : leur texte alternatif s'affiche à la place. Ainsi, le serveur n'accède jamais à des adresses externes.",
+        "q3": "Et le HTML écrit dans le Markdown ?",
+        "a3": "Par sécurité, seul son texte est conservé : balises, scripts, styles et iframes sont retirés avant de créer le PDF.",
+        "q4": "Mes fichiers sont-ils envoyés sur un serveur ?",
+        "a4": "Oui : le PDF est créé sur notre propre serveur (pas chez un tiers), via une connexion chiffrée, et le fichier est traité en mémoire sans être conservé. Si vous préférez que rien ne quitte votre appareil, utilisez Markdown en HTML puis imprimez la page en PDF depuis votre navigateur."
+      }
     }
   },
   "ToolUi": {
@@ -1827,6 +1843,10 @@
   "MarkupTools": {
     "fullDocument": "Page HTML complète (avec titre et styles lisibles)",
     "sanitizeNote": "Le HTML est nettoyé : scripts, gestionnaires d’événements, formulaires et liens javascript: sont retirés, il peut donc être publié sans risque.",
-    "htmlNote": "Titres, gras, listes, tableaux, blocs de code, liens et images sont conservés ; scripts, styles et formulaires sont écartés."
+    "htmlNote": "Titres, gras, listes, tableaux, blocs de code, liens et images sont conservés ; scripts, styles et formulaires sont écartés.",
+    "pageSize": "Format de page",
+    "pageSize_a4": "A4 (210 × 297 mm)",
+    "pageSize_letter": "Letter (216 × 279 mm)",
+    "pdfNote": "Les images liées ne sont pas téléchargées (seulement celles intégrées en data URL) et le HTML écrit dans le Markdown est réduit à son texte."
   }
 }
