@@ -1847,3 +1847,23 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Pendiente para 3D.1: el pie de página lista cada herramienta y ya es muy largo.
 
 **Siguiente**: 3C.22 (proteger con contraseña y quitar la contraseña, qpdf-wasm; revisar licencia antes de instalar).
+
+## 2026-10-21 20:30 UTC — Fase 3, tarea 3C.22 (proteger y quitar contraseña de PDF)
+
+**Qué se hizo**
+- **Proteger PDF con contraseña** (`/es/proteger-pdf`, `/en/protect-pdf`, `/pt/proteger-pdf`, `/fr/proteger-pdf`): contraseña + confirmación (aviso "no coinciden" y botón deshabilitado), "Mostrar contraseña", permisos imprimir / copiar / modificar (activos por defecto), lotes con ZIP. Cifrado **AES-256 (R6, PDF 2.0)** con qpdf; la contraseña de propietario es aleatoria (24 bytes), así los permisos solo se levantan con la contraseña de apertura. Un PDF que ya está cifrado (con contraseña o solo con permisos) se rechaza con el error nuevo `pdfAlreadyProtected`: re-cifrarlo quitaría restricciones puestas por otro.
+- **Quitar contraseña de PDF** (`/es/quitar-contrasena-pdf`, `/en/unlock-pdf`, `/pt/desbloquear-pdf`, `/fr/deverrouiller-pdf`): **solo con la contraseña** (de apertura o de propietario; no se prueban ni rompen contraseñas). Errores nuevos `pdfWrongPassword` y `pdfNotProtected`.
+- Motor `src/lib/pdf/password.ts` con `@neslinesli93/qpdf-wasm` 0.3.0 (ISC; qpdf 12.2, Apache-2.0) en el worker de PDF, import diferido; el `.wasm` (1,3 MB) se sirve desde nuestro dominio y solo lo descargan estas dos páginas. Una instancia nueva de qpdf por archivo (no queda nada en memoria entre archivos). Límite: 200 MB por archivo (qpdf tiene entrada y salida en memoria WASM), 5 min por trabajo.
+- Seguridad: las contraseñas se pasan como `--user-password=…`/`--password=…` (un argumento, sin shell), así una contraseña que empiece con `@` (archivos de argumentos de qpdf) o `--` no se interpreta; hasta 128 caracteres.
+- `next.config.ts`: `IgnorePlugin` para `fs`/`path`/`crypto` solo dentro de `qpdf-wasm` (el cargador Emscripten los pide únicamente en Node).
+
+**Formatos y detalles verificados**
+- Este build de qpdf no manda los errores a `printErr` y los códigos de `--is-encrypted`/`--requires-password` no son confiables (devuelven 2 con "invalid password"): el estado (cifrado o no, dañado) se decide antes con pdf-lib (`isEncrypted`, 0 páginas = dañado) y qpdf solo cifra/descifra (0 = ok, 3 = ok con advertencias).
+- Contraseñas con acentos (UTF-8) funcionan y pdf.js las acepta.
+
+**Verificación**
+- 6 tests unitarios (qpdf real en Node, lector independiente pdf.js): sin contraseña / con la incorrecta → `PasswordException`, con la correcta mismas 3 páginas y mismo texto; `/V 5` y `/R 6`; permisos leídos con `getPermissions`; contraseñas `@/etc/passwd` y `--decrypt`; ya cifrado, vacía, >128, `garbage.pdf`, `truncated.pdf`; quitar → pdf-lib `isEncrypted = false` y mismo texto; incorrecta / sin contraseña / dañado.
+- `pdf-password.spec.ts` (5 casos, entradas cifradas generadas en el test con qpdf en Node): lote de 2 protegido sin imprimir (validación de confirmación y "Mostrar"), ya cifrado + basura → errores; quitar la contraseña de apertura (etiquetas "page N of 3" intactas), quitar restricciones con la contraseña de propietario (fr), contraseña incorrecta + PDF sin contraseña + truncado → 3 errores. Sin llamadas al servidor.
+- Lint, typecheck, tests (757), build, `check:static` (802 páginas) y `npm run test:e2e` (229/229) pasan. Captura revisada: `/es/proteger-pdf` 360 px oscuro con el aviso de contraseñas distintas.
+
+**Siguiente**: 3C.23 (extraer imágenes de un PDF en ZIP).

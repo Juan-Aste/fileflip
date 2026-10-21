@@ -9,6 +9,7 @@ import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type { CompressionLevel, CompressResult } from "./compress";
 import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
 import type { Margins } from "./crop";
+import type { Permissions } from "./password";
 import type { SignaturePlacement } from "./sign";
 import type { PageNumberOptions, WatermarkOptions } from "./stamp";
 
@@ -126,4 +127,16 @@ export async function signPdfFile(file: Blob, png: Blob, placements: SignaturePl
   const bytes = await bytesOf(file);
   const image = await bytesOf(png);
   return pdfBlob(await call<Uint8Array>("sign", { bytes, png: image, placements }, { transfer: [bytes.buffer, image.buffer], ...job }));
+}
+
+/** Encrypts with AES-256 and an open password (qpdf). */
+export async function protectPdfFile(file: Blob, password: string, permissions: Permissions, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("protect", { bytes, password, permissions }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** Removes the encryption, given the password (qpdf). */
+export async function unlockPdfFile(file: Blob, password: string, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("unlock", { bytes, password }, { transfer: [bytes.buffer], ...job }));
 }

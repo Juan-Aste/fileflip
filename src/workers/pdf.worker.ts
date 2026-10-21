@@ -16,6 +16,7 @@ import { browserRecompress } from "@/lib/pdf/recompress-browser";
 import { addPageNumbers, addWatermark, type PageNumberOptions, type RenderText, type WatermarkOptions } from "@/lib/pdf/stamp";
 import { cropPdf, type Margins } from "@/lib/pdf/crop";
 import { signPdf, type SignaturePlacement } from "@/lib/pdf/sign";
+import { protectPdf, unlockPdf, type Permissions, type Qpdf, type QpdfFactory } from "@/lib/pdf/password";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
 /** Text Helvetica can't encode (Chinese, emoji...) drawn with the device's fonts at 4× for print. */
@@ -34,6 +35,15 @@ const renderText: RenderText = async (text, size, [r, g, b]) => {
   ctx.fillText(text, 1, height / 2);
   const png = new Uint8Array(await (await canvas.convertToBlob({ type: "image/png" })).arrayBuffer());
   return { png, width: width / scale, height: height / scale };
+};
+
+// qpdf (1.3 MB of WASM) is only downloaded by the password tools.
+const qpdfWasm = new URL("../../node_modules/@neslinesli93/qpdf-wasm/dist/qpdf.wasm", import.meta.url).href;
+const loadQpdf: QpdfFactory = async () => {
+  const { default: create } = (await import("@neslinesli93/qpdf-wasm")) as unknown as {
+    default: (options: object) => Promise<Qpdf>;
+  };
+  return create({ locateFile: () => qpdfWasm, print: () => {}, printErr: () => {} });
 };
 
 exposeHandlers({
@@ -75,6 +85,14 @@ exposeHandlers({
   },
   sign: async ({ bytes, png, placements }: { bytes: Uint8Array; png: Uint8Array; placements: SignaturePlacement[] }) => {
     const result = await signPdf(bytes, png, placements);
+    return { result, transfer: [result.buffer] };
+  },
+  protect: async ({ bytes, password, permissions }: { bytes: Uint8Array; password: string; permissions: Permissions }) => {
+    const result = await protectPdf(bytes, password, permissions, loadQpdf);
+    return { result, transfer: [result.buffer] };
+  },
+  unlock: async ({ bytes, password }: { bytes: Uint8Array; password: string }) => {
+    const result = await unlockPdf(bytes, password, loadQpdf);
     return { result, transfer: [result.buffer] };
   },
   organize: async ({ bytes, specs }: { bytes: Uint8Array; specs: PageSpec[] }) => {

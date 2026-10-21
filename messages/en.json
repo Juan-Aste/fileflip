@@ -203,7 +203,10 @@
     "jobCancelled": "The task was cancelled.",
     "jobTimedOut": "The task took too long and was stopped. Try a smaller file.",
     "pagesOutOfRange": "The chosen pages don’t exist in this PDF.",
-    "pdfIsScanned": "This PDF has no text: it looks like a scanned image. Getting its text needs text recognition (OCR)."
+    "pdfIsScanned": "This PDF has no text: it looks like a scanned image. Getting its text needs text recognition (OCR).",
+    "pdfAlreadyProtected": "This PDF is already protected or restricted. Remove its password first with “Unlock PDF”.",
+    "pdfNotProtected": "This PDF has no password: it already opens without one.",
+    "pdfWrongPassword": "That password isn’t right for this PDF."
   },
   "Tools": {
     "merge-pdf": {
@@ -898,6 +901,38 @@
         "a3": "Yes. Select the signature with Tab and move it with the arrow keys; hold Shift to move it faster.",
         "q4": "Are my signature or my PDF uploaded?",
         "a4": "No. Everything happens in your browser: neither the signature nor the document leaves your device, and we don't keep your signature."
+      }
+    },
+    "protect-pdf": {
+      "title": "Password protect a PDF",
+      "description": "Add a password to your PDF with 256-bit AES encryption and choose whether it can be printed or copied. Free, in your browser.",
+      "action": "Protect PDF",
+      "about": "Protect PDF adds an open password to your documents: without it, no viewer can show the content. It uses 256-bit AES, the strongest encryption the PDF format supports, and you can choose whether people who open it may print it, copy its text or edit it. Handy for emailing receipts, contracts or medical records with more peace of mind.",
+      "faq": {
+        "q1": "How secure is it?",
+        "a1": "It uses 256-bit AES (PDF 2.0). Security depends on the password: use a long one with words or varied characters, and share it through a different channel than the email itself.",
+        "q2": "What if I forget the password?",
+        "a2": "It can’t be recovered: we don’t store it anywhere. Keep a copy of the original PDF without a password.",
+        "q3": "Do the print and copy permissions work?",
+        "a3": "Adobe Acrobat, browsers and most viewers respect them, but some programs ignore them. The open password, on the other hand, is always required.",
+        "q4": "Is my PDF uploaded?",
+        "a4": "No. Encryption happens in your browser with qpdf, and neither the file nor the password leaves your device."
+      }
+    },
+    "unlock-pdf": {
+      "title": "Remove a PDF password",
+      "description": "Remove the password from a PDF you can open: type it once and download a copy without a password or restrictions.",
+      "action": "Remove password",
+      "about": "If you have a protected PDF (a bank statement, an invoice or a work document) and you’re tired of typing the password every time, type it here once and get an unencrypted copy. It also removes print or copy restrictions if you know the permissions password. It can’t open other people’s PDFs: the right password is required.",
+      "faq": {
+        "q1": "Can it find a password I don’t know?",
+        "a1": "No. The tool only removes the password if you type it correctly. We don’t try passwords or break the encryption.",
+        "q2": "Which password do I type?",
+        "a2": "The one you use to open the PDF. If the PDF opens without a password but won’t let you print or copy, type the permissions (owner) password.",
+        "q3": "Is anything in the document lost?",
+        "a3": "No. Only the encryption is removed; text, images, forms and links stay the same.",
+        "q4": "Are my PDF and password uploaded?",
+        "a4": "No. Everything happens in your browser and nothing leaves your device."
       }
     }
   },
@@ -1674,7 +1709,20 @@
       "left": "Left"
     },
     "cropInvalid": "Type numbers from 0 to 999 (at least one above 0).",
-    "cropNote": "Each page's visible area (CropBox) changes: what is cropped is hidden, not deleted from the file."
+    "cropNote": "Each page's visible area (CropBox) changes: what is cropped is hidden, not deleted from the file.",
+    "password": "Password",
+    "confirmPassword": "Repeat the password",
+    "currentPassword": "PDF password",
+    "showPassword": "Show password",
+    "passwordMismatch": "The passwords don’t match.",
+    "permissionsLegend": "Anyone who opens the PDF can:",
+    "permissions": {
+      "print": "Print",
+      "copy": "Copy text and images",
+      "modify": "Edit the document"
+    },
+    "protectNote": "Encrypted with 256-bit AES. Keep the password safe: if you forget it, nobody can recover it.",
+    "unlockNote": "You need the password: this tool doesn’t guess or crack passwords. The resulting PDF opens without a password or restrictions."
   },
   "SignPdf": {
     "notCertified": "This signature is a visible image on the PDF, like signing by hand. It is not a certified digital signature (with a certificate or token) and doesn't replace one when a process requires it.",

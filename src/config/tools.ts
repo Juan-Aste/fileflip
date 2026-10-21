@@ -41,6 +41,8 @@ export const toolIds = [
   "pdf-to-text",
   "crop-pdf",
   "sign-pdf",
+  "protect-pdf",
+  "unlock-pdf",
   "json-to-csv",
   "csv-to-json",
   "json-to-yaml",
@@ -114,6 +116,8 @@ const MINUTE = 60_000;
 const DATA_MAX_BYTES = 50 * 1024 * 1024;
 /** A feature film's subtitles are ~100 KB; this leaves room for long series files. */
 const SUBTITLE_MAX_BYTES = 10 * 1024 * 1024;
+/** qpdf holds the PDF and its encrypted copy in WASM memory (max. 2 GB address space). */
+const PDF_PASSWORD_MAX_BYTES = 200 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
 
 export const tools: Record<ToolId, ToolInfo> = {
@@ -259,6 +263,29 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 5 * MINUTE },
     status: "verified",
     slugs: { es: "firmar-pdf", en: "sign-pdf", pt: "assinar-pdf", fr: "signer-pdf", zh: "sign-pdf" },
+  },
+  "protect-pdf": {
+    id: "protect-pdf",
+    category: "pdf",
+    inputs: ["pdf"],
+    outputs: ["pdf"],
+    engine: "browser",
+    libraries: ["@neslinesli93/qpdf-wasm", "pdf-lib"],
+    // qpdf keeps the input and the output in WASM memory at once.
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: PDF_PASSWORD_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "proteger-pdf", en: "protect-pdf", pt: "proteger-pdf", fr: "proteger-pdf", zh: "protect-pdf" },
+  },
+  "unlock-pdf": {
+    id: "unlock-pdf",
+    category: "pdf",
+    inputs: ["pdf"],
+    outputs: ["pdf"],
+    engine: "browser",
+    libraries: ["@neslinesli93/qpdf-wasm", "pdf-lib"],
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: PDF_PASSWORD_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "quitar-contrasena-pdf", en: "unlock-pdf", pt: "desbloquear-pdf", fr: "deverrouiller-pdf", zh: "unlock-pdf" },
   },
   "json-to-csv": {
     id: "json-to-csv",

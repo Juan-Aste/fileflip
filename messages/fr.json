@@ -203,7 +203,10 @@
     "jobCancelled": "Le traitement a été annulé.",
     "jobTimedOut": "Le traitement a pris trop de temps et a été arrêté. Essayez avec un fichier plus petit.",
     "pagesOutOfRange": "Les pages choisies n’existent pas dans ce PDF.",
-    "pdfIsScanned": "Ce PDF ne contient pas de texte : il ressemble à une image numérisée. Pour en extraire le texte, il faut une reconnaissance de caractères (OCR)."
+    "pdfIsScanned": "Ce PDF ne contient pas de texte : il ressemble à une image numérisée. Pour en extraire le texte, il faut une reconnaissance de caractères (OCR).",
+    "pdfAlreadyProtected": "Ce PDF est déjà protégé ou restreint. Retirez d’abord son mot de passe avec « Déverrouiller un PDF ».",
+    "pdfNotProtected": "Ce PDF n’a pas de mot de passe : il s’ouvre déjà sans.",
+    "pdfWrongPassword": "Ce mot de passe n’est pas le bon pour ce PDF."
   },
   "Tools": {
     "merge-pdf": {
@@ -898,6 +901,38 @@
         "a3": "Oui. Sélectionnez la signature avec Tab et déplacez-la avec les flèches ; avec Maj, elle se déplace plus vite.",
         "q4": "Ma signature ou mon PDF sont-ils envoyés sur un serveur ?",
         "a4": "Non. Tout se fait dans votre navigateur : ni la signature ni le document ne quittent votre appareil, et nous ne conservons pas votre signature."
+      }
+    },
+    "protect-pdf": {
+      "title": "Protéger un PDF par mot de passe",
+      "description": "Ajoutez un mot de passe à votre PDF avec un chiffrement AES 256 bits et choisissez s’il peut être imprimé ou copié. Gratuit, dans votre navigateur.",
+      "action": "Protéger le PDF",
+      "about": "Protéger un PDF ajoute un mot de passe d’ouverture à vos documents : sans lui, aucune visionneuse ne peut afficher le contenu. Le chiffrement AES 256 bits est le plus fort que permet le format PDF, et vous choisissez si les personnes qui l’ouvrent pourront l’imprimer, copier le texte ou le modifier. Pratique pour envoyer des reçus, des contrats ou des dossiers médicaux par e-mail plus sereinement.",
+      "faq": {
+        "q1": "Est-ce sûr ?",
+        "a1": "Le chiffrement est AES 256 bits (PDF 2.0). La sécurité dépend du mot de passe : choisissez-en un long, avec des mots ou des caractères variés, et transmettez-le par un autre canal que l’e-mail lui-même.",
+        "q2": "Et si j’oublie le mot de passe ?",
+        "a2": "Il ne peut pas être récupéré : nous ne le conservons nulle part. Gardez une copie du PDF original sans mot de passe.",
+        "q3": "Les autorisations d’impression et de copie fonctionnent-elles ?",
+        "a3": "Adobe Acrobat, les navigateurs et la plupart des visionneuses les respectent, mais certains logiciels les ignorent. Le mot de passe d’ouverture, lui, est toujours obligatoire.",
+        "q4": "Mon PDF est-il envoyé sur internet ?",
+        "a4": "Non. Le chiffrement se fait dans votre navigateur avec qpdf : ni le fichier ni le mot de passe ne quittent votre appareil."
+      }
+    },
+    "unlock-pdf": {
+      "title": "Retirer le mot de passe d’un PDF",
+      "description": "Retirez le mot de passe d’un PDF que vous pouvez ouvrir : saisissez-le une fois et téléchargez une copie sans mot de passe ni restrictions.",
+      "action": "Retirer le mot de passe",
+      "about": "Si vous avez un PDF protégé (un relevé bancaire, une facture ou un document de travail) et que vous en avez assez de saisir le mot de passe à chaque ouverture, saisissez-le ici une fois et obtenez une copie non chiffrée. L’outil retire aussi les restrictions d’impression ou de copie si vous connaissez le mot de passe des autorisations. Il ne permet pas d’ouvrir les PDF d’autres personnes : le bon mot de passe est nécessaire.",
+      "faq": {
+        "q1": "Peut-il trouver un mot de passe que je ne connais pas ?",
+        "a1": "Non. L’outil ne retire le mot de passe que si vous le saisissez correctement. Nous n’essayons pas de mots de passe et ne cassons pas le chiffrement.",
+        "q2": "Quel mot de passe dois-je saisir ?",
+        "a2": "Celui qui sert à ouvrir le PDF. Si le PDF s’ouvre sans mot de passe mais empêche l’impression ou la copie, saisissez le mot de passe des autorisations (propriétaire).",
+        "q3": "Le document perd-il quelque chose ?",
+        "a3": "Non. Seul le chiffrement est retiré ; le texte, les images, les formulaires et les liens restent identiques.",
+        "q4": "Mon PDF et le mot de passe sont-ils envoyés sur internet ?",
+        "a4": "Non. Tout se passe dans votre navigateur et rien ne quitte votre appareil."
       }
     }
   },
@@ -1674,7 +1709,20 @@
       "left": "Gauche"
     },
     "cropInvalid": "Tapez des nombres de 0 à 999 (au moins un supérieur à 0).",
-    "cropNote": "La zone visible de chaque page (CropBox) change : la partie rognée est masquée, pas supprimée du fichier."
+    "cropNote": "La zone visible de chaque page (CropBox) change : la partie rognée est masquée, pas supprimée du fichier.",
+    "password": "Mot de passe",
+    "confirmPassword": "Répétez le mot de passe",
+    "currentPassword": "Mot de passe du PDF",
+    "showPassword": "Afficher le mot de passe",
+    "passwordMismatch": "Les mots de passe ne correspondent pas.",
+    "permissionsLegend": "Toute personne qui ouvre le PDF pourra :",
+    "permissions": {
+      "print": "Imprimer",
+      "copy": "Copier le texte et les images",
+      "modify": "Modifier le document"
+    },
+    "protectNote": "Chiffré en AES 256 bits. Conservez le mot de passe : si vous l’oubliez, personne ne peut le récupérer.",
+    "unlockNote": "Il vous faut le mot de passe : cet outil ne devine ni ne casse les mots de passe. Le PDF obtenu s’ouvre sans mot de passe ni restrictions."
   },
   "SignPdf": {
     "notCertified": "Cette signature est une image visible sur le PDF, comme une signature à la main. Ce n’est pas une signature électronique certifiée (avec certificat ou clé) et elle ne la remplace pas lorsqu’une démarche l’exige.",

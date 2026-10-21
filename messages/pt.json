@@ -203,7 +203,10 @@
     "jobCancelled": "O processo foi cancelado.",
     "jobTimedOut": "O processo demorou demais e foi interrompido. Tente um arquivo menor.",
     "pagesOutOfRange": "As páginas escolhidas não existem neste PDF.",
-    "pdfIsScanned": "Este PDF não tem texto: parece uma imagem digitalizada. Para extrair o texto é preciso reconhecimento de texto (OCR)."
+    "pdfIsScanned": "Este PDF não tem texto: parece uma imagem digitalizada. Para extrair o texto é preciso reconhecimento de texto (OCR).",
+    "pdfAlreadyProtected": "Este PDF já está protegido ou tem restrições. Remova primeiro a senha com “Desbloquear PDF”.",
+    "pdfNotProtected": "Este PDF não tem senha: ele já abre sem ela.",
+    "pdfWrongPassword": "A senha não está correta para este PDF."
   },
   "Tools": {
     "merge-pdf": {
@@ -898,6 +901,38 @@
         "a3": "Sim. Selecione a assinatura com Tab e mova com as setas; com Shift ela anda mais rápido.",
         "q4": "Minha assinatura ou meu PDF são enviados para um servidor?",
         "a4": "Não. Tudo acontece no seu navegador: nem a assinatura nem o documento saem do seu dispositivo, e não guardamos sua assinatura."
+      }
+    },
+    "protect-pdf": {
+      "title": "Proteger PDF com senha",
+      "description": "Coloque uma senha no seu PDF com criptografia AES de 256 bits e escolha se ele pode ser impresso ou copiado. Grátis, no seu navegador.",
+      "action": "Proteger PDF",
+      "about": "Proteger PDF adiciona uma senha de abertura aos seus documentos: sem ela, nenhum leitor consegue mostrar o conteúdo. Usa criptografia AES de 256 bits, a mais forte que o formato PDF aceita, e você escolhe se quem abrir poderá imprimir, copiar o texto ou modificar. Útil para enviar recibos, contratos ou exames por e-mail com mais tranquilidade.",
+      "faq": {
+        "q1": "É seguro?",
+        "a1": "Usa AES de 256 bits (PDF 2.0). A segurança depende da senha: use uma longa, com palavras ou caracteres variados, e envie-a por outro canal que não seja o mesmo e-mail.",
+        "q2": "E se eu esquecer a senha?",
+        "a2": "Ela não pode ser recuperada: não a guardamos em lugar nenhum. Mantenha uma cópia do PDF original sem senha.",
+        "q3": "As permissões de imprimir e copiar funcionam?",
+        "a3": "O Adobe Acrobat, os navegadores e a maioria dos leitores as respeitam, mas alguns programas as ignoram. Já a senha de abertura é sempre obrigatória.",
+        "q4": "Meu PDF é enviado para a internet?",
+        "a4": "Não. A criptografia é feita no seu navegador com o qpdf, e nem o arquivo nem a senha saem do seu dispositivo."
+      }
+    },
+    "unlock-pdf": {
+      "title": "Remover senha de PDF",
+      "description": "Remova a senha de um PDF que você consegue abrir: digite-a uma vez e baixe uma cópia sem senha nem restrições.",
+      "action": "Remover senha",
+      "about": "Se você tem um PDF protegido (um extrato bancário, uma nota fiscal ou um documento de trabalho) e cansou de digitar a senha toda vez, digite-a aqui uma vez e obtenha uma cópia sem criptografia. Também remove as restrições de impressão ou cópia se você souber a senha de permissões. Não serve para abrir PDFs de outras pessoas: é preciso a senha correta.",
+      "faq": {
+        "q1": "Ela descobre uma senha que eu não sei?",
+        "a1": "Não. A ferramenta só remove a senha se você digitá-la corretamente. Não testamos senhas nem quebramos a criptografia.",
+        "q2": "Qual senha devo digitar?",
+        "a2": "A que você usa para abrir o PDF. Se o PDF abre sem senha mas não deixa imprimir ou copiar, digite a senha de permissões (proprietário).",
+        "q3": "Algo do documento se perde?",
+        "a3": "Não. Só a criptografia é removida; texto, imagens, formulários e links continuam iguais.",
+        "q4": "Meu PDF e a senha são enviados para a internet?",
+        "a4": "Não. Tudo acontece no seu navegador e nada sai do seu dispositivo."
       }
     }
   },
@@ -1674,7 +1709,20 @@
       "left": "Esquerda"
     },
     "cropInvalid": "Digite números de 0 a 999 (pelo menos um maior que 0).",
-    "cropNote": "Muda a área visível de cada página (CropBox): o que é cortado fica oculto, não é apagado do arquivo."
+    "cropNote": "Muda a área visível de cada página (CropBox): o que é cortado fica oculto, não é apagado do arquivo.",
+    "password": "Senha",
+    "confirmPassword": "Repita a senha",
+    "currentPassword": "Senha do PDF",
+    "showPassword": "Mostrar senha",
+    "passwordMismatch": "As senhas não coincidem.",
+    "permissionsLegend": "Quem abrir o PDF poderá:",
+    "permissions": {
+      "print": "Imprimir",
+      "copy": "Copiar texto e imagens",
+      "modify": "Modificar o documento"
+    },
+    "protectNote": "Criptografado com AES de 256 bits. Guarde a senha: se você esquecê-la, ninguém consegue recuperá-la.",
+    "unlockNote": "Você precisa da senha: esta ferramenta não adivinha nem quebra senhas. O PDF resultante abre sem senha e sem restrições."
   },
   "SignPdf": {
     "notCertified": "Esta assinatura é uma imagem visível no PDF, como assinar à mão. Não é uma assinatura digital certificada (com certificado ou token) e não substitui uma quando o processo exige.",

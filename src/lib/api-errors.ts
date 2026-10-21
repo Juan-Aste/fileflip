@@ -25,6 +25,10 @@ export const apiErrorCodes = [
   "pagesOutOfRange",
   // Client-side only: PDF → text on a scan (no text layer).
   "pdfIsScanned",
+  // Client-side only: PDF passwords (protect an already encrypted PDF, unlock one without a password, wrong password).
+  "pdfAlreadyProtected",
+  "pdfNotProtected",
+  "pdfWrongPassword",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -54,6 +58,9 @@ const status: Record<ApiErrorCode, number> = {
   targetTooSmall: 422,
   pagesOutOfRange: 422,
   pdfIsScanned: 422,
+  pdfAlreadyProtected: 422,
+  pdfNotProtected: 422,
+  pdfWrongPassword: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

@@ -203,7 +203,10 @@
     "jobCancelled": "Se canceló el proceso.",
     "jobTimedOut": "El proceso tardó demasiado y se detuvo. Prueba con un archivo más pequeño.",
     "pagesOutOfRange": "Las páginas elegidas no existen en este PDF.",
-    "pdfIsScanned": "Este PDF no tiene texto: parece una imagen escaneada. Para sacar su texto hace falta reconocimiento de texto (OCR)."
+    "pdfIsScanned": "Este PDF no tiene texto: parece una imagen escaneada. Para sacar su texto hace falta reconocimiento de texto (OCR).",
+    "pdfAlreadyProtected": "Este PDF ya está protegido o tiene restricciones. Quita primero su contraseña con «Quitar contraseña de PDF».",
+    "pdfNotProtected": "Este PDF no tiene contraseña: ya se puede abrir sin ella.",
+    "pdfWrongPassword": "La contraseña no es correcta para este PDF."
   },
   "Tools": {
     "merge-pdf": {
@@ -898,6 +901,38 @@
         "a3": "Sí. Selecciona la firma con Tab y muévela con las flechas; con Mayús se mueve más rápido.",
         "q4": "¿Mi firma o mi PDF se suben a un servidor?",
         "a4": "No. Todo se hace en tu navegador: ni la firma ni el documento salen de tu dispositivo, y no guardamos tu firma."
+      }
+    },
+    "protect-pdf": {
+      "title": "Proteger PDF con contraseña",
+      "description": "Pon una contraseña a tu PDF con cifrado AES de 256 bits y elige si se puede imprimir o copiar. Gratis y en tu navegador.",
+      "action": "Proteger PDF",
+      "about": "Proteger PDF agrega una contraseña de apertura a tus documentos: sin ella, ningún visor puede mostrar el contenido. Se usa cifrado AES de 256 bits, el más fuerte que admite el formato PDF, y puedes elegir si quien lo abre podrá imprimirlo, copiar el texto o modificarlo. Sirve para enviar recibos, contratos o historias clínicas por correo con más tranquilidad.",
+      "faq": {
+        "q1": "¿Qué tan seguro es?",
+        "a1": "Se usa AES de 256 bits (PDF 2.0). La seguridad depende de la contraseña: usa una larga, con palabras o caracteres variados, y compártela por otro medio que no sea el mismo correo.",
+        "q2": "¿Qué pasa si olvido la contraseña?",
+        "a2": "No se puede recuperar: no la guardamos en ningún lado. Conserva una copia del PDF original sin contraseña.",
+        "q3": "¿Funcionan los permisos de imprimir y copiar?",
+        "a3": "Los respetan Adobe Acrobat, los navegadores y la mayoría de los visores, pero algunos programas los ignoran. La contraseña de apertura, en cambio, siempre es obligatoria.",
+        "q4": "¿Mi PDF se sube a internet?",
+        "a4": "No. El cifrado se hace en tu navegador con qpdf y ni el archivo ni la contraseña salen de tu dispositivo."
+      }
+    },
+    "unlock-pdf": {
+      "title": "Quitar contraseña de un PDF",
+      "description": "Quita la contraseña de un PDF que puedes abrir: escríbela una vez y descarga una copia sin contraseña ni restricciones.",
+      "action": "Quitar contraseña",
+      "about": "Si tienes un PDF protegido (un resumen bancario, una factura o un documento de trabajo) y te cansaste de escribir la contraseña cada vez que lo abres, aquí la escribes una vez y obtienes una copia sin cifrar. También quita las restricciones de imprimir o copiar si conoces la contraseña de permisos. No sirve para abrir PDF de otras personas: hace falta la contraseña correcta.",
+      "faq": {
+        "q1": "¿Puede averiguar una contraseña que no sé?",
+        "a1": "No. La herramienta solo quita la contraseña si la escribes bien. No probamos contraseñas ni rompemos el cifrado.",
+        "q2": "¿Qué contraseña tengo que escribir?",
+        "a2": "La que usas para abrir el PDF. Si el PDF se abre sin contraseña pero no deja imprimir o copiar, escribe la contraseña de permisos (propietario).",
+        "q3": "¿Se pierde algo del documento?",
+        "a3": "No. Se quita el cifrado y el contenido (texto, imágenes, formularios y enlaces) queda igual.",
+        "q4": "¿Mi PDF y la contraseña se suben a internet?",
+        "a4": "No. Todo se hace en tu navegador y nada sale de tu dispositivo."
       }
     }
   },
@@ -1674,7 +1709,20 @@
       "left": "Izquierda"
     },
     "cropInvalid": "Escribe números de 0 a 999 (al menos uno mayor que 0).",
-    "cropNote": "Se cambia el área visible de cada página (CropBox): lo recortado queda oculto, no se borra del archivo."
+    "cropNote": "Se cambia el área visible de cada página (CropBox): lo recortado queda oculto, no se borra del archivo.",
+    "password": "Contraseña",
+    "confirmPassword": "Repite la contraseña",
+    "currentPassword": "Contraseña del PDF",
+    "showPassword": "Mostrar contraseña",
+    "passwordMismatch": "Las contraseñas no coinciden.",
+    "permissionsLegend": "Quien abra el PDF podrá:",
+    "permissions": {
+      "print": "Imprimir",
+      "copy": "Copiar texto e imágenes",
+      "modify": "Modificar el documento"
+    },
+    "protectNote": "Se cifra con AES de 256 bits. Guarda la contraseña: si la olvidas, nadie puede recuperarla.",
+    "unlockNote": "Necesitas la contraseña: esta herramienta no adivina ni rompe contraseñas. El PDF resultante se abre sin contraseña y sin restricciones."
   },
   "SignPdf": {
     "notCertified": "Esta firma es una imagen visible sobre el PDF, como firmar a mano. No es una firma digital certificada (con certificado o token) y no reemplaza a una cuando un trámite la exige.",

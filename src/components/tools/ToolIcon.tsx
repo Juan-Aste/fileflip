@@ -1,5 +1,7 @@
 import {
   Binary,
+  FileLock2,
+  LockOpen,
   Signature,
   FileType,
   ListOrdered,
@@ -90,6 +92,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "pdf-to-text": FileType,
   "crop-pdf": Scissors,
   "sign-pdf": Signature,
+  "protect-pdf": FileLock2,
+  "unlock-pdf": LockOpen,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };
