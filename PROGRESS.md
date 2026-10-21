@@ -1822,3 +1822,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (744), build y `check:static` (787 páginas) pasan.
 
 **Siguiente**: 3C.21 (firmar PDF dibujando la firma o subiendo una foto).
+
+## 2026-10-21 20:45 UTC — Fase 3, tarea 3C.21 (firmar PDF)
+
+**Qué se hizo**
+- **Firmar PDF** (`/es/firmar-pdf`, `/en/sign-pdf`, `/pt/assinar-pdf`, `/fr/signer-pdf`): 1) la firma se **dibuja** en un recuadro (`SignaturePad`, eventos de puntero: dedo, mouse o lápiz; tinta azul o negra; borrar) o se **sube** una foto/imagen PNG, JPG o WEBP de hasta 10 MB con la opción "Quitar el fondo blanco del papel" (umbral con transición suave para no dejar bordes); en ambos casos se recorta al trazo (`trimSignature`) y se exporta como PNG transparente. 2) Se elige la página (anterior/siguiente con nombres accesibles), se ve la página dibujada con pdf.js y se **toca o arrastra** la firma; también se mueve con el **teclado** (control `role=slider` con flechas, Mayús = pasos de 5 %, posición anunciada como texto) y se ajusta el tamaño (5–80 % del ancho). 3) `signPdf` (pdf-lib, worker de PDF) dibuja la imagen en la posición visual (mismas conversiones que 3C.19, sirve en páginas giradas).
+- Aviso visible y en la FAQ: es una firma **visible**, no una firma digital certificada (no reemplaza certificado/token ni ICP-Brasil). No se guarda la firma: todo queda en el navegador.
+- Errores: imagen vacía/blanca → "No encontramos ninguna firma"; formato o tamaño de imagen no válidos → errores traducidos existentes; página fuera de rango → `pagesOutOfRange`; PDF o PNG dañado → `fileDamaged`.
+
+**Limitaciones**
+- Una sola firma por ejecución (para firmar varias páginas, se repite con el PDF resultante). No hay firma "escrita" con tipografía manuscrita (no cargamos fuentes web).
+
+**Verificación**
+- 4 tests unitarios: posición/tamaño de la imagen leídos del operador de dibujo con pdf.js en una página normal y una girada 90°, validaciones (página, lista vacía, PNG dañado, PDF dañado) y `trimSignature` (recorte y fondo blanco).
+- `sign-pdf.spec.ts` (3 casos, posición validada con el mismo método independiente): firma dibujada con el mouse y colocada tocando la página 2 al 25 %/80 % (ninguna imagen en otras páginas, texto original intacto); foto JPG sobre papel gris claro, movida con Mayús+← ×2 y ↑ y agrandada al 50 % (imagen con máscara de transparencia); imagen en blanco rechazada.
+- Lint, typecheck, tests (749), build, `check:static` (792 páginas) y `npm run test:e2e` (224/224) pasan. Capturas revisadas a 360 px oscuro: recuadro con la firma y paso de colocación.
+
+**Siguiente**: 3C.22 (proteger con contraseña y quitar la contraseña, qpdf-wasm).

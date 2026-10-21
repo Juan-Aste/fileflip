@@ -9,6 +9,7 @@ import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type { CompressionLevel, CompressResult } from "./compress";
 import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
 import type { Margins } from "./crop";
+import type { SignaturePlacement } from "./sign";
 import type { PageNumberOptions, WatermarkOptions } from "./stamp";
 
 // One PDF worker at a time (documents can take hundreds of MB). A job that
@@ -118,4 +119,11 @@ export async function watermarkPdf(file: Blob, options: WatermarkOptions, job: J
 export async function cropPdfFile(file: Blob, margins: (Margins | null)[], job: JobOptions = {}) {
   const bytes = await bytesOf(file);
   return pdfBlob(await call<Uint8Array>("crop", { bytes, margins }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** Draws a signature (PNG) at the given places. */
+export async function signPdfFile(file: Blob, png: Blob, placements: SignaturePlacement[], job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  const image = await bytesOf(png);
+  return pdfBlob(await call<Uint8Array>("sign", { bytes, png: image, placements }, { transfer: [bytes.buffer, image.buffer], ...job }));
 }

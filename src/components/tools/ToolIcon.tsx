@@ -1,5 +1,6 @@
 import {
   Binary,
+  Signature,
   FileType,
   ListOrdered,
   FileMinus,
@@ -88,6 +89,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "pdf-watermark": Stamp,
   "pdf-to-text": FileType,
   "crop-pdf": Scissors,
+  "sign-pdf": Signature,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

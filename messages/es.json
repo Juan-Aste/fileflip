@@ -883,6 +883,22 @@
         "q4": "¿Mi PDF se sube a internet?",
         "a4": "No. Todo se hace en tu navegador y el archivo no sale de tu dispositivo."
       }
+    },
+    "sign-pdf": {
+      "title": "Firmar PDF",
+      "description": "Dibuja tu firma o sube una foto y colócala en cualquier página de un PDF, sin imprimir ni escanear.",
+      "action": "Firmar y descargar",
+      "about": "Firmar PDF te deja poner tu firma manuscrita en un contrato, una autorización o un formulario sin imprimirlo ni escanearlo. Dibújala con el dedo o el mouse, o sube una foto de tu firma en papel (el fondo blanco se quita solo). Después elige la página, toca dónde va y ajusta el tamaño. La firma se guarda como una imagen sobre la página, con transparencia. Es una firma visible: no es una firma digital con certificado.",
+      "faq": {
+        "q1": "¿Tiene validez legal?",
+        "a1": "Depende del trámite y del país. Es equivalente a pegar una firma escaneada: sirve en muchos acuerdos privados, pero no es una firma digital certificada como la de un token o un certificado oficial. Si te piden firma digital, esta no la reemplaza.",
+        "q2": "¿Puedo usar una foto de mi firma?",
+        "a2": "Sí. Firma sobre un papel blanco, sácale una foto con buena luz y súbela: quitamos el blanco del papel y recortamos los bordes para que solo quede el trazo.",
+        "q3": "¿Puedo mover la firma con el teclado?",
+        "a3": "Sí. Selecciona la firma con Tab y muévela con las flechas; con Mayús se mueve más rápido.",
+        "q4": "¿Mi firma o mi PDF se suben a un servidor?",
+        "a4": "No. Todo se hace en tu navegador: ni la firma ni el documento salen de tu dispositivo, y no guardamos tu firma."
+      }
     }
   },
   "ToolUi": {
@@ -1659,5 +1675,29 @@
     },
     "cropInvalid": "Escribe números de 0 a 999 (al menos uno mayor que 0).",
     "cropNote": "Se cambia el área visible de cada página (CropBox): lo recortado queda oculto, no se borra del archivo."
+  },
+  "SignPdf": {
+    "notCertified": "Esta firma es una imagen visible sobre el PDF, como firmar a mano. No es una firma digital certificada (con certificado o token) y no reemplaza a una cuando un trámite la exige.",
+    "source": "Tu firma",
+    "draw": "Dibujarla",
+    "upload": "Subir una foto o imagen",
+    "ink": "Color de la tinta",
+    "inkBlue": "Azul",
+    "inkBlack": "Negro",
+    "padLabel": "Recuadro para dibujar la firma",
+    "padHint": "Firma con el dedo, el mouse o un lápiz.",
+    "clear": "Borrar",
+    "uploadHint": "PNG, JPG o WEBP de hasta 10 MB. Una foto de tu firma en papel blanco funciona bien.",
+    "removeWhite": "Quitar el fondo blanco del papel",
+    "noSignature": "No encontramos ninguna firma: dibújala o elige una imagen con trazos oscuros.",
+    "useSignature": "Usar esta firma",
+    "pageOf": "Página {n} de {total}",
+    "changeSignature": "Cambiar la firma",
+    "placeHint": "Toca la página donde quieres la firma o arrástrala. Con el teclado, usa las flechas (Mayús para moverla más rápido).",
+    "signatureHandle": "Firma en la página",
+    "positionValue": "{x} % desde la izquierda, {y} % desde arriba",
+    "size": "Tamaño de la firma: {value} % del ancho",
+    "prevPage": "Página anterior",
+    "nextPage": "Página siguiente"
   }
 }

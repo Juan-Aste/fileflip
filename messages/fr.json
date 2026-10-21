@@ -883,6 +883,22 @@
         "q4": "Mon PDF est-il envoyé sur internet ?",
         "a4": "Non. Tout se fait dans votre navigateur et le fichier ne quitte pas votre appareil."
       }
+    },
+    "sign-pdf": {
+      "title": "Signer un PDF",
+      "description": "Dessinez votre signature ou importez une photo et placez-la sur n’importe quelle page d’un PDF, sans imprimer ni scanner.",
+      "action": "Signer et télécharger",
+      "about": "Signer un PDF vous permet d’apposer votre signature manuscrite sur un contrat, une autorisation ou un formulaire sans l’imprimer ni le scanner. Dessinez-la au doigt ou à la souris, ou importez une photo de votre signature sur papier (le fond blanc est retiré automatiquement). Choisissez ensuite la page, touchez l’endroit voulu et ajustez la taille. La signature est enregistrée comme une image sur la page, avec transparence. C’est une signature visible, pas une signature électronique avec certificat.",
+      "faq": {
+        "q1": "A-t-elle une valeur légale ?",
+        "a1": "Cela dépend de la démarche et du pays. C’est l’équivalent d’une signature scannée collée : suffisant pour de nombreux accords privés, mais ce n’est pas une signature électronique qualifiée avec certificat. Si une signature électronique est exigée, celle-ci ne la remplace pas.",
+        "q2": "Puis-je utiliser une photo de ma signature ?",
+        "a2": "Oui. Signez sur du papier blanc, prenez une photo bien éclairée et importez-la : nous retirons le blanc du papier et rognons les bords pour ne garder que le trait.",
+        "q3": "Puis-je déplacer la signature au clavier ?",
+        "a3": "Oui. Sélectionnez la signature avec Tab et déplacez-la avec les flèches ; avec Maj, elle se déplace plus vite.",
+        "q4": "Ma signature ou mon PDF sont-ils envoyés sur un serveur ?",
+        "a4": "Non. Tout se fait dans votre navigateur : ni la signature ni le document ne quittent votre appareil, et nous ne conservons pas votre signature."
+      }
     }
   },
   "ToolUi": {
@@ -1659,5 +1675,29 @@
     },
     "cropInvalid": "Tapez des nombres de 0 à 999 (au moins un supérieur à 0).",
     "cropNote": "La zone visible de chaque page (CropBox) change : la partie rognée est masquée, pas supprimée du fichier."
+  },
+  "SignPdf": {
+    "notCertified": "Cette signature est une image visible sur le PDF, comme une signature à la main. Ce n’est pas une signature électronique certifiée (avec certificat ou clé) et elle ne la remplace pas lorsqu’une démarche l’exige.",
+    "source": "Votre signature",
+    "draw": "La dessiner",
+    "upload": "Importer une photo ou une image",
+    "ink": "Couleur de l’encre",
+    "inkBlue": "Bleu",
+    "inkBlack": "Noir",
+    "padLabel": "Zone pour dessiner la signature",
+    "padHint": "Signez avec le doigt, la souris ou un stylet.",
+    "clear": "Effacer",
+    "uploadHint": "PNG, JPG ou WEBP jusqu’à 10 Mo. Une photo de votre signature sur papier blanc convient très bien.",
+    "removeWhite": "Retirer le fond blanc du papier",
+    "noSignature": "Aucune signature trouvée : dessinez-la ou choisissez une image avec des traits foncés.",
+    "useSignature": "Utiliser cette signature",
+    "pageOf": "Page {n} sur {total}",
+    "changeSignature": "Changer de signature",
+    "placeHint": "Touchez la page à l’endroit voulu ou faites glisser la signature. Au clavier, utilisez les flèches (Maj pour aller plus vite).",
+    "signatureHandle": "Signature sur la page",
+    "positionValue": "{x} % depuis la gauche, {y} % depuis le haut",
+    "size": "Taille de la signature : {value} % de la largeur",
+    "prevPage": "Page précédente",
+    "nextPage": "Page suivante"
   }
 }

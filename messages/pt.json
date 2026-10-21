@@ -883,6 +883,22 @@
         "q4": "Meu PDF é enviado para a internet?",
         "a4": "Não. Tudo acontece no seu navegador e o arquivo não sai do seu dispositivo."
       }
+    },
+    "sign-pdf": {
+      "title": "Assinar PDF",
+      "description": "Desenhe sua assinatura ou envie uma foto e coloque-a em qualquer página de um PDF, sem imprimir nem digitalizar.",
+      "action": "Assinar e baixar",
+      "about": "Assinar PDF permite colocar sua assinatura à mão num contrato, numa autorização ou num formulário sem imprimir nem digitalizar. Desenhe com o dedo ou o mouse, ou envie uma foto da sua assinatura no papel (o fundo branco é removido sozinho). Depois escolha a página, toque onde ela vai e ajuste o tamanho. A assinatura é salva como uma imagem sobre a página, com transparência. É uma assinatura visível, não uma assinatura digital com certificado.",
+      "faq": {
+        "q1": "Tem validade jurídica?",
+        "a1": "Depende do processo e do país. Equivale a colar uma assinatura digitalizada: serve para muitos acordos particulares, mas não é uma assinatura digital certificada como a do ICP-Brasil ou de um token. Se pedirem assinatura digital, esta não substitui.",
+        "q2": "Posso usar uma foto da minha assinatura?",
+        "a2": "Sim. Assine num papel branco, tire uma foto com boa luz e envie: removemos o branco do papel e cortamos as bordas para ficar só o traço.",
+        "q3": "Posso mover a assinatura pelo teclado?",
+        "a3": "Sim. Selecione a assinatura com Tab e mova com as setas; com Shift ela anda mais rápido.",
+        "q4": "Minha assinatura ou meu PDF são enviados para um servidor?",
+        "a4": "Não. Tudo acontece no seu navegador: nem a assinatura nem o documento saem do seu dispositivo, e não guardamos sua assinatura."
+      }
     }
   },
   "ToolUi": {
@@ -1659,5 +1675,29 @@
     },
     "cropInvalid": "Digite números de 0 a 999 (pelo menos um maior que 0).",
     "cropNote": "Muda a área visível de cada página (CropBox): o que é cortado fica oculto, não é apagado do arquivo."
+  },
+  "SignPdf": {
+    "notCertified": "Esta assinatura é uma imagem visível no PDF, como assinar à mão. Não é uma assinatura digital certificada (com certificado ou token) e não substitui uma quando o processo exige.",
+    "source": "Sua assinatura",
+    "draw": "Desenhar",
+    "upload": "Enviar uma foto ou imagem",
+    "ink": "Cor da tinta",
+    "inkBlue": "Azul",
+    "inkBlack": "Preto",
+    "padLabel": "Quadro para desenhar a assinatura",
+    "padHint": "Assine com o dedo, o mouse ou uma caneta.",
+    "clear": "Apagar",
+    "uploadHint": "PNG, JPG ou WEBP de até 10 MB. Uma foto da sua assinatura em papel branco funciona bem.",
+    "removeWhite": "Tirar o fundo branco do papel",
+    "noSignature": "Não encontramos nenhuma assinatura: desenhe-a ou escolha uma imagem com traços escuros.",
+    "useSignature": "Usar esta assinatura",
+    "pageOf": "Página {n} de {total}",
+    "changeSignature": "Trocar a assinatura",
+    "placeHint": "Toque na página onde vai a assinatura ou arraste-a. Pelo teclado, use as setas (Shift move mais rápido).",
+    "signatureHandle": "Assinatura na página",
+    "positionValue": "{x} % da esquerda, {y} % do topo",
+    "size": "Tamanho da assinatura: {value} % da largura",
+    "prevPage": "Página anterior",
+    "nextPage": "Próxima página"
   }
 }

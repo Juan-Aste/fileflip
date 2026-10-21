@@ -49,6 +49,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "pdf-watermark": dynamic(() => import("./PdfStampTools").then((m) => m.PdfWatermarkTool)),
   "pdf-to-text": dynamic(() => import("./PdfTextCropTools").then((m) => m.PdfToTextTool)),
   "crop-pdf": dynamic(() => import("./PdfTextCropTools").then((m) => m.CropPdfTool)),
+  "sign-pdf": dynamic(() => import("./SignPdfTool")),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),
   "remove-exif": dynamic(() => import("./image/RemoveMetadataTool")),

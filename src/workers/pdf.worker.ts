@@ -15,6 +15,7 @@ import { compressPdf, type CompressionLevel } from "@/lib/pdf/compress";
 import { browserRecompress } from "@/lib/pdf/recompress-browser";
 import { addPageNumbers, addWatermark, type PageNumberOptions, type RenderText, type WatermarkOptions } from "@/lib/pdf/stamp";
 import { cropPdf, type Margins } from "@/lib/pdf/crop";
+import { signPdf, type SignaturePlacement } from "@/lib/pdf/sign";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
 /** Text Helvetica can't encode (Chinese, emoji...) drawn with the device's fonts at 4× for print. */
@@ -70,6 +71,10 @@ exposeHandlers({
   },
   crop: async ({ bytes, margins }: { bytes: Uint8Array; margins: (Margins | null)[] }) => {
     const result = await cropPdf(bytes, margins);
+    return { result, transfer: [result.buffer] };
+  },
+  sign: async ({ bytes, png, placements }: { bytes: Uint8Array; png: Uint8Array; placements: SignaturePlacement[] }) => {
+    const result = await signPdf(bytes, png, placements);
     return { result, transfer: [result.buffer] };
   },
   organize: async ({ bytes, specs }: { bytes: Uint8Array; specs: PageSpec[] }) => {

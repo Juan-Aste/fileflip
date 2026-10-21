@@ -883,6 +883,22 @@
         "q4": "Is my PDF uploaded?",
         "a4": "No. Everything happens in your browser and the file never leaves your device."
       }
+    },
+    "sign-pdf": {
+      "title": "Sign PDF",
+      "description": "Draw your signature or upload a photo and place it on any page of a PDF, without printing or scanning.",
+      "action": "Sign and download",
+      "about": "Sign PDF lets you put your handwritten signature on a contract, an authorization or a form without printing or scanning it. Draw it with your finger or mouse, or upload a photo of your signature on paper (the white background is removed for you). Then pick the page, tap where it goes and adjust its size. The signature is saved as an image on the page, with transparency. It is a visible signature, not a digital signature with a certificate.",
+      "faq": {
+        "q1": "Is it legally valid?",
+        "a1": "It depends on the process and the country. It is equivalent to pasting a scanned signature: fine for many private agreements, but it is not a certified digital signature like one from a token or an official certificate. If a digital signature is required, this doesn't replace it.",
+        "q2": "Can I use a photo of my signature?",
+        "a2": "Yes. Sign on white paper, take a well-lit photo and upload it: we remove the white paper and trim the edges so only the stroke remains.",
+        "q3": "Can I move the signature with the keyboard?",
+        "a3": "Yes. Select the signature with Tab and move it with the arrow keys; hold Shift to move it faster.",
+        "q4": "Are my signature or my PDF uploaded?",
+        "a4": "No. Everything happens in your browser: neither the signature nor the document leaves your device, and we don't keep your signature."
+      }
     }
   },
   "ToolUi": {
@@ -1659,5 +1675,29 @@
     },
     "cropInvalid": "Type numbers from 0 to 999 (at least one above 0).",
     "cropNote": "Each page's visible area (CropBox) changes: what is cropped is hidden, not deleted from the file."
+  },
+  "SignPdf": {
+    "notCertified": "This signature is a visible image on the PDF, like signing by hand. It is not a certified digital signature (with a certificate or token) and doesn't replace one when a process requires it.",
+    "source": "Your signature",
+    "draw": "Draw it",
+    "upload": "Upload a photo or image",
+    "ink": "Ink color",
+    "inkBlue": "Blue",
+    "inkBlack": "Black",
+    "padLabel": "Box to draw your signature",
+    "padHint": "Sign with your finger, mouse or a pen.",
+    "clear": "Clear",
+    "uploadHint": "PNG, JPG or WEBP up to 10 MB. A photo of your signature on white paper works well.",
+    "removeWhite": "Remove the white paper background",
+    "noSignature": "We couldn't find a signature: draw it or choose an image with dark strokes.",
+    "useSignature": "Use this signature",
+    "pageOf": "Page {n} of {total}",
+    "changeSignature": "Change signature",
+    "placeHint": "Tap the page where the signature goes, or drag it. With a keyboard, use the arrow keys (Shift moves it faster).",
+    "signatureHandle": "Signature on the page",
+    "positionValue": "{x}% from the left, {y}% from the top",
+    "size": "Signature size: {value}% of the width",
+    "prevPage": "Previous page",
+    "nextPage": "Next page"
   }
 }
