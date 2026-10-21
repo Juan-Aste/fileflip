@@ -42,7 +42,7 @@ Tests: `tests/inventory/server.test.ts` (72 casos). Pasan los archivos reales po
 
 ## Navegador (tarea 3A.3)
 
-Script: `node scripts/audit/browser.mjs [--json salida.json] [--only jpg,png]` contra un `next start`. Con Playwright (Chromium del entorno) sube cada fixture al conversor de la portada (`/es`), elige cada salida ofrecida, descarga el resultado y lo valida con lectores independientes del código de la app: sharp (formato, dimensiones y que los píxeles decodifiquen), encabezados BMP/ICO (y cada PNG dentro del ICO), pdf-lib (páginas y tamaño) y fflate (ZIP de PDF → imágenes). **Las peticiones a `/api/convert/**` se bloquean**, así que todo lo que figura ✅ se hizo de verdad en el navegador.
+Script original: `scripts/audit/browser.mjs` (desde la tarea 3B.7 es `tests/e2e/converter.spec.ts`, con `npm run test:e2e`) contra un `next start`. Con Playwright (Chromium del entorno) sube cada fixture al conversor de la portada (`/es`), elige cada salida ofrecida, descarga el resultado y lo valida con lectores independientes del código de la app: sharp (formato, dimensiones y que los píxeles decodifiquen), encabezados BMP/ICO (y cada PNG dentro del ICO), pdf-lib (páginas y tamaño) y fflate (ZIP de PDF → imágenes). **Las peticiones a `/api/convert/**` se bloquean**, así que todo lo que figura ✅ se hizo de verdad en el navegador.
 
 ### Conversor de imágenes (3A.3a)
 
@@ -77,7 +77,7 @@ Script: `node scripts/audit/browser.mjs [--json salida.json] [--only jpg,png]` c
 
 ### Herramientas PDF (3A.3b)
 
-Script: `node scripts/audit/pdf-tools.mjs [--json salida.json]` (mismas condiciones: Chromium del entorno, `/api/convert/**` bloqueado). Abre la página de cada herramienta en `/es`, elige opciones como un usuario, descarga y valida con pdf-lib (páginas, rotación, tamaño, imágenes incrustadas) y con pdf.js en Node (el texto "page N of M" de cada página, para comprobar el **orden** real).
+Script original: `scripts/audit/pdf-tools.mjs` (desde la tarea 3B.7 es `tests/e2e/pdf-tools.spec.ts`) (mismas condiciones: Chromium del entorno, `/api/convert/**` bloqueado). Abre la página de cada herramienta en `/es`, elige opciones como un usuario, descarga y valida con pdf-lib (páginas, rotación, tamaño, imágenes incrustadas) y con pdf.js en Node (el texto "page N of M" de cada página, para comprobar el **orden** real).
 
 | Herramienta | Caso | Resultado |
 |---|---|---|

@@ -48,7 +48,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | tailwindcss, @tailwindcss/postcss | 4.3.3 | MIT |
 | vitest | 3.2.7 | MIT |
 | mongodb-memory-server | 11.3.0 | MIT |
-| playwright-core | 1.56.0 | Apache-2.0 |
+| playwright-core, @playwright/test | 1.56.0 | Apache-2.0 |
 | @next/bundle-analyzer | 15.5.4 | MIT |
 | @formatjs/icu-messageformat-parser | 3.5.21 | MIT |
 | @types/* | — | MIT |

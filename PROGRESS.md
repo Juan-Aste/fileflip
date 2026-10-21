@@ -1426,3 +1426,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Verificación**
 - Tests nuevos: cada herramienta publicada tiene introducción (> 120 caracteres; > 40 en chino) y ≥ 3 preguntas numeradas con respuesta en los 5 idiomas, sin introducciones repetidas entre herramientas; `relatedTools`; `softwareApplicationJsonLd`. Lint, typecheck, tests (488), build y `check:static` (567 páginas) pasan; `pdf-tools.mjs` 19/19.
 - Capturas revisadas con Playwright: `/es/unir-pdf` a 1280 px claro y `/zh/compress-pdf` a 360 px oscuro (ambas con `SoftwareApplication` + `FAQPage`). Se corrigió un texto que mencionaba arrastrar en "Unir PDF" (esa herramienta ordena con botones).
+
+## 2026-10-21 01:45 UTC — Fase 3, tarea 3B.7 (tests de navegador)
+
+**Qué se hizo**
+- `@playwright/test` 1.56.0 (Apache-2.0, misma versión que `playwright-core`) y `playwright.config.ts`: `tests/e2e/**/*.spec.ts`, levanta `next start` en el puerto 3100 (o usa `BASE_URL`), Chromium del entorno (`/opt/pw-browsers/...`) o `CHROME_PATH`, 4 workers, traza solo si falla. Comando: `npm run build && npm run test:e2e`.
+- `tests/e2e/support.ts`: `test` con la API de conversión **bloqueada** (`serverCalls` registra los intentos) y que falla ante errores de JavaScript en la página; `openWithFiles`, `runTool`/`waitForResult` (descarga o mensaje de error), y validadores independientes del código de la app: `inspectPdf` (pdf-lib + pdf.js: páginas, rotación, tamaños, orden por el texto "page N of M"), `inspectImage` (sharp con decodificación de píxeles, BMP e ICO por encabezado), `unzipEntries`, `readText`, `readJson`, `readCsv` (lector RFC 4180 propio).
+- Migrados los scripts de auditoría (se borraron `scripts/audit/*.mjs`; `docs/audit-inventory.md` apunta a los specs): `converter.spec.ts` (88 conversiones + 7 corruptos), `pdf-tools.spec.ts` (12 casos de las 6 herramientas + 8 de corruptos), `search.spec.ts` (360 px oscuro y 1280 px claro).
+- `tests/e2e-coverage.test.ts` (Vitest, corre en CI): cada herramienta publicada y el conversor deben tener un bloque `test.describe("tool: <id>")` en `tests/e2e`.
+
+**Problemas y decisiones**
+- Con 4 workers, Chromium a veces no emite el evento `download` de un enlace `blob:` aunque la conversión terminó (2 de 117 en una corrida). `waitForResult` espera la descarga 15 s y, si no llega, lee los mismos bytes del `href` del enlace (queda una anotación en el test); la salida se sigue validando igual.
+- Los archivos corruptos del conversor pueden ir al servidor legítimamente (un texto con extensión `.jpg` se detecta como TXT → PDF en el servidor): la verificación "sin servidor" solo aplica a las conversiones de imagen.
+- El CI de GitHub no corre los tests de navegador (necesitaría instalar Chromium y hacer el build dos veces); se corren localmente al cerrar cada tarea con interfaz. Queda como mejora posible.
+
+**Verificación**
+- `npm run test:e2e`: 117/117 (y el conversor 190/190 con `--repeat-each 2`). Lint, typecheck, tests (495), build y `check:static` pasan.
