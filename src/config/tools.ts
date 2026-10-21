@@ -40,6 +40,8 @@ export const toolIds = [
   "yaml-to-json",
   "json-to-toml",
   "toml-to-json",
+  "json-to-xml",
+  "xml-to-json",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -207,6 +209,28 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
     status: "verified",
     slugs: { es: "toml-a-json", en: "toml-to-json", pt: "toml-para-json", fr: "toml-en-json", zh: "toml-to-json" },
+  },
+  "json-to-xml": {
+    id: "json-to-xml",
+    category: "data",
+    inputs: ["json"],
+    outputs: ["xml"],
+    engine: "browser",
+    libraries: ["fast-xml-parser"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "json-a-xml", en: "json-to-xml", pt: "json-para-xml", fr: "json-en-xml", zh: "json-to-xml" },
+  },
+  "xml-to-json": {
+    id: "xml-to-json",
+    category: "data",
+    inputs: ["xml"],
+    outputs: ["json"],
+    engine: "browser",
+    libraries: ["fast-xml-parser"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "xml-a-json", en: "xml-to-json", pt: "xml-para-json", fr: "xml-en-json", zh: "xml-to-json" },
   },
 };
 

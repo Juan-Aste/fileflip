@@ -2,10 +2,11 @@
 import { csvToJson, jsonToCsv, type CsvToJsonOptions, type JsonToCsvOptions } from "@/lib/data/csv";
 import { decodeText } from "@/lib/data/text";
 import { jsonToToml, tomlToJson } from "@/lib/data/toml";
+import { jsonToXml, xmlToJson } from "@/lib/data/xml";
 import { jsonToYaml, yamlToJson } from "@/lib/data/yaml";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
-// Data tools (JSON, CSV, YAML, TOML): parsing big files off the main thread keeps the page responsive.
+// Data tools (JSON, CSV, YAML, TOML, XML): parsing big files off the main thread keeps the page responsive.
 const textOf = async (input: Blob | string) =>
   typeof input === "string" ? input : decodeText(new Uint8Array(await input.arrayBuffer()));
 
@@ -19,4 +20,6 @@ exposeHandlers({
   yamlToJson: text(yamlToJson),
   jsonToToml: text(jsonToToml),
   tomlToJson: text(tomlToJson),
+  jsonToXml: text(jsonToXml),
+  xmlToJson: text(xmlToJson),
 });

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sample catalog -->
+<catalog lang="es">
+  <book id="1">
+    <title>Café &amp; té</title>
+    <code>007</code>
+  </book>
+  <book id="2">
+    <title>&#20013;&#25991;</title>
+    <note><![CDATA[<b>raw</b>]]></note>
+  </book>
+</catalog>

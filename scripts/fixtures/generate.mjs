@@ -152,6 +152,14 @@ write(
 );
 
 
+write(
+  "catalog.xml",
+  Buffer.from(
+    '<?xml version="1.0" encoding="UTF-8"?>\n<!-- Sample catalog -->\n<catalog lang="es">\n  <book id="1">\n    <title>Café &amp; té</title>\n    <code>007</code>\n  </book>\n  <book id="2">\n    <title>&#20013;&#25991;</title>\n    <note><![CDATA[<b>raw</b>]]></note>\n  </book>\n</catalog>\n',
+    "utf8",
+  ),
+);
+
 // --- Office documents through LibreOffice
 const fodt = `<?xml version="1.0" encoding="UTF-8"?>
 <office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" office:version="1.3" office:mimetype="application/vnd.oasis.opendocument.text">
@@ -246,3 +254,6 @@ writeCorrupt(
   ),
 );
 writeCorrupt("broken.toml", Buffer.from('title = "unclosed\n[owner\n'));
+// XXE: an external entity pointing at a local file.
+writeCorrupt("xxe.xml", Buffer.from('<?xml version="1.0"?>\n<!DOCTYPE r [<!ENTITY x SYSTEM "file:///etc/passwd">]>\n<r>&x;</r>\n'));
+writeCorrupt("broken.xml", Buffer.from("<catalog><book><title>open</book></catalog>\n"));

@@ -1,5 +1,6 @@
 import {
   Braces,
+  CodeXml,
   FileCode,
   FileJson,
   Settings2,
@@ -27,6 +28,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "yaml-to-json": FileJson,
   "json-to-toml": Settings2,
   "toml-to-json": FileJson,
+  "json-to-xml": CodeXml,
+  "xml-to-json": FileJson,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

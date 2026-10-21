@@ -194,6 +194,7 @@
     "fileDamaged": "Ce fichier est endommagé ou incomplet. Essayez avec une autre copie.",
     "invalidData": "Impossible de lire le contenu. Vérifiez que le format est valide (guillemets, virgules et accolades).",
     "tomlUnsupported": "TOML ne peut pas représenter ce contenu : il faut un objet à la racine et null n'est pas permis dans les listes.",
+    "xmlEntitiesBlocked": "Ce XML déclare des entités ('<!ENTITY>'). Par sécurité, elles ne sont pas traitées : supprimez la déclaration DOCTYPE et réessayez.",
     "signInRequired": "Connectez-vous pour continuer.",
     "paymentsUnavailable": "Les paiements ne sont pas encore disponibles dans votre pays. Revenez bientôt.",
     "jobCancelled": "Le traitement a été annulé.",
@@ -366,6 +367,34 @@
         "a2": "Le JSON du navigateur ne peut pas garder des entiers supérieurs à 2^53 sans perte de précision : ce fichier est donc refusé avec un message plutôt que de modifier la valeur.",
         "q3": "Mes fichiers sont-ils envoyés à un serveur ?",
         "a3": "Non. La conversion se fait dans votre navigateur et le fichier ne quitte jamais votre appareil."
+      }
+    },
+    "json-to-xml": {
+      "title": "JSON en XML",
+      "description": "Convertissez du JSON en document XML valide et indenté, attributs compris. Dans votre navigateur.",
+      "action": "Convertir en XML",
+      "about": "JSON en XML produit un document XML bien formé à partir de vos données JSON. Les clés commençant par @ deviennent des attributs et #text le texte de l'élément ; les listes deviennent des éléments répétés. Si le JSON n'a qu'une clé à la racine, elle devient l'élément racine ; sinon, tout est placé dans '<root>'.",
+      "faq": {
+        "q1": "Et les clés qui ne sont pas des noms XML valides ?",
+        "a1": "Elles sont corrigées pour que le XML reste valide : les espaces et symboles deviennent des tirets bas (ma clé → ma_clé) et un nom qui commence par un chiffre reçoit un tiret bas devant.",
+        "q2": "Comment écrire des attributs ?",
+        "a2": "Utilisez des clés précédées de @ : '{\"livre\": {\"@id\": \"1\", \"titre\": \"Nadja\"}}' produit '<livre id=\"1\"><titre>Nadja</titre></livre>'.",
+        "q3": "Les caractères spéciaux sont-ils échappés ?",
+        "a3": "Oui. &, '< et >' dans le texte et les guillemets dans les attributs sont écrits sous forme d'entités : le résultat est toujours du XML valide."
+      }
+    },
+    "xml-to-json": {
+      "title": "XML en JSON",
+      "description": "Convertissez du XML en JSON avec attributs, éléments répétés et CDATA. Protégé contre XXE, sans envoyer vos fichiers.",
+      "action": "Convertir en JSON",
+      "about": "XML en JSON lit des documents XML et les transforme en JSON : chaque élément devient une clé, les attributs sont précédés de @, les éléments répétés forment une liste et le contenu CDATA est gardé comme texte. Les valeurs restent du texte, car XML n'a pas de types : 007 reste 007.",
+      "faq": {
+        "q1": "Est-il sûr d'ouvrir un XML inconnu ?",
+        "a1": "Oui. Les documents qui déclarent des entités ('<!ENTITY>'), porte d'entrée d'attaques comme XXE ou billion laughs, sont refusés avec un message avant la lecture, et rien n'est téléchargé depuis Internet.",
+        "q2": "Pourquoi les nombres sont-ils entre guillemets ?",
+        "a2": "Parce qu'en XML tout est texte, et deviner les types pourrait modifier les données (zéros initiaux, codes). Vous obtenez exactement ce que dit le fichier.",
+        "q3": "Les commentaires sont-ils conservés ?",
+        "a3": "Non. Les commentaires et instructions de traitement n'ont pas d'équivalent en JSON et sont omis ; le reste du contenu est conservé."
       }
     }
   },

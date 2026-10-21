@@ -194,6 +194,7 @@
     "fileDamaged": "O arquivo está danificado ou incompleto. Tente com outra cópia.",
     "invalidData": "Não conseguimos ler o conteúdo. Verifique se o formato é válido (aspas, vírgulas e chaves).",
     "tomlUnsupported": "O TOML não consegue representar este conteúdo: ele precisa de um objeto na raiz e não aceita null dentro de listas.",
+    "xmlEntitiesBlocked": "Este XML declara entidades ('<!ENTITY>'). Por segurança, elas não são processadas: remova a declaração DOCTYPE e tente de novo.",
     "signInRequired": "Entre na sua conta para continuar.",
     "paymentsUnavailable": "Os pagamentos ainda não estão disponíveis no seu país. Volte em breve.",
     "jobCancelled": "O processo foi cancelado.",
@@ -366,6 +367,34 @@
         "a2": "O JSON no navegador não guarda inteiros maiores que 2^53 sem perder precisão, então esse arquivo é recusado com um aviso em vez de mudar o valor.",
         "q3": "Meus arquivos são enviados para algum servidor?",
         "a3": "Não. A conversão é feita no seu navegador e o arquivo nunca sai do seu dispositivo."
+      }
+    },
+    "json-to-xml": {
+      "title": "JSON para XML",
+      "description": "Converta JSON em um documento XML válido e com recuo, incluindo atributos. No seu navegador.",
+      "action": "Converter para XML",
+      "about": "JSON para XML gera um documento XML bem formado a partir dos seus dados JSON. Chaves que começam com @ viram atributos e #text vira o texto do elemento; listas viram elementos repetidos. Se o JSON tiver uma única chave na raiz, ela é o elemento raiz; caso contrário, tudo vai dentro de '<root>'.",
+      "faq": {
+        "q1": "E as chaves que não são nomes XML válidos?",
+        "a1": "São corrigidas para que o XML seja válido: espaços e símbolos viram sublinhado (minha chave → minha_chave) e um nome que começa com número ganha um sublinhado na frente.",
+        "q2": "Como escrevo atributos?",
+        "a2": "Use chaves com @ na frente: '{\"livro\": {\"@id\": \"1\", \"titulo\": \"Dom Casmurro\"}}' gera '<livro id=\"1\"><titulo>Dom Casmurro</titulo></livro>'.",
+        "q3": "Os caracteres especiais são escapados?",
+        "a3": "Sim. &, '< e >' nos textos e as aspas nos atributos são escritos como entidades, então o resultado é sempre XML válido."
+      }
+    },
+    "xml-to-json": {
+      "title": "XML para JSON",
+      "description": "Converta XML em JSON com atributos, elementos repetidos e CDATA. Seguro contra XXE e sem enviar seus arquivos.",
+      "action": "Converter para JSON",
+      "about": "XML para JSON lê documentos XML e os converte em JSON: cada elemento é uma chave, os atributos levam @ na frente, elementos repetidos formam uma lista e o conteúdo CDATA é mantido como texto. Os valores ficam como texto, porque XML não tem tipos: 007 continua 007.",
+      "faq": {
+        "q1": "É seguro abrir um XML desconhecido?",
+        "a1": "Sim. Documentos que declaram entidades ('<!ENTITY>'), a porta de entrada de ataques como XXE ou billion laughs, são recusados com um aviso antes da leitura, e nada é baixado da internet.",
+        "q2": "Por que os números aparecem entre aspas?",
+        "a2": "Porque em XML tudo é texto, e adivinhar tipos poderia alterar dados (zeros à esquerda, códigos). Assim você recebe exatamente o que o arquivo diz.",
+        "q3": "Os comentários são mantidos?",
+        "a3": "Não. Comentários e instruções de processamento não têm equivalente em JSON e são omitidos; o resto do conteúdo é mantido."
       }
     }
   },

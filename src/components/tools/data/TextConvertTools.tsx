@@ -53,6 +53,12 @@ export const YamlToJsonTool = () => (
 export const JsonToTomlTool = () => (
   <TextConvertTool id="json-to-toml" method="jsonToToml" from="json" to="toml" placeholder='{"title": "Demo", "owner": {"name": "Ana"}}' />
 );
+export const JsonToXmlTool = () => (
+  <TextConvertTool id="json-to-xml" method="jsonToXml" from="json" to="xml" placeholder='{"book": {"@id": "1", "title": "Rayuela"}}' />
+);
+export const XmlToJsonTool = () => (
+  <TextConvertTool id="xml-to-json" method="xmlToJson" from="xml" to="json" placeholder={'<book id="1">\n  <title>Rayuela</title>\n</book>'} />
+);
 export const TomlToJsonTool = () => (
   <TextConvertTool id="toml-to-json" method="tomlToJson" from="toml" to="json" placeholder={'title = "Demo"\n\n[owner]\nname = "Ana"'} />
 );

@@ -28,7 +28,8 @@ export type FormatId =
   | "json"
   | "tsv"
   | "yaml"
-  | "toml";
+  | "toml"
+  | "xml";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -71,6 +72,7 @@ export const formats: Record<FormatId, FormatInfo> = {
   tsv: { id: "tsv", label: "TSV", mime: "text/tab-separated-values", extensions: ["tsv", "tab"], category: "data" },
   yaml: { id: "yaml", label: "YAML", mime: "application/yaml", extensions: ["yaml", "yml"], category: "data" },
   toml: { id: "toml", label: "TOML", mime: "application/toml", extensions: ["toml"], category: "data" },
+  xml: { id: "xml", label: "XML", mime: "application/xml", extensions: ["xml"], category: "data" },
 };
 
 /** Raster formats we can encode as output in the browser. */

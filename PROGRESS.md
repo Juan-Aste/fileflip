@@ -1483,3 +1483,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - 15 tests unitarios (ida y vuelta, comillas 1.1/1.2, varios documentos, merge, billion laughs, etiquetas, `__proto__`, binario, claves repetidas, TOML con tablas, nulls, raíz inválida, fechas, enteros grandes). `data-tools.spec.ts`: 15 casos en total (8 nuevos, uno en inglés con texto pegado), validados releyendo la salida con `yaml`/`smol-toml` desde el test.
+
+## 2026-10-21 02:55 UTC — Fase 3, tarea 3C.3 (JSON ↔ XML)
+
+**Qué se hizo**
+- Dos herramientas en **Datos**: JSON a XML (`/es/json-a-xml`) y XML a JSON (`/es/xml-a-json`), formato `xml`, con fast-xml-parser 5.11.2 (MIT) en el worker de datos.
+- Convención: atributos como claves `@nombre`, texto mixto `#text`, elementos repetidos → lista, CDATA → texto. **Los valores quedan como texto** (XML no tiene tipos; `007` no pierde ceros). Se omiten comentarios, declaración e instrucciones de procesamiento.
+- Seguridad: cualquier documento con `<!ENTITY` (también en minúsculas) se rechaza **antes de parsear** con el código nuevo `xmlEntitiesBlocked` (mensaje que explica quitar el DOCTYPE, 5 idiomas): cubre XXE y "billion laughs". Se valida con `XMLValidator` antes de convertir. La librería además rechaza nombres como `<__proto__>` (→ `invalidData`) y no carga nada externo.
+- JSON → XML: una sola clave en la raíz = elemento raíz; si no, `<root>` (listas → `<item>`). Las claves se convierten en nombres XML válidos (`bad key` → `bad_key`, `1st` → `_1st`, prefijo `xml` reservado → `_xml…`), sin choques (sufijo `_2`) y con `__proto__` como dato. Escapa `&`, `<`, `>` y comillas.
+- En los mensajes ICU de next-intl, `<…>` se interpreta como etiqueta: los ejemplos de código se escriben entre comillas simples completas (`'<root>'`, `'{"a": 1}'`); dos segmentos citados pegados (`'…''…'`) producen un apóstrofo literal, hay que citar el ejemplo entero de una vez.
+- Fixtures: `catalog.xml`, `corrupt/xxe.xml` (entidad externa a `/etc/passwd`), `corrupt/broken.xml`.
+
+**Verificación**
+- 8 tests unitarios (atributos, listas, CDATA, referencias, XXE, billion laughs, XML roto, `__proto__`, nombres inválidos, ida y vuelta). `data-tools.spec.ts`: 19 casos; la salida XML se valida con el `DOMParser` del navegador (independiente de la librería). Lint, typecheck, tests (548), build, `check:static` (612 páginas) y `npm run test:e2e` (136/136) pasan.
+
+**Siguiente**: 3C.4 (formateador y validador de JSON, XML y YAML).

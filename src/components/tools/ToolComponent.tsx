@@ -18,6 +18,8 @@ const components: Record<ToolId, React.ComponentType> = {
   "yaml-to-json": dynamic(() => import("./data/TextConvertTools").then((m) => m.YamlToJsonTool)),
   "json-to-toml": dynamic(() => import("./data/TextConvertTools").then((m) => m.JsonToTomlTool)),
   "toml-to-json": dynamic(() => import("./data/TextConvertTools").then((m) => m.TomlToJsonTool)),
+  "json-to-xml": dynamic(() => import("./data/TextConvertTools").then((m) => m.JsonToXmlTool)),
+  "xml-to-json": dynamic(() => import("./data/TextConvertTools").then((m) => m.XmlToJsonTool)),
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {

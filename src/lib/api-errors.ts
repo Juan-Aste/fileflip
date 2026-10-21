@@ -14,6 +14,8 @@ export const apiErrorCodes = [
   "invalidData",
   // Client-side only: valid data that TOML can't represent (no root table, null in a list).
   "tomlUnsupported",
+  // Client-side only: an XML file declaring DTD entities (refused: XXE, entity expansion).
+  "xmlEntitiesBlocked",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -37,6 +39,7 @@ const status: Record<ApiErrorCode, number> = {
   fileDamaged: 422,
   invalidData: 422,
   tomlUnsupported: 422,
+  xmlEntitiesBlocked: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

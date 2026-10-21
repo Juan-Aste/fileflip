@@ -168,3 +168,63 @@ test.describe("tool: toml-to-json", () => {
     expect((await runTool(page, "Convertir a JSON")).error).toContain("No pudimos leer el contenido");
   });
 });
+
+/** Parses XML with the browser's own DOMParser (independent of the app's library). */
+const domXml = (page: Page, xml: string) =>
+  page.evaluate((text) => {
+    const doc = new DOMParser().parseFromString(text, "application/xml");
+    if (doc.querySelector("parsererror")) return null;
+    const walk = (el: Element): unknown => ({
+      name: el.tagName,
+      attrs: Object.fromEntries([...el.attributes].map((a) => [a.name, a.value])),
+      children: el.children.length ? [...el.children].map(walk) : el.textContent,
+    });
+    return walk(doc.documentElement);
+  }, xml);
+
+test.describe("tool: json-to-xml", () => {
+  test("pasted JSON with attributes → well-formed XML", async ({ page }) => {
+    await open(page, "/es/json-a-xml");
+    await page
+      .getByRole("textbox", { name: "O pega tu JSON" })
+      .fill('{"catalog": {"@lang": "es", "book": [{"@id": "1", "title": "Café & <té>"}, {"@id": "2", "title": "Rayuela"}], "bad key": 1}}');
+    const out = fileOf(await runTool(page, "Convertir a XML"));
+    expect(out.name).toBe("data.xml");
+    expect(await domXml(page, readText(out.buf))).toEqual({
+      name: "catalog",
+      attrs: { lang: "es" },
+      children: [
+        { name: "book", attrs: { id: "1" }, children: [{ name: "title", attrs: {}, children: "Café & <té>" }] },
+        { name: "book", attrs: { id: "2" }, children: [{ name: "title", attrs: {}, children: "Rayuela" }] },
+        { name: "bad_key", attrs: {}, children: "1" },
+      ],
+    });
+  });
+});
+
+test.describe("tool: xml-to-json", () => {
+  test("XML file → JSON with attributes, lists, references and CDATA", async ({ page }) => {
+    await open(page, "/es/xml-a-json", ["catalog.xml"]);
+    const out = fileOf(await runTool(page, "Convertir a JSON"));
+    expect(out.name).toBe("catalog.json");
+    expect(readJson(out.buf)).toEqual({
+      catalog: {
+        "@lang": "es",
+        book: [
+          { "@id": "1", title: "Café & té", code: "007" },
+          { "@id": "2", title: "中文", note: "<b>raw</b>" },
+        ],
+      },
+    });
+  });
+
+  test("XXE is refused with an explanation", async ({ page }) => {
+    await open(page, "/es/xml-a-json", ["corrupt/xxe.xml"]);
+    expect((await runTool(page, "Convertir a JSON")).error).toContain("declara entidades");
+  });
+
+  test("malformed XML shows an error", async ({ page }) => {
+    await open(page, "/es/xml-a-json", ["corrupt/broken.xml"]);
+    expect((await runTool(page, "Convertir a JSON")).error).toContain("No pudimos leer el contenido");
+  });
+});

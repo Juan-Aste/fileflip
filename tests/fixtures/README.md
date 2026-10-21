@@ -15,6 +15,7 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `text.txt`, `table.csv` | UTF-8 con acentos y chino / CSV con una coma entre comillas |
 | `data.json` | 3 registros con objetos y listas anidados, comillas, `null`, salto de línea, chino y un código postal "007" |
 | `config.yaml`, `config.toml` | YAML con comentario, ancla + clave de combinación (`<<`), `"007"` entre comillas y dos documentos / TOML con tabla, fecha y lista de tablas |
+| `catalog.xml` | XML con comentario, atributos, elementos repetidos, entidades predefinidas y numéricas (chino) y CDATA |
 | `table-excel.csv`, `table.tsv` | CSV como lo guarda Excel en español (punto y coma, coma decimal, Windows-1252) / TSV en UTF-8 |
 | `document.{odt,docx,doc,rtf}` | LibreOffice desde un documento ODF plano escrito en el script |
 | `spreadsheet.{ods,xlsx,xls}` | LibreOffice desde una hoja ODF plana (4 filas × 3 columnas) |
@@ -24,4 +25,5 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `corrupt/text-as.jpg`, `corrupt/random-as.docx` | Contenido que no coincide con la extensión |
 | `corrupt/empty.png` | Archivo vacío |
 | `corrupt/broken.json`, `corrupt/bad-quotes.csv` | JSON cortado / CSV con una comilla sin cerrar |
+| `corrupt/xxe.xml`, `corrupt/broken.xml` | Entidad externa que apunta a `/etc/passwd` (XXE) / etiquetas mal cerradas |
 | `corrupt/alias-bomb.yaml`, `corrupt/broken.toml` | "Billion laughs": 9 niveles de 9 alias (se expandiría a ~387 millones de valores) / TOML con texto y tabla sin cerrar |

@@ -194,6 +194,7 @@
     "fileDamaged": "El archivo está dañado o incompleto. Prueba con otra copia.",
     "invalidData": "No pudimos leer el contenido. Revisa que el formato sea válido (comillas, comas y llaves).",
     "tomlUnsupported": "TOML no puede representar este contenido: necesita un objeto en la raíz y no admite null dentro de listas.",
+    "xmlEntitiesBlocked": "Este XML declara entidades ('<!ENTITY>'). Por seguridad no se procesan: quita la declaración DOCTYPE e inténtalo de nuevo.",
     "signInRequired": "Inicia sesión para continuar.",
     "paymentsUnavailable": "Los pagos todavía no están disponibles en tu país. Vuelve pronto.",
     "jobCancelled": "Se canceló el proceso.",
@@ -366,6 +367,34 @@
         "a2": "JSON en el navegador no puede guardar enteros mayores que 2^53 sin perder precisión, así que ese archivo se rechaza con un aviso en lugar de cambiar el valor.",
         "q3": "¿Mis archivos se suben a algún servidor?",
         "a3": "No. La conversión se hace en tu navegador y el archivo nunca sale de tu dispositivo."
+      }
+    },
+    "json-to-xml": {
+      "title": "JSON a XML",
+      "description": "Convierte JSON en un documento XML válido y con sangría, con atributos incluidos. En tu navegador.",
+      "action": "Convertir a XML",
+      "about": "JSON a XML genera un documento XML bien formado a partir de tus datos JSON. Las claves que empiezan con @ se escriben como atributos y #text como el texto del elemento; las listas se convierten en elementos repetidos. Si el JSON tiene una sola clave en la raíz, esa clave es el elemento raíz; si no, todo va dentro de '<root>'.",
+      "faq": {
+        "q1": "¿Qué pasa con claves que no son nombres XML válidos?",
+        "a1": "Se corrigen para que el XML sea válido: los espacios y símbolos pasan a guion bajo (mi clave → mi_clave) y a un nombre que empieza con un número se le agrega un guion bajo delante.",
+        "q2": "¿Cómo escribo atributos?",
+        "a2": "Usa claves con @ delante: '{\"libro\": {\"@id\": \"1\", \"titulo\": \"Rayuela\"}}' produce '<libro id=\"1\"><titulo>Rayuela</titulo></libro>'.",
+        "q3": "¿Se escapan los caracteres especiales?",
+        "a3": "Sí. &, '< y >' en los textos y las comillas en los atributos se escriben como entidades, así que el resultado siempre es XML válido."
+      }
+    },
+    "xml-to-json": {
+      "title": "XML a JSON",
+      "description": "Convierte XML en JSON con atributos, elementos repetidos y CDATA. Seguro frente a XXE y sin subir tus archivos.",
+      "action": "Convertir a JSON",
+      "about": "XML a JSON lee documentos XML y los convierte en JSON: cada elemento es una clave, los atributos llevan @ delante, los elementos repetidos forman una lista y el contenido CDATA se conserva como texto. Los valores quedan como texto, porque XML no tiene tipos: 007 sigue siendo 007.",
+      "faq": {
+        "q1": "¿Es seguro abrir un XML desconocido?",
+        "a1": "Sí. Los documentos que declaran entidades ('<!ENTITY>'), la vía de ataques como XXE o billion laughs, se rechazan con un aviso antes de leerlos, y nada se descarga de internet.",
+        "q2": "¿Por qué los números aparecen entre comillas?",
+        "a2": "Porque en XML todo es texto y convertirlo adivinando podría cambiar datos (ceros a la izquierda, códigos). Así obtienes exactamente lo que dice el archivo.",
+        "q3": "¿Se conservan los comentarios?",
+        "a3": "No. Los comentarios y las instrucciones de procesamiento no tienen equivalente en JSON y se omiten; el resto del contenido se mantiene."
       }
     }
   },
