@@ -81,3 +81,26 @@ test.describe("tool: markdown-to-pdf", () => {
     expect(calls).toBe(2);
   });
 });
+
+test.describe("tool: html-to-pdf", () => {
+  test("an HTML page is printed without its scripts or remote resources", async ({ page }) => {
+    test.skip(!process.env.GOTENBERG_URL, "needs Gotenberg (GOTENBERG_URL)");
+    await page.route("**/api/convert/html", (route) => route.continue());
+    await openWithFiles(page, "/es/html-a-pdf", ["page.html"]);
+    const out = fileOf(await runTool(page, "Convertir a PDF"));
+    expect(out.name).toBe("page.pdf");
+    const doc = await PDFDocument.load(out.buf);
+    expect(doc.getTitle()).toBe("Página");
+    expect(Math.round(doc.getPage(0).getSize().width)).toBe(595);
+    const text = await pdfText(out.buf);
+    for (const expected of ["Guía 中文", "Hola", "mundo", "uno", "dos", 'print("hola")', "Documentación"]) expect(text).toContain(expected);
+    expect(text).not.toContain("pwned");
+  });
+
+  test("crafted nesting is refused with a clear error", async ({ page }) => {
+    await page.route("**/api/convert/html", (route) => route.continue());
+    await page.goto("/en/html-to-pdf", { waitUntil: "networkidle" });
+    await page.locator('input[type="file"]').first().setInputFiles({ name: "deep.html", mimeType: "text/html", buffer: Buffer.from("<div>".repeat(3000)) });
+    expect(await runTool(page, "Convert to PDF")).toEqual({ error: expect.stringContaining("damaged") });
+  });
+});

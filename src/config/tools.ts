@@ -82,6 +82,7 @@ export const toolIds = [
   "markdown-to-html",
   "html-to-markdown",
   "markdown-to-pdf",
+  "html-to-pdf",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -754,6 +755,17 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: MARKUP_MAX_BYTES },
     status: "verified",
     slugs: { es: "markdown-a-pdf", en: "markdown-to-pdf", pt: "markdown-para-pdf", fr: "markdown-en-pdf", zh: "markdown-to-pdf" },
+  },
+  "html-to-pdf": {
+    id: "html-to-pdf",
+    category: "document",
+    inputs: ["html", "txt"],
+    outputs: ["pdf"],
+    engine: "server",
+    libraries: ["parse5", "Gotenberg (Chromium)"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: MARKUP_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "html-a-pdf", en: "html-to-pdf", pt: "html-para-pdf", fr: "html-en-pdf", zh: "html-to-pdf" },
   },
 };
 

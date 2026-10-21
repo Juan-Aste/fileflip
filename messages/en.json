@@ -1015,6 +1015,22 @@
         "q4": "Are my files uploaded to a server?",
         "a4": "Yes: the PDF is made on our own server (not a third-party service), over an encrypted connection, and the file is processed in memory without being stored. If you'd rather nothing leaves your device, use Markdown to HTML and print the page as PDF from your browser."
       }
+    },
+    "html-to-pdf": {
+      "title": "HTML to PDF",
+      "description": "Turn an HTML file into a PDF that keeps its styles, tables and embedded images, in A4 or Letter.",
+      "action": "Convert to PDF",
+      "about": "HTML to PDF prints saved web pages, email templates, invoices or exported reports as a PDF ready to send. Styles written inside the file (style tags and attributes), tables and images embedded as data URLs are kept. If the HTML sets its own page size with @page, that size is used.",
+      "faq": {
+        "q1": "Can I convert a web page from its address (URL)?",
+        "a1": "No: you upload or paste the HTML file. For safety our server never visits internet or internal addresses while making the PDF.",
+        "q2": "Why are some images or styles missing?",
+        "a2": "Only what is inside the file is used: styles in style tags or attributes, and images embedded as data URLs. Linked stylesheets, fonts and images (link, src or url() pointing to another file or site) are not downloaded.",
+        "q3": "Does the page's JavaScript run?",
+        "a3": "No. Scripts, event attributes, iframes, objects and redirects are removed before printing; you get what the page shows without JavaScript. Pages that build their content with JavaScript will come out incomplete.",
+        "q4": "Are my files uploaded to a server?",
+        "a4": "Yes: the PDF is made on our own server (not a third-party service), over an encrypted connection, and the file is processed in memory without being stored."
+      }
     }
   },
   "ToolUi": {
@@ -1847,6 +1863,7 @@
     "pageSize": "Page size",
     "pageSize_a4": "A4 (210 × 297 mm)",
     "pageSize_letter": "Letter (8.5 × 11 in)",
-    "pdfNote": "Linked images are not downloaded (only those embedded as data URLs) and HTML written in the Markdown is reduced to its text."
+    "pdfNote": "Linked images are not downloaded (only those embedded as data URLs) and HTML written in the Markdown is reduced to its text.",
+    "htmlPdfNote": "Styles and images included in the file are used; anything linked to other files or sites is not downloaded and JavaScript does not run."
   }
 }

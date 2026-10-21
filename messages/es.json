@@ -1015,6 +1015,22 @@
         "q4": "¿Mis archivos se suben a un servidor?",
         "a4": "Sí: el PDF se genera en nuestro servidor (no en un servicio de terceros), por conexión cifrada, y el archivo se procesa en memoria sin guardarse. Si prefieres que nada salga de tu equipo, usa Markdown a HTML y luego imprime la página como PDF desde tu navegador."
       }
+    },
+    "html-to-pdf": {
+      "title": "HTML a PDF",
+      "description": "Convierte un archivo HTML en PDF conservando sus estilos, tablas e imágenes incrustadas, en A4 o Carta.",
+      "action": "Convertir a PDF",
+      "about": "HTML a PDF imprime tus páginas HTML guardadas, plantillas de correo, facturas o informes exportados como un PDF listo para enviar. Se respetan los estilos escritos dentro del archivo (etiquetas y atributos style), las tablas y las imágenes incrustadas como data URL. Si el HTML define su propio tamaño de página con @page, se usa ese.",
+      "faq": {
+        "q1": "¿Puedo convertir una página web a partir de su dirección (URL)?",
+        "a1": "No: subes o pegas el archivo HTML. Por seguridad nuestro servidor no visita direcciones de internet ni de redes internas mientras genera el PDF.",
+        "q2": "¿Por qué no aparecen algunas imágenes o estilos?",
+        "a2": "Solo se usa lo que está dentro del archivo: estilos en etiquetas o atributos style, e imágenes incrustadas como data URL. Hojas de estilo, fuentes e imágenes enlazadas (link, src o url() hacia otro archivo o sitio) no se descargan.",
+        "q3": "¿Se ejecuta el JavaScript de la página?",
+        "a3": "No. Antes de imprimir se quitan scripts, atributos de eventos, iframes, objetos, formularios automáticos y redirecciones; el resultado es lo que se ve sin JavaScript. Las páginas que construyen su contenido con JavaScript saldrán incompletas.",
+        "q4": "¿Mis archivos se suben a un servidor?",
+        "a4": "Sí: el PDF se genera en nuestro servidor (no en un servicio de terceros), por conexión cifrada, y el archivo se procesa en memoria sin guardarse."
+      }
     }
   },
   "ToolUi": {
@@ -1847,6 +1863,7 @@
     "pageSize": "Tamaño de página",
     "pageSize_a4": "A4 (210 × 297 mm)",
     "pageSize_letter": "Carta (216 × 279 mm)",
-    "pdfNote": "Las imágenes enlazadas no se descargan (solo las incluidas como data URL) y el HTML escrito en el Markdown se reduce a su texto."
+    "pdfNote": "Las imágenes enlazadas no se descargan (solo las incluidas como data URL) y el HTML escrito en el Markdown se reduce a su texto.",
+    "htmlPdfNote": "Se usan los estilos y las imágenes incluidos en el archivo; lo enlazado a otros archivos o sitios no se descarga y el JavaScript no se ejecuta."
   }
 }

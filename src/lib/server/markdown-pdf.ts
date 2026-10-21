@@ -15,7 +15,10 @@ export interface PrintOptions {
   pageSize: PageSize;
 }
 
-const CSP = "default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:";
+/** Blocks every request and script of a page printed by Gotenberg (shared with HTML → PDF). */
+export const PRINT_CSP = "default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:";
+
+export const pageRule = (size: PageSize) => `@page{size:${size === "letter" ? "letter" : "A4"};margin:18mm 16mm}`;
 
 const escapeHtml = (text: string) =>
   text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -55,7 +58,7 @@ function createMarked() {
   return marked;
 }
 
-const PAGE_CSS = (size: PageSize) => `@page{size:${size === "letter" ? "letter" : "A4"};margin:18mm 16mm}
+const PAGE_CSS = (size: PageSize) => `${pageRule(size)}
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 body{margin:0;font:11pt/1.55 "Noto Sans","Liberation Sans","DejaVu Sans",Arial,sans-serif;color:#1f2328;overflow-wrap:anywhere}
 h1,h2,h3,h4,h5,h6{line-height:1.25;margin:1.4em 0 .5em;break-after:avoid}h1{font-size:1.9em}h2{font-size:1.45em;border-bottom:1px solid #d0d7de;padding-bottom:.2em}h3{font-size:1.2em}
@@ -90,7 +93,7 @@ export function markdownToPrintHtml(markdown: string, { pageSize }: PrintOptions
 <html>
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="${CSP}">
+<meta http-equiv="Content-Security-Policy" content="${PRINT_CSP}">
 <title>${escapeHtml(title)}</title>
 <style>
 ${PAGE_CSS(pageSize)}

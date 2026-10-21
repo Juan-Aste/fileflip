@@ -4,6 +4,7 @@ import {
   Heading,
   FileCode2,
   FileText,
+  Printer,
   CaseSensitive,
   ImageDown,
   LockOpen,
@@ -104,6 +105,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "markdown-to-html": FileCode2,
   "html-to-markdown": Heading,
   "markdown-to-pdf": FileText,
+  "html-to-pdf": Printer,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

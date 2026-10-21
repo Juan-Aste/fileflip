@@ -1015,6 +1015,22 @@
         "q4": "Mes fichiers sont-ils envoyés sur un serveur ?",
         "a4": "Oui : le PDF est créé sur notre propre serveur (pas chez un tiers), via une connexion chiffrée, et le fichier est traité en mémoire sans être conservé. Si vous préférez que rien ne quitte votre appareil, utilisez Markdown en HTML puis imprimez la page en PDF depuis votre navigateur."
       }
+    },
+    "html-to-pdf": {
+      "title": "HTML en PDF",
+      "description": "Convertissez un fichier HTML en PDF en conservant ses styles, tableaux et images intégrées, en A4 ou Letter.",
+      "action": "Convertir en PDF",
+      "about": "HTML en PDF imprime vos pages web enregistrées, modèles d'e-mail, factures ou rapports exportés en un PDF prêt à envoyer. Les styles écrits dans le fichier (balises et attributs style), les tableaux et les images intégrées en data URL sont conservés. Si le HTML définit son propre format de page avec @page, celui-ci est utilisé.",
+      "faq": {
+        "q1": "Puis-je convertir une page web à partir de son adresse (URL) ?",
+        "a1": "Non : vous envoyez ou collez le fichier HTML. Par sécurité, notre serveur ne visite aucune adresse internet ni interne pendant la création du PDF.",
+        "q2": "Pourquoi certaines images ou certains styles manquent-ils ?",
+        "a2": "Seul le contenu du fichier est utilisé : styles dans des balises ou attributs style, et images intégrées en data URL. Les feuilles de style, polices et images liées (link, src ou url() vers un autre fichier ou site) ne sont pas téléchargées.",
+        "q3": "Le JavaScript de la page est-il exécuté ?",
+        "a3": "Non. Scripts, attributs d'événements, iframes, objets et redirections sont retirés avant l'impression ; vous obtenez ce que la page affiche sans JavaScript. Les pages qui construisent leur contenu en JavaScript seront incomplètes.",
+        "q4": "Mes fichiers sont-ils envoyés sur un serveur ?",
+        "a4": "Oui : le PDF est créé sur notre propre serveur (pas chez un tiers), via une connexion chiffrée, et le fichier est traité en mémoire sans être conservé."
+      }
     }
   },
   "ToolUi": {
@@ -1847,6 +1863,7 @@
     "pageSize": "Format de page",
     "pageSize_a4": "A4 (210 × 297 mm)",
     "pageSize_letter": "Letter (216 × 279 mm)",
-    "pdfNote": "Les images liées ne sont pas téléchargées (seulement celles intégrées en data URL) et le HTML écrit dans le Markdown est réduit à son texte."
+    "pdfNote": "Les images liées ne sont pas téléchargées (seulement celles intégrées en data URL) et le HTML écrit dans le Markdown est réduit à son texte.",
+    "htmlPdfNote": "Les styles et images inclus dans le fichier sont utilisés ; ce qui est lié à d'autres fichiers ou sites n'est pas téléchargé et le JavaScript ne s'exécute pas."
   }
 }

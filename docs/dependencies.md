@@ -26,6 +26,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | utif2 | 4.1.0 | MIT | lector/escritor TIFF | N (worker) |
 | libheif-js | 1.23.5 | LGPL-3.0 | lector HEIC/HEIF | N (worker, carga diferida, archivo aparte: cumple la LGPL al poder reemplazarse) |
 | woff2-encoder | 2.0.0 | MIT (google/woff2 y Brotli: MIT) | comprimir y descomprimir WOFF2 (codificador de referencia de Google en WASM incrustado, ~1 MB) | N (worker de datos, import diferido: solo el conversor de fuentes) |
+| parse5 | 8.0.1 | MIT | Parser HTML5 en el servidor: sanea el HTML de "HTML a PDF" antes de imprimirlo | N (solo servidor) |
 | marked | 18.1.1 | MIT | Markdown (CommonMark + GFM) → HTML (en el navegador para Markdown → HTML; en el servidor para Markdown → PDF) | N (chunk de la herramienta, import diferido) |
 | dompurify | 3.4.17 | MPL-2.0 OR Apache-2.0 (se usa bajo Apache-2.0) | sanea el HTML generado (sin scripts, eventos, formularios ni `javascript:`) | N (ídem) |
 | turndown, turndown-plugin-gfm | 7.2.4 / 1.0.2 | MIT (dep. @mixmark-io/domino BSD-2-Clause, solo en Node: el build del navegador la excluye) | HTML → Markdown con tablas, tachado y listas de tareas | N (ídem) |
@@ -50,7 +51,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 |---|---|---|
 | Gotenberg 8 (imagen Docker) | MIT | API HTTP de conversión de oficina; corre como servicio aparte en la red privada |
 | └ LibreOffice | MPL-2.0 | motor dentro de Gotenberg |
-| └ Chromium | BSD-3-Clause (y otras) | motor HTML → PDF dentro de Gotenberg (Markdown → PDF; sin JavaScript ni red) |
+| └ Chromium | BSD-3-Clause (y otras) | motor HTML → PDF dentro de Gotenberg (Markdown → PDF y HTML → PDF; sin JavaScript ni red) |
 | MongoDB 7 | SSPL (servidor, no se distribuye) | base de datos (Railway o Atlas) |
 
 ## Desarrollo (no se distribuyen)

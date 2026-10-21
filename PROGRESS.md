@@ -1969,3 +1969,27 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Actualizar el *Custom Start Command* del servicio `gotenberg` en Railway con las 3 opciones de Chromium (ver DEPLOY.md). Sin ellas la herramienta sigue protegida por la CSP, pero se pierde la segunda capa.
 
 **Siguiente**: 3C.26 (HTML → PDF con Gotenberg, protección SSRF, fixture PPT y PDF/A).
+
+## 2026-10-21 23:05 UTC — Fase 3, tarea 3C.26a (HTML → PDF)
+
+**Qué se hizo**
+- 3C.26 se dividió en 3C.26a (HTML → PDF), 3C.26b (PDF → PDF/A) y 3C.26c (fixture PPT y PPT → PDF).
+- **HTML a PDF** (`/es/html-a-pdf`, `/en/html-to-pdf`, `/pt/html-para-pdf`, `/fr/html-en-pdf`): archivo `.html`/`.htm`/`.txt` (lotes) o HTML pegado; A4 o Carta (el `@page` del propio documento tiene prioridad). Ruta `POST /api/convert/html`.
+- **Saneado en el servidor** (`src/lib/server/html-print.ts`, **parse5** 8.0.1, MIT, nueva dependencia directa; ya venía con jsdom): se recorre el árbol sin recursión y se eliminan `script`, `noscript`, `template`, `iframe`/`frame`, `object`/`embed`/`applet`, `base`, `link`, `meta` (incluido `refresh`), `audio`/`video`/`source`/`track`, `canvas`, las animaciones SVG (`animate`, `set`…) y los comentarios; se quitan los atributos `on*`, `srcdoc`, `http-equiv` y **todo atributo con URL** salvo `href` seguro en `a`/`area` (http, https, mailto, #) y `src` `data:image` (png/jpeg/gif/webp) en `img`. Luego se insertan primero en `<head>` el `charset`, la **misma CSP** que Markdown → PDF (bloquea `url()` e `@import` del CSS que se conserva) y la regla `@page`.
+- Anidamiento malicioso: un estimador lineal de profundidad (sin contar elementos con cierre opcional como `li`, `p`, `td`) rechaza más de 1000 niveles **antes** de parsear (parse5 se vuelve cuadrático: 20 000 `<div>` tardan 2,5 s y su serializador desborda la pila a ~5000); error `fileDamaged`. Una lista de 5000 `<li>` sin cerrar se acepta.
+- Ruta compartida `src/lib/server/print-route.ts` (`printUpload`) para Markdown → PDF y HTML → PDF: misma validación, opciones, registro de estadísticas y errores. Componente cliente común `PrintToPdfTools.tsx`.
+- Textos (introducción + 4 preguntas) en los 5 idiomas. Convención: **no usar `<etiquetas>` en `messages/*.json`** (next-intl las interpreta como texto enriquecido).
+
+**Verificación de SSRF**
+- Página de ataque con 30 vectores (meta refresh, base, link/preload, `@import`, `url()` en CSS y en `style`, `@font-face`, scripts, `onload`/`onerror`, `srcset`, `picture`, `iframe`/`srcdoc`, `object`, `embed`, `video`/`audio`/`poster`, `input type=image`, `background`, SVG `image`/`use`/`animate`/`a`/`script`, MathML `href`, `form action`/`formaction`, `ping`, `noscript`, `template`, comentarios). **Gotenberg 8 real sin opciones de seguridad**: la página original hizo **24 peticiones** a un servidor de prueba (incluida la redirección); la saneada, **0**.
+- Nota: en Playwright los recursos bloqueados por CSP igual emiten el evento `request` (no `requestfinished`); el servidor de prueba es la fuente de verdad.
+
+**Verificación**
+- 6 tests de `html-print.test.ts` (CSP primero, estilos y contenido conservados, los 30 vectores eliminados fuera del CSS, anidamiento, fragmento → página completa; **Chromium local**: control sin sanear con > 5 peticiones al servidor de prueba y la saneada con 0, PDF A4; **Gotenberg real** si hay `GOTENBERG_URL`: título y texto con chino). 2 tests de la ruta.
+- `markdown-pdf.spec.ts`: `page.html` → PDF con Gotenberg real (título "Página", texto, sin "pwned") y anidamiento rechazado con el mensaje traducido.
+- Lint, typecheck, tests (806 + 2 saltados sin Gotenberg), build, `check:static` (837 páginas) y `npm run test:e2e` completo con Gotenberg (242/242) pasan. Captura revisada: `/fr/html-en-pdf` 1280 claro con el resultado.
+
+**Limitaciones**
+- Sin URL de entrada (solo archivo/texto) y sin recursos externos (hojas de estilo, fuentes e imágenes enlazadas); sin JavaScript: las páginas que arman su contenido con JS salen incompletas (lo dicen las FAQ).
+
+**Siguiente**: 3C.26b (PDF → PDF/A con Gotenberg).
