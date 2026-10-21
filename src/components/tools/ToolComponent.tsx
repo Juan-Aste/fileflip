@@ -38,6 +38,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "compress-image": dynamic(() => import("./image/CompressImageTool")),
   "resize-image": dynamic(() => import("./image/ResizeImageTool")),
   "rotate-image": dynamic(() => import("./image/RotateImageTool")),
+  "crop-image": dynamic(() => import("./image/CropImageTool")),
   "remove-exif": dynamic(() => import("./image/RemoveMetadataTool")),
 };
 

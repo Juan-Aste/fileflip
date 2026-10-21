@@ -2,6 +2,9 @@ import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type {
   CompressArgs,
   CompressResult,
+  CropArgs,
+  PreviewArgs,
+  PreviewResult,
   ResizeArgs,
   ResizeResult,
   StripArgs,
@@ -27,3 +30,9 @@ export const transformImageFile = (args: TransformArgs, job: JobOptions = {}) =>
 
 export const stripImageMetadata = (args: StripArgs, job: JobOptions = {}) =>
   pool.run<StripResult>("strip", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });
+
+export const previewImageFile = (args: PreviewArgs, job: JobOptions = {}) =>
+  pool.run<PreviewResult>("preview", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });
+
+export const cropImageFile = (args: CropArgs, job: JobOptions = {}) =>
+  pool.run<{ buffer: ArrayBuffer; width: number; height: number }>("crop", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });

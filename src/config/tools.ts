@@ -61,6 +61,7 @@ export const toolIds = [
   "resize-image",
   "rotate-image",
   "remove-exif",
+  "crop-image",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -479,6 +480,19 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: 100 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "quitar-metadatos-exif", en: "remove-exif-metadata", pt: "remover-metadados-exif", fr: "supprimer-metadonnees-exif", zh: "remove-exif-metadata" },
+  },
+
+  "crop-image": {
+    id: "crop-image",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "heic"],
+    outputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff"],
+    engine: "browser",
+    libraries: ["own crop geometry", "@jsquash/jpeg", "@jsquash/webp", "@jsquash/avif", "@jsquash/png", "libheif-js", "utif2", "gifenc"],
+    // One image at a time: it is edited on a preview before cropping.
+    limits: { files: "single", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "recortar-imagen", en: "crop-image", pt: "cortar-imagem", fr: "recadrer-image", zh: "crop-image" },
   },
 
 };

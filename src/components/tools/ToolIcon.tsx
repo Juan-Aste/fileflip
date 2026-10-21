@@ -28,6 +28,7 @@ import {
   Expand,
   FlipHorizontal2,
   MapPinOff,
+  Crop,
   type LucideIcon,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
@@ -66,6 +67,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "resize-image": Expand,
   "rotate-image": FlipHorizontal2,
   "remove-exif": MapPinOff,
+  "crop-image": Crop,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

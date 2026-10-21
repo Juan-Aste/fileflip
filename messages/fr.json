@@ -673,6 +673,22 @@
         "q4": "Comment vérifier que la position a disparu ?",
         "a4": "Repassez la photo nettoyée dans cet outil : il doit indiquer qu'il n'a trouvé aucune métadonnée. Vous pouvez aussi regarder les propriétés du fichier sur votre ordinateur."
       }
+    },
+    "crop-image": {
+      "title": "Recadrer une image",
+      "description": "Recadrez vos photos librement ou selon un format fixe (1:1, 4:3, 16:9, 9:16…), au pixel près et sans les envoyer sur un serveur.",
+      "action": "Recadrer l'image",
+      "about": "Recadrer une image vous permet de choisir la partie de la photo à garder : faites glisser le cadre et ses coins, ou saisissez la position et la taille exactes en pixels. Vous pouvez fixer un format (carré 1:1 pour les profils, 4:5 pour Instagram, 16:9 pour les couvertures et vidéos, 9:16 pour les stories, le format d'origine…) ou recadrer librement. Fonctionne aussi uniquement au clavier. Accepte JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF et HEIC, et vous pouvez changer de format à l'enregistrement. Tout est traité dans votre navigateur.",
+      "faq": {
+        "q1": "Le recadrage fait-il perdre de la qualité ?",
+        "a1": "Les pixels de la zone choisie sont copiés tels quels, sans redimensionnement. PNG, BMP, TIFF et GIF ne perdent rien ; JPG, WEBP et AVIF sont réenregistrés en haute qualité (92).",
+        "q2": "Comment recadrer uniquement au clavier ?",
+        "a2": "Allez sur le cadre avec Tab : les flèches le déplacent et Maj + flèches le redimensionnent (1 % de l'image par appui). Pour des valeurs exactes, saisissez X, Y, largeur et hauteur en pixels puis appuyez sur Entrée.",
+        "q3": "Puis-je recadrer plusieurs photos à la fois ?",
+        "a3": "Non : le cadre se règle sur chaque photo, donc une à la fois. Pour mettre beaucoup de photos à la même taille, utilisez « Redimensionner une image » avec un format de réseau social et l'option de rogner les bords.",
+        "q4": "Pourquoi l'aperçu est-il plus petit que ma photo ?",
+        "a4": "Une copie réduite est affichée pour que l'édition reste rapide, mais le recadrage s'applique à l'image d'origine complète : les valeurs en pixels sont celles de la vraie photo."
+      }
     }
   },
   "ToolUi": {
@@ -1300,6 +1316,20 @@
     "removedFound": "{name} : supprimé {found}.",
     "removedBytes": "{name} : {size} de métadonnées supprimés (ni position ni données d'appareil).",
     "nothingFound": "{name} : aucune métadonnée à supprimer.",
-    "heicReencoded": "Enregistré en JPG."
+    "heicReencoded": "Enregistré en JPG.",
+    "cropAspect": "Format",
+    "aspectFree": "Libre",
+    "aspectOriginal": "D'origine",
+    "cropLoading": "Préparation de l'aperçu…",
+    "cropArea": "Zone de recadrage : {width} × {height} px à partir de ({x}, {y})",
+    "cropKeyboardHint": "Faites glisser le cadre ou ses coins. Au clavier : flèches pour déplacer, Maj + flèches pour redimensionner.",
+    "crop": {
+      "x": "X (px)",
+      "y": "Y (px)",
+      "width": "Largeur (px)",
+      "height": "Hauteur (px)"
+    },
+    "cropSize": "Recadrage de {width} × {height} px (l'image mesure {imageWidth} × {imageHeight} px)",
+    "croppedTo": "{name} : recadrée à {size} px"
   }
 }

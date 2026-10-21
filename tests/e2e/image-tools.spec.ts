@@ -289,3 +289,73 @@ test.describe("tool: remove-exif", () => {
     await expect(page.getByText(/Salvo como JPG\./)).toBeVisible();
   });
 });
+
+test.describe("tool: crop-image", () => {
+  const meanDiff = (a: Buffer, b: Buffer) => {
+    let sum = 0;
+    for (let i = 0; i < a.length; i++) sum += Math.abs(a[i]! - b[i]!);
+    return sum / a.length;
+  };
+
+  test("1:1 takes the biggest centered square, pixels copied from the original", async ({ page }) => {
+    await page.goto("/es/recortar-imagen", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.jpg")]);
+    await expect(page.getByRole("group", { name: /Área de recorte: 1000 × 750 px/ })).toBeVisible();
+    await choose(page, "1:1");
+    await expect(page.getByText("Recorte de 750 × 750 px (la imagen mide 1000 × 750 px)")).toBeVisible();
+    const out = fileOf(await runTool(page, "Recortar imagen"));
+    expect(out.name).toBe("photo.jpg");
+    expect(await inspectImage(out.buf)).toMatchObject({ format: "jpg", width: 750, height: 750 });
+    const px = await rawPixels(out.buf);
+    expect(px[(220 * 750 + 735) * 4]).toBeGreaterThan(230); // the sun at x = 860 - 125
+    await expect(page.getByText("photo.jpg: recortada a 750 × 750 px")).toBeVisible();
+  });
+
+  test("keyboard and exact fields, saved as PNG", async ({ page }) => {
+    await page.goto("/en/crop-image", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.jpg")]);
+    const box = page.getByRole("group", { name: /Crop area/ });
+    await expect(box).toBeVisible();
+    await page.getByRole("textbox", { name: "Width (px)" }).fill("300");
+    await page.getByRole("textbox", { name: "Width (px)" }).press("Enter");
+    await page.getByRole("textbox", { name: "Height (px)" }).fill("200");
+    await page.getByRole("textbox", { name: "Height (px)" }).press("Enter");
+    await box.focus();
+    for (let i = 0; i < 3; i++) await page.keyboard.press("ArrowRight"); // 10 px each (1 % of 1000)
+    await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("Shift+ArrowDown");
+    await page.keyboard.press("Shift+ArrowDown");
+    await expect(page.getByRole("textbox", { name: "X (px)" })).toHaveValue("30");
+    await expect(page.getByRole("textbox", { name: "Y (px)" })).toHaveValue("10");
+    await expect(page.getByRole("textbox", { name: "Height (px)" })).toHaveValue("220");
+    await choose(page, "PNG");
+    const out = fileOf(await runTool(page, "Crop image"));
+    expect(out.name).toBe("photo.png");
+    expect(await inspectImage(out.buf)).toMatchObject({ format: "png", width: 300, height: 220 });
+    const expected = await sharp(fixturePath("photo.jpg")).extract({ left: 30, top: 10, width: 300, height: 220 }).ensureAlpha().raw().toBuffer();
+    expect(meanDiff(await rawPixels(out.buf), expected)).toBeLessThan(2); // only JPEG decoder rounding differs
+  });
+
+  test("works on the image as shown (EXIF orientation) and on HEIC; a damaged file can't be cropped", async ({ page }) => {
+    await page.goto("/pt/cortar-imagem", { waitUntil: "networkidle" });
+    // Stored 320×240 with orientation 6: it is 240×320 as shown.
+    await pick(page, [fixturePath("exif-gps.jpg")]);
+    await expect(page.getByText("Corte de 240 × 320 px (a imagem tem 240 × 320 px)")).toBeVisible();
+    await choose(page, "9:16");
+    const portrait = fileOf(await runTool(page, "Cortar imagem"));
+    expect(await inspectImage(portrait.buf)).toMatchObject({ format: "jpg", width: 180, height: 320 });
+
+    await page.getByRole("button", { name: "Começar de novo" }).click();
+    await pick(page, [fixturePath("photo.heic")]);
+    await choose(page, "1:1");
+    await expect(page.getByText("Corte de 80 × 80 px (a imagem tem 120 × 80 px)")).toBeVisible();
+    const heic = fileOf(await runTool(page, "Cortar imagem"));
+    expect(heic.name).toBe("photo.jpg");
+    expect(await inspectImage(heic.buf)).toMatchObject({ format: "jpg", width: 80, height: 80 });
+
+    await page.getByRole("button", { name: "Começar de novo" }).click();
+    await pick(page, [fixturePath("corrupt/truncated.png")]);
+    await expect(toolAlert(page)).toContainText("danificad");
+    await expect(page.getByRole("button", { name: "Cortar imagem", exact: true })).toBeDisabled();
+  });
+});

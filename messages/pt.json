@@ -673,6 +673,22 @@
         "q4": "Como confiro que a localização sumiu?",
         "a4": "Passe a foto limpa de novo por esta ferramenta: ela deve dizer que não encontrou metadados. Você também pode ver as propriedades do arquivo no computador."
       }
+    },
+    "crop-image": {
+      "title": "Cortar imagem",
+      "description": "Corte suas fotos livremente ou em proporções fixas (1:1, 4:3, 16:9, 9:16…), com precisão de pixel e sem enviá-las a nenhum servidor.",
+      "action": "Cortar imagem",
+      "about": "Cortar imagem permite escolher a parte da foto que você quer manter: arraste o quadro e seus cantos, ou digite a posição e o tamanho exatos em pixels. Você pode fixar uma proporção (quadrada 1:1 para perfis, 4:5 para o Instagram, 16:9 para capas e vídeos, 9:16 para stories, a proporção original…) ou cortar livremente. Também funciona só com o teclado. Aceita JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF e HEIC, e você pode mudar o formato ao salvar. Tudo é processado no seu navegador.",
+      "faq": {
+        "q1": "Cortar perde qualidade?",
+        "a1": "Os pixels da área escolhida são copiados como estão, sem reduzir nem ampliar. PNG, BMP, TIFF e GIF não perdem nada; JPG, WEBP e AVIF são salvos de novo com qualidade alta (92).",
+        "q2": "Como corto usando só o teclado?",
+        "a2": "Vá com Tab até o quadro de corte: as setas o movem e Shift + setas mudam o tamanho (1% da imagem por toque). Para valores exatos, digite X, Y, largura e altura em pixels e pressione Enter.",
+        "q3": "Posso cortar várias fotos de uma vez?",
+        "a3": "Não: o corte é ajustado em cada foto, então é uma por vez. Para deixar muitas fotos no mesmo tamanho, use “Redimensionar imagem” com um tamanho de rede social e a opção de cortar as bordas.",
+        "q4": "Por que a prévia aparece menor que a minha foto?",
+        "a4": "Para editar rápido é mostrada uma cópia reduzida, mas o corte é aplicado na imagem original completa: os valores em pixels são os da foto real."
+      }
     }
   },
   "ToolUi": {
@@ -1300,6 +1316,20 @@
     "removedFound": "{name}: removido {found}.",
     "removedBytes": "{name}: removidos {size} de metadados (sem localização nem dados da câmera).",
     "nothingFound": "{name}: não tinha metadados para remover.",
-    "heicReencoded": "Salvo como JPG."
+    "heicReencoded": "Salvo como JPG.",
+    "cropAspect": "Proporção",
+    "aspectFree": "Livre",
+    "aspectOriginal": "Original",
+    "cropLoading": "Preparando a prévia…",
+    "cropArea": "Área de corte: {width} × {height} px a partir de ({x}, {y})",
+    "cropKeyboardHint": "Arraste o quadro ou seus cantos. Com o teclado: setas para mover, Shift + setas para mudar o tamanho.",
+    "crop": {
+      "x": "X (px)",
+      "y": "Y (px)",
+      "width": "Largura (px)",
+      "height": "Altura (px)"
+    },
+    "cropSize": "Corte de {width} × {height} px (a imagem tem {imageWidth} × {imageHeight} px)",
+    "croppedTo": "{name}: cortada em {size} px"
   }
 }

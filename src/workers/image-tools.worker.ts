@@ -10,6 +10,7 @@ import {
   type CompressFormat,
   type CompressionLevel,
 } from "@/lib/image/compress";
+import { isValidCrop, type Rect } from "@/lib/image/crop-rect";
 import { decodeImage } from "@/lib/image/decode";
 import { isDamagedImage } from "@/lib/image/integrity";
 import { DEFAULT_QUALITY } from "@/lib/image/options";
@@ -281,4 +282,66 @@ async function strip({ input, from }: StripArgs, onProgress: (progress: number) 
   return { result, transfer: [result.buffer] };
 }
 
-exposeHandlers({ compress, resize, transform, strip });
+export interface PreviewArgs {
+  input: Blob;
+  from: FormatId;
+  /** Longest side of the preview, in pixels. */
+  maxSide: number;
+}
+
+export interface PreviewResult {
+  /** A JPEG small enough to show while editing. */
+  blob: Blob;
+  /** Size of the full image, as decoded (EXIF orientation applied). */
+  width: number;
+  height: number;
+}
+
+/**
+ * Preview for tools that edit before running (crop): it comes from the same
+ * decoder as the final result, so coordinates match even for HEIC or TIFF,
+ * which the browser cannot show in an <img>.
+ */
+async function preview({ input, from, maxSide }: PreviewArgs) {
+  const image = await decode(await input.arrayBuffer(), from);
+  const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+  const size = { width: Math.max(1, Math.round(image.width * scale)), height: Math.max(1, Math.round(image.height * scale)) };
+  const small = scale < 1 ? await resizeRaw(image, size) : image;
+  const canvas = new OffscreenCanvas(size.width, size.height);
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("No 2D context");
+  // White behind transparent areas: the preview is only for framing.
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, size.width, size.height);
+  const bitmap = await createImageBitmap(new ImageData(new Uint8ClampedArray(small.data), small.width, small.height));
+  ctx.drawImage(bitmap, 0, 0);
+  bitmap.close();
+  const blob = await canvas.convertToBlob({ type: "image/jpeg", quality: 0.85 });
+  const result: PreviewResult = { blob, width: image.width, height: image.height };
+  return { result };
+}
+
+export interface CropArgs {
+  input: Blob;
+  from: FormatId;
+  to: FormatId;
+  /** In pixels of the decoded image. */
+  rect: Rect;
+}
+
+async function crop({ input, from, to, rect }: CropArgs, onProgress: (progress: number) => void) {
+  const image = await decode(await input.arrayBuffer(), from);
+  if (!isValidCrop(rect, image)) throw new ConversionError("invalidRequest");
+  onProgress(0.4);
+  // Copy the rows of the rectangle: no resampling, the pixels stay exact.
+  const data = new Uint8ClampedArray(rect.width * rect.height * 4);
+  for (let row = 0; row < rect.height; row++) {
+    const start = ((rect.y + row) * image.width + rect.x) * 4;
+    data.set(image.data.subarray(start, start + rect.width * 4), row * rect.width * 4);
+  }
+  const buffer = await encode({ data, width: rect.width, height: rect.height }, to, KEEP_QUALITY);
+  onProgress(1);
+  return { result: { buffer, width: rect.width, height: rect.height }, transfer: [buffer] };
+}
+
+exposeHandlers({ compress, resize, transform, strip, preview, crop });

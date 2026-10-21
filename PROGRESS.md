@@ -1668,3 +1668,23 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 - Hechas en esta ejecución: 3C.11 (comprimir imagen y peso objetivo), 3C.12 (redimensionar imagen) y 3C.13 (rotar/voltear y quitar metadatos EXIF).
 - Esta sesión se demoró entre 3C.12 y 3C.13: la hora del candado (08:37) quedó con más de 3 horas y otra ejecución lo tomó a las 12:03. 3C.13 ya estaba terminada y verificada, así que se subió encima del candado de la otra ejecución **sin tocarlo** (sigue siendo suyo) y esta ejecución se detuvo. Si la otra ejecución empezó también 3C.13, al hacer pull verá la tarea marcada.
+
+## 2026-10-21 13:20 UTC — Fase 3, tarea 3C.14 (recortar imagen)
+
+**Contexto**: esta ejecución tomó el candado a las 12:03 (el de las 08:37 tenía más de 3 horas). La ejecución anterior seguía viva y subió su 3C.13 a las 12:11; esta ejecución había hecho la misma tarea en paralelo y **descartó su versión sin subirla** (la subida era equivalente) y siguió con 3C.14.
+
+**Qué se hizo**
+- **Recortar imagen** (`/es/recortar-imagen`, `/en/crop-image`, `/pt/cortar-imagem`, `/fr/recadrer-image`): una imagen por vez (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, HEIC; hasta 50 MB), proporción libre, original, 1:1, 4:3, 3:4, 16:9, 9:16, 3:2 o 4:5; salida igual al original (HEIC → JPG), JPG, PNG, WEBP o AVIF.
+  - **Vista previa desde el worker** (handler `preview`): la imagen se decodifica con el mismo decodificador que el recorte (orientación EXIF aplicada, HEIC y TIFF incluidos, que `<img>` no muestra) y se envía una copia JPEG de hasta 1600 px más el tamaño real; las coordenadas siempre están en píxeles de la imagen original.
+  - **Editor** (`CropEditor.tsx`): arrastrar el recuadro o sus 4 esquinas (pointer events con captura, funciona con el dedo), guías de tercios, sombreado exterior con 4 franjas (las esquinas nunca quedan cortadas). **Teclado**: el recuadro es enfocable (`role="group"` con etiqueta que dice tamaño y posición); flechas = mover 1 % de la imagen, Mayús + flechas = cambiar el tamaño desde la esquina inferior derecha; campos X, Y, ancho y alto en píxeles que se aplican con Enter o al salir (así escribir "120" no se corta en "1").
+  - Geometría pura en `src/lib/image/crop-rect.ts` (`fitAspect`, `moveRect`, `resizeCorner`, `setField`, `isValidCrop`): enteros, dentro de la imagen, mínimo 8 px, proporción respetada; si un tamaño escrito no entra desde la posición actual, el recuadro se corre.
+  - Handler `crop`: valida el rectángulo (`invalidRequest` si no es válido) y **copia las filas de píxeles** (sin re-muestrear); JPG/WEBP/AVIF con calidad 92.
+- `ToolShell`: nuevas props `onFilesChange` (la herramienta se entera del archivo elegido para editarlo antes de ejecutar) e `input.ready` (botón deshabilitado mientras se prepara la vista previa o si el archivo está dañado); la tarjeta de opciones se muestra apenas hay un archivo.
+- Textos (introducción + 4 preguntas, etiquetas y ayuda de teclado) en los 5 idiomas.
+
+**Verificación**
+- 9 tests unitarios de `crop-rect.ts` (encaje centrado, bordes, esquina opuesta fija, proporción y límites, mínimo, campos, validación).
+- `image-tools.spec.ts`: 3 casos nuevos (1:1 → 750×750 con el sol en la posición esperada y mensaje; teclado + campos exactos → PNG 300×220 comparado con `sharp().extract()` del original, diferencia media < 2; JPG con orientación 6 recortado como se ve a 9:16 = 180×320, HEIC 120×80 → 80×80 JPG, PNG truncado → error y botón deshabilitado).
+- Lint, typecheck, tests (672), build, `check:static` (722 páginas) y `npm run test:e2e` (188/188) pasan. Capturas revisadas: `/es/recortar-imagen` 360 oscuro (antes y después de cambiar el sombreado: las esquinas se cortaban con `overflow-hidden`) y `/fr/recadrer-image` 1280 claro.
+
+**Siguiente**: 3C.15 (marca de agua y agregar texto a una imagen).

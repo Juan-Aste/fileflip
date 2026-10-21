@@ -39,6 +39,8 @@ export type ShellInput =
       maxFileBytes?: number;
       /** Also lets the user paste the content instead of picking a file. */
       paste?: { label: string; placeholder?: string };
+      /** False while the tool is still preparing the picked files (e.g. a preview). */
+      ready?: boolean;
     }
   | { kind: "text"; label: string; placeholder?: string; maxLength?: number }
   /** Generators: only options, nothing to pick or paste; `ready` is false while required options are empty. */
@@ -57,6 +59,8 @@ interface Props {
   process: (input: { files: File[]; text: string }, context: ShellContext) => Promise<ShellOutput[]>;
   /** Name of the ZIP offered when there are several outputs. */
   zipName?: string;
+  /** Called with the picked files whenever they change (tools that edit a file before running). */
+  onFilesChange?: (files: File[]) => void;
 }
 
 interface Picked {
@@ -76,7 +80,7 @@ const PREVIEW_CHARS = 100_000;
  * cancel, then the outputs with individual downloads or one ZIP. Limits shown
  * to the user are the ones enforced (plan limits, or the tool's own).
  */
-export default function ToolShell({ input, actionLabel, options, process, zipName = "fileflect.zip" }: Props) {
+export default function ToolShell({ input, actionLabel, options, process, zipName = "fileflect.zip", onFilesChange }: Props) {
   const t = useTranslations("ToolUi");
   const tc = useTranslations("Common");
   const tconv = useTranslations("Converter");
@@ -101,6 +105,12 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
         : 1
       : 0;
   const maxFileBytes = input.kind === "files" ? Math.min(input.maxFileBytes ?? Infinity, planLimits.browserMaxFileBytes) : 0;
+
+  const filesListener = useRef(onFilesChange);
+  useEffect(() => {
+    filesListener.current = onFilesChange;
+  });
+  useEffect(() => filesListener.current?.(files.map((f) => f.file)), [files]);
 
   // Leaving the page stops the work and frees the result URLs.
   useEffect(() => () => {
@@ -249,7 +259,9 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
   const processing = state.status === "processing";
   const hasText = text.trim().length > 0;
   const hasInput =
-    input.kind === "files" ? files.length > 0 || (!!input.paste && hasText) : input.kind === "text" ? hasText : input.ready !== false;
+    input.kind === "files"
+      ? (files.length > 0 && input.ready !== false) || (!!input.paste && hasText)
+      : input.kind === "text" ? hasText : input.ready !== false;
 
   return (
     <div className="flex flex-col gap-4">
@@ -284,7 +296,7 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
           {rejected.map((r) => `${r.name}: ${te(r.reason)}`).join(" · ")}
         </ToolAlert>
       )}
-      {(hasInput || input.kind === "none" || state.status === "error") && (
+      {(hasInput || files.length > 0 || input.kind === "none" || state.status === "error") && (
         <div className={`${card} flex flex-col gap-4 p-4 sm:p-6`}>
           {files.length > 0 && (
             <ul className="flex flex-col gap-2">

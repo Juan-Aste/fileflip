@@ -673,6 +673,22 @@
         "q4": "How do I check the location is gone?",
         "a4": "Run the clean photo through this tool again: it should say it found no metadata. You can also check the file's properties on your computer."
       }
+    },
+    "crop-image": {
+      "title": "Crop image",
+      "description": "Crop your photos freely or to a fixed aspect ratio (1:1, 4:3, 16:9, 9:16…), pixel-exact and without uploading them anywhere.",
+      "action": "Crop image",
+      "about": "Crop image lets you pick the part of the photo you want to keep: drag the box and its corners, or type the exact position and size in pixels. You can lock an aspect ratio (square 1:1 for profile pictures, 4:5 for Instagram, 16:9 for covers and videos, 9:16 for stories, the original ratio…) or crop freely. It also works with the keyboard alone. It accepts JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF and HEIC, and you can change the format when saving. Everything runs in your browser.",
+      "faq": {
+        "q1": "Does cropping lose quality?",
+        "a1": "The pixels in the chosen area are copied as they are, with no scaling. PNG, BMP, TIFF and GIF lose nothing; JPG, WEBP and AVIF are saved again at high quality (92).",
+        "q2": "How do I crop with the keyboard only?",
+        "a2": "Tab to the crop box: the arrow keys move it and Shift + arrows resize it (1% of the image per press). For exact values, type X, Y, width and height in pixels and press Enter.",
+        "q3": "Can I crop several photos at once?",
+        "a3": "No: the crop is set on each photo, so it's one at a time. To bring many photos to the same size, use “Resize image” with a social media size and the crop-edges option.",
+        "q4": "Why is the preview smaller than my photo?",
+        "a4": "A reduced copy is shown so editing stays fast, but the crop is applied to the full original image: the pixel values are those of the real photo."
+      }
     }
   },
   "ToolUi": {
@@ -1300,6 +1316,20 @@
     "removedFound": "{name}: removed {found}.",
     "removedBytes": "{name}: removed {size} of metadata (no location or camera data).",
     "nothingFound": "{name}: had no metadata to remove.",
-    "heicReencoded": "Saved as JPG."
+    "heicReencoded": "Saved as JPG.",
+    "cropAspect": "Aspect ratio",
+    "aspectFree": "Free",
+    "aspectOriginal": "Original",
+    "cropLoading": "Preparing the preview…",
+    "cropArea": "Crop area: {width} × {height} px from ({x}, {y})",
+    "cropKeyboardHint": "Drag the box or its corners. With the keyboard: arrows to move, Shift + arrows to resize.",
+    "crop": {
+      "x": "X (px)",
+      "y": "Y (px)",
+      "width": "Width (px)",
+      "height": "Height (px)"
+    },
+    "cropSize": "Crop of {width} × {height} px (the image is {imageWidth} × {imageHeight} px)",
+    "croppedTo": "{name}: cropped to {size} px"
   }
 }

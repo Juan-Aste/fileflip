@@ -673,6 +673,22 @@
         "q4": "¿Cómo compruebo que se borró la ubicación?",
         "a4": "Vuelve a pasar la foto limpia por esta herramienta: debería decir que no encontró metadatos. También puedes mirar las propiedades del archivo en tu computadora."
       }
+    },
+    "crop-image": {
+      "title": "Recortar imagen",
+      "description": "Recorta tus fotos a mano o con proporciones fijas (1:1, 4:3, 16:9, 9:16…), con precisión de píxel y sin subirlas a ningún servidor.",
+      "action": "Recortar imagen",
+      "about": "Recortar imagen te deja elegir la parte de la foto que quieres conservar: arrastra el recuadro y sus esquinas, o escribe la posición y el tamaño exactos en píxeles. Puedes fijar una proporción (cuadrada 1:1 para perfiles, 4:5 para Instagram, 16:9 para portadas y videos, 9:16 para historias, la proporción original…) o recortar libremente. También funciona solo con el teclado. Acepta JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF y HEIC, y puedes cambiar el formato al guardar. Todo se procesa en tu navegador.",
+      "faq": {
+        "q1": "¿Se pierde calidad al recortar?",
+        "a1": "Los píxeles de la zona elegida se copian tal cual, sin achicar ni agrandar. PNG, BMP, TIFF y GIF no pierden nada; JPG, WEBP y AVIF se guardan de nuevo con calidad alta (92).",
+        "q2": "¿Cómo recorto usando solo el teclado?",
+        "a2": "Pasa con Tab al recuadro de recorte: las flechas lo mueven y Mayús + flechas cambian su tamaño (un 1 % de la imagen por pulsación). Para valores exactos, escribe X, Y, ancho y alto en píxeles y presiona Enter.",
+        "q3": "¿Puedo recortar varias fotos a la vez?",
+        "a3": "No: el recorte se ajusta sobre cada foto, así que se hace de a una. Para llevar muchas fotos a la misma medida, usa «Redimensionar imagen» con una medida de redes sociales y la opción de recortar los bordes.",
+        "q4": "¿Por qué la vista previa se ve más chica que mi foto?",
+        "a4": "Para editar rápido se muestra una copia reducida, pero el recorte se aplica sobre la imagen original completa: los valores en píxeles son los de la foto real."
+      }
     }
   },
   "ToolUi": {
@@ -1300,6 +1316,20 @@
     "removedFound": "{name}: se quitó {found}.",
     "removedBytes": "{name}: se quitaron {size} de metadatos (no tenía ubicación ni datos de cámara).",
     "nothingFound": "{name}: no tenía metadatos que quitar.",
-    "heicReencoded": "Se guardó como JPG."
+    "heicReencoded": "Se guardó como JPG.",
+    "cropAspect": "Proporción",
+    "aspectFree": "Libre",
+    "aspectOriginal": "Original",
+    "cropLoading": "Preparando la vista previa…",
+    "cropArea": "Área de recorte: {width} × {height} px desde ({x}, {y})",
+    "cropKeyboardHint": "Arrastra el recuadro o sus esquinas. Con el teclado: flechas para mover, Mayús + flechas para cambiar el tamaño.",
+    "crop": {
+      "x": "X (px)",
+      "y": "Y (px)",
+      "width": "Ancho (px)",
+      "height": "Alto (px)"
+    },
+    "cropSize": "Recorte de {width} × {height} px (la imagen mide {imageWidth} × {imageHeight} px)",
+    "croppedTo": "{name}: recortada a {size} px"
   }
 }
