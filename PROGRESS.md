@@ -1933,3 +1933,9 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (787), build, `check:static` (827 páginas) y `npm run test:e2e` (238/238) pasan; además `pdf-tools`, `sign-pdf` y `converter` dos veces seguidas (278/278).
 
 **Siguiente**: 3C.25b (Markdown → PDF con Gotenberg).
+
+## 2026-10-21 22:25 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas: 3C.22 (proteger / quitar contraseña de PDF), 3C.23 (extraer imágenes de PDF), medición de Lighthouse después de 3C.23 (con una regresión de bundle corregida), 3C.24 (conversor de fuentes) y 3C.25a (Markdown ↔ HTML). 6 herramientas nuevas y la categoría Fuentes publicada. También se corrigió un error de pdf.js que podía marcar como "dañado" un PDF válido en lotes. `npm run test:e2e` 238/238 al cierre.
+
+**Siguiente**: 3C.25b (Markdown → PDF con Gotenberg).
