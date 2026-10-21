@@ -1,5 +1,6 @@
 import {
   Binary,
+  ListOrdered,
   FileMinus,
   FileOutput,
   Captions,
@@ -82,6 +83,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "svg-converter": PenTool,
   "delete-pdf-pages": FileMinus,
   "extract-pdf-pages": FileOutput,
+  "pdf-page-numbers": ListOrdered,
+  "pdf-watermark": Stamp,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

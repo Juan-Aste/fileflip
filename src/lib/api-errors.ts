@@ -21,6 +21,8 @@ export const apiErrorCodes = [
   "qrNotFound",
   // Client-side only: an image that can't reach the asked file size without becoming tiny.
   "targetTooSmall",
+  // Client-side only: page ranges beyond the last page of one of the PDFs.
+  "pagesOutOfRange",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -48,6 +50,7 @@ const status: Record<ApiErrorCode, number> = {
   qrTooLong: 422,
   qrNotFound: 422,
   targetTooSmall: 422,
+  pagesOutOfRange: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

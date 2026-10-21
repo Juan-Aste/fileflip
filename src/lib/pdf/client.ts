@@ -8,6 +8,7 @@ import { isDamagedImage } from "@/lib/image/integrity";
 import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type { CompressionLevel, CompressResult } from "./compress";
 import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
+import type { PageNumberOptions, WatermarkOptions } from "./stamp";
 
 // One PDF worker at a time (documents can take hundreds of MB). A job that
 // hangs inside pdf-lib is stopped by the time limit, which restarts the worker.
@@ -98,4 +99,16 @@ export async function compressPdfFile(file: Blob, level: CompressionLevel, onPro
   const bytes = await bytesOf(file);
   const result = await call<CompressResult>("compress", { bytes, level }, { transfer: [bytes.buffer], onProgress });
   return { blob: pdfBlob(result.bytes), imagesRecompressed: result.imagesRecompressed };
+}
+
+/** Page numbers drawn on every page (or from page 2). */
+export async function numberPdfPages(file: Blob, options: PageNumberOptions, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("pageNumbers", { bytes, options }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** A text watermark on every page (or the chosen ones). */
+export async function watermarkPdf(file: Blob, options: WatermarkOptions, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("watermark", { bytes, options }, { transfer: [bytes.buffer], ...job }));
 }

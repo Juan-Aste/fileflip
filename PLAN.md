@@ -238,7 +238,7 @@ Subtítulos
 
 PDF
 - [x] 3C.18 Eliminar páginas y extraer páginas (con miniaturas)
-- [ ] 3C.19 Numerar páginas y marca de agua de texto (posición, tamaño, opacidad; páginas rotadas)
+- [x] 3C.19 Numerar páginas y marca de agua de texto (posición, tamaño, opacidad; páginas rotadas)
 - [ ] 3C.20 PDF → texto (pdf.js; aviso si no tiene texto: sugerir OCR) y recortar márgenes (CropBox)
 - [ ] 3C.21 Firmar PDF dibujando la firma o subiendo una foto (aclarando que no es firma digital certificada)
 - [ ] 3C.22 Proteger con contraseña y quitar la contraseña conociéndola (qpdf-wasm, ISC/Apache-2.0)

@@ -13,6 +13,7 @@ import {
   test,
   toolAlert,
   unzipEntries,
+  waitForResult,
 } from "./support";
 
 const choose = (page: Page, label: string) => page.locator("label").filter({ hasText: label }).first().click();
@@ -152,6 +153,90 @@ test.describe("tool: extract-pdf-pages", () => {
   });
 });
 
+/** Text of each page, read with pdf.js. */
+async function pageTexts(buf: Buffer): Promise<string[]> {
+  const { getDocument } = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  const doc = await getDocument({ data: new Uint8Array(buf), verbosity: 0 }).promise;
+  const texts: string[] = [];
+  for (let i = 1; i <= doc.numPages; i++) {
+    const items = (await (await doc.getPage(i)).getTextContent()).items as { str?: string }[];
+    texts.push(items.map((t) => t.str ?? "").join(" "));
+  }
+  return texts;
+}
+
+test.describe("tool: pdf-page-numbers", () => {
+  test("'Página N de M' at the top right of every page", async ({ page }) => {
+    await openWithFiles(page, "/es/numerar-paginas-pdf", ["document.pdf"]);
+    await choose(page, "Página 1 de 10");
+    await choose(page, "Arriba a la derecha");
+    const out = fileOf(await runTool(page, "Numerar páginas"));
+    expect(out.name).toBe("document-numbered.pdf");
+    const texts = await pageTexts(out.buf);
+    texts.forEach((text, i) => expect(text).toContain(`Página ${i + 1} de 3`));
+    expect((await inspectPdf(out.buf)).labels).toEqual(["1 of 3", "2 of 3", "3 of 3"]);
+  });
+
+  test("cover without a number, a batch of two PDFs", async ({ page }) => {
+    await openWithFiles(page, "/en/add-page-numbers-to-pdf", ["document.pdf", "document-1page.pdf"]);
+    await choose(page, "No number on the first page (cover)");
+    await page.getByRole("button", { name: "Add page numbers", exact: true }).click();
+    const links = page.locator("main a[download]");
+    await expect(links).toHaveCount(2);
+    const three = fileOf(await waitForResult(page, links.nth(0), toolAlert(page)));
+    const texts = await pageTexts(three.buf);
+    expect(texts.map((t) => t.match(/(?:^|\s)(\d)$/)?.[1] ?? null)).toEqual([null, "1", "2"]);
+    const one = fileOf(await waitForResult(page, links.nth(1), toolAlert(page)));
+    expect((await inspectPdf(one.buf)).pages).toBe(1);
+  });
+
+  test("Chinese numbering is drawn as images with the device's fonts", async ({ page }) => {
+    await openWithFiles(page, "/zh/add-page-numbers-to-pdf", ["document.pdf"]);
+    await choose(page, "第 1 页，共 10 页");
+    const pdf = await pdfOf(page, "添加页码");
+    expect(pdf.pages).toBe(3);
+    // One PNG per page, each with its transparency mask (also an image).
+    expect(pdf.images).toBe(6);
+  });
+});
+
+test.describe("tool: pdf-watermark", () => {
+  test("diagonal CONFIDENCIAL on every page", async ({ page }) => {
+    await openWithFiles(page, "/es/marca-de-agua-pdf", ["document.pdf"]);
+    await expect(page.getByRole("textbox", { name: "Texto de la marca de agua" })).toHaveValue("CONFIDENCIAL");
+    const out = fileOf(await runTool(page, "Agregar marca de agua"));
+    expect(out.name).toBe("document-watermark.pdf");
+    for (const text of await pageTexts(out.buf)) expect(text).toContain("CONFIDENCIAL");
+  });
+
+  test("only page 2, tiled; pages beyond the end fail clearly", async ({ page }) => {
+    await openWithFiles(page, "/es/marca-de-agua-pdf", ["document.pdf"]);
+    await page.getByRole("textbox", { name: "Texto de la marca de agua" }).fill("BORRADOR");
+    await choose(page, "Mosaico (repetida)");
+    await choose(page, "Solo algunas");
+    await pagesBox(page).fill("2");
+    const texts = await pageTexts(fileOf(await runTool(page, "Agregar marca de agua")).buf);
+    const counts = texts.map((t) => (t.match(/BORRADOR/g) ?? []).length);
+    expect(counts[0]).toBe(0);
+    expect(counts[1]).toBeGreaterThan(10);
+    expect(counts[2]).toBe(0);
+
+    await openWithFiles(page, "/es/marca-de-agua-pdf", ["document.pdf"]);
+    await choose(page, "Solo algunas");
+    await pagesBox(page).fill("9");
+    const result = await runTool(page, "Agregar marca de agua");
+    expect(result.error).toContain("Las páginas elegidas no existen");
+  });
+
+  test("a Chinese watermark is embedded as an image", async ({ page }) => {
+    await openWithFiles(page, "/zh/watermark-pdf", ["document-1page.pdf"]);
+    await expect(page.getByRole("textbox", { name: "水印文字" })).toHaveValue("机密");
+    const pdf = await pdfOf(page, "添加水印");
+    // One PNG and its transparency mask.
+    expect(pdf.images).toBe(2);
+  });
+});
+
 test.describe("tool: images-to-pdf", () => {
   test("JPG + PNG + HEIC on landscape A4 (default)", async ({ page }) => {
     await openWithFiles(page, "/es/imagenes-a-pdf", ["image.jpg", "image.png", "photo.heic"]);
@@ -196,6 +281,8 @@ test.describe("corrupt inputs end in a visible error", () => {
     ["/es/ordenar-pdf", ["corrupt/garbage.pdf"], "Guardar PDF"],
     ["/es/eliminar-paginas-pdf", ["corrupt/garbage.pdf"], "Eliminar páginas"],
     ["/es/extraer-paginas-pdf", ["corrupt/truncated.pdf"], "Extraer páginas"],
+    ["/es/numerar-paginas-pdf", ["corrupt/garbage.pdf"], "Numerar páginas"],
+    ["/es/marca-de-agua-pdf", ["corrupt/truncated.pdf"], "Agregar marca de agua"],
     ["/es/comprimir-pdf", ["corrupt/truncated.pdf"], "Comprimir PDF"],
     ["/es/imagenes-a-pdf", ["image.png", "corrupt/truncated.png"], "Crear PDF"],
   ];

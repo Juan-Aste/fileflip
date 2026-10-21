@@ -201,7 +201,8 @@
     "signInRequired": "Connectez-vous pour continuer.",
     "paymentsUnavailable": "Les paiements ne sont pas encore disponibles dans votre pays. Revenez bientôt.",
     "jobCancelled": "Le traitement a été annulé.",
-    "jobTimedOut": "Le traitement a pris trop de temps et a été arrêté. Essayez avec un fichier plus petit."
+    "jobTimedOut": "Le traitement a pris trop de temps et a été arrêté. Essayez avec un fichier plus petit.",
+    "pagesOutOfRange": "Les pages choisies n’existent pas dans ce PDF."
   },
   "Tools": {
     "merge-pdf": {
@@ -816,6 +817,38 @@
         "a3": "Oui. Choisissez « Un PDF par page (ZIP) » pour télécharger un ZIP contenant un PDF par page sélectionnée, avec le numéro de page dans le nom.",
         "q4": "Le PDF d’origine est-il modifié ?",
         "a4": "Non. Un nouveau fichier est créé dans votre navigateur et l’original reste intact sur votre appareil."
+      }
+    },
+    "pdf-page-numbers": {
+      "title": "Numéroter les pages d’un PDF",
+      "description": "Ajoutez des numéros de page à vos PDF à la position et au format de votre choix, pages pivotées comprises.",
+      "action": "Numéroter les pages",
+      "about": "Numéroter les pages d’un PDF ajoute un numéro sur chaque feuille d’un mémoire, d’un contrat ou d’un dossier. Choisissez un coin ou le centre, en haut ou en bas, le format (1, « 1 / 10 » ou « Page 1 sur 10 »), la taille et le premier numéro ; la couverture peut rester sans numéro. Les numéros sont écrits en texte réel et restent droits même si une page est enregistrée de côté. Numérotez plusieurs PDF à la fois.",
+      "faq": {
+        "q1": "Puis-je laisser la couverture sans numéro ?",
+        "a1": "Oui. Cochez « Pas de numéro sur la première page » : la numérotation commence à la deuxième feuille avec le numéro choisi (par exemple 1).",
+        "q2": "Et les pages en paysage ou pivotées ?",
+        "a2": "Le numéro est placé selon l’affichage de la page à l’ouverture : en bas au centre reste en bas au centre sur une page paysage ou un scan enregistré de côté.",
+        "q3": "Peut-on commencer à un autre numéro ?",
+        "a3": "Oui. Tapez le premier numéro, par exemple 15 si le PDF fait suite à un autre document. Le total de « Page N sur M » s’ajuste tout seul.",
+        "q4": "Mes PDF sont-ils envoyés sur un serveur ?",
+        "a4": "Non. Les numéros sont ajoutés dans votre navigateur et vos fichiers ne quittent pas votre appareil."
+      }
+    },
+    "pdf-watermark": {
+      "title": "Ajouter un filigrane à un PDF",
+      "description": "Apposez un texte comme CONFIDENTIEL ou BROUILLON sur vos PDF, en diagonale, à l’horizontale ou en mosaïque, avec l’opacité voulue.",
+      "action": "Ajouter le filigrane",
+      "about": "Ajouter un filigrane à un PDF appose un texte sur les pages pour signaler une copie, un brouillon ou un document confidentiel, ou pour identifier son destinataire. Choisissez le texte, la disposition (une grande diagonale, une ligne horizontale au centre ou une mosaïque répétée qui couvre toute la feuille), la taille, la couleur et l’opacité, et s’il va sur toutes les pages ou seulement certaines. Les accents fonctionnent, tout comme le chinois et les emojis.",
+      "faq": {
+        "q1": "Le filigrane cache-t-il le contenu ?",
+        "a1": "Il est dessiné par-dessus avec l’opacité choisie : à 20–30 %, le texte du document reste bien lisible.",
+        "q2": "Peut-on l’enlever ensuite ?",
+        "a2": "Il est inscrit dans les pages comme contenu, il ne s’enlève donc pas d’un clic. Quelqu’un muni d’un éditeur de PDF pourrait toutefois le retirer : il ne remplace ni une signature ni une protection par mot de passe.",
+        "q3": "Puis-je marquer seulement certaines pages ?",
+        "a3": "Oui. Choisissez « Seulement certaines » et tapez des pages ou des plages, par exemple 1, 3-5. Avec plusieurs PDF, les pages s’appliquent à chacun.",
+        "q4": "Mon PDF est-il envoyé sur internet ?",
+        "a4": "Non. Le filigrane est ajouté dans votre navigateur et le fichier ne quitte pas votre appareil."
       }
     }
   },
@@ -1544,5 +1577,40 @@
     "fpsFrom": "FPS du sous-titre",
     "fpsTo": "FPS de la vidéo",
     "fpsValue": "{fps} FPS"
+  },
+  "PdfTools": {
+    "position": "Position",
+    "numberStyle": "Format du numéro",
+    "pageOf": "Page {n} sur {total}",
+    "textSize": "Taille",
+    "sizes": {
+      "small": "Petite",
+      "medium": "Moyenne",
+      "large": "Grande"
+    },
+    "positions": {
+      "bottom-center": "En bas au centre",
+      "bottom-right": "En bas à droite",
+      "bottom-left": "En bas à gauche",
+      "top-center": "En haut au centre",
+      "top-right": "En haut à droite",
+      "top-left": "En haut à gauche"
+    },
+    "startAt": "Commencer à",
+    "skipFirst": "Pas de numéro sur la première page (couverture)",
+    "watermarkText": "Texte du filigrane",
+    "defaultWatermark": "CONFIDENTIEL",
+    "layout": "Disposition",
+    "layouts": {
+      "diagonal": "Diagonale",
+      "horizontal": "Horizontale",
+      "tiled": "Mosaïque (répétée)"
+    },
+    "color": "Couleur",
+    "opacity": "Opacité : {value} %",
+    "pagesScope": "Pages",
+    "allPages": "Toutes",
+    "somePages": "Seulement certaines",
+    "rangesSyntax": "Tapez des pages ou des plages séparées par des virgules, par exemple 1-3, 5."
   }
 }

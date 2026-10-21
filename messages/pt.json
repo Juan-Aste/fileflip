@@ -201,7 +201,8 @@
     "signInRequired": "Entre na sua conta para continuar.",
     "paymentsUnavailable": "Os pagamentos ainda não estão disponíveis no seu país. Volte em breve.",
     "jobCancelled": "O processo foi cancelado.",
-    "jobTimedOut": "O processo demorou demais e foi interrompido. Tente um arquivo menor."
+    "jobTimedOut": "O processo demorou demais e foi interrompido. Tente um arquivo menor.",
+    "pagesOutOfRange": "As páginas escolhidas não existem neste PDF."
   },
   "Tools": {
     "merge-pdf": {
@@ -816,6 +817,38 @@
         "a3": "Sim. Escolha «Um PDF por página (ZIP)» e você baixa um ZIP com um PDF para cada página selecionada, com o número da página no nome.",
         "q4": "O PDF original muda?",
         "a4": "Não. Um arquivo novo é criado no seu navegador e o original continua igual no seu dispositivo."
+      }
+    },
+    "pdf-page-numbers": {
+      "title": "Numerar páginas de um PDF",
+      "description": "Adicione números de página aos seus PDF na posição e no formato que escolher, também em páginas giradas.",
+      "action": "Numerar páginas",
+      "about": "Numerar páginas de um PDF coloca o número em cada folha de um TCC, um contrato ou um processo. Escolha o canto ou o centro, em cima ou embaixo, o formato (1, «1 / 10» ou «Página 1 de 10»), o tamanho e o número inicial; dá para deixar a capa sem número. Os números são escritos como texto real e ficam na posição certa mesmo quando a página está salva de lado. Numere vários PDF de uma vez.",
+      "faq": {
+        "q1": "Posso deixar a capa sem número?",
+        "a1": "Sim. Marque «Sem número na primeira página»: a numeração começa na segunda folha com o número que você escolher (por exemplo 1).",
+        "q2": "E as páginas na horizontal ou giradas?",
+        "a2": "O número é colocado conforme a página aparece ao ser aberta: embaixo no centro continua embaixo no centro numa página paisagem ou digitalizada de lado.",
+        "q3": "Dá para começar em outro número?",
+        "a3": "Sim. Digite o número inicial, por exemplo 15 se o PDF continua outro documento. O total de «Página N de M» se ajusta sozinho.",
+        "q4": "Meus PDF são enviados para um servidor?",
+        "a4": "Não. Os números são adicionados no seu navegador e seus arquivos não saem do seu dispositivo."
+      }
+    },
+    "pdf-watermark": {
+      "title": "Adicionar marca d’água a um PDF",
+      "description": "Coloque um texto como CONFIDENCIAL ou RASCUNHO nos seus PDF, na diagonal, na horizontal ou em mosaico, com a opacidade que quiser.",
+      "action": "Adicionar marca d’água",
+      "about": "Adicionar marca d’água a um PDF carimba um texto nas páginas para indicar que é uma cópia, um rascunho ou um documento confidencial, ou para identificar para quem você enviou. Escolha o texto, a disposição (uma diagonal grande, uma linha horizontal no centro ou um mosaico repetido que cobre a folha inteira), o tamanho, a cor e a opacidade, e se vai em todas as páginas ou só em algumas. Funciona com acentos, cedilha e também com chinês ou emojis.",
+      "faq": {
+        "q1": "A marca d’água cobre o conteúdo?",
+        "a1": "Ela é desenhada por cima com a opacidade escolhida: com 20–30 % o texto do documento continua legível.",
+        "q2": "Dá para tirar depois?",
+        "a2": "Ela fica escrita nas páginas como conteúdo, então não sai com um clique. Mesmo assim, alguém com um editor de PDF poderia removê-la: não substitui uma assinatura nem uma proteção com senha.",
+        "q3": "Posso marcar só algumas páginas?",
+        "a3": "Sim. Escolha «Só algumas» e digite as páginas ou intervalos, por exemplo 1, 3-5. Com vários PDF, as páginas valem para cada um.",
+        "q4": "Meu PDF é enviado para a internet?",
+        "a4": "Não. A marca d’água é adicionada no seu navegador e o arquivo não sai do seu dispositivo."
       }
     }
   },
@@ -1544,5 +1577,40 @@
     "fpsFrom": "FPS da legenda",
     "fpsTo": "FPS do vídeo",
     "fpsValue": "{fps} FPS"
+  },
+  "PdfTools": {
+    "position": "Posição",
+    "numberStyle": "Formato do número",
+    "pageOf": "Página {n} de {total}",
+    "textSize": "Tamanho",
+    "sizes": {
+      "small": "Pequeno",
+      "medium": "Médio",
+      "large": "Grande"
+    },
+    "positions": {
+      "bottom-center": "Embaixo no centro",
+      "bottom-right": "Embaixo à direita",
+      "bottom-left": "Embaixo à esquerda",
+      "top-center": "Em cima no centro",
+      "top-right": "Em cima à direita",
+      "top-left": "Em cima à esquerda"
+    },
+    "startAt": "Começar a contar em",
+    "skipFirst": "Sem número na primeira página (capa)",
+    "watermarkText": "Texto da marca d’água",
+    "defaultWatermark": "CONFIDENCIAL",
+    "layout": "Disposição",
+    "layouts": {
+      "diagonal": "Diagonal",
+      "horizontal": "Horizontal",
+      "tiled": "Mosaico (repetida)"
+    },
+    "color": "Cor",
+    "opacity": "Opacidade: {value} %",
+    "pagesScope": "Páginas",
+    "allPages": "Todas",
+    "somePages": "Só algumas",
+    "rangesSyntax": "Digite páginas ou intervalos separados por vírgulas, por exemplo 1-3, 5."
   }
 }

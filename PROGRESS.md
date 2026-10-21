@@ -1786,3 +1786,25 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (723), build y `check:static` (767 páginas) pasan. Captura revisada: `/es/eliminar-paginas-pdf` 360 px oscuro con la página 2 marcada.
 
 **Siguiente**: 3C.19 (numerar páginas y marca de agua de texto en PDF).
+
+## 2026-10-21 19:30 UTC — Fase 3, tarea 3C.19 (numerar páginas y marca de agua en PDF)
+
+**Qué se hizo**
+- **Numerar páginas** (`/es/numerar-paginas-pdf`, `/en/add-page-numbers-to-pdf`, `/pt/numerar-paginas-pdf`, `/fr/numeroter-pages-pdf`): 6 posiciones (arriba/abajo × izquierda/centro/derecha, a ~1 cm del borde), formato `1`, `1 / 10` o "Página 1 de 10" traducido (la plantilla sale de `PdfTools.pageOf` con `{n}`/`{total}` como valores), 3 tamaños (9/11/14 pt), número inicial y "sin número en la portada". Lotes con ZIP.
+- **Marca de agua en PDF** (`/es/marca-de-agua-pdf`, `/en/watermark-pdf`, `/pt/marca-dagua-pdf`, `/fr/filigrane-pdf`): texto (hasta 200 caracteres, por defecto "CONFIDENCIAL" traducido), diagonal (sigue la diagonal real de cada página), horizontal o mosaico a 30° en filas desfasadas (máximo 400 copias por página), 3 tamaños, color, opacidad 10–100 % (graphics state `/ca`), todas las páginas o rangos (se validan contra cada PDF del lote; fuera de rango → error nuevo `pagesOutOfRange` traducido).
+- Motor `src/lib/pdf/stamp.ts` (pdf-lib, en el worker de PDF): **posiciones visuales** — se calcula el tamaño visible desde el CropBox y el `/Rotate` de cada página y se convierte cada punto al espacio de la página, así el número queda abajo al centro y derecho también en páginas giradas 90/180/270°.
+- Texto: Helvetica (texto real seleccionable) cuando se puede codificar en WinAnsi (español, portugués, francés); si no (chino, emojis), el worker lo dibuja con las fuentes del dispositivo en un `OffscreenCanvas` a 4× y lo inserta como PNG (cada etiqueta distinta se inserta una sola vez). Un PDF que pdf-lib no puede leer → `fileDamaged`.
+- `RangesInput` acepta un aviso propio (`invalidHint`) cuando no se conoce la cantidad de páginas (lotes).
+- Textos (introducción + 4 preguntas) e interfaz (`PdfTools`) en los 5 idiomas.
+
+**Limitaciones**
+- El texto chino queda como imagen (no seleccionable). El color de los números de página es gris oscuro fijo (en páginas negras no se ve).
+- La marca de agua es contenido de la página: un editor de PDF podría quitarla (lo dice la FAQ).
+
+**Verificación**
+- 9 tests unitarios con pdf.js como lector independiente: posición y orientación visual de los números en páginas de 0°, 90° y 270° (abajo al centro y arriba a la derecha, siempre derechos), portada sin número + inicio en 5 con acentos, plantilla sin `{n}` y PDF dañado, texto chino con el renderizador (3 imágenes, una por etiqueta), marca diagonal en páginas giradas, solo la página 2 con `/ca 0.3` solo en esa página, mosaico acotado a 30°, texto vacío.
+- `pdf-tools.spec.ts`: 6 casos nuevos + 2 corruptos (34/34): "Página N de 3" arriba a la derecha, lote de 2 PDF con portada sin número, numeración china como imágenes, CONFIDENCIAL en todas las páginas, mosaico solo en la página 2 y página 9 → error claro, marca de agua china como imagen.
+- Lint, typecheck, tests (734), build y `check:static` pasan. Revisados: la página 1 de la salida en mosaico (pdftoppm) y la página `/es/marca-de-agua-pdf` a 1280 px.
+- Nota para 3D: el pie de página lista todas las herramientas PDF/datos/etc. y ya es muy largo; hay que resumirlo en 3D.1.
+
+**Siguiente**: 3C.20 (PDF → texto y recortar márgenes).

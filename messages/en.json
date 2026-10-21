@@ -201,7 +201,8 @@
     "signInRequired": "Please sign in to continue.",
     "paymentsUnavailable": "Payments aren't available in your country yet. Check back soon.",
     "jobCancelled": "The task was cancelled.",
-    "jobTimedOut": "The task took too long and was stopped. Try a smaller file."
+    "jobTimedOut": "The task took too long and was stopped. Try a smaller file.",
+    "pagesOutOfRange": "The chosen pages don’t exist in this PDF."
   },
   "Tools": {
     "merge-pdf": {
@@ -816,6 +817,38 @@
         "a3": "Yes. Choose \"One PDF per page (ZIP)\" to download a ZIP with one PDF for each selected page, named with its page number.",
         "q4": "Is the original PDF changed?",
         "a4": "No. A new file is created in your browser and the original stays the same on your device."
+      }
+    },
+    "pdf-page-numbers": {
+      "title": "Add page numbers to a PDF",
+      "description": "Add page numbers to your PDFs in the position and format you choose, rotated pages included.",
+      "action": "Add page numbers",
+      "about": "Add page numbers puts a number on every sheet of a thesis, contract or case file. Choose a corner or the center, top or bottom, the format (1, \"1 / 10\" or \"Page 1 of 10\"), the size and the first number; you can leave the cover unnumbered. Numbers are written as real text and stay upright even when a page is stored sideways. Number several PDFs at once.",
+      "faq": {
+        "q1": "Can I leave the cover without a number?",
+        "a1": "Yes. Tick \"No number on the first page\": numbering starts on the second sheet with the number you choose (for example 1).",
+        "q2": "What about landscape or rotated pages?",
+        "a2": "The number is placed according to how the page looks when opened: bottom center is bottom center on a landscape page or a scan stored sideways too.",
+        "q3": "Can I start at another number?",
+        "a3": "Yes. Type the first number, for example 15 if the PDF continues another document. The total in \"Page N of M\" adjusts by itself.",
+        "q4": "Are my PDFs uploaded?",
+        "a4": "No. Numbers are added in your browser and your files never leave your device."
+      }
+    },
+    "pdf-watermark": {
+      "title": "Add a watermark to a PDF",
+      "description": "Stamp text such as CONFIDENTIAL or DRAFT on your PDFs, diagonally, horizontally or tiled, with the opacity you want.",
+      "action": "Add watermark",
+      "about": "Add a watermark to a PDF stamps text on the pages to mark a copy, a draft or a confidential document, or to identify who you sent it to. Choose the text, the layout (one large diagonal, a horizontal line across the center or a repeated pattern covering the whole sheet), the size, color and opacity, and whether it goes on every page or only some. Accented letters work, and so do Chinese characters and emoji.",
+      "faq": {
+        "q1": "Does the watermark hide the content?",
+        "a1": "It is drawn on top with the opacity you choose: at 20–30% the document's text stays easy to read.",
+        "q2": "Can it be removed later?",
+        "a2": "It is written into the pages as content, so it can't be removed with one click. Still, someone with a PDF editor could take it out: it doesn't replace a signature or password protection.",
+        "q3": "Can I mark only some pages?",
+        "a3": "Yes. Choose \"Only some\" and type pages or ranges, for example 1, 3-5. With several PDFs, the pages apply to each one.",
+        "q4": "Is my PDF uploaded?",
+        "a4": "No. The watermark is added in your browser and the file never leaves your device."
       }
     }
   },
@@ -1544,5 +1577,40 @@
     "fpsFrom": "Subtitle FPS",
     "fpsTo": "Video FPS",
     "fpsValue": "{fps} FPS"
+  },
+  "PdfTools": {
+    "position": "Position",
+    "numberStyle": "Number format",
+    "pageOf": "Page {n} of {total}",
+    "textSize": "Size",
+    "sizes": {
+      "small": "Small",
+      "medium": "Medium",
+      "large": "Large"
+    },
+    "positions": {
+      "bottom-center": "Bottom center",
+      "bottom-right": "Bottom right",
+      "bottom-left": "Bottom left",
+      "top-center": "Top center",
+      "top-right": "Top right",
+      "top-left": "Top left"
+    },
+    "startAt": "Start counting at",
+    "skipFirst": "No number on the first page (cover)",
+    "watermarkText": "Watermark text",
+    "defaultWatermark": "CONFIDENTIAL",
+    "layout": "Layout",
+    "layouts": {
+      "diagonal": "Diagonal",
+      "horizontal": "Horizontal",
+      "tiled": "Tiled (repeated)"
+    },
+    "color": "Color",
+    "opacity": "Opacity: {value}%",
+    "pagesScope": "Pages",
+    "allPages": "All",
+    "somePages": "Only some",
+    "rangesSyntax": "Type pages or ranges separated by commas, for example 1-3, 5."
   }
 }
