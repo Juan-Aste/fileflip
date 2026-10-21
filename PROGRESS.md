@@ -1625,3 +1625,22 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (643), build (sin avisos), `check:static` (702 páginas) y `npm run test:e2e` (176/176) pasan. Capturas revisadas: `/es/comprimir-imagen` 1280 claro con resultado y `/zh/compress-image` 360 oscuro en modo peso exacto.
 
 **Siguiente**: 3C.12 ("Redimensionar imagen").
+
+## 2026-10-21 09:15 UTC — Fase 3, tarea 3C.12 (redimensionar imagen)
+
+**Qué se hizo**
+- Herramienta **Redimensionar imagen** (`/es/redimensionar-imagen`, `/en/resize-image`, `/pt/redimensionar-imagem`, `/fr/redimensionner-image`): JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF y HEIC, en lotes, hasta 50 MB por archivo.
+  - **En píxeles**: ancho y/o alto; con "Mantener proporciones" no agranda salvo que se marque "Permitir agrandar"; sin proporciones estira al tamaño exacto.
+  - **En porcentaje** (1–400 %).
+  - **Redes sociales**: 10 medidas (`socialPresets` en `src/lib/image/resize-plan.ts`: Instagram cuadrada/vertical, historia 1080×1920, publicación y portada de Facebook, publicación y encabezado de X, miniatura de YouTube, banner de LinkedIn, foto de perfil) con **recortar los bordes** (centro) o **agregar bordes** (blancos en JPG/BMP, transparentes en PNG/WEBP/AVIF).
+  - Formato de salida: igual al original (HEIC → JPG, porque no hay codificador HEIC), JPG, PNG, WEBP o AVIF (calidad 82). Mensaje por archivo "foto.jpg: 1000 × 750 → 400 × 300 px".
+- Geometría pura en `planResize` (tamaño, rectángulo de origen y destino, bordes); el dibujo lo hace el handler `resize` del worker `image-tools.worker.ts` con `OffscreenCanvas` (`imageSmoothingQuality: "high"`).
+- **Límite de memoria**: el resultado se limita a ~36 MP (`MAX_OUTPUT_PIXELS`, ~144 MB de píxeles) manteniendo la forma, además del tope de 16 384 px por lado; la página lo explica en las preguntas frecuentes. GIF animado: solo el primer cuadro (dicho en la página).
+- Textos (introducción + 4 preguntas, nombres de las medidas) en los 5 idiomas. A 360 px el nombre largo de una medida cortaba las dimensiones dentro del `<select>`: las dimensiones se muestran debajo.
+
+**Verificación**
+- 7 tests unitarios de `planResize` (porcentaje y rango, un lado con proporción, agrandar solo si se pide, estirar, lados inválidos, tope de píxeles con la forma, recorte centrado, bordes centrados y agrandado al cuadro, presets únicos).
+- `image-tools.spec.ts`: 4 casos nuevos validados con sharp: 400 px de ancho → 400×300 y mensaje; 50 % en lote (JPG 500×375, TIFF sigue TIFF 80×60, HEIC → JPG a la mitad, PNG truncado falla solo); Instagram cuadrada 1080×1080 con el sol del paisaje dentro del recorte; historia con bordes en PNG (arriba transparente, centro opaco); estirar a 300×300 en WEBP con alfa.
+- Lint, typecheck, tests (651), build, `check:static` (707 páginas) y `npm run test:e2e` (180/180) pasan. Capturas revisadas: `/es/redimensionar-imagen` 360 oscuro (redes sociales) y `/fr/redimensionner-image` 1280 claro.
+
+**Siguiente**: 3C.13 (rotar/voltear y quitar metadatos EXIF/GPS).

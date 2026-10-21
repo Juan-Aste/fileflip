@@ -625,6 +625,22 @@
         "q4": "¿Se pierde calidad?",
         "a4": "En JPG, WEBP y AVIF sí, un poco: el nivel bajo casi no se nota y el fuerte prioriza el peso. El PNG en nivel bajo no pierde nada."
       }
+    },
+    "resize-image": {
+      "title": "Redimensionar imagen",
+      "description": "Cambia el tamaño de tus imágenes en píxeles, en porcentaje o a las medidas de cada red social.",
+      "action": "Redimensionar imágenes",
+      "about": "Redimensionar imagen cambia el ancho y el alto de tus fotos: escribe los píxeles que quieres (con o sin mantener las proporciones), un porcentaje, o elige una medida lista para redes sociales, como la publicación cuadrada de Instagram, una historia o la miniatura de YouTube. Si la proporción no coincide, puedes recortar los bordes o agregar bordes para no perder nada de la foto. Funciona con JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF y HEIC, en lotes, y puedes cambiar el formato al mismo tiempo. Todo se procesa en tu navegador.",
+      "faq": {
+        "q1": "¿Se agranda una imagen más chica que el tamaño pedido?",
+        "a1": "En el modo en píxeles con proporciones, no, salvo que marques «Permitir agrandar imágenes más chicas», porque agrandar no agrega detalle. Las medidas de redes sociales sí la agrandan para llenar el formato.",
+        "q2": "¿Qué pasa si la foto no tiene la proporción de la red social?",
+        "a2": "Con «Recortar los bordes» se conserva el centro de la foto y se recorta lo que sobra. Con «Agregar bordes» entra la foto completa y se completan los costados (blancos en JPG, transparentes en PNG, WEBP y AVIF).",
+        "q3": "¿Hay un tamaño máximo?",
+        "a3": "El resultado puede tener hasta unos 36 megapíxeles (por ejemplo, 6928 × 5196); si pides más, se reduce manteniendo la forma. Cada archivo puede pesar hasta 50 MB.",
+        "q4": "¿Funciona con GIF animados?",
+        "a4": "Se redimensiona solo el primer cuadro. Para GIF animados, la herramienta de video a GIF llegará más adelante."
+      }
     }
   },
   "ToolUi": {
@@ -1209,6 +1225,35 @@
     "formatSame": "Igual que el original",
     "pngToJpg": "En este modo los PNG se guardan como JPG (con fondo blanco si tienen transparencia).",
     "kept": "ya estaba optimizada, así que te devolvemos el original sin cambios.",
-    "resized": "Se redujo a {width} × {height} px para llegar al peso."
+    "resized": "Se redujo a {width} × {height} px para llegar al peso.",
+    "resizeMode": "¿Cómo quieres cambiar el tamaño?",
+    "byPixels": "En píxeles",
+    "byPercent": "En porcentaje",
+    "bySocial": "Redes sociales",
+    "width": "Ancho (px)",
+    "height": "Alto (px)",
+    "keepRatio": "Mantener proporciones",
+    "enlarge": "Permitir agrandar imágenes más chicas",
+    "stretchHint": "Sin mantener proporciones, la imagen se estira al ancho y alto exactos.",
+    "pixelsInvalid": "Escribe el ancho, el alto o ambos, en píxeles enteros.",
+    "percent": "Porcentaje (%)",
+    "percentInvalid": "Escribe un porcentaje entre 1 y 400.",
+    "preset": "Medida",
+    "fit": "Si la proporción no coincide",
+    "fitCrop": "Recortar los bordes",
+    "fitPad": "Agregar bordes",
+    "resizedTo": "{name}: {before} → {after} px",
+    "presets": {
+      "instagramSquare": "Instagram cuadrada",
+      "instagramPortrait": "Instagram vertical",
+      "story": "Historia (Instagram, TikTok, WhatsApp)",
+      "facebookPost": "Publicación de Facebook / enlace",
+      "facebookCover": "Portada de Facebook",
+      "xPost": "Publicación de X",
+      "xHeader": "Encabezado de X",
+      "youtubeThumbnail": "Miniatura de YouTube",
+      "linkedinBanner": "Banner de LinkedIn",
+      "profilePhoto": "Foto de perfil"
+    }
   }
 }

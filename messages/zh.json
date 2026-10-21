@@ -625,6 +625,22 @@
         "q4": "画质会下降吗？",
         "a4": "JPG、WEBP 和 AVIF 会略有下降：低等级几乎看不出来，强等级优先考虑体积。低等级下的 PNG 完全无损。"
       }
+    },
+    "resize-image": {
+      "title": "调整图片大小",
+      "description": "按像素、百分比或各社交平台的尺寸调整图片大小。",
+      "action": "调整图片大小",
+      "about": "调整图片大小可以改变照片的宽度和高度：输入想要的像素（可保持或不保持比例）、一个百分比，或选择现成的社交媒体尺寸，例如 Instagram 方形帖子、快拍或 YouTube 缩略图。比例不一致时，可以裁掉边缘，或添加边框以保留整张照片。支持 JPG、PNG、WEBP、AVIF、GIF、BMP、TIFF 和 HEIC，可批量处理，并可同时更改格式。所有处理都在浏览器中完成。",
+      "faq": {
+        "q1": "比目标尺寸小的图片会被放大吗？",
+        "a1": "在保持比例的像素模式下不会，除非勾选“允许放大较小的图片”，因为放大不会增加细节。社交媒体尺寸会放大图片以填满画面。",
+        "q2": "照片比例和社交平台不一致怎么办？",
+        "a2": "选择“裁掉边缘”会保留照片中央并裁掉多余部分。选择“添加边框”会完整放入照片并填充两侧（JPG 为白色，PNG、WEBP 和 AVIF 为透明）。",
+        "q3": "有最大尺寸限制吗？",
+        "a3": "结果最多约 3600 万像素（例如 6928 × 5196）；超出时会按原比例缩小。每个文件最大 50 MB。",
+        "q4": "支持 GIF 动图吗？",
+        "a4": "只会调整第一帧。用于动图的视频转 GIF 工具将在之后推出。"
+      }
     }
   },
   "ToolUi": {
@@ -1209,6 +1225,35 @@
     "formatSame": "与原图相同",
     "pngToJpg": "在此模式下，PNG 会保存为 JPG（如有透明部分则使用白色背景）。",
     "kept": "已经是优化过的图片，因此原样返回原文件。",
-    "resized": "已缩小到 {width} × {height} 像素以达到目标大小。"
+    "resized": "已缩小到 {width} × {height} 像素以达到目标大小。",
+    "resizeMode": "你想如何调整大小？",
+    "byPixels": "按像素",
+    "byPercent": "按百分比",
+    "bySocial": "社交媒体",
+    "width": "宽度（像素）",
+    "height": "高度（像素）",
+    "keepRatio": "保持比例",
+    "enlarge": "允许放大较小的图片",
+    "stretchHint": "不保持比例时，图片会被拉伸到指定的宽度和高度。",
+    "pixelsInvalid": "请输入宽度、高度或两者（整数像素）。",
+    "percent": "百分比（%）",
+    "percentInvalid": "请输入 1 到 400 之间的百分比。",
+    "preset": "尺寸",
+    "fit": "比例不一致时",
+    "fitCrop": "裁掉边缘",
+    "fitPad": "添加边框",
+    "resizedTo": "{name}：{before} → {after} 像素",
+    "presets": {
+      "instagramSquare": "Instagram 方形",
+      "instagramPortrait": "Instagram 竖版",
+      "story": "快拍（Instagram、TikTok、WhatsApp）",
+      "facebookPost": "Facebook 帖子 / 链接",
+      "facebookCover": "Facebook 封面",
+      "xPost": "X 帖子",
+      "xHeader": "X 页眉",
+      "youtubeThumbnail": "YouTube 缩略图",
+      "linkedinBanner": "LinkedIn 横幅",
+      "profilePhoto": "头像"
+    }
   }
 }

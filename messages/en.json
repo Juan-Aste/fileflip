@@ -625,6 +625,22 @@
         "q4": "Do I lose quality?",
         "a4": "With JPG, WEBP and AVIF, a little: the low level is barely noticeable and the strong level favors size. PNG at the low level loses nothing."
       }
+    },
+    "resize-image": {
+      "title": "Resize image",
+      "description": "Change the size of your images in pixels, by percentage or to each social network's dimensions.",
+      "action": "Resize images",
+      "about": "Resize image changes the width and height of your photos: type the pixels you want (keeping the proportions or not), a percentage, or pick a ready-made social media size such as an Instagram square post, a story or a YouTube thumbnail. When the proportions don't match, you can crop the edges or add borders so nothing of the photo is lost. It works with JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF and HEIC, in batches, and you can change the format at the same time. Everything is processed in your browser.",
+      "faq": {
+        "q1": "Is an image smaller than the requested size enlarged?",
+        "a1": "In pixel mode with proportions, no, unless you tick “Allow enlarging smaller images”, since enlarging adds no detail. Social media sizes do enlarge it to fill the format.",
+        "q2": "What if the photo doesn't have the social network's proportions?",
+        "a2": "“Crop the edges” keeps the center of the photo and crops what doesn't fit. “Add borders” fits the whole photo and fills the sides (white for JPG, transparent for PNG, WEBP and AVIF).",
+        "q3": "Is there a maximum size?",
+        "a3": "The result can have up to about 36 megapixels (for example 6928 × 5196); larger requests are scaled down keeping the shape. Each file can be up to 50 MB.",
+        "q4": "Does it work with animated GIFs?",
+        "a4": "Only the first frame is resized. A video-to-GIF tool for animated GIFs will come later."
+      }
     }
   },
   "ToolUi": {
@@ -1209,6 +1225,35 @@
     "formatSame": "Same as original",
     "pngToJpg": "In this mode PNG files are saved as JPG (on a white background if they have transparency).",
     "kept": "already optimized, so you get the original back unchanged.",
-    "resized": "Scaled down to {width} × {height} px to reach the size."
+    "resized": "Scaled down to {width} × {height} px to reach the size.",
+    "resizeMode": "How do you want to resize?",
+    "byPixels": "In pixels",
+    "byPercent": "By percentage",
+    "bySocial": "Social media",
+    "width": "Width (px)",
+    "height": "Height (px)",
+    "keepRatio": "Keep proportions",
+    "enlarge": "Allow enlarging smaller images",
+    "stretchHint": "Without keeping proportions, the image is stretched to the exact width and height.",
+    "pixelsInvalid": "Enter the width, the height or both, in whole pixels.",
+    "percent": "Percentage (%)",
+    "percentInvalid": "Enter a percentage between 1 and 400.",
+    "preset": "Size",
+    "fit": "If the proportions don't match",
+    "fitCrop": "Crop the edges",
+    "fitPad": "Add borders",
+    "resizedTo": "{name}: {before} → {after} px",
+    "presets": {
+      "instagramSquare": "Instagram square",
+      "instagramPortrait": "Instagram portrait",
+      "story": "Story (Instagram, TikTok, WhatsApp)",
+      "facebookPost": "Facebook post / link",
+      "facebookCover": "Facebook cover",
+      "xPost": "X post",
+      "xHeader": "X header",
+      "youtubeThumbnail": "YouTube thumbnail",
+      "linkedinBanner": "LinkedIn banner",
+      "profilePhoto": "Profile photo"
+    }
   }
 }

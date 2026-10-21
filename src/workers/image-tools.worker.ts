@@ -12,13 +12,16 @@ import {
 } from "@/lib/image/compress";
 import { decodeImage } from "@/lib/image/decode";
 import { isDamagedImage } from "@/lib/image/integrity";
+import { DEFAULT_QUALITY } from "@/lib/image/options";
 import type { RawImage } from "@/lib/image/pixels";
 import { quantizedPng } from "@/lib/image/png-indexed";
+import { planResize, type ResizeRequest } from "@/lib/image/resize-plan";
+import type { FormatId } from "@/config/formats";
 import { ConversionError } from "@/lib/convert-error";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
-// Image tools built on the decoders/encoders of the converter (compress for
-// now). Runs on the job pool of `@/lib/jobs`: cancelling terminates it.
+// Image tools built on the decoders/encoders of the converter (compress,
+// resize). Runs on the job pool of `@/lib/jobs`: cancelling terminates it.
 
 export interface CompressArgs {
   input: Blob;
@@ -39,7 +42,7 @@ export interface CompressResult {
   scale: number;
 }
 
-async function decode(buffer: ArrayBuffer, from: CompressFormat): Promise<RawImage> {
+async function decode(buffer: ArrayBuffer, from: FormatId): Promise<RawImage> {
   if (isDamagedImage(new Uint8Array(buffer), from)) throw new ConversionError("fileDamaged");
   try {
     return await decodeImage(buffer, from);
@@ -58,7 +61,7 @@ async function encodePng(image: RawImage, level: CompressionLevel) {
   return optimise(new Uint8Array(png), 3, false, true).slice().buffer;
 }
 
-async function encode(image: RawImage, format: CompressFormat, quality: number) {
+async function encode(image: RawImage, format: FormatId, quality: number) {
   const encoder = encoders[format];
   if (!encoder) throw new Error(`No encoder for ${format}`);
   return encoder(image, { quality });
@@ -126,4 +129,53 @@ async function compress(
   });
 }
 
-exposeHandlers({ compress });
+export interface ResizeArgs {
+  input: Blob;
+  from: FormatId;
+  /** An output format the image worker can encode. */
+  to: FormatId;
+  request: ResizeRequest;
+}
+
+export interface ResizeResult {
+  buffer: ArrayBuffer;
+  before: { width: number; height: number };
+  width: number;
+  height: number;
+}
+
+async function resize({ input, from, to, request }: ResizeArgs, onProgress: (progress: number) => void) {
+  const image = await decode(await input.arrayBuffer(), from);
+  onProgress(0.3);
+  const plan = planResize(image, request);
+  if (!plan) throw new ConversionError("invalidRequest");
+  const source = await createImageBitmap(new ImageData(new Uint8ClampedArray(image.data), image.width, image.height));
+  let resized: RawImage;
+  try {
+    const ctx = new OffscreenCanvas(plan.size.width, plan.size.height).getContext("2d");
+    if (!ctx) throw new Error("No 2D context");
+    ctx.imageSmoothingQuality = "high";
+    // Borders are white where the format has no transparency, transparent elsewhere.
+    if (plan.padded && (to === "jpg" || to === "bmp")) {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, plan.size.width, plan.size.height);
+    }
+    const { source: s, target: t } = plan;
+    ctx.drawImage(source, s.x, s.y, s.width, s.height, t.x, t.y, t.width, t.height);
+    resized = ctx.getImageData(0, 0, plan.size.width, plan.size.height);
+  } finally {
+    source.close();
+  }
+  onProgress(0.6);
+  const buffer = await encode(resized, to, DEFAULT_QUALITY);
+  onProgress(1);
+  const result: ResizeResult = {
+    buffer,
+    before: { width: image.width, height: image.height },
+    width: resized.width,
+    height: resized.height,
+  };
+  return { result, transfer: [buffer] };
+}
+
+exposeHandlers({ compress, resize });

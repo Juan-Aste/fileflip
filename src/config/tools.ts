@@ -58,6 +58,7 @@ export const toolIds = [
   "color-converter",
   "unit-converter",
   "compress-image",
+  "resize-image",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -441,6 +442,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "comprimir-imagen", en: "compress-image", pt: "comprimir-imagem", fr: "compresser-image", zh: "compress-image" },
+  },
+  "resize-image": {
+    id: "resize-image",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "heic"],
+    outputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff"],
+    engine: "browser",
+    libraries: ["canvas", "@jsquash/jpeg", "@jsquash/webp", "@jsquash/avif", "@jsquash/png", "libheif-js", "utif2", "gifenc"],
+    // Decoded whole in memory; results are capped at ~36 MP.
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "redimensionar-imagen", en: "resize-image", pt: "redimensionar-imagem", fr: "redimensionner-image", zh: "resize-image" },
   },
 
 };

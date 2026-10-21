@@ -25,6 +25,7 @@ import {
   RotateCw,
   Scissors,
   Minimize2,
+  Expand,
   type LucideIcon,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
@@ -60,6 +61,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "color-converter": Palette,
   "unit-converter": Ruler,
   "compress-image": Minimize2,
+  "resize-image": Expand,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

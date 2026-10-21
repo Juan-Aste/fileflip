@@ -126,3 +126,78 @@ test.describe("tool: compress-image", () => {
     await expect(page.getByText("strong.jpg: ya estaba optimizada")).toBeVisible();
   });
 });
+
+test.describe("tool: resize-image", () => {
+  test("pixels keeping proportions, and the message with both sizes", async ({ page }) => {
+    await page.goto("/es/redimensionar-imagen", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.jpg")]);
+    const width = page.getByRole("textbox", { name: "Ancho (px)" });
+    await width.fill("");
+    await expect(page.getByText("Escribe el ancho, el alto o ambos")).toBeVisible();
+    await width.fill("400");
+    const out = fileOf(await runTool(page, "Redimensionar imágenes"));
+    expect(out.name).toBe("photo.jpg");
+    expect(await inspectImage(out.buf)).toMatchObject({ format: "jpg", width: 400, height: 300 });
+    await expect(page.getByText("photo.jpg: 1000 × 750 → 400 × 300 px")).toBeVisible();
+  });
+
+  test("percentage over a batch keeps each format (TIFF stays TIFF, HEIC becomes JPG)", async ({ page }) => {
+    await page.goto("/en/resize-image", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.jpg"), fixturePath("image.tiff"), fixturePath("photo.heic"), fixturePath("corrupt/truncated.png")]);
+    await choose(page, "By percentage");
+    await page.getByRole("textbox", { name: "Percentage (%)" }).fill("50");
+    await page.getByRole("button", { name: "Resize images", exact: true }).click();
+    const items = page.locator("main ul").filter({ has: page.locator("a[download]") }).locator("li");
+    await expect(items).toHaveCount(4, { timeout: 60_000 });
+    await expect(items.nth(3)).toContainText("damaged");
+    const links = page.locator("main a[download]");
+    const jpg = fileOf(await waitForResult(page, links.nth(0), toolAlert(page)));
+    const tiff = fileOf(await waitForResult(page, links.nth(1), toolAlert(page)));
+    const heic = fileOf(await waitForResult(page, links.nth(2), toolAlert(page)));
+    expect(await inspectImage(jpg.buf)).toMatchObject({ format: "jpg", width: 500, height: 375 });
+    expect(await inspectImage(tiff.buf)).toMatchObject({ format: "tiff", width: 80, height: 60 });
+    expect(heic.name).toBe("photo.jpg");
+    const heicSource = await sharp(fixturePath("photo.heic")).metadata().catch(() => null);
+    const heicInfo = await inspectImage(heic.buf);
+    expect(heicInfo.format).toBe("jpg");
+    if (heicSource?.width) expect(heicInfo.width).toBe(Math.round(heicSource.width / 2));
+  });
+
+  test("social sizes: crop to fill, or fit with transparent borders", async ({ page }) => {
+    await page.goto("/pt/redimensionar-imagem", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.jpg")]);
+    await choose(page, "Redes sociais");
+    const square = fileOf(await runTool(page, "Redimensionar imagens"));
+    expect(await inspectImage(square.buf)).toMatchObject({ format: "jpg", width: 1080, height: 1080 });
+    // The sun (right side of the landscape) is still inside the cropped square.
+    const sq = await sharp(square.buf).raw().toBuffer({ resolveWithObject: true });
+    const at = (x: number, y: number) => [...sq.data.subarray((y * 1080 + x) * 3, (y * 1080 + x) * 3 + 3)];
+    expect(at(1000, 317)[0]).toBeGreaterThan(230);
+
+    await page.getByRole("button", { name: "Começar de novo" }).click();
+    await pick(page, [fixturePath("photo.jpg")]);
+    await choose(page, "Redes sociais");
+    await page.getByRole("combobox", { name: "Medida" }).selectOption("story");
+    await choose(page, "Adicionar bordas");
+    await choose(page, "PNG");
+    const story = fileOf(await runTool(page, "Redimensionar imagens"));
+    expect(story.name).toBe("photo.png");
+    expect(await inspectImage(story.buf)).toMatchObject({ format: "png", width: 1080, height: 1920 });
+    const px = await rawPixels(story.buf);
+    expect(px[3]).toBe(0); // top border: transparent
+    expect(px[(960 * 1080 + 540) * 4 + 3]).toBe(255); // center: the photo
+  });
+
+  test("stretch to an exact size without proportions, as WEBP", async ({ page }) => {
+    await page.goto("/fr/redimensionner-image", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo-alpha.png")]);
+    await page.getByText("Garder les proportions").click();
+    await page.getByRole("textbox", { name: "Largeur (px)" }).fill("300");
+    await page.getByRole("textbox", { name: "Hauteur (px)" }).fill("300");
+    await choose(page, "WEBP");
+    const out = fileOf(await runTool(page, "Redimensionner les images"));
+    expect(out.name).toBe("photo-alpha.webp");
+    expect(await inspectImage(out.buf)).toMatchObject({ format: "webp", width: 300, height: 300 });
+    expect((await rawPixels(out.buf))[3]).toBe(0);
+  });
+});
