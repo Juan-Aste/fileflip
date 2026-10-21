@@ -221,7 +221,7 @@ Datos y desarrolladores
 Utilidades
 - [x] 3C.8 Generador de QR (texto, URL, Wi-Fi, contacto; PNG y SVG; qrcode, MIT) y lector de QR desde imagen (jsQR, Apache-2.0); test: generar y volver a leer
 - [x] 3C.9 Generador de contraseñas (sin sesgo) y contador de palabras/caracteres con mayúsculas/minúsculas (`Intl.Segmenter`, también chino)
-- [ ] 3C.10 Selector y conversor de colores (HEX, RGB, HSL, OKLCH, contraste AA) y conversor de unidades
+- [x] 3C.10 Selector y conversor de colores (HEX, RGB, HSL, OKLCH, contraste AA) y conversor de unidades
 
 Imágenes (las más buscadas primero)
 - [ ] 3C.11 "Comprimir imagen" con página propia (JPG, PNG, WEBP, AVIF; niveles simples; antes/después; lotes) y "comprimir a un peso objetivo" (búsqueda de calidad + reducción de tamaño si no alcanza; presets de trámites)

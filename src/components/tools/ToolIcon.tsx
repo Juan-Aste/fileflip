@@ -10,6 +10,8 @@ import {
   ScanLine,
   LockKeyhole,
   WholeWord,
+  Palette,
+  Ruler,
   CodeXml,
   FileCode,
   FileJson,
@@ -54,6 +56,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "qr-reader": ScanLine,
   "password-generator": LockKeyhole,
   "word-counter": WholeWord,
+  "color-converter": Palette,
+  "unit-converter": Ruler,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

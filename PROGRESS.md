@@ -1581,3 +1581,23 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - 8 tests unitarios (sesgo del muestreo, uniformidad sobre 10 000 caracteres, tipos garantizados, ambiguos, límites, entropía; conteos con emoji y acentos, chino, mayúsculas por idioma y tipo oración con `¿` y `«`). `tests/e2e/text-tools.spec.ts` (5 casos): 50 contraseñas únicas con los 4 tipos, solo dígitos sin ambiguos (`[2-9]{20}`) con aviso "Weak", botón deshabilitado sin tipos; conteos en vivo, mayúsculas/oración y descarga; archivo `text.txt` y chino. Lint, typecheck, tests (618), build, `check:static` (687 páginas) y `npm run test:e2e` (166/166) pasan. Capturas revisadas: `/es/contador-de-palabras` 360 oscuro y `/fr/generateur-mot-de-passe` 1280 claro.
 
 **Siguiente**: 3C.10 (colores y unidades).
+
+## 2026-10-21 07:45 UTC — Fase 3, tarea 3C.10 (colores y unidades) + Lighthouse
+
+**Qué se hizo**
+- **Conversor de colores** (`/es/conversor-de-colores`, `/en/color-converter`, `/pt/conversor-de-cores`, `/fr/convertisseur-couleurs`): lee HEX (3/4/6/8 dígitos), `rgb()`/`rgba()` (comas o espacios, porcentajes, `/ alfa`), `hsl()`/`hsla()` (unidades de tono deg/turn/rad/grad), `oklch()` y los 148 nombres CSS; muestra HEX, RGB, HSL y OKLCH (sintaxis moderna) con botón de copiar, selector de color nativo sincronizado y muestra. **Contraste WCAG 2** contra un fondo elegible (el color translúcido se mezcla con el fondo), tabla AA/AAA para texto normal y grande, y contraste con blanco y negro. Matemática propia (`src/lib/color/`), sin dependencias; OKLCH fuera de gama sRGB se recorta por canal.
+- **Conversor de unidades** (`/es/conversor-de-unidades`…): longitud, peso, temperatura, volumen (medidas de EE. UU. + galón imperial), superficie, velocidad, datos (SI y binarios KiB…TiB) y tiempo, con **definiciones exactas**; valor con coma o punto decimal (`parseDecimal`: "1.234,5", "1,234.5", grupos de miles válidos), intercambiar unidades y tabla con el valor en todas las unidades (10 cifras significativas, notación científica fuera de 1e-6…1e15). Nombres de unidades en los 5 idiomas.
+- Ambas son componentes en vivo (sin `ToolShell`) e informan el uso una vez por visita.
+- Corregido tras revisar capturas: a 360 px los valores HSL/OKLCH se cortaban (ahora se parten por espacios) y la insignia "No cumple" se partía en dos líneas.
+- **Lighthouse después de 3C.10** (`docs/perf/2026-10-21-3C10.md`): rendimiento 96–99, accesibilidad 100, CLS 0 en 11 páginas (se agregaron una herramienta de datos y una de utilidades al script). SEO 92 solo por medir en el puerto 3101 con un build cuyo canonical apunta a `localhost:3000` (artefacto de la medición; en 3B era 100 en el puerto 3000).
+
+**Verificación**
+- 9 tests unitarios (notaciones equivalentes, alfa, valores de referencia OKLCH de CSS Color 4, rechazos, contraste 4,54:1 de #767676; definiciones exactas, temperaturas, ida y vuelta entre todas las unidades, lectura de números). `tests/e2e/utility-tools.spec.ts` (4 casos). Lint, typecheck, tests (629), build, `check:static` (697 páginas) y `npm run test:e2e` (170/170) pasan. Capturas revisadas: `/es/conversor-de-colores` 360 oscuro y `/pt/conversor-de-unidades` 1280 claro.
+
+## 2026-10-21 07:50 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas en esta ejecución: 3C.6 (hashes), 3C.7 (UUID y timestamps), 3C.8 (QR), 3C.9 (contraseñas y contador), 3C.10 (colores y unidades) + medición Lighthouse.
+- La ejecución anterior (candado de las 03:08) se cortó sin subir nada: el candado quedó vencido y se retomó.
+- Aviso para el dueño: `npm audit` informa vulnerabilidades ya existentes (no agregadas en esta ejecución), entre ellas **nodemailer ≤ 10.0.5** (alta: DoS en el parser de direcciones y una validación de dominio evitable). Actualizar a nodemailer 10.x es un salto de versión mayor; queda anotado para revisarlo.
+
+**Siguiente**: 3C.11 ("Comprimir imagen" con página propia y "comprimir a un peso objetivo").

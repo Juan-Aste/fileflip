@@ -580,6 +580,34 @@
         "q3": "Comment le temps de lecture est-il calculé ?",
         "a3": "Sur la base de 200 mots par minute, arrondi au supérieur."
       }
+    },
+    "color-converter": {
+      "title": "Convertisseur de couleurs",
+      "description": "Convertissez des couleurs entre HEX, RGB, HSL et OKLCH et vérifiez le contraste pour l’accessibilité (WCAG).",
+      "action": "Convertir la couleur",
+      "about": "Le convertisseur de couleurs lit une couleur en HEX, RGB, HSL, OKLCH ou par son nom CSS et l’affiche dans tous ces formats, prête à copier dans votre CSS ou votre outil de design. Il calcule aussi le contraste de la couleur sur un fond selon les règles WCAG 2 et indique si elle respecte les niveaux AA et AAA pour le texte normal et le grand texte, pour que vos textes restent lisibles.",
+      "faq": {
+        "q1": "À quoi sert OKLCH ?",
+        "a1": "C’est une façon de décrire les couleurs par luminosité, chroma et teinte proche de notre perception. Elle facilite les palettes harmonieuses, et tous les navigateurs récents l’acceptent en CSS.",
+        "q2": "Quel contraste faut-il pour un texte ?",
+        "a2": "Le niveau AA demande au moins 4,5:1 pour le texte normal et 3:1 pour le grand texte ; le niveau AAA, 7:1 et 4,5:1.",
+        "q3": "Accepte-t-il les couleurs transparentes ?",
+        "a3": "Oui : #RRGGBBAA, rgb(… / 0,5) et similaires. Pour le contraste, la couleur est fusionnée avec le fond comme le ferait le navigateur."
+      }
+    },
+    "unit-converter": {
+      "title": "Convertisseur d’unités",
+      "description": "Convertissez longueur, poids, température, volume, surface, vitesse, données et temps entre unités métriques et impériales.",
+      "action": "Convertir",
+      "about": "Le convertisseur d’unités convertit instantanément une valeur entre unités métriques, impériales et américaines : longueur, poids, température, volume, surface, vitesse, taille de données et temps. Il utilise les définitions exactes (1 pouce = 2,54 cm, 1 livre = 453,59237 g) et affiche la valeur dans toutes les unités à la fois. La virgule et le point décimal sont acceptés.",
+      "faq": {
+        "q1": "Les tasses et gallons sont-ils américains ou britanniques ?",
+        "a1": "Les cuillères à café, cuillères à soupe, tasses, pintes, quarts et gallons sont les mesures américaines ; le gallon impérial britannique est listé à part.",
+        "q2": "Pourquoi 1 Go ne fait-il pas 1024 Mo ?",
+        "a2": "Avec les préfixes du système international, 1 Go = 1000 Mo. Les systèmes d’exploitation comptent parfois en puissances de 2 : ce sont des Gio et Mio, que vous pouvez aussi convertir.",
+        "q3": "Quelle est la précision des résultats ?",
+        "a3": "Jusqu’à 10 chiffres significatifs sont affichés. Les équivalences sont exactes par définition ; le nombre n’est arrondi qu’à l’affichage."
+      }
     }
   },
   "ToolUi": {
@@ -1036,5 +1064,119 @@
     "copy": "Copier le texte",
     "copied": "Copié",
     "download": "Télécharger .txt"
+  },
+  "UtilityTools": {
+    "copied": "Copié",
+    "copyValue": "Copier {value}",
+    "pick": "Choisir {label}",
+    "invalidColor": "Ce n'est pas une couleur valide. Essayez #0f766e, rgb(15 118 110), hsl(175 77% 26%), oklch(51% 0.09 186) ou un nom comme teal.",
+    "color": "Couleur (HEX, RGB, HSL, OKLCH ou nom CSS)",
+    "preview": "Aperçu de la couleur {color}",
+    "contrastTitle": "Contraste du texte",
+    "background": "Couleur de fond",
+    "sample": "Texte d'exemple sur le fond",
+    "ratio": "Contraste : {ratio}:1",
+    "textSize": "Taille du texte",
+    "normalText": "Texte normal",
+    "largeText": "Grand texte (18 pt, ou 14 pt en gras)",
+    "pass": "Conforme",
+    "fail": "Non conforme",
+    "versus": "Contraste avec le blanc : {white}:1 · avec le noir : {black}:1",
+    "category": "Grandeur",
+    "value": "Valeur",
+    "from": "De",
+    "to": "Vers",
+    "swap": "Inverser les unités",
+    "invalidNumber": "Saisissez un nombre, par exemple 12,5 ou 12.5.",
+    "allUnits": "{value} dans toutes les unités",
+    "categories": {
+      "length": "Longueur",
+      "mass": "Poids",
+      "temperature": "Température",
+      "volume": "Volume",
+      "area": "Surface",
+      "speed": "Vitesse",
+      "data": "Données",
+      "time": "Temps"
+    },
+    "unit": {
+      "length": {
+        "mm": "Millimètres",
+        "cm": "Centimètres",
+        "m": "Mètres",
+        "km": "Kilomètres",
+        "in": "Pouces",
+        "ft": "Pieds",
+        "yd": "Yards",
+        "mi": "Miles",
+        "nmi": "Milles marins"
+      },
+      "mass": {
+        "mg": "Milligrammes",
+        "g": "Grammes",
+        "kg": "Kilogrammes",
+        "t": "Tonnes",
+        "oz": "Onces",
+        "lb": "Livres",
+        "st": "Stones"
+      },
+      "temperature": {
+        "c": "Degrés Celsius",
+        "f": "Degrés Fahrenheit",
+        "k": "Kelvin"
+      },
+      "volume": {
+        "ml": "Millilitres",
+        "l": "Litres",
+        "m3": "Mètres cubes",
+        "tsp": "Cuillères à café (US)",
+        "tbsp": "Cuillères à soupe (US)",
+        "floz": "Onces liquides (US)",
+        "cup": "Tasses (US)",
+        "pt": "Pintes (US)",
+        "qt": "Quarts (US)",
+        "gal": "Gallons (US)",
+        "ukgal": "Gallons impériaux"
+      },
+      "area": {
+        "cm2": "Centimètres carrés",
+        "m2": "Mètres carrés",
+        "ha": "Hectares",
+        "km2": "Kilomètres carrés",
+        "in2": "Pouces carrés",
+        "ft2": "Pieds carrés",
+        "yd2": "Yards carrés",
+        "ac": "Acres",
+        "mi2": "Miles carrés"
+      },
+      "speed": {
+        "ms": "Mètres par seconde",
+        "kmh": "Kilomètres par heure",
+        "mph": "Miles par heure",
+        "kn": "Nœuds",
+        "fts": "Pieds par seconde"
+      },
+      "data": {
+        "bit": "Bits",
+        "b": "Octets",
+        "kb": "Kilooctets",
+        "mb": "Mégaoctets",
+        "gb": "Gigaoctets",
+        "tb": "Téraoctets",
+        "kib": "Kibioctets",
+        "mib": "Mébioctets",
+        "gib": "Gibioctets",
+        "tib": "Tébioctets"
+      },
+      "time": {
+        "ms": "Millisecondes",
+        "s": "Secondes",
+        "min": "Minutes",
+        "h": "Heures",
+        "d": "Jours",
+        "wk": "Semaines",
+        "yr": "Années"
+      }
+    }
   }
 }

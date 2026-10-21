@@ -33,6 +33,8 @@ const components: Record<ToolId, React.ComponentType> = {
   "qr-reader": dynamic(() => import("./qr/QrTools").then((m) => m.QrReaderTool)),
   "password-generator": dynamic(() => import("./text/TextTools").then((m) => m.PasswordGeneratorTool)),
   "word-counter": dynamic(() => import("./text/TextTools").then((m) => m.WordCounterTool)),
+  "color-converter": dynamic(() => import("./utility/UtilityTools").then((m) => m.ColorConverterTool)),
+  "unit-converter": dynamic(() => import("./utility/UtilityTools").then((m) => m.UnitConverterTool)),
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {

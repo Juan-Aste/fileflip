@@ -580,6 +580,34 @@
         "q3": "Como é calculado o tempo de leitura?",
         "a3": "Com um ritmo de 200 palavras por minuto, arredondado para cima."
       }
+    },
+    "color-converter": {
+      "title": "Conversor de cores",
+      "description": "Converta cores entre HEX, RGB, HSL e OKLCH e confira o contraste para acessibilidade (WCAG).",
+      "action": "Converter cor",
+      "about": "O conversor de cores lê uma cor em HEX, RGB, HSL, OKLCH ou pelo nome CSS e mostra a cor em todos esses formatos, pronta para copiar no seu CSS ou na sua ferramenta de design. Ele também calcula o contraste da cor sobre um fundo segundo as diretrizes WCAG 2 e indica se atende aos níveis AA e AAA para texto normal e grande, para que seus textos fiquem legíveis.",
+      "faq": {
+        "q1": "O que é OKLCH e para que serve?",
+        "a1": "É uma forma de descrever cores por luminosidade, croma e matiz parecida com a nossa percepção. Facilita criar paletas harmônicas, e todos os navegadores modernos aceitam em CSS.",
+        "q2": "Quanto contraste um texto precisa?",
+        "a2": "O nível AA pede pelo menos 4,5:1 para texto normal e 3:1 para texto grande; o nível AAA, 7:1 e 4,5:1.",
+        "q3": "Aceita cores com transparência?",
+        "a3": "Sim: #RRGGBBAA, rgb(… / 0,5) e similares. Para o contraste, a cor é misturada com o fundo como o navegador faria."
+      }
+    },
+    "unit-converter": {
+      "title": "Conversor de unidades",
+      "description": "Converta comprimento, peso, temperatura, volume, área, velocidade, dados e tempo entre unidades métricas e imperiais.",
+      "action": "Converter",
+      "about": "O conversor de unidades converte na hora um valor entre unidades métricas, imperiais e americanas: comprimento, peso, temperatura, volume, área, velocidade, tamanho de dados e tempo. Usa as definições exatas (1 polegada = 2,54 cm, 1 libra = 453,59237 g) e mostra o valor em todas as unidades ao mesmo tempo. Aceita vírgula ou ponto decimal.",
+      "faq": {
+        "q1": "As xícaras e galões são dos EUA ou do Reino Unido?",
+        "a1": "Colheres de chá, colheres de sopa, xícaras, pints, quartos e galões são as medidas americanas; o galão imperial britânico aparece separado.",
+        "q2": "Por que 1 GB não é 1024 MB?",
+        "a2": "Com prefixos do sistema internacional, 1 GB = 1000 MB. Os sistemas operacionais às vezes contam em potências de 2: isso são GiB e MiB, que você também pode converter.",
+        "q3": "Quão precisos são os resultados?",
+        "a3": "São mostrados até 10 algarismos significativos. As equivalências são exatas por definição; o número só é arredondado na exibição."
+      }
     }
   },
   "ToolUi": {
@@ -1036,5 +1064,119 @@
     "copy": "Copiar texto",
     "copied": "Copiado",
     "download": "Baixar .txt"
+  },
+  "UtilityTools": {
+    "copied": "Copiado",
+    "copyValue": "Copiar {value}",
+    "pick": "Escolher {label}",
+    "invalidColor": "Essa não é uma cor válida. Tente #0f766e, rgb(15 118 110), hsl(175 77% 26%), oklch(51% 0.09 186) ou um nome como teal.",
+    "color": "Cor (HEX, RGB, HSL, OKLCH ou nome CSS)",
+    "preview": "Amostra da cor {color}",
+    "contrastTitle": "Contraste para texto",
+    "background": "Cor de fundo",
+    "sample": "Texto de exemplo sobre o fundo",
+    "ratio": "Contraste: {ratio}:1",
+    "textSize": "Tamanho do texto",
+    "normalText": "Texto normal",
+    "largeText": "Texto grande (18 pt ou 14 pt em negrito)",
+    "pass": "Aprovado",
+    "fail": "Reprovado",
+    "versus": "Contraste com branco: {white}:1 · com preto: {black}:1",
+    "category": "Grandeza",
+    "value": "Valor",
+    "from": "De",
+    "to": "Para",
+    "swap": "Inverter unidades",
+    "invalidNumber": "Digite um número, por exemplo 12,5 ou 12.5.",
+    "allUnits": "{value} em todas as unidades",
+    "categories": {
+      "length": "Comprimento",
+      "mass": "Peso",
+      "temperature": "Temperatura",
+      "volume": "Volume",
+      "area": "Área",
+      "speed": "Velocidade",
+      "data": "Dados",
+      "time": "Tempo"
+    },
+    "unit": {
+      "length": {
+        "mm": "Milímetros",
+        "cm": "Centímetros",
+        "m": "Metros",
+        "km": "Quilômetros",
+        "in": "Polegadas",
+        "ft": "Pés",
+        "yd": "Jardas",
+        "mi": "Milhas",
+        "nmi": "Milhas náuticas"
+      },
+      "mass": {
+        "mg": "Miligramas",
+        "g": "Gramas",
+        "kg": "Quilogramas",
+        "t": "Toneladas",
+        "oz": "Onças",
+        "lb": "Libras",
+        "st": "Stones"
+      },
+      "temperature": {
+        "c": "Graus Celsius",
+        "f": "Graus Fahrenheit",
+        "k": "Kelvin"
+      },
+      "volume": {
+        "ml": "Mililitros",
+        "l": "Litros",
+        "m3": "Metros cúbicos",
+        "tsp": "Colheres de chá (EUA)",
+        "tbsp": "Colheres de sopa (EUA)",
+        "floz": "Onças líquidas (EUA)",
+        "cup": "Xícaras (EUA)",
+        "pt": "Pints (EUA)",
+        "qt": "Quartos (EUA)",
+        "gal": "Galões (EUA)",
+        "ukgal": "Galões imperiais"
+      },
+      "area": {
+        "cm2": "Centímetros quadrados",
+        "m2": "Metros quadrados",
+        "ha": "Hectares",
+        "km2": "Quilômetros quadrados",
+        "in2": "Polegadas quadradas",
+        "ft2": "Pés quadrados",
+        "yd2": "Jardas quadradas",
+        "ac": "Acres",
+        "mi2": "Milhas quadradas"
+      },
+      "speed": {
+        "ms": "Metros por segundo",
+        "kmh": "Quilômetros por hora",
+        "mph": "Milhas por hora",
+        "kn": "Nós",
+        "fts": "Pés por segundo"
+      },
+      "data": {
+        "bit": "Bits",
+        "b": "Bytes",
+        "kb": "Kilobytes",
+        "mb": "Megabytes",
+        "gb": "Gigabytes",
+        "tb": "Terabytes",
+        "kib": "Kibibytes",
+        "mib": "Mebibytes",
+        "gib": "Gibibytes",
+        "tib": "Tebibytes"
+      },
+      "time": {
+        "ms": "Milissegundos",
+        "s": "Segundos",
+        "min": "Minutos",
+        "h": "Horas",
+        "d": "Dias",
+        "wk": "Semanas",
+        "yr": "Anos"
+      }
+    }
   }
 }

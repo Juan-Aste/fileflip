@@ -55,6 +55,8 @@ export const toolIds = [
   "qr-reader",
   "password-generator",
   "word-counter",
+  "color-converter",
+  "unit-converter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -404,6 +406,28 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "none", timeoutMs: MINUTE },
     status: "verified",
     slugs: { es: "contador-de-palabras", en: "word-counter", pt: "contador-de-palavras", fr: "compteur-de-mots", zh: "word-counter" },
+  },
+  "color-converter": {
+    id: "color-converter",
+    category: "utility",
+    inputs: ["txt"],
+    outputs: ["txt"],
+    engine: "browser",
+    libraries: ["own OKLab/WCAG math"],
+    limits: { files: "none", timeoutMs: MINUTE },
+    status: "verified",
+    slugs: { es: "conversor-de-colores", en: "color-converter", pt: "conversor-de-cores", fr: "convertisseur-couleurs", zh: "color-converter" },
+  },
+  "unit-converter": {
+    id: "unit-converter",
+    category: "utility",
+    inputs: ["txt"],
+    outputs: ["txt"],
+    engine: "browser",
+    libraries: ["own unit tables"],
+    limits: { files: "none", timeoutMs: MINUTE },
+    status: "verified",
+    slugs: { es: "conversor-de-unidades", en: "unit-converter", pt: "conversor-de-unidades", fr: "convertisseur-unites", zh: "unit-converter" },
   },
 };
 

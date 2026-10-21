@@ -580,6 +580,34 @@
         "q3": "How is the reading time calculated?",
         "a3": "At 200 words per minute, rounded up."
       }
+    },
+    "color-converter": {
+      "title": "Color converter",
+      "description": "Convert colors between HEX, RGB, HSL and OKLCH and check accessibility contrast (WCAG).",
+      "action": "Convert color",
+      "about": "The color converter reads a color in HEX, RGB, HSL, OKLCH or by its CSS name and shows it in all of those formats, ready to copy into your CSS or design tool. It also calculates the color's contrast on a background following the WCAG 2 guidelines and tells you whether it meets AA and AAA for normal and large text, so your text stays readable.",
+      "faq": {
+        "q1": "What is OKLCH for?",
+        "a1": "It describes colors by lightness, chroma and hue in a way that matches how we perceive them. It makes harmonious palettes easier, and every modern browser accepts it in CSS.",
+        "q2": "How much contrast does text need?",
+        "a2": "Level AA asks for at least 4.5:1 for normal text and 3:1 for large text; level AAA, 7:1 and 4.5:1.",
+        "q3": "Does it accept transparent colors?",
+        "a3": "Yes: #RRGGBBAA, rgb(… / 0.5) and similar. For contrast, the color is blended with the background the way a browser would."
+      }
+    },
+    "unit-converter": {
+      "title": "Unit converter",
+      "description": "Convert length, weight, temperature, volume, area, speed, data and time between metric and imperial units.",
+      "action": "Convert",
+      "about": "The unit converter instantly converts a value between metric, imperial and US units: length, weight, temperature, volume, area, speed, data size and time. It uses exact definitions (1 inch = 2.54 cm, 1 pound = 453.59237 g) and shows the value in every unit at once. Both decimal points and decimal commas are accepted.",
+      "faq": {
+        "q1": "Are cups and gallons US or UK measures?",
+        "a1": "Teaspoons, tablespoons, cups, pints, quarts and gallons are US customary measures; the British imperial gallon is listed separately.",
+        "q2": "Why isn't a GB 1024 MB?",
+        "a2": "With SI prefixes, 1 GB = 1000 MB. Operating systems sometimes count in powers of 2: those are GiB and MiB, which you can convert too.",
+        "q3": "How precise are the results?",
+        "a3": "Up to 10 significant digits are shown. The equivalences are exact by definition; the number is only rounded for display."
+      }
     }
   },
   "ToolUi": {
@@ -1036,5 +1064,119 @@
     "copy": "Copy text",
     "copied": "Copied",
     "download": "Download .txt"
+  },
+  "UtilityTools": {
+    "copied": "Copied",
+    "copyValue": "Copy {value}",
+    "pick": "Pick {label}",
+    "invalidColor": "That isn't a valid color. Try #0f766e, rgb(15 118 110), hsl(175 77% 26%), oklch(51% 0.09 186) or a name such as teal.",
+    "color": "Color (HEX, RGB, HSL, OKLCH or CSS name)",
+    "preview": "Swatch of {color}",
+    "contrastTitle": "Text contrast",
+    "background": "Background color",
+    "sample": "Sample text on the background",
+    "ratio": "Contrast: {ratio}:1",
+    "textSize": "Text size",
+    "normalText": "Normal text",
+    "largeText": "Large text (18 pt, or 14 pt bold)",
+    "pass": "Pass",
+    "fail": "Fail",
+    "versus": "Contrast with white: {white}:1 · with black: {black}:1",
+    "category": "Quantity",
+    "value": "Value",
+    "from": "From",
+    "to": "To",
+    "swap": "Swap units",
+    "invalidNumber": "Enter a number, for example 12.5 or 12,5.",
+    "allUnits": "{value} in every unit",
+    "categories": {
+      "length": "Length",
+      "mass": "Weight",
+      "temperature": "Temperature",
+      "volume": "Volume",
+      "area": "Area",
+      "speed": "Speed",
+      "data": "Data",
+      "time": "Time"
+    },
+    "unit": {
+      "length": {
+        "mm": "Millimeters",
+        "cm": "Centimeters",
+        "m": "Meters",
+        "km": "Kilometers",
+        "in": "Inches",
+        "ft": "Feet",
+        "yd": "Yards",
+        "mi": "Miles",
+        "nmi": "Nautical miles"
+      },
+      "mass": {
+        "mg": "Milligrams",
+        "g": "Grams",
+        "kg": "Kilograms",
+        "t": "Metric tons",
+        "oz": "Ounces",
+        "lb": "Pounds",
+        "st": "Stones"
+      },
+      "temperature": {
+        "c": "Degrees Celsius",
+        "f": "Degrees Fahrenheit",
+        "k": "Kelvin"
+      },
+      "volume": {
+        "ml": "Milliliters",
+        "l": "Liters",
+        "m3": "Cubic meters",
+        "tsp": "Teaspoons (US)",
+        "tbsp": "Tablespoons (US)",
+        "floz": "Fluid ounces (US)",
+        "cup": "Cups (US)",
+        "pt": "Pints (US)",
+        "qt": "Quarts (US)",
+        "gal": "Gallons (US)",
+        "ukgal": "Imperial gallons"
+      },
+      "area": {
+        "cm2": "Square centimeters",
+        "m2": "Square meters",
+        "ha": "Hectares",
+        "km2": "Square kilometers",
+        "in2": "Square inches",
+        "ft2": "Square feet",
+        "yd2": "Square yards",
+        "ac": "Acres",
+        "mi2": "Square miles"
+      },
+      "speed": {
+        "ms": "Meters per second",
+        "kmh": "Kilometers per hour",
+        "mph": "Miles per hour",
+        "kn": "Knots",
+        "fts": "Feet per second"
+      },
+      "data": {
+        "bit": "Bits",
+        "b": "Bytes",
+        "kb": "Kilobytes",
+        "mb": "Megabytes",
+        "gb": "Gigabytes",
+        "tb": "Terabytes",
+        "kib": "Kibibytes",
+        "mib": "Mebibytes",
+        "gib": "Gibibytes",
+        "tib": "Tebibytes"
+      },
+      "time": {
+        "ms": "Milliseconds",
+        "s": "Seconds",
+        "min": "Minutes",
+        "h": "Hours",
+        "d": "Days",
+        "wk": "Weeks",
+        "yr": "Years"
+      }
+    }
   }
 }
