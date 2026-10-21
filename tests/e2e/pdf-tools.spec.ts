@@ -1,12 +1,14 @@
 // The PDF page tools, run like a user would on /es, with their output checked
 // by pdf-lib and pdf.js. The fixtures' pages say "page N of M", which shows
 // the final order. Corrupt inputs must end in a visible error.
-import { statSync } from "node:fs";
+import { readFileSync, statSync, writeFileSync } from "node:fs";
 import type { Page } from "@playwright/test";
+import sharp from "sharp";
 import {
   expect,
   fileOf,
   fixturePath,
+  inspectImage,
   inspectPdf,
   openWithFiles,
   runTool,
@@ -363,5 +365,79 @@ test.describe("corrupt inputs end in a visible error", () => {
     await openWithFiles(page, "/es/imagenes-a-pdf", ["image.png", "corrupt/truncated.png"]);
     const result = await runTool(page, "Crear PDF");
     expect(result.error).toContain("truncated.png");
+  });
+});
+
+test.describe("tool: extract-pdf-images", () => {
+  /** Page 1: a JPEG photo and a transparent PNG; page 2: the same photo again and a 10×10 red dot. */
+  async function samplePdf() {
+    const { PDFDocument } = await import("pdf-lib");
+    const doc = await PDFDocument.create();
+    const jpg = await doc.embedJpg(readFileSync(fixturePath("photo.jpg")));
+    const png = await doc.embedPng(readFileSync(fixturePath("photo-alpha.png")));
+    const dot = await doc.embedPng(await sharp({ create: { width: 10, height: 10, channels: 3, background: "#f00" } }).png().toBuffer());
+    const p1 = doc.addPage([600, 800]);
+    p1.drawImage(jpg, { x: 20, y: 400, width: 300, height: 200 });
+    p1.drawImage(png, { x: 20, y: 100, width: 200, height: 150 });
+    const p2 = doc.addPage([600, 800]);
+    p2.drawImage(jpg, { x: 50, y: 50, width: 100, height: 70 });
+    p2.drawImage(dot, { x: 300, y: 300, width: 10, height: 10 });
+    const path = test.info().outputPath("album.pdf");
+    writeFileSync(path, await doc.save());
+    return path;
+  }
+
+  test("original JPEG byte for byte and a transparent PNG; small images optional", async ({ page }) => {
+    const pdf = await samplePdf();
+    await page.goto("/es/extraer-imagenes-pdf", { waitUntil: "networkidle" });
+    await page.locator('input[type="file"]').first().setInputFiles(pdf);
+    await page.getByRole("button", { name: "Extraer imágenes", exact: true }).click();
+    const links = page.locator("main li a[download]");
+    await expect(links).toHaveCount(2, { timeout: 45_000 });
+    const jpg = fileOf(await waitForResult(page, links.nth(0), toolAlert(page)));
+    expect(jpg.name).toBe("album-p1-1.jpg");
+    expect(jpg.buf.equals(readFileSync(fixturePath("photo.jpg")))).toBe(true);
+    const png = fileOf(await waitForResult(page, links.nth(1), toolAlert(page)));
+    expect(png.name).toBe("album-p1-2.png");
+    expect(await inspectImage(png.buf)).toMatchObject({ format: "png", width: 360, height: 270 });
+    const [a, b] = await Promise.all([
+      sharp(png.buf).ensureAlpha().raw().toBuffer(),
+      sharp(readFileSync(fixturePath("photo-alpha.png"))).ensureAlpha().raw().toBuffer(),
+    ]);
+    // Same alpha; the canvas stores premultiplied colors, so semi-transparent pixels round a little.
+    let alphaDiff = 0;
+    let colorDiff = 0;
+    let counted = 0;
+    for (let i = 0; i < a.length; i += 4) {
+      alphaDiff = Math.max(alphaDiff, Math.abs(a[i + 3]! - b[i + 3]!));
+      if (b[i + 3]! < 32) continue;
+      for (let c = 0; c < 3; c++) colorDiff += Math.abs(a[i + c]! - b[i + c]!);
+      counted += 3;
+    }
+    expect(alphaDiff).toBe(0);
+    expect(colorDiff / counted).toBeLessThan(1.5);
+    // The ZIP has both.
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Descargar todo/ }).click()]);
+    expect(download.suggestedFilename()).toBe("fileflect-images.zip");
+    expect(unzipEntries(readFileSync((await download.path())!)).map((e) => e.name)).toEqual(["album-p1-1.jpg", "album-p1-2.png"]);
+
+    await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(pdf);
+    await page.getByLabel(/Ignorar imágenes pequeñas/).uncheck();
+    await page.getByRole("button", { name: "Extraer imágenes", exact: true }).click();
+    await expect(links).toHaveCount(3, { timeout: 45_000 });
+    const dot = fileOf(await waitForResult(page, links.nth(2), toolAlert(page)));
+    expect(dot.name).toBe("album-p2-1.png");
+    expect(await inspectImage(dot.buf)).toMatchObject({ width: 10, height: 10 });
+  });
+
+  test("a scan gives its page image; no images and damaged files fail", async ({ page }) => {
+    await openWithFiles(page, "/en/extract-images-from-pdf", ["scan.pdf", "document.pdf", "corrupt/garbage.pdf"]);
+    await page.getByRole("button", { name: "Extract images", exact: true }).click();
+    const links = page.locator("main li a[download]");
+    await expect(links).toHaveCount(1, { timeout: 45_000 });
+    expect(await inspectImage(fileOf(await waitForResult(page, links.nth(0), toolAlert(page))).buf)).toMatchObject({ width: 320, height: 240 });
+    await expect(page.getByText(/has no images to extract/)).toBeVisible();
+    await expect(page.getByText(/damaged/i).first()).toBeVisible();
   });
 });

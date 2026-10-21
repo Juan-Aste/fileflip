@@ -47,7 +47,7 @@ function components(doc: PDFDocument, colorSpace: PDFObject | undefined): 1 | 3 
 }
 
 /** Extracts an image we can safely re-encode, or null to leave it alone. */
-function sourceImage(doc: PDFDocument, stream: PDFRawStream): SourceImage | null {
+export function sourceImage(doc: PDFDocument, stream: PDFRawStream): SourceImage | null {
   const dict = stream.dict;
   if (name(dict, "Subtype") !== "/Image") return null;
   if (dict.get(PDFName.of("ImageMask")) || dict.get(PDFName.of("Decode"))) return null;

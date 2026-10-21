@@ -242,7 +242,7 @@ PDF
 - [x] 3C.20 PDF → texto (pdf.js; aviso si no tiene texto: sugerir OCR) y recortar márgenes (CropBox)
 - [x] 3C.21 Firmar PDF dibujando la firma o subiendo una foto (aclarando que no es firma digital certificada)
 - [x] 3C.22 Proteger con contraseña y quitar la contraseña conociéndola (qpdf-wasm, ISC/Apache-2.0)
-- [ ] 3C.23 Extraer imágenes de un PDF (ZIP)
+- [x] 3C.23 Extraer imágenes de un PDF (ZIP)
 
 Fuentes y documentos
 - [ ] 3C.24 TTF/OTF ↔ WOFF/WOFF2 (fonteditor-core + wawoff2, confirmar licencias; fixture de fuente propia)

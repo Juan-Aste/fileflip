@@ -16,6 +16,7 @@ import { browserRecompress } from "@/lib/pdf/recompress-browser";
 import { addPageNumbers, addWatermark, type PageNumberOptions, type RenderText, type WatermarkOptions } from "@/lib/pdf/stamp";
 import { cropPdf, type Margins } from "@/lib/pdf/crop";
 import { signPdf, type SignaturePlacement } from "@/lib/pdf/sign";
+import { originalJpegs } from "@/lib/pdf/images";
 import { protectPdf, unlockPdf, type Permissions, type Qpdf, type QpdfFactory } from "@/lib/pdf/password";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
@@ -94,6 +95,10 @@ exposeHandlers({
   unlock: async ({ bytes, password }: { bytes: Uint8Array; password: string }) => {
     const result = await unlockPdf(bytes, password, loadQpdf);
     return { result, transfer: [result.buffer] };
+  },
+  jpegs: async (bytes: Uint8Array) => {
+    const result = await originalJpegs(bytes);
+    return { result, transfer: Object.values(result).map((b) => b.buffer as ArrayBuffer) };
   },
   organize: async ({ bytes, specs }: { bytes: Uint8Array; specs: PageSpec[] }) => {
     const result = await organizePdf(bytes, specs);

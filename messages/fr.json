@@ -206,7 +206,8 @@
     "pdfIsScanned": "Ce PDF ne contient pas de texte : il ressemble à une image numérisée. Pour en extraire le texte, il faut une reconnaissance de caractères (OCR).",
     "pdfAlreadyProtected": "Ce PDF est déjà protégé ou restreint. Retirez d’abord son mot de passe avec « Déverrouiller un PDF ».",
     "pdfNotProtected": "Ce PDF n’a pas de mot de passe : il s’ouvre déjà sans.",
-    "pdfWrongPassword": "Ce mot de passe n’est pas le bon pour ce PDF."
+    "pdfWrongPassword": "Ce mot de passe n’est pas le bon pour ce PDF.",
+    "pdfHasNoImages": "Ce PDF ne contient aucune image à extraire (ou seulement de très petites)."
   },
   "Tools": {
     "merge-pdf": {
@@ -933,6 +934,22 @@
         "a3": "Non. Seul le chiffrement est retiré ; le texte, les images, les formulaires et les liens restent identiques.",
         "q4": "Mon PDF et le mot de passe sont-ils envoyés sur internet ?",
         "a4": "Non. Tout se passe dans votre navigateur et rien ne quitte votre appareil."
+      }
+    },
+    "extract-pdf-images": {
+      "title": "Extraire les images d’un PDF",
+      "description": "Téléchargez toutes les images d’un PDF dans leur qualité d’origine : les photos dans leur JPG d’origine et le reste en PNG, dans un ZIP.",
+      "action": "Extraire les images",
+      "about": "Extraire les images récupère les photos, logos et illustrations contenus dans un PDF pour les utiliser séparément : les photos d’un catalogue, les images d’une présentation ou les graphiques d’un rapport. Ce n’est pas une capture de la page : vous obtenez chaque image dans sa résolution d’origine. Les images répétées sur plusieurs pages ne sont téléchargées qu’une fois.",
+      "faq": {
+        "q1": "Les images perdent-elles en qualité ?",
+        "a1": "Non. Les photos enregistrées en JPG dans le PDF sont copiées octet par octet ; les autres sont décodées et enregistrées en PNG, sans perte.",
+        "q2": "Pourquoi le texte et les dessins n’apparaissent-ils pas ?",
+        "a2": "Seules les images sont extraites. Le texte et les dessins vectoriels (lignes, tableaux, beaucoup de logos) ne sont pas des images ; pour les conserver, utilisez PDF en JPG, qui convertit la page entière.",
+        "q3": "Et un PDF numérisé ?",
+        "a3": "Chaque page numérisée est une image : vous obtiendrez une image par page, à la résolution de la numérisation.",
+        "q4": "Mon PDF est-il envoyé sur internet ?",
+        "a4": "Non. Tout se passe dans votre navigateur et le fichier ne quitte pas votre appareil."
       }
     }
   },
@@ -1722,7 +1739,9 @@
       "modify": "Modifier le document"
     },
     "protectNote": "Chiffré en AES 256 bits. Conservez le mot de passe : si vous l’oubliez, personne ne peut le récupérer.",
-    "unlockNote": "Il vous faut le mot de passe : cet outil ne devine ni ne casse les mots de passe. Le PDF obtenu s’ouvre sans mot de passe ni restrictions."
+    "unlockNote": "Il vous faut le mot de passe : cet outil ne devine ni ne casse les mots de passe. Le PDF obtenu s’ouvre sans mot de passe ni restrictions.",
+    "skipSmallImages": "Ignorer les petites images (moins de {size} px de côté)",
+    "extractImagesNote": "Les photos enregistrées en JPG sont téléchargées telles quelles, sans perte de qualité ; les autres images sont enregistrées en PNG (avec transparence le cas échéant)."
   },
   "SignPdf": {
     "notCertified": "Cette signature est une image visible sur le PDF, comme une signature à la main. Ce n’est pas une signature électronique certifiée (avec certificat ou clé) et elle ne la remplace pas lorsqu’une démarche l’exige.",

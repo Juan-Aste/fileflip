@@ -1867,3 +1867,25 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (757), build, `check:static` (802 páginas) y `npm run test:e2e` (229/229) pasan. Captura revisada: `/es/proteger-pdf` 360 px oscuro con el aviso de contraseñas distintas.
 
 **Siguiente**: 3C.23 (extraer imágenes de un PDF en ZIP).
+
+## 2026-10-21 20:40 UTC — Fase 3, tarea 3C.23 (extraer imágenes de un PDF)
+
+**Qué se hizo**
+- **Extraer imágenes de un PDF** (`/es/extraer-imagenes-pdf`, `/en/extract-images-from-pdf`, `/pt/extrair-imagens-pdf`, `/fr/extraire-images-pdf`): todas las imágenes distintas del PDF, en orden de página, con descarga individual o ZIP (`fileflect-images.zip`); nombres `<pdf>-p<página>-<n>.jpg|png`. Opción "Ignorar imágenes pequeñas (menos de 50 px de lado)" activa por defecto (íconos, viñetas, líneas). Lotes de varios PDF.
+- Motor híbrido en `src/lib/pdf/images.ts`:
+  - **pdf.js** recorre la lista de operadores de cada página (`paintImageXObject`, `…Repeat` e imágenes en línea) y entrega cada imagen ya decodificada (cualquier filtro: Flate, JPX, JBIG2, CCITT; cualquier espacio de color; con su máscara suave aplicada como transparencia). Se guarda como PNG (en el navegador desde el `ImageBitmap` en un canvas; en Node con `toRgba`, que expande los formatos de pdf.js: RGB, RGBA y gris de 1 bit).
+  - **pdf-lib** (worker de PDF, `originalJpegs`) busca las imágenes guardadas como **JPEG simple** (DCTDecode, RGB/gris/ICC de 1 o 3 componentes, 8 bits, sin `Decode`, `SMask` ni `Mask`) y devuelve sus bytes; se emparejan con las de pdf.js por la referencia del objeto (pdf.js expone `ref`, p. ej. `"12R"`), así esas fotos se descargan **byte a byte, sin recomprimir**. PDF cifrados: todo pasa por pdf.js (pdf-lib no descifra).
+  - Una imagen repetida (en varias páginas o con varios nombres) se descarga una vez (por id de pdf.js y por referencia).
+- `sourceImage` de `compress.ts` ahora se exporta (misma detección de JPEG que usa "Comprimir PDF").
+- Error nuevo `pdfHasNoImages` (5 idiomas). Textos (introducción + 4 preguntas) en los 5 idiomas.
+- `scripts/perf/lighthouse.sh`: se agregan `/es/recortar-imagen` y `/es/extraer-imagenes-pdf`.
+
+**Limitaciones**
+- Solo imágenes: texto y dibujos vectoriales no (la FAQ remite a PDF → JPG). Las imágenes CMYK, con máscara o en otros filtros salen en PNG (decodificadas por pdf.js), no en su formato original. El color de píxeles semitransparentes puede variar ±1 por el canvas (alfa premultiplicado).
+
+**Verificación**
+- 5 tests unitarios (pdf.js en Node + sharp): `toRgba` (RGB y 1 bit), PDF de prueba con JPEG + PNG transparente + la misma foto en la página 2 + un punto de 10 px → JPEG **idéntico byte a byte** al original, PNG con **los mismos píxeles y alfa** que el original, repetida omitida, punto incluido solo sin mínimo; `document-images.pdf` (la foto de 2 páginas → 1 JPEG 640×480), `scan.pdf` (320×240), texto sin imágenes → `pdfHasNoImages` con progreso, basura → sin originales.
+- `pdf-tools.spec.ts`: 2 casos nuevos (JPEG byte a byte, PNG con alfa exacto y color ±1,5 de media, ZIP con los 2 archivos, "Empezar de nuevo" sin el mínimo → 3 imágenes con el punto de 10×10; escaneo + PDF sin imágenes + basura → 1 imagen y 2 errores).
+- Lint, typecheck, tests (763), build, `check:static` (807 páginas) y `npm run test:e2e` (230/231: falló `add-text-to-image › text with a box…` solo bajo carga en paralelo; pasa sola y no se tocó ese código) pasan.
+
+**Siguiente**: medición de Lighthouse después de 3C.23 (la pide el plan) y luego 3C.24 (fuentes TTF/OTF ↔ WOFF/WOFF2).

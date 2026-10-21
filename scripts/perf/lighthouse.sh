@@ -23,6 +23,8 @@ PAGES=(
   "tool-merge /es/unir-pdf"
   "tool-data /es/generador-hash"
   "tool-utility /es/conversor-de-unidades"
+  "tool-image /es/recortar-imagen"
+  "tool-pdf-images /es/extraer-imagenes-pdf"
 )
 # Warm up the server (first render of each route).
 for p in "${PAGES[@]}"; do curl -s -o /dev/null "$BASE${p#* }"; done

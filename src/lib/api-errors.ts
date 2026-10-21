@@ -29,6 +29,8 @@ export const apiErrorCodes = [
   "pdfAlreadyProtected",
   "pdfNotProtected",
   "pdfWrongPassword",
+  // Client-side only: extracting images from a PDF that has none.
+  "pdfHasNoImages",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -61,6 +63,7 @@ const status: Record<ApiErrorCode, number> = {
   pdfAlreadyProtected: 422,
   pdfNotProtected: 422,
   pdfWrongPassword: 422,
+  pdfHasNoImages: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

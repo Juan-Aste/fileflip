@@ -206,7 +206,8 @@
     "pdfIsScanned": "This PDF has no text: it looks like a scanned image. Getting its text needs text recognition (OCR).",
     "pdfAlreadyProtected": "This PDF is already protected or restricted. Remove its password first with “Unlock PDF”.",
     "pdfNotProtected": "This PDF has no password: it already opens without one.",
-    "pdfWrongPassword": "That password isn’t right for this PDF."
+    "pdfWrongPassword": "That password isn’t right for this PDF.",
+    "pdfHasNoImages": "This PDF has no images to extract (or only very small ones)."
   },
   "Tools": {
     "merge-pdf": {
@@ -933,6 +934,22 @@
         "a3": "No. Only the encryption is removed; text, images, forms and links stay the same.",
         "q4": "Are my PDF and password uploaded?",
         "a4": "No. Everything happens in your browser and nothing leaves your device."
+      }
+    },
+    "extract-pdf-images": {
+      "title": "Extract images from a PDF",
+      "description": "Download every image in a PDF at its original quality: photos as the original JPG and the rest as PNG, in a ZIP.",
+      "action": "Extract images",
+      "about": "Extract images pulls the photos, logos and illustrations out of a PDF so you can use them on their own: catalog photos, slides’ pictures or a report’s charts. It isn’t a screenshot of the page: you get each image at its original resolution. Images repeated on several pages are downloaded once.",
+      "faq": {
+        "q1": "Do the images lose quality?",
+        "a1": "No. Photos stored as JPG inside the PDF are copied byte for byte; the others are decoded and saved as PNG, which is lossless.",
+        "q2": "Why aren’t the text or drawings included?",
+        "a2": "Only images are extracted. Text and vector drawings (lines, tables, many logos) aren’t images; to keep them, use PDF to JPG, which converts the whole page.",
+        "q3": "What about a scanned PDF?",
+        "a3": "Each scanned page is an image, so you’ll get one image per page at the scan’s resolution.",
+        "q4": "Is my PDF uploaded?",
+        "a4": "No. Everything happens in your browser and the file never leaves your device."
       }
     }
   },
@@ -1722,7 +1739,9 @@
       "modify": "Edit the document"
     },
     "protectNote": "Encrypted with 256-bit AES. Keep the password safe: if you forget it, nobody can recover it.",
-    "unlockNote": "You need the password: this tool doesn’t guess or crack passwords. The resulting PDF opens without a password or restrictions."
+    "unlockNote": "You need the password: this tool doesn’t guess or crack passwords. The resulting PDF opens without a password or restrictions.",
+    "skipSmallImages": "Skip small images (under {size} px on a side)",
+    "extractImagesNote": "Photos stored as JPG are downloaded as they are, with no quality loss; other images are saved as PNG (with transparency if they have it)."
   },
   "SignPdf": {
     "notCertified": "This signature is a visible image on the PDF, like signing by hand. It is not a certified digital signature (with a certificate or token) and doesn't replace one when a process requires it.",

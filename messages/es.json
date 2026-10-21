@@ -206,7 +206,8 @@
     "pdfIsScanned": "Este PDF no tiene texto: parece una imagen escaneada. Para sacar su texto hace falta reconocimiento de texto (OCR).",
     "pdfAlreadyProtected": "Este PDF ya está protegido o tiene restricciones. Quita primero su contraseña con «Quitar contraseña de PDF».",
     "pdfNotProtected": "Este PDF no tiene contraseña: ya se puede abrir sin ella.",
-    "pdfWrongPassword": "La contraseña no es correcta para este PDF."
+    "pdfWrongPassword": "La contraseña no es correcta para este PDF.",
+    "pdfHasNoImages": "Este PDF no tiene imágenes para extraer (o solo tiene imágenes muy pequeñas)."
   },
   "Tools": {
     "merge-pdf": {
@@ -933,6 +934,22 @@
         "a3": "No. Se quita el cifrado y el contenido (texto, imágenes, formularios y enlaces) queda igual.",
         "q4": "¿Mi PDF y la contraseña se suben a internet?",
         "a4": "No. Todo se hace en tu navegador y nada sale de tu dispositivo."
+      }
+    },
+    "extract-pdf-images": {
+      "title": "Extraer imágenes de un PDF",
+      "description": "Descarga todas las imágenes de un PDF en su calidad original: fotos en JPG tal cual y el resto en PNG, en un ZIP.",
+      "action": "Extraer imágenes",
+      "about": "Extraer imágenes saca las fotos, logos e ilustraciones que hay dentro de un PDF para que las uses por separado: las fotos de un catálogo, las imágenes de una presentación o los gráficos de un informe. No es una captura de la página: obtienes cada imagen con su resolución original. Las que se repiten en varias páginas se descargan una sola vez.",
+      "faq": {
+        "q1": "¿Pierden calidad las imágenes?",
+        "a1": "No. Las fotos guardadas en JPG dentro del PDF se copian byte a byte; las demás se decodifican y se guardan en PNG, que no tiene pérdida.",
+        "q2": "¿Por qué no aparece el texto o los dibujos?",
+        "a2": "Solo se extraen imágenes. El texto y los dibujos vectoriales (líneas, tablas, muchos logos) no son imágenes; para guardarlos usa PDF a JPG, que convierte la página entera.",
+        "q3": "¿Qué pasa con un PDF escaneado?",
+        "a3": "Cada página escaneada es una imagen, así que obtendrás una imagen por página, con la resolución del escaneo.",
+        "q4": "¿Mi PDF se sube a internet?",
+        "a4": "No. Todo se hace en tu navegador y el archivo no sale de tu dispositivo."
       }
     }
   },
@@ -1722,7 +1739,9 @@
       "modify": "Modificar el documento"
     },
     "protectNote": "Se cifra con AES de 256 bits. Guarda la contraseña: si la olvidas, nadie puede recuperarla.",
-    "unlockNote": "Necesitas la contraseña: esta herramienta no adivina ni rompe contraseñas. El PDF resultante se abre sin contraseña y sin restricciones."
+    "unlockNote": "Necesitas la contraseña: esta herramienta no adivina ni rompe contraseñas. El PDF resultante se abre sin contraseña y sin restricciones.",
+    "skipSmallImages": "Ignorar imágenes pequeñas (menos de {size} px de lado)",
+    "extractImagesNote": "Las fotos guardadas como JPG se descargan tal cual, sin perder calidad; las demás imágenes se guardan como PNG (con transparencia si la tienen)."
   },
   "SignPdf": {
     "notCertified": "Esta firma es una imagen visible sobre el PDF, como firmar a mano. No es una firma digital certificada (con certificado o token) y no reemplaza a una cuando un trámite la exige.",

@@ -140,3 +140,9 @@ export async function unlockPdfFile(file: Blob, password: string, job: JobOption
   const bytes = await bytesOf(file);
   return pdfBlob(await call<Uint8Array>("unlock", { bytes, password }, { transfer: [bytes.buffer], ...job }));
 }
+
+/** The images stored as plain JPEG, by object reference ("12R"), to save them unchanged. */
+export async function originalPdfJpegs(file: Blob, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return call<Record<string, Uint8Array>>("jpegs", bytes, { transfer: [bytes.buffer], ...job });
+}

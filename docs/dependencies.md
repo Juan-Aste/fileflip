@@ -27,7 +27,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | libheif-js | 1.23.5 | LGPL-3.0 | lector HEIC/HEIF | N (worker, carga diferida, archivo aparte: cumple la LGPL al poder reemplazarse) |
 | pdf-lib | 1.17.1 | MIT | crear y editar PDF | N (worker) |
 | @neslinesli93/qpdf-wasm | 0.3.0 | ISC (motor qpdf 12.2: Apache-2.0) | cifrar (AES-256) y descifrar PDF con contraseña; WASM de 1,3 MB que solo descargan "Proteger PDF" y "Quitar contraseña" | N (worker de PDF, import diferido) |
-| pdfjs-dist | 6.4.299 | Apache-2.0 | leer y rasterizar PDF | N + S |
+| pdfjs-dist | 6.4.299 | Apache-2.0 | leer y rasterizar PDF; decodificar las imágenes de "Extraer imágenes de PDF" | N + S |
 | fflate | 0.8.3 | MIT | ZIP / DOCX | N + S |
 | docx | 9.12.0 | MIT | PDF → Word | S |
 | papaparse | 5.5.3 | MIT | leer y escribir CSV/TSV (JSON ↔ CSV) | N (worker de datos) |

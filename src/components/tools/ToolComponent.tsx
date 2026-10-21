@@ -52,6 +52,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "sign-pdf": dynamic(() => import("./SignPdfTool")),
   "protect-pdf": dynamic(() => import("./PdfPasswordTools").then((m) => m.ProtectPdfTool)),
   "unlock-pdf": dynamic(() => import("./PdfPasswordTools").then((m) => m.UnlockPdfTool)),
+  "extract-pdf-images": dynamic(() => import("./ExtractPdfImagesTool")),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),
   "remove-exif": dynamic(() => import("./image/RemoveMetadataTool")),
