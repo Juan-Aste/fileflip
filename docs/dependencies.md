@@ -21,7 +21,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | @fontsource-variable/bricolage-grotesque, @fontsource-variable/figtree, @fontsource/bricolage-grotesque | 5.3.0 | OFL-1.1 | tipografías | N |
 | @jsquash/jpeg, png, webp, avif | 1.6.0 / 3.1.1 / 1.5.0 / 2.1.1 | Apache-2.0 | códecs de imagen WASM | N (worker) |
 | gifenc | 1.0.3 | MIT | codificador GIF | N (worker) |
-| @jsquash/oxipng (+ wasm-feature-detect) | 2.3.0 / 1.8.0 | Apache-2.0 (oxipng: MIT) | optimización PNG sin pérdida en "Comprimir imagen"; se importa directo el build de un hilo (el multihilo necesita COOP/COEP) | N (worker de herramientas de imagen) |
+| @jsquash/oxipng (+ wasm-feature-detect) | 2.3.0 / 1.9.0 | Apache-2.0 (oxipng: MIT) | optimización PNG sin pérdida en "Comprimir imagen"; se importa directo el build de un hilo (el multihilo necesita COOP/COEP) | N (worker de herramientas de imagen) |
 | utif2 | 4.1.0 | MIT | lector/escritor TIFF | N (worker) |
 | libheif-js | 1.23.5 | LGPL-3.0 | lector HEIC/HEIF | N (worker, carga diferida, archivo aparte: cumple la LGPL al poder reemplazarse) |
 | pdf-lib | 1.17.1 | MIT | crear y editar PDF | N (worker) |
