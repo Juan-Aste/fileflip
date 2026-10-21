@@ -27,6 +27,7 @@ import {
 import { formats, type Conversion } from "@/config/formats";
 import {
   availableTools,
+  relatedTools,
   toolFromSlug,
   tools,
   type ToolCategory,
@@ -39,7 +40,10 @@ import {
   type LongtailPage,
 } from "@/content/longtail";
 import { routing, type Locale } from "@/i18n/routing";
-import { alternatesFor } from "@/lib/seo";
+import { limits } from "@/config/limits";
+import { jsonLdString } from "@/lib/faq";
+import { formatBytes } from "@/lib/format";
+import { alternatesFor, siteUrl, softwareApplicationJsonLd } from "@/lib/seo";
 
 type Params = { locale: string; slug: string };
 
@@ -187,13 +191,84 @@ export default async function SlugPage({
 
 async function ToolView({ tool }: { tool: ToolInfo }) {
   const t = await getTranslations(`Tools.${tool.id}`);
+  const tp = await getTranslations("ToolPage");
+  const tcat = await getTranslations("Catalog");
+  const locale = (await getLocale()) as Locale;
+  const tt = await getTranslations("Tools");
+  // Questions are numbered q1/a1, q2/a2... in the messages (at least 3 per tool).
+  const faq = Array.from({ length: 12 }, (_, i) => i + 1)
+    .filter((n) => t.has(`faq.q${n}`))
+    .map((n) => ({ q: t(`faq.q${n}`), a: t(`faq.a${n}`) }));
+  const related = relatedTools(tool.id);
+  const size = (bytes: number) => formatBytes(bytes, locale);
+  const limitItems = [
+    tool.limits.files === "single"
+      ? tp("limitSingle", { size: size(limits.free.browserMaxFileBytes) })
+      : tp("limitMultiple", { count: limits.free.browserMaxBatch, size: size(limits.free.browserMaxFileBytes) }),
+    tp("limitPro", { size: size(limits.pro.browserMaxFileBytes), count: limits.pro.browserMaxBatch }),
+    tp("limitTime", { minutes: Math.round(tool.limits.timeoutMs / 60_000) }),
+    tool.engine === "browser" ? tp("limitBrowser") : tp("limitServer"),
+  ];
+  const jsonLd = softwareApplicationJsonLd({
+    name: t("title"),
+    description: t("description"),
+    url: `${siteUrl()}/${locale}/${tool.slugs[locale]}`,
+    locale,
+  });
+
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-8 py-12">
-      <PageHero icon={<ToolIcon id={tool.id} className="h-7 w-7" />} title={t("title")}>
-        <p className="max-w-xl text-lg text-muted text-pretty">{t("description")}</p>
-        <ProcessingBadge engine={tool.engine} />
-      </PageHero>
-      <ToolComponent id={tool.id} />
+    <div className="mx-auto flex max-w-3xl flex-col gap-12 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }} />
+      <div className="flex flex-col gap-8">
+        <PageHero icon={<ToolIcon id={tool.id} className="h-7 w-7" />} title={t("title")}>
+          <p className="max-w-xl text-lg text-muted text-pretty">{t("description")}</p>
+          <ProcessingBadge engine={tool.engine} />
+        </PageHero>
+        <ToolComponent id={tool.id} />
+      </div>
+
+      <section aria-labelledby="about" className="flex flex-col gap-3">
+        <h2 id="about" className="text-2xl font-bold">
+          {tp("aboutTitle", { tool: t("title") })}
+        </h2>
+        <p className="leading-relaxed text-foreground/85">{t("about")}</p>
+      </section>
+
+      <section aria-labelledby="limits" className={`${card} flex flex-col gap-3 p-6`}>
+        <h2 id="limits" className="text-xl font-bold">
+          {tp("limitsTitle")}
+        </h2>
+        <ul className="flex list-disc flex-col gap-1.5 pl-5 text-foreground/85">
+          {limitItems.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="faq" className="flex flex-col gap-4">
+        <h2 id="faq" className="text-2xl font-bold">
+          {tp("faqTitle")}
+        </h2>
+        <FaqList items={faq} locale={locale} />
+      </section>
+
+      <nav aria-labelledby="related" className="flex flex-col gap-4">
+        <h2 id="related" className="text-2xl font-bold">
+          {tp("relatedTitle")}
+        </h2>
+        <ul className="flex flex-wrap gap-2">
+          {related.map((other) => (
+            <li key={other.id}>
+              <PillLink href={`/${other.slugs[locale]}`}>{tt(`${other.id}.title`)}</PillLink>
+            </li>
+          ))}
+          <li>
+            <PillLink href={`/${categorySlug(tool.category, locale)}`}>
+              {tcat("seeCategory", { category: tcat(`categories.${tool.category}.name`) })}
+            </PillLink>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }

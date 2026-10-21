@@ -201,32 +201,86 @@
     "merge-pdf": {
       "title": "Juntar PDF",
       "description": "Combine vários PDFs em um só, na ordem que quiser. Sem enviar seus arquivos.",
-      "action": "Juntar PDF"
+      "action": "Juntar PDF",
+      "about": "Juntar PDF une vários documentos em um único arquivo. Você pode mudar a ordem com os botões de subir e descer antes de juntar. As páginas são copiadas como estão: texto, links e qualidade das imagens não mudam.",
+      "faq": {
+        "q1": "Perco qualidade ao juntar PDF?",
+        "a1": "Não. As páginas são copiadas sem nova compressão, então o texto continua selecionável e as imagens mantêm a resolução.",
+        "q2": "Posso escolher a ordem dos arquivos?",
+        "a2": "Sim. Use os botões de subir e descer de cada arquivo; o PDF final segue a ordem da lista.",
+        "q3": "Posso juntar PDF protegidos por senha?",
+        "a3": "Não. Um PDF criptografado não pode ser lido sem a senha; você verá um aviso e poderá tirá-lo da lista."
+      }
     },
     "split-pdf": {
       "title": "Dividir PDF",
       "description": "Separe um PDF em vários arquivos ou extraia só as páginas que você precisa.",
-      "action": "Dividir PDF"
+      "action": "Dividir PDF",
+      "about": "Dividir PDF separa um documento em vários arquivos. Você pode salvar cada página como um PDF, criar um PDF por intervalo (por exemplo 1-3, 4-6) ou extrair só algumas páginas em um único arquivo. Quando o resultado tem vários PDF, eles são baixados juntos em um ZIP.",
+      "faq": {
+        "q1": "Como escrevo os intervalos de páginas?",
+        "a1": "Separe os intervalos com vírgulas: 1-3, 5, 8-. Um número sozinho é uma página e \"8-\" significa da página 8 até o final.",
+        "q2": "Posso tirar só algumas páginas sem dividir tudo?",
+        "a2": "Sim. Escolha \"Extrair páginas em um só PDF\" e digite as páginas que quer manter.",
+        "q3": "O PDF original é alterado?",
+        "a3": "Não. O Fileflect cria arquivos novos e o seu PDF original continua igual no seu dispositivo."
+      }
     },
     "rotate-pdf": {
       "title": "Girar PDF",
       "description": "Gire as páginas de um PDF e salve com a orientação certa.",
-      "action": "Girar PDF"
+      "action": "Girar PDF",
+      "about": "Girar PDF gira as páginas 90° para a direita, 90° para a esquerda ou 180°. Você pode girar todas as páginas ou só as que indicar, como páginas digitalizadas que ficaram de cabeça para baixo. A rotação fica salva no arquivo, então aparece certa em qualquer leitor.",
+      "faq": {
+        "q1": "Posso girar só algumas páginas?",
+        "a1": "Sim. Escolha \"Só algumas\" e digite as páginas ou intervalos, por exemplo 2, 5-7.",
+        "q2": "Girar o PDF reduz a qualidade?",
+        "a2": "Não. Só muda a orientação das páginas; o conteúdo não é comprimido de novo.",
+        "q3": "A rotação continua ao abrir em outro programa?",
+        "a3": "Sim. A rotação fica salva no PDF e é respeitada pelo Acrobat, pelos navegadores e pelos leitores do celular."
+      }
     },
     "organize-pdf": {
       "title": "Organizar páginas de PDF",
       "description": "Reordene, gire ou exclua páginas de um PDF vendo as miniaturas.",
-      "action": "Salvar PDF"
+      "action": "Salvar PDF",
+      "about": "Organizar PDF mostra uma miniatura de cada página para você reorganizar o documento visualmente: arraste as páginas para o novo lugar (ou use os botões), gire as que precisarem e exclua as que sobram. No final, você baixa um PDF novo na ordem escolhida.",
+      "faq": {
+        "q1": "Posso usar sem mouse?",
+        "a1": "Sim. Cada página tem botões para movê-la antes ou depois, girá-la e excluí-la, acessíveis pelo teclado e em telas sensíveis ao toque.",
+        "q2": "Excluí uma página sem querer. Posso recuperá-la?",
+        "a2": "Sim. O botão \"Restaurar todas\" volta ao documento original antes de baixar.",
+        "q3": "Funciona com PDF de muitas páginas?",
+        "a3": "Sim, embora as miniaturas demorem mais em documentos longos ou com muitas imagens, principalmente no celular."
+      }
     },
     "images-to-pdf": {
       "title": "Imagens para PDF",
       "description": "Transforme fotos JPG, PNG, HEIC e outras em um único PDF.",
-      "action": "Criar PDF"
+      "action": "Criar PDF",
+      "about": "Imagens para PDF cria um documento com uma imagem por página. Aceita JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC (fotos do iPhone) e SVG. Você pode ordenar as imagens, escolher o tamanho da página (igual à imagem, A4 ou Carta) e uma margem; as fotos são giradas conforme a orientação EXIF.",
+      "faq": {
+        "q1": "Posso transformar fotos do iPhone (HEIC) em PDF?",
+        "a1": "Sim. As fotos HEIC são decodificadas no seu navegador e adicionadas ao PDF como qualquer outra imagem.",
+        "q2": "Qual tamanho de página escolher?",
+        "a2": "\"Igual à imagem\" não adiciona bordas. A4 ou Carta servem para imprimir ou enviar documentos: a imagem fica centralizada e ajustada sem distorcer.",
+        "q3": "E se uma imagem estiver danificada?",
+        "a3": "Aparece um aviso com o nome do arquivo que falhou para você removê-lo ou trocá-lo; as outras imagens não se perdem."
+      }
     },
     "compress-pdf": {
       "title": "Comprimir PDF",
       "description": "Diminua o tamanho dos seus PDFs para enviar por e-mail ou WhatsApp.",
-      "action": "Comprimir PDF"
+      "action": "Comprimir PDF",
+      "about": "Comprimir PDF reduz o tamanho do arquivo recodificando as fotos que ele contém, que costumam ser o motivo de um PDF pesado. Texto, fontes e desenhos vetoriais são mantidos como estão. Há três níveis: baixa (melhor qualidade), recomendada e forte (arquivo mais leve).",
+      "faq": {
+        "q1": "Por que meu PDF quase não diminuiu?",
+        "a1": "Se o PDF tem principalmente texto, ou as imagens já estão otimizadas, há pouco a reduzir. Nesse caso o Fileflect avisa em vez de entregar um arquivo maior.",
+        "q2": "O texto fica borrado?",
+        "a2": "Não. Só as imagens são recomprimidas; o texto continua nítido, selecionável e pesquisável.",
+        "q3": "Qual nível escolher para enviar por e-mail ou WhatsApp?",
+        "a3": "A compressão recomendada costuma bastar. Se o arquivo continuar grande, tente a forte: as fotos perdem algum detalhe, mas o documento continua legível."
+      }
     }
   },
   "ToolUi": {
@@ -551,5 +605,17 @@
       "conversion": "Conversão",
       "guide": "Guia"
     }
+  },
+  "ToolPage": {
+    "aboutTitle": "O que {tool} faz",
+    "limitsTitle": "Limites",
+    "limitSingle": "Um arquivo por vez, de até {size}.",
+    "limitMultiple": "Até {count} arquivos por vez, de até {size} cada.",
+    "limitPro": "Com o Pro: arquivos de até {size} e até {count} por lote.",
+    "limitTime": "Se um trabalho demorar mais de {minutes} minutos, ele é interrompido para não travar seu dispositivo.",
+    "limitBrowser": "Processado no seu navegador: seus arquivos nunca são enviados a um servidor.",
+    "limitServer": "Processado no nosso servidor por conexão criptografada; o arquivo é apagado em menos de 1 hora.",
+    "faqTitle": "Perguntas frequentes",
+    "relatedTitle": "Ferramentas relacionadas"
   }
 }

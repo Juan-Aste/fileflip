@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { alternatesFor, sitemapEntries } from "./seo";
+import { alternatesFor, sitemapEntries, softwareApplicationJsonLd } from "./seo";
 
 describe("alternatesFor", () => {
   it("lists every language plus x-default", () => {
@@ -37,5 +37,24 @@ describe("sitemapEntries", () => {
 
   it("leaves out private pages", () => {
     expect(entries.some((e) => /\/(account|login)/.test(e.url))).toBe(false);
+  });
+});
+
+describe("softwareApplicationJsonLd", () => {
+  it("describes a free web tool", () => {
+    const data = softwareApplicationJsonLd({
+      name: "Unir PDF",
+      description: "Combina PDF",
+      url: "https://example.com/es/unir-pdf",
+      locale: "es",
+    });
+    expect(data).toMatchObject({
+      "@type": "SoftwareApplication",
+      name: "Unir PDF",
+      url: "https://example.com/es/unir-pdf",
+      inLanguage: "es",
+      isAccessibleForFree: true,
+      offers: { price: "0" },
+    });
   });
 });

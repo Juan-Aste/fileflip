@@ -155,3 +155,17 @@ export function conversionCategory(conversion: Pick<Conversion, "from" | "to">):
   if (from === "pdf" || conversion.to === "pdf") return "pdf";
   return "image";
 }
+
+/**
+ * Published tools to link from a tool's page: same category first, then
+ * tools sharing an input format, in registry order.
+ */
+export function relatedTools(id: ToolId, max = 6): ToolInfo[] {
+  const tool = tools[id];
+  const others = availableTools.map((other) => tools[other]).filter((other) => other.id !== id);
+  const sameCategory = others.filter((other) => other.category === tool.category);
+  const sharedInput = others.filter(
+    (other) => other.category !== tool.category && other.inputs.some((f) => tool.inputs.includes(f)),
+  );
+  return [...sameCategory, ...sharedInput].slice(0, max);
+}

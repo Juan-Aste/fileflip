@@ -201,32 +201,86 @@
     "merge-pdf": {
       "title": "Fusionner des PDF",
       "description": "Combinez plusieurs PDF en un seul, dans l'ordre de votre choix. Sans envoyer vos fichiers.",
-      "action": "Fusionner"
+      "action": "Fusionner",
+      "about": "Fusionner PDF réunit plusieurs documents en un seul fichier. Vous pouvez changer l'ordre avec les boutons monter et descendre avant de fusionner. Les pages sont copiées telles quelles : le texte, les liens et la qualité des images ne changent pas.",
+      "faq": {
+        "q1": "La fusion fait-elle perdre de la qualité ?",
+        "a1": "Non. Les pages sont copiées sans recompression : le texte reste sélectionnable et les images gardent leur résolution.",
+        "q2": "Puis-je choisir l'ordre des fichiers ?",
+        "a2": "Oui. Utilisez les boutons monter et descendre de chaque fichier ; le PDF final suit l'ordre de la liste.",
+        "q3": "Puis-je fusionner des PDF protégés par mot de passe ?",
+        "a3": "Non. Un PDF chiffré ne peut pas être lu sans son mot de passe ; un avertissement s'affiche et vous pouvez le retirer de la liste."
+      }
     },
     "split-pdf": {
       "title": "Diviser un PDF",
       "description": "Séparez un PDF en plusieurs fichiers ou extrayez uniquement les pages utiles.",
-      "action": "Diviser"
+      "action": "Diviser",
+      "about": "Diviser PDF sépare un document en plusieurs fichiers. Vous pouvez enregistrer chaque page dans son propre PDF, créer un PDF par plage (par exemple 1-3, 4-6) ou extraire seulement certaines pages dans un seul fichier. Quand le résultat contient plusieurs PDF, ils sont téléchargés ensemble dans un ZIP.",
+      "faq": {
+        "q1": "Comment écrire les plages de pages ?",
+        "a1": "Séparez les plages par des virgules : 1-3, 5, 8-. Un nombre seul est une page et « 8- » signifie de la page 8 jusqu'à la fin.",
+        "q2": "Puis-je extraire quelques pages sans tout diviser ?",
+        "a2": "Oui. Choisissez « Extraire des pages dans un seul PDF » et indiquez les pages à garder.",
+        "q3": "Le PDF d'origine est-il modifié ?",
+        "a3": "Non. Fileflect crée de nouveaux fichiers et votre PDF d'origine reste intact sur votre appareil."
+      }
     },
     "rotate-pdf": {
       "title": "Pivoter un PDF",
       "description": "Faites pivoter les pages d'un PDF et enregistrez-le dans le bon sens.",
-      "action": "Pivoter"
+      "action": "Pivoter",
+      "about": "Faire pivoter PDF tourne les pages de 90° vers la droite, de 90° vers la gauche ou de 180°. Vous pouvez faire pivoter toutes les pages ou seulement celles que vous indiquez, par exemple des pages scannées à l'envers. La rotation est enregistrée dans le fichier et s'affiche correctement dans tous les lecteurs.",
+      "faq": {
+        "q1": "Puis-je faire pivoter seulement certaines pages ?",
+        "a1": "Oui. Choisissez « Seulement certaines » et indiquez les pages ou plages, par exemple 2, 5-7.",
+        "q2": "La rotation réduit-elle la qualité ?",
+        "a2": "Non. Seule l'orientation des pages change ; le contenu n'est pas recompressé.",
+        "q3": "La rotation est-elle conservée dans d'autres logiciels ?",
+        "a3": "Oui. Elle est enregistrée dans le PDF et respectée par Acrobat, les navigateurs et les lecteurs sur mobile."
+      }
     },
     "organize-pdf": {
       "title": "Organiser les pages d'un PDF",
       "description": "Réorganisez, pivotez ou supprimez des pages à l'aide des miniatures.",
-      "action": "Enregistrer le PDF"
+      "action": "Enregistrer le PDF",
+      "about": "Organiser PDF affiche une miniature de chaque page pour réorganiser le document visuellement : faites glisser les pages à leur nouvelle place (ou utilisez les boutons), faites pivoter celles qui en ont besoin et supprimez celles en trop. À la fin, vous téléchargez un nouveau PDF dans l'ordre choisi.",
+      "faq": {
+        "q1": "Puis-je l'utiliser sans souris ?",
+        "a1": "Oui. Chaque page a des boutons pour la déplacer avant ou après, la faire pivoter et la supprimer, utilisables au clavier et sur écran tactile.",
+        "q2": "J'ai supprimé une page par erreur. Puis-je la récupérer ?",
+        "a2": "Oui. Le bouton « Tout restaurer » rétablit le document d'origine avant le téléchargement.",
+        "q3": "Est-ce que ça marche avec de longs PDF ?",
+        "a3": "Oui, mais les miniatures prennent plus de temps pour les documents longs ou riches en images, surtout sur mobile."
+      }
     },
     "images-to-pdf": {
       "title": "Images en PDF",
       "description": "Transformez vos photos JPG, PNG, HEIC et autres en un seul PDF.",
-      "action": "Créer le PDF"
+      "action": "Créer le PDF",
+      "about": "Images en PDF crée un document avec une image par page. Il accepte JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC (photos d'iPhone) et SVG. Vous pouvez réordonner les images, choisir le format de page (comme l'image, A4 ou Lettre US) et une marge ; les photos sont tournées selon leur orientation EXIF.",
+      "faq": {
+        "q1": "Puis-je convertir des photos d'iPhone (HEIC) en PDF ?",
+        "a1": "Oui. Les photos HEIC sont décodées dans votre navigateur et ajoutées au PDF comme n'importe quelle autre image.",
+        "q2": "Quel format de page choisir ?",
+        "a2": "« Comme l'image » n'ajoute pas de bordure. A4 ou Lettre US conviennent pour imprimer ou envoyer des documents : l'image est centrée et ajustée sans être déformée.",
+        "q3": "Que se passe-t-il si une image est endommagée ?",
+        "a3": "Un avertissement indique le nom du fichier en cause pour que vous le retiriez ou le remplaciez ; les autres images sont conservées."
+      }
     },
     "compress-pdf": {
       "title": "Compresser un PDF",
       "description": "Allégez vos PDF pour les envoyer par e-mail ou WhatsApp.",
-      "action": "Compresser"
+      "action": "Compresser",
+      "about": "Compresser PDF réduit le poids du fichier en réencodant les photos qu'il contient, qui sont généralement la cause d'un PDF lourd. Le texte, les polices et les dessins vectoriels sont conservés tels quels. Il y a trois niveaux : faible (meilleure qualité), recommandée et forte (fichier le plus léger).",
+      "faq": {
+        "q1": "Pourquoi mon PDF a-t-il à peine diminué ?",
+        "a1": "Si le PDF contient surtout du texte, ou si ses images sont déjà optimisées, il y a peu à réduire. Fileflect vous le signale au lieu de vous donner un fichier plus gros.",
+        "q2": "Le texte devient-il flou ?",
+        "a2": "Non. Seules les images sont recompressées ; le texte reste net, sélectionnable et consultable.",
+        "q3": "Quel niveau choisir pour un e-mail ou WhatsApp ?",
+        "a3": "La compression recommandée suffit généralement. Si le fichier reste lourd, essayez la forte : les photos perdent un peu de détail mais le document reste lisible."
+      }
     }
   },
   "ToolUi": {
@@ -551,5 +605,17 @@
       "conversion": "Conversion",
       "guide": "Guide"
     }
+  },
+  "ToolPage": {
+    "aboutTitle": "Ce que fait {tool}",
+    "limitsTitle": "Limites",
+    "limitSingle": "Un fichier à la fois, jusqu'à {size}.",
+    "limitMultiple": "Jusqu'à {count} fichiers à la fois, jusqu'à {size} chacun.",
+    "limitPro": "Avec Pro : fichiers jusqu'à {size} et jusqu'à {count} par lot.",
+    "limitTime": "Un traitement qui dure plus de {minutes} minutes est arrêté pour ne pas bloquer votre appareil.",
+    "limitBrowser": "Traité dans votre navigateur : vos fichiers ne sont jamais envoyés sur un serveur.",
+    "limitServer": "Traité sur notre serveur via une connexion chiffrée ; le fichier est supprimé en moins d'une heure.",
+    "faqTitle": "Questions fréquentes",
+    "relatedTitle": "Outils associés"
   }
 }

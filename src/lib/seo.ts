@@ -59,3 +59,29 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
   });
   return [...localized, ...longtail];
 }
+
+/** SoftwareApplication structured data (schema.org) for a free web tool page. */
+export function softwareApplicationJsonLd({
+  name,
+  description,
+  url,
+  locale,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  locale: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name,
+    description,
+    url,
+    inLanguage: locale,
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Web browser",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  };
+}

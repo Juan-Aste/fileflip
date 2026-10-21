@@ -1412,3 +1412,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - 12 tests de la lógica de estado. Lint, typecheck, tests (484) y build pasan (una corrida con `next start` abierto en paralelo tuvo un test lento por timeout; repetida sin carga, todo verde). El componente todavía no tiene consumidores: su prueba de navegador llega con la primera herramienta de 3C (3C.1) y la base de 3B.7.
+
+## 2026-10-21 00:55 UTC — Fase 3, tarea 3B.6 (plantilla de página de herramienta)
+
+**Qué se hizo**
+- La página de cada herramienta (`ToolView` en `src/app/[locale]/[slug]/page.tsx`) ahora tiene: encabezado + herramienta, "Qué hace …" (texto propio), **Límites** generados del registro y del plan (archivos por vez y tamaño máximo del plan gratis, lo que da Pro, tiempo máximo por trabajo, dónde se procesa), **preguntas frecuentes** con `FAQPage` (componente `FaqList` existente), **herramientas relacionadas** (`relatedTools` en `tools.ts`: misma categoría primero, luego las que comparten formato de entrada) con enlace a la categoría, y datos estructurados `SoftwareApplication` (`softwareApplicationJsonLd` en `seo.ts`, gratis, en el idioma de la página).
+- Textos: `Tools.<id>.about` y `Tools.<id>.faq.q1/a1…` (3 preguntas por herramienta, con los nombres reales de los botones de cada idioma) para las 6 herramientas PDF en los 5 idiomas, y el namespace `ToolPage` (títulos de sección y frases de límites).
+
+**Convenciones**
+- Las preguntas se numeran `q1/a1`, `q2/a2`… sin huecos; la página lee hasta que falta una (máximo 12). Se usa el namespace existente `Tools.<id>` en lugar del `Catalog.<id>` que decía el plan, para no duplicar título/descripción.
+- Los límites que se muestran salen de `limits.ts` y del `timeoutMs` del registro: si cambian, la página cambia sola.
+
+**Verificación**
+- Tests nuevos: cada herramienta publicada tiene introducción (> 120 caracteres; > 40 en chino) y ≥ 3 preguntas numeradas con respuesta en los 5 idiomas, sin introducciones repetidas entre herramientas; `relatedTools`; `softwareApplicationJsonLd`. Lint, typecheck, tests (488), build y `check:static` (567 páginas) pasan; `pdf-tools.mjs` 19/19.
+- Capturas revisadas con Playwright: `/es/unir-pdf` a 1280 px claro y `/zh/compress-pdf` a 360 px oscuro (ambas con `SoftwareApplication` + `FAQPage`). Se corrigió un texto que mencionaba arrastrar en "Unir PDF" (esa herramienta ordena con botones).

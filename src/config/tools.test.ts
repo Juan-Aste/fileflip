@@ -8,6 +8,7 @@ import { translatePathname } from "./routes";
 import {
   availableTools,
   conversionCategory,
+  relatedTools,
   toolCategories,
   toolFromSlug,
   toolIds,
@@ -46,6 +47,43 @@ describe("tool registry", () => {
         expect(t?.action, `${locale} ${id}`).toBeTruthy();
       }
     }
+  });
+
+  it("has an introduction and at least 3 numbered questions in every language for published tools", () => {
+    for (const locale of locales) {
+      for (const id of availableTools) {
+        const t = messages[locale].Tools[id];
+        // Chinese says the same in about a third of the characters.
+        expect(t?.about?.length, `${locale} ${id} about`).toBeGreaterThan(locale === "zh" ? 40 : 120);
+        const faq: Record<string, string> = t?.faq ?? {};
+        const numbers = Object.keys(faq)
+          .filter((k) => k.startsWith("q"))
+          .map((k) => Number(k.slice(1)));
+        expect(numbers.length, `${locale} ${id} faq`).toBeGreaterThanOrEqual(3);
+        // Numbered from 1 without gaps (the page reads q1, q2... until one is missing).
+        expect(numbers.sort((a, b) => a - b)).toEqual(numbers.map((_, i) => i + 1));
+        for (const n of numbers) expect(faq[`a${n}`], `${locale} ${id} a${n}`).toBeTruthy();
+      }
+    }
+  });
+
+  it("gives every page its own introduction (no copies between tools)", () => {
+    for (const locale of locales) {
+      const intros = availableTools.map((id) => messages[locale].Tools[id].about);
+      expect(new Set(intros).size).toBe(intros.length);
+    }
+  });
+
+  it("links related tools from the same category first, never itself", () => {
+    for (const id of availableTools) {
+      const related = relatedTools(id);
+      expect(related.map((t) => t.id)).not.toContain(id);
+      expect(related.every((t) => t.status === "verified")).toBe(true);
+      const firstOther = related.findIndex((t) => t.category !== tools[id].category);
+      if (firstOther !== -1) expect(related.slice(firstOther).every((t) => t.category !== tools[id].category)).toBe(true);
+    }
+    expect(relatedTools("merge-pdf").map((t) => t.id)).toContain("split-pdf");
+    expect(relatedTools("merge-pdf", 2)).toHaveLength(2);
   });
 
   it("groups published tools by category", () => {

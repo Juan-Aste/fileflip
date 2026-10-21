@@ -201,32 +201,86 @@
     "merge-pdf": {
       "title": "Merge PDF",
       "description": "Combine several PDFs into one, in any order. Your files are never uploaded.",
-      "action": "Merge PDF"
+      "action": "Merge PDF",
+      "about": "Merge PDF joins several documents into a single file. You can change the order with the move up and move down buttons before merging. Pages are copied as they are: text, links and image quality don't change.",
+      "faq": {
+        "q1": "Do I lose quality when merging PDFs?",
+        "a1": "No. Pages are copied without being recompressed, so text stays selectable and images keep their resolution.",
+        "q2": "Can I choose the order of the files?",
+        "a2": "Yes. Use each file's move up and move down buttons; the final PDF follows the order of the list.",
+        "q3": "Can I merge password-protected PDFs?",
+        "a3": "No. An encrypted PDF can't be read without its password; you'll see a warning and can remove it from the list."
+      }
     },
     "split-pdf": {
       "title": "Split PDF",
       "description": "Split a PDF into several files or extract just the pages you need.",
-      "action": "Split PDF"
+      "action": "Split PDF",
+      "about": "Split PDF separates a document into several files. You can save each page as its own PDF, make one PDF per range (for example 1-3, 4-6) or extract just some pages into a single file. When the result has several PDFs, they download together as a ZIP.",
+      "faq": {
+        "q1": "How do I write page ranges?",
+        "a1": "Separate ranges with commas: 1-3, 5, 8-. A single number is one page and \"8-\" means from page 8 to the end.",
+        "q2": "Can I take out just a few pages without splitting everything?",
+        "a2": "Yes. Choose \"Extract pages into one PDF\" and type the pages you want to keep.",
+        "q3": "Is the original PDF changed?",
+        "a3": "No. Fileflect creates new files and your original PDF stays the same on your device."
+      }
     },
     "rotate-pdf": {
       "title": "Rotate PDF",
       "description": "Turn the pages of a PDF and save it the right way up.",
-      "action": "Rotate PDF"
+      "action": "Rotate PDF",
+      "about": "Rotate PDF turns pages 90° clockwise, 90° counterclockwise or 180°. You can rotate every page or only the ones you list, such as scanned pages that came out upside down. The rotation is saved in the file, so it looks right in any reader.",
+      "faq": {
+        "q1": "Can I rotate only some pages?",
+        "a1": "Yes. Choose \"Only some\" and type the pages or ranges, for example 2, 5-7.",
+        "q2": "Does rotating a PDF reduce quality?",
+        "a2": "No. Only the page orientation changes; the content isn't recompressed.",
+        "q3": "Does the rotation stay when I open it in another app?",
+        "a3": "Yes. The rotation is saved in the PDF and is respected by Acrobat, web browsers and phone readers."
+      }
     },
     "organize-pdf": {
       "title": "Organize PDF pages",
       "description": "Reorder, rotate or delete PDF pages with thumbnails.",
-      "action": "Save PDF"
+      "action": "Save PDF",
+      "about": "Organize PDF shows a thumbnail of every page so you can rearrange the document visually: drag pages to their new place (or use the buttons), rotate the ones that need it and delete the ones you don't want. When you're done, you download a new PDF in the chosen order.",
+      "faq": {
+        "q1": "Can I use it without a mouse?",
+        "a1": "Yes. Each page has buttons to move it earlier or later, rotate it and delete it, usable with the keyboard and on touch screens.",
+        "q2": "I deleted a page by mistake. Can I get it back?",
+        "a2": "Yes. The \"Restore all\" button brings back the original document before you download.",
+        "q3": "Does it work with long PDFs?",
+        "a3": "Yes, although thumbnails take longer to generate for long or image-heavy documents, especially on phones."
+      }
     },
     "images-to-pdf": {
       "title": "Images to PDF",
       "description": "Turn JPG, PNG, HEIC and other photos into a single PDF.",
-      "action": "Create PDF"
+      "action": "Create PDF",
+      "about": "Images to PDF creates a document with one image per page. It accepts JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC (iPhone photos) and SVG. You can reorder the images, choose the page size (same as the image, A4 or Letter) and a margin; photos are turned according to their EXIF orientation.",
+      "faq": {
+        "q1": "Can I turn iPhone photos (HEIC) into a PDF?",
+        "a1": "Yes. HEIC photos are decoded in your browser and added to the PDF like any other image.",
+        "q2": "Which page size should I pick?",
+        "a2": "\"Same as image\" adds no borders. A4 or Letter are good for printing or sending documents: the image is centered and fitted without stretching.",
+        "q3": "What if an image is damaged?",
+        "a3": "You'll see a warning with the name of the file that failed so you can remove or replace it; your other images are kept."
+      }
     },
     "compress-pdf": {
       "title": "Compress PDF",
       "description": "Make your PDFs smaller to send them by email or WhatsApp.",
-      "action": "Compress PDF"
+      "action": "Compress PDF",
+      "about": "Compress PDF makes the file smaller by re-encoding the photos inside it, which are usually why a PDF is heavy. Text, fonts and vector drawings are kept as they are. There are three levels: low (best quality), recommended and strong (smallest file).",
+      "faq": {
+        "q1": "Why did my PDF barely shrink?",
+        "a1": "If the PDF is mostly text, or its images are already optimized, there's little to reduce. In that case Fileflect tells you instead of giving you a bigger file.",
+        "q2": "Does the text get blurry?",
+        "a2": "No. Only images are recompressed; text stays sharp, selectable and searchable.",
+        "q3": "Which level should I pick for email or WhatsApp?",
+        "a3": "Recommended is usually enough. If the file is still large, try strong: photos lose some detail but the document stays readable."
+      }
     }
   },
   "ToolUi": {
@@ -551,5 +605,17 @@
       "conversion": "Conversion",
       "guide": "Guide"
     }
+  },
+  "ToolPage": {
+    "aboutTitle": "What {tool} does",
+    "limitsTitle": "Limits",
+    "limitSingle": "One file at a time, up to {size}.",
+    "limitMultiple": "Up to {count} files at a time, up to {size} each.",
+    "limitPro": "With Pro: files up to {size} and up to {count} per batch.",
+    "limitTime": "A job that takes longer than {minutes} minutes is stopped so it doesn't freeze your device.",
+    "limitBrowser": "Processed in your browser: your files are never uploaded to a server.",
+    "limitServer": "Processed on our server over an encrypted connection; the file is deleted within 1 hour.",
+    "faqTitle": "Frequently asked questions",
+    "relatedTitle": "Related tools"
   }
 }
