@@ -689,6 +689,38 @@
         "q4": "Pourquoi l'aperçu est-il plus petit que ma photo ?",
         "a4": "Une copie réduite est affichée pour que l'édition reste rapide, mais le recadrage s'applique à l'image d'origine complète : les valeurs en pixels sont celles de la vraie photo."
       }
+    },
+    "watermark-image": {
+      "title": "Filigrane sur des images",
+      "description": "Ajoutez votre nom, un texte ou votre logo en filigrane à de nombreuses photos à la fois, dans un coin ou en mosaïque.",
+      "action": "Ajouter le filigrane",
+      "about": "Filigrane sur des images protège vos photos avec un texte (votre nom, votre marque, « exemple », « confidentiel ») ou avec votre logo. Choisissez la position sur une grille de 9 emplacements ou une mosaïque inclinée qui couvre toute l'image, la taille, la couleur et l'opacité, et vérifiez le résultat dans l'aperçu avant de lancer le traitement. Il s'applique de la même façon à toutes les photos du lot, avec une taille proportionnelle à chacune. Fonctionne avec JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF et HEIC, et tout est traité dans votre navigateur.",
+      "faq": {
+        "q1": "Puis-je utiliser mon logo avec un fond transparent ?",
+        "a1": "Oui : choisissez « Logo ou image » et envoyez un PNG ou WEBP avec transparence. Le logo est mis à l'échelle selon un pourcentage de la largeur de chaque photo, il rend donc pareil sur les grandes et les petites photos.",
+        "q2": "À quoi sert la mosaïque ?",
+        "a2": "Elle répète le filigrane incliné sur toute l'image. C'est plus difficile à rogner ou à effacer qu'une marque dans un coin, idéal pour les documents ou les photos partagées comme exemples.",
+        "q3": "Peut-on retirer le filigrane ensuite ?",
+        "a3": "Pas du nouveau fichier : la marque est dessinée dans les pixels. Gardez vos originaux sans filigrane ; l'outil ne les modifie jamais.",
+        "q4": "Y a-t-il une perte de qualité ?",
+        "a4": "PNG, BMP, TIFF et GIF ne perdent rien. JPG, WEBP et AVIF sont réenregistrés en haute qualité (92). La taille en pixels ne change pas."
+      }
+    },
+    "add-text-to-image": {
+      "title": "Ajouter du texte à une image",
+      "description": "Écrivez sur vos photos avec la police, la taille, la couleur, le contour et la position de votre choix, avec un aperçu instantané.",
+      "action": "Ajouter le texte",
+      "about": "Ajouter du texte à une image vous permet d'écrire une ou plusieurs lignes sur une photo : un titre, une date, un prix, une citation à partager. Choisissez la police, le gras, la taille, la couleur, un contour lisible sur tout fond ou un fond derrière le texte, et la position sur une grille de 9 emplacements. L'aperçu se met à jour pendant que vous écrivez. Vous pouvez appliquer le même texte à plusieurs images. Fonctionne avec JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF et HEIC, dans votre navigateur.",
+      "faq": {
+        "q1": "Puis-je écrire sur plusieurs lignes ?",
+        "a1": "Oui : chaque retour à la ligne dans la zone de texte crée une nouvelle ligne, centrées entre elles. Vous pouvez écrire jusqu'à 500 caractères.",
+        "q2": "Quelles polices sont disponibles ?",
+        "a2": "Sans empattement, avec empattement et à chasse fixe, avec les polices de votre système ; les accents, les emojis et le chinois s'affichent comme sur votre appareil.",
+        "q3": "Le texte est peu lisible sur ma photo. Que faire ?",
+        "a3": "Activez « Contour », qui ajoute une bordure de couleur opposée autour de chaque lettre, ou « Fond derrière le texte », qui ajoute un cadre semi-transparent.",
+        "q4": "La taille du texte dépend-elle de la photo ?",
+        "a4": "Oui : c'est un pourcentage du plus petit côté de l'image, donc le texte paraît aussi grand sur une photo de téléphone que sur une petite capture."
+      }
     }
   },
   "ToolUi": {
@@ -1330,6 +1362,48 @@
       "height": "Hauteur (px)"
     },
     "cropSize": "Recadrage de {width} × {height} px (l'image mesure {imageWidth} × {imageHeight} px)",
-    "croppedTo": "{name} : recadrée à {size} px"
+    "croppedTo": "{name} : recadrée à {size} px",
+    "overlayPreview": "Aperçu (première image)",
+    "overlayMode": "Type de filigrane",
+    "modeText": "Texte",
+    "modeLogo": "Logo ou image",
+    "logoFile": "Logo (PNG, JPG ou WEBP)",
+    "logoHint": "Un PNG à fond transparent rend mieux. Jusqu'à 10 Mo.",
+    "logoInvalid": "Impossible de lire le logo : choisissez un PNG, JPG ou WEBP de 10 Mo maximum.",
+    "watermarkText": "Texte du filigrane",
+    "watermarkDefault": "© Votre nom",
+    "textContent": "Texte",
+    "textDefault": "Votre texte ici",
+    "font": "Police",
+    "fonts": {
+      "sans": "Sans empattement",
+      "serif": "Avec empattement",
+      "mono": "Chasse fixe"
+    },
+    "textColor": "Couleur",
+    "bold": "Gras",
+    "outline": "Contour (lisible sur tout fond)",
+    "textBackground": "Fond derrière le texte",
+    "overlaySize": "Taille",
+    "overlaySizes": {
+      "s": "Petite",
+      "m": "Moyenne",
+      "l": "Grande",
+      "xl": "Très grande"
+    },
+    "opacity": "Opacité : {value} %",
+    "overlayPosition": "Position",
+    "positions": {
+      "tl": "En haut à gauche",
+      "tc": "En haut au centre",
+      "tr": "En haut à droite",
+      "ml": "Au milieu à gauche",
+      "mc": "Centre",
+      "mr": "Au milieu à droite",
+      "bl": "En bas à gauche",
+      "bc": "En bas au centre",
+      "br": "En bas à droite"
+    },
+    "positionTile": "Mosaïque (toute l'image)"
   }
 }

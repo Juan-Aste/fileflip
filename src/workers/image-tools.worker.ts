@@ -12,6 +12,7 @@ import {
 } from "@/lib/image/compress";
 import { isValidCrop, type Rect } from "@/lib/image/crop-rect";
 import { decodeImage } from "@/lib/image/decode";
+import { drawOverlay, type OverlaySpec } from "@/lib/image/overlay";
 import { isDamagedImage } from "@/lib/image/integrity";
 import { DEFAULT_QUALITY } from "@/lib/image/options";
 import type { RawImage } from "@/lib/image/pixels";
@@ -344,4 +345,43 @@ async function crop({ input, from, to, rect }: CropArgs, onProgress: (progress: 
   return { result: { buffer, width: rect.width, height: rect.height }, transfer: [buffer] };
 }
 
-exposeHandlers({ compress, resize, transform, strip, preview, crop });
+export interface OverlayArgs {
+  input: Blob;
+  from: FormatId;
+  to: FormatId;
+  spec: OverlaySpec;
+  /** PNG, JPG or WEBP, for logo overlays. */
+  logo?: Blob;
+}
+
+async function overlay({ input, from, to, spec, logo }: OverlayArgs, onProgress: (progress: number) => void) {
+  const image = await decode(await input.arrayBuffer(), from);
+  onProgress(0.3);
+  let logoBitmap: ImageBitmap | undefined;
+  if (spec.item.kind === "logo") {
+    if (!logo) throw new ConversionError("invalidRequest");
+    try {
+      logoBitmap = await createImageBitmap(logo);
+    } catch {
+      throw new ConversionError("fileDamaged");
+    }
+  }
+  const source = await createImageBitmap(new ImageData(new Uint8ClampedArray(image.data), image.width, image.height));
+  let out: RawImage;
+  try {
+    const ctx = new OffscreenCanvas(image.width, image.height).getContext("2d");
+    if (!ctx) throw new Error("No 2D context");
+    ctx.drawImage(source, 0, 0);
+    drawOverlay(ctx, image.width, image.height, spec, logoBitmap);
+    out = ctx.getImageData(0, 0, image.width, image.height);
+  } finally {
+    source.close();
+    logoBitmap?.close();
+  }
+  onProgress(0.6);
+  const buffer = await encode(out, to, KEEP_QUALITY);
+  onProgress(1);
+  return { result: { buffer, width: image.width, height: image.height }, transfer: [buffer] };
+}
+
+exposeHandlers({ compress, resize, transform, strip, preview, crop, overlay });

@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { Page } from "@playwright/test";
 import exifr from "exifr";
+import jsQR from "jsqr";
 import sharp from "sharp";
 import { expect, fileOf, fixturePath, inspectImage, runTool, test, toolAlert, waitForResult } from "./support";
 
@@ -357,5 +358,93 @@ test.describe("tool: crop-image", () => {
     await pick(page, [fixturePath("corrupt/truncated.png")]);
     await expect(toolAlert(page)).toContainText("danificad");
     await expect(page.getByRole("button", { name: "Cortar imagem", exact: true })).toBeDisabled();
+  });
+});
+
+/** Share of pixels in a region that differ from the original by more than 40 (any channel). */
+async function changedShare(out: Buffer, original: string, region: { left: number; top: number; width: number; height: number }) {
+  const a = await sharp(out).extract(region).removeAlpha().raw().toBuffer();
+  const b = await sharp(original).extract(region).removeAlpha().raw().toBuffer();
+  let changed = 0;
+  for (let i = 0; i < a.length; i += 3) {
+    if (Math.abs(a[i]! - b[i]!) > 40 || Math.abs(a[i + 1]! - b[i + 1]!) > 40 || Math.abs(a[i + 2]! - b[i + 2]!) > 40) changed++;
+  }
+  return changed / (a.length / 3);
+}
+const quadrants = [
+  { left: 0, top: 0, width: 500, height: 375 },
+  { left: 500, top: 0, width: 500, height: 375 },
+  { left: 0, top: 375, width: 500, height: 375 },
+  { left: 500, top: 375, width: 500, height: 375 },
+];
+
+test.describe("tool: watermark-image", () => {
+  test("text in the bottom-right corner only, with a live preview", async ({ page }) => {
+    await page.goto("/en/watermark-image", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.jpg")]);
+    await expect(page.getByRole("img", { name: "Preview (first image)" })).toBeVisible();
+    await page.getByRole("textbox", { name: "Watermark text" }).fill("SAMPLE 2026");
+    await page.getByRole("slider", { name: /Opacity/ }).fill("100");
+    await expect(page.getByText("Opacity: 100%")).toBeVisible();
+    await choose(page, "Large");
+    await choose(page, "PNG");
+    const out = fileOf(await runTool(page, "Add watermark"));
+    expect(out.name).toBe("photo.png");
+    expect(await inspectImage(out.buf)).toMatchObject({ format: "png", width: 1000, height: 750 });
+    const photoPath = fixturePath("photo.jpg");
+    expect(await changedShare(out.buf, photoPath, quadrants[0]!)).toBe(0);
+    expect(await changedShare(out.buf, photoPath, quadrants[1]!)).toBe(0);
+    expect(await changedShare(out.buf, photoPath, quadrants[2]!)).toBe(0);
+    expect(await changedShare(out.buf, photoPath, { left: 600, top: 650, width: 380, height: 80 })).toBeGreaterThan(0.05);
+  });
+
+  test("a logo in the center can be read back (QR as the logo)", async ({ page }) => {
+    await page.goto("/es/marca-de-agua-imagen", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.jpg")]);
+    await choose(page, "Logo o imagen");
+    await expect(page.getByRole("button", { name: "Agregar marca de agua", exact: true })).toBeDisabled();
+    await page.getByLabel("Logo (PNG, JPG o WEBP)").setInputFiles(fixturePath("qr.png"));
+    await choose(page, "50 %");
+    await page.getByRole("slider", { name: /Opacidad/ }).fill("100");
+    await page.getByRole("radio", { name: "Centro", exact: true }).check({ force: true });
+    await choose(page, "PNG");
+    const out = fileOf(await runTool(page, "Agregar marca de agua"));
+    const { data, info } = await sharp(out.buf).extract({ left: 200, top: 75, width: 600, height: 600 }).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    expect(jsQR(new Uint8ClampedArray(data), info.width, info.height)?.data).toBe("https://fileflect.example/qr-test?ok=1");
+    expect(await changedShare(out.buf, fixturePath("photo.jpg"), { left: 0, top: 0, width: 150, height: 750 })).toBe(0);
+  });
+
+  test("tiled over the whole image, in a batch with HEIC and a damaged file", async ({ page }) => {
+    await page.goto("/pt/marca-dagua-imagem", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.jpg"), fixturePath("photo.heic"), fixturePath("corrupt/truncated.png")]);
+    await page.getByText("Mosaico (imagem inteira)").click();
+    await page.getByRole("button", { name: "Adicionar marca d'água", exact: true }).click();
+    const items = page.locator("main ul").filter({ has: page.locator("a[download]") }).locator("li");
+    await expect(items).toHaveCount(3, { timeout: 60_000 });
+    await expect(items.nth(2)).toContainText("danificad");
+    const jpg = fileOf(await waitForResult(page, page.locator('main a[download="photo.jpg"]').first(), toolAlert(page)));
+    for (const q of quadrants) expect(await changedShare(jpg.buf, fixturePath("photo.jpg"), q)).toBeGreaterThan(0.01);
+  });
+});
+
+test.describe("tool: add-text-to-image", () => {
+  test("text with a box at the top center; the rest untouched", async ({ page }) => {
+    await page.goto("/es/agregar-texto-a-imagen", { waitUntil: "networkidle" });
+    await pick(page, [fixturePath("photo.jpg")]);
+    await page.getByRole("textbox", { name: "Texto" }).fill("Hola\nSegunda línea ñ");
+    await choose(page, "Fondo detrás del texto");
+    await page.getByRole("radio", { name: "Arriba al centro" }).check({ force: true });
+    await page.getByRole("combobox", { name: "Tipo de letra" }).selectOption("serif");
+    await expect(page.getByRole("img", { name: "Vista previa (primera imagen)" })).toBeVisible();
+    await choose(page, "PNG");
+    const out = fileOf(await runTool(page, "Agregar texto"));
+    expect(await inspectImage(out.buf)).toMatchObject({ format: "png", width: 1000, height: 750 });
+    const photoPath = fixturePath("photo.jpg");
+    expect(await changedShare(out.buf, photoPath, { left: 0, top: 300, width: 1000, height: 450 })).toBe(0);
+    // The dark box behind the text darkens the top center band.
+    const band = { left: 450, top: 30, width: 100, height: 60 };
+    const mean = async (buf: Buffer | string) => (await sharp(buf).extract(band).stats()).channels.slice(0, 3).reduce((a, c) => a + c.mean, 0);
+    expect(await mean(out.buf)).not.toBeCloseTo(await mean(photoPath), 0);
+    expect(await changedShare(out.buf, photoPath, { left: 350, top: 20, width: 300, height: 140 })).toBeGreaterThan(0.2);
   });
 });

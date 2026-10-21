@@ -689,6 +689,38 @@
         "q4": "Por que a prévia aparece menor que a minha foto?",
         "a4": "Para editar rápido é mostrada uma cópia reduzida, mas o corte é aplicado na imagem original completa: os valores em pixels são os da foto real."
       }
+    },
+    "watermark-image": {
+      "title": "Marca d'água em imagens",
+      "description": "Adicione seu nome, texto ou logo como marca d'água a várias fotos de uma vez, em um canto ou em mosaico.",
+      "action": "Adicionar marca d'água",
+      "about": "Marca d'água em imagens protege suas fotos com um texto (seu nome, sua marca, “amostra”, “confidencial”) ou com seu logo. Escolha a posição em uma grade de 9 lugares ou um mosaico inclinado que cobre a imagem inteira, o tamanho, a cor e a opacidade, e veja o resultado na prévia antes de processar. É aplicada igual a todas as fotos do lote, com tamanho proporcional a cada uma. Funciona com JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF e HEIC, e tudo é processado no seu navegador.",
+      "faq": {
+        "q1": "Posso usar meu logo com fundo transparente?",
+        "a1": "Sim: escolha “Logo ou imagem” e envie um PNG ou WEBP com transparência. O logo é ajustado a uma porcentagem da largura de cada foto, então fica igual em fotos grandes e pequenas.",
+        "q2": "Para que serve o mosaico?",
+        "a2": "Repete a marca d'água inclinada sobre a imagem inteira. É mais difícil de cortar ou apagar do que uma marca no canto, por isso é bom para documentos ou fotos que você compartilha como amostra.",
+        "q3": "Dá para tirar a marca d'água depois?",
+        "a3": "Não do arquivo novo: a marca fica desenhada nos pixels. Guarde seus originais sem marca; a ferramenta nunca os altera.",
+        "q4": "Há perda de qualidade?",
+        "a4": "PNG, BMP, TIFF e GIF não perdem nada. JPG, WEBP e AVIF são salvos de novo com qualidade alta (92). O tamanho em pixels não muda."
+      }
+    },
+    "add-text-to-image": {
+      "title": "Adicionar texto na imagem",
+      "description": "Escreva nas suas fotos com a fonte, o tamanho, a cor, o contorno e a posição que quiser, com prévia na hora.",
+      "action": "Adicionar texto",
+      "about": "Adicionar texto na imagem permite escrever uma ou várias linhas sobre uma foto: um título, uma data, um preço, uma frase para compartilhar. Escolha a fonte, negrito, tamanho, cor, um contorno legível em qualquer fundo ou um fundo atrás do texto, e a posição em uma grade de 9 lugares. A prévia é atualizada enquanto você digita. Você pode aplicar o mesmo texto a várias imagens. Funciona com JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF e HEIC, no seu navegador.",
+      "faq": {
+        "q1": "Posso escrever em várias linhas?",
+        "a1": "Sim: cada quebra de linha na caixa de texto é uma nova linha, centralizadas entre si. Você pode escrever até 500 caracteres.",
+        "q2": "Quais fontes existem?",
+        "a2": "Sem serifa, com serifa e monoespaçada, usando as fontes do seu sistema; acentos, emojis e chinês aparecem como no seu dispositivo.",
+        "q3": "O texto não fica legível na minha foto. O que fazer?",
+        "a3": "Ative “Contorno”, que adiciona uma borda de cor oposta em volta de cada letra, ou “Fundo atrás do texto”, que coloca uma caixa semitransparente.",
+        "q4": "O tamanho do texto depende da foto?",
+        "a4": "Sim: é uma porcentagem do lado menor da imagem, então o texto fica do mesmo tamanho numa foto do celular e numa captura pequena."
+      }
     }
   },
   "ToolUi": {
@@ -1330,6 +1362,48 @@
       "height": "Altura (px)"
     },
     "cropSize": "Corte de {width} × {height} px (a imagem tem {imageWidth} × {imageHeight} px)",
-    "croppedTo": "{name}: cortada em {size} px"
+    "croppedTo": "{name}: cortada em {size} px",
+    "overlayPreview": "Prévia (primeira imagem)",
+    "overlayMode": "Tipo de marca d'água",
+    "modeText": "Texto",
+    "modeLogo": "Logo ou imagem",
+    "logoFile": "Logo (PNG, JPG ou WEBP)",
+    "logoHint": "Um PNG com fundo transparente fica melhor. Até 10 MB.",
+    "logoInvalid": "Não foi possível ler o logo: escolha um PNG, JPG ou WEBP de até 10 MB.",
+    "watermarkText": "Texto da marca d'água",
+    "watermarkDefault": "© Seu nome",
+    "textContent": "Texto",
+    "textDefault": "Seu texto aqui",
+    "font": "Fonte",
+    "fonts": {
+      "sans": "Sem serifa",
+      "serif": "Com serifa",
+      "mono": "Monoespaçada"
+    },
+    "textColor": "Cor",
+    "bold": "Negrito",
+    "outline": "Contorno (legível em qualquer fundo)",
+    "textBackground": "Fundo atrás do texto",
+    "overlaySize": "Tamanho",
+    "overlaySizes": {
+      "s": "Pequeno",
+      "m": "Médio",
+      "l": "Grande",
+      "xl": "Muito grande"
+    },
+    "opacity": "Opacidade: {value} %",
+    "overlayPosition": "Posição",
+    "positions": {
+      "tl": "Em cima à esquerda",
+      "tc": "Em cima no centro",
+      "tr": "Em cima à direita",
+      "ml": "No meio à esquerda",
+      "mc": "Centro",
+      "mr": "No meio à direita",
+      "bl": "Embaixo à esquerda",
+      "bc": "Embaixo no centro",
+      "br": "Embaixo à direita"
+    },
+    "positionTile": "Mosaico (imagem inteira)"
   }
 }

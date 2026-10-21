@@ -1688,3 +1688,23 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (672), build, `check:static` (722 páginas) y `npm run test:e2e` (188/188) pasan. Capturas revisadas: `/es/recortar-imagen` 360 oscuro (antes y después de cambiar el sombreado: las esquinas se cortaban con `overflow-hidden`) y `/fr/recadrer-image` 1280 claro.
 
 **Siguiente**: 3C.15 (marca de agua y agregar texto a una imagen).
+
+## 2026-10-21 14:05 UTC — Fase 3, tarea 3C.15 (marca de agua y agregar texto)
+
+**Qué se hizo**
+- **Marca de agua en imágenes** (`/es/marca-de-agua-imagen`, `/en/watermark-image`, `/pt/marca-dagua-imagem`, `/fr/filigrane-image`): texto o **logo** (PNG/JPG/WEBP de hasta 10 MB, transparencia respetada), en lotes; tamaño (texto: 3/5/8 % del lado corto; logo: 10/20/30/50 % del ancho), color, opacidad 10–100 %, posición en una cuadrícula de 9 lugares o **mosaico** inclinado −30° que cubre toda la imagen (filas desfasadas como ladrillos).
+- **Agregar texto a una imagen** (`/es/agregar-texto-a-imagen`, `/en/add-text-to-image`, `/pt/adicionar-texto-na-imagem`, `/fr/ajouter-texte-image`): varias líneas (hasta 500 caracteres), tipo de letra (sin serifa / con serifa / monoespaciada, fuentes del sistema), negrita, tamaño, color, **contorno** de color opuesto y **recuadro** semitransparente detrás, 9 posiciones; el mismo texto se puede aplicar a varias imágenes.
+- Las dos comparten `OverlayImageTool.tsx` (variante por herramienta) y `src/lib/image/overlay.ts`: `overlayPlacements` (geometría pura: márgenes del 3 % del lado corto, mosaico con paso mínimo del 5 % de la imagen para que un elemento diminuto no genere millones de copias) y `drawOverlay`, que dibuja igual sobre un `CanvasRenderingContext2D` (vista previa en vivo en la página, desde la imagen que devuelve el handler `preview` del worker) y sobre un `OffscreenCanvas` (handler `overlay` del worker, resultado a tamaño completo). Los tamaños son relativos, así que la vista previa reducida coincide con el resultado.
+- Formato de salida igual al original (HEIC → JPG), JPG, PNG, WEBP o AVIF; JPG/WEBP/AVIF con calidad 92. El botón queda deshabilitado sin texto o sin logo válido.
+- Selector de posición accesible: 9 radios (con nombre para lectores de pantalla) en una grilla 3 × 3, más "Mosaico". Textos (introducción + 4 preguntas cada una) en los 5 idiomas.
+
+**Limitaciones**
+- Sin fuentes web en el worker: se usan las del sistema, así que el texto puede verse levemente distinto entre dispositivos (los acentos, emojis y chino se dibujan con las fuentes del dispositivo).
+- SVG no se acepta como logo (en un worker `createImageBitmap` no decodifica SVG); se puede convertir antes con SVG → PNG.
+
+**Verificación**
+- 3 tests unitarios de `overlayPlacements` (9 posiciones con margen, mosaico que cubre esquinas y centro sin colocar copias lejos, tope de copias).
+- `image-tools.spec.ts`: 4 casos nuevos, salida PNG comparada con el original por regiones con sharp: texto abajo a la derecha (los otros 3 cuadrantes idénticos, la esquina cambiada) con vista previa; **logo = el QR de los fixtures centrado al 50 % y leído de vuelta con jsQR** desde la salida (y franja izquierda intacta); mosaico que cambia los 4 cuadrantes en un lote con HEIC y un PNG truncado que falla solo; texto de dos líneas con recuadro arriba al centro y el resto de la imagen intacto.
+- Lint, typecheck, tests (677), build, `check:static` (732 páginas) y `npm run test:e2e` (192/192) pasan. Capturas revisadas: `/es/marca-de-agua-imagen` 360 oscuro (mosaico en la vista previa) y `/fr/ajouter-texte-image` 1280 claro.
+
+**Siguiente**: 3C.16 (favicon, SVG → PNG/JPG con página propia y HEIF como entrada).

@@ -3,6 +3,7 @@ import type {
   CompressArgs,
   CompressResult,
   CropArgs,
+  OverlayArgs,
   PreviewArgs,
   PreviewResult,
   ResizeArgs,
@@ -36,3 +37,6 @@ export const previewImageFile = (args: PreviewArgs, job: JobOptions = {}) =>
 
 export const cropImageFile = (args: CropArgs, job: JobOptions = {}) =>
   pool.run<{ buffer: ArrayBuffer; width: number; height: number }>("crop", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });
+
+export const overlayImageFile = (args: OverlayArgs, job: JobOptions = {}) =>
+  pool.run<{ buffer: ArrayBuffer; width: number; height: number }>("overlay", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });

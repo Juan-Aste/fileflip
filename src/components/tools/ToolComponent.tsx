@@ -39,6 +39,8 @@ const components: Record<ToolId, React.ComponentType> = {
   "resize-image": dynamic(() => import("./image/ResizeImageTool")),
   "rotate-image": dynamic(() => import("./image/RotateImageTool")),
   "crop-image": dynamic(() => import("./image/CropImageTool")),
+  "watermark-image": dynamic(() => import("./image/OverlayImageTool").then((m) => m.WatermarkImageTool)),
+  "add-text-to-image": dynamic(() => import("./image/OverlayImageTool").then((m) => m.AddTextToImageTool)),
   "remove-exif": dynamic(() => import("./image/RemoveMetadataTool")),
 };
 

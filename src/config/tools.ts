@@ -62,6 +62,8 @@ export const toolIds = [
   "rotate-image",
   "remove-exif",
   "crop-image",
+  "watermark-image",
+  "add-text-to-image",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -493,6 +495,35 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "recortar-imagen", en: "crop-image", pt: "cortar-imagem", fr: "recadrer-image", zh: "crop-image" },
+  },
+
+  "watermark-image": {
+    id: "watermark-image",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "heic"],
+    outputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff"],
+    engine: "browser",
+    libraries: ["canvas", "@jsquash/jpeg", "@jsquash/webp", "@jsquash/avif", "@jsquash/png", "libheif-js", "utif2", "gifenc"],
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "marca-de-agua-imagen", en: "watermark-image", pt: "marca-dagua-imagem", fr: "filigrane-image", zh: "watermark-image" },
+  },
+  "add-text-to-image": {
+    id: "add-text-to-image",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "heic"],
+    outputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff"],
+    engine: "browser",
+    libraries: ["canvas", "@jsquash/jpeg", "@jsquash/webp", "@jsquash/avif", "@jsquash/png", "libheif-js", "utif2", "gifenc"],
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: {
+      es: "agregar-texto-a-imagen",
+      en: "add-text-to-image",
+      pt: "adicionar-texto-na-imagem",
+      fr: "ajouter-texte-image",
+      zh: "add-text-to-image",
+    },
   },
 
 };

@@ -689,6 +689,38 @@
         "q4": "Why is the preview smaller than my photo?",
         "a4": "A reduced copy is shown so editing stays fast, but the crop is applied to the full original image: the pixel values are those of the real photo."
       }
+    },
+    "watermark-image": {
+      "title": "Watermark images",
+      "description": "Add your name, text or logo as a watermark to many photos at once, in a corner or tiled.",
+      "action": "Add watermark",
+      "about": "Watermark images protects your photos with a text (your name, your brand, “sample”, “confidential”) or with your logo. Pick the position on a 9-spot grid or a tilted tile pattern that covers the whole image, the size, color and opacity, and check the result in the preview before processing. It is applied the same way to every photo in the batch, sized in proportion to each one. It works with JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF and HEIC, and everything runs in your browser.",
+      "faq": {
+        "q1": "Can I use my logo with a transparent background?",
+        "a1": "Yes: choose “Logo or image” and upload a PNG or WEBP with transparency. The logo is scaled to a percentage of each photo's width, so it looks the same on large and small photos.",
+        "q2": "What is the tiled option for?",
+        "a2": "It repeats the watermark, tilted, over the whole image. It is harder to crop out or erase than a corner mark, so it suits documents or photos you share as samples.",
+        "q3": "Can the watermark be removed later?",
+        "a3": "Not from the new file: the mark is drawn into the pixels. Keep your originals without the mark; the tool never changes them.",
+        "q4": "Is there any quality loss?",
+        "a4": "PNG, BMP, TIFF and GIF lose nothing. JPG, WEBP and AVIF are saved again at high quality (92). The size in pixels doesn't change."
+      }
+    },
+    "add-text-to-image": {
+      "title": "Add text to image",
+      "description": "Write on your photos with the font, size, color, outline and position you choose, with an instant preview.",
+      "action": "Add text",
+      "about": "Add text to image lets you write one or more lines over a photo: a title, a date, a price, a quote to share. Choose the font, bold, size, color, an outline that reads on any background or a box behind the text, and the position on a 9-spot grid. The preview updates as you type. You can apply the same text to several images. It works with JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF and HEIC, in your browser.",
+      "faq": {
+        "q1": "Can I write several lines?",
+        "a1": "Yes: each line break in the text box starts a new line, centered on each other. You can write up to 500 characters.",
+        "q2": "Which fonts are available?",
+        "a2": "Sans serif, serif and monospace, using your system's fonts; accents, emoji and Chinese show as they do on your device.",
+        "q3": "The text is hard to read on my photo. What can I do?",
+        "a3": "Turn on “Outline”, which adds a border of the opposite color around each letter, or “Box behind the text”, which adds a translucent box.",
+        "q4": "Does the text size depend on the photo?",
+        "a4": "Yes: it is a percentage of the image's shorter side, so the text looks equally big on a phone photo and on a small screenshot."
+      }
     }
   },
   "ToolUi": {
@@ -1330,6 +1362,48 @@
       "height": "Height (px)"
     },
     "cropSize": "Crop of {width} × {height} px (the image is {imageWidth} × {imageHeight} px)",
-    "croppedTo": "{name}: cropped to {size} px"
+    "croppedTo": "{name}: cropped to {size} px",
+    "overlayPreview": "Preview (first image)",
+    "overlayMode": "Watermark type",
+    "modeText": "Text",
+    "modeLogo": "Logo or image",
+    "logoFile": "Logo (PNG, JPG or WEBP)",
+    "logoHint": "A PNG with a transparent background looks best. Up to 10 MB.",
+    "logoInvalid": "The logo could not be read: choose a PNG, JPG or WEBP up to 10 MB.",
+    "watermarkText": "Watermark text",
+    "watermarkDefault": "© Your name",
+    "textContent": "Text",
+    "textDefault": "Your text here",
+    "font": "Font",
+    "fonts": {
+      "sans": "Sans serif",
+      "serif": "Serif",
+      "mono": "Monospace"
+    },
+    "textColor": "Color",
+    "bold": "Bold",
+    "outline": "Outline (readable on any background)",
+    "textBackground": "Box behind the text",
+    "overlaySize": "Size",
+    "overlaySizes": {
+      "s": "Small",
+      "m": "Medium",
+      "l": "Large",
+      "xl": "Extra large"
+    },
+    "opacity": "Opacity: {value}%",
+    "overlayPosition": "Position",
+    "positions": {
+      "tl": "Top left",
+      "tc": "Top center",
+      "tr": "Top right",
+      "ml": "Middle left",
+      "mc": "Center",
+      "mr": "Middle right",
+      "bl": "Bottom left",
+      "bc": "Bottom center",
+      "br": "Bottom right"
+    },
+    "positionTile": "Tiled (whole image)"
   }
 }

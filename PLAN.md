@@ -228,7 +228,7 @@ Imágenes (las más buscadas primero)
 - [x] 3C.12 "Redimensionar imagen" con página propia (píxeles, porcentaje, presets de redes sociales)
 - [x] 3C.13 Rotar/voltear y quitar metadatos EXIF/GPS (aplicando antes la orientación; exifr para mostrar qué se quita)
 - [x] 3C.14 Recortar imagen con proporciones fijas (accesible con teclado)
-- [ ] 3C.15 Marca de agua (texto o imagen) y agregar texto a una imagen
+- [x] 3C.15 Marca de agua (texto o imagen) y agregar texto a una imagen
 - [ ] 3C.16 Paquete de favicon (PNG 16–512, ICO multi-tamaño, manifest, ZIP), SVG → PNG/JPG con página propia (sin ejecutar scripts del SVG) y HEIF como entrada
 
 Subtítulos
