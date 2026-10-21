@@ -3,7 +3,8 @@ import { join } from "node:path";
 import { PDFDocument } from "pdf-lib";
 import sharp from "sharp";
 import { describe, expect, it } from "vitest";
-import { extractPdfImages, originalJpegs, toRgba, type PdfjsImage } from "./images";
+import { extractPdfImages, toRgba, type PdfjsImage } from "./images";
+import { originalJpegs } from "./jpegs";
 
 const fixture = (name: string) => new Uint8Array(readFileSync(join(__dirname, "../../../tests/fixtures", name)));
 const open = async (bytes: Uint8Array) => {

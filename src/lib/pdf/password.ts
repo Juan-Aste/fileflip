@@ -2,6 +2,9 @@
 // so the PDF worker loads the browser build and tests load it from disk.
 import { PDFDocument } from "pdf-lib";
 import { ConversionError } from "@/lib/convert-error";
+import { MAX_PASSWORD_LENGTH, type Permissions } from "./password-options";
+
+export type { Permissions } from "./password-options";
 
 /** The part of the Emscripten module we use. */
 export interface Qpdf {
@@ -15,13 +18,6 @@ export interface Qpdf {
 /** A fresh qpdf instance per job: nothing from a previous file stays in its memory. */
 export type QpdfFactory = () => Promise<Qpdf>;
 
-export interface Permissions {
-  print: boolean;
-  copy: boolean;
-  modify: boolean;
-}
-
-export const MAX_PASSWORD_LENGTH = 128;
 
 const IN = "/input.pdf";
 const OUT = "/output.pdf";

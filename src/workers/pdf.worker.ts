@@ -16,7 +16,7 @@ import { browserRecompress } from "@/lib/pdf/recompress-browser";
 import { addPageNumbers, addWatermark, type PageNumberOptions, type RenderText, type WatermarkOptions } from "@/lib/pdf/stamp";
 import { cropPdf, type Margins } from "@/lib/pdf/crop";
 import { signPdf, type SignaturePlacement } from "@/lib/pdf/sign";
-import { originalJpegs } from "@/lib/pdf/images";
+import { originalJpegs } from "@/lib/pdf/jpegs";
 import { protectPdf, unlockPdf, type Permissions, type Qpdf, type QpdfFactory } from "@/lib/pdf/password";
 import { exposeHandlers } from "@/lib/worker-rpc";
 

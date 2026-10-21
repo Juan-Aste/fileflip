@@ -1889,3 +1889,11 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (763), build, `check:static` (807 páginas) y `npm run test:e2e` (230/231: falló `add-text-to-image › text with a box…` solo bajo carga en paralelo; pasa sola y no se tocó ese código) pasan.
 
 **Siguiente**: medición de Lighthouse después de 3C.23 (la pide el plan) y luego 3C.24 (fuentes TTF/OTF ↔ WOFF/WOFF2).
+
+## 2026-10-21 21:30 UTC — Fase 3, medición de Lighthouse después de 3C.23
+
+- `docs/perf/2026-10-21-3C23.md`: 15 páginas, móvil, mediana de 3. Rendimiento 95–98, accesibilidad y SEO 100, CLS 0.
+- **Regresión encontrada y corregida**: `/es/extraer-imagenes-pdf` medía 90 con 345 KB de JS porque `images.ts` importaba pdf-lib. La búsqueda de JPEG originales pasó a `src/lib/pdf/jpegs.ts` (solo la importa el worker de PDF) y las constantes de las herramientas de contraseña a `password-options.ts`. Ahora 162 KB y 97.
+- Convención: un módulo que importa la página nunca debe importar pdf-lib ni otro motor; lo que necesita el worker va en un archivo aparte (como `compress.ts`/`client.ts`).
+- `scripts/perf/lighthouse.sh` suma `/es/recortar-imagen`, `/es/extraer-imagenes-pdf`, `/es/proteger-pdf` y `/es/convertir-fuentes`.
+- Verificación: lint, typecheck, tests, build y `npm run test:e2e` (234/234) pasan.

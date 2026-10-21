@@ -25,6 +25,8 @@ PAGES=(
   "tool-utility /es/conversor-de-unidades"
   "tool-image /es/recortar-imagen"
   "tool-pdf-images /es/extraer-imagenes-pdf"
+  "tool-pdf-protect /es/proteger-pdf"
+  "tool-font /es/convertir-fuentes"
 )
 # Warm up the server (first render of each route).
 for p in "${PAGES[@]}"; do curl -s -o /dev/null "$BASE${p#* }"; done

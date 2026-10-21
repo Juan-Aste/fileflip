@@ -9,7 +9,7 @@ import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type { CompressionLevel, CompressResult } from "./compress";
 import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
 import type { Margins } from "./crop";
-import type { Permissions } from "./password";
+import type { Permissions } from "./password-options";
 import type { SignaturePlacement } from "./sign";
 import type { PageNumberOptions, WatermarkOptions } from "./stamp";
 

@@ -7,7 +7,7 @@ import { field } from "@/components/ui/styles";
 import { tools, type ToolId } from "@/config/tools";
 import { runBatch } from "@/lib/jobs";
 import { protectPdfFile, unlockPdfFile } from "@/lib/pdf/client";
-import { MAX_PASSWORD_LENGTH, type Permissions } from "@/lib/pdf/password";
+import { MAX_PASSWORD_LENGTH, type Permissions } from "@/lib/pdf/password-options";
 import { trackTool } from "@/lib/stats-client";
 import Checkbox from "./Checkbox";
 import ToolShell from "./shell/ToolShell";
