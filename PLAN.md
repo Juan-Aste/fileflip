@@ -253,7 +253,7 @@ Fuentes y documentos
   - [x] 3C.26a HTML → PDF (servidor): HTML del usuario saneado en el servidor con parse5 (sin scripts, eventos, meta/base/link, iframes, objetos ni URLs que no sean `data:`), la misma CSP y Gotenberg endurecido; prueba de SSRF
   - [x] 3C.26b PDF → PDF/A (Gotenberg, PDF/A-1b/2b/3b) con validación de los metadatos `pdfaid` en los tests
   - [x] 3C.26c Fixture PPT (97-2003) generado con el LibreOffice de la imagen de Gotenberg y prueba PPT → PDF en el inventario
-- [ ] 3C.27 Hojas de cálculo XLSX ↔ CSV ↔ ODS en el navegador (SheetJS CE desde el tarball oficial o exceljs; límite de celdas; elegir hoja)
+- [x] 3C.27 Hojas de cálculo XLSX ↔ CSV ↔ ODS en el navegador (SheetJS CE desde el tarball oficial o exceljs; límite de celdas; elegir hoja)
 
 Archivos comprimidos
 - [ ] 3C.28 Crear ZIP, TAR y TAR.GZ (fflate + escritor TAR propio; test leyendo la salida con `tar` del sistema)

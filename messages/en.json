@@ -207,7 +207,8 @@
     "pdfAlreadyProtected": "This PDF is already protected or restricted. Remove its password first with “Unlock PDF”.",
     "pdfNotProtected": "This PDF has no password: it already opens without one.",
     "pdfWrongPassword": "That password isn’t right for this PDF.",
-    "pdfHasNoImages": "This PDF has no images to extract (or only very small ones)."
+    "pdfHasNoImages": "This PDF has no images to extract (or only very small ones).",
+    "tooManyCells": "This spreadsheet is too large to process in the browser (more than 2 million cells)."
   },
   "Tools": {
     "merge-pdf": {
@@ -1046,6 +1047,22 @@
         "a3": "No: PDF/A does not allow encryption. Remove the password first with “Remove a PDF password” and then convert it.",
         "q4": "Are my files uploaded to a server?",
         "a4": "Yes: the conversion runs on our own server (not a third-party service), over an encrypted connection, and the file is processed in memory without being stored."
+      }
+    },
+    "spreadsheet-converter": {
+      "title": "Spreadsheet converter",
+      "description": "Convert between Excel (XLSX, XLS), OpenDocument (ODS) and CSV: every sheet, value and formula, in your browser.",
+      "action": "Convert",
+      "about": "Convert spreadsheets between Excel (XLSX and the older XLS), OpenDocument (ODS, from LibreOffice) and CSV or TSV. Turn a CSV exported by some system into an Excel file ready to work with, or an Excel file into CSV to load into another app. When reading a CSV the separator is detected and numbers with a decimal comma are recognized; when writing one you can choose comma or semicolon so that Excel in other languages opens it correctly.",
+      "faq": {
+        "q1": "What is kept?",
+        "a1": "Every sheet, the values (text, numbers, dates) and formulas with their last result. Visual formatting is not kept: colors, fonts, borders, column widths, charts and images.",
+        "q2": "Why does Excel show broken accents or everything in one column?",
+        "a2": "Excel in many European and Latin American languages expects a semicolon separator and a decimal comma. Choose “Semicolon” and keep UTF-8 with BOM checked so accented letters display correctly on double-click.",
+        "q3": "What happens to a workbook with several sheets when converting to CSV?",
+        "a3": "A CSV holds one table, so one CSV is made per sheet (with the sheet name in the file name), or only the first sheet's if you uncheck the option.",
+        "q4": "Is there a size limit?",
+        "a4": "Up to 50 MB per file and 2 million filled cells, because everything is processed in your browser's memory. Your files are not uploaded to any server."
       }
     }
   },
@@ -1887,5 +1904,19 @@
     "hint_1b": "The first version: for systems that only accept PDF/A-1. Transparency is flattened.",
     "hint_2b": "Recommended: the most widely accepted for submissions and archives.",
     "hint_3b": "Like 2b, and also allows file attachments inside the PDF."
+  },
+  "SheetTool": {
+    "target": "Convert to",
+    "targets": {
+      "xlsx": "Excel (XLSX)",
+      "ods": "OpenDocument (ODS)",
+      "csv": "CSV"
+    },
+    "delimiter": "CSV separator",
+    "delimiterComma": "Comma ( , ) and decimal point",
+    "delimiterSemicolon": "Semicolon ( ; ) and decimal comma — Excel in Spanish, French…",
+    "allSheets": "One CSV per sheet (otherwise only the first)",
+    "bom": "UTF-8 with BOM (Excel shows accents correctly)",
+    "note": "Sheets, values and formulas are kept; visual formatting (colors, borders, widths) is not."
   }
 }

@@ -207,7 +207,8 @@
     "pdfAlreadyProtected": "Ce PDF est déjà protégé ou restreint. Retirez d’abord son mot de passe avec « Déverrouiller un PDF ».",
     "pdfNotProtected": "Ce PDF n’a pas de mot de passe : il s’ouvre déjà sans.",
     "pdfWrongPassword": "Ce mot de passe n’est pas le bon pour ce PDF.",
-    "pdfHasNoImages": "Ce PDF ne contient aucune image à extraire (ou seulement de très petites)."
+    "pdfHasNoImages": "Ce PDF ne contient aucune image à extraire (ou seulement de très petites).",
+    "tooManyCells": "Ce classeur est trop volumineux pour être traité dans le navigateur (plus de 2 millions de cellules)."
   },
   "Tools": {
     "merge-pdf": {
@@ -1046,6 +1047,22 @@
         "a3": "Non : le PDF/A n'autorise pas le chiffrement. Retirez d'abord le mot de passe avec « Retirer le mot de passe d’un PDF », puis convertissez-le.",
         "q4": "Mes fichiers sont-ils envoyés sur un serveur ?",
         "a4": "Oui : la conversion se fait sur notre propre serveur (pas chez un tiers), via une connexion chiffrée, et le fichier est traité en mémoire sans être conservé."
+      }
+    },
+    "spreadsheet-converter": {
+      "title": "Convertir un tableur",
+      "description": "Convertissez entre Excel (XLSX, XLS), OpenDocument (ODS) et CSV : toutes les feuilles, valeurs et formules, dans votre navigateur.",
+      "action": "Convertir",
+      "about": "Convertissez des tableurs entre Excel (XLSX et l'ancien XLS), OpenDocument (ODS, de LibreOffice) et CSV ou TSV. Transformez un CSV exporté par un logiciel en fichier Excel prêt à l'emploi, ou un Excel en CSV pour l'importer ailleurs. À la lecture d'un CSV, le séparateur est détecté et les nombres à virgule décimale sont reconnus ; à l'écriture, vous choisissez la virgule ou le point-virgule pour qu'Excel en français l'ouvre correctement.",
+      "faq": {
+        "q1": "Qu'est-ce qui est conservé ?",
+        "a1": "Toutes les feuilles, les valeurs (texte, nombres, dates) et les formules avec leur dernier résultat. La mise en forme n'est pas conservée : couleurs, polices, bordures, largeurs de colonnes, graphiques et images.",
+        "q2": "Pourquoi Excel affiche-t-il mal les accents ou tout dans une colonne ?",
+        "a2": "Excel en français attend le point-virgule comme séparateur et la virgule décimale. Choisissez « Point-virgule » et gardez l'option UTF-8 avec BOM cochée pour que les accents s'affichent correctement au double-clic.",
+        "q3": "Que devient un classeur de plusieurs feuilles en CSV ?",
+        "a3": "Un CSV ne contient qu'un tableau : un CSV est créé par feuille (avec le nom de la feuille dans le fichier), ou seulement celui de la première si vous décochez l'option.",
+        "q4": "Y a-t-il une limite de taille ?",
+        "a4": "Jusqu'à 50 Mo par fichier et 2 millions de cellules remplies, car tout est traité dans la mémoire de votre navigateur. Vos fichiers ne sont envoyés sur aucun serveur."
       }
     }
   },
@@ -1887,5 +1904,19 @@
     "hint_1b": "La première version : pour les systèmes qui n'acceptent que PDF/A-1. La transparence est aplatie.",
     "hint_2b": "Recommandée : la plus acceptée pour les démarches et l'archivage.",
     "hint_3b": "Comme 2b, et autorise en plus les pièces jointes dans le PDF."
+  },
+  "SheetTool": {
+    "target": "Convertir en",
+    "targets": {
+      "xlsx": "Excel (XLSX)",
+      "ods": "OpenDocument (ODS)",
+      "csv": "CSV"
+    },
+    "delimiter": "Séparateur du CSV",
+    "delimiterComma": "Virgule ( , ) et point décimal",
+    "delimiterSemicolon": "Point-virgule ( ; ) et virgule décimale — Excel en français",
+    "allSheets": "Un CSV par feuille (sinon, seulement la première)",
+    "bom": "UTF-8 avec BOM (Excel affiche bien les accents)",
+    "note": "Les feuilles, valeurs et formules sont conservées ; la mise en forme (couleurs, bordures, largeurs) ne l'est pas."
   }
 }

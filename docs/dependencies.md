@@ -26,6 +26,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | utif2 | 4.1.0 | MIT | lector/escritor TIFF | N (worker) |
 | libheif-js | 1.23.5 | LGPL-3.0 | lector HEIC/HEIF | N (worker, carga diferida, archivo aparte: cumple la LGPL al poder reemplazarse) |
 | woff2-encoder | 2.0.0 | MIT (google/woff2 y Brotli: MIT) | comprimir y descomprimir WOFF2 (codificador de referencia de Google en WASM incrustado, ~1 MB) | N (worker de datos, import diferido: solo el conversor de fuentes) |
+| xlsx (SheetJS CE) | 0.20.3 | Apache-2.0 | Lectura de XLSX/XLS/ODS y escritura de XLSX/ODS en "Convertir hoja de cálculo". Instalada desde el **tarball oficial** `https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz` (la versión de npm, 0.18.5, está abandonada y tiene CVE-2023-30533 y CVE-2024-22363, corregidas desde 0.20.2) | N (worker de datos, import diferido) |
 | parse5 | 8.0.1 | MIT | Parser HTML5 en el servidor: sanea el HTML de "HTML a PDF" antes de imprimirlo | N (solo servidor) |
 | marked | 18.1.1 | MIT | Markdown (CommonMark + GFM) → HTML (en el navegador para Markdown → HTML; en el servidor para Markdown → PDF) | N (chunk de la herramienta, import diferido) |
 | dompurify | 3.4.17 | MPL-2.0 OR Apache-2.0 (se usa bajo Apache-2.0) | sanea el HTML generado (sin scripts, eventos, formularios ni `javascript:`) | N (ídem) |

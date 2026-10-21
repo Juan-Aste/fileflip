@@ -2029,3 +2029,32 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - `npx vitest run tests/inventory/server.test.ts` (y con `SOFFICE=<envoltorio>`) → 12 casos de oficina pasan; sin LibreOffice se saltan como antes. Lint, typecheck y tests (812) pasan.
 
 **Siguiente**: 3C.27 (hojas de cálculo XLSX ↔ CSV ↔ ODS en el navegador).
+
+## 2026-10-21 23:55 UTC — Fase 3, tarea 3C.27 (convertir hojas de cálculo)
+
+**Qué se hizo**
+- **Convertir hoja de cálculo** (`/es/convertir-hoja-de-calculo`, `/en/spreadsheet-converter`, `/pt/converter-planilha`, `/fr/convertir-tableur`), categoría Documentos, en el navegador: entradas **XLSX, XLS, ODS, CSV y TSV**; salidas **XLSX, ODS o CSV**. Lotes con ZIP. Para CSV: separador **coma** (punto decimal) o **punto y coma con coma decimal** (Excel en español/portugués/francés), **un CSV por hoja** (`libro-Hoja.csv`) o solo la primera, y **UTF-8 con BOM** (activado por defecto, para que Excel muestre bien los acentos).
+- Motor `src/lib/sheet/sheet.ts` en el worker de datos con import diferido (SheetJS no entra en otras herramientas): **SheetJS CE 0.20.3** (Apache-2.0) desde el tarball oficial de cdn.sheetjs.com (no la 0.18.5 de npm, con CVEs).
+  - CSV de entrada con nuestro parser (papaparse + `decodeText`: UTF-8 o Windows-1252), separador detectado; con `;` se reconocen números con coma decimal y miles con punto ("1.234,5"); "007" y enteros enormes quedan como texto. Nombre de la hoja = nombre del archivo (≤ 31 caracteres, sin `[]:*?/\`).
+  - CSV de salida propio: números exactos (con coma decimal si se pide), fechas y demás como se muestran (`w`), filas rellenadas al mismo ancho y sin filas vacías al final.
+  - Se conservan **hojas, valores y fórmulas** (con su último resultado); el formato visual no (SheetJS CE no lo escribe): lo dicen la nota y las FAQ.
+- Seguridad y límites: 50 MB por archivo; **2 millones de celdas** con datos (error nuevo `tooManyCells`, 5 idiomas); para XLSX/ODS se suma lo que el ZIP **declara** descomprimir (directorio central, sin inflar) y más de 400 MB se rechaza antes de leer (**bomba**); el formato se decide por contenido (ZIP, OLE2 o texto; binario → `fileDamaged`); 2 minutos por trabajo en el worker.
+- Fixtures nuevos `workbook.{ods,xlsx}` generados con LibreOffice desde una hoja ODF plana en `generate.mjs` (2 hojas, fórmulas, fechas, "007", acentos, chino).
+
+**Verificación**
+- 11 tests unitarios con lectores independientes (XML dentro del ZIP con fflate y **LibreOffice leyendo las salidas**): XLSX y ODS → CSV por hoja (texto exacto), CSV para Excel en español con BOM, XLSX → ODS (2 hojas, `of:=[.B2]*[.C2]`, chino), ODS → XLSX (`<f>SUM(D2:D3)</f>`), CSV de Excel en Windows-1252 → números 3.25/9.5, XLS y TSV; LibreOffice relee ODS→XLSX, XLSX→ODS y CSV→XLSX con los mismos valores; errores: PNG, DOCX, XLSX cortado, comillas rotas, ZIP que declara 4 GB, CSV de 2 000 002 celdas.
+- `sheet-tools.spec.ts` (3 casos, sin llamadas al servidor): libro de 2 hojas → 2 CSV para Excel en español (contenido exacto); CSV de Excel → XLSX con números; ODS → XLSX con fórmulas; XLSX cortado + binario fallan uno por uno y el TSV sale.
+- Lint, typecheck, tests (824 + 7 saltados sin Gotenberg), build, `check:static` (847 páginas) y `npm run test:e2e` completo (247/247, con Gotenberg) pasan. Captura revisada: 360 px oscuro con las opciones de CSV.
+
+**Pendiente del dueño**
+- El build (`npm ci`) descarga SheetJS desde `cdn.sheetjs.com` (fijado con su hash en `package-lock.json`): Railway necesita acceso a ese dominio al construir.
+
+**Siguiente**: 3C.28 (crear ZIP, TAR y TAR.GZ).
+
+## 2026-10-21 23:58 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas: 3C.25b (Markdown → PDF), 3C.26a (HTML → PDF), 3C.26b (PDF → PDF/A), 3C.26c (PPT → PDF probado) y 3C.27 (convertir hojas de cálculo). 4 herramientas nuevas, las primeras del catálogo que usan el servidor (Gotenberg) además de la conversión de oficina existente.
+- En esta ejecución hubo Docker disponible: se probó con **Gotenberg 8 real** y se validó PDF/A con **veraPDF**. Las pruebas de navegador de las herramientas con Gotenberg se saltan sin `GOTENBERG_URL`.
+- `npm run test:e2e` 247/247 al cierre.
+
+**Siguiente**: 3C.28 (crear ZIP, TAR y TAR.GZ).

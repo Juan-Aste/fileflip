@@ -198,6 +198,27 @@ ${[["name", "qty", "price"], ["alpha", 1, 9.5], ["beta", 2, 3.25], ["gamma", 3, 
   .join("\n")}
 </table:table></office:spreadsheet></office:body></office:document>
 `;
+// Two sheets with formulas, dates, a zero-padded code and non-ASCII text (spreadsheet converter).
+const cell = (v) => {
+  if (typeof v === "number") return `<table:table-cell office:value-type="float" office:value="${v}"><text:p>${v}</text:p></table:table-cell>`;
+  if (v.formula) return `<table:table-cell table:formula="of:=${v.formula}" office:value-type="float" office:value="${v.value}"><text:p>${v.value}</text:p></table:table-cell>`;
+  if (v.date) return `<table:table-cell table:style-name="date" office:value-type="date" office:date-value="${v.date}"><text:p>${v.date}</text:p></table:table-cell>`;
+  return `<table:table-cell office:value-type="string"><text:p>${v}</text:p></table:table-cell>`;
+};
+const sheetXml = (name, rows) => `<table:table table:name="${name}">${rows.map((row) => `<table:table-row>${row.map(cell).join("")}</table:table-row>`).join("\n")}</table:table>`;
+const fodsWorkbook = `<?xml version="1.0" encoding="UTF-8"?>
+<office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:of="urn:oasis:names:tc:opendocument:xmlns:of:1.2" office:version="1.3" office:mimetype="application/vnd.oasis.opendocument.spreadsheet">
+<office:automatic-styles><number:date-style style:name="iso"><number:year number:style="long"/><number:text>-</number:text><number:month number:style="long"/><number:text>-</number:text><number:day number:style="long"/></number:date-style><style:style style:name="date" style:family="table-cell" style:data-style-name="iso"/></office:automatic-styles>
+<office:body><office:spreadsheet>
+${sheetXml("Ventas", [
+  ["producto", "cantidad", "precio", "total", "fecha"],
+  ["Café", 2, 3.25, { formula: "[.B2]*[.C2]", value: 6.5 }, { date: "2024-03-15" }],
+  ["北京 té", 1, 9.5, { formula: "[.B3]*[.C3]", value: 9.5 }, { date: "2024-12-01" }],
+  ["código", "007", 0.1, { formula: "SUM([.D2:.D3])", value: 16 }, ""],
+])}
+${sheetXml("Notas", [["nota"], ["segunda hoja ñ"]])}
+</office:spreadsheet></office:body></office:document>
+`;
 const fodp = `<?xml version="1.0" encoding="UTF-8"?>
 <office:document xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0" office:version="1.3" office:mimetype="application/vnd.oasis.opendocument.presentation">
 <office:body><office:presentation>
@@ -222,10 +243,11 @@ if (!soffice) {
 } else {
   const work = mkdtempSync(join(tmpdir(), "fixtures-"));
   const profile = `file://${join(work, "profile")}`;
-  const sources = { text: [fodt, "fodt"], sheet: [fods, "fods"], slides: [fodp, "fodp"] };
+  const sources = { text: [fodt, "fodt"], sheet: [fods, "fods"], workbook: [fodsWorkbook, "fods"], slides: [fodp, "fodp"] };
   const targets = {
     text: [["odt", "document.odt"], ["docx", "document.docx"], ["doc", "document.doc"], ["rtf", "document.rtf"]],
     sheet: [["ods", "spreadsheet.ods"], ["xlsx", "spreadsheet.xlsx"], ["xls", "spreadsheet.xls"]],
+    workbook: [["ods", "workbook.ods"], ["xlsx", "workbook.xlsx"]],
     slides: [["odp", "slides.odp"], ["pptx", "slides.pptx"]], // PPT export is ~450 KB: skipped
   };
   for (const [kind, [xml, ext]] of Object.entries(sources)) {

@@ -9,10 +9,14 @@ import { jsonToXml, xmlToJson } from "@/lib/data/xml";
 import { jsonToYaml, yamlToJson } from "@/lib/data/yaml";
 import { convertSubtitles, syncSubtitles, type SubtitleFormat, type SyncOptions } from "@/lib/subtitle/subtitle";
 import { convertFont, type FontContainer, type Woff2Codec } from "@/lib/font/font";
+import type { SheetOptions } from "@/lib/sheet/sheet";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
 // Google's WOFF2 encoder (WASM, ~1 MB): only downloaded by the font converter.
 const woff2Codec = (): Promise<Woff2Codec> => import("woff2-encoder").then(({ compress, decompress }) => ({ compress, decompress }));
+
+// SheetJS (~1 MB): only downloaded by the spreadsheet converter.
+const sheetEngine = () => import("@/lib/sheet/sheet");
 
 // Data tools (JSON, CSV, YAML, TOML, XML) and subtitles: parsing big files off the main thread keeps the page responsive.
 const textOf = async (input: Blob | string) =>
@@ -44,6 +48,10 @@ exposeHandlers({
   convertFont: async ({ input, options }: { input: Blob; options: { to: FontContainer } }) => {
     const result = await convertFont(new Uint8Array(await input.arrayBuffer()), options.to, woff2Codec);
     return { result, transfer: [result.bytes.buffer] };
+  },
+  convertSpreadsheet: async ({ input, options }: { input: File; options: SheetOptions }) => {
+    const result = (await sheetEngine()).convertSpreadsheet(new Uint8Array(await input.arrayBuffer()), input.name, options);
+    return { result, transfer: result.map((file) => file.bytes.buffer) };
   },
   syncSubtitles: async ({ input, options }: Input<SyncOptions>) => ({ result: syncSubtitles(await textOf(input), options) }),
   // Formatters answer with a result (with the error position) instead of throwing.

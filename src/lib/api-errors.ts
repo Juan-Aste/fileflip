@@ -31,6 +31,8 @@ export const apiErrorCodes = [
   "pdfWrongPassword",
   // Client-side only: extracting images from a PDF that has none.
   "pdfHasNoImages",
+  // Client-side only: a spreadsheet over the cell limit (or a ZIP declaring too much data).
+  "tooManyCells",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -64,6 +66,7 @@ const status: Record<ApiErrorCode, number> = {
   pdfNotProtected: 422,
   pdfWrongPassword: 422,
   pdfHasNoImages: 422,
+  tooManyCells: 413,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

@@ -27,6 +27,7 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `table-excel.csv`, `table.tsv` | CSV como lo guarda Excel en español (punto y coma, coma decimal, Windows-1252) / TSV en UTF-8 |
 | `document.{odt,docx,doc,rtf}` | LibreOffice desde un documento ODF plano escrito en el script |
 | `spreadsheet.{ods,xlsx,xls}` | LibreOffice desde una hoja ODF plana (4 filas × 3 columnas) |
+| `workbook.{ods,xlsx}` | LibreOffice desde una hoja ODF plana del script: hojas "Ventas" (fórmulas `B2*C2` y `SUM`, fechas con formato ISO, código "007" como texto, acentos y chino) y "Notas" |
 | `slides.{odp,pptx}` | LibreOffice desde una presentación ODF plana de 2 diapositivas (el PPT ocupa ~450 KB y no se incluye: `tests/inventory/server.test.ts` lo genera desde `slides.pptx` con LibreOffice al correr) |
 | `corrupt/truncated.{jpg,png,pdf}` | Los archivos válidos cortados a la mitad (PDF: un tercio) |
 | `corrupt/garbage.{png,pdf}` | Firma válida seguida de bytes basura |

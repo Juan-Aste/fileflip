@@ -84,6 +84,7 @@ export const toolIds = [
   "html-to-markdown",
   "markdown-to-pdf",
   "html-to-pdf",
+  "spreadsheet-converter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -127,6 +128,8 @@ const SUBTITLE_MAX_BYTES = 10 * 1024 * 1024;
 const PDF_PASSWORD_MAX_BYTES = 200 * 1024 * 1024;
 /** Same cap as the font engine (MAX_FONT_BYTES): bigger than any real font. */
 const FONT_MAX_BYTES = 40 * 1024 * 1024;
+/** Spreadsheets are read whole by SheetJS in the worker (cells are also capped: MAX_CELLS). */
+const SHEET_MAX_BYTES = 50 * 1024 * 1024;
 /** Markdown/HTML are converted on the page (they need a DOM): keep it responsive. */
 const MARKUP_MAX_BYTES = 5 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
@@ -778,6 +781,17 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: MARKUP_MAX_BYTES },
     status: "verified",
     slugs: { es: "html-a-pdf", en: "html-to-pdf", pt: "html-para-pdf", fr: "html-en-pdf", zh: "html-to-pdf" },
+  },
+  "spreadsheet-converter": {
+    id: "spreadsheet-converter",
+    category: "document",
+    inputs: ["xlsx", "xls", "ods", "csv", "tsv"],
+    outputs: ["xlsx", "ods", "csv"],
+    engine: "browser",
+    libraries: ["xlsx (SheetJS CE)", "papaparse", "fflate"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: SHEET_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "convertir-hoja-de-calculo", en: "spreadsheet-converter", pt: "converter-planilha", fr: "convertir-tableur", zh: "spreadsheet-converter" },
   },
 };
 

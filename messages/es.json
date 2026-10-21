@@ -207,7 +207,8 @@
     "pdfAlreadyProtected": "Este PDF ya está protegido o tiene restricciones. Quita primero su contraseña con «Quitar contraseña de PDF».",
     "pdfNotProtected": "Este PDF no tiene contraseña: ya se puede abrir sin ella.",
     "pdfWrongPassword": "La contraseña no es correcta para este PDF.",
-    "pdfHasNoImages": "Este PDF no tiene imágenes para extraer (o solo tiene imágenes muy pequeñas)."
+    "pdfHasNoImages": "Este PDF no tiene imágenes para extraer (o solo tiene imágenes muy pequeñas).",
+    "tooManyCells": "La hoja de cálculo es demasiado grande para procesarla en el navegador (más de 2 millones de celdas)."
   },
   "Tools": {
     "merge-pdf": {
@@ -1046,6 +1047,22 @@
         "a3": "No: el PDF/A no permite cifrado. Quita primero la contraseña con «Quitar contraseña de un PDF» y luego conviértelo.",
         "q4": "¿Mis archivos se suben a un servidor?",
         "a4": "Sí: la conversión se hace en nuestro servidor (no en un servicio de terceros), por conexión cifrada, y el archivo se procesa en memoria sin guardarse."
+      }
+    },
+    "spreadsheet-converter": {
+      "title": "Convertir hoja de cálculo",
+      "description": "Convierte entre Excel (XLSX, XLS), OpenDocument (ODS) y CSV: todas las hojas, valores y fórmulas, en tu navegador.",
+      "action": "Convertir",
+      "about": "Convierte hojas de cálculo entre Excel (XLSX y el antiguo XLS), OpenDocument (ODS, de LibreOffice) y CSV o TSV. Pasa de un CSV exportado por un sistema a un Excel listo para trabajar, o de un Excel a CSV para cargarlo en otra aplicación. Al leer un CSV detecta el separador y reconoce números con coma decimal; al crear un CSV puedes elegir coma o punto y coma para que Excel en español lo abra bien.",
+      "faq": {
+        "q1": "¿Qué se conserva al convertir?",
+        "a1": "Todas las hojas, los valores (texto, números, fechas) y las fórmulas con su último resultado. No se conserva el formato visual: colores, fuentes, bordes, anchos de columna, gráficos ni imágenes.",
+        "q2": "¿Por qué Excel me muestra mal los acentos o todo en una columna?",
+        "a2": "Excel en español espera punto y coma como separador y coma decimal. Elige «Punto y coma» y deja marcada la opción de UTF-8 con BOM: así los acentos y la ñ se ven bien al hacer doble clic.",
+        "q3": "¿Qué pasa con un libro de varias hojas al pasarlo a CSV?",
+        "a3": "Un CSV solo tiene una tabla, así que se crea un CSV por hoja (con el nombre de la hoja en el archivo), o solo el de la primera hoja si desmarcas la opción.",
+        "q4": "¿Hay un límite de tamaño?",
+        "a4": "Hasta 50 MB por archivo y 2 millones de celdas con datos, porque todo se procesa en la memoria de tu navegador. Tus archivos no se suben a ningún servidor."
       }
     }
   },
@@ -1887,5 +1904,19 @@
     "hint_1b": "La primera versión: para sistemas que solo aceptan PDF/A-1. Las transparencias se aplanan.",
     "hint_2b": "Recomendada: la más aceptada en trámites y archivos.",
     "hint_3b": "Como 2b, y además admite archivos adjuntos dentro del PDF."
+  },
+  "SheetTool": {
+    "target": "Convertir a",
+    "targets": {
+      "xlsx": "Excel (XLSX)",
+      "ods": "OpenDocument (ODS)",
+      "csv": "CSV"
+    },
+    "delimiter": "Separador del CSV",
+    "delimiterComma": "Coma ( , ) y punto decimal",
+    "delimiterSemicolon": "Punto y coma ( ; ) y coma decimal — Excel en español",
+    "allSheets": "Un CSV por cada hoja (si no, solo la primera)",
+    "bom": "UTF-8 con BOM (Excel muestra bien los acentos)",
+    "note": "Se conservan hojas, valores y fórmulas; el formato visual (colores, bordes, anchos) no."
   }
 }

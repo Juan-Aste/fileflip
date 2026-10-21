@@ -56,6 +56,7 @@
     "turndown-plugin-gfm": "1.0.2",
     "utif2": "^4.1.0",
     "woff2-encoder": "2.0.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
     "yaml": "^2.9.1"
   },
   "devDependencies": {

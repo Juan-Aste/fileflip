@@ -5,6 +5,7 @@ import type { HashAlgorithm } from "./hash";
 import type { CsvToJsonOptions, JsonToCsvOptions } from "./csv";
 import type { SubtitleFormat, SubtitleResult, SyncOptions } from "@/lib/subtitle/subtitle";
 import type { FontContainer, FontFlavor } from "@/lib/font/font";
+import type { SheetFile, SheetOptions } from "@/lib/sheet/sheet";
 import type { FormatResult, JsonFormatOptions, XmlFormatOptions, YamlFormatOptions } from "./format";
 
 // One data worker, started on first use. Text formats are parsed whole, so a
@@ -68,3 +69,7 @@ export const syncSubtitleInput = (input: Input, options: SyncOptions, job: JobOp
 /** A font in another container (sfnt, WOFF, WOFF2); `flavor` says whether the sfnt is .ttf or .otf. */
 export const convertFontFile = (file: Blob, to: FontContainer, job: JobOptions = {}) =>
   call<{ bytes: Uint8Array; flavor: FontFlavor }>("convertFont", { input: file, options: { to } }, job);
+
+/** A spreadsheet as XLSX, ODS or CSV (one CSV per sheet when asked). */
+export const convertSpreadsheetFile = (file: File, options: SheetOptions, job: JobOptions = {}) =>
+  call<SheetFile[]>("convertSpreadsheet", { input: file, options }, job);

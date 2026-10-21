@@ -207,7 +207,8 @@
     "pdfAlreadyProtected": "Este PDF já está protegido ou tem restrições. Remova primeiro a senha com “Desbloquear PDF”.",
     "pdfNotProtected": "Este PDF não tem senha: ele já abre sem ela.",
     "pdfWrongPassword": "A senha não está correta para este PDF.",
-    "pdfHasNoImages": "Este PDF não tem imagens para extrair (ou só tem imagens muito pequenas)."
+    "pdfHasNoImages": "Este PDF não tem imagens para extrair (ou só tem imagens muito pequenas).",
+    "tooManyCells": "A planilha é grande demais para processar no navegador (mais de 2 milhões de células)."
   },
   "Tools": {
     "merge-pdf": {
@@ -1046,6 +1047,22 @@
         "a3": "Não: o PDF/A não permite criptografia. Remova primeiro a senha com «Remover senha de PDF» e depois converta.",
         "q4": "Meus arquivos são enviados a um servidor?",
         "a4": "Sim: a conversão é feita no nosso servidor (não em um serviço de terceiros), por conexão criptografada, e o arquivo é processado em memória sem ser guardado."
+      }
+    },
+    "spreadsheet-converter": {
+      "title": "Converter planilha",
+      "description": "Converta entre Excel (XLSX, XLS), OpenDocument (ODS) e CSV: todas as abas, valores e fórmulas, no seu navegador.",
+      "action": "Converter",
+      "about": "Converta planilhas entre Excel (XLSX e o antigo XLS), OpenDocument (ODS, do LibreOffice) e CSV ou TSV. Transforme um CSV exportado por um sistema em um Excel pronto para trabalhar, ou um Excel em CSV para carregar em outro aplicativo. Ao ler um CSV, o separador é detectado e números com vírgula decimal são reconhecidos; ao criar um CSV você escolhe vírgula ou ponto e vírgula para o Excel em português abrir certo.",
+      "faq": {
+        "q1": "O que é mantido na conversão?",
+        "a1": "Todas as abas, os valores (texto, números, datas) e as fórmulas com o último resultado. A formatação visual não é mantida: cores, fontes, bordas, larguras de coluna, gráficos e imagens.",
+        "q2": "Por que o Excel mostra os acentos errados ou tudo em uma coluna?",
+        "a2": "O Excel em português espera ponto e vírgula como separador e vírgula decimal. Escolha «Ponto e vírgula» e deixe marcada a opção UTF-8 com BOM para que os acentos e o ç apareçam certos com um clique duplo.",
+        "q3": "E uma pasta de trabalho com várias abas ao converter para CSV?",
+        "a3": "Um CSV tem só uma tabela, então é criado um CSV por aba (com o nome da aba no arquivo), ou só o da primeira se você desmarcar a opção.",
+        "q4": "Existe limite de tamanho?",
+        "a4": "Até 50 MB por arquivo e 2 milhões de células preenchidas, porque tudo é processado na memória do seu navegador. Seus arquivos não são enviados a nenhum servidor."
       }
     }
   },
@@ -1887,5 +1904,19 @@
     "hint_1b": "A primeira versão: para sistemas que só aceitam PDF/A-1. As transparências são achatadas.",
     "hint_2b": "Recomendada: a mais aceita em órgãos e arquivos.",
     "hint_3b": "Como a 2b, e também permite anexos dentro do PDF."
+  },
+  "SheetTool": {
+    "target": "Converter para",
+    "targets": {
+      "xlsx": "Excel (XLSX)",
+      "ods": "OpenDocument (ODS)",
+      "csv": "CSV"
+    },
+    "delimiter": "Separador do CSV",
+    "delimiterComma": "Vírgula ( , ) e ponto decimal",
+    "delimiterSemicolon": "Ponto e vírgula ( ; ) e vírgula decimal — Excel em português",
+    "allSheets": "Um CSV por aba (senão, só a primeira)",
+    "bom": "UTF-8 com BOM (o Excel mostra os acentos certos)",
+    "note": "Abas, valores e fórmulas são mantidos; a formatação visual (cores, bordas, larguras) não."
   }
 }
