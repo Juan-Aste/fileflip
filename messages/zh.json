@@ -276,7 +276,10 @@
     "levelRecommended": "推荐",
     "levelStrong": "强（文件最小）",
     "reduced": "{before} → {after}（减小 {percent}）",
-    "alreadyOptimized": "此 PDF 已经过优化，无法再缩小。"
+    "alreadyOptimized": "此 PDF 已经过优化，无法再缩小。",
+    "cancel": "取消",
+    "limitsMultiple": "最多 {count} 个文件，每个不超过 {size}。",
+    "limitsSingle": "一个文件，不超过 {size}。"
   },
   "Email": {
     "subject": "你的 Fileflect 登录链接",

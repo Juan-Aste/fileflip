@@ -1398,3 +1398,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Verificación**
 - 19 tests nuevos con un worker simulado (reutilización, tope de concurrencia, orden, progreso, transferibles, cancelación en curso y en cola, señal ya abortada, timeout, caída del worker, respuestas viejas, `dispose`). Lint, typecheck, tests (472) y build pasan; `scripts/audit/pdf-tools.mjs` 19/19 y `scripts/audit/browser.mjs` 88/88.
+
+## 2026-10-21 00:35 UTC — Fase 3, tarea 3B.5 (interfaz genérica de herramienta)
+
+**Qué se hizo**
+- `src/components/tools/shell/state.ts` (lógica pura): `checkInputs` (filtro por extensión, tamaño máximo y cantidad contando los ya elegidos; el contenido lo sigue validando cada procesador), `shellReducer` (`idle` → `processing` con progreso que no retrocede → `done` / `error`; ignora eventos tardíos; si todas las entradas fallan con el mismo código se muestra un solo error; con fallas parciales se conservan los archivos buenos), `outputFiles` y `renameExtension`.
+- `src/components/tools/shell/ToolShell.tsx`: entrada de archivos (Dropzone) o de texto (textarea), opciones de la herramienta, botón de acción con barra de progreso y **Cancelar** (aborta el `AbortSignal` que recibe el procesador → el pool termina el worker), lista de resultados con descarga individual, error traducido por archivo, "Descargar todo en ZIP" si hay más de uno y "Empezar de nuevo". Los object URL se crean una vez por resultado y se liberan al reiniciar o salir de la página (`createUrlRegistry`).
+- Límites visibles y reales: "Hasta N archivos de X como máximo cada uno" / "Un archivo de X como máximo", el mínimo entre el plan del usuario (`limits.ts`) y el límite propio de la herramienta.
+- Textos nuevos en `ToolUi` (`cancel`, `limitsMultiple`, `limitsSingle`) en los 5 idiomas.
+
+**Convención para 3C**
+- Una herramienta nueva implementa `process({ files, text }, { signal, onProgress })` que devuelve `ShellOutput[]` (`file` o `error` con código) y se monta con `<ToolShell input=… actionLabel=… options=… process=… />`. Los trabajos pesados van al pool de `@/lib/jobs` pasando `signal`.
+
+**Verificación**
+- 12 tests de la lógica de estado. Lint, typecheck, tests (484) y build pasan (una corrida con `next start` abierto en paralelo tuvo un test lento por timeout; repetida sin carga, todo verde). El componente todavía no tiene consumidores: su prueba de navegador llega con la primera herramienta de 3C (3C.1) y la base de 3B.7.

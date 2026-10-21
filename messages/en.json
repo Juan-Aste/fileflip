@@ -276,7 +276,10 @@
     "levelRecommended": "Recommended",
     "levelStrong": "Strong (smallest file)",
     "reduced": "{before} → {after} ({percent} smaller)",
-    "alreadyOptimized": "This PDF is already optimized: we couldn't make it smaller."
+    "alreadyOptimized": "This PDF is already optimized: we couldn't make it smaller.",
+    "cancel": "Cancel",
+    "limitsMultiple": "Up to {count} files, {size} max each.",
+    "limitsSingle": "One file, {size} max."
   },
   "Email": {
     "subject": "Your Fileflect sign-in link",

@@ -276,7 +276,10 @@
     "levelRecommended": "Recomendada",
     "levelStrong": "Forte (arquivo mais leve)",
     "reduced": "{before} → {after} ({percent} menor)",
-    "alreadyOptimized": "Este PDF já está otimizado: não conseguimos reduzi-lo mais."
+    "alreadyOptimized": "Este PDF já está otimizado: não conseguimos reduzi-lo mais.",
+    "cancel": "Cancelar",
+    "limitsMultiple": "Até {count} arquivos de no máximo {size} cada.",
+    "limitsSingle": "Um arquivo de no máximo {size}."
   },
   "Email": {
     "subject": "Seu link para entrar no Fileflect",
