@@ -193,7 +193,9 @@
     "pdfHasNoText": "Ce PDF est une image numérisée : il ne contient pas de texte à mettre dans Word.",
     "fileDamaged": "Ce fichier est endommagé ou incomplet. Essayez avec une autre copie.",
     "signInRequired": "Connectez-vous pour continuer.",
-    "paymentsUnavailable": "Les paiements ne sont pas encore disponibles dans votre pays. Revenez bientôt."
+    "paymentsUnavailable": "Les paiements ne sont pas encore disponibles dans votre pays. Revenez bientôt.",
+    "jobCancelled": "Le traitement a été annulé.",
+    "jobTimedOut": "Le traitement a pris trop de temps et a été arrêté. Essayez avec un fichier plus petit."
   },
   "Tools": {
     "merge-pdf": {

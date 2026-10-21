@@ -193,7 +193,9 @@
     "pdfHasNoText": "Este PDF é uma imagem digitalizada: não tem texto para passar para o Word.",
     "fileDamaged": "O arquivo está danificado ou incompleto. Tente com outra cópia.",
     "signInRequired": "Entre na sua conta para continuar.",
-    "paymentsUnavailable": "Os pagamentos ainda não estão disponíveis no seu país. Volte em breve."
+    "paymentsUnavailable": "Os pagamentos ainda não estão disponíveis no seu país. Volte em breve.",
+    "jobCancelled": "O processo foi cancelado.",
+    "jobTimedOut": "O processo demorou demais e foi interrompido. Tente um arquivo menor."
   },
   "Tools": {
     "merge-pdf": {

@@ -193,7 +193,9 @@
     "pdfHasNoText": "Este PDF es una imagen escaneada: no tiene texto que pasar a Word.",
     "fileDamaged": "El archivo está dañado o incompleto. Prueba con otra copia.",
     "signInRequired": "Inicia sesión para continuar.",
-    "paymentsUnavailable": "Los pagos todavía no están disponibles en tu país. Vuelve pronto."
+    "paymentsUnavailable": "Los pagos todavía no están disponibles en tu país. Vuelve pronto.",
+    "jobCancelled": "Se canceló el proceso.",
+    "jobTimedOut": "El proceso tardó demasiado y se detuvo. Prueba con un archivo más pequeño."
   },
   "Tools": {
     "merge-pdf": {

@@ -193,7 +193,9 @@
     "pdfHasNoText": "This PDF is a scanned image: it has no text to put into Word.",
     "fileDamaged": "This file is damaged or incomplete. Try another copy.",
     "signInRequired": "Please sign in to continue.",
-    "paymentsUnavailable": "Payments aren't available in your country yet. Check back soon."
+    "paymentsUnavailable": "Payments aren't available in your country yet. Check back soon.",
+    "jobCancelled": "The task was cancelled.",
+    "jobTimedOut": "The task took too long and was stopped. Try a smaller file."
   },
   "Tools": {
     "merge-pdf": {

@@ -1349,7 +1349,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Los límites de tamaño y de lote siguen saliendo del plan (`limits.ts`); el registro solo agrega lo propio de cada herramienta.
 
 **Verificación**
-- Lint, typecheck, tests (440), build y `check:static` (547 páginas, igual que antes) pasan; `scripts/audit/pdf-tools.mjs` 19/19.
+- Lint, typecheck, tests (440), build y `check:static` (547 páginas, igual que antes) pasan; `scripts/audit/pdf-tools.mjs` 19/19 y `scripts/audit/browser.mjs` 88/88.
 
 ## 2026-10-21 00:10 UTC — Fase 3, tarea 3B.2 (páginas de categoría y "Todas las herramientas")
 
@@ -1382,3 +1382,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Tests (453, incluidos los de búsqueda y del índice en los 5 idiomas), lint, typecheck, build y `check:static` pasan. `scripts/audit/search.mjs` (nuevo): 12/12 en 360 y 1280 px (el índice no se pide al cargar la página; Ctrl+K, `/`, flechas, Enter navega, Escape cierra, mensaje sin resultados). `pdf-tools.mjs` 19/19.
 
 **Siguiente**: 3B.4 (motor de trabajos genérico en workers).
+
+## 2026-10-21 00:20 UTC — Fase 3, tarea 3B.4 (motor de trabajos genérico)
+
+**Qué se hizo**
+- `src/lib/jobs/pool.ts`: `createJobPool(start, { concurrency })` — pool de workers que hablan el protocolo de `worker-rpc` (`exposeHandlers` del lado del worker), creados al primer uso y reutilizados; cola en orden; progreso; **cancelación** con `AbortSignal` (un trabajo en cola sale de la cola; uno en curso **termina su worker** con `worker.terminate()` y el siguiente trabajo arranca uno nuevo); **tiempo máximo por trabajo** (`timeoutMs`) que también termina el worker; un worker que se cae falla solo su trabajo y se reemplaza; `dispose()` para salir de la página.
+- `src/lib/jobs/batch.ts`: `runBatch(items, task, { concurrency, signal, onProgress, onItem })` — un resultado por archivo (`done` o `error` con código traducible) sin cortar el lote, progreso total promedio, y los archivos no empezados al cancelar quedan como `jobCancelled`.
+- `src/lib/jobs/urls.ts`: registro de object URLs (`create`/`revoke`/`revokeAll`) para liberar vistas previas y descargas de una sola vez.
+- Códigos nuevos `jobCancelled` y `jobTimedOut` en `api-errors.ts` con textos en los 5 idiomas.
+- El cliente de las herramientas PDF (`src/lib/pdf/client.ts`) usa el pool con un límite de 10 minutos por trabajo (antes, un bucle infinito de pdf-lib dejaba el worker ocupado para siempre). Se quitó `createWorkerClient` de `worker-rpc.ts` (ya no se usaba).
+
+**Decisiones**
+- El conversor de imágenes mantiene su pool propio (`src/lib/image/client.ts`, con precarga de códecs y protocolo propio): funciona y está auditado; se migra solo si una herramienta nueva necesita compartirlo.
+- El pool de PDF es de un solo worker (documentos grandes ocupan cientos de MB); los trabajos se ejecutan en orden.
+
+**Verificación**
+- 19 tests nuevos con un worker simulado (reutilización, tope de concurrencia, orden, progreso, transferibles, cancelación en curso y en cola, señal ya abortada, timeout, caída del worker, respuestas viejas, `dispose`). Lint, typecheck, tests (472) y build pasan; `scripts/audit/pdf-tools.mjs` 19/19 y `scripts/audit/browser.mjs` 88/88.

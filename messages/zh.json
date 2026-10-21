@@ -193,7 +193,9 @@
     "pdfHasNoText": "此 PDF 是扫描图像，没有可转换为 Word 的文字。",
     "fileDamaged": "文件已损坏或不完整，请换一个副本再试。",
     "signInRequired": "请先登录。",
-    "paymentsUnavailable": "你所在的国家/地区暂不支持付款，敬请期待。"
+    "paymentsUnavailable": "你所在的国家/地区暂不支持付款，敬请期待。",
+    "jobCancelled": "任务已取消。",
+    "jobTimedOut": "任务耗时过长，已停止。请尝试较小的文件。"
   },
   "Tools": {
     "merge-pdf": {

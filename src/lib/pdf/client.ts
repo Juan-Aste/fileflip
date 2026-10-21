@@ -5,13 +5,18 @@ import { ConversionError, InputFileError, errorCode } from "@/lib/convert-error"
 import { jpegOrientation } from "@/lib/image/exif";
 import { convertImage } from "@/lib/image/client";
 import { isDamagedImage } from "@/lib/image/integrity";
-import { createWorkerClient } from "@/lib/worker-rpc";
+import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type { CompressionLevel, CompressResult } from "./compress";
 import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
 
-const call = createWorkerClient(
+// One PDF worker at a time (documents can take hundreds of MB). A job that
+// hangs inside pdf-lib is stopped by the time limit, which restarts the worker.
+const PDF_JOB_TIMEOUT_MS = 10 * 60_000;
+const pool = createJobPool(
   () => new Worker(new URL("../../workers/pdf.worker.ts", import.meta.url), { type: "module" }),
 );
+const call = <T>(method: string, args: unknown, options: JobOptions = {}) =>
+  pool.run<T>(method, args, { timeoutMs: PDF_JOB_TIMEOUT_MS, ...options });
 
 const bytesOf = async (file: Blob) => new Uint8Array(await file.arrayBuffer());
 
