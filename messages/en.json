@@ -197,6 +197,7 @@
     "xmlEntitiesBlocked": "This XML declares entities ('<!ENTITY>'). For security they are not processed: remove the DOCTYPE declaration and try again.",
     "qrTooLong": "The text is too long for a QR code. Shorten it or lower the error correction level.",
     "qrNotFound": "We couldn't find a readable QR code in the image. Try a sharper photo, taken straight on, with the whole code visible.",
+    "targetTooSmall": "That size can't be reached without making the image too small. Try a larger size.",
     "signInRequired": "Please sign in to continue.",
     "paymentsUnavailable": "Payments aren't available in your country yet. Check back soon.",
     "jobCancelled": "The task was cancelled.",
@@ -607,6 +608,22 @@
         "a2": "With SI prefixes, 1 GB = 1000 MB. Operating systems sometimes count in powers of 2: those are GiB and MiB, which you can convert too.",
         "q3": "How precise are the results?",
         "a3": "Up to 10 significant digits are shown. The equivalences are exact by definition; the number is only rounded for display."
+      }
+    },
+    "compress-image": {
+      "title": "Compress image",
+      "description": "Shrink JPG, PNG, WEBP and AVIF photos, or fit them under an exact file size for a form.",
+      "action": "Compress images",
+      "about": "Compress image re-encodes your photos so they take less space without changing their pixel size. Pick a level (low, recommended or strong) or an exact maximum size, like the 100 KB or 200 KB many online forms ask for: we find the best quality that fits and, if that is not enough, scale the image down. PNG files are optimized losslessly at the low level and reduced to a color palette at the others. You can also switch to WEBP or AVIF, which are smaller at the same quality. Everything happens in your browser, and metadata (such as GPS location) is removed.",
+      "faq": {
+        "q1": "How much smaller will my photo get?",
+        "a1": "It depends on the photo: a phone JPG usually drops 40% to 80% at the recommended level. If the image was already optimized and can't get smaller, you get the original back unchanged.",
+        "q2": "How do I get a photo under 100 KB for a form?",
+        "a2": "Choose “Exact file size” and the 100 KB button (or type another size). The result is at most that size; if needed its pixel size is reduced too, and we tell you by how much.",
+        "q3": "Why was my PNG saved as JPG?",
+        "a3": "In exact-size mode PNG files are saved as JPG, because PNG has no quality setting. If your PNG has transparency, choose WEBP to keep it.",
+        "q4": "Do I lose quality?",
+        "a4": "With JPG, WEBP and AVIF, a little: the low level is barely noticeable and the strong level favors size. PNG at the low level loses nothing."
       }
     }
   },
@@ -1178,5 +1195,20 @@
         "yr": "Years"
       }
     }
+  },
+  "ImageTools": {
+    "mode": "How do you want to compress?",
+    "modeLevel": "By level",
+    "modeTarget": "Exact file size",
+    "target": "Maximum size",
+    "targetCustom": "Other",
+    "targetKb": "Maximum size in KB",
+    "targetInvalid": "Enter a size of at least 10 KB.",
+    "targetHint": "For forms that ask for a maximum file size. We find the best quality that fits; if that is not enough, we scale the image down.",
+    "format": "Output format",
+    "formatSame": "Same as original",
+    "pngToJpg": "In this mode PNG files are saved as JPG (on a white background if they have transparency).",
+    "kept": "already optimized, so you get the original back unchanged.",
+    "resized": "Scaled down to {width} × {height} px to reach the size."
   }
 }

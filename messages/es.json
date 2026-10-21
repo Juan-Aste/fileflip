@@ -197,6 +197,7 @@
     "xmlEntitiesBlocked": "Este XML declara entidades ('<!ENTITY>'). Por seguridad no se procesan: quita la declaración DOCTYPE e inténtalo de nuevo.",
     "qrTooLong": "El texto es demasiado largo para un código QR. Acórtalo o baja el nivel de corrección de errores.",
     "qrNotFound": "No encontramos un código QR legible en la imagen. Prueba con una foto más nítida, de frente y con el código completo.",
+    "targetTooSmall": "No se puede llegar a ese peso sin que la imagen quede demasiado chica. Prueba con un peso mayor.",
     "signInRequired": "Inicia sesión para continuar.",
     "paymentsUnavailable": "Los pagos todavía no están disponibles en tu país. Vuelve pronto.",
     "jobCancelled": "Se canceló el proceso.",
@@ -607,6 +608,22 @@
         "a2": "Con prefijos del sistema internacional, 1 GB = 1000 MB. Los sistemas operativos a veces cuentan en potencias de 2: eso son GiB y MiB, que también puedes convertir.",
         "q3": "¿Qué tan precisos son los resultados?",
         "a3": "Se muestran hasta 10 cifras significativas. Las equivalencias son exactas por definición; solo se redondea al mostrar el número."
+      }
+    },
+    "compress-image": {
+      "title": "Comprimir imagen",
+      "description": "Reduce el peso de fotos JPG, PNG, WEBP y AVIF, o ajústalas a un peso exacto para un trámite.",
+      "action": "Comprimir imágenes",
+      "about": "Comprimir imagen vuelve a codificar tus fotos para que pesen menos sin cambiar su tamaño en píxeles. Elige un nivel (baja, recomendada o fuerte) o un peso máximo exacto, como los 100 KB o 200 KB que piden muchos formularios y trámites: buscamos la mejor calidad que entra en ese peso y, si no alcanza, achicamos la imagen. Los PNG se optimizan sin pérdida en el nivel bajo y se reducen a una paleta de colores en los demás. También puedes pasar a WEBP o AVIF, que pesan menos con la misma calidad. Todo ocurre en tu navegador y los metadatos (como la ubicación GPS) se quitan.",
+      "faq": {
+        "q1": "¿Cuánto se reduce una foto?",
+        "a1": "Depende de la foto: una foto de celular en JPG suele bajar entre 40 % y 80 % con el nivel recomendado. Si la imagen ya estaba optimizada y no se puede reducir, te devolvemos el original sin cambios.",
+        "q2": "¿Cómo dejo una foto en menos de 100 KB para un trámite?",
+        "a2": "Elige «A un peso exacto» y el botón de 100 KB (o escribe otro peso). La foto resultante pesa como máximo eso; si hace falta, también se reduce su tamaño en píxeles y te avisamos cuánto.",
+        "q3": "¿Por qué mi PNG se guardó como JPG?",
+        "a3": "En el modo de peso exacto los PNG se guardan como JPG, porque el PNG no tiene un ajuste de calidad. Si tu PNG tiene transparencia, elige WEBP para conservarla.",
+        "q4": "¿Se pierde calidad?",
+        "a4": "En JPG, WEBP y AVIF sí, un poco: el nivel bajo casi no se nota y el fuerte prioriza el peso. El PNG en nivel bajo no pierde nada."
       }
     }
   },
@@ -1178,5 +1195,20 @@
         "yr": "Años"
       }
     }
+  },
+  "ImageTools": {
+    "mode": "¿Cómo quieres comprimir?",
+    "modeLevel": "Por nivel",
+    "modeTarget": "A un peso exacto",
+    "target": "Peso máximo",
+    "targetCustom": "Otro",
+    "targetKb": "Peso máximo en KB",
+    "targetInvalid": "Escribe un peso de al menos 10 KB.",
+    "targetHint": "Para formularios y trámites que piden un peso máximo. Buscamos la mejor calidad que entra; si no alcanza, achicamos la imagen.",
+    "format": "Formato de salida",
+    "formatSame": "Igual que el original",
+    "pngToJpg": "En este modo los PNG se guardan como JPG (con fondo blanco si tienen transparencia).",
+    "kept": "ya estaba optimizada, así que te devolvemos el original sin cambios.",
+    "resized": "Se redujo a {width} × {height} px para llegar al peso."
   }
 }

@@ -197,6 +197,7 @@
     "xmlEntitiesBlocked": "Este XML declara entidades ('<!ENTITY>'). Por segurança, elas não são processadas: remova a declaração DOCTYPE e tente de novo.",
     "qrTooLong": "O texto é longo demais para um código QR. Encurte-o ou diminua o nível de correção de erros.",
     "qrNotFound": "Não encontramos um código QR legível na imagem. Tente uma foto mais nítida, de frente e com o código inteiro.",
+    "targetTooSmall": "Não é possível chegar a esse tamanho sem deixar a imagem pequena demais. Tente um tamanho maior.",
     "signInRequired": "Entre na sua conta para continuar.",
     "paymentsUnavailable": "Os pagamentos ainda não estão disponíveis no seu país. Volte em breve.",
     "jobCancelled": "O processo foi cancelado.",
@@ -607,6 +608,22 @@
         "a2": "Com prefixos do sistema internacional, 1 GB = 1000 MB. Os sistemas operacionais às vezes contam em potências de 2: isso são GiB e MiB, que você também pode converter.",
         "q3": "Quão precisos são os resultados?",
         "a3": "São mostrados até 10 algarismos significativos. As equivalências são exatas por definição; o número só é arredondado na exibição."
+      }
+    },
+    "compress-image": {
+      "title": "Comprimir imagem",
+      "description": "Reduza o tamanho de fotos JPG, PNG, WEBP e AVIF, ou ajuste-as a um tamanho exato para um formulário.",
+      "action": "Comprimir imagens",
+      "about": "Comprimir imagem recodifica suas fotos para que fiquem mais leves sem mudar o tamanho em pixels. Escolha um nível (baixa, recomendada ou forte) ou um tamanho máximo exato, como os 100 KB ou 200 KB que muitos formulários e serviços públicos pedem: procuramos a melhor qualidade que cabe nesse tamanho e, se não der, diminuímos a imagem. Os PNG são otimizados sem perda no nível baixo e reduzidos a uma paleta de cores nos outros. Você também pode passar para WEBP ou AVIF, que ficam menores com a mesma qualidade. Tudo acontece no seu navegador e os metadados (como a localização GPS) são removidos.",
+      "faq": {
+        "q1": "Quanto uma foto diminui?",
+        "a1": "Depende da foto: uma foto de celular em JPG costuma diminuir de 40% a 80% no nível recomendado. Se a imagem já estava otimizada e não dá para reduzir, devolvemos o original sem alterações.",
+        "q2": "Como deixo uma foto com menos de 100 KB para um formulário?",
+        "a2": "Escolha «Tamanho exato» e o botão de 100 KB (ou digite outro tamanho). A foto resultante terá no máximo esse tamanho; se necessário, as dimensões em pixels também diminuem e avisamos quanto.",
+        "q3": "Por que meu PNG foi salvo como JPG?",
+        "a3": "No modo de tamanho exato os PNG são salvos como JPG, porque o PNG não tem ajuste de qualidade. Se o seu PNG tem transparência, escolha WEBP para mantê-la.",
+        "q4": "A qualidade diminui?",
+        "a4": "Em JPG, WEBP e AVIF, um pouco: o nível baixo quase não se nota e o forte prioriza o tamanho. O PNG no nível baixo não perde nada."
       }
     }
   },
@@ -1178,5 +1195,20 @@
         "yr": "Anos"
       }
     }
+  },
+  "ImageTools": {
+    "mode": "Como você quer comprimir?",
+    "modeLevel": "Por nível",
+    "modeTarget": "Tamanho exato",
+    "target": "Tamanho máximo",
+    "targetCustom": "Outro",
+    "targetKb": "Tamanho máximo em KB",
+    "targetInvalid": "Digite um tamanho de pelo menos 10 KB.",
+    "targetHint": "Para formulários que pedem um tamanho máximo. Procuramos a melhor qualidade que cabe; se não der, diminuímos a imagem.",
+    "format": "Formato de saída",
+    "formatSame": "Igual ao original",
+    "pngToJpg": "Neste modo os PNG são salvos como JPG (com fundo branco se tiverem transparência).",
+    "kept": "já estava otimizada, então devolvemos o original sem alterações.",
+    "resized": "Reduzida para {width} × {height} px para atingir o tamanho."
   }
 }

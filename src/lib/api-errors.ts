@@ -19,6 +19,8 @@ export const apiErrorCodes = [
   // Client-side only: QR codes (text too long to encode, no code found in the image).
   "qrTooLong",
   "qrNotFound",
+  // Client-side only: an image that can't reach the asked file size without becoming tiny.
+  "targetTooSmall",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -45,6 +47,7 @@ const status: Record<ApiErrorCode, number> = {
   xmlEntitiesBlocked: 422,
   qrTooLong: 422,
   qrNotFound: 422,
+  targetTooSmall: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

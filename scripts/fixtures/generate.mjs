@@ -261,6 +261,56 @@ write("qr.png", await sharp(Buffer.from(await qrSvg("https://fileflect.example/q
 }
 write("qr-inverted.png", await sharp(Buffer.from(await qrSvg("Olá, 中文 ✓ 123", "#ffffffff", "#0f2a1dff"))).resize(240, 240, { kernel: "nearest" }).png().toBuffer());
 
+// --- Photo-like pictures for the image compressor: a noisy 1000×750 landscape
+// saved at JPEG quality 95 (plenty to compress) and a 360×270 PNG with smooth
+// colors and a transparent background (palette reduction must keep the alpha).
+{
+  let seed = 7;
+  const rand = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const clamp = (v) => Math.max(0, Math.min(255, v));
+  const PW = 1000;
+  const PH = 750;
+  const photo = Buffer.alloc(PW * PH * 3);
+  for (let y = 0; y < PH; y++) {
+    for (let x = 0; x < PW; x++) {
+      const i = (y * PW + x) * 3;
+      const n = (rand() - 0.5) * 8;
+      const sky = y < PH * 0.55;
+      const sun = (x - 860) ** 2 + (y - 220) ** 2 < 90 ** 2;
+      let r = sky ? 90 + (y / PH) * 160 : 60 + Math.sin(x / 37) * 20 + (y / PH) * 40;
+      let g = sky ? 140 + (y / PH) * 90 : 110 + Math.cos(y / 23) * 25;
+      let b = sky ? 230 - (y / PH) * 60 : 50 + Math.sin((x + y) / 51) * 15;
+      if (sun) [r, g, b] = [255, 214, 120];
+      photo[i] = clamp(r + n);
+      photo[i + 1] = clamp(g + n);
+      photo[i + 2] = clamp(b + n);
+    }
+  }
+  write("photo.jpg", await sharp(photo, { raw: { width: PW, height: PH, channels: 3 } }).jpeg({ quality: 95 }).toBuffer());
+
+  const AW = 360;
+  const AH = 270;
+  const alpha = Buffer.alloc(AW * AH * 4);
+  for (let y = 0; y < AH; y++) {
+    for (let x = 0; x < AW; x++) {
+      const i = (y * AW + x) * 4;
+      const n = (rand() - 0.5) * 2;
+      alpha[i] = clamp((x / AW) * 255 + n);
+      alpha[i + 1] = clamp(120 + Math.sin(y / 15) * 60 + n);
+      alpha[i + 2] = clamp((y / AH) * 255);
+      alpha[i + 3] = (x - 180) ** 2 + (y - 135) ** 2 < 120 ** 2 ? 255 : 0;
+    }
+  }
+  write("photo-alpha.png", await sharp(alpha, { raw: { width: AW, height: AH, channels: 4 } }).png({ compressionLevel: 9 }).toBuffer());
+
+  // Heavy grain that survives low JPEG qualities: reaching a small size forces scaling down.
+  const NW = 480;
+  const NH = 360;
+  const grain = Buffer.alloc(NW * NH * 3);
+  for (let i = 0; i < grain.length; i++) grain[i] = clamp(128 + Math.sin(i / 7000) * 60 + (rand() - 0.5) * 120);
+  write("noise.jpg", await sharp(grain, { raw: { width: NW, height: NH, channels: 3 } }).jpeg({ quality: 85 }).toBuffer());
+}
+
 // --- Broken files for error paths
 const writeCorrupt = (name, bytes) => write(join("corrupt", name), bytes);
 const png = readFileSync(join(out, "image.png"));

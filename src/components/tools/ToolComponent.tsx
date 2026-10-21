@@ -35,6 +35,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "word-counter": dynamic(() => import("./text/TextTools").then((m) => m.WordCounterTool)),
   "color-converter": dynamic(() => import("./utility/UtilityTools").then((m) => m.ColorConverterTool)),
   "unit-converter": dynamic(() => import("./utility/UtilityTools").then((m) => m.UnitConverterTool)),
+  "compress-image": dynamic(() => import("./image/CompressImageTool")),
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {

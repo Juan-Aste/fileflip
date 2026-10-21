@@ -57,6 +57,7 @@ export const toolIds = [
   "word-counter",
   "color-converter",
   "unit-converter",
+  "compress-image",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -429,6 +430,19 @@ export const tools: Record<ToolId, ToolInfo> = {
     status: "verified",
     slugs: { es: "conversor-de-unidades", en: "unit-converter", pt: "conversor-de-unidades", fr: "convertisseur-unites", zh: "unit-converter" },
   },
+  "compress-image": {
+    id: "compress-image",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif"],
+    outputs: ["jpg", "png", "webp", "avif"],
+    engine: "browser",
+    libraries: ["@jsquash/jpeg", "@jsquash/webp", "@jsquash/avif", "@jsquash/png", "@jsquash/oxipng", "gifenc"],
+    // Photos are decoded whole (4 bytes per pixel) and encoded several times in target mode.
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "comprimir-imagen", en: "compress-image", pt: "comprimir-imagem", fr: "compresser-image", zh: "compress-image" },
+  },
+
 };
 
 /** Published tools: only verified ones get pages, links and sitemap entries. */

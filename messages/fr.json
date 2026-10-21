@@ -197,6 +197,7 @@
     "xmlEntitiesBlocked": "Ce XML déclare des entités ('<!ENTITY>'). Par sécurité, elles ne sont pas traitées : supprimez la déclaration DOCTYPE et réessayez.",
     "qrTooLong": "Le texte est trop long pour un code QR. Raccourcissez-le ou baissez le niveau de correction d'erreurs.",
     "qrNotFound": "Aucun code QR lisible n'a été trouvé dans l'image. Essayez une photo plus nette, prise de face, avec le code entier.",
+    "targetTooSmall": "Impossible d'atteindre ce poids sans rendre l'image trop petite. Essayez un poids plus élevé.",
     "signInRequired": "Connectez-vous pour continuer.",
     "paymentsUnavailable": "Les paiements ne sont pas encore disponibles dans votre pays. Revenez bientôt.",
     "jobCancelled": "Le traitement a été annulé.",
@@ -607,6 +608,22 @@
         "a2": "Avec les préfixes du système international, 1 Go = 1000 Mo. Les systèmes d’exploitation comptent parfois en puissances de 2 : ce sont des Gio et Mio, que vous pouvez aussi convertir.",
         "q3": "Quelle est la précision des résultats ?",
         "a3": "Jusqu’à 10 chiffres significatifs sont affichés. Les équivalences sont exactes par définition ; le nombre n’est arrondi qu’à l’affichage."
+      }
+    },
+    "compress-image": {
+      "title": "Compresser une image",
+      "description": "Allégez vos photos JPG, PNG, WEBP et AVIF, ou ajustez-les à un poids exact pour un formulaire.",
+      "action": "Compresser les images",
+      "about": "Compresser une image réencode vos photos pour qu'elles pèsent moins sans changer leurs dimensions en pixels. Choisissez un niveau (faible, recommandé ou fort) ou un poids maximal exact, comme les 100 Ko ou 200 Ko demandés par de nombreux formulaires et démarches : nous cherchons la meilleure qualité qui tient dans ce poids et, si cela ne suffit pas, nous réduisons l'image. Les PNG sont optimisés sans perte au niveau faible et réduits à une palette de couleurs aux autres. Vous pouvez aussi passer en WEBP ou AVIF, plus légers à qualité égale. Tout se passe dans votre navigateur et les métadonnées (comme la position GPS) sont supprimées.",
+      "faq": {
+        "q1": "De combien ma photo sera-t-elle allégée ?",
+        "a1": "Cela dépend de la photo : un JPG de téléphone perd en général 40 % à 80 % au niveau recommandé. Si l'image était déjà optimisée et ne peut pas être réduite, vous récupérez l'original inchangé.",
+        "q2": "Comment obtenir une photo de moins de 100 Ko pour un formulaire ?",
+        "a2": "Choisissez « Poids exact » et le bouton 100 Ko (ou saisissez un autre poids). La photo obtenue pèse au plus ce poids ; si nécessaire, ses dimensions sont aussi réduites et nous indiquons de combien.",
+        "q3": "Pourquoi mon PNG a-t-il été enregistré en JPG ?",
+        "a3": "En mode poids exact, les PNG sont enregistrés en JPG, car le PNG n'a pas de réglage de qualité. Si votre PNG a de la transparence, choisissez WEBP pour la conserver.",
+        "q4": "Est-ce que je perds en qualité ?",
+        "a4": "En JPG, WEBP et AVIF, un peu : le niveau faible se remarque à peine et le niveau fort privilégie le poids. Le PNG au niveau faible ne perd rien."
       }
     }
   },
@@ -1178,5 +1195,20 @@
         "yr": "Années"
       }
     }
+  },
+  "ImageTools": {
+    "mode": "Comment voulez-vous compresser ?",
+    "modeLevel": "Par niveau",
+    "modeTarget": "Poids exact",
+    "target": "Poids maximal",
+    "targetCustom": "Autre",
+    "targetKb": "Poids maximal en Ko",
+    "targetInvalid": "Saisissez un poids d'au moins 10 Ko.",
+    "targetHint": "Pour les formulaires qui imposent un poids maximal. Nous cherchons la meilleure qualité qui tient ; si cela ne suffit pas, nous réduisons l'image.",
+    "format": "Format de sortie",
+    "formatSame": "Identique à l'original",
+    "pngToJpg": "Dans ce mode, les PNG sont enregistrés en JPG (sur fond blanc s'ils ont de la transparence).",
+    "kept": "déjà optimisée : vous récupérez l'original inchangé.",
+    "resized": "Réduite à {width} × {height} px pour atteindre le poids."
   }
 }

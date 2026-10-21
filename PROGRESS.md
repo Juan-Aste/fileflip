@@ -1601,3 +1601,27 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Aviso para el dueño: `npm audit` informa vulnerabilidades ya existentes (no agregadas en esta ejecución), entre ellas **nodemailer ≤ 10.0.5** (alta: DoS en el parser de direcciones y una validación de dominio evitable). Actualizar a nodemailer 10.x es un salto de versión mayor; queda anotado para revisarlo.
 
 **Siguiente**: 3C.11 ("Comprimir imagen" con página propia y "comprimir a un peso objetivo").
+
+## 2026-10-21 08:45 UTC — Fase 3, tarea 3C.11 (comprimir imagen y peso objetivo)
+
+**Qué se hizo**
+- Herramienta **Comprimir imagen** en la categoría Imágenes (`/es/comprimir-imagen`, `/en/compress-image`, `/pt/comprimir-imagem`, `/fr/compresser-image`): JPG, PNG, WEBP y AVIF, en lotes, hasta 50 MB por archivo y 5 minutos por trabajo.
+  - **Por nivel** (baja/recomendada/fuerte = calidad 82/68/50 en JPG/WEBP/AVIF). PNG: nivel bajo **sin pérdida** (re-codificado + oxipng nivel 3), recomendada/fuerte = **paleta** de 256/64 colores (cuantizador de gifenc + escritor de PNG indexado propio `src/lib/image/png-indexed.ts` con tRNS, luego oxipng). Si el resultado no es más chico que el original (mismo formato), se devuelve **el original sin cambios** con el aviso "ya estaba optimizada".
+  - **A un peso exacto** (botones 50 KB, 100 KB, 200 KB, 500 KB, 1 MB y "Otro" en KB, mínimo 10 KB): búsqueda binaria de la mejor calidad que entra (`fitToTarget` en `src/lib/image/compress.ts`, ~8 codificaciones); si ni con calidad 40 entra, achica la imagen (raíz del cociente de pesos) y vuelve a buscar; solo en el tamaño mínimo (160 px de lado) baja la calidad hasta 5. Si no se puede → código nuevo `targetTooSmall`. Los PNG se guardan como JPG en este modo (aviso en la interfaz; WEBP para conservar transparencia).
+  - Formato de salida: igual al original, JPG, PNG (solo por nivel), WEBP o AVIF.
+  - "Antes/después": cada resultado muestra "172,7 kB → 13,5 kB (92 % menos)" y, si se achicó, las dimensiones nuevas; vista previa cuando es un solo archivo. Los metadatos (EXIF/GPS) se pierden al re-codificar (dicho en el texto de la página).
+- Worker nuevo `src/workers/image-tools.worker.ts` sobre el pool de `@/lib/jobs` (cancelación y tiempo máximo), que reutiliza los códecs del conversor; servirá también para 3C.12–3C.16. La decodificación se movió a `src/lib/image/decode.ts` (compartida con `image.worker.ts`). Los JPEG/PNG truncados se rechazan con `fileDamaged` (mismo chequeo de integridad que el conversor).
+- Textos (introducción + 4 preguntas, namespace `ImageTools`, error `targetTooSmall`) en los 5 idiomas.
+- Fixtures nuevos generados por script: `photo.jpg` (1000×750, JPEG 95 %, 177 KB), `photo-alpha.png` (360×270 con transparencia, 158 KB) y `noise.jpg` (grano fuerte, 93 KB: para llegar a 12 KB hay que achicarla).
+
+**Decisiones**
+- Los presets usan KB decimales (100 KB = 100 000 bytes): entran en un límite de "100 KB" lo lea el formulario como 1000 o 1024 bytes.
+- `@jsquash/oxipng` 2.3.0 (Apache-2.0): se importa directo `codec/pkg/squoosh_oxipng.js` (un hilo). El módulo principal también referencia el build multihilo (wasm-bindgen-rayon), que genera un chunk circular en webpack (mismo problema que el AVIF multihilo en la fase 1) y solo se usaría con COOP/COEP.
+- Sin libimagequant (GPL-3): la paleta usa gifenc (MIT). En fotos con degradados suaves la paleta puede mostrar bandas; por eso el nivel bajo de PNG es sin pérdida.
+
+**Verificación**
+- Unit: 6 tests de `fitToTarget` con codificador simulado (mejor calidad, tope 92, achicado, calidad < 40 solo en el mínimo, imposible → null, pasos) + helpers; 4 tests del PNG indexado (sharp lo lee píxel por píxel con alfa, errores, ≤ 64 colores y más chico que el RGBA, transparencia).
+- `tests/e2e/image-tools.spec.ts` (6 casos, salida validada con sharp): JPG recomendada < 50 % y 1000×750; 50 KB → ≤ 50 000 bytes y > 30 000 (no aplastada); 12 KB con `noise.jpg` → achicada con proporción 4:3 y aviso con las dimensiones reales; PNG paleta (`isPalette`, alfa 0 en la esquina y 255 en el centro, < 60 % del original) y PNG sin pérdida (píxeles visibles idénticos); JPG → AVIF y PNG transparente → AVIF con alfa, JPG → WEBP; un JPG ya comprimido vuelve **byte a byte igual** y un JPG truncado falla solo con "dañado".
+- Lint, typecheck, tests (643), build (sin avisos), `check:static` (702 páginas) y `npm run test:e2e` (176/176) pasan. Capturas revisadas: `/es/comprimir-imagen` 1280 claro con resultado y `/zh/compress-image` 360 oscuro en modo peso exacto.
+
+**Siguiente**: 3C.12 ("Redimensionar imagen").

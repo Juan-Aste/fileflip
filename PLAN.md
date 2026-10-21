@@ -224,7 +224,7 @@ Utilidades
 - [x] 3C.10 Selector y conversor de colores (HEX, RGB, HSL, OKLCH, contraste AA) y conversor de unidades
 
 Imágenes (las más buscadas primero)
-- [ ] 3C.11 "Comprimir imagen" con página propia (JPG, PNG, WEBP, AVIF; niveles simples; antes/después; lotes) y "comprimir a un peso objetivo" (búsqueda de calidad + reducción de tamaño si no alcanza; presets de trámites)
+- [x] 3C.11 "Comprimir imagen" con página propia (JPG, PNG, WEBP, AVIF; niveles simples; antes/después; lotes) y "comprimir a un peso objetivo" (búsqueda de calidad + reducción de tamaño si no alcanza; presets de trámites)
 - [ ] 3C.12 "Redimensionar imagen" con página propia (píxeles, porcentaje, presets de redes sociales)
 - [ ] 3C.13 Rotar/voltear y quitar metadatos EXIF/GPS (aplicando antes la orientación; exifr para mostrar qué se quita)
 - [ ] 3C.14 Recortar imagen con proporciones fijas (accesible con teclado)

@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
-import { formats } from "@/config/formats";
-import { decoderWarmers, decoders, encoderWarmers, encoders } from "@/lib/image/codecs";
+import { decoderWarmers, encoderWarmers, encoders } from "@/lib/image/codecs";
+import { decodeImage } from "@/lib/image/decode";
 import { resizeRaw } from "@/lib/image/canvas";
 import { computeSize, coverCrop, isSameSize, type Resize } from "@/lib/image/dimensions";
 import type { RawImage } from "@/lib/image/pixels";
@@ -15,24 +15,7 @@ async function decode(job: ImageJob): Promise<RawImage> {
   if (job.pixels) {
     return { ...job.pixels, data: new Uint8ClampedArray(job.buffer) };
   }
-  try {
-    const bitmap = await createImageBitmap(
-      new Blob([job.buffer], { type: formats[job.from].mime }),
-    );
-    try {
-      const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
-      const ctx = canvas.getContext("2d");
-      if (!ctx) throw new Error("No 2D context");
-      ctx.drawImage(bitmap, 0, 0);
-      return ctx.getImageData(0, 0, canvas.width, canvas.height);
-    } finally {
-      bitmap.close();
-    }
-  } catch (nativeError) {
-    const decoder = decoders[job.from];
-    if (!decoder) throw nativeError;
-    return decoder(job.buffer);
-  }
+  return decodeImage(job.buffer, job.from);
 }
 
 async function resize(image: RawImage, request: Resize | undefined): Promise<RawImage> {

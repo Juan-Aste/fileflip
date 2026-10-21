@@ -24,6 +24,7 @@ import {
   LayoutGrid,
   RotateCw,
   Scissors,
+  Minimize2,
   type LucideIcon,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
@@ -58,6 +59,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "word-counter": WholeWord,
   "color-converter": Palette,
   "unit-converter": Ruler,
+  "compress-image": Minimize2,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {
