@@ -1839,3 +1839,11 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (749), build, `check:static` (792 páginas) y `npm run test:e2e` (224/224) pasan. Capturas revisadas a 360 px oscuro: recuadro con la firma y paso de colocación.
 
 **Siguiente**: 3C.22 (proteger con contraseña y quitar la contraseña, qpdf-wasm).
+
+## 2026-10-21 20:50 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas en esta ejecución: 3C.17 (convertir y sincronizar subtítulos), 3C.18 (eliminar y extraer páginas de PDF), 3C.19 (numerar páginas y marca de agua en PDF), 3C.20 (PDF a texto y recortar márgenes) y 3C.21 (firmar PDF). 11 herramientas nuevas publicadas; `npm run test:e2e` 224/224 al cierre.
+- El candado encontrado (14:14) estaba vencido: una ejecución anterior lo tomó y se cortó sin subir cambios.
+- Pendiente para 3D.1: el pie de página lista cada herramienta y ya es muy largo.
+
+**Siguiente**: 3C.22 (proteger con contraseña y quitar la contraseña, qpdf-wasm; revisar licencia antes de instalar).
