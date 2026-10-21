@@ -4,6 +4,8 @@ import {
   FileDown,
   Link2,
   Fingerprint,
+  KeyRound,
+  Clock,
   CodeXml,
   FileCode,
   FileJson,
@@ -42,6 +44,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "base64-decode": FileDown,
   "url-encode": Link2,
   "hash-generator": Fingerprint,
+  "uuid-generator": KeyRound,
+  "timestamp-converter": Clock,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

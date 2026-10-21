@@ -494,6 +494,34 @@
         "q3": "Can a hash be used to store passwords?",
         "a3": "Not directly: passwords need slow, salted functions such as bcrypt or Argon2. Fast hashes like these are for verifying files and integrity."
       }
+    },
+    "uuid-generator": {
+      "title": "UUID generator",
+      "description": "Generate random v4 or time-ordered v7 UUIDs, one or in bulk, with or without hyphens.",
+      "action": "Generate UUIDs",
+      "about": "The UUID generator creates unique identifiers following RFC 9562 with your browser's cryptographic random generator. Version 4 is fully random; version 7 starts with the date and time in milliseconds, so the identifiers sort by creation time, which is handy as a primary key in databases. You can generate up to 10,000 at once, in upper case or without hyphens, and download them as text.",
+      "faq": {
+        "q1": "Can two UUIDs be the same?",
+        "a1": "Not in practice: a v4 UUID has 122 random bits, so the chance of a repeat is negligible even after billions of them.",
+        "q2": "When should I use version 7?",
+        "a2": "When the identifiers are database keys: since they are ordered by time, indexes fragment less than with v4 UUIDs. Keep in mind that they reveal when they were created.",
+        "q3": "Are the generated UUIDs stored?",
+        "a3": "No. They are generated in your browser and never sent to a server."
+      }
+    },
+    "timestamp-converter": {
+      "title": "Unix timestamp converter",
+      "description": "Convert Unix timestamps in seconds or milliseconds to date and time in any time zone, and dates to timestamps.",
+      "action": "Convert",
+      "about": "The timestamp converter turns Unix timestamps (seconds, milliseconds, microseconds or nanoseconds) into readable dates and dates into timestamps. Paste one per line: it detects the unit from the number of digits and also accepts ISO 8601 dates (2023-11-14T22:13:20Z) or email-style dates (RFC 2822). For each line you get the seconds, the milliseconds, the date in UTC and the time in the time zone you choose, with its UTC offset and daylight saving time applied.",
+      "faq": {
+        "q1": "How does it know whether a number is in seconds or milliseconds?",
+        "a1": "From the number of digits: up to 11 is seconds, up to 14 milliseconds, up to 17 microseconds and more is nanoseconds. If your data differs, choose the unit yourself.",
+        "q2": "Which zone is used for a date without a time zone?",
+        "a2": "The zone chosen in the selector. If the date includes Z or an offset such as -03:00, that one is used.",
+        "q3": "What about daylight saving time?",
+        "a3": "It is applied with your browser's time zone database. If a local time happens twice when clocks go back, the first one is used."
+      }
     }
   },
   "ToolUi": {
@@ -590,7 +618,19 @@
     "expectedHashHint": "Paste an MD5, SHA-1, SHA-256 or SHA-512 checksum to check whether it matches.",
     "hashMatches": "Match: the {algorithm} of {name} equals the expected hash.",
     "hashMismatch": "No match: no file has the expected hash.",
-    "hashNotComparable": "Could not compare: the expected hash does not have the length of any chosen algorithm."
+    "hashNotComparable": "Could not compare: the expected hash does not have the length of any chosen algorithm.",
+    "uuidVersion": "Version",
+    "uuidV4": "v4 (random)",
+    "uuidV7": "v7 (time-ordered)",
+    "uuidCount": "How many (up to {max})",
+    "uuidHyphens": "With hyphens",
+    "timestampInput": "Timestamps or dates, one per line",
+    "timestampUnit": "Unit of the numbers",
+    "unitAuto": "Detect",
+    "unitSeconds": "Seconds",
+    "unitMilliseconds": "Milliseconds",
+    "timeZone": "Time zone",
+    "timeZoneHint": "Used to show the local time and to read dates without a zone."
   },
   "Email": {
     "subject": "Your Fileflect sign-in link",
@@ -870,7 +910,7 @@
     "limitMultiple": "Up to {count} files at a time, up to {size} each.",
     "limitPro": "With Pro: files up to {size} and up to {count} per batch.",
     "limitProBatch": "With Pro: up to {count} files per batch.",
-    "limitTime": "A job that takes longer than {minutes} minutes is stopped so it doesn't freeze your device.",
+    "limitTime": "A job that takes longer than {minutes, plural, one {# minute} other {# minutes}} is stopped so it doesn't freeze your device.",
     "limitBrowser": "Processed in your browser: your files are never uploaded to a server.",
     "limitServer": "Processed on our server over an encrypted connection; the file is deleted within 1 hour.",
     "faqTitle": "Frequently asked questions",

@@ -494,6 +494,34 @@
         "q3": "Un hash sert-il à stocker des mots de passe ?",
         "a3": "Pas directement : les mots de passe exigent des fonctions lentes avec sel, comme bcrypt ou Argon2. Des hashes rapides comme ceux-ci servent à vérifier des fichiers et leur intégrité."
       }
+    },
+    "uuid-generator": {
+      "title": "Générateur d’UUID",
+      "description": "Générez des UUID v4 aléatoires ou v7 triés par date, un seul ou en lot, avec ou sans tirets.",
+      "action": "Générer des UUID",
+      "about": "Le générateur d’UUID crée des identifiants uniques conformes à la RFC 9562 avec le générateur cryptographique de votre navigateur. La version 4 est entièrement aléatoire ; la version 7 commence par la date et l’heure en millisecondes, si bien que les identifiants se trient par ordre de création, ce qui est pratique comme clé primaire en base de données. Vous pouvez en générer jusqu’à 10 000 à la fois, en majuscules ou sans tirets, et les télécharger en texte.",
+      "faq": {
+        "q1": "Deux UUID peuvent-ils être identiques ?",
+        "a1": "En pratique, non : un UUID v4 contient 122 bits aléatoires, la probabilité d’un doublon est négligeable même après des milliards.",
+        "q2": "Quand utiliser la version 7 ?",
+        "a2": "Quand les identifiants servent de clés en base de données : triés par date, ils fragmentent moins les index que les UUID v4. Notez qu’ils révèlent leur moment de création.",
+        "q3": "Les UUID générés sont-ils conservés ?",
+        "a3": "Non. Ils sont générés dans votre navigateur et ne sont envoyés à aucun serveur."
+      }
+    },
+    "timestamp-converter": {
+      "title": "Convertisseur de timestamp Unix",
+      "description": "Convertissez des timestamps Unix en secondes ou millisecondes en date et heure dans n’importe quel fuseau, et des dates en timestamp.",
+      "action": "Convertir",
+      "about": "Le convertisseur de timestamp transforme des horodatages Unix (secondes, millisecondes, microsecondes ou nanosecondes) en dates lisibles, et des dates en timestamps. Collez-en un par ligne : l’unité est détectée d’après le nombre de chiffres, et les dates ISO 8601 (2023-11-14T22:13:20Z) ou au format des e-mails (RFC 2822) sont aussi acceptées. Pour chaque ligne, vous obtenez les secondes, les millisecondes, la date en UTC et l’heure dans le fuseau choisi, avec son décalage UTC et l’heure d’été appliquée.",
+      "faq": {
+        "q1": "Comment sait-il si le nombre est en secondes ou en millisecondes ?",
+        "a1": "D’après le nombre de chiffres : jusqu’à 11, ce sont des secondes ; jusqu’à 14, des millisecondes ; jusqu’à 17, des microsecondes ; au-delà, des nanosecondes. Si vos données diffèrent, choisissez l’unité vous-même.",
+        "q2": "Dans quel fuseau une date sans fuseau est-elle lue ?",
+        "a2": "Dans le fuseau choisi dans le sélecteur. Si la date contient Z ou un décalage comme -03:00, c’est celui-ci qui est utilisé.",
+        "q3": "Et l’heure d’été ?",
+        "a3": "Elle est appliquée avec la base de fuseaux horaires de votre navigateur. Si une heure locale existe deux fois lors du recul de l’horloge, la première est retenue."
+      }
     }
   },
   "ToolUi": {
@@ -590,7 +618,19 @@
     "expectedHashHint": "Collez une somme MD5, SHA-1, SHA-256 ou SHA-512 pour vérifier si elle correspond.",
     "hashMatches": "Correspondance : le {algorithm} de {name} est identique au hash attendu.",
     "hashMismatch": "Aucune correspondance : aucun fichier n’a le hash attendu.",
-    "hashNotComparable": "Comparaison impossible : le hash attendu n’a la longueur d’aucun des algorithmes choisis."
+    "hashNotComparable": "Comparaison impossible : le hash attendu n’a la longueur d’aucun des algorithmes choisis.",
+    "uuidVersion": "Version",
+    "uuidV4": "v4 (aléatoire)",
+    "uuidV7": "v7 (trié par date)",
+    "uuidCount": "Nombre (jusqu’à {max})",
+    "uuidHyphens": "Avec tirets",
+    "timestampInput": "Timestamps ou dates, un par ligne",
+    "timestampUnit": "Unité des nombres",
+    "unitAuto": "Détecter",
+    "unitSeconds": "Secondes",
+    "unitMilliseconds": "Millisecondes",
+    "timeZone": "Fuseau horaire",
+    "timeZoneHint": "Sert à afficher l’heure locale et à lire les dates sans fuseau."
   },
   "Email": {
     "subject": "Votre lien de connexion Fileflect",
@@ -870,7 +910,7 @@
     "limitMultiple": "Jusqu'à {count} fichiers à la fois, jusqu'à {size} chacun.",
     "limitPro": "Avec Pro : fichiers jusqu'à {size} et jusqu'à {count} par lot.",
     "limitProBatch": "Avec Pro : jusqu'à {count} fichiers par lot.",
-    "limitTime": "Un traitement qui dure plus de {minutes} minutes est arrêté pour ne pas bloquer votre appareil.",
+    "limitTime": "Un traitement qui dure plus de {minutes, plural, one {# minute} other {# minutes}} est arrêté pour ne pas bloquer votre appareil.",
     "limitBrowser": "Traité dans votre navigateur : vos fichiers ne sont jamais envoyés sur un serveur.",
     "limitServer": "Traité sur notre serveur via une connexion chiffrée ; le fichier est supprimé en moins d'une heure.",
     "faqTitle": "Questions fréquentes",

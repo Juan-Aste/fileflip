@@ -49,6 +49,8 @@ export const toolIds = [
   "base64-decode",
   "url-encode",
   "hash-generator",
+  "uuid-generator",
+  "timestamp-converter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -56,8 +58,11 @@ export type ToolId = (typeof toolIds)[number];
 export type ToolStatus = "draft" | "verified";
 
 export interface ToolLimits {
-  /** How many files one run takes. Sizes and batch counts come from the plan (limits.ts). */
-  files: "single" | "multiple";
+  /**
+   * How many files one run takes ("none": text or options only, so no file
+   * limits apply). Sizes and batch counts come from the plan (limits.ts).
+   */
+  files: "single" | "multiple" | "none";
   /** A job running longer than this is stopped (its worker is terminated). */
   timeoutMs: number;
   /** Per-file cap below the plan's, when the tool needs it (text parsed whole in memory...). */
@@ -301,7 +306,7 @@ export const tools: Record<ToolId, ToolInfo> = {
     outputs: ["txt"],
     engine: "browser",
     libraries: ["native encodeURIComponent"],
-    limits: { files: "single", timeoutMs: MINUTE },
+    limits: { files: "none", timeoutMs: MINUTE },
     status: "verified",
     slugs: { es: "codificar-url", en: "url-encode", pt: "codificar-url", fr: "encoder-url", zh: "url-encode" },
   },
@@ -316,6 +321,34 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 10 * MINUTE },
     status: "verified",
     slugs: { es: "generador-hash", en: "hash-generator", pt: "gerador-de-hash", fr: "generateur-hash", zh: "hash-generator" },
+  },
+  "uuid-generator": {
+    id: "uuid-generator",
+    category: "developer",
+    inputs: [],
+    outputs: ["txt"],
+    engine: "browser",
+    libraries: ["native crypto.getRandomValues"],
+    limits: { files: "none", timeoutMs: MINUTE },
+    status: "verified",
+    slugs: { es: "generador-uuid", en: "uuid-generator", pt: "gerador-de-uuid", fr: "generateur-uuid", zh: "uuid-generator" },
+  },
+  "timestamp-converter": {
+    id: "timestamp-converter",
+    category: "developer",
+    inputs: ["txt"],
+    outputs: ["csv"],
+    engine: "browser",
+    libraries: ["native Intl"],
+    limits: { files: "none", timeoutMs: MINUTE },
+    status: "verified",
+    slugs: {
+      es: "convertir-timestamp",
+      en: "timestamp-converter",
+      pt: "conversor-de-timestamp",
+      fr: "convertisseur-timestamp",
+      zh: "timestamp-converter",
+    },
   },
 };
 

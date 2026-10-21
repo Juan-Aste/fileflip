@@ -408,3 +408,54 @@ test.describe("tool: hash-generator", () => {
     await expect(page.getByText("No match: no file has the expected hash.")).toBeVisible();
   });
 });
+
+test.describe("tool: uuid-generator", () => {
+  test("a batch of v7 UUIDs: valid, unique, time-ordered and starting with now", async ({ page }) => {
+    await open(page, "/es/generador-uuid");
+    await choose(page, "v7 (ordenado por tiempo)");
+    await page.getByRole("spinbutton", { name: /Cantidad/ }).fill("500");
+    const before = Date.now();
+    const out = fileOf(await runTool(page, "Generar UUID"));
+    expect(out.name).toBe("uuids.txt");
+    const ids = readText(out.buf).trim().split("\n");
+    expect(ids).toHaveLength(500);
+    for (const id of ids) expect(id).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+    expect(new Set(ids).size).toBe(500);
+    expect([...ids].sort()).toEqual(ids);
+    const ms = parseInt(ids[0]!.replace(/-/g, "").slice(0, 12), 16);
+    expect(Math.abs(ms - before)).toBeLessThan(60_000);
+  });
+
+  test("one v4 UUID in upper case without hyphens", async ({ page }) => {
+    await open(page, "/en/uuid-generator");
+    await choose(page, "With hyphens");
+    await choose(page, "Upper-case hexadecimal");
+    const out = fileOf(await runTool(page, "Generate UUIDs"));
+    expect(out.name).toBe("uuid.txt");
+    expect(readText(out.buf)).toMatch(/^[0-9A-F]{12}4[0-9A-F]{3}[89AB][0-9A-F]{15}\n$/);
+  });
+});
+
+test.describe("tool: timestamp-converter", () => {
+  test("seconds, milliseconds and dates → CSV in the chosen time zone", async ({ page }) => {
+    await open(page, "/es/convertir-timestamp");
+    await page.getByRole("textbox", { name: "Timestamps o fechas, uno por línea" }).fill("1700000000\n1700000000123\n2023-11-14 19:13:20\n");
+    await page.getByRole("combobox", { name: "Zona horaria" }).selectOption("America/Sao_Paulo");
+    const out = fileOf(await runTool(page, "Convertir"));
+    expect(out.name).toBe("timestamps.csv");
+    const rows = readCsv(out.buf).filter((r) => r.some(Boolean));
+    expect(rows).toEqual([
+      ["input", "unix_seconds", "unix_milliseconds", "iso_8601_utc", "America/Sao_Paulo", "utc_offset"],
+      ["1700000000", "1700000000", "1700000000000", "2023-11-14T22:13:20.000Z", "2023-11-14 19:13:20.000", "UTC-03:00"],
+      ["1700000000123", "1700000000.123", "1700000000123", "2023-11-14T22:13:20.123Z", "2023-11-14 19:13:20.123", "UTC-03:00"],
+      ["2023-11-14 19:13:20", "1700000000", "1700000000000", "2023-11-14T22:13:20.000Z", "2023-11-14 19:13:20.000", "UTC-03:00"],
+    ]);
+  });
+
+  test("an invalid line is reported with its position", async ({ page }) => {
+    await open(page, "/es/convertir-timestamp");
+    await page.getByRole("textbox", { name: "Timestamps o fechas, uno por línea" }).fill("1700000000\n2023-02-30");
+    const result = await runTool(page, "Convertir");
+    expect(result.error).toContain("línea 2, columna 1");
+  });
+});

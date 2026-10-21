@@ -25,12 +25,15 @@ describe("tool registry", () => {
     expect(availableTools).toEqual(toolIds.filter((id) => tools[id].status === "verified"));
   });
 
+  const generators = new Set<string>(["uuid-generator"]);
+
   it("describes every tool with known categories, formats and limits", () => {
     for (const id of toolIds) {
       const tool = tools[id];
       expect(tool.id).toBe(id);
       expect(toolCategories).toContain(tool.category);
-      expect(tool.inputs.length).toBeGreaterThan(0);
+      // Generators (UUID, passwords...) take no input format.
+      expect(tool.inputs.length > 0 || generators.has(id)).toBe(true);
       expect(tool.outputs.length).toBeGreaterThan(0);
       [...tool.inputs, ...tool.outputs].forEach((f) => expect(formats[f]).toBeDefined());
       expect(tool.libraries.length).toBeGreaterThan(0);

@@ -40,7 +40,9 @@ export type ShellInput =
       /** Also lets the user paste the content instead of picking a file. */
       paste?: { label: string; placeholder?: string };
     }
-  | { kind: "text"; label: string; placeholder?: string; maxLength?: number };
+  | { kind: "text"; label: string; placeholder?: string; maxLength?: number }
+  /** Generators: only options, nothing to pick or paste. */
+  | { kind: "none" };
 
 export interface ShellContext {
   signal: AbortSignal;
@@ -238,7 +240,8 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
 
   const processing = state.status === "processing";
   const hasText = text.trim().length > 0;
-  const hasInput = input.kind === "files" ? files.length > 0 || (!!input.paste && hasText) : hasText;
+  const hasInput =
+    input.kind === "files" ? files.length > 0 || (!!input.paste && hasText) : input.kind === "text" ? hasText : true;
 
   return (
     <div className="flex flex-col gap-4">
@@ -256,9 +259,9 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
               : t("limitsSingle", { size: formatBytes(maxFileBytes, locale) })}
           </p>
         </>
-      ) : (
+      ) : input.kind === "text" ? (
         <TextInput label={input.label} placeholder={input.placeholder} maxLength={input.maxLength} value={text} onChange={setText} />
-      )}
+      ) : null}
       {input.kind === "files" && input.paste && files.length === 0 && (
         <TextInput
           label={input.paste.label}

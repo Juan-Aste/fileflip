@@ -216,7 +216,7 @@ Datos y desarrolladores
 - [x] 3C.4 Formateador y validador de JSON, XML y YAML (sangría, minificar, error con línea y columna)
 - [x] 3C.5 Base64 de texto (UTF-8) y de archivos (ida y vuelta con bytes idénticos, data URL) + codificar/decodificar URL
 - [x] 3C.6 Hashes MD5, SHA-1, SHA-256, SHA-512 de texto y archivos (hash-wasm, por bloques); vectores conocidos y comparación con `crypto` de Node
-- [ ] 3C.7 Generador de UUID (v4, v7, en lote) y conversor de timestamps (Unix s/ms ↔ fecha, zonas horarias)
+- [x] 3C.7 Generador de UUID (v4, v7, en lote) y conversor de timestamps (Unix s/ms ↔ fecha, zonas horarias)
 
 Utilidades
 - [ ] 3C.8 Generador de QR (texto, URL, Wi-Fi, contacto; PNG y SVG; qrcode, MIT) y lector de QR desde imagen (jsQR, Apache-2.0); test: generar y volver a leer

@@ -494,6 +494,34 @@
         "q3": "Um hash serve para guardar senhas?",
         "a3": "Não diretamente: para senhas se usam funções lentas com sal, como bcrypt ou Argon2. Hashes rápidos como estes servem para verificar arquivos e integridade."
       }
+    },
+    "uuid-generator": {
+      "title": "Gerador de UUID",
+      "description": "Gere UUID v4 aleatórios ou v7 ordenados por tempo, um ou em lote, com ou sem hifens.",
+      "action": "Gerar UUID",
+      "about": "O gerador de UUID cria identificadores únicos segundo a RFC 9562 com o gerador criptográfico do seu navegador. A versão 4 é totalmente aleatória; a versão 7 começa com a data e hora em milissegundos, então os identificadores ficam ordenados pelo momento de criação, o que é útil como chave primária em bancos de dados. Você pode gerar até 10 000 de uma vez, em maiúsculas ou sem hifens, e baixá-los como texto.",
+      "faq": {
+        "q1": "Dois UUID podem se repetir?",
+        "a1": "Na prática, não: um UUID v4 tem 122 bits aleatórios, então a chance de repetição é desprezível mesmo gerando bilhões.",
+        "q2": "Quando usar a versão 7?",
+        "a2": "Quando os identificadores forem chaves em um banco de dados: por serem ordenados por tempo, os índices se fragmentam menos do que com UUID v4. Lembre que eles revelam o momento de criação.",
+        "q3": "Os UUID gerados são guardados?",
+        "a3": "Não. Eles são gerados no seu navegador e não são enviados a nenhum servidor."
+      }
+    },
+    "timestamp-converter": {
+      "title": "Conversor de timestamp Unix",
+      "description": "Converta timestamps Unix em segundos ou milissegundos para data e hora em qualquer fuso horário, e datas para timestamp.",
+      "action": "Converter",
+      "about": "O conversor de timestamp transforma marcas de tempo Unix (segundos, milissegundos, microssegundos ou nanossegundos) em datas legíveis e datas em timestamps. Cole um por linha: ele detecta a unidade pela quantidade de dígitos e também aceita datas ISO 8601 (2023-11-14T22:13:20Z) ou de e-mail (RFC 2822). Para cada linha você recebe os segundos, os milissegundos, a data em UTC e a hora no fuso horário escolhido, com a diferença para UTC e o horário de verão aplicado.",
+      "faq": {
+        "q1": "Como ele sabe se o número está em segundos ou milissegundos?",
+        "a1": "Pela quantidade de dígitos: até 11 são segundos, até 14 milissegundos, até 17 microssegundos e acima disso nanossegundos. Se o seu dado for diferente, escolha a unidade manualmente.",
+        "q2": "Em qual fuso é lida uma data sem fuso horário?",
+        "a2": "No fuso escolhido no seletor. Se a data tiver Z ou uma diferença como -03:00, essa é usada.",
+        "q3": "E o horário de verão?",
+        "a3": "É aplicado com a base de fusos horários do seu navegador. Se uma hora local se repete quando o relógio atrasa, usa-se a primeira."
+      }
     }
   },
   "ToolUi": {
@@ -590,7 +618,19 @@
     "expectedHashHint": "Cole uma soma MD5, SHA-1, SHA-256 ou SHA-512 para conferir se coincide.",
     "hashMatches": "Coincide: o {algorithm} de {name} é igual ao hash esperado.",
     "hashMismatch": "Não coincide: nenhum arquivo tem o hash esperado.",
-    "hashNotComparable": "Não foi possível comparar: o hash esperado não tem o comprimento de nenhum dos algoritmos escolhidos."
+    "hashNotComparable": "Não foi possível comparar: o hash esperado não tem o comprimento de nenhum dos algoritmos escolhidos.",
+    "uuidVersion": "Versão",
+    "uuidV4": "v4 (aleatório)",
+    "uuidV7": "v7 (ordenado por tempo)",
+    "uuidCount": "Quantidade (até {max})",
+    "uuidHyphens": "Com hifens",
+    "timestampInput": "Timestamps ou datas, um por linha",
+    "timestampUnit": "Unidade dos números",
+    "unitAuto": "Detectar",
+    "unitSeconds": "Segundos",
+    "unitMilliseconds": "Milissegundos",
+    "timeZone": "Fuso horário",
+    "timeZoneHint": "Usado para mostrar a hora local e para ler datas sem fuso."
   },
   "Email": {
     "subject": "Seu link para entrar no Fileflect",
@@ -870,7 +910,7 @@
     "limitMultiple": "Até {count} arquivos por vez, de até {size} cada.",
     "limitPro": "Com o Pro: arquivos de até {size} e até {count} por lote.",
     "limitProBatch": "Com o Pro: até {count} arquivos por lote.",
-    "limitTime": "Se um trabalho demorar mais de {minutes} minutos, ele é interrompido para não travar seu dispositivo.",
+    "limitTime": "Se um trabalho demorar mais de {minutes, plural, one {# minuto} other {# minutos}}, ele é interrompido para não travar seu dispositivo.",
     "limitBrowser": "Processado no seu navegador: seus arquivos nunca são enviados a um servidor.",
     "limitServer": "Processado no nosso servidor por conexão criptografada; o arquivo é apagado em menos de 1 hora.",
     "faqTitle": "Perguntas frequentes",

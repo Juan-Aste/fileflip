@@ -1537,3 +1537,21 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - 5 tests unitarios: vectores publicados ("" y "abc" en los 4 algoritmos), UTF-8, archivo aleatorio de 8 MB leído por bloques comparado con `crypto` de Node y progreso, líneas BSD y comparación con el esperado. `data-tools.spec.ts`: 3 casos nuevos (dos archivos comparados con Node + coincidencia; solo SHA-256 validado con **`sha256sum -c` del sistema**; texto en mayúsculas en inglés + aviso de no coincidencia). Lint, typecheck, tests (590), build, `check:static` (652 páginas) y `npm run test:e2e` (152/152) pasan. Capturas revisadas: `/es/generador-hash` 1280 claro y `/zh/hash-generator` 360 oscuro.
 
 **Siguiente**: 3C.7 (UUID y conversor de timestamps).
+
+## 2026-10-21 06:45 UTC — Fase 3, tarea 3C.7 (UUID y conversor de timestamps)
+
+**Qué se hizo**
+- **Generador de UUID** (`/es/generador-uuid`, `/en/uuid-generator`…): v4 aleatorio y **v7** ordenado por tiempo (RFC 9562, contador de 12 bits en `rand_a` para que los generados en el mismo milisegundo queden en orden; si el contador se desborda, avanza un milisegundo), hasta 10 000 por vez, mayúsculas y con/sin guiones, con `crypto.getRandomValues`. Salida `uuid.txt`/`uuids.txt` con vista previa.
+- **Conversor de timestamp Unix** (`/es/convertir-timestamp`, `/en/timestamp-converter`, `/pt/conversor-de-timestamp`, `/fr/convertisseur-timestamp`): una línea por valor; números en s/ms/µs/ns detectados por la cantidad de dígitos (≤ 11 s, ≤ 14 ms, ≤ 17 µs, si no ns; BigInt para no perder precisión) o unidad elegida; fechas ISO 8601 (con o sin zona; sin zona se leen en la zona elegida) y RFC 2822. Fechas imposibles (29/2 en año no bisiesto, mes 13) se rechazan. Salida `timestamps.csv` con segundos, milisegundos, ISO UTC, hora en la zona elegida y su desplazamiento; una línea inválida → error con línea y columna. Zonas horarias de `Intl` (horario de verano incluido; una hora repetida al atrasar el reloj toma la primera).
+- `ToolShell` admite `input: { kind: "none" }` (generadores sin entrada) y el registro `limits.files: "none"` para herramientas de texto u opciones: la sección "Límites" ya no muestra límites de archivos que no aplican (también corrige "Codificar URL"). El test del registro admite herramientas sin formato de entrada solo si están en la lista de generadores.
+- "Más de 1 minutos": `ToolPage.limitTime` ahora usa plural ICU en es/en/pt/fr.
+
+**Limitaciones**
+- Chromium lista las zonas con los nombres antiguos de ICU (`America/Buenos_Aires`, `Asia/Calcutta`); funcionan igual, pero el selector las muestra así.
+
+**Verificación**
+- 8 tests unitarios (v4/v7, orden y unicidad de 5000 v7, desborde del contador, formatos; unidades, ISO/RFC 2822, zonas con y sin horario de verano, años 0–99, fechas imposibles, CSV y error con posición). `data-tools.spec.ts`: 4 casos nuevos (500 v7 válidos, únicos, ordenados y con la hora actual; v4 en mayúsculas sin guiones; timestamps → CSV en `America/Sao_Paulo`; línea inválida con posición). Lint, typecheck, tests (600), build, `check:static` (662 páginas) y `npm run test:e2e` (156/156) pasan. Capturas revisadas: `/es/generador-uuid` 360 oscuro y `/pt/conversor-de-timestamp` 1280 claro.
+
+**Nota de entorno**: un `next start` viejo que sigue corriendo mientras se reconstruye `.next` puede guardar 404 en `.next/server/route-cache` y servirlos después; solo pasa en local (en Railway cada deploy es una imagen nueva). Solución: matar el servidor antes del build o borrar esa carpeta.
+
+**Siguiente**: 3C.8 (QR: generar y leer).
