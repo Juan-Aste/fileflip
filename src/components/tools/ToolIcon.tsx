@@ -6,6 +6,8 @@ import {
   Fingerprint,
   KeyRound,
   Clock,
+  QrCode,
+  ScanLine,
   CodeXml,
   FileCode,
   FileJson,
@@ -46,6 +48,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "hash-generator": Fingerprint,
   "uuid-generator": KeyRound,
   "timestamp-converter": Clock,
+  "qr-generator": QrCode,
+  "qr-reader": ScanLine,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

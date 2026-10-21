@@ -195,6 +195,8 @@
     "invalidData": "We couldn't read the content. Check that the format is valid (quotes, commas and brackets).",
     "tomlUnsupported": "TOML can't represent this content: it needs an object at the root and doesn't allow null inside lists.",
     "xmlEntitiesBlocked": "This XML declares entities ('<!ENTITY>'). For security they are not processed: remove the DOCTYPE declaration and try again.",
+    "qrTooLong": "The text is too long for a QR code. Shorten it or lower the error correction level.",
+    "qrNotFound": "We couldn't find a readable QR code in the image. Try a sharper photo, taken straight on, with the whole code visible.",
     "signInRequired": "Please sign in to continue.",
     "paymentsUnavailable": "Payments aren't available in your country yet. Check back soon.",
     "jobCancelled": "The task was cancelled.",
@@ -521,6 +523,34 @@
         "a2": "The zone chosen in the selector. If the date includes Z or an offset such as -03:00, that one is used.",
         "q3": "What about daylight saving time?",
         "a3": "It is applied with your browser's time zone database. If a local time happens twice when clocks go back, the first one is used."
+      }
+    },
+    "qr-generator": {
+      "title": "QR code generator",
+      "description": "Create QR codes for text, links, Wi-Fi networks or contacts and download them as PNG or SVG.",
+      "action": "Create QR code",
+      "about": "The QR code generator turns text, a link, Wi-Fi network details or a contact card (vCard) into a code any phone reads with its camera. Choose the size, the error correction level and the colors, then download it as PNG to use right away or as SVG to print at any size without losing sharpness. The code never expires and doesn't go through a link shortener: it holds your data directly.",
+      "faq": {
+        "q1": "Does the QR code stop working over time?",
+        "a1": "No. The data is inside the code itself, with no redirects or services in between, so it works as long as the image can be read.",
+        "q2": "Which error correction level should I choose?",
+        "a2": "Medium works for almost everything. Use a higher level if the code is printed on surfaces that can get scratched or stained; it uses more modules, so the code looks denser.",
+        "q3": "How do I share my Wi-Fi with a QR code?",
+        "a3": "Choose Wi-Fi and enter the network name and password with the same security type your router uses. When scanned, Android and iPhone offer to join without typing the password."
+      }
+    },
+    "qr-reader": {
+      "title": "Read a QR code from an image",
+      "description": "Read the content of a QR code in a photo or screenshot, without using the camera.",
+      "action": "Read QR code",
+      "about": "The QR code reader finds the code in a photo or screenshot (PNG, JPG, WEBP, GIF, BMP or AVIF) and shows its content so you can copy it: a link, text, Wi-Fi details or a contact. It also reads light codes on dark backgrounds and tries several scales to find small codes in large photos. The image is analyzed in your browser.",
+      "faq": {
+        "q1": "Why can't it find the code in my photo?",
+        "a1": "Usually the photo is blurry, taken at a steep angle, or the code is cut off. Crop the image around the code or take the photo straight on in good light.",
+        "q2": "Does it open the link automatically?",
+        "a2": "No. It only shows the content, so you can check where a link goes before opening it.",
+        "q3": "Can it read several codes at once?",
+        "a3": "You can choose several images and get the content of each; one code is read from each image."
       }
     }
   },
@@ -915,5 +945,35 @@
     "limitServer": "Processed on our server over an encrypted connection; the file is deleted within 1 hour.",
     "faqTitle": "Frequently asked questions",
     "relatedTitle": "Related tools"
+  },
+  "QrTools": {
+    "content": "Content",
+    "contentText": "Text or link",
+    "contentWifi": "Wi-Fi",
+    "contentContact": "Contact",
+    "text": "Text or link",
+    "ssid": "Network name (SSID)",
+    "password": "Password",
+    "security": "Security",
+    "noPassword": "No password",
+    "hidden": "Hidden network",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "email": "Email",
+    "organization": "Company",
+    "website": "Website",
+    "format": "Format",
+    "svgLabel": "SVG (vector)",
+    "size": "Size",
+    "correction": "Error correction",
+    "correctionL": "Low (7%)",
+    "correctionM": "Medium (15%)",
+    "correctionQ": "High (25%)",
+    "correctionH": "Maximum (30%)",
+    "darkColor": "Code color",
+    "lightColor": "Background color",
+    "transparent": "Transparent background",
+    "lowContrast": "With this little contrast between the colors, many phones won't be able to read the code."
   }
 }

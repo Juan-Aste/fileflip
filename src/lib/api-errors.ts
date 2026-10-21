@@ -16,6 +16,9 @@ export const apiErrorCodes = [
   "tomlUnsupported",
   // Client-side only: an XML file declaring DTD entities (refused: XXE, entity expansion).
   "xmlEntitiesBlocked",
+  // Client-side only: QR codes (text too long to encode, no code found in the image).
+  "qrTooLong",
+  "qrNotFound",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -40,6 +43,8 @@ const status: Record<ApiErrorCode, number> = {
   invalidData: 422,
   tomlUnsupported: 422,
   xmlEntitiesBlocked: 422,
+  qrTooLong: 422,
+  qrNotFound: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

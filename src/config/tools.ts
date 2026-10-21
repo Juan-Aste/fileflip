@@ -51,6 +51,8 @@ export const toolIds = [
   "hash-generator",
   "uuid-generator",
   "timestamp-converter",
+  "qr-generator",
+  "qr-reader",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -349,6 +351,29 @@ export const tools: Record<ToolId, ToolInfo> = {
       fr: "convertisseur-timestamp",
       zh: "timestamp-converter",
     },
+  },
+  "qr-generator": {
+    id: "qr-generator",
+    category: "utility",
+    inputs: [],
+    outputs: ["png", "svg"],
+    engine: "browser",
+    libraries: ["qrcode"],
+    limits: { files: "none", timeoutMs: MINUTE },
+    status: "verified",
+    slugs: { es: "generador-codigo-qr", en: "qr-code-generator", pt: "gerador-de-qr-code", fr: "generateur-qr-code", zh: "qr-code-generator" },
+  },
+  "qr-reader": {
+    id: "qr-reader",
+    category: "utility",
+    inputs: ["png", "jpg", "webp", "gif", "bmp", "avif"],
+    outputs: ["txt"],
+    engine: "browser",
+    libraries: ["jsqr"],
+    // The photo is decoded whole into memory before scanning.
+    limits: { files: "multiple", timeoutMs: MINUTE, maxFileBytes: 25 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "leer-codigo-qr", en: "qr-code-reader", pt: "ler-qr-code", fr: "lire-qr-code", zh: "qr-code-reader" },
   },
 };
 

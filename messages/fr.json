@@ -195,6 +195,8 @@
     "invalidData": "Impossible de lire le contenu. Vérifiez que le format est valide (guillemets, virgules et accolades).",
     "tomlUnsupported": "TOML ne peut pas représenter ce contenu : il faut un objet à la racine et null n'est pas permis dans les listes.",
     "xmlEntitiesBlocked": "Ce XML déclare des entités ('<!ENTITY>'). Par sécurité, elles ne sont pas traitées : supprimez la déclaration DOCTYPE et réessayez.",
+    "qrTooLong": "Le texte est trop long pour un code QR. Raccourcissez-le ou baissez le niveau de correction d'erreurs.",
+    "qrNotFound": "Aucun code QR lisible n'a été trouvé dans l'image. Essayez une photo plus nette, prise de face, avec le code entier.",
     "signInRequired": "Connectez-vous pour continuer.",
     "paymentsUnavailable": "Les paiements ne sont pas encore disponibles dans votre pays. Revenez bientôt.",
     "jobCancelled": "Le traitement a été annulé.",
@@ -521,6 +523,34 @@
         "a2": "Dans le fuseau choisi dans le sélecteur. Si la date contient Z ou un décalage comme -03:00, c’est celui-ci qui est utilisé.",
         "q3": "Et l’heure d’été ?",
         "a3": "Elle est appliquée avec la base de fuseaux horaires de votre navigateur. Si une heure locale existe deux fois lors du recul de l’horloge, la première est retenue."
+      }
+    },
+    "qr-generator": {
+      "title": "Générateur de QR code",
+      "description": "Créez des QR codes pour du texte, des liens, des réseaux Wi-Fi ou des contacts et téléchargez-les en PNG ou SVG.",
+      "action": "Créer le QR code",
+      "about": "Le générateur de QR code transforme un texte, un lien, les informations d’un réseau Wi-Fi ou une carte de contact (vCard) en un code que n’importe quel téléphone lit avec son appareil photo. Choisissez la taille, le niveau de correction d’erreurs et les couleurs, puis téléchargez-le en PNG pour l’utiliser tout de suite ou en SVG pour l’imprimer à n’importe quelle taille sans perte de netteté. Le code n’expire pas et ne passe par aucun raccourcisseur : il contient directement vos données.",
+      "faq": {
+        "q1": "Le QR code cesse-t-il de fonctionner avec le temps ?",
+        "a1": "Non. Les données sont dans le code lui-même, sans redirection ni service intermédiaire : il fonctionne tant que l’image reste lisible.",
+        "q2": "Quel niveau de correction d’erreurs choisir ?",
+        "a2": "Moyen convient presque toujours. Choisissez un niveau plus élevé si le code est imprimé sur une surface qui peut se rayer ou se tacher ; il utilise plus de modules et paraît donc plus dense.",
+        "q3": "Comment partager mon Wi-Fi avec un QR code ?",
+        "a3": "Choisissez Wi-Fi et saisissez le nom du réseau et le mot de passe avec le même type de sécurité que votre box. En le scannant, Android et iPhone proposent de se connecter sans taper le mot de passe."
+      }
+    },
+    "qr-reader": {
+      "title": "Lire un QR code depuis une image",
+      "description": "Lisez le contenu d’un QR code sur une photo ou une capture d’écran, sans utiliser l’appareil photo.",
+      "action": "Lire le QR code",
+      "about": "Le lecteur de QR code trouve le code sur une photo ou une capture d’écran (PNG, JPG, WEBP, GIF, BMP ou AVIF) et affiche son contenu pour que vous le copiiez : un lien, du texte, les informations d’un réseau Wi-Fi ou un contact. Il lit aussi les codes clairs sur fond sombre et essaie plusieurs échelles pour trouver les petits codes dans les grandes photos. L’image est analysée dans votre navigateur.",
+      "faq": {
+        "q1": "Pourquoi ne trouve-t-il pas le code sur ma photo ?",
+        "a1": "Le plus souvent, la photo est floue, prise trop en biais ou le code est coupé. Recadrez l’image autour du code ou prenez la photo de face avec une bonne lumière.",
+        "q2": "Ouvre-t-il le lien automatiquement ?",
+        "a2": "Non. Il affiche seulement le contenu, pour que vous puissiez vérifier où mène un lien avant de l’ouvrir.",
+        "q3": "Peut-il lire plusieurs codes à la fois ?",
+        "a3": "Vous pouvez choisir plusieurs images et obtenir le contenu de chacune ; un code est lu par image."
       }
     }
   },
@@ -915,5 +945,35 @@
     "limitServer": "Traité sur notre serveur via une connexion chiffrée ; le fichier est supprimé en moins d'une heure.",
     "faqTitle": "Questions fréquentes",
     "relatedTitle": "Outils associés"
+  },
+  "QrTools": {
+    "content": "Contenu",
+    "contentText": "Texte ou lien",
+    "contentWifi": "Wi-Fi",
+    "contentContact": "Contact",
+    "text": "Texte ou lien",
+    "ssid": "Nom du réseau (SSID)",
+    "password": "Mot de passe",
+    "security": "Sécurité",
+    "noPassword": "Sans mot de passe",
+    "hidden": "Réseau masqué",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "phone": "Téléphone",
+    "email": "E-mail",
+    "organization": "Entreprise",
+    "website": "Site web",
+    "format": "Format",
+    "svgLabel": "SVG (vectoriel)",
+    "size": "Taille",
+    "correction": "Correction d’erreurs",
+    "correctionL": "Faible (7 %)",
+    "correctionM": "Moyenne (15 %)",
+    "correctionQ": "Élevée (25 %)",
+    "correctionH": "Maximale (30 %)",
+    "darkColor": "Couleur du code",
+    "lightColor": "Couleur du fond",
+    "transparent": "Fond transparent",
+    "lowContrast": "Avec si peu de contraste entre les couleurs, beaucoup de téléphones ne pourront pas lire le code."
   }
 }

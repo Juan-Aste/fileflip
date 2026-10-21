@@ -16,6 +16,7 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `data.json` | 3 registros con objetos y listas anidados, comillas, `null`, salto de línea, chino y un código postal "007" |
 | `config.yaml`, `config.toml` | YAML con comentario, ancla + clave de combinación (`<<`), `"007"` entre comillas y dos documentos / TOML con tabla, fecha y lista de tablas |
 | `catalog.xml` | XML con comentario, atributos, elementos repetidos, entidades predefinidas y numéricas (chino) y CDATA |
+| `qr.png`, `qr-photo.jpg`, `qr-inverted.png` | qrcode + sharp: QR de un enlace (300 px, limpio) / QR de una red Wi-Fi ficticia girado 12° sobre un fondo con luz despareja y ruido, desenfocado y en JPEG al 70 % / QR claro sobre fondo oscuro con texto UTF-8 |
 | `table-excel.csv`, `table.tsv` | CSV como lo guarda Excel en español (punto y coma, coma decimal, Windows-1252) / TSV en UTF-8 |
 | `document.{odt,docx,doc,rtf}` | LibreOffice desde un documento ODF plano escrito en el script |
 | `spreadsheet.{ods,xlsx,xls}` | LibreOffice desde una hoja ODF plana (4 filas × 3 columnas) |

@@ -1555,3 +1555,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 **Nota de entorno**: un `next start` viejo que sigue corriendo mientras se reconstruye `.next` puede guardar 404 en `.next/server/route-cache` y servirlos después; solo pasa en local (en Railway cada deploy es una imagen nueva). Solución: matar el servidor antes del build o borrar esa carpeta.
 
 **Siguiente**: 3C.8 (QR: generar y leer).
+
+## 2026-10-21 07:05 UTC — Fase 3, tarea 3C.8 (códigos QR: generar y leer)
+
+**Qué se hizo**
+- Categoría **Utilidades** publicada (`/es/utilidades`) con dos herramientas:
+  - **Generador de códigos QR** (`/es/generador-codigo-qr`, `/en/qr-code-generator`, `/pt/gerador-de-qr-code`, `/fr/generateur-qr-code`): texto/enlace, **Wi-Fi** (formato `WIFI:T:…;S:…;P:…;H:…;;` con escape de `\ ; , : "`) y **contacto** (vCard 3.0 con escape RFC 2426, solo campos completos); PNG (256–2048 px, módulos enteros, zona de silencio de 4) o SVG (un solo `path`); corrección L/M/Q/H; colores y fondo transparente con aviso si el contraste es < 3:1; texto demasiado largo → código nuevo `qrTooLong`. Matriz con **qrcode 1.5.4 (MIT)**; el SVG y los píxeles los arma `src/lib/qr/qr.ts` (el texto del usuario nunca entra en el SVG).
+  - **Leer código QR desde una imagen** (`/es/leer-codigo-qr`…): PNG, JPG, WEBP, GIF, BMP y AVIF (hasta 25 MB), en un worker propio (`qr.worker.ts`) con **jsQR 1.4.0 (Apache-2.0)**: prueba a 1000, 2000 y 3200 px de lado y códigos invertidos; sin código → `qrNotFound`; imagen dañada → `fileDamaged`. No abre enlaces, solo muestra el texto.
+- `ToolShell`: `input: { kind: "none", ready }` (el botón se habilita cuando hay contenido; las opciones se muestran siempre) y **vista previa de imagen** cuando el resultado es una sola imagen.
+- Fixtures nuevos (en `generate.mjs`): `qr.png`, `qr-photo.jpg` (girado 12°, luz despareja, ruido, desenfoque, JPEG 70 %) y `qr-inverted.png` (claro sobre oscuro, UTF-8). Al regenerar, LibreOffice vuelve a sellar los archivos de oficina: se descartaron esos cambios.
+
+**Verificación**
+- 6 tests unitarios (ida y vuelta generador → jsQR en los 4 niveles, UTF-8, 1500 caracteres, capacidad excedida, Wi-Fi con escapes, vCard, SVG y píxeles, contraste). `tests/e2e/qr-tools.spec.ts` (5 casos): PNG de 512 px, SVG de Wi-Fi rasterizado con sharp y vCard **decodificados en el test con sharp + jsQR**; aviso de bajo contraste; foto ruidosa; lote con código invertido, imagen sin código y PNG truncado (cada uno con su resultado). Lint, typecheck, tests (608), build, `check:static` (677 páginas) y `npm run test:e2e` (161/161) pasan. Capturas revisadas: `/es/generador-codigo-qr` 1280 claro y `/zh/qr-code-generator` 360 oscuro con el resultado.
+
+**Siguiente**: 3C.9 (generador de contraseñas y contador de palabras).

@@ -13,6 +13,7 @@ import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync,
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import QRCode from "qrcode";
 import sharp from "sharp";
 
 const out = new URL("../../tests/fixtures/", import.meta.url).pathname;
@@ -229,6 +230,36 @@ if (!soffice) {
   }
   rmSync(work, { recursive: true, force: true });
 }
+
+// --- QR codes: a clean screenshot-like PNG, a "photo" (rotated code on a noisy,
+// uneven background, saved as a lossy JPEG) and a light-on-dark code.
+const qrSvg = (text, dark, light) => QRCode.toString(text, { type: "svg", errorCorrectionLevel: "M", margin: 4, color: { dark, light } });
+write("qr.png", await sharp(Buffer.from(await qrSvg("https://fileflect.example/qr-test?ok=1", "#000000ff", "#ffffffff"))).resize(300, 300, { kernel: "nearest" }).png({ compressionLevel: 9 }).toBuffer());
+{
+  const code = await sharp(Buffer.from(await qrSvg("WIFI:T:WPA;S:Café 5G;P:secreto123;;", "#1b1b1bff", "#f4f1e8ff")))
+    .resize(260, 260, { kernel: "nearest" })
+    .rotate(12, { background: "#f4f1e8" })
+    .toBuffer();
+  const W2 = 640;
+  const H2 = 480;
+  const bg = Buffer.alloc(W2 * H2 * 3);
+  for (let y = 0; y < H2; y++) {
+    for (let x = 0; x < W2; x++) {
+      // Uneven light plus deterministic speckle noise.
+      const v = 120 + Math.round((x / W2) * 70 + (y / H2) * 30) + (((x * 7919 + y * 104729) % 23) - 11);
+      bg.fill(Math.max(0, Math.min(255, v)), (y * W2 + x) * 3, (y * W2 + x) * 3 + 3);
+    }
+  }
+  write(
+    "qr-photo.jpg",
+    await sharp(bg, { raw: { width: W2, height: H2, channels: 3 } })
+      .composite([{ input: code, left: 330, top: 120 }])
+      .blur(0.8)
+      .jpeg({ quality: 70 })
+      .toBuffer(),
+  );
+}
+write("qr-inverted.png", await sharp(Buffer.from(await qrSvg("Olá, 中文 ✓ 123", "#ffffffff", "#0f2a1dff"))).resize(240, 240, { kernel: "nearest" }).png().toBuffer());
 
 // --- Broken files for error paths
 const writeCorrupt = (name, bytes) => write(join("corrupt", name), bytes);

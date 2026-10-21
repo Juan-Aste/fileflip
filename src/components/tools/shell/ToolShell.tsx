@@ -41,8 +41,8 @@ export type ShellInput =
       paste?: { label: string; placeholder?: string };
     }
   | { kind: "text"; label: string; placeholder?: string; maxLength?: number }
-  /** Generators: only options, nothing to pick or paste. */
-  | { kind: "none" };
+  /** Generators: only options, nothing to pick or paste; `ready` is false while required options are empty. */
+  | { kind: "none"; ready?: boolean };
 
 export interface ShellContext {
   signal: AbortSignal;
@@ -213,6 +213,14 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
               </p>
             ) : null,
           )}
+          {state.outputs.length === 1 && state.outputs[0]!.kind === "file" && state.outputs[0]!.blob.type.startsWith("image/") && (
+            // eslint-disable-next-line @next/next/no-img-element -- a local object URL, not an optimizable asset
+            <img
+              src={links[0]}
+              alt={state.outputs[0]!.name}
+              className="mx-auto max-h-72 w-auto max-w-full rounded-lg border border-border bg-white object-contain"
+            />
+          )}
           {state.outputs.length === 1 && state.outputs[0]!.kind === "file" && state.outputs[0]!.preview !== undefined && (
             <TextPreview text={state.outputs[0]!.preview} />
           )}
@@ -241,7 +249,7 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
   const processing = state.status === "processing";
   const hasText = text.trim().length > 0;
   const hasInput =
-    input.kind === "files" ? files.length > 0 || (!!input.paste && hasText) : input.kind === "text" ? hasText : true;
+    input.kind === "files" ? files.length > 0 || (!!input.paste && hasText) : input.kind === "text" ? hasText : input.ready !== false;
 
   return (
     <div className="flex flex-col gap-4">
@@ -276,7 +284,7 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
           {rejected.map((r) => `${r.name}: ${te(r.reason)}`).join(" · ")}
         </ToolAlert>
       )}
-      {(hasInput || state.status === "error") && (
+      {(hasInput || input.kind === "none" || state.status === "error") && (
         <div className={`${card} flex flex-col gap-4 p-4 sm:p-6`}>
           {files.length > 0 && (
             <ul className="flex flex-col gap-2">

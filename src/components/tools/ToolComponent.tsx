@@ -29,6 +29,8 @@ const components: Record<ToolId, React.ComponentType> = {
   "hash-generator": dynamic(() => import("./data/HashTool")),
   "uuid-generator": dynamic(() => import("./data/GeneratorTools").then((m) => m.UuidGeneratorTool)),
   "timestamp-converter": dynamic(() => import("./data/GeneratorTools").then((m) => m.TimestampConverterTool)),
+  "qr-generator": dynamic(() => import("./qr/QrTools").then((m) => m.QrGeneratorTool)),
+  "qr-reader": dynamic(() => import("./qr/QrTools").then((m) => m.QrReaderTool)),
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {
