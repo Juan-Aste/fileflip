@@ -202,7 +202,8 @@
     "paymentsUnavailable": "Os pagamentos ainda não estão disponíveis no seu país. Volte em breve.",
     "jobCancelled": "O processo foi cancelado.",
     "jobTimedOut": "O processo demorou demais e foi interrompido. Tente um arquivo menor.",
-    "pagesOutOfRange": "As páginas escolhidas não existem neste PDF."
+    "pagesOutOfRange": "As páginas escolhidas não existem neste PDF.",
+    "pdfIsScanned": "Este PDF não tem texto: parece uma imagem digitalizada. Para extrair o texto é preciso reconhecimento de texto (OCR)."
   },
   "Tools": {
     "merge-pdf": {
@@ -849,6 +850,38 @@
         "a3": "Sim. Escolha «Só algumas» e digite as páginas ou intervalos, por exemplo 1, 3-5. Com vários PDF, as páginas valem para cada um.",
         "q4": "Meu PDF é enviado para a internet?",
         "a4": "Não. A marca d’água é adicionada no seu navegador e o arquivo não sai do seu dispositivo."
+      }
+    },
+    "pdf-to-text": {
+      "title": "PDF para texto",
+      "description": "Extraia o texto dos seus PDF para um arquivo TXT para copiar, pesquisar ou reaproveitar, sem enviá-los.",
+      "action": "Extrair texto",
+      "about": "PDF para texto copia todo o texto de um PDF para um arquivo TXT em UTF-8, página por página e na ordem de leitura, para colar num e-mail, procurar uma frase ou reaproveitar um contrato sem digitar de novo. Você pode marcar onde começa cada página e processar vários PDF de uma vez. Se o PDF for uma digitalização (só imagens), avisamos: esse texto precisa de reconhecimento óptico (OCR).",
+      "faq": {
+        "q1": "A formatação, as tabelas ou as colunas são mantidas?",
+        "a1": "Não. O resultado é texto puro: as palavras e as quebras de linha ficam, mas não as fontes, as cores nem a posição exata. As tabelas viram linhas de texto.",
+        "q2": "Por que diz que meu PDF não tem texto?",
+        "a2": "Porque é uma imagem digitalizada ou uma foto salva como PDF: tem pixels, não letras. Para extrair esse texto é preciso OCR.",
+        "q3": "Funciona com acentos e outros idiomas?",
+        "a3": "Sim. O texto é salvo em UTF-8, com acentos, cedilha e também chinês, desde que o PDF tenha essas letras como texto.",
+        "q4": "Meus PDF são enviados para um servidor?",
+        "a4": "Não. O texto é extraído no seu navegador e seus arquivos não saem do seu dispositivo."
+      }
+    },
+    "crop-pdf": {
+      "title": "Cortar margens de um PDF",
+      "description": "Tire as margens brancas de um PDF automaticamente ou em milímetros, sem perder qualidade.",
+      "action": "Cortar PDF",
+      "about": "Cortar PDF tira as margens que sobram: ótimo para ler um artigo no celular ou num leitor de e-books, ou para ajustar um documento digitalizado com bordas. No modo automático, detecta onde termina o conteúdo de cada página e deixa 3 mm ao redor; no modo manual, você tira os milímetros que quiser de cada lado. Só a área visível (CropBox) muda, então texto e imagens não são recomprimidos.",
+      "faq": {
+        "q1": "O que é cortado é apagado do arquivo?",
+        "a1": "Não. Fica oculto fora da área visível e os leitores não mostram nem imprimem, mas continua dentro do arquivo. Não use esta ferramenta para esconder dados privados.",
+        "q2": "Como funciona o modo automático?",
+        "a2": "Cada página é desenhada em baixa resolução para encontrar o conteúdo que não é branco, e o corte é feito ao redor com 3 mm de margem. Uma página em branco fica como está.",
+        "q3": "Funciona com páginas giradas ou na horizontal?",
+        "a3": "Sim. Em cima, embaixo, esquerda e direita seguem como a página aparece ao ser aberta.",
+        "q4": "Meu PDF é enviado para a internet?",
+        "a4": "Não. Tudo acontece no seu navegador e o arquivo não sai do seu dispositivo."
       }
     }
   },
@@ -1611,6 +1644,20 @@
     "pagesScope": "Páginas",
     "allPages": "Todas",
     "somePages": "Só algumas",
-    "rangesSyntax": "Digite páginas ou intervalos separados por vírgulas, por exemplo 1-3, 5."
+    "rangesSyntax": "Digite páginas ou intervalos separados por vírgulas, por exemplo 1-3, 5.",
+    "pageHeadings": "Marcar o começo de cada página",
+    "pageHeading": "--- Página {n} ---",
+    "cropMode": "Como cortar",
+    "cropAuto": "Automático: tirar o branco ao redor do conteúdo",
+    "cropManual": "Margens fixas em milímetros",
+    "cropMargins": "Milímetros a tirar de cada lado",
+    "sides": {
+      "top": "Em cima",
+      "right": "Direita",
+      "bottom": "Embaixo",
+      "left": "Esquerda"
+    },
+    "cropInvalid": "Digite números de 0 a 999 (pelo menos um maior que 0).",
+    "cropNote": "Muda a área visível de cada página (CropBox): o que é cortado fica oculto, não é apagado do arquivo."
   }
 }

@@ -202,7 +202,8 @@
     "paymentsUnavailable": "Los pagos todavía no están disponibles en tu país. Vuelve pronto.",
     "jobCancelled": "Se canceló el proceso.",
     "jobTimedOut": "El proceso tardó demasiado y se detuvo. Prueba con un archivo más pequeño.",
-    "pagesOutOfRange": "Las páginas elegidas no existen en este PDF."
+    "pagesOutOfRange": "Las páginas elegidas no existen en este PDF.",
+    "pdfIsScanned": "Este PDF no tiene texto: parece una imagen escaneada. Para sacar su texto hace falta reconocimiento de texto (OCR)."
   },
   "Tools": {
     "merge-pdf": {
@@ -849,6 +850,38 @@
         "a3": "Sí. Elige «Solo algunas» y escribe las páginas o rangos, por ejemplo 1, 3-5. Si marcas varios PDF, las páginas se aplican a cada uno.",
         "q4": "¿Mi PDF se sube a internet?",
         "a4": "No. La marca de agua se agrega en tu navegador y el archivo no sale de tu dispositivo."
+      }
+    },
+    "pdf-to-text": {
+      "title": "PDF a texto",
+      "description": "Extrae el texto de tus PDF a un archivo TXT para copiarlo, buscarlo o reutilizarlo, sin subirlos.",
+      "action": "Extraer texto",
+      "about": "PDF a texto copia todo el texto de un PDF a un archivo TXT en UTF-8, página por página y en orden de lectura, para pegarlo en un correo, buscar una frase o reutilizar un contrato sin volver a tipearlo. Puedes marcar dónde empieza cada página y procesar varios PDF a la vez. Si el PDF es un escaneo (solo imágenes), te avisamos: ese texto necesita reconocimiento óptico (OCR).",
+      "faq": {
+        "q1": "¿Se mantiene el formato, las tablas o las columnas?",
+        "a1": "No. El resultado es texto plano: se conservan las palabras y los saltos de línea, pero no fuentes, colores ni la posición exacta. Las tablas quedan como líneas de texto.",
+        "q2": "¿Por qué dice que mi PDF no tiene texto?",
+        "a2": "Porque es una imagen escaneada o una foto guardada como PDF: no contiene letras, solo píxeles. Para sacar ese texto hace falta OCR.",
+        "q3": "¿Funciona con acentos y otros idiomas?",
+        "a3": "Sí. El texto se guarda en UTF-8, con tildes, eñes, cedillas y también chino, siempre que el PDF tenga esas letras como texto.",
+        "q4": "¿Mis PDF se suben a un servidor?",
+        "a4": "No. El texto se extrae en tu navegador y tus archivos no salen de tu dispositivo."
+      }
+    },
+    "crop-pdf": {
+      "title": "Recortar márgenes de un PDF",
+      "description": "Quita los márgenes blancos de un PDF de forma automática o con medidas en milímetros, sin perder calidad.",
+      "action": "Recortar PDF",
+      "about": "Recortar PDF quita los márgenes que sobran: ideal para leer un artículo en el celular o en un lector de libros, o para ajustar un documento escaneado con bordes. En modo automático detecta dónde termina el contenido de cada página y deja 3 mm alrededor; en modo manual quitas los milímetros que elijas de cada lado. Se cambia el área visible (CropBox), así que el texto y las imágenes no se recomprimen.",
+      "faq": {
+        "q1": "¿Lo recortado se borra del archivo?",
+        "a1": "No. Queda oculto fuera del área visible y los visores no lo muestran ni lo imprimen, pero sigue dentro del archivo. No uses esta herramienta para ocultar datos privados.",
+        "q2": "¿Cómo funciona el modo automático?",
+        "a2": "Cada página se dibuja en baja resolución para encontrar el contenido que no es blanco, y se recorta alrededor con 3 mm de margen. Una página en blanco queda como está.",
+        "q3": "¿Funciona con páginas giradas o apaisadas?",
+        "a3": "Sí. Arriba, abajo, izquierda y derecha se toman según cómo se ve la página al abrirla.",
+        "q4": "¿Mi PDF se sube a internet?",
+        "a4": "No. Todo se hace en tu navegador y el archivo no sale de tu dispositivo."
       }
     }
   },
@@ -1611,6 +1644,20 @@
     "pagesScope": "Páginas",
     "allPages": "Todas",
     "somePages": "Solo algunas",
-    "rangesSyntax": "Escribe páginas o rangos separados por comas, por ejemplo 1-3, 5."
+    "rangesSyntax": "Escribe páginas o rangos separados por comas, por ejemplo 1-3, 5.",
+    "pageHeadings": "Marcar el comienzo de cada página",
+    "pageHeading": "--- Página {n} ---",
+    "cropMode": "Cómo recortar",
+    "cropAuto": "Automático: quitar el blanco alrededor del contenido",
+    "cropManual": "Márgenes fijos en milímetros",
+    "cropMargins": "Milímetros a quitar de cada lado",
+    "sides": {
+      "top": "Arriba",
+      "right": "Derecha",
+      "bottom": "Abajo",
+      "left": "Izquierda"
+    },
+    "cropInvalid": "Escribe números de 0 a 999 (al menos uno mayor que 0).",
+    "cropNote": "Se cambia el área visible de cada página (CropBox): lo recortado queda oculto, no se borra del archivo."
   }
 }

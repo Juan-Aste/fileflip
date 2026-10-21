@@ -8,6 +8,7 @@ import { isDamagedImage } from "@/lib/image/integrity";
 import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type { CompressionLevel, CompressResult } from "./compress";
 import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
+import type { Margins } from "./crop";
 import type { PageNumberOptions, WatermarkOptions } from "./stamp";
 
 // One PDF worker at a time (documents can take hundreds of MB). A job that
@@ -111,4 +112,10 @@ export async function numberPdfPages(file: Blob, options: PageNumberOptions, job
 export async function watermarkPdf(file: Blob, options: WatermarkOptions, job: JobOptions = {}) {
   const bytes = await bytesOf(file);
   return pdfBlob(await call<Uint8Array>("watermark", { bytes, options }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** Sets each page's CropBox (null leaves a page as it is). */
+export async function cropPdfFile(file: Blob, margins: (Margins | null)[], job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("crop", { bytes, margins }, { transfer: [bytes.buffer], ...job }));
 }

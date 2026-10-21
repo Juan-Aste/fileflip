@@ -1808,3 +1808,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Nota para 3D: el pie de página lista todas las herramientas PDF/datos/etc. y ya es muy largo; hay que resumirlo en 3D.1.
 
 **Siguiente**: 3C.20 (PDF → texto y recortar márgenes).
+
+## 2026-10-21 20:05 UTC — Fase 3, tarea 3C.20 (PDF a texto y recortar márgenes)
+
+**Qué se hizo**
+- **PDF a texto** (`/es/pdf-a-texto`, `/en/pdf-to-text`, `/pt/pdf-para-texto`, `/fr/pdf-en-texte`): texto de todas las páginas en orden de lectura de pdf.js, en un TXT UTF-8 con vista previa y botón copiar; opción "Marcar el comienzo de cada página" (`--- Página N ---`, traducido); lotes con ZIP. Saltos de línea: los `hasEOL` de pdf.js más los saltos verticales que pdf.js no marca, sin duplicar los ítems vacíos de fin de línea. Un PDF sin capa de texto → error nuevo **`pdfIsScanned`** ("parece una imagen escaneada… hace falta OCR"); el mensaje existente `pdfHasNoText` habla de Word y quedó para PDF → Word.
+- **Recortar márgenes de PDF** (`/es/recortar-pdf`, `/en/crop-pdf`, `/pt/cortar-pdf`, `/fr/rogner-pdf`): modo **automático** (cada página se dibuja con pdf.js a 36 ppp, `contentMargins` busca el área no blanca y se deja 3 mm alrededor; página en blanco → sin cambios) o **manual** (mm por lado, validados; botón deshabilitado si no son números de 0 a 999 o todos son 0). Se cambia el **CropBox** con pdf-lib en el worker de PDF, usando las mismas posiciones visuales de 3C.19 (funciona en páginas giradas) y dejando siempre al menos ~1 cm visible. El contenido no se recomprime ni se borra; la página y la FAQ avisan que lo recortado queda oculto, no eliminado (no sirve para ocultar datos privados).
+- Fixture nuevo `scan.pdf` (una página A4 que solo tiene una imagen).
+
+**Verificación**
+- Tests unitarios: `pageText` (EOL y saltos verticales), extracción de `document.pdf` con y sin encabezados y progreso, acentos, escaneo → `pdfIsScanned`; `contentMargins` (área y página en blanco), `cropPdf` con márgenes visuales en páginas de 0° y 90°, página `null` intacta, mínimo visible y PDF dañado.
+- `pdf-tools.spec.ts` (39/39): TXT con encabezados por página y vista previa; escaneo + PDF basura → mensaje de OCR y ninguna descarga; recorte automático con CropBox alrededor del texto (x 40–56, alto 715–810 pt) y texto intacto (pdf.js); manual 10 mm con validación; PDF corrupto en recortar.
+- Lint, typecheck, tests (744), build y `check:static` (787 páginas) pasan.
+
+**Siguiente**: 3C.21 (firmar PDF dibujando la firma o subiendo una foto).

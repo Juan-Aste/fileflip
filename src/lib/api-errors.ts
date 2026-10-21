@@ -23,6 +23,8 @@ export const apiErrorCodes = [
   "targetTooSmall",
   // Client-side only: page ranges beyond the last page of one of the PDFs.
   "pagesOutOfRange",
+  // Client-side only: PDF → text on a scan (no text layer).
+  "pdfIsScanned",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -51,6 +53,7 @@ const status: Record<ApiErrorCode, number> = {
   qrNotFound: 422,
   targetTooSmall: 422,
   pagesOutOfRange: 422,
+  pdfIsScanned: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

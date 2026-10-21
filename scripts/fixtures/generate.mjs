@@ -126,6 +126,17 @@ const pdf3 = await textPdf(3);
 write("document.pdf", pdf3);
 write("document-1page.pdf", await textPdf(1));
 write("document-images.pdf", await textPdf(2, { image: true }));
+// A "scan": one page that is only a picture (no text layer), for PDF → text and OCR.
+{
+  const doc = await PDFDocument.create();
+  doc.setProducer("Fileflect fixtures");
+  doc.setCreator("Fileflect fixtures");
+  doc.setCreationDate(new Date("2026-01-01T00:00:00Z"));
+  doc.setModificationDate(new Date("2026-01-01T00:00:00Z"));
+  const jpg = await doc.embedJpg(await picture().resize(320, 240).flatten({ background: "#fff" }).jpeg({ quality: 80 }).toBuffer());
+  doc.addPage([595, 842]).drawImage(jpg, { x: 100, y: 400, width: 320, height: 240 });
+  write("scan.pdf", Buffer.from(await doc.save({ useObjectStreams: false })));
+}
 
 // --- Plain text formats
 write("text.txt", Buffer.from("Fileflect sample text.\nSegunda línea con acentos: áéíóú ñ ç ü.\n中文示例\n", "utf8"));

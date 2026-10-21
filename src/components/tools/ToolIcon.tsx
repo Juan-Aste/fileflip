@@ -1,5 +1,6 @@
 import {
   Binary,
+  FileType,
   ListOrdered,
   FileMinus,
   FileOutput,
@@ -85,6 +86,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "extract-pdf-pages": FileOutput,
   "pdf-page-numbers": ListOrdered,
   "pdf-watermark": Stamp,
+  "pdf-to-text": FileType,
+  "crop-pdf": Scissors,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

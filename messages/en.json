@@ -202,7 +202,8 @@
     "paymentsUnavailable": "Payments aren't available in your country yet. Check back soon.",
     "jobCancelled": "The task was cancelled.",
     "jobTimedOut": "The task took too long and was stopped. Try a smaller file.",
-    "pagesOutOfRange": "The chosen pages don’t exist in this PDF."
+    "pagesOutOfRange": "The chosen pages don’t exist in this PDF.",
+    "pdfIsScanned": "This PDF has no text: it looks like a scanned image. Getting its text needs text recognition (OCR)."
   },
   "Tools": {
     "merge-pdf": {
@@ -849,6 +850,38 @@
         "a3": "Yes. Choose \"Only some\" and type pages or ranges, for example 1, 3-5. With several PDFs, the pages apply to each one.",
         "q4": "Is my PDF uploaded?",
         "a4": "No. The watermark is added in your browser and the file never leaves your device."
+      }
+    },
+    "pdf-to-text": {
+      "title": "PDF to text",
+      "description": "Extract the text of your PDFs into a TXT file to copy, search or reuse it, without uploading them.",
+      "action": "Extract text",
+      "about": "PDF to text copies all the text in a PDF into a UTF-8 TXT file, page by page in reading order, so you can paste it into an email, search for a phrase or reuse a contract without retyping it. You can mark where each page starts and process several PDFs at once. If the PDF is a scan (images only), we tell you: that text needs optical character recognition (OCR).",
+      "faq": {
+        "q1": "Are formatting, tables or columns kept?",
+        "a1": "No. The result is plain text: words and line breaks are kept, but not fonts, colors or exact positions. Tables come out as lines of text.",
+        "q2": "Why does it say my PDF has no text?",
+        "a2": "Because it is a scanned image or a photo saved as PDF: it holds pixels, not letters. Getting that text out needs OCR.",
+        "q3": "Does it work with accents and other languages?",
+        "a3": "Yes. Text is saved as UTF-8, with accents and Chinese characters too, as long as the PDF holds them as text.",
+        "q4": "Are my PDFs uploaded?",
+        "a4": "No. Text is extracted in your browser and your files never leave your device."
+      }
+    },
+    "crop-pdf": {
+      "title": "Crop PDF margins",
+      "description": "Remove white margins from a PDF automatically or by millimeters, without losing quality.",
+      "action": "Crop PDF",
+      "about": "Crop PDF removes the margins you don't need: great for reading an article on a phone or e-reader, or for trimming a scanned document with borders. Automatic mode finds where each page's content ends and keeps 3 mm around it; manual mode removes the millimeters you choose from each side. Only the visible area (CropBox) changes, so text and images are not recompressed.",
+      "faq": {
+        "q1": "Is the cropped part deleted from the file?",
+        "a1": "No. It is hidden outside the visible area and viewers don't show or print it, but it is still inside the file. Don't use this tool to hide private data.",
+        "q2": "How does automatic mode work?",
+        "a2": "Each page is drawn at low resolution to find the content that isn't white, then cropped around it with a 3 mm margin. A blank page stays as it is.",
+        "q3": "Does it work with rotated or landscape pages?",
+        "a3": "Yes. Top, bottom, left and right follow how the page looks when you open it.",
+        "q4": "Is my PDF uploaded?",
+        "a4": "No. Everything happens in your browser and the file never leaves your device."
       }
     }
   },
@@ -1611,6 +1644,20 @@
     "pagesScope": "Pages",
     "allPages": "All",
     "somePages": "Only some",
-    "rangesSyntax": "Type pages or ranges separated by commas, for example 1-3, 5."
+    "rangesSyntax": "Type pages or ranges separated by commas, for example 1-3, 5.",
+    "pageHeadings": "Mark where each page starts",
+    "pageHeading": "--- Page {n} ---",
+    "cropMode": "How to crop",
+    "cropAuto": "Automatic: remove the white space around the content",
+    "cropManual": "Fixed margins in millimeters",
+    "cropMargins": "Millimeters to remove from each side",
+    "sides": {
+      "top": "Top",
+      "right": "Right",
+      "bottom": "Bottom",
+      "left": "Left"
+    },
+    "cropInvalid": "Type numbers from 0 to 999 (at least one above 0).",
+    "cropNote": "Each page's visible area (CropBox) changes: what is cropped is hidden, not deleted from the file."
   }
 }

@@ -47,6 +47,8 @@ const components: Record<ToolId, React.ComponentType> = {
   "extract-pdf-pages": dynamic(() => import("./PageSelectPdfTool").then((m) => m.ExtractPdfPagesTool)),
   "pdf-page-numbers": dynamic(() => import("./PdfStampTools").then((m) => m.PdfPageNumbersTool)),
   "pdf-watermark": dynamic(() => import("./PdfStampTools").then((m) => m.PdfWatermarkTool)),
+  "pdf-to-text": dynamic(() => import("./PdfTextCropTools").then((m) => m.PdfToTextTool)),
+  "crop-pdf": dynamic(() => import("./PdfTextCropTools").then((m) => m.CropPdfTool)),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),
   "remove-exif": dynamic(() => import("./image/RemoveMetadataTool")),

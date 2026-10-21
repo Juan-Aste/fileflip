@@ -237,6 +237,65 @@ test.describe("tool: pdf-watermark", () => {
   });
 });
 
+test.describe("tool: pdf-to-text", () => {
+  test("every page's text in a UTF-8 TXT, with page headings", async ({ page }) => {
+    await openWithFiles(page, "/es/pdf-a-texto", ["document.pdf"]);
+    await choose(page, "Marcar el comienzo de cada página");
+    const out = fileOf(await runTool(page, "Extraer texto"));
+    expect(out.name).toBe("document.txt");
+    const text = out.buf.toString("utf8");
+    for (const n of [1, 2, 3]) expect(text).toContain(`--- Página ${n} ---\n\nFileflect sample page ${n} of 3\nSynthetic text for automated tests.`);
+    await expect(page.getByRole("textbox", { name: "Vista previa" })).toHaveValue(/^--- Página 1 ---/);
+  });
+
+  test("a scan says it needs OCR; a damaged PDF fails", async ({ page }) => {
+    await openWithFiles(page, "/es/pdf-a-texto", ["scan.pdf", "corrupt/garbage.pdf"]);
+    await page.getByRole("button", { name: "Extraer texto", exact: true }).click();
+    await expect(page.getByText(/parece una imagen escaneada/)).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator("main a[download]")).toHaveCount(0);
+  });
+});
+
+test.describe("tool: crop-pdf", () => {
+  const cropBoxes = async (buf: Buffer) => {
+    const { PDFDocument } = await import("pdf-lib");
+    return (await PDFDocument.load(buf)).getPages().map((p) => p.getCropBox());
+  };
+
+  test("automatic: crops each page around its text with a small margin", async ({ page }) => {
+    await openWithFiles(page, "/es/recortar-pdf", ["document.pdf"]);
+    const out = fileOf(await runTool(page, "Recortar PDF"));
+    expect(out.name).toBe("document-cropped.pdf");
+    const boxes = await cropBoxes(out.buf);
+    expect(boxes).toHaveLength(3);
+    for (const b of boxes) {
+      // The text runs from x=56 and between y≈738 and y≈790 (points).
+      expect(b.x).toBeGreaterThan(40);
+      expect(b.x).toBeLessThan(56);
+      expect(b.y).toBeGreaterThan(715);
+      expect(b.y).toBeLessThan(740);
+      expect(b.y + b.height).toBeGreaterThan(785);
+      expect(b.y + b.height).toBeLessThan(810);
+      expect(b.width).toBeLessThan(400);
+    }
+    // Content is untouched: the text is still there.
+    expect((await inspectPdf(out.buf)).labels).toEqual(["1 of 3", "2 of 3", "3 of 3"]);
+  });
+
+  test("manual: 10 mm from every side", async ({ page }) => {
+    await openWithFiles(page, "/en/crop-pdf", ["document-1page.pdf"]);
+    await choose(page, "Fixed margins in millimeters");
+    const top = page.getByRole("textbox", { name: "Top" });
+    await top.fill("x");
+    await expect(page.getByText("Type numbers from 0 to 999")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Crop PDF", exact: true })).toBeDisabled();
+    await top.fill("10");
+    const [b] = await cropBoxes(fileOf(await runTool(page, "Crop PDF")).buf);
+    const mm10 = (10 * 72) / 25.4;
+    expect([b!.x, b!.y, b!.width, b!.height].map((v) => Math.round(v))).toEqual([mm10, mm10, 595 - 2 * mm10, 842 - 2 * mm10].map((v) => Math.round(v)));
+  });
+});
+
 test.describe("tool: images-to-pdf", () => {
   test("JPG + PNG + HEIC on landscape A4 (default)", async ({ page }) => {
     await openWithFiles(page, "/es/imagenes-a-pdf", ["image.jpg", "image.png", "photo.heic"]);
@@ -283,6 +342,7 @@ test.describe("corrupt inputs end in a visible error", () => {
     ["/es/extraer-paginas-pdf", ["corrupt/truncated.pdf"], "Extraer páginas"],
     ["/es/numerar-paginas-pdf", ["corrupt/garbage.pdf"], "Numerar páginas"],
     ["/es/marca-de-agua-pdf", ["corrupt/truncated.pdf"], "Agregar marca de agua"],
+    ["/es/recortar-pdf", ["corrupt/garbage.pdf"], "Recortar PDF"],
     ["/es/comprimir-pdf", ["corrupt/truncated.pdf"], "Comprimir PDF"],
     ["/es/imagenes-a-pdf", ["image.png", "corrupt/truncated.png"], "Crear PDF"],
   ];
