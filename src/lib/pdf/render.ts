@@ -4,23 +4,26 @@
 // legacy build supports older browsers (common on budget Android phones).
 import type { PDFDocumentProxy } from "pdfjs-dist";
 
-let pdfjs: Promise<typeof import("pdfjs-dist")> | null = null;
+type Pdfjs = typeof import("pdfjs-dist");
+let pdfjs: Promise<{ lib: Pdfjs; worker: InstanceType<Pdfjs["PDFWorker"]> }> | null = null;
 
 function loadPdfjs() {
-  pdfjs ??= import("pdfjs-dist/legacy/build/pdf.min.mjs").then((lib) => {
-    lib.GlobalWorkerOptions.workerPort = new Worker(
-      new URL("pdfjs-dist/legacy/build/pdf.worker.min.mjs", import.meta.url),
-      { type: "module" },
-    );
-    return lib as unknown as typeof import("pdfjs-dist");
+  pdfjs ??= import("pdfjs-dist/legacy/build/pdf.min.mjs").then((mod) => {
+    const lib = mod as unknown as Pdfjs;
+    const port = new Worker(new URL("pdfjs-dist/legacy/build/pdf.worker.min.mjs", import.meta.url), { type: "module" });
+    // One worker for every document, passed explicitly: pdf.js then never
+    // destroys it with a document. (With GlobalWorkerOptions.workerPort, the
+    // first `loadingTask.destroy()` tore the shared worker down and a PDF
+    // opened at the same time in a batch failed.)
+    // (The bundled types say `port` must be null; a Worker is what pdf.js expects.)
+    return { lib, worker: new lib.PDFWorker({ port: port as never }) };
   });
   return pdfjs;
 }
 
 export async function openPdf(file: Blob): Promise<PDFDocumentProxy> {
-  const { getDocument } = await loadPdfjs();
-  return getDocument({ data: new Uint8Array(await file.arrayBuffer()) })
-    .promise;
+  const { lib, worker } = await loadPdfjs();
+  return lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), worker }).promise;
 }
 
 /**

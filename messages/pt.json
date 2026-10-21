@@ -808,6 +808,38 @@
         "a4": "Não. A conversão acontece no seu navegador e os arquivos não saem do seu dispositivo."
       }
     },
+    "markdown-to-html": {
+      "title": "Markdown para HTML",
+      "description": "Converta Markdown (com tabelas e listas de tarefas do GitHub) em HTML limpo e seguro, como fragmento ou página completa. No seu navegador.",
+      "action": "Converter para HTML",
+      "about": "Markdown para HTML transforma suas notas, README ou documentação em Markdown em HTML pronto para colar em um site, um e-mail ou um CMS. Aceita o formato do GitHub: tabelas, tachado, listas de tarefas e blocos de código com linguagem. Você pode obter só o conteúdo ou uma página completa com título e estilos legíveis nos modos claro e escuro.",
+      "faq": {
+        "q1": "Qual variante de Markdown é aceita?",
+        "a1": "CommonMark com as extensões do GitHub (GFM): tabelas, tachado com ~~, listas de tarefas, links automáticos e blocos de código com linguagem.",
+        "q2": "O HTML gerado é seguro?",
+        "a2": "Sim. Ele é limpo com DOMPurify: não ficam scripts, atributos de eventos (onclick, onerror), formulários nem links javascript:. O HTML escrito dentro do Markdown só é mantido se for seguro.",
+        "q3": "Posso converter vários arquivos?",
+        "a3": "Sim. Escolha vários .md e baixe-os em um ZIP, ou cole o texto diretamente.",
+        "q4": "Meus arquivos são enviados para a internet?",
+        "a4": "Não. A conversão acontece no seu navegador."
+      }
+    },
+    "html-to-markdown": {
+      "title": "HTML para Markdown",
+      "description": "Converta páginas ou trechos HTML em Markdown limpo (com tabelas do GitHub) para documentação, wikis ou notas. No seu navegador.",
+      "action": "Converter para Markdown",
+      "about": "HTML para Markdown passa o conteúdo de uma página web, um e-mail ou uma exportação de CMS para Markdown fácil de editar: títulos com #, listas, negrito, links, imagens, tabelas e blocos de código com linguagem. Scripts, estilos e formulários são descartados. Ideal para migrar conteúdo para GitHub, Notion, Obsidian ou um gerador de sites estáticos.",
+      "faq": {
+        "q1": "Algo do HTML é executado?",
+        "a1": "Não. O HTML é analisado como texto inerte: scripts não rodam e nenhuma imagem ou recurso externo é carregado.",
+        "q2": "O que acontece com estilos, cores e layout?",
+        "a2": "Markdown não tem estilos: a estrutura (títulos, listas, tabelas, ênfase) é mantida e cores, fontes e posições se perdem.",
+        "q3": "As tabelas são mantidas?",
+        "a3": "Sim, como tabelas Markdown do GitHub. Células mescladas não existem em Markdown e são simplificadas.",
+        "q4": "Meus arquivos são enviados para a internet?",
+        "a4": "Não. Tudo acontece no seu navegador."
+      }
+    },
     "delete-pdf-pages": {
       "title": "Excluir páginas de um PDF",
       "description": "Remova páginas de um PDF escolhendo-as nas miniaturas ou pelo número, sem enviar o arquivo.",
@@ -1791,5 +1823,10 @@
       "sfnt": "TTF / OTF (para instalar no computador)"
     },
     "note": "O tipo de contorno é mantido: uma fonte TrueType sai como .ttf e uma OpenType CFF como .otf. Para a web, a regra @font-face fica pronta para copiar abaixo do resultado."
+  },
+  "MarkupTools": {
+    "fullDocument": "Página HTML completa (com título e estilos legíveis)",
+    "sanitizeNote": "O HTML é limpo: scripts, eventos, formulários e links javascript: são removidos, então é seguro publicá-lo.",
+    "htmlNote": "Títulos, negrito, listas, tabelas, blocos de código, links e imagens são mantidos; scripts, estilos e formulários são descartados."
   }
 }

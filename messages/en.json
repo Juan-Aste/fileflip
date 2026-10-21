@@ -808,6 +808,38 @@
         "a4": "No. Conversion happens in your browser and the files never leave your device."
       }
     },
+    "markdown-to-html": {
+      "title": "Markdown to HTML",
+      "description": "Convert Markdown (with GitHub tables and task lists) to clean, safe HTML, as a fragment or a full page. In your browser.",
+      "action": "Convert to HTML",
+      "about": "Markdown to HTML turns notes, READMEs or docs written in Markdown into HTML ready to paste into a website, an email or a CMS. It supports the GitHub flavor: tables, strikethrough, task lists and fenced code blocks with a language. Get just the content or a complete page with a title and readable light and dark styles.",
+      "faq": {
+        "q1": "Which Markdown flavor is supported?",
+        "a1": "CommonMark with the GitHub extensions (GFM): tables, ~~strikethrough~~, task lists, autolinks and fenced code blocks with a language.",
+        "q2": "Is the generated HTML safe?",
+        "a2": "Yes. It’s cleaned with DOMPurify: no scripts, event attributes (onclick, onerror), forms or javascript: links remain. HTML written inside the Markdown is kept only if it’s safe.",
+        "q3": "Can I convert several files?",
+        "a3": "Yes. Pick several .md files and download them in a ZIP, or paste the text directly.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. The conversion happens in your browser."
+      }
+    },
+    "html-to-markdown": {
+      "title": "HTML to Markdown",
+      "description": "Convert HTML pages or snippets to clean Markdown (with GitHub tables) for docs, wikis or notes. In your browser.",
+      "action": "Convert to Markdown",
+      "about": "HTML to Markdown turns the content of a web page, an email or a CMS export into easy-to-edit Markdown: # headings, lists, bold, links, images, tables and fenced code blocks with a language. Scripts, styles and forms are dropped. Great for moving content to GitHub, Notion, Obsidian or a static site generator.",
+      "faq": {
+        "q1": "Does anything in the HTML run?",
+        "a1": "No. The HTML is parsed as inert text: scripts don’t run and no images or external resources are loaded.",
+        "q2": "What happens to styles, colors and layout?",
+        "a2": "Markdown has no styles: the structure (headings, lists, tables, emphasis) is kept and colors, fonts and positions are lost.",
+        "q3": "Are tables kept?",
+        "a3": "Yes, as GitHub Markdown tables. Merged cells don’t exist in Markdown and are simplified.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. Everything happens in your browser."
+      }
+    },
     "delete-pdf-pages": {
       "title": "Delete pages from a PDF",
       "description": "Remove unwanted pages from a PDF by picking them on thumbnails or by number, without uploading the file.",
@@ -1791,5 +1823,10 @@
       "sfnt": "TTF / OTF (to install on a computer)"
     },
     "note": "The outline type is kept: a TrueType font comes out as .ttf and an OpenType CFF one as .otf. For the web, the @font-face rule is ready to copy below the result."
+  },
+  "MarkupTools": {
+    "fullDocument": "Complete HTML page (with a title and readable styles)",
+    "sanitizeNote": "The HTML is cleaned: scripts, event handlers, forms and javascript: links are removed, so it’s safe to publish.",
+    "htmlNote": "Headings, bold, lists, tables, code blocks, links and images are kept; scripts, styles and forms are dropped."
   }
 }

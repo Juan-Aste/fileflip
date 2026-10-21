@@ -26,6 +26,9 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | utif2 | 4.1.0 | MIT | lector/escritor TIFF | N (worker) |
 | libheif-js | 1.23.5 | LGPL-3.0 | lector HEIC/HEIF | N (worker, carga diferida, archivo aparte: cumple la LGPL al poder reemplazarse) |
 | woff2-encoder | 2.0.0 | MIT (google/woff2 y Brotli: MIT) | comprimir y descomprimir WOFF2 (codificador de referencia de Google en WASM incrustado, ~1 MB) | N (worker de datos, import diferido: solo el conversor de fuentes) |
+| marked | 18.1.1 | MIT | Markdown (CommonMark + GFM) → HTML | N (chunk de la herramienta, import diferido) |
+| dompurify | 3.4.17 | MPL-2.0 OR Apache-2.0 (se usa bajo Apache-2.0) | sanea el HTML generado (sin scripts, eventos, formularios ni `javascript:`) | N (ídem) |
+| turndown, turndown-plugin-gfm | 7.2.4 / 1.0.2 | MIT (dep. @mixmark-io/domino BSD-2-Clause, solo en Node: el build del navegador la excluye) | HTML → Markdown con tablas, tachado y listas de tareas | N (ídem) |
 | pdf-lib | 1.17.1 | MIT | crear y editar PDF | N (worker) |
 | @neslinesli93/qpdf-wasm | 0.3.0 | ISC (motor qpdf 12.2: Apache-2.0) | cifrar (AES-256) y descifrar PDF con contraseña; WASM de 1,3 MB que solo descargan "Proteger PDF" y "Quitar contraseña" | N (worker de PDF, import diferido) |
 | pdfjs-dist | 6.4.299 | Apache-2.0 | leer y rasterizar PDF; decodificar las imágenes de "Extraer imágenes de PDF" | N + S |
@@ -65,6 +68,8 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | @types/* (incluido @types/papaparse) | — | MIT |
 | fontkit (lector de fuentes independiente en los tests; deps brotli, restructure, unicode-* … MIT) | 2.0.4 | MIT |
 | opentype.js (genera el fixture `font.otf`) | 2.0.0 | MIT |
+| jsdom, @types/jsdom (DOM de los tests de Markdown/HTML y lector independiente en los de navegador) | 29.1.1 | MIT |
+| @types/turndown | 5.0.6 | MIT |
 
 ## Candidatas evaluadas para la fase 3 (todavía no instaladas)
 

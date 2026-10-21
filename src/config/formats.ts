@@ -39,7 +39,9 @@ export type FormatId =
   | "ttf"
   | "otf"
   | "woff"
-  | "woff2";
+  | "woff2"
+  | "md"
+  | "html";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -93,6 +95,8 @@ export const formats: Record<FormatId, FormatInfo> = {
   otf: { id: "otf", label: "OTF", mime: "font/otf", extensions: ["otf"], category: "data" },
   woff: { id: "woff", label: "WOFF", mime: "font/woff", extensions: ["woff"], category: "data" },
   woff2: { id: "woff2", label: "WOFF2", mime: "font/woff2", extensions: ["woff2"], category: "data" },
+  md: { id: "md", label: "Markdown", mime: "text/markdown", extensions: ["md", "markdown"], category: "data" },
+  html: { id: "html", label: "HTML", mime: "text/html", extensions: ["html", "htm"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 

@@ -79,6 +79,8 @@ export const toolIds = [
   "subtitle-converter",
   "subtitle-sync",
   "font-converter",
+  "markdown-to-html",
+  "html-to-markdown",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -122,6 +124,8 @@ const SUBTITLE_MAX_BYTES = 10 * 1024 * 1024;
 const PDF_PASSWORD_MAX_BYTES = 200 * 1024 * 1024;
 /** Same cap as the font engine (MAX_FONT_BYTES): bigger than any real font. */
 const FONT_MAX_BYTES = 40 * 1024 * 1024;
+/** Markdown/HTML are converted on the page (they need a DOM): keep it responsive. */
+const MARKUP_MAX_BYTES = 5 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
 
 export const tools: Record<ToolId, ToolInfo> = {
@@ -715,6 +719,28 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: FONT_MAX_BYTES },
     status: "verified",
     slugs: { es: "convertir-fuentes", en: "font-converter", pt: "converter-fontes", fr: "convertir-polices", zh: "font-converter" },
+  },
+  "markdown-to-html": {
+    id: "markdown-to-html",
+    category: "document",
+    inputs: ["md", "txt"],
+    outputs: ["html"],
+    engine: "browser",
+    libraries: ["marked", "dompurify"],
+    limits: { files: "multiple", timeoutMs: MINUTE, maxFileBytes: MARKUP_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "markdown-a-html", en: "markdown-to-html", pt: "markdown-para-html", fr: "markdown-en-html", zh: "markdown-to-html" },
+  },
+  "html-to-markdown": {
+    id: "html-to-markdown",
+    category: "document",
+    inputs: ["html", "txt"],
+    outputs: ["md"],
+    engine: "browser",
+    libraries: ["turndown", "turndown-plugin-gfm"],
+    limits: { files: "multiple", timeoutMs: MINUTE, maxFileBytes: MARKUP_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "html-a-markdown", en: "html-to-markdown", pt: "html-para-markdown", fr: "html-en-markdown", zh: "html-to-markdown" },
   },
 };
 

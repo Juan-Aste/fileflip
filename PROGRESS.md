@@ -1912,3 +1912,24 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (780), build, `check:static` (817 páginas) y `npm run test:e2e` (234/234) pasan. Lighthouse de `/es/convertir-fuentes`: 97, 164 KB (en `docs/perf/2026-10-21-3C23.md`). Captura revisada: 360 px oscuro con el resultado.
 
 **Siguiente**: 3C.25 (Markdown ↔ HTML en el navegador y Markdown → PDF).
+
+## 2026-10-21 22:20 UTC — Fase 3, tarea 3C.25a (Markdown ↔ HTML) y arreglo del worker de pdf.js
+
+**Qué se hizo**
+- 3C.25 se dividió en 3C.25a (Markdown ↔ HTML en el navegador) y 3C.25b (Markdown → PDF con Gotenberg).
+- **Markdown a HTML** (`/es/markdown-a-html`, `/en/markdown-to-html`, `/pt/markdown-para-html`, `/fr/markdown-en-html`): CommonMark + GFM (tablas, tachado, listas de tareas, código con lenguaje) con marked; el resultado se **sanea con DOMPurify** (sin `<script>`, atributos `on*`, formularios, botones ni enlaces `javascript:`; las casillas de las listas de tareas se conservan). Opción "Página HTML completa" (por defecto): doctype, `charset`, título = primer `<h1>` (escapado) y estilos legibles claro/oscuro; si no, solo el fragmento. Archivos `.md`/`.markdown`/`.txt` en lotes o texto pegado.
+- **HTML a Markdown** (`/es/html-a-markdown`, `/en/html-to-markdown`, `/pt/html-para-markdown`, `/fr/html-en-markdown`): turndown + turndown-plugin-gfm (títulos `#`, `-` en listas, código cercado, tablas, tachado). El HTML se analiza con `DOMParser` (inerte: no ejecuta scripts ni carga imágenes) y se convierte solo el `<body>`; se descartan `script`, `style`, `noscript`, `iframe`, `object`, `embed`, `form` y `template`. HTML sin contenido → `invalidData`.
+- Las dos corren en la página (DOMPurify y turndown necesitan DOM) con las librerías en un import diferido; límite 5 MB por archivo. Formatos nuevos `md` y `html` en `formats.ts`. Textos (introducción + 4 preguntas) en los 5 idiomas, en la categoría Documentos.
+- **Arreglo de pdf.js (afecta a todas las herramientas que abren PDF en el navegador)**: `render.ts` compartía el worker de pdf.js con `GlobalWorkerOptions.workerPort`; el primer `loadingTask.destroy()` de un lote lo destruía y un PDF que se abría al mismo tiempo fallaba con "the worker is being destroyed" (se veía como "archivo dañado"). Lo detectó la prueba de "Extraer imágenes" bajo carga. Ahora se crea un solo `PDFWorker` y se pasa explícito a `getDocument`, así pdf.js nunca lo destruye con un documento.
+
+**Limitaciones**
+- Markdown → HTML y HTML → Markdown corren en el hilo de la página: el límite de tiempo del registro (1 min) no puede cortar un archivo patológico; por eso el tope de 5 MB.
+- En HTML → Markdown se pierden estilos, colores y celdas combinadas (lo dice la FAQ).
+
+**Verificación**
+- 5 tests unitarios con jsdom (`// @vitest-environment jsdom`): GFM con tabla, tachado, código y casilla marcada; sin `<script>`, `onerror` ni `javascript:`; página completa con título escapado; HTML → Markdown con encabezado, énfasis, lista, tabla, código y enlace, sin scripts, estilos ni `<title>`; ida y vuelta; HTML vacío.
+- `markup-tools.spec.ts` (4 casos, salida leída con jsdom): `document.md` → página segura (tabla, código, casilla, sin scripts/eventos, la variable `pwned` nunca se define y ninguna petición sale de localhost); fragmento pegado; `page.html` → Markdown GFM sin `<head>`, estilos, scripts ni formulario y sin peticiones externas; HTML vacío → error.
+- Fixtures nuevos `document.md` y `page.html` (en `generate.mjs`).
+- Lint, typecheck, tests (787), build, `check:static` (827 páginas) y `npm run test:e2e` (238/238) pasan; además `pdf-tools`, `sign-pdf` y `converter` dos veces seguidas (278/278).
+
+**Siguiente**: 3C.25b (Markdown → PDF con Gotenberg).

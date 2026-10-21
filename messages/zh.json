@@ -808,6 +808,38 @@
         "a4": "不会。转换在浏览器中完成，文件不会离开你的设备。"
       }
     },
+    "markdown-to-html": {
+      "title": "Markdown 转 HTML",
+      "description": "将 Markdown（支持 GitHub 表格和任务列表）转换为干净、安全的 HTML，可选片段或完整页面。在浏览器中完成。",
+      "action": "转换为 HTML",
+      "about": "Markdown 转 HTML 将用 Markdown 写的笔记、README 或文档转换为可直接粘贴到网站、邮件或 CMS 的 HTML。支持 GitHub 风格：表格、删除线、任务列表和带语言的代码块。可以只获取内容，也可以获取带标题、适配浅色和深色模式的完整页面。",
+      "faq": {
+        "q1": "支持哪种 Markdown？",
+        "a1": "CommonMark 加 GitHub 扩展（GFM）：表格、~~删除线~~、任务列表、自动链接和带语言的代码块。",
+        "q2": "生成的 HTML 安全吗？",
+        "a2": "安全。使用 DOMPurify 清理：不会保留脚本、事件属性（onclick、onerror）、表单或 javascript: 链接。Markdown 中写的 HTML 只有在安全时才会保留。",
+        "q3": "可以转换多个文件吗？",
+        "a3": "可以。选择多个 .md 文件并打包为 ZIP 下载，或直接粘贴文本。",
+        "q4": "我的文件会被上传吗？",
+        "a4": "不会。转换在浏览器中完成。"
+      }
+    },
+    "html-to-markdown": {
+      "title": "HTML 转 Markdown",
+      "description": "将 HTML 页面或片段转换为干净的 Markdown（支持 GitHub 表格），用于文档、维基或笔记。在浏览器中完成。",
+      "action": "转换为 Markdown",
+      "about": "HTML 转 Markdown 将网页、邮件或 CMS 导出的内容转换为易于编辑的 Markdown：# 标题、列表、粗体、链接、图片、表格和带语言的代码块。脚本、样式和表单会被丢弃。非常适合把内容迁移到 GitHub、Notion、Obsidian 或静态网站生成器。",
+      "faq": {
+        "q1": "HTML 中的内容会被执行吗？",
+        "a1": "不会。HTML 作为惰性文本解析：脚本不会运行，也不会加载任何图片或外部资源。",
+        "q2": "样式、颜色和布局会怎样？",
+        "a2": "Markdown 没有样式：保留结构（标题、列表、表格、强调），颜色、字体和位置会丢失。",
+        "q3": "表格会保留吗？",
+        "a3": "会，转换为 GitHub Markdown 表格。Markdown 中没有合并单元格，会被简化。",
+        "q4": "我的文件会被上传吗？",
+        "a4": "不会。一切都在浏览器中完成。"
+      }
+    },
     "delete-pdf-pages": {
       "title": "删除 PDF 页面",
       "description": "在缩略图上选择或按页码删除 PDF 中多余的页面，无需上传文件。",
@@ -1791,5 +1823,10 @@
       "sfnt": "TTF / OTF（安装到电脑）"
     },
     "note": "保留轮廓类型：TrueType 字体输出为 .ttf，OpenType CFF 字体输出为 .otf。用于网页时，结果下方有可直接复制的 @font-face 规则。"
+  },
+  "MarkupTools": {
+    "fullDocument": "完整 HTML 页面（含标题和易读样式）",
+    "sanitizeNote": "HTML 会被清理：移除脚本、事件处理、表单和 javascript: 链接，可以放心发布。",
+    "htmlNote": "保留标题、粗体、列表、表格、代码块、链接和图片；脚本、样式和表单会被丢弃。"
   }
 }

@@ -414,3 +414,18 @@ writeCorrupt("broken.toml", Buffer.from('title = "unclosed\n[owner\n'));
 writeCorrupt("xxe.xml", Buffer.from('<?xml version="1.0"?>\n<!DOCTYPE r [<!ENTITY x SYSTEM "file:///etc/passwd">]>\n<r>&x;</r>\n'));
 writeCorrupt("broken.xml", Buffer.from("<catalog><book><title>open</book></catalog>\n"));
 writeCorrupt("broken.srt", Buffer.from("1\nthis is not a timing line\nHello\n\n2\n00:00:99,000 -> nope\nBye\n"));
+
+// Markdown and HTML for the markup tools: GitHub tables, a task list, code, a
+// link, and things that must never survive (script, event handler, javascript: link).
+write(
+  "document.md",
+  Buffer.from(
+    "# Informe ñandú\n\nTexto con **negrita**, *cursiva* y ~~tachado~~.\n\n- [x] hecho\n- pendiente\n\n| Producto | Precio |\n| --- | ---: |\n| Té | 2,50 |\n| Café | 3,10 |\n\n```js\nconst total = 5.6;\n```\n\n[Fileflect](https://example.com) <script>window.top.pwned = 1</script> <img src=\"x.png\" onerror=\"window.top.pwned = 2\"> [mal](javascript:alert(1))\n",
+  ),
+);
+write(
+  "page.html",
+  Buffer.from(
+    '<!doctype html>\n<html lang="es"><head><meta charset="utf-8"><title>Página</title><style>h1{color:red}</style><script>window.top.pwned = 3</script></head>\n<body><h1>Guía 中文</h1><p>Hola <strong>mundo</strong> y <em>bienvenidos</em>.</p>\n<ul><li>uno</li><li>dos</li></ul>\n<table><thead><tr><th>A</th><th>B</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table>\n<pre><code class="language-py">print("hola")</code></pre>\n<p><a href="https://example.com/docs">Documentación</a> <img src="https://example.com/remote.png" alt="logo" onerror="window.top.pwned = 4"></p>\n<form><input name="q"></form></body></html>\n',
+  ),
+);

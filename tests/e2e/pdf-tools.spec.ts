@@ -437,7 +437,7 @@ test.describe("tool: extract-pdf-images", () => {
     const links = page.locator("main li a[download]");
     await expect(links).toHaveCount(1, { timeout: 45_000 });
     expect(await inspectImage(fileOf(await waitForResult(page, links.nth(0), toolAlert(page))).buf)).toMatchObject({ width: 320, height: 240 });
-    await expect(page.getByText(/has no images to extract/)).toBeVisible();
-    await expect(page.getByText(/damaged/i).first()).toBeVisible();
+    await expect(page.getByText(/has no images to extract/)).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText(/damaged/i).first()).toBeVisible({ timeout: 30_000 });
   });
 });
