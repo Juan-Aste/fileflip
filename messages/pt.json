@@ -785,6 +785,38 @@
         "q4": "Meu arquivo ASS perde os estilos?",
         "a4": "Não. Só os tempos de início e fim de cada linha são reescritos; estilos, posições, efeitos e comentários ficam como estavam."
       }
+    },
+    "delete-pdf-pages": {
+      "title": "Excluir páginas de um PDF",
+      "description": "Remova páginas de um PDF escolhendo-as nas miniaturas ou pelo número, sem enviar o arquivo.",
+      "action": "Excluir páginas",
+      "about": "Excluir páginas de um PDF permite tirar folhas em branco, anexos ou páginas repetidas antes de enviar um documento. Você vê uma miniatura de cada página: toque nas que sobram (ficam marcadas em vermelho) ou digite os números, por exemplo 2, 5-7. O resto do documento continua igual, na mesma ordem e qualidade, porque as páginas são copiadas sem nova compressão.",
+      "faq": {
+        "q1": "Excluir páginas reduz a qualidade?",
+        "a1": "Não. As páginas que ficam são copiadas como estão, com texto selecionável, imagens e links internos.",
+        "q2": "Posso escolher as páginas digitando os números?",
+        "a2": "Sim. Digite intervalos separados por vírgulas, como 1-3, 8 ou 10- (da 10 até o fim). As miniaturas são marcadas automaticamente e, se você tocar numa miniatura, o campo é atualizado.",
+        "q3": "Por que não posso excluir todas as páginas?",
+        "a3": "Um PDF sem páginas não é válido e a maioria dos programas não o abre. Deixe pelo menos uma página.",
+        "q4": "Meu PDF é enviado para a internet?",
+        "a4": "Não. As miniaturas e o novo PDF são gerados no seu navegador; o arquivo não sai do seu dispositivo."
+      }
+    },
+    "extract-pdf-pages": {
+      "title": "Extrair páginas de um PDF",
+      "description": "Escolha páginas nas miniaturas e salve-as num novo PDF, ou cada uma no seu próprio PDF.",
+      "action": "Extrair páginas",
+      "about": "Extrair páginas de um PDF cria um documento novo só com as páginas que você escolhe: um comprovante dentro de um arquivo longo, o capítulo de um livro ou as folhas que precisam ser assinadas. Toque nas miniaturas (ficam com um visto) ou digite os números e escolha um só PDF ou um PDF por página dentro de um ZIP. As páginas mantêm a ordem original e são copiadas sem perder qualidade.",
+      "faq": {
+        "q1": "Em que ordem ficam as páginas extraídas?",
+        "a1": "Na mesma ordem do documento original. Se precisar de outra ordem, use depois Organizar PDF.",
+        "q2": "Qual a diferença para Dividir PDF?",
+        "a2": "Dividir PDF separa o documento inteiro em intervalos. Aqui você escolhe visualmente só as páginas que interessam, uma a uma.",
+        "q3": "Posso tirar cada página num arquivo separado?",
+        "a3": "Sim. Escolha «Um PDF por página (ZIP)» e você baixa um ZIP com um PDF para cada página selecionada, com o número da página no nome.",
+        "q4": "O PDF original muda?",
+        "a4": "Não. Um arquivo novo é criado no seu navegador e o original continua igual no seu dispositivo."
+      }
     }
   },
   "ToolUi": {
@@ -842,7 +874,17 @@
     "copy": "Copiar",
     "copied": "Copiado",
     "previewTruncated": "A pré-visualização mostra só o começo; o arquivo baixado tem tudo.",
-    "errorAt": "(linha {line}, coluna {column})"
+    "errorAt": "(linha {line}, coluna {column})",
+    "pickDeleteHint": "Toque nas páginas que quer excluir ou digite os números.",
+    "pickExtractHint": "Toque nas páginas que quer extrair ou digite os números.",
+    "selectAll": "Selecionar todas",
+    "selectNone": "Limpar seleção",
+    "pagesToDelete": "{count, plural, =0 {Nenhuma página selecionada.} one {# página de {total} será excluída.} other {# páginas de {total} serão excluídas.}}",
+    "pagesToExtract": "{count, plural, =0 {Nenhuma página selecionada.} one {# página de {total} será extraída.} other {# páginas de {total} serão extraídas.}}",
+    "cannotDeleteAll": "Não é possível excluir todas as páginas: deixe pelo menos uma.",
+    "extractOutput": "Resultado",
+    "extractSingle": "Um só PDF com essas páginas",
+    "extractEach": "Um PDF por página (ZIP)"
   },
   "DataTools": {
     "delimiter": "Separador",

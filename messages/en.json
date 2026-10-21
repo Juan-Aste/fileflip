@@ -785,6 +785,38 @@
         "q4": "Will my ASS file lose its styles?",
         "a4": "No. Only each line's start and end times are rewritten; styles, positions, effects and comments stay as they were."
       }
+    },
+    "delete-pdf-pages": {
+      "title": "Delete pages from a PDF",
+      "description": "Remove unwanted pages from a PDF by picking them on thumbnails or by number, without uploading the file.",
+      "action": "Delete pages",
+      "about": "Delete PDF pages lets you remove blank sheets, appendices or duplicate pages before sending a document. You see a thumbnail of every page: tap the ones you don't need (they turn red) or type their numbers, such as 2, 5-7. The rest of the document stays the same, in the same order and quality, because pages are copied without being recompressed.",
+      "faq": {
+        "q1": "Does deleting pages reduce quality?",
+        "a1": "No. The remaining pages are copied as they are, with selectable text, images and internal page links.",
+        "q2": "Can I pick pages by typing their numbers?",
+        "a2": "Yes. Type comma-separated ranges such as 1-3, 8 or 10- (page 10 to the end). Thumbnails are marked automatically, and tapping a thumbnail updates the field.",
+        "q3": "Why can't I delete every page?",
+        "a3": "A PDF with no pages is not valid and most apps won't open it. Keep at least one page.",
+        "q4": "Is my PDF uploaded?",
+        "a4": "No. Thumbnails and the new PDF are made in your browser; the file never leaves your device."
+      }
+    },
+    "extract-pdf-pages": {
+      "title": "Extract pages from a PDF",
+      "description": "Pick pages on thumbnails and save them as a new PDF, or each one as its own PDF.",
+      "action": "Extract pages",
+      "about": "Extract PDF pages creates a new document with only the pages you choose: a certificate from a long file, a chapter of a book or the sheets that need signing. Tap the thumbnails (they get a check mark) or type the numbers, then choose one PDF or one PDF per page in a ZIP. Pages keep the original order and are copied without losing quality.",
+      "faq": {
+        "q1": "In what order are the extracted pages?",
+        "a1": "In the same order as in the original document. If you need another order, use Organize PDF afterwards.",
+        "q2": "How is this different from Split PDF?",
+        "a2": "Split PDF cuts the whole document into ranges. Here you visually pick only the pages you care about, one by one.",
+        "q3": "Can I get every page as a separate file?",
+        "a3": "Yes. Choose \"One PDF per page (ZIP)\" to download a ZIP with one PDF for each selected page, named with its page number.",
+        "q4": "Is the original PDF changed?",
+        "a4": "No. A new file is created in your browser and the original stays the same on your device."
+      }
     }
   },
   "ToolUi": {
@@ -842,7 +874,17 @@
     "copy": "Copy",
     "copied": "Copied",
     "previewTruncated": "The preview only shows the beginning; the downloaded file has everything.",
-    "errorAt": "(line {line}, column {column})"
+    "errorAt": "(line {line}, column {column})",
+    "pickDeleteHint": "Tap the pages you want to delete, or type their numbers.",
+    "pickExtractHint": "Tap the pages you want to extract, or type their numbers.",
+    "selectAll": "Select all",
+    "selectNone": "Clear selection",
+    "pagesToDelete": "{count, plural, =0 {No pages selected.} one {# page of {total} will be deleted.} other {# pages of {total} will be deleted.}}",
+    "pagesToExtract": "{count, plural, =0 {No pages selected.} one {# page of {total} will be extracted.} other {# pages of {total} will be extracted.}}",
+    "cannotDeleteAll": "You can't delete every page: keep at least one.",
+    "extractOutput": "Result",
+    "extractSingle": "One PDF with those pages",
+    "extractEach": "One PDF per page (ZIP)"
   },
   "DataTools": {
     "delimiter": "Delimiter",

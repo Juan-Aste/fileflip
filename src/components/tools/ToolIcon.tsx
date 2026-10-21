@@ -1,5 +1,7 @@
 import {
   Binary,
+  FileMinus,
+  FileOutput,
   Captions,
   TimerReset,
   Braces,
@@ -78,6 +80,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "add-text-to-image": Type,
   "favicon-generator": AppWindow,
   "svg-converter": PenTool,
+  "delete-pdf-pages": FileMinus,
+  "extract-pdf-pages": FileOutput,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

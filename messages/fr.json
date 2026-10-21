@@ -785,6 +785,38 @@
         "q4": "Mon fichier ASS perd-il ses styles ?",
         "a4": "Non. Seuls les temps de début et de fin de chaque ligne sont réécrits ; styles, positions, effets et commentaires restent tels quels."
       }
+    },
+    "delete-pdf-pages": {
+      "title": "Supprimer des pages d’un PDF",
+      "description": "Retirez les pages inutiles d’un PDF en les choisissant sur les miniatures ou par numéro, sans envoyer le fichier.",
+      "action": "Supprimer les pages",
+      "about": "Supprimer des pages d’un PDF permet d’enlever des pages blanches, des annexes ou des doublons avant d’envoyer un document. Une miniature de chaque page s’affiche : touchez celles en trop (elles passent en rouge) ou tapez leurs numéros, par exemple 2, 5-7. Le reste du document ne change pas, ni l’ordre ni la qualité, car les pages sont copiées sans être recompressées.",
+      "faq": {
+        "q1": "La suppression de pages réduit-elle la qualité ?",
+        "a1": "Non. Les pages restantes sont copiées telles quelles, avec leur texte sélectionnable, leurs images et leurs liens internes.",
+        "q2": "Puis-je choisir les pages en tapant leurs numéros ?",
+        "a2": "Oui. Tapez des plages séparées par des virgules, comme 1-3, 8 ou 10- (de la page 10 à la fin). Les miniatures se cochent toutes seules, et toucher une miniature met le champ à jour.",
+        "q3": "Pourquoi ne puis-je pas supprimer toutes les pages ?",
+        "a3": "Un PDF sans page n’est pas valide et la plupart des logiciels ne l’ouvrent pas. Gardez au moins une page.",
+        "q4": "Mon PDF est-il envoyé sur internet ?",
+        "a4": "Non. Les miniatures et le nouveau PDF sont créés dans votre navigateur ; le fichier ne quitte pas votre appareil."
+      }
+    },
+    "extract-pdf-pages": {
+      "title": "Extraire des pages d’un PDF",
+      "description": "Choisissez des pages sur les miniatures et enregistrez-les dans un nouveau PDF, ou chacune dans son propre PDF.",
+      "action": "Extraire les pages",
+      "about": "Extraire des pages d’un PDF crée un nouveau document avec uniquement les pages choisies : une attestation dans un long dossier, un chapitre de livre ou les pages à signer. Touchez les miniatures (elles sont cochées) ou tapez les numéros, puis choisissez un seul PDF ou un PDF par page dans un ZIP. Les pages gardent l’ordre d’origine et sont copiées sans perte de qualité.",
+      "faq": {
+        "q1": "Dans quel ordre sont les pages extraites ?",
+        "a1": "Dans le même ordre que dans le document d’origine. Pour un autre ordre, utilisez ensuite Organiser un PDF.",
+        "q2": "Quelle différence avec Diviser un PDF ?",
+        "a2": "Diviser un PDF découpe tout le document en plages. Ici, vous choisissez visuellement uniquement les pages qui vous intéressent, une par une.",
+        "q3": "Puis-je obtenir chaque page dans un fichier séparé ?",
+        "a3": "Oui. Choisissez « Un PDF par page (ZIP) » pour télécharger un ZIP contenant un PDF par page sélectionnée, avec le numéro de page dans le nom.",
+        "q4": "Le PDF d’origine est-il modifié ?",
+        "a4": "Non. Un nouveau fichier est créé dans votre navigateur et l’original reste intact sur votre appareil."
+      }
     }
   },
   "ToolUi": {
@@ -842,7 +874,17 @@
     "copy": "Copier",
     "copied": "Copié",
     "previewTruncated": "L'aperçu ne montre que le début ; le fichier téléchargé contient tout.",
-    "errorAt": "(ligne {line}, colonne {column})"
+    "errorAt": "(ligne {line}, colonne {column})",
+    "pickDeleteHint": "Touchez les pages à supprimer ou tapez leurs numéros.",
+    "pickExtractHint": "Touchez les pages à extraire ou tapez leurs numéros.",
+    "selectAll": "Tout sélectionner",
+    "selectNone": "Effacer la sélection",
+    "pagesToDelete": "{count, plural, =0 {Aucune page sélectionnée.} one {# page sur {total} sera supprimée.} other {# pages sur {total} seront supprimées.}}",
+    "pagesToExtract": "{count, plural, =0 {Aucune page sélectionnée.} one {# page sur {total} sera extraite.} other {# pages sur {total} seront extraites.}}",
+    "cannotDeleteAll": "Impossible de supprimer toutes les pages : gardez-en au moins une.",
+    "extractOutput": "Résultat",
+    "extractSingle": "Un seul PDF avec ces pages",
+    "extractEach": "Un PDF par page (ZIP)"
   },
   "DataTools": {
     "delimiter": "Séparateur",

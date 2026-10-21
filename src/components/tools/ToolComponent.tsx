@@ -43,6 +43,8 @@ const components: Record<ToolId, React.ComponentType> = {
   "add-text-to-image": dynamic(() => import("./image/OverlayImageTool").then((m) => m.AddTextToImageTool)),
   "favicon-generator": dynamic(() => import("./image/FaviconTool")),
   "svg-converter": dynamic(() => import("./image/SvgConverterTool")),
+  "delete-pdf-pages": dynamic(() => import("./PageSelectPdfTool").then((m) => m.DeletePdfPagesTool)),
+  "extract-pdf-pages": dynamic(() => import("./PageSelectPdfTool").then((m) => m.ExtractPdfPagesTool)),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),
   "remove-exif": dynamic(() => import("./image/RemoveMetadataTool")),

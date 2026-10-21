@@ -237,7 +237,7 @@ Subtítulos
 - [x] 3C.17 SRT ↔ VTT ↔ ASS/SSA, desplazar tiempos y ajustar FPS (detección de codificación; aviso de estilos que se pierden)
 
 PDF
-- [ ] 3C.18 Eliminar páginas y extraer páginas (con miniaturas)
+- [x] 3C.18 Eliminar páginas y extraer páginas (con miniaturas)
 - [ ] 3C.19 Numerar páginas y marca de agua de texto (posición, tamaño, opacidad; páginas rotadas)
 - [ ] 3C.20 PDF → texto (pdf.js; aviso si no tiene texto: sugerir OCR) y recortar márgenes (CropBox)
 - [ ] 3C.21 Firmar PDF dibujando la firma o subiendo una foto (aclarando que no es firma digital certificada)

@@ -1771,3 +1771,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (719), build, `check:static` (757 páginas) y `npm run test:e2e` (202/202) pasan.
 
 **Siguiente**: 3C.18 (eliminar y extraer páginas de PDF con miniaturas).
+
+## 2026-10-21 18:55 UTC — Fase 3, tarea 3C.18 (eliminar y extraer páginas de PDF)
+
+**Qué se hizo**
+- **Eliminar páginas de un PDF** (`/es/eliminar-paginas-pdf`, `/en/delete-pdf-pages`, `/pt/excluir-paginas-pdf`, `/fr/supprimer-pages-pdf`) y **Extraer páginas de un PDF** (`/es/extraer-paginas-pdf`, `/en/extract-pdf-pages`, `/pt/extrair-paginas-pdf`, `/fr/extraire-pages-pdf`), con un componente compartido `PageSelectPdfTool.tsx`.
+- Miniaturas de todas las páginas (`usePdfThumbnails`, pdf.js) como **botones conmutables** (`aria-pressed`, nombre "Página N", foco visible): en rojo con ✕ para eliminar, con ✓ para extraer. El campo **Páginas** está sincronizado en los dos sentidos: escribir `1-3, 5` o `8-` marca las miniaturas y tocar una miniatura reescribe el campo normalizado (`formatPageRanges` nuevo en `ranges.ts`). "Seleccionar todas" / "Quitar la selección" y un resumen en vivo (`role=status`: "Se eliminará 1 página de 3.").
+- Eliminar: no deja eliminar todas las páginas (aviso + botón deshabilitado); usa `organizePdfFile` con las páginas que quedan (se copian sin recomprimir). Extraer: un solo PDF (`documento-1_3.pdf`) o un PDF por página en ZIP (`documento-pages.zip` con `documento-2.pdf`…), en el orden original, con `splitPdfFile`.
+- Textos (introducción + 4 preguntas) en los 5 idiomas; textos de interfaz nuevos en `ToolUi`.
+
+**Verificación**
+- 2 tests unitarios de `formatPageRanges` (incluye ida y vuelta con `parsePageRanges`).
+- `pdf-tools.spec.ts`: 4 casos nuevos con la salida leída por pdf-lib + pdf.js (etiquetas "page N of M"): eliminar la página 2 tocando la miniatura; `1-` marca las 3 y bloquea, luego se desmarca la 1 y queda solo la página 1; extraer `3, 1` → páginas 1 y 3 en orden; extraer 3 y 2 por página → ZIP con dos PDF. Más 2 casos de PDF corruptos (error visible). 26/26.
+- Lint, typecheck, tests (723), build y `check:static` (767 páginas) pasan. Captura revisada: `/es/eliminar-paginas-pdf` 360 px oscuro con la página 2 marcada.
+
+**Siguiente**: 3C.19 (numerar páginas y marca de agua de texto en PDF).

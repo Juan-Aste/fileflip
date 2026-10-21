@@ -1,4 +1,4 @@
-// The six PDF tools, run like a user would on /es, with their output checked
+// The PDF page tools, run like a user would on /es, with their output checked
 // by pdf-lib and pdf.js. The fixtures' pages say "page N of M", which shows
 // the final order. Corrupt inputs must end in a visible error.
 import { statSync } from "node:fs";
@@ -97,6 +97,61 @@ test.describe("tool: organize-pdf", () => {
   });
 });
 
+const thumb = (page: Page, n: number) => page.getByRole("button", { name: `Página ${n}`, exact: true });
+
+test.describe("tool: delete-pdf-pages", () => {
+  test("deletes the page picked on its thumbnail", async ({ page }) => {
+    await openWithFiles(page, "/es/eliminar-paginas-pdf", ["document.pdf"]);
+    await thumb(page, 2).click();
+    await expect(thumb(page, 2)).toHaveAttribute("aria-pressed", "true");
+    await expect(pagesBox(page)).toHaveValue("2");
+    await expect(page.getByText("Se eliminará 1 página de 3.")).toBeVisible();
+    const out = fileOf(await runTool(page, "Eliminar páginas"));
+    expect(out.name).toBe("document-edited.pdf");
+    const pdf = await inspectPdf(out.buf);
+    expect(pdf.labels).toEqual(["1 of 3", "3 of 3"]);
+  });
+
+  test("typed ranges mark the thumbnails, and deleting every page is refused", async ({ page }) => {
+    await openWithFiles(page, "/es/eliminar-paginas-pdf", ["document.pdf"]);
+    await pagesBox(page).fill("1-");
+    for (const n of [1, 2, 3]) await expect(thumb(page, n)).toHaveAttribute("aria-pressed", "true");
+    await expect(toolAlert(page)).toContainText("No se pueden eliminar todas las páginas");
+    await expect(page.getByRole("button", { name: "Eliminar páginas", exact: true })).toBeDisabled();
+    await thumb(page, 1).click();
+    await expect(pagesBox(page)).toHaveValue("2-3");
+    expect((await pdfOf(page, "Eliminar páginas")).labels).toEqual(["1 of 3"]);
+  });
+});
+
+test.describe("tool: extract-pdf-pages", () => {
+  test("extracts typed pages into one PDF in the original order", async ({ page }) => {
+    await openWithFiles(page, "/es/extraer-paginas-pdf", ["document.pdf"]);
+    const action = page.getByRole("button", { name: "Extraer páginas", exact: true });
+    await expect(thumb(page, 1)).toBeVisible();
+    await expect(action).toBeDisabled();
+    await pagesBox(page).fill("3, 1");
+    await expect(thumb(page, 1)).toHaveAttribute("aria-pressed", "true");
+    await expect(thumb(page, 2)).toHaveAttribute("aria-pressed", "false");
+    const out = fileOf(await runTool(page, "Extraer páginas"));
+    expect(out.name).toBe("document-1_3.pdf");
+    expect((await inspectPdf(out.buf)).labels).toEqual(["1 of 3", "3 of 3"]);
+  });
+
+  test("one PDF per picked page (ZIP)", async ({ page }) => {
+    await openWithFiles(page, "/en/extract-pdf-pages", ["document.pdf"]);
+    await page.getByRole("button", { name: "Page 3", exact: true }).click();
+    await page.getByRole("button", { name: "Page 2", exact: true }).click();
+    await choose(page, "One PDF per page (ZIP)");
+    const out = fileOf(await runTool(page, "Extract pages"));
+    expect(out.name).toBe("document-pages.zip");
+    const entries = unzipEntries(out.buf);
+    expect(entries.map((e) => e.name)).toEqual(["document-2.pdf", "document-3.pdf"]);
+    const parts = await Promise.all(entries.map((e) => inspectPdf(e.data)));
+    expect(parts.map((p) => p.labels)).toEqual([["2 of 3"], ["3 of 3"]]);
+  });
+});
+
 test.describe("tool: images-to-pdf", () => {
   test("JPG + PNG + HEIC on landscape A4 (default)", async ({ page }) => {
     await openWithFiles(page, "/es/imagenes-a-pdf", ["image.jpg", "image.png", "photo.heic"]);
@@ -139,6 +194,8 @@ test.describe("corrupt inputs end in a visible error", () => {
     ["/es/dividir-pdf", ["corrupt/garbage.pdf"], "Dividir PDF"],
     ["/es/rotar-pdf", ["corrupt/truncated.pdf"], "Rotar PDF"],
     ["/es/ordenar-pdf", ["corrupt/garbage.pdf"], "Guardar PDF"],
+    ["/es/eliminar-paginas-pdf", ["corrupt/garbage.pdf"], "Eliminar páginas"],
+    ["/es/extraer-paginas-pdf", ["corrupt/truncated.pdf"], "Extraer páginas"],
     ["/es/comprimir-pdf", ["corrupt/truncated.pdf"], "Comprimir PDF"],
     ["/es/imagenes-a-pdf", ["image.png", "corrupt/truncated.png"], "Crear PDF"],
   ];
