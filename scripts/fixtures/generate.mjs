@@ -129,6 +129,17 @@ write("document-images.pdf", await textPdf(2, { image: true }));
 // --- Plain text formats
 write("text.txt", Buffer.from("Fileflect sample text.\nSegunda línea con acentos: áéíóú ñ ç ü.\n中文示例\n", "utf8"));
 write("table.csv", Buffer.from("name,qty,price\nalpha,1,9.50\n\"beta, with comma\",2,3.25\ngamma,3,0\n", "utf8"));
+// --- Data formats (JSON, CSV variants)
+const records = [
+  { id: 1, name: "Ana Pérez", active: true, score: 9.5, address: { city: "Lima", zip: "007" }, tags: ["a", "b"] },
+  { id: 2, name: "Zoë \"Z\", Jr.", active: false, score: null, address: { city: "São Paulo", zip: "01000" }, tags: ["c"] },
+  { id: 3, name: "李雷", active: true, score: 7, address: { city: "北京", zip: "100000" }, tags: [], note: "line 1\nline 2" },
+];
+write("data.json", Buffer.from(JSON.stringify(records, null, 2) + "\n", "utf8"));
+// Excel on Windows in Spanish: semicolons, decimal commas and Windows-1252 accents.
+write("table-excel.csv", Buffer.from("nombre;cantidad;precio\r\nCañón;2;3,25\r\nAçaí;1;9,50\r\n", "latin1"));
+write("table.tsv", Buffer.from("name\tqty\nalpha\t1\nbeta\t2\n", "utf8"));
+
 
 // --- Office documents through LibreOffice
 const fodt = `<?xml version="1.0" encoding="UTF-8"?>
@@ -214,3 +225,5 @@ writeCorrupt("garbage.pdf", Buffer.concat([Buffer.from("%PDF-1.7\n"), Buffer.all
 writeCorrupt("text-as.jpg", Buffer.from("this is plain text, not a JPEG\n"));
 writeCorrupt("random-as.docx", Buffer.from(Array.from({ length: 1024 }, (_, i) => (i * 73 + 41) % 256)));
 writeCorrupt("empty.png", Buffer.alloc(0));
+writeCorrupt("broken.json", Buffer.from('[{"id": 1, "name": "Ana"}, {"id": 2, "name": '));
+writeCorrupt("bad-quotes.csv", Buffer.from('name,note\nAna,"unclosed quote\nBeto,ok\n'));

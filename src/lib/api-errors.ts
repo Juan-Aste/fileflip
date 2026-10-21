@@ -10,6 +10,8 @@ export const apiErrorCodes = [
   "serviceUnavailable",
   "pdfHasNoText",
   "fileDamaged",
+  // Client-side only: a data file (JSON, CSV...) whose content can't be parsed.
+  "invalidData",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -31,6 +33,7 @@ const status: Record<ApiErrorCode, number> = {
   serviceUnavailable: 503,
   pdfHasNoText: 422,
   fileDamaged: 422,
+  invalidData: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

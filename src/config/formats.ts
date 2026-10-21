@@ -24,9 +24,12 @@ export type FormatId =
   | "ods"
   | "odp"
   | "rtf"
-  | "txt";
+  | "txt"
+  | "json"
+  | "tsv";
 
-export type FormatCategory = "image" | "pdf" | "document";
+/** "data" formats are only read and written by the data tools, not the converter. */
+export type FormatCategory = "image" | "pdf" | "document" | "data";
 export type Engine = "browser" | "server";
 
 export interface FormatInfo {
@@ -62,6 +65,8 @@ export const formats: Record<FormatId, FormatInfo> = {
   odp: { id: "odp", label: "ODP", mime: "application/vnd.oasis.opendocument.presentation", extensions: ["odp"], category: "document" },
   rtf: { id: "rtf", label: "RTF", mime: "application/rtf", extensions: ["rtf"], category: "document" },
   txt: { id: "txt", label: "TXT", mime: "text/plain", extensions: ["txt"], category: "document" },
+  json: { id: "json", label: "JSON", mime: "application/json", extensions: ["json"], category: "data" },
+  tsv: { id: "tsv", label: "TSV", mime: "text/tab-separated-values", extensions: ["tsv", "tab"], category: "data" },
 };
 
 /** Raster formats we can encode as output in the browser. */

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { CheckCircle2, Download, FileText, RotateCcw, X } from "lucide-react";
+import { Check, CheckCircle2, Copy, Download, FileText, RotateCcw, X } from "lucide-react";
 import AdSlot from "@/components/ads/AdSlot";
 import Dropzone from "@/components/converter/Dropzone";
 import { useSessionInfo } from "@/components/session/SessionInfo";
@@ -35,6 +35,8 @@ export type ShellInput =
       /** Lower than the plan's limits when the tool needs it (memory, pages...). */
       maxFiles?: number;
       maxFileBytes?: number;
+      /** Also lets the user paste the content instead of picking a file. */
+      paste?: { label: string; placeholder?: string };
     }
   | { kind: "text"; label: string; placeholder?: string; maxLength?: number };
 
@@ -59,6 +61,11 @@ interface Picked {
 }
 
 let nextId = 0;
+
+/** Pasted text up to this length; bigger content goes through a file. */
+const MAX_PASTE_CHARS = 5_000_000;
+/** The in-page preview of a text output stops here (the download has everything). */
+const PREVIEW_CHARS = 100_000;
 
 /**
  * Generic tool UI: file or text input, options, run with progress and
@@ -115,7 +122,8 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
     dispatch({ type: "start" });
     try {
       const outputs = await process(
-        { files: files.map((f) => f.file), text },
+        // A picked file wins over pasted text (the paste box hides once a file is chosen).
+        { files: files.map((f) => f.file), text: files.length > 0 ? "" : text },
         { signal: abort.signal, onProgress: (progress) => dispatch({ type: "progress", progress }) },
       );
       if (abort.signal.aborted) return;
@@ -181,6 +189,9 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
               </li>
             ))}
           </ul>
+          {state.outputs.length === 1 && state.outputs[0]!.kind === "file" && state.outputs[0]!.preview !== undefined && (
+            <TextPreview text={state.outputs[0]!.preview} />
+          )}
           <div className="flex flex-col gap-3 sm:flex-row">
             {downloads.length > 1 && (
               <button
@@ -204,7 +215,8 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
   }
 
   const processing = state.status === "processing";
-  const hasInput = input.kind === "files" ? files.length > 0 : text.trim().length > 0;
+  const hasText = text.trim().length > 0;
+  const hasInput = input.kind === "files" ? files.length > 0 || (!!input.paste && hasText) : hasText;
 
   return (
     <div className="flex flex-col gap-4">
@@ -223,18 +235,16 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
           </p>
         </>
       ) : (
-        <label className="flex flex-col gap-2 text-sm font-semibold">
-          {input.label}
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder={input.placeholder}
-            maxLength={input.maxLength}
-            rows={8}
-            spellCheck={false}
-            className={`${field} py-2 font-mono text-sm font-normal`}
-          />
-        </label>
+        <TextInput label={input.label} placeholder={input.placeholder} maxLength={input.maxLength} value={text} onChange={setText} />
+      )}
+      {input.kind === "files" && input.paste && files.length === 0 && (
+        <TextInput
+          label={input.paste.label}
+          placeholder={input.paste.placeholder}
+          maxLength={MAX_PASTE_CHARS}
+          value={text}
+          onChange={setText}
+        />
       )}
       {rejected.length > 0 && (
         <ToolAlert>
@@ -278,6 +288,77 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function TextInput({
+  label,
+  placeholder,
+  maxLength,
+  value,
+  onChange,
+}: {
+  label: string;
+  placeholder?: string;
+  maxLength?: number;
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="flex flex-col gap-2 text-sm font-semibold">
+      {label}
+      <textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        maxLength={maxLength}
+        rows={8}
+        spellCheck={false}
+        autoCapitalize="off"
+        autoCorrect="off"
+        className={`${field} py-2 font-mono text-sm font-normal`}
+      />
+    </label>
+  );
+}
+
+/** Read-only view of a text result with a copy button. */
+function TextPreview({ text }: { text: string }) {
+  const t = useTranslations("ToolUi");
+  const [copied, setCopied] = useState(false);
+  const shown = text.length > PREVIEW_CHARS ? text.slice(0, PREVIEW_CHARS) : text;
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard blocked (permissions, insecure context): the download still works.
+    }
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between gap-2">
+        <span id="tool-preview" className="text-sm font-semibold">
+          {t("preview")}
+        </span>
+        <button type="button" onClick={copy} className="inline-flex items-center gap-1 rounded-lg px-2 py-1 text-sm font-semibold text-brand hover:bg-brand-soft">
+          {copied ? <Check aria-hidden="true" className="h-4 w-4" /> : <Copy aria-hidden="true" className="h-4 w-4" />}
+          <span aria-live="polite">{copied ? t("copied") : t("copy")}</span>
+        </button>
+      </div>
+      <textarea
+        readOnly
+        aria-labelledby="tool-preview"
+        value={shown}
+        rows={10}
+        spellCheck={false}
+        className={`${field} py-2 font-mono text-sm`}
+      />
+      {shown.length < text.length && <p className="text-sm text-muted">{t("previewTruncated")}</p>}
     </div>
   );
 }

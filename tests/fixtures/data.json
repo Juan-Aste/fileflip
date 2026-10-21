@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "name": "Ana Pérez",
+    "active": true,
+    "score": 9.5,
+    "address": {
+      "city": "Lima",
+      "zip": "007"
+    },
+    "tags": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Zoë \"Z\", Jr.",
+    "active": false,
+    "score": null,
+    "address": {
+      "city": "São Paulo",
+      "zip": "01000"
+    },
+    "tags": [
+      "c"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "李雷",
+    "active": true,
+    "score": 7,
+    "address": {
+      "city": "北京",
+      "zip": "100000"
+    },
+    "tags": [],
+    "note": "line 1\nline 2"
+  }
+]

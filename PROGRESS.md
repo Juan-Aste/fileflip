@@ -1449,3 +1449,25 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - `scripts/perf/lighthouse.sh` mide también esas 3 páginas. Nota: `LIGHTHOUSE` debe ser la ruta a un ejecutable (no `npx …`, el script lo cita como un solo comando).
 
 **Siguiente**: 3C.1 (JSON ↔ CSV/TSV), la primera herramienta sobre `ToolShell`.
+
+## 2026-10-21 02:30 UTC — Fase 3, tarea 3C.1 (JSON ↔ CSV/TSV)
+
+**Qué se hizo**
+- Dos herramientas nuevas en la categoría **Datos** (que ahora se publica: `/es/herramientas-de-datos`): **JSON a CSV** (`/es/json-a-csv`, `/en/json-to-csv`, `/pt/json-para-csv`, `/fr/json-en-csv`) y **CSV a JSON** (`/es/csv-a-json`…). Formatos nuevos en `formats.ts`: `json` y `tsv` (categoría `data`, fuera del conversor).
+- `src/lib/data/csv.ts` (funciones puras, papaparse MIT): objetos anidados → columnas con punto (`address.city`, `tags.0`) y al revés; acepta lista de objetos, un objeto, un objeto que envuelve una sola lista y lista de listas; separador `,` `;` o tab; BOM UTF-8 opcional (por defecto sí, para Excel); detección del separador (`,` `;` tab `|`); comillas y saltos de línea en celdas; encabezados vacíos/repetidos con nombre propio; tipado opcional que solo convierte lo que se relee igual (`007` y enteros de 20 dígitos quedan como texto); protección contra prototype pollution (`__proto__`, `constructor`, `prototype` quedan como claves planas), y topes de 5000 columnas y 32 niveles.
+- `src/lib/data/text.ts`: decodifica UTF-8, UTF-16 con BOM y, si no es UTF-8 válido, **Windows-1252** (CSV de Excel en Windows).
+- Worker propio `src/workers/data.worker.ts` sobre el pool de `@/lib/jobs` (límite de 2 minutos por trabajo); papaparse solo entra en el chunk del worker.
+- `ToolShell`: opción `paste` (pegar el contenido además de elegir archivos; se oculta al elegir uno) y vista previa de salidas de texto (`preview`) con botón **Copiar** (primeros 100 000 caracteres). Componente `Checkbox`. Helper `runTextTool` (una salida por archivo, error por archivo, estadísticas).
+- El pool convierte los errores del worker que son códigos de la API en `ConversionError` (antes llegaban como `Error` genérico) y `trackTool` informa el código real. Código nuevo `invalidData` (5 idiomas).
+- Límite propio por herramienta en el registro (`limits.maxFileBytes`, 50 MB para datos): `ToolShell` y la sección "Límites" de la página muestran el menor entre el plan y la herramienta (nuevo texto `limitProBatch` cuando Pro no amplía el tamaño).
+- Textos de las dos herramientas (introducción + 3 preguntas) y namespace `DataTools` en los 5 idiomas. En los mensajes ICU, las llaves literales se escriben `'{'…'}'`.
+- Fixtures nuevos (en `generate.mjs`): `data.json`, `table-excel.csv` (punto y coma, coma decimal, Windows-1252), `table.tsv`, `corrupt/broken.json`, `corrupt/bad-quotes.csv`.
+
+**Limitaciones conocidas**
+- CSV no tiene tipos: con "convertir valores", un texto numérico como `"100000"` vuelve como número (los que tienen ceros a la izquierda no). Una clave ausente vuelve como `null`; una lista vacía no tiene celda propia y no vuelve.
+- La coma decimal (`3,25`) se deja como texto: no se adivina la configuración regional.
+
+**Verificación**
+- 22 tests unitarios de datos (incluida la ida y vuelta, BOM, Windows-1252, XXE no aplica). `tests/e2e/data-tools.spec.ts`: 7 casos (archivo anidado, pegar → TSV, JSON roto, CSV de Excel, lote TSV+CSV, ida y vuelta, comillas rotas), validados con lectores propios (`readCsv`, `readJson`). Lint, typecheck, tests (519), build, `check:static` (582 páginas) y `npm run test:e2e` (124/124) pasan. Capturas revisadas: `/es/json-a-csv` 1280 claro y `/zh/csv-to-json` 360 oscuro.
+
+**Siguiente**: 3C.2 (JSON ↔ YAML y JSON ↔ TOML).

@@ -210,7 +210,7 @@ Antes de sumar herramientas. Todo lo visible (buscador, categorías, páginas, s
 Por cada herramienta: procesamiento real, interfaz y textos en los 5 idiomas, página con metadatos y FAQ, tests unitarios con archivos válidos y corruptos que validan la salida, prueba de navegador, límites documentados, licencias en `docs/dependencies.md`, estado `verified` solo al final.
 
 Datos y desarrolladores
-- [ ] 3C.1 JSON ↔ CSV y JSON ↔ TSV (papaparse, MIT): aplanado de objetos anidados, delimitador detectado (`,` `;` tab), BOM, comillas y saltos de línea
+- [x] 3C.1 JSON ↔ CSV y JSON ↔ TSV (papaparse, MIT): aplanado de objetos anidados, delimitador detectado (`,` `;` tab), BOM, comillas y saltos de línea
 - [ ] 3C.2 JSON ↔ YAML (js-yaml, límite de alias) y JSON ↔ TOML (smol-toml)
 - [ ] 3C.3 JSON ↔ XML (fast-xml-parser, sin resolver entidades: test de XXE y "billion laughs")
 - [ ] 3C.4 Formateador y validador de JSON, XML y YAML (sangría, minificar, error con línea y columna)

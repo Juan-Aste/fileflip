@@ -1,5 +1,7 @@
 import {
+  Braces,
   FileArchive,
+  Sheet,
   Images,
   Layers,
   LayoutGrid,
@@ -16,6 +18,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "organize-pdf": LayoutGrid,
   "images-to-pdf": Images,
   "compress-pdf": FileArchive,
+  "json-to-csv": Sheet,
+  "csv-to-json": Braces,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

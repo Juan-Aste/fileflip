@@ -192,6 +192,7 @@
     "browserUnsupported": "Tu navegador no puede convertir este archivo. Prueba con una versión reciente de Chrome, Edge, Firefox o Safari.",
     "pdfHasNoText": "Este PDF es una imagen escaneada: no tiene texto que pasar a Word.",
     "fileDamaged": "El archivo está dañado o incompleto. Prueba con otra copia.",
+    "invalidData": "No pudimos leer el contenido. Revisa que el formato sea válido (comillas, comas y llaves).",
     "signInRequired": "Inicia sesión para continuar.",
     "paymentsUnavailable": "Los pagos todavía no están disponibles en tu país. Vuelve pronto.",
     "jobCancelled": "Se canceló el proceso.",
@@ -281,6 +282,34 @@
         "q3": "¿Qué nivel elijo para enviar por correo o WhatsApp?",
         "a3": "La compresión recomendada suele bastar. Si el archivo sigue siendo grande, prueba la fuerte: las fotos pierden algo de detalle pero el documento sigue legible."
       }
+    },
+    "json-to-csv": {
+      "title": "JSON a CSV",
+      "description": "Convierte JSON en una tabla CSV o TSV para abrir en Excel o Google Sheets. Sin subir tus datos.",
+      "action": "Convertir a CSV",
+      "about": "JSON a CSV transforma una lista de objetos JSON en una tabla: cada objeto es una fila y cada clave, una columna. Los objetos anidados se convierten en columnas con punto (por ejemplo, direccion.ciudad) y las listas en columnas numeradas (etiquetas.0, etiquetas.1). Puedes elegir coma, punto y coma o tabulación (TSV), y agregar la marca UTF-8 para que Excel muestre bien los acentos.",
+      "faq": {
+        "q1": "¿Qué JSON acepta?",
+        "a1": "Una lista de objetos, un solo objeto, un objeto que envuelve una única lista (como '{'\"items\": [...]'}') o una lista de listas, que se escribe tal cual como filas. Si el JSON tiene un error de sintaxis verás un aviso.",
+        "q2": "¿Por qué Excel muestra mal los acentos o todo en una columna?",
+        "a2": "Deja marcada la opción compatible con Excel (agrega la marca UTF-8). Si tu Excel usa la coma como separador decimal, como en gran parte de Latinoamérica y Europa, elige punto y coma.",
+        "q3": "¿Mis datos se envían a algún servidor?",
+        "a3": "No. La conversión se hace en tu navegador, en segundo plano, y el archivo nunca sale de tu dispositivo."
+      }
+    },
+    "csv-to-json": {
+      "title": "CSV a JSON",
+      "description": "Convierte CSV o TSV en JSON con detección automática del separador. Sin subir tus datos.",
+      "action": "Convertir a JSON",
+      "about": "CSV a JSON lee una tabla con fila de encabezado y genera una lista de objetos JSON, uno por fila. Detecta solo si el archivo usa coma, punto y coma, tabulación o barra vertical, respeta las comillas y los saltos de línea dentro de las celdas, y lee archivos guardados por Excel en UTF-8 o en Windows-1252. Opcionalmente convierte números y true/false, y reconstruye objetos a partir de columnas con punto.",
+      "faq": {
+        "q1": "¿Cómo se tratan los números?",
+        "a1": "Con la opción de convertir valores, un número se escribe como número solo si vuelve a leerse igual: 007 o un número de 20 dígitos quedan como texto para no perder ceros ni precisión. Las celdas vacías pasan a null.",
+        "q2": "¿Qué pasa con encabezados vacíos o repetidos?",
+        "a2": "Reciben un nombre propio (column3, nombre_2) para que ninguna columna se pierda. Las filas con menos celdas se completan con null.",
+        "q3": "¿Puedo obtener objetos anidados?",
+        "a3": "Sí. Las columnas como direccion.ciudad o etiquetas.0 se convierten en objetos y listas. Si una columna choca con otra, se deja tal cual para no perder datos."
+      }
     }
   },
   "ToolUi": {
@@ -333,7 +362,24 @@
     "alreadyOptimized": "Este PDF ya está optimizado: no pudimos reducirlo más.",
     "cancel": "Cancelar",
     "limitsMultiple": "Hasta {count} archivos de {size} como máximo cada uno.",
-    "limitsSingle": "Un archivo de {size} como máximo."
+    "limitsSingle": "Un archivo de {size} como máximo.",
+    "preview": "Vista previa",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "previewTruncated": "La vista previa muestra solo el comienzo; el archivo descargado tiene todo."
+  },
+  "DataTools": {
+    "delimiter": "Separador",
+    "auto": "Detectar",
+    "comma": "Coma (,)",
+    "semicolon": "Punto y coma (;)",
+    "tab": "Tabulación (TSV)",
+    "flatten": "Convertir objetos anidados en columnas (direccion.ciudad)",
+    "bom": "Compatible con Excel (UTF-8 con marca BOM)",
+    "typed": "Convertir números, true/false y celdas vacías",
+    "nested": "Reconstruir objetos desde columnas con punto",
+    "pasteJson": "O pega tu JSON",
+    "pasteCsv": "O pega tu CSV"
   },
   "Email": {
     "subject": "Tu enlace para entrar a Fileflect",
@@ -612,6 +658,7 @@
     "limitSingle": "Un archivo por vez, de hasta {size}.",
     "limitMultiple": "Hasta {count} archivos por vez, de hasta {size} cada uno.",
     "limitPro": "Con Pro: archivos de hasta {size} y hasta {count} por lote.",
+    "limitProBatch": "Con Pro: hasta {count} archivos por lote.",
     "limitTime": "Si un trabajo tarda más de {minutes} minutos, se detiene para no bloquear tu dispositivo.",
     "limitBrowser": "Se procesa en tu navegador: tus archivos no se suben a ningún servidor.",
     "limitServer": "Se procesa en nuestro servidor por conexión cifrada y el archivo se borra en menos de 1 hora.",

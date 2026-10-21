@@ -12,6 +12,8 @@ const components: Record<ToolId, React.ComponentType> = {
   "organize-pdf": dynamic(() => import("./OrganizePdfTool")),
   "images-to-pdf": dynamic(() => import("./ImagesToPdfTool")),
   "compress-pdf": dynamic(() => import("./CompressPdfTool")),
+  "json-to-csv": dynamic(() => import("./JsonToCsvTool")),
+  "csv-to-json": dynamic(() => import("./CsvToJsonTool")),
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {

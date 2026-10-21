@@ -34,6 +34,8 @@ export const toolIds = [
   "organize-pdf",
   "images-to-pdf",
   "compress-pdf",
+  "json-to-csv",
+  "csv-to-json",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -45,6 +47,8 @@ export interface ToolLimits {
   files: "single" | "multiple";
   /** A job running longer than this is stopped (its worker is terminated). */
   timeoutMs: number;
+  /** Per-file cap below the plan's, when the tool needs it (text parsed whole in memory...). */
+  maxFileBytes?: number;
 }
 
 export interface ToolInfo {
@@ -64,6 +68,8 @@ export interface ToolInfo {
 
 const imageInputs: readonly FormatId[] = ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "ico", "heic", "svg"];
 const MINUTE = 60_000;
+/** Text data is parsed whole: beyond this a tab can run out of memory. */
+const DATA_MAX_BYTES = 50 * 1024 * 1024;
 
 export const tools: Record<ToolId, ToolInfo> = {
   "merge-pdf": {
@@ -131,6 +137,28 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 10 * MINUTE },
     status: "verified",
     slugs: { es: "comprimir-pdf", en: "compress-pdf", pt: "comprimir-pdf", fr: "compresser-pdf", zh: "compress-pdf" },
+  },
+  "json-to-csv": {
+    id: "json-to-csv",
+    category: "data",
+    inputs: ["json"],
+    outputs: ["csv", "tsv"],
+    engine: "browser",
+    libraries: ["papaparse"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "json-a-csv", en: "json-to-csv", pt: "json-para-csv", fr: "json-en-csv", zh: "json-to-csv" },
+  },
+  "csv-to-json": {
+    id: "csv-to-json",
+    category: "data",
+    inputs: ["csv", "tsv"],
+    outputs: ["json"],
+    engine: "browser",
+    libraries: ["papaparse"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: DATA_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "csv-a-json", en: "csv-to-json", pt: "csv-para-json", fr: "csv-en-json", zh: "csv-to-json" },
   },
 };
 

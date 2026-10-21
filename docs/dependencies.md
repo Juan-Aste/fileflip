@@ -27,6 +27,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | pdfjs-dist | 6.4.299 | Apache-2.0 | leer y rasterizar PDF | N + S |
 | fflate | 0.8.3 | MIT | ZIP / DOCX | N + S |
 | docx | 9.12.0 | MIT | PDF → Word | S |
+| papaparse | 5.5.3 | MIT | leer y escribir CSV/TSV (JSON ↔ CSV) | N (worker de datos) |
 | sharp | 0.35.5 | Apache-2.0 | respaldo de imágenes | S |
 | └ @img/sharp-libvips-* | 1.3.4 | LGPL-3.0-or-later | libvips precompilada (biblioteca dinámica, sin modificar) | S |
 
@@ -51,7 +52,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | playwright-core, @playwright/test | 1.56.0 | Apache-2.0 |
 | @next/bundle-analyzer | 15.5.4 | MIT |
 | @formatjs/icu-messageformat-parser | 3.5.21 | MIT |
-| @types/* | — | MIT |
+| @types/* (incluido @types/papaparse) | — | MIT |
 
 ## Candidatas evaluadas para la fase 3 (todavía no instaladas)
 
@@ -59,7 +60,7 @@ Ver `docs/audit.md`. Resumen de licencias (`npm view`, 2026-10-20):
 
 | Paquete | Licencia | Estado |
 |---|---|---|
-| papaparse, fast-xml-parser, js-yaml, hash-wasm, qrcode, marked, turndown, three, dxf-parser, exifr, wawoff2, libarchive.js, onnxruntime-web, exceljs | MIT | aceptable |
+| fast-xml-parser, js-yaml, hash-wasm, qrcode, marked, turndown, three, dxf-parser, exifr, wawoff2, libarchive.js, onnxruntime-web, exceljs | MIT | aceptable |
 | smol-toml, @zip.js/zip.js | BSD-3-Clause | aceptable |
 | epubjs | BSD-2-Clause | aceptable |
 | jsqr, tesseract.js, @mediapipe/tasks-vision, SheetJS CE (tarball oficial 0.20.x) | Apache-2.0 | aceptable |

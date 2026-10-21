@@ -49,7 +49,13 @@ export function checkInputs<F extends { name: string; size: number }>(
 
 /** One output of a run: a file to download, or the error of one input. */
 export type ShellOutput =
-  | { kind: "file"; name: string; blob: Blob }
+  | {
+      kind: "file";
+      name: string;
+      blob: Blob;
+      /** Text outputs shown in the page (with a copy button) besides the download. */
+      preview?: string;
+    }
   | { kind: "error"; name: string; code: ApiErrorCode };
 
 export type ShellState =

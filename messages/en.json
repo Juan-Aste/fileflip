@@ -192,6 +192,7 @@
     "browserUnsupported": "Your browser can't convert this file. Try a recent version of Chrome, Edge, Firefox or Safari.",
     "pdfHasNoText": "This PDF is a scanned image: it has no text to put into Word.",
     "fileDamaged": "This file is damaged or incomplete. Try another copy.",
+    "invalidData": "We couldn't read the content. Check that the format is valid (quotes, commas and brackets).",
     "signInRequired": "Please sign in to continue.",
     "paymentsUnavailable": "Payments aren't available in your country yet. Check back soon.",
     "jobCancelled": "The task was cancelled.",
@@ -281,6 +282,34 @@
         "q3": "Which level should I pick for email or WhatsApp?",
         "a3": "Recommended is usually enough. If the file is still large, try strong: photos lose some detail but the document stays readable."
       }
+    },
+    "json-to-csv": {
+      "title": "JSON to CSV",
+      "description": "Convert JSON into a CSV or TSV table for Excel or Google Sheets. Your data is never uploaded.",
+      "action": "Convert to CSV",
+      "about": "JSON to CSV turns a list of JSON objects into a table: each object becomes a row and each key a column. Nested objects become dotted columns (for example address.city) and lists become numbered columns (tags.0, tags.1). Choose comma, semicolon or tab (TSV), and add the UTF-8 mark so Excel shows accented characters correctly.",
+      "faq": {
+        "q1": "Which JSON does it accept?",
+        "a1": "A list of objects, a single object, an object wrapping a single list (like '{'\"items\": [...]'}') or a list of lists, which is written as rows as is. If the JSON has a syntax error you will see a warning.",
+        "q2": "Why does Excel show broken accents or everything in one column?",
+        "a2": "Keep the Excel-compatible option checked (it adds the UTF-8 mark). If your Excel uses a comma as the decimal separator, as in much of Europe and Latin America, choose semicolon.",
+        "q3": "Is my data sent to a server?",
+        "a3": "No. The conversion runs in your browser, in the background, and the file never leaves your device."
+      }
+    },
+    "csv-to-json": {
+      "title": "CSV to JSON",
+      "description": "Convert CSV or TSV into JSON with automatic delimiter detection. Your data is never uploaded.",
+      "action": "Convert to JSON",
+      "about": "CSV to JSON reads a table with a header row and produces a list of JSON objects, one per row. It detects whether the file uses commas, semicolons, tabs or pipes, keeps quotes and line breaks inside cells, and reads files saved by Excel in UTF-8 or Windows-1252. Optionally it converts numbers and true/false, and rebuilds objects from dotted columns.",
+      "faq": {
+        "q1": "How are numbers handled?",
+        "a1": "With value conversion on, a number is written as a number only if it reads back the same: 007 or a 20-digit number stay as text so no zeros or precision are lost. Empty cells become null.",
+        "q2": "What about empty or repeated headers?",
+        "a2": "They get a name of their own (column3, name_2) so no column is lost. Rows with fewer cells are filled with null.",
+        "q3": "Can I get nested objects?",
+        "a3": "Yes. Columns like address.city or tags.0 become objects and lists. If a column clashes with another one, it is kept as is so no data is lost."
+      }
     }
   },
   "ToolUi": {
@@ -333,7 +362,24 @@
     "alreadyOptimized": "This PDF is already optimized: we couldn't make it smaller.",
     "cancel": "Cancel",
     "limitsMultiple": "Up to {count} files, {size} max each.",
-    "limitsSingle": "One file, {size} max."
+    "limitsSingle": "One file, {size} max.",
+    "preview": "Preview",
+    "copy": "Copy",
+    "copied": "Copied",
+    "previewTruncated": "The preview only shows the beginning; the downloaded file has everything."
+  },
+  "DataTools": {
+    "delimiter": "Delimiter",
+    "auto": "Detect",
+    "comma": "Comma (,)",
+    "semicolon": "Semicolon (;)",
+    "tab": "Tab (TSV)",
+    "flatten": "Turn nested objects into columns (address.city)",
+    "bom": "Excel compatible (UTF-8 with BOM)",
+    "typed": "Convert numbers, true/false and empty cells",
+    "nested": "Rebuild objects from dotted columns",
+    "pasteJson": "Or paste your JSON",
+    "pasteCsv": "Or paste your CSV"
   },
   "Email": {
     "subject": "Your Fileflect sign-in link",
@@ -612,6 +658,7 @@
     "limitSingle": "One file at a time, up to {size}.",
     "limitMultiple": "Up to {count} files at a time, up to {size} each.",
     "limitPro": "With Pro: files up to {size} and up to {count} per batch.",
+    "limitProBatch": "With Pro: up to {count} files per batch.",
     "limitTime": "A job that takes longer than {minutes} minutes is stopped so it doesn't freeze your device.",
     "limitBrowser": "Processed in your browser: your files are never uploaded to a server.",
     "limitServer": "Processed on our server over an encrypted connection; the file is deleted within 1 hour.",

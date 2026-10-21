@@ -192,6 +192,7 @@
     "browserUnsupported": "Seu navegador não consegue converter este arquivo. Tente uma versão recente do Chrome, Edge, Firefox ou Safari.",
     "pdfHasNoText": "Este PDF é uma imagem digitalizada: não tem texto para passar para o Word.",
     "fileDamaged": "O arquivo está danificado ou incompleto. Tente com outra cópia.",
+    "invalidData": "Não conseguimos ler o conteúdo. Verifique se o formato é válido (aspas, vírgulas e chaves).",
     "signInRequired": "Entre na sua conta para continuar.",
     "paymentsUnavailable": "Os pagamentos ainda não estão disponíveis no seu país. Volte em breve.",
     "jobCancelled": "O processo foi cancelado.",
@@ -281,6 +282,34 @@
         "q3": "Qual nível escolher para enviar por e-mail ou WhatsApp?",
         "a3": "A compressão recomendada costuma bastar. Se o arquivo continuar grande, tente a forte: as fotos perdem algum detalhe, mas o documento continua legível."
       }
+    },
+    "json-to-csv": {
+      "title": "JSON para CSV",
+      "description": "Converta JSON em uma tabela CSV ou TSV para abrir no Excel ou no Google Sheets. Sem enviar seus dados.",
+      "action": "Converter para CSV",
+      "about": "JSON para CSV transforma uma lista de objetos JSON em uma tabela: cada objeto vira uma linha e cada chave, uma coluna. Objetos aninhados viram colunas com ponto (por exemplo, endereco.cidade) e listas viram colunas numeradas (tags.0, tags.1). Escolha vírgula, ponto e vírgula ou tabulação (TSV) e adicione a marca UTF-8 para que o Excel mostre os acentos corretamente.",
+      "faq": {
+        "q1": "Que JSON é aceito?",
+        "a1": "Uma lista de objetos, um único objeto, um objeto que envolve uma única lista (como '{'\"items\": [...]'}') ou uma lista de listas, que é escrita como linhas do jeito que está. Se o JSON tiver um erro de sintaxe, você verá um aviso.",
+        "q2": "Por que o Excel mostra os acentos errados ou tudo em uma coluna?",
+        "a2": "Deixe marcada a opção compatível com o Excel (ela adiciona a marca UTF-8). Se o seu Excel usa vírgula como separador decimal, como no Brasil, escolha ponto e vírgula.",
+        "q3": "Meus dados são enviados para algum servidor?",
+        "a3": "Não. A conversão é feita no seu navegador, em segundo plano, e o arquivo nunca sai do seu dispositivo."
+      }
+    },
+    "csv-to-json": {
+      "title": "CSV para JSON",
+      "description": "Converta CSV ou TSV em JSON com detecção automática do separador. Sem enviar seus dados.",
+      "action": "Converter para JSON",
+      "about": "CSV para JSON lê uma tabela com linha de cabeçalho e gera uma lista de objetos JSON, um por linha. Detecta sozinho se o arquivo usa vírgula, ponto e vírgula, tabulação ou barra vertical, respeita aspas e quebras de linha dentro das células e lê arquivos salvos pelo Excel em UTF-8 ou Windows-1252. Opcionalmente converte números e true/false e reconstrói objetos a partir de colunas com ponto.",
+      "faq": {
+        "q1": "Como os números são tratados?",
+        "a1": "Com a conversão de valores ativada, um número é escrito como número só se puder ser lido de volta igual: 007 ou um número de 20 dígitos ficam como texto para não perder zeros nem precisão. Células vazias viram null.",
+        "q2": "E os cabeçalhos vazios ou repetidos?",
+        "a2": "Recebem um nome próprio (column3, nome_2) para que nenhuma coluna se perca. Linhas com menos células são completadas com null.",
+        "q3": "Posso obter objetos aninhados?",
+        "a3": "Sim. Colunas como endereco.cidade ou tags.0 viram objetos e listas. Se uma coluna conflitar com outra, ela fica como está para não perder dados."
+      }
     }
   },
   "ToolUi": {
@@ -333,7 +362,24 @@
     "alreadyOptimized": "Este PDF já está otimizado: não conseguimos reduzi-lo mais.",
     "cancel": "Cancelar",
     "limitsMultiple": "Até {count} arquivos de no máximo {size} cada.",
-    "limitsSingle": "Um arquivo de no máximo {size}."
+    "limitsSingle": "Um arquivo de no máximo {size}.",
+    "preview": "Pré-visualização",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "previewTruncated": "A pré-visualização mostra só o começo; o arquivo baixado tem tudo."
+  },
+  "DataTools": {
+    "delimiter": "Separador",
+    "auto": "Detectar",
+    "comma": "Vírgula (,)",
+    "semicolon": "Ponto e vírgula (;)",
+    "tab": "Tabulação (TSV)",
+    "flatten": "Transformar objetos aninhados em colunas (endereco.cidade)",
+    "bom": "Compatível com o Excel (UTF-8 com BOM)",
+    "typed": "Converter números, true/false e células vazias",
+    "nested": "Reconstruir objetos a partir de colunas com ponto",
+    "pasteJson": "Ou cole seu JSON",
+    "pasteCsv": "Ou cole seu CSV"
   },
   "Email": {
     "subject": "Seu link para entrar no Fileflect",
@@ -612,6 +658,7 @@
     "limitSingle": "Um arquivo por vez, de até {size}.",
     "limitMultiple": "Até {count} arquivos por vez, de até {size} cada.",
     "limitPro": "Com o Pro: arquivos de até {size} e até {count} por lote.",
+    "limitProBatch": "Com o Pro: até {count} arquivos por lote.",
     "limitTime": "Se um trabalho demorar mais de {minutes} minutos, ele é interrompido para não travar seu dispositivo.",
     "limitBrowser": "Processado no seu navegador: seus arquivos nunca são enviados a um servidor.",
     "limitServer": "Processado no nosso servidor por conexão criptografada; o arquivo é apagado em menos de 1 hora.",

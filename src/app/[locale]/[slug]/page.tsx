@@ -201,11 +201,15 @@ async function ToolView({ tool }: { tool: ToolInfo }) {
     .map((n) => ({ q: t(`faq.q${n}`), a: t(`faq.a${n}`) }));
   const related = relatedTools(tool.id);
   const size = (bytes: number) => formatBytes(bytes, locale);
+  // The same caps ToolShell enforces: the plan's, or the tool's own when lower.
+  const fileCap = (plan: keyof typeof limits) => Math.min(tool.limits.maxFileBytes ?? Infinity, limits[plan].browserMaxFileBytes);
   const limitItems = [
     tool.limits.files === "single"
-      ? tp("limitSingle", { size: size(limits.free.browserMaxFileBytes) })
-      : tp("limitMultiple", { count: limits.free.browserMaxBatch, size: size(limits.free.browserMaxFileBytes) }),
-    tp("limitPro", { size: size(limits.pro.browserMaxFileBytes), count: limits.pro.browserMaxBatch }),
+      ? tp("limitSingle", { size: size(fileCap("free")) })
+      : tp("limitMultiple", { count: limits.free.browserMaxBatch, size: size(fileCap("free")) }),
+    fileCap("pro") > fileCap("free")
+      ? tp("limitPro", { size: size(fileCap("pro")), count: limits.pro.browserMaxBatch })
+      : tp("limitProBatch", { count: limits.pro.browserMaxBatch }),
     tp("limitTime", { minutes: Math.round(tool.limits.timeoutMs / 60_000) }),
     tool.engine === "browser" ? tp("limitBrowser") : tp("limitServer"),
   ];

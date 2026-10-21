@@ -13,6 +13,8 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `photo.heic` | HEIC de 120×80 hecho con pillow-heif (fase 1; sharp no codifica HEIC) |
 | `document.pdf`, `document-1page.pdf`, `document-images.pdf` | pdf-lib: 3 páginas de texto, 1 página, y 2 páginas con una foto JPG de 640×480 (para comprimir) |
 | `text.txt`, `table.csv` | UTF-8 con acentos y chino / CSV con una coma entre comillas |
+| `data.json` | 3 registros con objetos y listas anidados, comillas, `null`, salto de línea, chino y un código postal "007" |
+| `table-excel.csv`, `table.tsv` | CSV como lo guarda Excel en español (punto y coma, coma decimal, Windows-1252) / TSV en UTF-8 |
 | `document.{odt,docx,doc,rtf}` | LibreOffice desde un documento ODF plano escrito en el script |
 | `spreadsheet.{ods,xlsx,xls}` | LibreOffice desde una hoja ODF plana (4 filas × 3 columnas) |
 | `slides.{odp,pptx}` | LibreOffice desde una presentación ODF plana de 2 diapositivas (el PPT ocupa ~450 KB y no se incluye) |
@@ -20,3 +22,4 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `corrupt/garbage.{png,pdf}` | Firma válida seguida de bytes basura |
 | `corrupt/text-as.jpg`, `corrupt/random-as.docx` | Contenido que no coincide con la extensión |
 | `corrupt/empty.png` | Archivo vacío |
+| `corrupt/broken.json`, `corrupt/bad-quotes.csv` | JSON cortado / CSV con una comilla sin cerrar |

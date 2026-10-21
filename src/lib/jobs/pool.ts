@@ -3,6 +3,7 @@
 // or exceeds its time limit terminates its worker (the only way to stop code
 // stuck in a library), and the pool starts a fresh one for the next job.
 
+import { isApiErrorCode } from "@/lib/api-errors";
 import { ConversionError } from "@/lib/convert-error";
 
 /** The part of `Worker` the pool uses, so tests can pass a fake. */
@@ -74,7 +75,8 @@ export function createJobPool(start: () => WorkerLike, { concurrency = 1 }: { co
       if (!job || msg.id !== job.id) return;
       if (msg.type === "progress") job.options.onProgress?.(msg.progress);
       else if (msg.type === "done") job.finish(undefined, msg.result);
-      else job.finish(new Error(msg.message));
+      // A ConversionError thrown in the worker arrives as its code: keep it translatable.
+      else job.finish(isApiErrorCode(msg.message) ? new ConversionError(msg.message) : new Error(msg.message));
     };
     slot.worker.onerror = (event) => {
       event.preventDefault?.();
