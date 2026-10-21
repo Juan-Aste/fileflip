@@ -1031,6 +1031,22 @@
         "q4": "Are my files uploaded to a server?",
         "a4": "Yes: the PDF is made on our own server (not a third-party service), over an encrypted connection, and the file is processed in memory without being stored."
       }
+    },
+    "pdf-to-pdfa": {
+      "title": "PDF to PDF/A",
+      "description": "Convert a PDF to the PDF/A archival format (1b, 2b or 3b) for long-term storage or official submissions.",
+      "action": "Convert to PDF/A",
+      "about": "PDF to PDF/A turns your PDFs into the long-term archival format required by many public agencies, courts and universities. PDF/A embeds every font, pins colors to a profile and stores the metadata inside the file, so the document looks the same many years from now. The result is checked with the veraPDF reference validator.",
+      "faq": {
+        "q1": "Which PDF/A version should I choose?",
+        "a1": "Unless you are asked for another, PDF/A-2b: it is the most widely accepted and supports transparency and modern compression. PDF/A-1b is for older systems that only accept the first version; PDF/A-3b also allows files attached inside the PDF (e-invoices, for example).",
+        "q2": "Does the document's appearance change?",
+        "a2": "Content and pages stay the same. Some details may vary: fonts are embedded and, in PDF/A-1b, transparency is flattened. Links and interactive forms may be lost because the archival format does not allow them.",
+        "q3": "Can I convert a password-protected PDF?",
+        "a3": "No: PDF/A does not allow encryption. Remove the password first with “Remove a PDF password” and then convert it.",
+        "q4": "Are my files uploaded to a server?",
+        "a4": "Yes: the conversion runs on our own server (not a third-party service), over an encrypted connection, and the file is processed in memory without being stored."
+      }
     }
   },
   "ToolUi": {
@@ -1865,5 +1881,11 @@
     "pageSize_letter": "Letter (8.5 × 11 in)",
     "pdfNote": "Linked images are not downloaded (only those embedded as data URLs) and HTML written in the Markdown is reduced to its text.",
     "htmlPdfNote": "Styles and images included in the file are used; anything linked to other files or sites is not downloaded and JavaScript does not run."
+  },
+  "PdfaTool": {
+    "standard": "PDF/A version",
+    "hint_1b": "The first version: for systems that only accept PDF/A-1. Transparency is flattened.",
+    "hint_2b": "Recommended: the most widely accepted for submissions and archives.",
+    "hint_3b": "Like 2b, and also allows file attachments inside the PDF."
   }
 }

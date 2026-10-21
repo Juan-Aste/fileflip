@@ -1031,6 +1031,22 @@
         "q4": "Mes fichiers sont-ils envoyés sur un serveur ?",
         "a4": "Oui : le PDF est créé sur notre propre serveur (pas chez un tiers), via une connexion chiffrée, et le fichier est traité en mémoire sans être conservé."
       }
+    },
+    "pdf-to-pdfa": {
+      "title": "PDF en PDF/A",
+      "description": "Convertissez un PDF au format d'archivage PDF/A (1b, 2b ou 3b) pour une conservation à long terme ou des démarches officielles.",
+      "action": "Convertir en PDF/A",
+      "about": "PDF en PDF/A transforme vos PDF au format d'archivage à long terme exigé par de nombreuses administrations, tribunaux et universités. Le PDF/A intègre toutes les polices, fixe les couleurs avec un profil et conserve les métadonnées dans le fichier, pour que le document reste identique dans de nombreuses années. Le résultat est vérifié avec le validateur de référence veraPDF.",
+      "faq": {
+        "q1": "Quelle version de PDF/A choisir ?",
+        "a1": "Sauf indication contraire, PDF/A-2b : c'est la plus acceptée et elle gère la transparence et la compression moderne. PDF/A-1b est pour les anciens systèmes qui n'acceptent que la première version ; PDF/A-3b permet en plus de joindre des fichiers dans le PDF (factures électroniques, par exemple).",
+        "q2": "L'apparence du document change-t-elle ?",
+        "a2": "Le contenu et les pages sont conservés. Certains détails peuvent varier : les polices sont intégrées et, en PDF/A-1b, la transparence est aplatie. Les liens et formulaires interactifs peuvent être perdus car le format d'archivage ne les autorise pas.",
+        "q3": "Puis-je convertir un PDF protégé par mot de passe ?",
+        "a3": "Non : le PDF/A n'autorise pas le chiffrement. Retirez d'abord le mot de passe avec « Retirer le mot de passe d’un PDF », puis convertissez-le.",
+        "q4": "Mes fichiers sont-ils envoyés sur un serveur ?",
+        "a4": "Oui : la conversion se fait sur notre propre serveur (pas chez un tiers), via une connexion chiffrée, et le fichier est traité en mémoire sans être conservé."
+      }
     }
   },
   "ToolUi": {
@@ -1865,5 +1881,11 @@
     "pageSize_letter": "Letter (216 × 279 mm)",
     "pdfNote": "Les images liées ne sont pas téléchargées (seulement celles intégrées en data URL) et le HTML écrit dans le Markdown est réduit à son texte.",
     "htmlPdfNote": "Les styles et images inclus dans le fichier sont utilisés ; ce qui est lié à d'autres fichiers ou sites n'est pas téléchargé et le JavaScript ne s'exécute pas."
+  },
+  "PdfaTool": {
+    "standard": "Version PDF/A",
+    "hint_1b": "La première version : pour les systèmes qui n'acceptent que PDF/A-1. La transparence est aplatie.",
+    "hint_2b": "Recommandée : la plus acceptée pour les démarches et l'archivage.",
+    "hint_3b": "Comme 2b, et autorise en plus les pièces jointes dans le PDF."
   }
 }

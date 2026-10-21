@@ -60,6 +60,17 @@ export async function htmlToPdf(html: string, options: RequestOptions = {}): Pro
   return convert("/forms/chromium/convert/html", form, options);
 }
 
+export const pdfaStandards = ["PDF/A-1b", "PDF/A-2b", "PDF/A-3b"] as const;
+export type PdfaStandard = (typeof pdfaStandards)[number];
+
+/** Rewrites a PDF as archival PDF/A (LibreOffice engine: fonts embedded, color profile, XMP metadata). */
+export async function pdfToPdfA(bytes: Uint8Array, standard: PdfaStandard, options: RequestOptions = {}): Promise<Uint8Array> {
+  const form = new FormData();
+  form.append("files", new Blob([bytes as Uint8Array<ArrayBuffer>], { type: "application/pdf" }), "document.pdf");
+  form.append("pdfa", standard);
+  return convert("/forms/pdfengines/convert", form, options);
+}
+
 async function convert(
   route: string,
   form: FormData,

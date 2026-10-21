@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { GotenbergError, htmlToPdf, officeToPdf } from "./gotenberg";
+import { GotenbergError, htmlToPdf, officeToPdf, pdfToPdfA } from "./gotenberg";
 
 const file = { name: "report.docx", bytes: new Uint8Array([1, 2, 3]) };
 
@@ -64,5 +64,21 @@ describe("htmlToPdf", () => {
     const respond = (status: number) => (async () => new Response("nope", { status })) as typeof fetch;
     await expect(htmlToPdf("x", { fetchImpl: respond(400) })).rejects.toMatchObject({ reason: "failed" });
     await expect(htmlToPdf("x", { fetchImpl: respond(503) })).rejects.toMatchObject({ reason: "unavailable" });
+  });
+});
+
+describe("pdfToPdfA", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("posts the PDF and the standard to the PDF engines route", async () => {
+    vi.stubEnv("GOTENBERG_URL", "http://g");
+    const fetchImpl = vi.fn(async (url: string | URL | Request, init?: RequestInit) => {
+      expect(String(url)).toBe("http://g/forms/pdfengines/convert");
+      const form = init?.body as FormData;
+      expect((form.get("files") as File).name).toBe("document.pdf");
+      expect(form.get("pdfa")).toBe("PDF/A-3b");
+      return new Response(new Uint8Array([0x25]));
+    });
+    expect([...(await pdfToPdfA(new Uint8Array([1]), "PDF/A-3b", { fetchImpl: fetchImpl as typeof fetch }))]).toEqual([0x25]);
   });
 });

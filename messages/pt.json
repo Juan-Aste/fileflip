@@ -1031,6 +1031,22 @@
         "q4": "Meus arquivos são enviados a um servidor?",
         "a4": "Sim: o PDF é gerado no nosso servidor (não em um serviço de terceiros), por conexão criptografada, e o arquivo é processado em memória sem ser guardado."
       }
+    },
+    "pdf-to-pdfa": {
+      "title": "PDF para PDF/A",
+      "description": "Converta um PDF para o formato de arquivamento PDF/A (1b, 2b ou 3b) para guardar a longo prazo ou enviar a órgãos oficiais.",
+      "action": "Converter para PDF/A",
+      "about": "PDF para PDF/A transforma seus PDFs no formato de arquivamento de longo prazo exigido por muitos órgãos públicos, tribunais e universidades. O PDF/A incorpora todas as fontes, fixa as cores com um perfil e guarda os metadados dentro do arquivo, para que o documento continue igual daqui a muitos anos. O resultado é verificado com o validador de referência veraPDF.",
+      "faq": {
+        "q1": "Qual versão de PDF/A escolher?",
+        "a1": "Se não pedirem outra, PDF/A-2b: é a mais aceita e suporta transparências e compressão moderna. PDF/A-1b é para sistemas antigos que só aceitam a primeira versão; PDF/A-3b também permite anexar arquivos dentro do PDF (por exemplo, notas fiscais eletrônicas).",
+        "q2": "A aparência do documento muda?",
+        "a2": "O conteúdo e as páginas são mantidos. Alguns detalhes podem variar: as fontes são incorporadas e, no PDF/A-1b, as transparências são achatadas. Links e formulários interativos podem se perder porque o formato de arquivamento não os permite.",
+        "q3": "Posso converter um PDF com senha?",
+        "a3": "Não: o PDF/A não permite criptografia. Remova primeiro a senha com «Remover senha de PDF» e depois converta.",
+        "q4": "Meus arquivos são enviados a um servidor?",
+        "a4": "Sim: a conversão é feita no nosso servidor (não em um serviço de terceiros), por conexão criptografada, e o arquivo é processado em memória sem ser guardado."
+      }
     }
   },
   "ToolUi": {
@@ -1865,5 +1881,11 @@
     "pageSize_letter": "Carta (216 × 279 mm)",
     "pdfNote": "Imagens com link não são baixadas (só as incluídas como data URL) e o HTML escrito no Markdown é reduzido ao texto.",
     "htmlPdfNote": "São usados os estilos e as imagens incluídos no arquivo; o que tem link para outros arquivos ou sites não é baixado e o JavaScript não é executado."
+  },
+  "PdfaTool": {
+    "standard": "Versão do PDF/A",
+    "hint_1b": "A primeira versão: para sistemas que só aceitam PDF/A-1. As transparências são achatadas.",
+    "hint_2b": "Recomendada: a mais aceita em órgãos e arquivos.",
+    "hint_3b": "Como a 2b, e também permite anexos dentro do PDF."
   }
 }

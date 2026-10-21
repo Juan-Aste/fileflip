@@ -1,8 +1,9 @@
-// Markdown → PDF runs on our server (Gotenberg's Chromium). The upload goes to
-// the real API route; with GOTENBERG_URL set (docker compose up gotenberg,
-// and the same variable for `next start`) the PDF is printed for real and
-// checked with pdf-lib and pdf.js. Without it, the UI is checked against a
-// simulated outage.
+// Tools that run on our server with Gotenberg (Markdown/HTML → PDF with
+// Chromium, PDF → PDF/A with LibreOffice). Uploads go to the real API routes;
+// with GOTENBERG_URL set (docker compose up gotenberg, and the same variable
+// for `next start`) the output is made for real and checked with pdf-lib and
+// pdf.js. Without it, errors the route answers by itself and a simulated
+// outage are still checked.
 import { readFileSync } from "node:fs";
 import { PDFDocument } from "pdf-lib";
 import { expect, fileOf, openWithFiles, runTool, test, toolAlert } from "./support";
@@ -102,5 +103,29 @@ test.describe("tool: html-to-pdf", () => {
     await page.goto("/en/html-to-pdf", { waitUntil: "networkidle" });
     await page.locator('input[type="file"]').first().setInputFiles({ name: "deep.html", mimeType: "text/html", buffer: Buffer.from("<div>".repeat(3000)) });
     expect(await runTool(page, "Convert to PDF")).toEqual({ error: expect.stringContaining("damaged") });
+  });
+});
+
+test.describe("tool: pdf-to-pdfa", () => {
+  test("a PDF becomes a PDF/A-1b copy with the same pages", async ({ page }) => {
+    test.skip(!process.env.GOTENBERG_URL, "needs Gotenberg (GOTENBERG_URL)");
+    await page.route("**/api/convert/pdfa", (route) => route.continue());
+    await openWithFiles(page, "/es/pdf-a-pdfa", ["document.pdf"]);
+    await page.getByText("PDF/A-1b", { exact: true }).click();
+    await expect(page.getByText("La primera versión: para sistemas")).toBeVisible();
+    const out = fileOf(await runTool(page, "Convertir a PDF/A"));
+    expect(out.name).toBe("document-pdfa.pdf");
+    const doc = await PDFDocument.load(out.buf);
+    expect(doc.getPageCount()).toBe(3);
+    const xmp = out.buf.toString("latin1");
+    expect(xmp).toMatch(/pdfaid:part(>|=")1/);
+    expect(xmp).toMatch(/pdfaid:conformance(>|=")B/);
+    expect(await pdfText(out.buf)).toContain("page 2 of 3");
+  });
+
+  test("a damaged PDF is explained by the route", async ({ page }) => {
+    await page.route("**/api/convert/pdfa", (route) => route.continue());
+    await openWithFiles(page, "/en/pdf-to-pdfa", ["corrupt/truncated.pdf"]);
+    expect(await runTool(page, "Convert to PDF/A")).toEqual({ error: expect.stringContaining("damaged") });
   });
 });

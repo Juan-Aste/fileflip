@@ -1993,3 +1993,26 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Sin URL de entrada (solo archivo/texto) y sin recursos externos (hojas de estilo, fuentes e imágenes enlazadas); sin JavaScript: las páginas que arman su contenido con JS salen incompletas (lo dicen las FAQ).
 
 **Siguiente**: 3C.26b (PDF → PDF/A con Gotenberg).
+
+## 2026-10-21 23:25 UTC — Fase 3, tarea 3C.26b (PDF → PDF/A)
+
+**Qué se hizo**
+- **PDF a PDF/A** (`/es/pdf-a-pdfa`, `/en/pdf-to-pdfa`, `/pt/pdf-para-pdfa`, `/fr/pdf-en-pdfa`), categoría PDF, en el servidor: **PDF/A-1b, 2b (por defecto) o 3b**, lotes, salida `<nombre>-pdfa.pdf` (no pisa el original). Ruta `POST /api/convert/pdfa` → Gotenberg `/forms/pdfengines/convert` (motor LibreOffice) con `pdfa=…` (`pdfToPdfA` en `gotenberg.ts`).
+- Antes de llamar a Gotenberg el PDF se abre con pdf-lib: dañado o sin páginas → `fileDamaged` (Gotenberg respondía 500 con `truncated.pdf`, que se habría mostrado como "servicio no disponible"); cifrado → `pdfAlreadyProtected` (el PDF/A no admite cifrado; el mensaje remite a "Quitar contraseña de un PDF").
+- Helper de cliente `runServerBatch` (`components/tools/shell/serverBatch.ts`): subida por archivo con progreso, cancelación y estadísticas sin duplicar; lo usan Markdown/HTML → PDF y PDF/A.
+- Textos (introducción + 4 preguntas, ayuda de cada versión) en los 5 idiomas.
+- `tests/e2e/markdown-pdf.spec.ts` pasa a llamarse `gotenberg-tools.spec.ts` (todas las herramientas con Gotenberg).
+
+**Formatos verificados**
+- Con Gotenberg 8 real y el validador de referencia **veraPDF** (imagen Docker `verapdf/cli`, solo para tests): `document.pdf` en 1b, 2b y 3b, `document-images.pdf` (1b y 2b), `scan.pdf` (1b y 2b) y `document-1page.pdf` → **PASS**; el original sin convertir → FAIL (control).
+
+**Verificación**
+- `pdfa.test.ts` (con `GOTENBERG_URL`): para las 3 versiones, `pdfaid:part`/`conformance` del XMP, todas las fuentes incrustadas (`FontFile*` en cada `FontDescriptor`), `OutputIntents`, sin cifrado y **mismo texto por página** (pdf.js); PDF con fotos conserva páginas e imágenes; con `VERAPDF_DOCKER=1`, los 4 archivos pasan veraPDF.
+- 3 tests de la ruta (versión elegida / por defecto, nombre `-pdfa.pdf`, truncado → `fileDamaged`, cifrado con qpdf → `pdfAlreadyProtected`, DOCX con nombre `.pdf` → 415, errores de Gotenberg) y 1 de `pdfToPdfA`.
+- e2e: `document.pdf` → PDF/A-1b (nombre, 3 páginas, XMP, texto) con Gotenberg real; truncado → mensaje "damaged" de la ruta real.
+- Lint, typecheck, tests (811 + 7 saltados sin Gotenberg), build, `check:static` (842 páginas) y `npm run test:e2e` completo con Gotenberg (244/244) pasan.
+
+**Limitaciones**
+- Conformidad nivel **b** (aspecto visual), no **a**/**u** (accesible/Unicode). En PDF/A-1b se aplanan transparencias; enlaces y formularios interactivos pueden perderse (FAQ). Límite de tamaño: el de servidor del plan (15 MB gratis, 100 MB Pro).
+
+**Siguiente**: 3C.26c (fixture PPT 97-2003 y prueba PPT → PDF).

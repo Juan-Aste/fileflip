@@ -3,12 +3,9 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { tools, type ToolId } from "@/config/tools";
-import { ConversionError, errorCode } from "@/lib/convert-error";
-import { runBatch } from "@/lib/jobs";
-import { convertOnServer } from "@/lib/server-client";
-import { reportConversion } from "@/lib/stats-client";
 import ToolShell from "../shell/ToolShell";
-import { renameExtension, type ShellOutput } from "../shell/state";
+import { runServerBatch } from "../shell/serverBatch";
+import { renameExtension } from "../shell/state";
 
 const pageSizes = ["a4", "letter"] as const;
 
@@ -26,8 +23,6 @@ interface PrintTool {
 
 /**
  * Text → PDF on our server (the page is printed by Gotenberg's Chromium).
- * The server logs each conversion; the browser only reports failures the
- * server never saw (rejected uploads, network errors).
  */
 function PrintToPdfTool({ id, endpoint, extensions, format, pastedName, placeholder, note }: PrintTool) {
   const tool = tools[id];
@@ -66,27 +61,16 @@ function PrintToPdfTool({ id, endpoint, extensions, format, pastedName, placehol
           <p className="text-sm text-muted">{tm(note)}</p>
         </div>
       }
-      process={async ({ files, text }, { signal, onProgress }) => {
-        const inputs = files.length > 0 ? files : [new File([text], pastedName, { type: "text/plain" })];
-        const results = await runBatch(
-          inputs,
-          async (file, job) => {
-            try {
-              return await convertOnServer(endpoint, file, "pdf", { pageSize }, job.onProgress, job.signal);
-            } catch (error) {
-              if (!(error instanceof ConversionError && (error.loggedByServer || error.code === "jobCancelled"))) {
-                reportConversion({ from: tool.inputs[0], to: "pdf", size: file.size, success: false, tool: tool.id, engine: "server", errorCode: errorCode(error) });
-              }
-              throw error;
-            }
-          },
-          { signal, onProgress },
-        );
-        return results.map((result, i): ShellOutput => {
-          const name = renameExtension(inputs[i].name, "pdf");
-          return result.status === "error" ? { kind: "error", name, code: result.code } : { kind: "file", name, blob: result.value };
-        });
-      }}
+      process={({ files, text }, context) =>
+        runServerBatch(files.length > 0 ? files : [new File([text], pastedName, { type: "text/plain" })], context, {
+          tool: id,
+          endpoint,
+          from: tool.inputs[0],
+          to: "pdf",
+          options: { pageSize },
+          outputName: (name) => renameExtension(name, "pdf"),
+        })
+      }
     />
   );
 }

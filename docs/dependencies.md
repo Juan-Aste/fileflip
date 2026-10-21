@@ -49,8 +49,9 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 
 | Servicio | Licencia | Uso |
 |---|---|---|
+| veraPDF (imagen Docker `verapdf/cli`, solo tests) | GPL-3.0+ / MPL-2.0 (doble licencia) | validador de referencia de PDF/A en `src/lib/server/pdfa.test.ts` con `VERAPDF_DOCKER=1`; no se distribuye ni se ejecuta en producción |
 | Gotenberg 8 (imagen Docker) | MIT | API HTTP de conversión de oficina; corre como servicio aparte en la red privada |
-| └ LibreOffice | MPL-2.0 | motor dentro de Gotenberg |
+| └ LibreOffice | MPL-2.0 | motor dentro de Gotenberg (oficina → PDF y PDF → PDF/A) |
 | └ Chromium | BSD-3-Clause (y otras) | motor HTML → PDF dentro de Gotenberg (Markdown → PDF y HTML → PDF; sin JavaScript ni red) |
 | MongoDB 7 | SSPL (servidor, no se distribuye) | base de datos (Railway o Atlas) |
 
