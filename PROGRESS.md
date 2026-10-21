@@ -1740,3 +1740,11 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (684), build, `check:static` (742 páginas) y `npm run test:e2e` (197/197) pasan. Captura revisada: `/es/convertir-svg` 360 oscuro.
 
 **Siguiente**: 3C.17 (subtítulos SRT ↔ VTT ↔ ASS/SSA, desplazar tiempos y ajustar FPS).
+
+## 2026-10-21 15:30 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas en esta ejecución: 3C.14 (recortar imagen), 3C.15 (marca de agua y agregar texto), 3C.16a (generador de favicon) y 3C.16b (convertir SVG + HEIF). La quinta "tarea" fue 3C.13, hecha en paralelo con la ejecución anterior y descartada sin subir porque esa ejecución subió una equivalente a las 12:11.
+- Causa del solapamiento: la ejecución anterior siguió trabajando más de 3 horas sin actualizar `.agent-lock` (última actualización 08:37) y esta ejecución lo tomó como vencido a las 12:03. Para evitarlo, cada ejecución debe actualizar la hora del candado en cada commit de tarea (lo hace) y no pasar más de 3 horas en una sola tarea.
+- Nota de entorno: `pkill -f "next start"` (o `next-server`) dentro de un comando de shell que contiene ese mismo texto mata al propio shell (código 144); usar `pkill -f "^next-server"`.
+
+**Siguiente**: 3C.17 (subtítulos SRT ↔ VTT ↔ ASS/SSA, desplazar tiempos y ajustar FPS).
