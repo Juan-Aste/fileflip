@@ -31,6 +31,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | yaml | 2.9.1 | ISC | leer y escribir YAML (límite de alias contra "billion laughs") | N (worker de datos) |
 | smol-toml | 1.9.0 | BSD-3-Clause | leer y escribir TOML | N (worker de datos) |
 | fast-xml-parser | 5.11.2 | MIT | leer y escribir XML (sin entidades DTD) | N (worker de datos) |
+| hash-wasm | 4.12.0 | MIT | MD5, SHA-1, SHA-256 y SHA-512 por bloques (WASM incrustado) | N (worker de datos) |
 | sharp | 0.35.5 | Apache-2.0 | respaldo de imágenes | S |
 | └ @img/sharp-libvips-* | 1.3.4 | LGPL-3.0-or-later | libvips precompilada (biblioteca dinámica, sin modificar) | S |
 

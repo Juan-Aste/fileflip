@@ -61,6 +61,8 @@ export type ShellOutput =
       blob: Blob;
       /** Text outputs shown in the page (with a copy button) besides the download. */
       preview?: string;
+      /** A verdict shown with the result, e.g. whether a checksum matches. */
+      message?: { ok: boolean; text: string };
     }
   | { kind: "error"; name: string; code: ApiErrorCode; position?: ErrorPosition };
 

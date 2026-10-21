@@ -3,6 +3,7 @@ import {
   Braces,
   FileDown,
   Link2,
+  Fingerprint,
   CodeXml,
   FileCode,
   FileJson,
@@ -40,6 +41,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "base64-encode": Binary,
   "base64-decode": FileDown,
   "url-encode": Link2,
+  "hash-generator": Fingerprint,
 };
 
 export default function ToolIcon({ id, className }: { id: ToolId; className?: string }) {

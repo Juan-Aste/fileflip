@@ -480,6 +480,20 @@
         "q3": "E um % malformado?",
         "a3": "Você verá um aviso: uma sequência como %E0%A4%A está incompleta e não corresponde a nenhum caractere."
       }
+    },
+    "hash-generator": {
+      "title": "Gerador de hash MD5 e SHA",
+      "description": "Calcule MD5, SHA-1, SHA-256 e SHA-512 de um texto ou de arquivos e verifique uma soma de verificação.",
+      "action": "Calcular hash",
+      "about": "O gerador de hash calcula as somas MD5, SHA-1, SHA-256 e SHA-512 de um texto (como UTF-8) ou de qualquer arquivo, sem enviá-lo: os arquivos são lidos em partes no seu navegador, então também funciona com arquivos grandes. Cole o hash publicado por quem distribui um arquivo para conferir se o seu download está completo e não foi alterado. O resultado é baixado como checksums.txt no formato que o sha256sum -c lê.",
+      "faq": {
+        "q1": "Como confiro se um download não está corrompido?",
+        "a1": "Escolha o arquivo, cole em «Hash esperado» a soma publicada no site oficial e calcule. Você verá se coincide e com qual algoritmo; ele é reconhecido pelo comprimento.",
+        "q2": "Qual algoritmo devo usar?",
+        "a2": "SHA-256 ou SHA-512. MD5 e SHA-1 detectam erros de download, mas não são mais seguros contra alguém que fabrica de propósito arquivos com o mesmo hash.",
+        "q3": "Um hash serve para guardar senhas?",
+        "a3": "Não diretamente: para senhas se usam funções lentas com sal, como bcrypt ou Argon2. Hashes rápidos como estes servem para verificar arquivos e integridade."
+      }
     }
   },
   "ToolUi": {
@@ -569,7 +583,14 @@
     "scope": "O que você vai codificar?",
     "scopeComponent": "Um valor ou parâmetro",
     "scopeUrl": "Uma URL completa",
-    "plusIsSpace": "Ler + como espaço (formulários)"
+    "plusIsSpace": "Ler + como espaço (formulários)",
+    "algorithms": "Algoritmos",
+    "upperCase": "Hexadecimal em maiúsculas",
+    "expectedHash": "Hash esperado (opcional)",
+    "expectedHashHint": "Cole uma soma MD5, SHA-1, SHA-256 ou SHA-512 para conferir se coincide.",
+    "hashMatches": "Coincide: o {algorithm} de {name} é igual ao hash esperado.",
+    "hashMismatch": "Não coincide: nenhum arquivo tem o hash esperado.",
+    "hashNotComparable": "Não foi possível comparar: o hash esperado não tem o comprimento de nenhum dos algoritmos escolhidos."
   },
   "Email": {
     "subject": "Seu link para entrar no Fileflect",

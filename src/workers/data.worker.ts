@@ -2,6 +2,7 @@
 import { csvToJson, jsonToCsv, type CsvToJsonOptions, type JsonToCsvOptions } from "@/lib/data/csv";
 import { formatJson, formatXml, formatYaml, type JsonFormatOptions, type XmlFormatOptions, type YamlFormatOptions } from "@/lib/data/format";
 import { decodeBase64, encodeBase64, type EncodeOptions } from "@/lib/data/base64";
+import { hashInput, type HashAlgorithm } from "@/lib/data/hash";
 import { decodeText } from "@/lib/data/text";
 import { jsonToToml, tomlToJson } from "@/lib/data/toml";
 import { jsonToXml, xmlToJson } from "@/lib/data/xml";
@@ -31,6 +32,9 @@ exposeHandlers({
     const result = decodeBase64(await textOf(input));
     return { result, transfer: [result.bytes.buffer] };
   },
+  hash: async ({ input, options }: Input<{ algorithms: HashAlgorithm[] }>, onProgress: (progress: number) => void) => ({
+    result: await hashInput(input, options.algorithms, onProgress),
+  }),
   // Formatters answer with a result (with the error position) instead of throwing.
   formatJson: async ({ input, options }: Input<JsonFormatOptions>) => ({ result: formatJson(await textOf(input), options) }),
   formatXml: async ({ input, options }: Input<XmlFormatOptions>) => ({ result: formatXml(await textOf(input), options) }),

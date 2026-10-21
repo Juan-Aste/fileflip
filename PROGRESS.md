@@ -1524,3 +1524,16 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - 7 tests unitarios (comparación con el Base64 de Node en tamaños que cruzan los bloques, hasta 300 KB aleatorios, ida y vuelta byte a byte, saltos, data URL, alfabeto URL, inválidos, texto legible, URL). `data-tools.spec.ts`: 32 casos (7 nuevos: PNG → Base64 igual al de Node y data URL, texto UTF-8, data URL → PNG idéntico, Base64 de un PDF reconocido por contenido, texto con vista previa, inválido, URL en sus modos y `%` roto). Lint, typecheck, tests (584), build, `check:static` (647 páginas) y `npm run test:e2e` (149/149) pasan.
 
 **Siguiente**: 3C.6 (hashes MD5/SHA de texto y archivos).
+
+## 2026-10-21 06:25 UTC — Fase 3, tarea 3C.6 (hashes MD5/SHA)
+
+**Qué se hizo**
+- Herramienta **Generador de hash MD5 y SHA** en Desarrolladores (`/es/generador-hash`, `/en/hash-generator`, `/pt/gerador-de-hash`, `/fr/generateur-hash`): MD5, SHA-1, SHA-256 y SHA-512 de texto pegado (UTF-8) o de archivos, en el worker de datos con **hash-wasm 4.12.0 (MIT, WASM incrustado)**. Los archivos se leen en bloques de 4 MB con progreso, así que el único límite es el del plan (200 MB gratis / 1 GB Pro) y 10 minutos por trabajo.
+- Salida: un solo `checksums.txt` con todos los archivos en formato BSD (`SHA256 (foto.jpg) = …`), que `sha256sum -c` lee; opción de hexadecimal en mayúsculas.
+- "Hash esperado" opcional: se reconoce el algoritmo por la longitud, sin distinguir mayúsculas ni espacios, y se muestra "Coincide"/"No coincide"/"No se pudo comparar". Para eso `ShellOutput` admite `message: { ok, text }`, que `ToolShell` muestra en verde o rojo sobre la vista previa.
+- Textos (introducción + 3 preguntas y opciones) en los 5 idiomas.
+
+**Verificación**
+- 5 tests unitarios: vectores publicados ("" y "abc" en los 4 algoritmos), UTF-8, archivo aleatorio de 8 MB leído por bloques comparado con `crypto` de Node y progreso, líneas BSD y comparación con el esperado. `data-tools.spec.ts`: 3 casos nuevos (dos archivos comparados con Node + coincidencia; solo SHA-256 validado con **`sha256sum -c` del sistema**; texto en mayúsculas en inglés + aviso de no coincidencia). Lint, typecheck, tests (590), build, `check:static` (652 páginas) y `npm run test:e2e` (152/152) pasan. Capturas revisadas: `/es/generador-hash` 1280 claro y `/zh/hash-generator` 360 oscuro.
+
+**Siguiente**: 3C.7 (UUID y conversor de timestamps).

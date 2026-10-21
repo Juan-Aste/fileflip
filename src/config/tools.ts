@@ -48,6 +48,7 @@ export const toolIds = [
   "base64-encode",
   "base64-decode",
   "url-encode",
+  "hash-generator",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -303,6 +304,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: MINUTE },
     status: "verified",
     slugs: { es: "codificar-url", en: "url-encode", pt: "codificar-url", fr: "encoder-url", zh: "url-encode" },
+  },
+  "hash-generator": {
+    id: "hash-generator",
+    category: "developer",
+    inputs: ["bin", "txt"],
+    outputs: ["txt"],
+    engine: "browser",
+    libraries: ["hash-wasm"],
+    // Files are read in 4 MB chunks: the plan's size limit applies, not a tool limit.
+    limits: { files: "multiple", timeoutMs: 10 * MINUTE },
+    status: "verified",
+    slugs: { es: "generador-hash", en: "hash-generator", pt: "gerador-de-hash", fr: "generateur-hash", zh: "hash-generator" },
   },
 };
 

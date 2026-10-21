@@ -1,6 +1,7 @@
 import { ConversionError, TextPositionError } from "@/lib/convert-error";
 import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type { Decoded, EncodeOptions } from "./base64";
+import type { HashAlgorithm } from "./hash";
 import type { CsvToJsonOptions, JsonToCsvOptions } from "./csv";
 import type { FormatResult, JsonFormatOptions, XmlFormatOptions, YamlFormatOptions } from "./format";
 
@@ -46,3 +47,10 @@ export const encodeBase64Input = (input: Input, options: EncodeOptions, job: Job
   call("base64Encode", { input, options }, job);
 
 export const decodeBase64Input = (input: Input, job: JobOptions = {}) => call<Decoded>("base64Decode", { input }, job);
+
+// Hashing reads files in chunks, so big files are fine but take longer.
+const HASH_JOB_TIMEOUT_MS = 10 * 60_000;
+
+/** Hex digests of a file's bytes, or of text as UTF-8. */
+export const hashFileInput = (input: Input, algorithms: HashAlgorithm[], job: JobOptions = {}) =>
+  call<Partial<Record<HashAlgorithm, string>>>("hash", { input, options: { algorithms } }, { timeoutMs: HASH_JOB_TIMEOUT_MS, ...job });

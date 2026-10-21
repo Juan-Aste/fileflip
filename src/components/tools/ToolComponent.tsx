@@ -26,6 +26,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "base64-encode": dynamic(() => import("./data/EncodingTools").then((m) => m.Base64EncodeTool)),
   "base64-decode": dynamic(() => import("./data/EncodingTools").then((m) => m.Base64DecodeTool)),
   "url-encode": dynamic(() => import("./data/EncodingTools").then((m) => m.UrlEncodeTool)),
+  "hash-generator": dynamic(() => import("./data/HashTool")),
 };
 
 export default function ToolComponent({ id }: { id: ToolId }) {

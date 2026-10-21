@@ -480,6 +480,20 @@
         "q3": "What about a malformed %?",
         "a3": "You will see a warning: a sequence like %E0%A4%A is incomplete and doesn't stand for any character."
       }
+    },
+    "hash-generator": {
+      "title": "MD5 and SHA hash generator",
+      "description": "Calculate MD5, SHA-1, SHA-256 and SHA-512 of text or files and verify a checksum.",
+      "action": "Calculate hash",
+      "about": "The hash generator calculates MD5, SHA-1, SHA-256 and SHA-512 checksums of text (as UTF-8) or of any file without uploading it: files are read in parts in your browser, so large files work too. Paste the hash published by whoever distributes a file to check that your download is complete and has not been altered. The result downloads as checksums.txt in the format sha256sum -c reads.",
+      "faq": {
+        "q1": "How do I check that a download is not damaged?",
+        "a1": "Choose the file, paste the checksum from the official site into “Expected hash” and calculate. You will see whether it matches and with which algorithm; it is recognized by its length.",
+        "q2": "Which algorithm should I use?",
+        "a2": "SHA-256 or SHA-512. MD5 and SHA-1 catch download errors, but they are no longer safe against someone deliberately crafting files with the same hash.",
+        "q3": "Can a hash be used to store passwords?",
+        "a3": "Not directly: passwords need slow, salted functions such as bcrypt or Argon2. Fast hashes like these are for verifying files and integrity."
+      }
     }
   },
   "ToolUi": {
@@ -569,7 +583,14 @@
     "scope": "What are you encoding?",
     "scopeComponent": "A value or parameter",
     "scopeUrl": "A whole URL",
-    "plusIsSpace": "Read + as a space (forms)"
+    "plusIsSpace": "Read + as a space (forms)",
+    "algorithms": "Algorithms",
+    "upperCase": "Upper-case hexadecimal",
+    "expectedHash": "Expected hash (optional)",
+    "expectedHashHint": "Paste an MD5, SHA-1, SHA-256 or SHA-512 checksum to check whether it matches.",
+    "hashMatches": "Match: the {algorithm} of {name} equals the expected hash.",
+    "hashMismatch": "No match: no file has the expected hash.",
+    "hashNotComparable": "Could not compare: the expected hash does not have the length of any chosen algorithm."
   },
   "Email": {
     "subject": "Your Fileflect sign-in link",

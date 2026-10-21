@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, CheckCircle2, Copy, Download, FileText, RotateCcw, X } from "lucide-react";
+import { Check, CheckCircle2, Copy, Download, FileText, RotateCcw, X, XCircle } from "lucide-react";
 import AdSlot from "@/components/ads/AdSlot";
 import Dropzone from "@/components/converter/Dropzone";
 import { useSessionInfo } from "@/components/session/SessionInfo";
@@ -194,6 +194,23 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
               </li>
             ))}
           </ul>
+          {state.outputs.map((output, i) =>
+            output.kind === "file" && output.message ? (
+              <p
+                key={i}
+                className={`flex items-start gap-2 rounded-xl p-3 text-sm font-semibold ${
+                  output.message.ok ? "bg-success-soft text-success" : "bg-danger-soft text-danger"
+                }`}
+              >
+                {output.message.ok ? (
+                  <CheckCircle2 aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+                ) : (
+                  <XCircle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+                )}
+                {output.message.text}
+              </p>
+            ) : null,
+          )}
           {state.outputs.length === 1 && state.outputs[0]!.kind === "file" && state.outputs[0]!.preview !== undefined && (
             <TextPreview text={state.outputs[0]!.preview} />
           )}

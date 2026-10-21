@@ -1,7 +1,11 @@
 // Data tools (JSON ↔ CSV/TSV/YAML/TOML) run like a user would: pick a fixture
 // or paste text, download the result and read it back with independent readers
 // (the YAML and TOML readers are libraries, but not the app's code paths).
-import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import type { Page } from "@playwright/test";
 import { parse as parseToml } from "smol-toml";
 import YAML from "yaml";
@@ -358,5 +362,49 @@ test.describe("tool: url-encode", () => {
     await page.getByRole("textbox", { name: "O escribe o pega el texto" }).fill("%E0%A4%A");
     await choose(page, "Decodificar");
     expect((await runTool(page, "Decodificar URL")).error).toContain("No pudimos leer el contenido");
+  });
+});
+
+test.describe("tool: hash-generator", () => {
+  const digest = (algorithm: string, bytes: Buffer | string) => createHash(algorithm).update(bytes).digest("hex");
+
+  test("two files → checksums.txt equal to Node's crypto, and the expected hash matches", async ({ page }) => {
+    const png = readFileSync(fixturePath("image.png"));
+    const pdf = readFileSync(fixturePath("document.pdf"));
+    await open(page, "/es/generador-hash", ["image.png", "document.pdf"]);
+    await page.getByRole("textbox", { name: "Hash esperado (opcional)" }).fill(digest("sha256", pdf).toUpperCase());
+    const out = fileOf(await runTool(page, "Calcular hash"));
+    expect(out.name).toBe("checksums.txt");
+    const lines = readText(out.buf).trim().split("\n");
+    const expected = (name: string, bytes: Buffer) => [
+      `MD5 (${name}) = ${digest("md5", bytes)}`,
+      `SHA1 (${name}) = ${digest("sha1", bytes)}`,
+      `SHA256 (${name}) = ${digest("sha256", bytes)}`,
+      `SHA512 (${name}) = ${digest("sha512", bytes)}`,
+    ];
+    expect(lines).toEqual([...expected("image.png", png), ...expected("document.pdf", pdf)]);
+    await expect(page.getByText("Coincide: el SHA-256 de document.pdf es igual al hash esperado.")).toBeVisible();
+  });
+
+  test("SHA-256 only: sha256sum -c accepts the downloaded file", async ({ page }) => {
+    await open(page, "/es/generador-hash", ["image.jpg", "text.txt"]);
+    for (const name of ["MD5", "SHA-1", "SHA-512"]) await choose(page, name);
+    const out = fileOf(await runTool(page, "Calcular hash"));
+    const dir = mkdtempSync(join(tmpdir(), "checksums-"));
+    writeFileSync(join(dir, "checksums.txt"), out.buf);
+    const check = execFileSync("sha256sum", ["-c", join(dir, "checksums.txt")], { cwd: fixturePath("."), encoding: "utf8" });
+    expect(check).toBe("image.jpg: OK\ntext.txt: OK\n");
+  });
+
+  test("pasted text in upper case; a wrong expected hash is reported", async ({ page }) => {
+    await open(page, "/en/hash-generator");
+    await page.getByRole("textbox", { name: "Or type or paste the text" }).fill("abc");
+    await page.getByRole("textbox", { name: "Expected hash (optional)" }).fill("900150983cd24fb0d6963f7d28e17f73");
+    await choose(page, "Upper-case hexadecimal");
+    const out = fileOf(await runTool(page, "Calculate hash"));
+    const text = readText(out.buf);
+    expect(text).toContain("MD5 (text) = 900150983CD24FB0D6963F7D28E17F72\n");
+    expect(text).toContain(`SHA256 (text) = ${digest("sha256", "abc").toUpperCase()}\n`);
+    await expect(page.getByText("No match: no file has the expected hash.")).toBeVisible();
   });
 });
