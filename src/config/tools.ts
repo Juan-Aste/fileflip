@@ -889,7 +889,7 @@ export const tools: Record<ToolId, ToolInfo> = {
     inputs: ["zip", "tar", "tgz", "7z", "rar"],
     outputs: ["bin"],
     engine: "browser",
-    libraries: ["fflate", "libarchive-wasm (libarchive)"],
+    libraries: ["fflate", "libarchive 3.8 (own WASM build)", "libarchive-wasm (wrapper)"],
     // The extracted files are also capped: EXTRACT_LIMITS (500 MB, 5000 files).
     limits: { files: "multiple", timeoutMs: 10 * MINUTE, maxFileBytes: ARCHIVE_MAX_BYTES },
     status: "verified",

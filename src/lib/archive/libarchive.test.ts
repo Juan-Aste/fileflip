@@ -1,14 +1,15 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { libarchiveWasm } from "libarchive-wasm";
 import { describe, expect, it } from "vitest";
 import type { ConversionError } from "@/lib/convert-error";
+import { loadLibarchive } from "./libarchive-module";
 import { detectLibarchiveFormat, extractWithLibarchive, MAX_LIBARCHIVE_INPUT_BYTES } from "./libarchive";
 
 const dir = join(__dirname, "../../../tests/fixtures");
 const fixture = (name: string) => new Uint8Array(readFileSync(join(dir, name)));
 const text = (data: Uint8Array) => new TextDecoder().decode(data);
-const load = () => libarchiveWasm();
+const wasmBinary = new Uint8Array(readFileSync(join(__dirname, "../../vendor/libarchive/libarchive.wasm")));
+const load = () => loadLibarchive({ wasmBinary });
 const extract = (name: string, limits?: { maxBytes: number; maxEntries: number }) => extractWithLibarchive(fixture(name), load, limits);
 const codeOf = async (promise: Promise<unknown>) =>
   promise.then(
@@ -26,6 +27,14 @@ function followsPattern(data: Uint8Array, magic: number) {
   return true;
 }
 
+describe("our libarchive build", () => {
+  it("is libarchive 3.8 with zlib, bzip2 and liblzma", async () => {
+    const lib = await load();
+    expect(lib.version_number()).toBeGreaterThanOrEqual(3_008_000);
+    expect(lib.version_details()).toMatch(/zlib\/[\d.]+ liblzma\/[\d.]+ bz2lib\/[\d.]+/);
+  });
+});
+
 describe("extractWithLibarchive", () => {
   it("7z (written by py7zr): every file byte for byte, with folders", async () => {
     const result = await extract("archive.7z");
@@ -35,10 +44,8 @@ describe("extractWithLibarchive", () => {
     expect(Buffer.from(files["images/image.png"]!).equals(Buffer.from(fixture("image.png")))).toBe(true);
     expect(Buffer.from(files["document-1page.pdf"]!).equals(Buffer.from(fixture("document-1page.pdf")))).toBe(true);
     expect(files["empty.txt"]!.length).toBe(0);
-    // Known limitation: this libarchive build runs in the C locale, so non-ASCII 7z names
-    // lose those characters ("*", then made safe as "_"); the content is intact.
-    const notes = result.files.find((f) => f.path.startsWith("docs/a_o 2024/"))!;
-    expect(text(notes.data)).toBe("Notas con acentos: canción, pingüino.\n");
+    // Our build starts in a UTF-8 locale: the UTF-16 names of 7z keep every letter.
+    expect(text(files["docs/año 2024/notas — 中文.txt"]!)).toBe("Notas con acentos: canción, pingüino.\n");
     expect(result.files).toHaveLength(5);
   });
 

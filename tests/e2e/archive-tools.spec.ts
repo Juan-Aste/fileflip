@@ -135,6 +135,9 @@ test.describe("tool: extract-archive", () => {
     expect(get("archive/images/image.png").equals(original("image.png"))).toBe(true);
     expect(get("archive/document-1page.pdf").equals(original("document-1page.pdf"))).toBe(true);
     expect(get("archive/docs/readme.txt").toString("utf8")).toContain("ñandú 中文");
+    // Non-ASCII 7z names survive (our libarchive build runs in a UTF-8 locale).
+    await expect(main).toContainText("docs/año 2024/notas — 中文.txt");
+    expect(get("archive/docs/año 2024/notas — 中文.txt").toString("utf8")).toBe("Notas con acentos: canción, pingüino.\n");
     expect(get("archive-rar4/testdir/test.txt").toString("utf8")).toBe("test text document\r\n");
     expect(entries.filter((e) => e.name.startsWith("archive-rar4/"))).toHaveLength(2);
   });

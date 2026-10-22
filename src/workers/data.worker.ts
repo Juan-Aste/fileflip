@@ -20,8 +20,8 @@ import { exposeHandlers } from "@/lib/worker-rpc";
 const woff2Codec = (): Promise<Woff2Codec> => import("woff2-encoder").then(({ compress, decompress }) => ({ compress, decompress }));
 
 // libarchive (600 KB of WASM): only downloaded to open 7Z and RAR files, one fresh instance per archive.
-const libarchiveWasmUrl = new URL("../../node_modules/libarchive-wasm/dist/libarchive.wasm", import.meta.url).href;
-const loadLibarchive = async () => (await import("libarchive-wasm")).libarchiveWasm({ locateFile: () => libarchiveWasmUrl });
+const libarchiveWasmUrl = new URL("../vendor/libarchive/libarchive.wasm", import.meta.url).href;
+const loadLibarchive = async () => (await import("@/lib/archive/libarchive-module")).loadLibarchive({ locateFile: () => libarchiveWasmUrl });
 
 // SheetJS (~1 MB): only downloaded by the spreadsheet converter.
 const sheetEngine = () => import("@/lib/sheet/sheet");

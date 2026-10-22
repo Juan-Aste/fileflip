@@ -2697,3 +2697,22 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Mejora posible (no planificada): ISNet cuantizado a uint8 (~44 MB) como opción "alta calidad".
 
 **Siguiente**: 3C.45 (WASM propio de libarchive 3.8.x con emscripten).
+
+## 2026-10-22 13:25 UTC — Fase 3, tarea 3C.45 (libarchive propio en WASM)
+
+**Qué se hizo**
+- `scripts/libarchive/build.sh`: build **reproducible** de **libarchive 3.8.10** + zlib 1.3.2 + bzip2 1.0.8 + xz/liblzma 5.8.4 con **Emscripten 6.0.13** (emsdk fijado). Descarga las fuentes de sus sitios oficiales y las comprueba con **sha256 fijados en el script** (anotados al primer build; no se verificaron firmas GPG). Solo lectores: sin herramientas, cripto, iconv, zstd, lz4, libxml2 ni expat. Salida versionada en `src/vendor/libarchive/` (`libarchive.mjs` + `libarchive.wasm`, ~490 KB, menos que los 600 KB anteriores, y `BUILD.md` con versiones, licencias y sha256 del WASM).
+- `glue.c`: constructor que hace `setlocale(LC_ALL, "C.UTF-8")` al iniciar → los nombres **UTF-16 de 7Z** se convierten a UTF-8 sin perder letras (`docs/año 2024/notas — 中文.txt` en vez de `docs/a_o 2024/…`).
+- `read_memory.c`: las dos funciones propias que espera el envoltorio de libarchive-wasm (`archive_read_new_memory`, `archive_read_next_entry`: NULL al final o ante error, y `archive_error_string` dice cuál). Se sigue usando **solo el envoltorio JS** de libarchive-wasm (import directo de `dist/ArchiveReader` y `dist/wrapLibarchiveWasm`), nunca su WASM viejo; el bundle emite un único `libarchive.*.wasm`.
+- Enlazado: módulo ES (`createLibarchive`), entorno web/worker (en Node los tests pasan `wasmBinary`), memoria creciente hasta 2 GB, y `-sWASM_BIGINT=0` (Emscripten 6 devuelve los enteros de 64 bits como BigInt y el envoltorio necesita `number`; la opción figura como obsoleta: si una versión futura la quita, adaptar el envoltorio). `-sFILESYSTEM=0` no enlaza (libarchive usa `poll`).
+- Se quitó de "Extraer ZIP" (5 idiomas) la advertencia sobre letras perdidas en los nombres de 7Z. ESLint ignora `src/vendor/**`.
+
+**Verificación**
+- `libarchive.test.ts` (7, Node, WASM nuevo): versión ≥ 3.8 con zlib, liblzma y bz2lib; 7Z con el nombre `docs/año 2024/notas — 中文.txt` y su contenido exactos; los demás casos de 3C.30 sin cambios (RAR 5 con el patrón de libarchive, RAR 4 y RAR 5 con emoji y enlaces omitidos, cifrados → `archiveEncrypted`, cortados/alterados → `fileDamaged`, límites).
+- `archive-tools.spec.ts` (7/7, Chromium): el caso 7Z/RAR ahora también comprueba el nombre con ñ y chino en la lista y dentro del ZIP de "Descargar todo".
+- Lint, typecheck, tests (980 + 8 saltados), build y `check:static` (1007 páginas).
+
+**Limitaciones**
+- El build tarda ~20 minutos y baja ~1 GB (emsdk); no corre en el CI: el WASM se versiona. Para actualizar libarchive: cambiar versión y sha256 en el script, correrlo y revisar los tests.
+
+**Siguiente**: hito 3D (3D.1 portada que escale a 100+ herramientas).

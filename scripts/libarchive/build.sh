@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+# Reproducible build of libarchive for the browser (7Z and RAR extraction):
+# libarchive + zlib + bzip2 + xz/liblzma compiled with a pinned Emscripten,
+# with a UTF-8 locale set at startup (glue.c). Output: src/vendor/libarchive/
+# (libarchive.mjs + libarchive.wasm + BUILD.md), committed to the repo.
+#
+# Usage: scripts/libarchive/build.sh [work-dir]
+# Needs: git, curl, cmake, make, python3. Downloads ~1 GB (emsdk) the first time.
+set -euo pipefail
+
+EMSDK_VERSION=6.0.13
+LIBARCHIVE_VERSION=3.8.10
+ZLIB_VERSION=1.3.2
+BZIP2_VERSION=1.0.8
+XZ_VERSION=5.8.4
+# sha256 of each source tarball, recorded when the build was first made (2026-10-22).
+SOURCES=(
+  "https://libarchive.org/downloads/libarchive-${LIBARCHIVE_VERSION}.tar.xz 56cad765459d5ee25a3b761f90c47d99379d28297fbfb72d908880d6b875fb96"
+  "https://zlib.net/zlib-${ZLIB_VERSION}.tar.xz d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3"
+  "https://sourceware.org/pub/bzip2/bzip2-${BZIP2_VERSION}.tar.gz ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269"
+  "https://github.com/tukaani-project/xz/releases/download/v${XZ_VERSION}/xz-${XZ_VERSION}.tar.xz 4ce24038fd4221e0d13bc1a2de7a4db56e90b92b3bf75321f6c14be73f65de4b"
+)
+
+HERE="$(cd "$(dirname "$0")" && pwd)"
+ROOT="$(cd "$HERE/../.." && pwd)"
+WORK="$(mkdir -p "${1:-${TMPDIR:-/tmp}/libarchive-build}" && cd "${1:-${TMPDIR:-/tmp}/libarchive-build}" && pwd)"
+OUT="$ROOT/src/vendor/libarchive"
+PREFIX="$WORK/prefix"
+mkdir -p "$WORK/src" "$PREFIX"
+
+# --- Emscripten ---
+if [ ! -d "$WORK/emsdk" ]; then git clone --quiet https://github.com/emscripten-core/emsdk.git "$WORK/emsdk"; fi
+"$WORK/emsdk/emsdk" install "$EMSDK_VERSION" >/dev/null
+"$WORK/emsdk/emsdk" activate "$EMSDK_VERSION" >/dev/null
+# shellcheck disable=SC1091
+source "$WORK/emsdk/emsdk_env.sh" >/dev/null 2>&1
+
+# --- Sources (checked against the recorded sha256) ---
+cd "$WORK/src"
+for line in "${SOURCES[@]}"; do
+  url="${line% *}"
+  sum="${line##* }"
+  file="$(basename "$url")"
+  [ -f "$file" ] || curl -sSfLo "$file" "$url"
+  echo "$sum  $file" | sha256sum -c --quiet -
+  rm -rf "${file%.tar.*}"
+  tar -xf "$file"
+done
+
+CFLAGS_COMMON="-O3 -fPIC"
+export CFLAGS="$CFLAGS_COMMON"
+
+# --- zlib ---
+cd "$WORK/src/zlib-$ZLIB_VERSION"
+emconfigure ./configure --static --prefix="$PREFIX" >/dev/null
+emmake make -j"$(nproc)" libz.a >/dev/null
+emmake make install >/dev/null
+
+# --- bzip2 ---
+cd "$WORK/src/bzip2-$BZIP2_VERSION"
+emmake make -j"$(nproc)" libbz2.a CC=emcc AR=emar RANLIB=emranlib CFLAGS="$CFLAGS_COMMON -D_FILE_OFFSET_BITS=64" >/dev/null
+mkdir -p "$PREFIX/lib" "$PREFIX/include"
+cp libbz2.a "$PREFIX/lib/" && cp bzlib.h "$PREFIX/include/"
+
+# --- xz (liblzma only) ---
+cd "$WORK/src/xz-$XZ_VERSION"
+emconfigure ./configure --prefix="$PREFIX" --host=wasm32-unknown-emscripten --disable-shared --enable-static \
+  --disable-threads --disable-nls --disable-xz --disable-xzdec --disable-lzmadec --disable-lzmainfo \
+  --disable-lzma-links --disable-scripts --disable-doc >/dev/null
+emmake make -j"$(nproc)" -C src/liblzma >/dev/null
+emmake make -C src/liblzma install >/dev/null
+
+# --- libarchive (readers only: no tools, no crypto, no iconv) ---
+cd "$WORK/src/libarchive-$LIBARCHIVE_VERSION"
+rm -rf wasm-build && mkdir wasm-build && cd wasm-build
+emcmake cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$PREFIX" -DCMAKE_FIND_ROOT_PATH="$PREFIX" \
+  -DBUILD_SHARED_LIBS=OFF -DENABLE_TEST=OFF -DENABLE_INSTALL=OFF \
+  -DENABLE_TAR=OFF -DENABLE_CPIO=OFF -DENABLE_CAT=OFF -DENABLE_UNZIP=OFF \
+  -DENABLE_ZLIB=ON -DENABLE_BZip2=ON -DENABLE_LZMA=ON \
+  -DENABLE_ZSTD=OFF -DENABLE_LZ4=OFF -DENABLE_LIBB2=OFF -DENABLE_LZO=OFF \
+  -DENABLE_OPENSSL=OFF -DENABLE_MBEDTLS=OFF -DENABLE_NETTLE=OFF -DENABLE_CNG=OFF \
+  -DENABLE_LIBXML2=OFF -DENABLE_EXPAT=OFF -DENABLE_PCREPOSIX=OFF -DENABLE_PCRE2POSIX=OFF -DENABLE_REGEX=OFF \
+  -DENABLE_ICONV=OFF -DENABLE_ACL=OFF -DENABLE_XATTR=OFF -DENABLE_WIN32_XMLLITE=OFF \
+  -DZLIB_LIBRARY="$PREFIX/lib/libz.a" -DZLIB_INCLUDE_DIR="$PREFIX/include" \
+  -DBZIP2_LIBRARIES="$PREFIX/lib/libbz2.a" -DBZIP2_INCLUDE_DIR="$PREFIX/include" \
+  -DLIBLZMA_LIBRARY="$PREFIX/lib/liblzma.a" -DLIBLZMA_INCLUDE_DIR="$PREFIX/include" >/dev/null
+emmake make -j"$(nproc)" archive_static >/dev/null
+
+# --- Link: the functions libarchive-wasm's wrapper calls, as an ES module ---
+FUNCTIONS=(
+  archive_version_number archive_version_string archive_version_details
+  archive_read_new_memory archive_read_new archive_read_support_filter_all archive_read_support_format_all
+  archive_read_open_memory archive_read_next_entry archive_read_has_encrypted_entries archive_read_data
+  archive_read_data_skip archive_read_add_passphrase archive_read_free archive_error_string
+  archive_entry_filetype archive_entry_pathname_utf8 archive_entry_symlink_utf8 archive_entry_hardlink_utf8
+  archive_entry_size archive_entry_atime archive_entry_birthtime archive_entry_ctime archive_entry_mtime
+  archive_entry_is_encrypted malloc free
+)
+EXPORTS="$(printf '"_%s",' "${FUNCTIONS[@]}")"
+mkdir -p "$OUT"
+emcc -O3 "$HERE/glue.c" "$HERE/read_memory.c" -I"$WORK/src/libarchive-$LIBARCHIVE_VERSION/libarchive" \
+  libarchive/libarchive.a "$PREFIX/lib/libz.a" "$PREFIX/lib/libbz2.a" "$PREFIX/lib/liblzma.a" \
+  -o "$OUT/libarchive.mjs" \
+  -sMODULARIZE=1 -sEXPORT_ES6=1 -sEXPORT_NAME=createLibarchive -sENVIRONMENT=web,worker \
+  -sWASM_BIGINT=0 -sALLOW_MEMORY_GROWTH=1 -sMAXIMUM_MEMORY=2GB -sINCOMING_MODULE_JS_API=locateFile,wasmBinary \
+  -sEXPORTED_FUNCTIONS="[${EXPORTS%,}]" -sEXPORTED_RUNTIME_METHODS='["cwrap","HEAP8","HEAPU8"]'
+
+cat > "$OUT/BUILD.md" <<INFO
+# libarchive para el navegador (generado; no editar)
+
+Generado por \`scripts/libarchive/build.sh\` el $(date -u +%Y-%m-%d) con Emscripten ${EMSDK_VERSION}.
+
+| Componente | Versión | Licencia |
+|---|---|---|
+| libarchive | ${LIBARCHIVE_VERSION} | BSD-2-Clause |
+| zlib | ${ZLIB_VERSION} | Zlib |
+| bzip2 | ${BZIP2_VERSION} | bzip2 (BSD-like) |
+| xz / liblzma | ${XZ_VERSION} | 0BSD |
+
+- BLAKE2 (para RAR 5): copia incluida en libarchive (`libb2/bundled`, CC0/Apache-2.0).
+- `-sWASM_BIGINT=0`: los enteros de 64 bits llegan a JS como `number` (el envoltorio de libarchive-wasm no acepta BigInt).
+- Locale \`C.UTF-8\` al iniciar (\`glue.c\`): nombres no ASCII de 7Z y RAR 4 en UTF-8.
+- Sin OpenSSL/Nettle/mbedTLS (no descifra: los cifrados se detectan y se rechazan), sin iconv, zstd, lz4, libxml2 ni expat.
+- sha256: libarchive.wasm $(sha256sum "$OUT/libarchive.wasm" | cut -d' ' -f1)
+INFO
+echo "libarchive: $OUT ready ($(du -h "$OUT/libarchive.wasm" | cut -f1) of WASM)"

@@ -1,10 +1,11 @@
-import { ArchiveReader, type LibarchiveWasm } from "libarchive-wasm";
+import { ArchiveReader } from "libarchive-wasm/dist/ArchiveReader";
+import type { LibarchiveWasm } from "libarchive-wasm/dist/libarchiveWasm";
 import { ConversionError } from "@/lib/convert-error";
 import { detectLibarchiveFormat } from "./detect";
 import { Budget, crc32, EXTRACT_LIMITS, safePath, withUniquePaths, type ExtractedFile, type ExtractLimits, type ExtractResult } from "./extract";
 
 // 7Z and RAR (v4 and v5) are read with libarchive compiled to WebAssembly
-// (libarchive-wasm). It runs inside the data worker's WASM sandbox, and gets a
+// (our own build, see libarchive-module.ts). It runs inside the data worker's WASM sandbox, and gets a
 // fresh instance per archive so nothing carries over from a hostile file.
 // Sizes are checked before each entry is read, and libarchive never writes
 // more than the declared size into the buffer it is given.

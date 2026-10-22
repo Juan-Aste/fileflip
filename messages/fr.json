@@ -1171,7 +1171,7 @@
         "q1": "Est-il sûr d’ouvrir un ZIP que l’on m’a envoyé ?",
         "a1": "Il est ouvert comme un fichier potentiellement hostile : rien n’est exécuté, les chemins qui tentent de sortir du dossier (comme « ../ ») sont corrigés, les liens symboliques et fichiers spéciaux sont ignorés, et les « bombes ZIP » s’arrêtent dès qu’elles dépassent la limite. Analysez tout de même avec un antivirus les programmes provenant de sources inconnues.",
         "q2": "Quels formats peut-il ouvrir ?",
-        "a2": "ZIP, RAR (4 et 5), 7Z, TAR, TAR.GZ (ou TGZ) et GZ. Les archives protégées par mot de passe ne peuvent pas encore être ouvertes ici, pas plus que les ZIP aux méthodes de compression rares ou les RAR en plusieurs parties. Dans les 7Z, les lettres accentuées ou d’autres alphabets dans les noms peuvent être remplacées par « _ » ; le contenu ne change pas.",
+        "a2": "ZIP, RAR (4 et 5), 7Z, TAR, TAR.GZ (ou TGZ) et GZ. Les archives protégées par mot de passe ne peuvent pas encore être ouvertes ici, pas plus que les ZIP aux méthodes de compression rares ou les RAR en plusieurs parties.",
         "q3": "Y a-t-il une limite ?",
         "a3": "L’archive peut peser jusqu’à 500 Mo (RAR et 7Z jusqu’à 250 Mo), et son contenu jusqu’à 500 Mo et 5 000 fichiers au total, car tout est extrait dans la mémoire de votre navigateur.",
         "q4": "Les dossiers sont-ils conservés ?",

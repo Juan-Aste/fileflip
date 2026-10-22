@@ -1171,7 +1171,7 @@
         "q1": "É seguro abrir um ZIP que me enviaram?",
         "a1": "Ele é aberto como um arquivo potencialmente hostil: nada é executado, caminhos que tentam sair da pasta (como “../”) são corrigidos, links simbólicos e arquivos especiais são ignorados e as “bombas ZIP” param ao passar do limite. Mesmo assim, verifique com um antivírus os programas baixados de fontes desconhecidas.",
         "q2": "Quais formatos ele abre?",
-        "a2": "ZIP, RAR (4 e 5), 7Z, TAR, TAR.GZ (ou TGZ) e GZ. Arquivos com senha ainda não podem ser abertos aqui, nem ZIPs com métodos de compressão incomuns ou RARs divididos em partes. Nos 7Z, letras acentuadas ou de outros alfabetos nos nomes podem ser trocadas por “_”; o conteúdo não muda.",
+        "a2": "ZIP, RAR (4 e 5), 7Z, TAR, TAR.GZ (ou TGZ) e GZ. Arquivos com senha ainda não podem ser abertos aqui, nem ZIPs com métodos de compressão incomuns ou RARs divididos em partes.",
         "q3": "Existe limite?",
         "a3": "O arquivo compactado pode ter até 500 MB (RAR e 7Z até 250 MB), e o conteúdo até 500 MB e 5.000 arquivos no total, porque tudo é extraído na memória do seu navegador.",
         "q4": "As pastas são mantidas?",
