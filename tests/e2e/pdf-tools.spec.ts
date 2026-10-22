@@ -98,6 +98,20 @@ test.describe("tool: organize-pdf", () => {
     expect(pdf.labels).toEqual(["1 of 3", "3 of 3"]);
     expect(pdf.rotations).toEqual([0, 90]);
   });
+
+  test("reorders pages by dragging their thumbnails", async ({ page }) => {
+    await openWithFiles(page, "/es/ordenar-pdf", ["document.pdf"]);
+    const cards = page.getByRole("listitem").filter({ has: page.getByRole("button", { name: /^Girar página/ }) });
+    await expect(cards).toHaveCount(3, { timeout: 20_000 });
+    // Wait for the thumbnails so the cards keep their size while dragging.
+    await expect(page.getByRole("img", { name: /^Página \d$/ })).toHaveCount(3, { timeout: 20_000 });
+    // Page 3 dropped on page 1 goes first; then page 1 (now second) onto the last card.
+    await cards.nth(2).dragTo(cards.nth(0));
+    await expect(cards.locator("span.text-xs")).toHaveText(["3", "1", "2"]);
+    await cards.nth(1).dragTo(cards.nth(2));
+    await expect(cards.locator("span.text-xs")).toHaveText(["3", "2", "1"]);
+    expect((await pdfOf(page, "Guardar PDF")).labels).toEqual(["3 of 3", "2 of 3", "1 of 3"]);
+  });
 });
 
 const thumb = (page: Page, n: number) => page.getByRole("button", { name: `Página ${n}`, exact: true });

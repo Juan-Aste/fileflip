@@ -2911,3 +2911,13 @@ Se revisó cada punto de "Pendiente del dueño" y de la sección 10 de `docs/rep
 ## 2026-10-22 19:50 UTC — Fin de la ejecución (tope de 5 tareas)
 - Hechas: 4.1a, 4.1b, 4.1c, 4.2a, 4.2b. CI de GitHub en verde en 10e1b17.
 - Quedan: 4.2c (prueba de arrastrar y soltar en "Ordenar PDF") y 4.3 (`docs/launch-checklist.md`).
+
+## 2026-10-22 20:20 UTC — Fase 4, tarea 4.2c (arrastrar y soltar en "Ordenar PDF") — HITO 4.2 TERMINADO
+
+**Qué se hizo**
+- `tests/e2e/pdf-tools.spec.ts`: nueva prueba "reorders pages by dragging their thumbnails". Espera las 3 miniaturas, arrastra la página 3 sobre la 1 (orden 3, 1, 2) y luego la 1 sobre la última (3, 2, 1) con `dragTo` de Playwright (arrastre HTML5 real en Chromium), y comprueba con pdf.js que el PDF guardado sale en ese orden. Reemplaza la revisión manual que había quedado de la fase 1.
+
+**Verificación**
+- Lint, build y tests unitarios (997) pasan; `pdf-tools.spec.ts` 42/42.
+
+**Siguiente**: 4.3 (`docs/launch-checklist.md`).
