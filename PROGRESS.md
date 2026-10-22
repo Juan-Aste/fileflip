@@ -2921,3 +2921,14 @@ Se revisó cada punto de "Pendiente del dueño" y de la sección 10 de `docs/rep
 - Lint, build y tests unitarios (997) pasan; `pdf-tools.spec.ts` 42/42.
 
 **Siguiente**: 4.3 (`docs/launch-checklist.md`).
+
+## 2026-10-22 20:25 UTC — Fase 4, tarea 4.2d (`/ads.txt` para AdSense)
+
+Al preparar la lista para publicar se vio que faltaba `ads.txt`, que AdSense exige para servir anuncios sin restricciones. Se resuelve en código sin decisiones del dueño.
+
+**Qué se hizo**
+- `src/lib/ads-txt.ts` + `src/app/ads.txt/route.ts`: `/ads.txt` responde `google.com, pub-…, DIRECT, f08c47fec0942fa0` a partir de `NEXT_PUBLIC_ADSENSE_CLIENT` (`ca-pub-…`); sin la variable (o con un valor inválido) responde 404. Como es `NEXT_PUBLIC_*`, se toma al construir: al cargar el ID de AdSense hay que redesplegar.
+- Test unitario `src/lib/ads-txt.test.ts`.
+
+**Verificación**
+- Lint, build y tests unitarios pasan; `next start` sin la variable: `/ads.txt` → 404 (el middleware de idiomas no lo intercepta).

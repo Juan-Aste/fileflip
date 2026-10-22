@@ -333,6 +333,7 @@ Cierre antes de publicar: tareas chicas que no requieren decisiones del dueño. 
 - [x] 4.2a Revisar "Pendiente del dueño" (PROGRESS.md) y la sección 10 de `docs/report-phase3.md`: clasificar cada punto (código / dueño) y dejar la lista del dueño al día
 - [x] 4.2b CLS de la página de la categoría PDF (0,014 en 1 de 3 corridas: la fila de pastillas se reacomoda al cargar la fuente): dejarlo en 0
 - [x] 4.2c Prueba automatizada de arrastrar y soltar miniaturas en "Ordenar PDF" (quedó como revisión manual en la fase 1)
+- [x] 4.2d `/ads.txt` generado desde `NEXT_PUBLIC_ADSENSE_CLIENT` (AdSense lo pide para servir anuncios; sin la variable, 404)
 
 ### Hito 4.3 — Lista para publicar
 - [ ] 4.3 `docs/launch-checklist.md`: pasos concretos y en orden para publicar (variables de Railway con valor de ejemplo, Gotenberg, dominio y DNS, Google OAuth, Resend, Mercado Pago, AdSense, Search Console, mergear `dev` en `main`, qué verificar después)
