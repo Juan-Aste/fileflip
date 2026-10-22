@@ -227,7 +227,11 @@
     "videoEncoderUnsupported": "Tu navegador no puede crear video en este formato (MOV necesita H.264). Prueba con Chrome, Edge o Safari, o elige MP4, WebM o MKV.",
     "videoTooLong": "El video es demasiado largo: el máximo es de 2 horas por archivo.",
     "videoRangeInvalid": "Revisa los tiempos: el inicio debe ser anterior al fin y ambos deben estar dentro del video.",
-    "gifTooManyFrames": "El GIF tendría demasiados cuadros: acorta el tramo o baja los cuadros por segundo."
+    "gifTooManyFrames": "El GIF tendría demasiados cuadros: acorta el tramo o baja los cuadros por segundo.",
+    "modelEmpty": "Este modelo no tiene caras (triángulos) que convertir: puede estar vacío o ser una nube de puntos.",
+    "modelTooLarge": "El modelo es demasiado grande: el máximo es de 3 millones de triángulos.",
+    "modelExternalFiles": "Este glTF usa archivos aparte (.bin o texturas) que no se subieron. Conviértelo primero a GLB (un solo archivo) en tu programa 3D, o usa un .gltf con todo incluido.",
+    "modelCompressed": "Este glTF está comprimido con Draco, meshopt o KTX2, que todavía no podemos leer. Expórtalo sin compresión."
   },
   "Tools": {
     "merge-pdf": {
@@ -1389,6 +1393,22 @@
         "q4": "¿Hay algún límite?",
         "a4": "Hasta 200 MB por video en el plan gratis (500 MB con Pro), 2 horas en total y 30 minutos de proceso. El resultado se arma en la memoria del dispositivo, así que en celulares conviene unir videos cortos. Tu navegador tiene que poder decodificar cada video (H.264 no se decodifica en algunos navegadores sin códecs propietarios)."
       }
+    },
+    "model-converter": {
+      "title": "Convertir modelo 3D",
+      "description": "Convierte modelos 3D entre STL, OBJ, PLY y GLB (glTF) en tu navegador, sin instalar nada.",
+      "action": "Convertir modelo",
+      "about": "Pasa un modelo de un formato a otro para imprimirlo en 3D, abrirlo en otro programa o publicarlo en la web: STL para impresoras y laminadores, OBJ y PLY para editores y escáneres, y GLB (glTF binario) para la web, la realidad aumentada y los motores de juegos. Lee STL (binario y ASCII), OBJ, PLY, GLB y glTF con todo incluido, y conserva la geometría, las posiciones de cada pieza y, cuando el formato de salida lo admite (PLY y GLB), los colores por vértice. Puedes convertir varios archivos a la vez. Todo pasa en tu dispositivo: los modelos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Se conservan los materiales y las texturas?",
+        "a1": "Se conservan la forma y, en PLY y GLB, los colores por vértice. STL no guarda colores ni materiales, y el OBJ se genera sin archivo .mtl, así que las texturas y los materiales se pierden en esas salidas. De GLB a GLB se mantienen los materiales.",
+        "q2": "¿Cambia el tamaño o la orientación del modelo?",
+        "a2": "No: las coordenadas se copian tal cual, sin escalar ni rotar. Ten en cuenta que muchos programas de impresión usan el eje Z hacia arriba y glTF usa el Y, así que al pasar de STL a GLB el modelo puede verse acostado; rótalo en tu visor si hace falta.",
+        "q3": "Mi .gltf da error por archivos aparte, ¿qué hago?",
+        "a3": "Un .gltf puede depender de un .bin y de imágenes externas, que no podemos pedir. Expórtalo como GLB (un solo archivo) o como glTF con todo incluido. Los glTF comprimidos con Draco o meshopt todavía no se pueden leer.",
+        "q4": "¿Hay algún límite?",
+        "a4": "Hasta 200 MB y 3 millones de triángulos por modelo, y 5 minutos de proceso por archivo. Las nubes de puntos (PLY sin caras) no se pueden convertir a mallas."
+      }
     }
   },
   "ToolUi": {
@@ -2439,5 +2459,16 @@
   "JoinVideosTool": {
     "note": "El resultado toma el tamaño del primer video (máximo 1080p); los demás se encajan con bandas negras. Se recodifica en calidad alta, en tu dispositivo.",
     "size": "{width} × {height} px."
+  },
+  "ModelConverterTool": {
+    "target": "Convertir a",
+    "targets": {
+      "stl": "STL",
+      "obj": "OBJ",
+      "ply": "PLY",
+      "glb": "GLB (glTF binario)"
+    },
+    "note": "Se conservan la geometría y, en PLY y GLB, los colores por vértice; STL y OBJ no guardan materiales. Hasta {max} triángulos por modelo. Se procesa en tu dispositivo.",
+    "done": "{triangles} triángulos."
   }
 }

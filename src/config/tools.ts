@@ -104,6 +104,7 @@ export const toolIds = [
   "video-to-gif",
   "video-speed",
   "join-videos",
+  "model-converter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -157,6 +158,8 @@ const OCR_MAX_BYTES = 50 * 1024 * 1024;
 const OCR_PDF_MAX_BYTES = 100 * 1024 * 1024;
 /** Books are unpacked in the worker (EPUB_LIMITS) and assembled into one page in the tab. */
 const EPUB_MAX_BYTES = 100 * 1024 * 1024;
+/** 3D models: a 3-million-triangle binary STL is ~150 MB. */
+const MODEL_MAX_BYTES = 200 * 1024 * 1024;
 /** EPUB → PDF uploads the book already assembled into one page (images embedded): the Pro server limit. */
 const EPUB_PDF_MAX_BYTES = 50 * 1024 * 1024;
 /** Chapters are sanitized and serialized on the page; room for images embedded as data: URLs. */
@@ -1043,6 +1046,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 30 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
     status: "verified",
     slugs: { es: "unir-videos", en: "join-videos", pt: "juntar-videos", fr: "fusionner-videos", zh: "join-videos" },
+  },
+  "model-converter": {
+    id: "model-converter",
+    category: "3d",
+    inputs: ["stl", "obj", "ply", "glb", "gltf"],
+    outputs: ["stl", "obj", "ply", "glb"],
+    engine: "browser",
+    libraries: ["three"],
+    // Up to MAX_MODEL_TRIANGLES (3 million) per model, parsed and written in a worker.
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: MODEL_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "convertir-modelo-3d", en: "3d-model-converter", pt: "converter-modelo-3d", fr: "convertir-modele-3d", zh: "3d-model-converter" },
   },
 
 

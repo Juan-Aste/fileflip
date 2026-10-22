@@ -66,6 +66,7 @@ import {
   Volume2,
   FastForward,
   Film,
+  Box,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
 
@@ -144,6 +145,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "video-to-gif": ImagePlay,
   "video-speed": FastForward,
   "join-videos": Film,
+  "model-converter": Box,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

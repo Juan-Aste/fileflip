@@ -56,6 +56,11 @@ export type FormatId =
   | "aac"
   | "webm"
   | "aiff"
+  | "stl"
+  | "obj"
+  | "ply"
+  | "glb"
+  | "gltf"
   | "mp4"
   | "mov"
   | "mkv";
@@ -131,6 +136,11 @@ export const formats: Record<FormatId, FormatInfo> = {
   mkv: { id: "mkv", label: "MKV", mime: "video/x-matroska", extensions: ["mkv"], category: "data" },
   webm: { id: "webm", label: "WEBM", mime: "audio/webm", extensions: ["webm", "weba"], category: "data" },
   aiff: { id: "aiff", label: "AIFF", mime: "audio/aiff", extensions: ["aiff", "aif", "aifc"], category: "data" },
+  stl: { id: "stl", label: "STL", mime: "model/stl", extensions: ["stl"], category: "data" },
+  obj: { id: "obj", label: "OBJ", mime: "model/obj", extensions: ["obj"], category: "data" },
+  ply: { id: "ply", label: "PLY", mime: "application/x-ply", extensions: ["ply"], category: "data" },
+  glb: { id: "glb", label: "GLB", mime: "model/gltf-binary", extensions: ["glb"], category: "data" },
+  gltf: { id: "gltf", label: "glTF", mime: "model/gltf+json", extensions: ["gltf"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 

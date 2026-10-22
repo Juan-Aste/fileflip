@@ -2498,3 +2498,23 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Siempre recodifica (incluso si todos los clips tienen el mismo formato): más lento que una unión por copia, pero funciona con cualquier mezcla. Sin transiciones. El navegador tiene que decodificar cada video (H.264 no se decodifica en Chromium sin códecs propietarios). El resultado se arma en memoria: en celulares conviene unir videos cortos.
 
 **Siguiente**: 3C.39 (modelos 3D con three.js).
+
+## 2026-10-22 09:05 UTC — Fase 3, tarea 3C.39a (convertir modelo 3D)
+
+**Qué se hizo**
+- 3C.39 se dividió en 3C.39a (conversor) y 3C.39b (visor 3D en la página).
+- **Convertir modelo 3D** (`/es/convertir-modelo-3d`, `/en/3d-model-converter`, `/pt/converter-modelo-3d`, `/fr/convertir-modele-3d`), primera herramienta de la categoría **3D** (ahora publicada): en lotes, **STL (binario y ASCII), OBJ, PLY, GLB y glTF con todo incluido** → **STL binario, OBJ, PLY binario little-endian o GLB**. Hasta 200 MB y **3 millones de triángulos** por modelo (`MAX_MODEL_TRIANGLES`), 5 minutos por archivo. Formatos nuevos `stl`, `obj`, `ply`, `glb`, `gltf` en `formats.ts`.
+- Dependencia nueva **three 0.186.1 (MIT)** (+ `@types/three` en desarrollo), anotada en `docs/dependencies.md`. Solo se carga en el worker `workers/model.worker.ts` (pool de trabajos: cancelación y tiempo máximo terminan el worker); ninguna otra página la incluye.
+- Motor `src/lib/model3d/convert.ts`: loaders y exporters de three.js. Se conservan geometría, transformaciones (los exporters aplican la matriz de cada pieza) y **colores por vértice** en PLY y GLB (OBJ y STL no los guardan; GLB → GLB conserva materiales). Sin normales se calculan. Coordenadas sin escalar ni rotar (la FAQ explica Z arriba vs. Y arriba).
+- Protecciones (`options.ts`, sin three, con tests): un glTF/GLB cuyos buffers o imágenes no estén dentro del archivo (`data:` o el bloque BIN) se rechaza **antes de cargarlo** (`modelExternalFiles`; así three nunca hace pedidos de red); extensiones requeridas Draco/meshopt/KTX2 → `modelCompressed`; GLB con encabezado inválido → dañado; STL binario cortado (el loader de three lo tomaba como texto y daba un modelo vacío) → `fileDamaged`; OBJ sin vértices → formato no admitido; PLY sin caras (nube de puntos) o modelo sin triángulos → `modelEmpty`; más de 3 M triángulos → `modelTooLarge`; coordenadas no finitas → dañado. El PLY se escribe con el valor de retorno síncrono del exporter (su callback usa `requestAnimationFrame`, que no está garantizado en workers). 4 códigos de error nuevos en los 5 idiomas.
+- Fixtures escritos byte a byte por `scripts/fixtures/models.mjs` (sin three.js): cubo de 10 mm en STL binario y ASCII, pirámide con base cuadrada (un cuadrilátero) en OBJ, tetraedro con colores por vértice en PLY ASCII, GLB y glTF embebido; corruptos: STL cortado, OBJ de texto, PLY sin caras, glTF con `.bin` externo, glTF con Draco requerido, GLB con firma inválida (todos < 2 KB).
+
+**Verificación**
+- `src/lib/model3d/convert.test.ts` (4 tests en Node): lectura de cada formato (triángulos, caja envolvente, colores), códigos de error de cada corrupto, cadena STL → OBJ → PLY → STL sin cambios y colores GLB → PLY.
+- `tests/e2e/model-tools.spec.ts` (3 casos en Chromium; salida leída con **lectores propios de STL, OBJ, PLY y GLB escritos desde las especificaciones**): los 6 fixtures → GLB (ZIP) con 12/6/4 triángulos, cajas [0,0,0]–[10,10,10], [0,0,0]–[20,15,20] y [0,0,0]–[30,30,30], y **colores del tetraedro exactos** (rojo, verde, azul, blanco) desde PLY, GLB y glTF; GLB → PLY con colores, OBJ → STL, STL → OBJ y STL ASCII → binario; los 6 corruptos dan su mensaje mientras el bueno se convierte. Sin llamadas al servidor.
+- Lint, typecheck, tests (932 + 8 saltados), build, `check:static` (977 páginas) y `npm run test:e2e` completo: 304 pasan, 4 saltados (sin Gotenberg ni EPUBCheck). three.js solo aparece en chunks diferidos (worker y herramienta).
+
+**Limitaciones**
+- Sin visor todavía (3C.39b). OBJ sin `.mtl` (sin materiales ni texturas); STL sin colores; los colores PLY se escriben como `float` (0–1), que leen MeshLab, CloudCompare y Blender. Las texturas de un GLB solo se conservan en GLB → GLB. glTF con archivos externos o comprimidos no se leen.
+
+**Siguiente**: 3C.39b (visor 3D).

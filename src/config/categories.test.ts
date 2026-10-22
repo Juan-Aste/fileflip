@@ -22,12 +22,12 @@ describe("catalog categories", () => {
   });
 
   it("publish only categories with content", () => {
-    expect(publishedCategories).toEqual(["image", "pdf", "document", "data", "developer", "utility", "subtitle", "font", "archive", "ocr", "ebook", "audio", "video"]);
+    expect(publishedCategories).toEqual(["image", "pdf", "document", "data", "developer", "utility", "subtitle", "font", "archive", "ocr", "ebook", "audio", "video", "3d"]);
     for (const c of publishedCategories) {
       const e = categoryEntries(c);
       expect(e.tools.length + e.conversions.length).toBeGreaterThan(0);
     }
-    expect(categoryFromSlug("es", categorySlug("3d", "es"))).toBeUndefined();
+    expect(categoryFromSlug("es", categorySlug("cad", "es"))).toBeUndefined();
   });
 
   it("put every conversion page in exactly one category", () => {
@@ -48,6 +48,7 @@ describe("catalog categories", () => {
     expect(urls).toContain("https://x.test/es/herramientas");
     expect(urls).toContain("https://x.test/en/pdf-tools");
     expect(urls).toContain("https://x.test/zh/document-tools");
-    expect(urls).not.toContain("https://x.test/en/3d-tools");
+    expect(urls).toContain("https://x.test/en/3d-tools");
+    expect(urls).not.toContain("https://x.test/en/cad-tools");
   });
 });

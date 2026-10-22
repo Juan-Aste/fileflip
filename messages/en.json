@@ -227,7 +227,11 @@
     "videoEncoderUnsupported": "Your browser can't create video in this format (MOV needs H.264). Try Chrome, Edge or Safari, or choose MP4, WebM or MKV.",
     "videoTooLong": "The video is too long: the maximum is 2 hours per file.",
     "videoRangeInvalid": "Check the times: the start must come before the end and both must be inside the video.",
-    "gifTooManyFrames": "The GIF would have too many frames: shorten the clip or lower the frames per second."
+    "gifTooManyFrames": "The GIF would have too many frames: shorten the clip or lower the frames per second.",
+    "modelEmpty": "This model has no faces (triangles) to convert: it may be empty or a point cloud.",
+    "modelTooLarge": "The model is too large: the maximum is 3 million triangles.",
+    "modelExternalFiles": "This glTF uses separate files (.bin or textures) that weren't uploaded. Convert it to GLB (a single file) in your 3D software first, or use a .gltf with everything embedded.",
+    "modelCompressed": "This glTF is compressed with Draco, meshopt or KTX2, which we can't read yet. Export it without compression."
   },
   "Tools": {
     "merge-pdf": {
@@ -1389,6 +1393,22 @@
         "q4": "Is there a limit?",
         "a4": "Up to 200 MB per video on the free plan (500 MB with Pro), 2 hours in total and 30 minutes of processing. The result is built in your device's memory, so on phones it's best to join short videos. Your browser has to be able to decode each video (H.264 isn't decoded in some browsers without proprietary codecs)."
       }
+    },
+    "model-converter": {
+      "title": "3D model converter",
+      "description": "Convert 3D models between STL, OBJ, PLY and GLB (glTF) in your browser, with nothing to install.",
+      "action": "Convert model",
+      "about": "Move a model from one format to another to 3D print it, open it in other software or publish it on the web: STL for printers and slicers, OBJ and PLY for editors and scanners, and GLB (binary glTF) for the web, augmented reality and game engines. It reads STL (binary and ASCII), OBJ, PLY, GLB and self-contained glTF, and keeps the geometry, where each part sits and, when the output format supports them (PLY and GLB), the vertex colors. You can convert several files at once. Everything happens on your device: the models aren't uploaded to any server.",
+      "faq": {
+        "q1": "Are materials and textures kept?",
+        "a1": "The shape is kept and, in PLY and GLB, the vertex colors. STL stores no colors or materials, and the OBJ is written without an .mtl file, so textures and materials are lost in those outputs. From GLB to GLB the materials are kept.",
+        "q2": "Does the size or orientation of the model change?",
+        "a2": "No: coordinates are copied as they are, without scaling or rotating. Note that many printing programs use Z as up while glTF uses Y, so after STL → GLB the model may appear lying down; rotate it in your viewer if needed.",
+        "q3": "My .gltf fails because of separate files. What can I do?",
+        "a3": "A .gltf can depend on a .bin and external images, which we can't fetch. Export it as GLB (a single file) or as glTF with everything embedded. glTF compressed with Draco or meshopt can't be read yet.",
+        "q4": "Is there a limit?",
+        "a4": "Up to 200 MB and 3 million triangles per model, and 5 minutes of processing per file. Point clouds (PLY without faces) can't be converted to meshes."
+      }
     }
   },
   "ToolUi": {
@@ -2439,5 +2459,16 @@
   "JoinVideosTool": {
     "note": "The result takes the size of the first video (1080p at most); the others are fitted with black bands. Re-encoded at high quality, on your device.",
     "size": "{width} × {height} px."
+  },
+  "ModelConverterTool": {
+    "target": "Convert to",
+    "targets": {
+      "stl": "STL",
+      "obj": "OBJ",
+      "ply": "PLY",
+      "glb": "GLB (binary glTF)"
+    },
+    "note": "The geometry is kept and, in PLY and GLB, the vertex colors; STL and OBJ store no materials. Up to {max} triangles per model. Processed on your device.",
+    "done": "{triangles} triangles."
   }
 }

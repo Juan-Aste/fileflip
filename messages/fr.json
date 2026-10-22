@@ -227,7 +227,11 @@
     "videoEncoderUnsupported": "Votre navigateur ne peut pas créer de vidéo dans ce format (MOV exige H.264). Essayez Chrome, Edge ou Safari, ou choisissez MP4, WebM ou MKV.",
     "videoTooLong": "La vidéo est trop longue : le maximum est de 2 heures par fichier.",
     "videoRangeInvalid": "Vérifiez les temps : le début doit précéder la fin et les deux doivent être dans la vidéo.",
-    "gifTooManyFrames": "Le GIF aurait trop d'images : raccourcissez l'extrait ou baissez le nombre d'images par seconde."
+    "gifTooManyFrames": "Le GIF aurait trop d'images : raccourcissez l'extrait ou baissez le nombre d'images par seconde.",
+    "modelEmpty": "Ce modèle n'a pas de faces (triangles) à convertir : il est peut-être vide ou c'est un nuage de points.",
+    "modelTooLarge": "Le modèle est trop grand : le maximum est de 3 millions de triangles.",
+    "modelExternalFiles": "Ce glTF utilise des fichiers séparés (.bin ou textures) qui n'ont pas été envoyés. Convertissez-le d'abord en GLB (un seul fichier) dans votre logiciel 3D, ou utilisez un .gltf qui contient tout.",
+    "modelCompressed": "Ce glTF est compressé avec Draco, meshopt ou KTX2, que nous ne savons pas encore lire. Exportez-le sans compression."
   },
   "Tools": {
     "merge-pdf": {
@@ -1389,6 +1393,22 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures au total et 30 minutes de traitement. Le résultat est construit dans la mémoire de l'appareil : sur téléphone, mieux vaut fusionner des vidéos courtes. Votre navigateur doit pouvoir décoder chaque vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
       }
+    },
+    "model-converter": {
+      "title": "Convertir un modèle 3D",
+      "description": "Convertissez des modèles 3D entre STL, OBJ, PLY et GLB (glTF) dans votre navigateur, sans rien installer.",
+      "action": "Convertir le modèle",
+      "about": "Passez un modèle d'un format à un autre pour l'imprimer en 3D, l'ouvrir dans un autre logiciel ou le publier sur le web : STL pour les imprimantes et les trancheurs, OBJ et PLY pour les éditeurs et les scanners, et GLB (glTF binaire) pour le web, la réalité augmentée et les moteurs de jeu. Il lit le STL (binaire et ASCII), l'OBJ, le PLY, le GLB et le glTF autonome, et conserve la géométrie, la position de chaque pièce et, quand le format de sortie le permet (PLY et GLB), les couleurs par sommet. Vous pouvez convertir plusieurs fichiers à la fois. Tout se passe sur votre appareil : les modèles ne sont envoyés à aucun serveur.",
+      "faq": {
+        "q1": "Les matériaux et les textures sont-ils conservés ?",
+        "a1": "La forme est conservée et, en PLY et GLB, les couleurs par sommet. Le STL ne stocke ni couleurs ni matériaux, et l'OBJ est écrit sans fichier .mtl : textures et matériaux sont perdus dans ces sorties. De GLB à GLB, les matériaux sont conservés.",
+        "q2": "La taille ou l'orientation du modèle changent-elles ?",
+        "a2": "Non : les coordonnées sont copiées telles quelles, sans mise à l'échelle ni rotation. Beaucoup de logiciels d'impression utilisent Z vers le haut alors que glTF utilise Y : après STL → GLB, le modèle peut apparaître couché ; tournez-le dans votre visionneuse si besoin.",
+        "q3": "Mon .gltf échoue à cause de fichiers séparés. Que faire ?",
+        "a3": "Un .gltf peut dépendre d'un .bin et d'images externes, que nous ne pouvons pas récupérer. Exportez-le en GLB (un seul fichier) ou en glTF autonome. Les glTF compressés avec Draco ou meshopt ne peuvent pas encore être lus.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Jusqu'à 200 Mo et 3 millions de triangles par modèle, et 5 minutes de traitement par fichier. Les nuages de points (PLY sans faces) ne peuvent pas être convertis en maillages."
+      }
     }
   },
   "ToolUi": {
@@ -2439,5 +2459,16 @@
   "JoinVideosTool": {
     "note": "Le résultat prend la taille de la première vidéo (1080p au maximum) ; les autres sont ajustées avec des bandes noires. Réencodage en haute qualité, sur votre appareil.",
     "size": "{width} × {height} px."
+  },
+  "ModelConverterTool": {
+    "target": "Convertir en",
+    "targets": {
+      "stl": "STL",
+      "obj": "OBJ",
+      "ply": "PLY",
+      "glb": "GLB (glTF binaire)"
+    },
+    "note": "La géométrie est conservée et, en PLY et GLB, les couleurs par sommet ; STL et OBJ ne stockent pas de matériaux. Jusqu'à {max} triangles par modèle. Traitement sur votre appareil.",
+    "done": "{triangles} triangles."
   }
 }
