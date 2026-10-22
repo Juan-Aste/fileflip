@@ -2470,5 +2470,18 @@
     },
     "note": "保留几何形状，在 PLY 和 GLB 中还保留顶点颜色；STL 和 OBJ 不保存材质。每个模型最多 {max} 个三角形。在你的设备上处理。",
     "done": "{triangles} 个三角形。"
+  },
+  "ModelViewer": {
+    "loading": "正在准备预览…",
+    "label": "{name} 的 3D 预览。",
+    "keys": "拖动可旋转，使用滚轮或双指可缩放；键盘：方向键旋转，+ 和 − 缩放，0 回到初始视图。",
+    "summary": "{name}：{triangles} 个三角形 · {x} × {y} × {z}（宽 × 高 × 深，单位与文件相同）。",
+    "rotateLeft": "向左旋转",
+    "rotateRight": "向右旋转",
+    "zoomIn": "放大",
+    "zoomOut": "缩小",
+    "reset": "回到初始视图",
+    "resetShort": "居中",
+    "tooLarge": "模型超过 50 MB：可以转换，但为避免页面卡顿不显示预览。"
   }
 }

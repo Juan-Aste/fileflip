@@ -9,6 +9,7 @@ import { MAX_MODEL_TRIANGLES, modelExtension, modelFormat, modelInputs, modelMim
 import { runBatch } from "@/lib/jobs";
 import { trackTool } from "@/lib/stats-client";
 import ChoiceGroup from "../ChoiceGroup";
+import ModelViewer from "./ModelViewer";
 import ToolShell from "../shell/ToolShell";
 import { renameExtension, type ShellOutput } from "../shell/state";
 
@@ -21,14 +22,18 @@ export default function ModelConverterTool() {
   const tt = useTranslations("Tools.model-converter");
   const locale = useLocale() as Locale;
   const [target, setTarget] = useState<ModelTarget>("stl");
+  const [preview, setPreview] = useState<File | null>(null);
 
   return (
     <ToolShell
       input={{ kind: "files", extensions: [...modelInputs], multiple: true, maxFileBytes: tool.limits.maxFileBytes }}
       actionLabel={tt("action")}
       zipName="fileflect-3d.zip"
+      onFilesChange={(files) => setPreview(files[0] ?? null)}
       options={
         <div className="flex flex-col gap-4">
+          {/* The first model of the list; keyed so each file gets a fresh canvas (and WebGL context). */}
+          {preview && <ModelViewer key={`${preview.name}-${preview.size}-${preview.lastModified}`} file={preview} />}
           <ChoiceGroup legend={t("target")} value={target} onChange={setTarget} options={modelTargets.map((f) => ({ value: f, label: t(`targets.${f}`) }))} />
           <p className="text-sm text-muted">{t("note", { max: MAX_MODEL_TRIANGLES.toLocaleString(locale) })}</p>
         </div>

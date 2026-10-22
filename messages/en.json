@@ -2470,5 +2470,18 @@
     },
     "note": "The geometry is kept and, in PLY and GLB, the vertex colors; STL and OBJ store no materials. Up to {max} triangles per model. Processed on your device.",
     "done": "{triangles} triangles."
+  },
+  "ModelViewer": {
+    "loading": "Preparing the preview…",
+    "label": "3D preview of {name}.",
+    "keys": "Drag to rotate and use the wheel or two fingers to zoom; with the keyboard: arrows to rotate, + and − to zoom, 0 to go back to the initial view.",
+    "summary": "{name}: {triangles} triangles · {x} × {y} × {z} (width × height × depth, in the file's units).",
+    "rotateLeft": "Rotate left",
+    "rotateRight": "Rotate right",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Back to the initial view",
+    "resetShort": "Center",
+    "tooLarge": "The model is over 50 MB: it can be converted, but we don't preview it so the page doesn't freeze."
   }
 }

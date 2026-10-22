@@ -2470,5 +2470,18 @@
     },
     "note": "La géométrie est conservée et, en PLY et GLB, les couleurs par sommet ; STL et OBJ ne stockent pas de matériaux. Jusqu'à {max} triangles par modèle. Traitement sur votre appareil.",
     "done": "{triangles} triangles."
+  },
+  "ModelViewer": {
+    "loading": "Préparation de l'aperçu…",
+    "label": "Aperçu 3D de {name}.",
+    "keys": "Faites glisser pour tourner et utilisez la molette ou deux doigts pour zoomer ; au clavier : flèches pour tourner, + et − pour zoomer, 0 pour revenir à la vue initiale.",
+    "summary": "{name} : {triangles} triangles · {x} × {y} × {z} (largeur × hauteur × profondeur, dans les unités du fichier).",
+    "rotateLeft": "Tourner à gauche",
+    "rotateRight": "Tourner à droite",
+    "zoomIn": "Zoomer",
+    "zoomOut": "Dézoomer",
+    "reset": "Revenir à la vue initiale",
+    "resetShort": "Centrer",
+    "tooLarge": "Le modèle dépasse 50 Mo : il peut être converti, mais nous ne l'affichons pas pour ne pas bloquer la page."
   }
 }

@@ -2470,5 +2470,18 @@
     },
     "note": "Se conservan la geometría y, en PLY y GLB, los colores por vértice; STL y OBJ no guardan materiales. Hasta {max} triángulos por modelo. Se procesa en tu dispositivo.",
     "done": "{triangles} triángulos."
+  },
+  "ModelViewer": {
+    "loading": "Preparando la vista previa…",
+    "label": "Vista previa 3D de {name}.",
+    "keys": "Arrastra para girar y usa la rueda o dos dedos para acercar; con el teclado: flechas para girar, + y − para acercar, 0 para volver a la vista inicial.",
+    "summary": "{name}: {triangles} triángulos · {x} × {y} × {z} (ancho × alto × profundidad, en las unidades del archivo).",
+    "rotateLeft": "Girar a la izquierda",
+    "rotateRight": "Girar a la derecha",
+    "zoomIn": "Acercar",
+    "zoomOut": "Alejar",
+    "reset": "Volver a la vista inicial",
+    "resetShort": "Centrar",
+    "tooLarge": "El modelo pesa más de 50 MB: se puede convertir, pero no lo mostramos para no trabar la página."
   }
 }

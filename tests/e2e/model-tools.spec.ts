@@ -175,3 +175,58 @@ test.describe("tool: model-converter", () => {
     await expect(main).toContainText("no se puede convertir");
   });
 });
+
+test.describe("tool: model-converter (3D preview)", () => {
+  /** Opaque pixels of the preview canvas (its background is transparent) and a fingerprint of the picture. */
+  const snapshot = (page: import("@playwright/test").Page) =>
+    page.locator("main canvas").evaluate((canvas: HTMLCanvasElement) => {
+      const copy = document.createElement("canvas");
+      copy.width = canvas.width;
+      copy.height = canvas.height;
+      const ctx = copy.getContext("2d")!;
+      ctx.drawImage(canvas, 0, 0);
+      const { data } = ctx.getImageData(0, 0, copy.width, copy.height);
+      let opaque = 0;
+      let hash = 0;
+      for (let i = 3; i < data.length; i += 4 * 7) {
+        if (data[i]! > 0) opaque++;
+        hash = (hash * 31 + data[i - 1]! + data[i - 2]! + data[i]!) | 0;
+      }
+      const center = ((copy.height >> 1) * copy.width + (copy.width >> 1)) * 4;
+      return { opaque: opaque / (data.length / 28), center: data[center + 3]!, corner: data[3]!, hash };
+    });
+
+  test("shows the model with its size, and the buttons and arrow keys move the camera", async ({ page }) => {
+    await openWithFiles(page, "/en/3d-model-converter", ["pyramid.obj"]);
+    const main = page.locator("main");
+    await expect(main.getByText("pyramid.obj: 6 triangles · 20 × 15 × 20 (width × height × depth, in the file's units).")).toBeVisible({ timeout: 20_000 });
+    const first = await snapshot(page);
+    expect(first.center, "the model is drawn in the middle").toBeGreaterThan(0);
+    expect(first.corner, "the background is transparent").toBe(0);
+    expect(first.opaque, `the model covers ${first.opaque} of the view`).toBeGreaterThan(0.05);
+    await page.getByRole("button", { name: "Rotate right" }).click();
+    const turned = await snapshot(page);
+    expect(turned.hash).not.toBe(first.hash);
+    await page.getByRole("button", { name: "Back to the initial view" }).click();
+    expect((await snapshot(page)).hash).toBe(first.hash);
+    const canvas = page.getByRole("img", { name: /3D preview of pyramid\.obj/ });
+    await canvas.focus();
+    await page.keyboard.press("ArrowLeft");
+    await page.keyboard.press("+");
+    const keyed = await snapshot(page);
+    expect(keyed.hash).not.toBe(first.hash);
+    expect(keyed.opaque, "zooming in makes the model bigger").toBeGreaterThan(first.opaque);
+    await page.keyboard.press("0");
+    expect((await snapshot(page)).hash).toBe(first.hash);
+    // The conversion still works with the preview open.
+    await page.getByText("STL", { exact: true }).click();
+    const out = fileOf(await runTool(page, "Convert model"));
+    expect(readStl(out.buf)).toMatchObject({ triangles: 6, box: PYRAMID });
+  });
+
+  test("a damaged first file shows the error in the preview", async ({ page }) => {
+    await openWithFiles(page, "/es/convertir-modelo-3d", ["corrupt/external.gltf"]);
+    await expect(page.locator("main")).toContainText("usa archivos aparte");
+    await expect(page.locator("main canvas")).toHaveCount(0);
+  });
+});

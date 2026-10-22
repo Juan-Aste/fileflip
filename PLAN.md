@@ -290,9 +290,9 @@ Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo apr
   - [x] 3C.38e "Unir videos": varios archivos en orden, misma resolución de salida (encaje con bandas), audio igualado; test de duración total y colores por tramo
 
 3D y CAD
-- [ ] 3C.39 Modelos 3D con three.js (MIT, cargado solo en esas páginas): STL ↔ OBJ ↔ PLY ↔ GLB/glTF con visor y límite de vértices (dividida):
+- [x] 3C.39 Modelos 3D con three.js (MIT, cargado solo en esas páginas): STL ↔ OBJ ↔ PLY ↔ GLB/glTF con visor y límite de vértices (dividida):
   - [x] 3C.39a "Convertir modelo 3D" en un worker: entradas STL (binario/ASCII), OBJ, PLY, GLB y glTF autocontenido; salidas STL binario, OBJ, PLY binario y GLB; colores por vértice donde el formato los admite; glTF con archivos externos o comprimido (Draco/meshopt/KTX2) rechazado sin pedir nada a la red; límite de triángulos; fixtures escritos a mano y salida validada con lectores propios (no three.js)
-  - [ ] 3C.39b Visor 3D en la página (three.js con WebGL, cargado solo al elegir un modelo): orbitar/zoom con mouse, toque y teclado, encuadre automático, cantidad de triángulos y medidas (caja envolvente); sin WebGL, aviso y la conversión sigue funcionando; captura de Playwright revisada
+  - [x] 3C.39b Visor 3D en la página (three.js con WebGL, cargado solo al elegir un modelo): orbitar/zoom con mouse, toque y teclado, encuadre automático, cantidad de triángulos y medidas (caja envolvente); sin WebGL, aviso y la conversión sigue funcionando; captura de Playwright revisada
 - [ ] 3C.40 Entradas 3MF, COLLADA y FBX (solo lectura; sin anunciar salidas que no existen) e imagen → litofanía (STL)
 - [ ] 3C.41 DXF → SVG/PNG/PDF con dxf-parser (MIT) y aviso de entidades omitidas; DWG documentado como no viable
 

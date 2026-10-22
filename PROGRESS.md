@@ -2518,3 +2518,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Sin visor todavía (3C.39b). OBJ sin `.mtl` (sin materiales ni texturas); STL sin colores; los colores PLY se escriben como `float` (0–1), que leen MeshLab, CloudCompare y Blender. Las texturas de un GLB solo se conservan en GLB → GLB. glTF con archivos externos o comprimidos no se leen.
 
 **Siguiente**: 3C.39b (visor 3D).
+
+## 2026-10-22 09:20 UTC — Fase 3, tarea 3C.39b (visor 3D) — 3C.39 TERMINADA
+
+**Qué se hizo**
+- "Convertir modelo 3D" muestra una **vista previa interactiva** del primer modelo de la lista (`ModelViewer`, con `key` por archivo para crear un canvas y un contexto WebGL nuevos): arrastrar para orbitar y rueda o dos dedos para acercar (`OrbitControls` de three.js), botones **Girar a la izquierda/derecha, Acercar, Alejar y Centrar**, y teclado sobre el canvas enfocable (flechas giran, `+`/`−` acercan, `0` vuelve a la vista inicial). Encuadre automático a la caja envolvente; caras visibles de ambos lados (modelos con normales invertidas); fondo transparente sobre el color de la superficie del tema.
+- Leyenda con `aria-live`: "{nombre}: {triángulos} triángulos · ancho × alto × profundidad (en las unidades del archivo)". El canvas tiene `role="img"` con una etiqueta que explica los controles de teclado.
+- `src/lib/model3d/viewer.ts` (three.js en el hilo principal, **importado solo al elegir un modelo**): reutiliza `loadModel` del conversor, así que los mismos archivos dañados o externos muestran el mismo error en la vista previa. Sin WebGL → aviso "navegador no compatible" y la conversión sigue funcionando. Modelos de más de **50 MB** no se previsualizan (parsearlos en el hilo principal trabaría la página) pero se convierten. Al cambiar de archivo se liberan geometrías, materiales y el contexto WebGL (`forceContextLoss`).
+- Textos del visor en los 5 idiomas. Capturas `docs/screenshots/es_convertir-modelo-3d-360-dark.webp` y `-1280-light.webp` revisadas (sin desplazamiento horizontal a 360 px; altura máxima 26 rem en escritorio).
+
+**Verificación**
+- `model-tools.spec.ts` (+2): con `pyramid.obj` la leyenda dice "6 triangles · 20 × 15 × 20"; los píxeles del canvas muestran el modelo en el centro y fondo transparente en la esquina; "Rotate right" cambia la imagen y "Back to the initial view" la restituye **idéntica**; con el teclado (← y +) la imagen cambia y el modelo ocupa más superficie, `0` vuelve a la vista inicial; con la vista abierta la conversión a STL sigue dando 6 triángulos y la caja correcta; un glTF con archivos externos muestra el error en lugar del canvas.
+- Lint, typecheck, tests (932 + 8 saltados), build, `check:static` (977 páginas) y `npm run test:e2e` completo: 306 pasan, 4 saltados (sin Gotenberg ni EPUBCheck).
+
+**Limitaciones**
+- La vista previa usa un solo modelo (el primero de la lista). Sin medidas en milímetros (los formatos no guardan unidades, salvo glTF en metros). Las texturas de un GLB se ven; las de OBJ no (no se sube el `.mtl`).
+
+**Siguiente**: 3C.40 (entradas 3MF, COLLADA y FBX e imagen → litofanía).
