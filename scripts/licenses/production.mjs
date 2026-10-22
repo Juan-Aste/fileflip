@@ -15,7 +15,8 @@ export const PREFERRED_LICENSE = { dompurify: "Apache-2.0" };
 export const KNOWN_LICENSES = [
   "MIT", "MIT-0", "ISC", "0BSD", "BSD-2-Clause", "BSD-3-Clause", "Apache-2.0", "Zlib",
   "MPL-2.0", "LGPL-2.0", "LGPL-2.1", "LGPL-3.0", "LGPL-2.1-or-later", "LGPL-3.0-or-later",
-  "OFL-1.1", "CC-BY-4.0", "CC0-1.0", "BlueOak-1.0.0", "Python-2.0", "Unlicense",
+  "LGPL-2.0-or-later", "LGPL-2.0-only", "LGPL-2.1-only", "LGPL-3.0-only",
+  "OFL-1.1", "CC-BY-4.0", "CC0-1.0", "BlueOak-1.0.0", "Python-2.0", "Unlicense", "IJG", "bzip2-1.0.6", "MPL-1.1",
 ];
 
 const isStrongCopyleft = (id) => /^(A?GPL|GPL)-/.test(id);
@@ -135,9 +136,12 @@ export function namesFromCell(cell) {
   return [...own, ...names];
 }
 
+/** @typedef {{ names: string[], license: string, use: string, where: ("browser"|"server")[] }} DocumentedRow */
+
 /**
- * Rows of the "Producción" table of docs/dependencies.md:
- * { names, license, use, where: ("browser"|"server")[] }.
+ * Rows of the "Producción" table of docs/dependencies.md.
+ * @param {string} markdown
+ * @returns {DocumentedRow[]}
  */
 export function documentedDependencies(markdown) {
   const section = markdown.split(/^## /m).find((s) => s.startsWith("Producción"));
@@ -148,6 +152,7 @@ export function documentedDependencies(markdown) {
     .map((line) => {
       const cells = line.split("|").slice(1, -1).map((c) => c.trim());
       const [first, , license, use, place = ""] = cells;
+      /** @type {DocumentedRow["where"]} */
       const where = [];
       if (/\bN\b/.test(place)) where.push("browser");
       if (/\bS\b/.test(place)) where.push("server");

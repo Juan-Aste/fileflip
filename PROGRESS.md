@@ -606,6 +606,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
   - MOBI/AZW (solo con Calibre, GPL-3.0) y DWG (LibreDWG GPL-3.0 u ODA comercial): descartados salvo que el dueño decida otra cosa.
   - "Convertir audio" incluye LAME (MP3) y el codificador AAC de FFmpeg, ambos **LGPL**, compilados a WASM en las extensiones de mediabunny sin modificar: conviene una página de créditos/licencias con enlaces a su código fuente (LAME pide un enlace a lame.sourceforge.io).
 
+- **Fase 4 — código fuente exacto de FFmpeg (AAC)**: `@mediabunny/aac-encoder` 1.62.0 trae el codificador AAC de FFmpeg compilado a WASM (LGPL-2.1+), pero su compilación clona FFmpeg sin anotar el commit; el binario dice `Lavc62.23.103` (versión de desarrollo, entre FFmpeg 8.0 y 8.1). La página de créditos enlaza el repositorio de FFmpeg y las instrucciones de compilación de mediabunny y lo aclara. Para cumplir la LGPL al pie de la letra hay dos caminos: pedirle al autor de mediabunny (Vanilagy) el commit exacto, o compilar nosotros el codificador desde una versión publicada de FFmpeg con hash fijado (como con libarchive en 3C.45) y servir ese WASM. Mientras tanto, M4A/AAC solo usa este WASM cuando el navegador no tiene codificador AAC propio.
 - **Foto carnet (3C.42)**: no se encontraron fuentes oficiales fiables de las medidas por país; la herramienta usa medidas habituales y pide confirmar con la oficina. Si se quieren presets por país (AR, BR, MX, CL, CO, PE, UY), validar cada medida con el organismo correspondiente.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
@@ -2829,3 +2830,19 @@ Todas las tareas de la fase 3 en PLAN.md están marcadas. Informe en `docs/repor
 - Lint, typecheck, tests (994 + 8 saltados) y build pasan.
 
 **Siguiente**: 4.1b (componentes embebidos y LGPL con su código fuente).
+
+## 2026-10-22 19:26 UTC — Fase 4, tarea 4.1b (componentes embebidos y LGPL)
+
+**Qué se hizo**
+- `scripts/licenses/embedded.mjs`: motores que vienen **dentro** de paquetes npm (WASM o bibliotecas nativas), nuestro build de libarchive, datos servidos desde nuestro dominio y servicios del servidor. Versiones leídas de los binarios (`strings` sobre los WASM: `Lavc62.23.103`, `reference libFLAC git-3f1ecff8 20260304`, libheif 1.23.5 + libde265 1.0.15, mozjpeg 3.3.1, libaom 3.7.0, oxipng 9.1.1) y del `versions.json` de sharp-libvips (libvips 8.18.7 y sus bibliotecas).
+- LGPL (aviso, texto de licencia, código fuente de la versión exacta y compilación): **LAME 3.100** (LGPL-2.0+, tarball de SourceForge, enlace a https://lame.sourceforge.io, compilación en el README de `@mediabunny/mp3-encoder` v1.62.0), **FFmpeg/libavcodec AAC** (LGPL-2.1+; commit exacto no registrado → "Pendiente del dueño"), **libheif 1.23.5** y **libde265 1.0.15** (LGPL-3.0, compilados por libheif-js v1.23.5), **libvips 8.18.7** y las LGPL que trae la misma biblioteca precompilada (GLib, cairo, Pango, FriBidi, librsvg, libexif, libheif, proxy-libintl; compilación: sharp-libvips v1.3.4). Ninguna está modificada; todas se cargan como archivo aparte (WASM o biblioteca dinámica) y se pueden reemplazar.
+- Permisivas embebidas: libFLAC, MozJPEG, libwebp, libavif/libaom, oxipng, qpdf, Tesseract + Leptonica, google/woff2 + Brotli, libarchive (nuestro build; `/licenses/libarchive-build.txt` publica `build.sh`, `glue.c` y `read_memory.c`), modelo u2netp y tessdata; servicios: Gotenberg, LibreOffice, Chromium y MongoDB (no se distribuyen).
+- `npm run licenses` agrega esta lista a `src/content/credits.json` (`embedded`) y a `public/third-party-notices.txt`, y copia los textos de licencia a `public/licenses/` (LGPL-2.0, LGPL-2.1, LGPL-3.0 con la GPL-3.0, GPL-3.0, MPL-2.0, Apache-2.0).
+- `docs/dependencies.md`: libde265 dentro de libheif-js, bibliotecas LGPL dentro de sharp-libvips, y referencia al script y al test.
+
+**Verificación**
+- `tests/licenses.test.ts` (+3): la lista embebida coincide con los datos, cada `partOf` es un paquete que distribuimos, licencias aceptables, cada LGPL con texto en `public/licenses/`, código fuente y compilación (LAME con su página), y toda fila de `docs/dependencies.md` con LGPL tiene su motor listado.
+- Enlaces comprobados con `curl` desde la sesión: SourceForge (tarball de LAME), ffmpeg.org, libvips.org, download.gnome.org, cairographics.org, xiph.org, etc. responden 200. Los de GitHub (mediabunny, libheif, sharp-libvips) y lame.sourceforge.io no se pudieron abrir desde este entorno (el proxy devuelve 403), siguen el formato de etiquetas de cada proyecto.
+- Lint, tests (997 + 8 saltados), build y `check:static` pasan.
+
+**Siguiente**: 4.1c (página de créditos).

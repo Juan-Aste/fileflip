@@ -4,8 +4,9 @@
 // packages in node_modules and docs/dependencies.md. Run it after adding,
 // removing or updating a production dependency; tests/licenses.test.ts
 // fails while the data is out of date.
-import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { embedded, LICENSE_TEXTS } from "./embedded.mjs";
 import { chooseLicense, documentedDependencies, productionPackages } from "./production.mjs";
 
 const root = new URL("../../", import.meta.url).pathname;
@@ -49,7 +50,7 @@ function noticeFiles(dir) {
 }
 
 /** Canonical texts (SPDX) for packages that ship no license file. */
-function canonicalText(license, author) {
+function canonicalText(license, author = "") {
   const ids = license.split(/\s+AND\s+/);
   // The LGPL-3.0 is a set of permissions on top of the GPL-3.0.
   if (ids.some((id) => id.startsWith("LGPL-3.0"))) ids.push("GPL-3.0");
@@ -106,12 +107,35 @@ for (const p of packages) {
   notices.push(`${"=".repeat(78)}\n${header.join("\n")}\n${"=".repeat(78)}\n\n${body}\n`);
 }
 
+// Engines and data inside packages, our own builds and server services.
+const embeddedNotices = embedded.map((e) => {
+  const header = [`${e.name} ${e.version}`, `License: ${e.license}`, `Project: ${e.homepage}`];
+  if (e.partOf) header.push(`Included in: ${e.partOf}`);
+  if (e.source) header.push(`Source code${e.exactSource === false ? " (exact commit not recorded by the build)" : ""}: ${e.source}`);
+  if (e.build) header.push(`Build: ${e.build}`);
+  const lgpl = e.lgpl
+    ? `Used unmodified under the ${e.license}, as a separate, replaceable file (WASM module or shared library). License text: /licenses/${e.licenseText}.txt`
+    : "";
+  const text = e.kind === "service" ? "Runs as a separate service; not distributed with Fileflect." : lgpl || canonicalText(e.licenseText, `the ${e.name} authors`);
+  return `${"=".repeat(78)}\n${header.join("\n")}\n${"=".repeat(78)}\n\n${text}\n`;
+});
+
 if (problems.length) {
   console.error(`Licenses: ${problems.length} problem(s):\n- ${problems.join("\n- ")}`);
   process.exit(1);
 }
 
-writeFileSync(join(root, "src/content/credits.json"), `${JSON.stringify({ packages: credits }, null, 2)}\n`);
+writeFileSync(join(root, "src/content/credits.json"), `${JSON.stringify({ packages: credits, embedded }, null, 2)}\n`);
+const licensesDir = join(root, "public/licenses");
+mkdirSync(licensesDir, { recursive: true });
+for (const id of LICENSE_TEXTS) writeFileSync(join(licensesDir, `${id}.txt`), `${canonicalText(id)}\n`);
+// Our libarchive WASM (BSD): how it is built, for anyone who wants to rebuild it.
+writeFileSync(
+  join(licensesDir, "libarchive-build.txt"),
+  ["build.sh", "glue.c", "read_memory.c"]
+    .map((f) => `===== scripts/libarchive/${f} =====\n\n${read(`scripts/libarchive/${f}`).trimEnd()}\n`)
+    .join("\n"),
+);
 writeFileSync(
   join(root, "public/third-party-notices.txt"),
   [
@@ -124,6 +148,12 @@ writeFileSync(
     "",
     "",
     notices.join("\n\n"),
+    "",
+    "",
+    "Components inside the packages above, our own builds and server services",
+    "",
+    "",
+    embeddedNotices.join("\n\n"),
   ].join("\n"),
 );
 console.log(`Licenses: ${credits.length} packages; without a license file (standard text used): ${missingFiles.join(", ") || "none"}.`);

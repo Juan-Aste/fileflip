@@ -2,7 +2,7 @@
 
 Regla de la fase 3: antes de agregar una dependencia se revisa su licencia y se anota aquí. Se prefieren MIT, Apache-2.0, BSD, ISC, MPL-2.0 o LGPL. **No se agregan dependencias GPL o AGPL sin aprobación del dueño** (se anotan en "Pendiente del dueño" de PROGRESS.md con una alternativa).
 
-Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
+Licencias leídas del `package.json` de cada paquete instalado (2026-10-20). La lista completa (con dependencias transitivas y los motores dentro de los WASM) la genera `npm run licenses` para la página de créditos; `tests/licenses.test.ts` falla si una dependencia de producción no tiene entrada o si aparece una GPL/AGPL no aprobada.
 
 ## Producción (se distribuyen al navegador o corren en el servidor)
 
@@ -24,7 +24,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | @jsquash/oxipng (+ wasm-feature-detect) | 2.3.0 / 1.9.0 | Apache-2.0 (oxipng: MIT) | optimización PNG sin pérdida en "Comprimir imagen"; se importa directo el build de un hilo (el multihilo necesita COOP/COEP) | N (worker de herramientas de imagen) |
 | exifr | 7.1.3 | MIT | lee qué metadatos tiene una foto (GPS, cámara, fecha) para mostrar qué se quita; el borrado es propio | N (worker de herramientas de imagen) |
 | utif2 | 4.1.0 | MIT | lector/escritor TIFF | N (worker) |
-| libheif-js | 1.23.5 | LGPL-3.0 | lector HEIC/HEIF | N (worker, carga diferida, archivo aparte: cumple la LGPL al poder reemplazarse) |
+| libheif-js | 1.23.5 | LGPL-3.0 (incluye libheif 1.23.5 y libde265 1.0.15, ambos LGPL-3.0) | lector HEIC/HEIF | N (worker, carga diferida, archivo aparte: cumple la LGPL al poder reemplazarse) |
 | woff2-encoder | 2.0.0 | MIT (google/woff2 y Brotli: MIT) | comprimir y descomprimir WOFF2 (codificador de referencia de Google en WASM incrustado, ~1 MB) | N (worker de datos, import diferido: solo el conversor de fuentes) |
 | libarchive-wasm | 1.2.0 | MIT (envoltorio de ofk) | solo su envoltorio JavaScript (`wrapLibarchiveWasm`, `ArchiveReader`); su WASM (libarchive 3.7.7) ya no se usa | N (worker de datos, import diferido) |
 | libarchive (build propio) | 3.8.10 con zlib 1.3.2, bzip2 1.0.8, xz/liblzma 5.8.4; Emscripten 6.0.13 | BSD-2-Clause (zlib: Zlib; bzip2: tipo BSD; liblzma: 0BSD; BLAKE2 incluido: CC0/Apache-2.0) | extraer 7Z y RAR 4/5 (solo lectura; ~490 KB de WASM en `src/vendor/libarchive/`), con locale UTF-8 al iniciar para los nombres no ASCII y las correcciones de seguridad de 2025; generado por `scripts/libarchive/build.sh` (fuentes con sha256 fijado) | N (worker de datos, import diferido: solo al abrir un 7Z o RAR) |
@@ -58,7 +58,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | jsqr | 1.4.0 | Apache-2.0 | leer códigos QR en imágenes | N (worker de QR) |
 | hash-wasm | 4.12.0 | MIT | MD5, SHA-1, SHA-256 y SHA-512 por bloques (WASM incrustado) | N (worker de datos) |
 | sharp | 0.35.5 | Apache-2.0 | respaldo de imágenes | S |
-| └ @img/sharp-libvips-* | 1.3.4 | LGPL-3.0-or-later | libvips precompilada (biblioteca dinámica, sin modificar) | S |
+| └ @img/sharp-libvips-* | 1.3.4 | LGPL-3.0-or-later | libvips 8.18.7 precompilada por sharp-libvips 1.3.4 (biblioteca dinámica, sin modificar; incluye GLib, cairo, Pango, FriBidi, librsvg, libexif, libheif y proxy-libintl, LGPL, y otras permisivas: ver `scripts/licenses/embedded.mjs`) | S |
 
 ## Servicios externos propios (no son paquetes npm)
 

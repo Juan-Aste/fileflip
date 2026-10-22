@@ -2770,5 +2770,424 @@
       ],
       "direct": false
     }
+  ],
+  "embedded": [
+    {
+      "id": "lame",
+      "name": "LAME MP3 Encoder",
+      "version": "3.100",
+      "license": "LGPL-2.0-or-later",
+      "lgpl": true,
+      "partOf": "@mediabunny/mp3-encoder",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://lame.sourceforge.io",
+      "source": "https://sourceforge.net/projects/lame/files/lame/3.100/lame-3.100.tar.gz/download",
+      "exactSource": true,
+      "build": "https://github.com/Vanilagy/mediabunny/tree/v1.62.0/packages/mp3-encoder#building-and-development",
+      "licenseText": "LGPL-2.0",
+      "kind": "engine"
+    },
+    {
+      "id": "ffmpeg-aac",
+      "name": "FFmpeg (libavcodec, native AAC encoder)",
+      "version": "libavcodec 62.23.103",
+      "license": "LGPL-2.1-or-later",
+      "lgpl": true,
+      "partOf": "@mediabunny/aac-encoder",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://ffmpeg.org",
+      "source": "https://github.com/FFmpeg/FFmpeg",
+      "exactSource": false,
+      "build": "https://github.com/Vanilagy/mediabunny/tree/v1.62.0/packages/aac-encoder#building-and-development",
+      "licenseText": "LGPL-2.1",
+      "kind": "engine"
+    },
+    {
+      "id": "libheif",
+      "name": "libheif",
+      "version": "1.23.5",
+      "license": "LGPL-3.0",
+      "lgpl": true,
+      "partOf": "libheif-js",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/strukturag/libheif",
+      "source": "https://github.com/strukturag/libheif/releases/tag/v1.23.5",
+      "exactSource": true,
+      "build": "https://github.com/catdad-experiments/libheif-js/tree/v1.23.5",
+      "licenseText": "LGPL-3.0",
+      "kind": "engine"
+    },
+    {
+      "id": "libde265",
+      "name": "libde265 (HEVC decoder)",
+      "version": "1.0.15",
+      "license": "LGPL-3.0",
+      "lgpl": true,
+      "partOf": "libheif-js",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/strukturag/libde265",
+      "source": "https://github.com/strukturag/libde265/releases/tag/v1.0.15",
+      "exactSource": true,
+      "build": "https://github.com/catdad-experiments/libheif-js/tree/v1.23.5",
+      "licenseText": "LGPL-3.0",
+      "kind": "engine"
+    },
+    {
+      "id": "libvips",
+      "name": "libvips",
+      "version": "8.18.7",
+      "license": "LGPL-2.1-or-later",
+      "lgpl": true,
+      "partOf": "@img/sharp-libvips-linux-x64",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://www.libvips.org",
+      "source": "https://github.com/libvips/libvips/releases/tag/v8.18.7",
+      "exactSource": true,
+      "build": "https://github.com/lovell/sharp-libvips/tree/v1.3.4",
+      "licenseText": "LGPL-2.1",
+      "kind": "engine"
+    },
+    {
+      "id": "libvips-glib",
+      "name": "GLib",
+      "version": "2.90.0",
+      "license": "LGPL-2.1-or-later",
+      "lgpl": true,
+      "partOf": "@img/sharp-libvips-linux-x64",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://gitlab.gnome.org/GNOME/glib",
+      "source": "https://download.gnome.org/sources/glib/2.90/",
+      "exactSource": true,
+      "build": "https://github.com/lovell/sharp-libvips/tree/v1.3.4",
+      "licenseText": "LGPL-2.1",
+      "kind": "engine"
+    },
+    {
+      "id": "libvips-cairo",
+      "name": "cairo",
+      "version": "1.18.6",
+      "license": "LGPL-2.1 OR MPL-1.1",
+      "lgpl": true,
+      "partOf": "@img/sharp-libvips-linux-x64",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://www.cairographics.org",
+      "source": "https://cairographics.org/releases/",
+      "exactSource": true,
+      "build": "https://github.com/lovell/sharp-libvips/tree/v1.3.4",
+      "licenseText": "LGPL-2.1",
+      "kind": "engine"
+    },
+    {
+      "id": "libvips-pango",
+      "name": "Pango",
+      "version": "1.58.2",
+      "license": "LGPL-2.1-or-later",
+      "lgpl": true,
+      "partOf": "@img/sharp-libvips-linux-x64",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://gitlab.gnome.org/GNOME/pango",
+      "source": "https://download.gnome.org/sources/pango/1.58/",
+      "exactSource": true,
+      "build": "https://github.com/lovell/sharp-libvips/tree/v1.3.4",
+      "licenseText": "LGPL-2.1",
+      "kind": "engine"
+    },
+    {
+      "id": "libvips-fribidi",
+      "name": "GNU FriBidi",
+      "version": "1.0.17",
+      "license": "LGPL-2.1-or-later",
+      "lgpl": true,
+      "partOf": "@img/sharp-libvips-linux-x64",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://github.com/fribidi/fribidi",
+      "source": "https://github.com/fribidi/fribidi/releases/tag/v1.0.17",
+      "exactSource": true,
+      "build": "https://github.com/lovell/sharp-libvips/tree/v1.3.4",
+      "licenseText": "LGPL-2.1",
+      "kind": "engine"
+    },
+    {
+      "id": "libvips-librsvg",
+      "name": "librsvg",
+      "version": "2.63.2",
+      "license": "LGPL-2.1-or-later",
+      "lgpl": true,
+      "partOf": "@img/sharp-libvips-linux-x64",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://gitlab.gnome.org/GNOME/librsvg",
+      "source": "https://download.gnome.org/sources/librsvg/2.63/",
+      "exactSource": true,
+      "build": "https://github.com/lovell/sharp-libvips/tree/v1.3.4",
+      "licenseText": "LGPL-2.1",
+      "kind": "engine"
+    },
+    {
+      "id": "libvips-libexif",
+      "name": "libexif",
+      "version": "0.6.26",
+      "license": "LGPL-2.1-or-later",
+      "lgpl": true,
+      "partOf": "@img/sharp-libvips-linux-x64",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://github.com/libexif/libexif",
+      "source": "https://github.com/libexif/libexif/releases",
+      "exactSource": true,
+      "build": "https://github.com/lovell/sharp-libvips/tree/v1.3.4",
+      "licenseText": "LGPL-2.1",
+      "kind": "engine"
+    },
+    {
+      "id": "libvips-proxy-libintl",
+      "name": "proxy-libintl",
+      "version": "0.5",
+      "license": "LGPL-2.1-or-later",
+      "lgpl": true,
+      "partOf": "@img/sharp-libvips-linux-x64",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://github.com/frida/proxy-libintl",
+      "source": "https://github.com/frida/proxy-libintl/tree/0.5",
+      "exactSource": true,
+      "build": "https://github.com/lovell/sharp-libvips/tree/v1.3.4",
+      "licenseText": "LGPL-2.1",
+      "kind": "engine"
+    },
+    {
+      "id": "libvips-heif",
+      "name": "libheif (in libvips)",
+      "version": "1.23.5",
+      "license": "LGPL-3.0",
+      "lgpl": true,
+      "partOf": "@img/sharp-libvips-linux-x64",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://github.com/strukturag/libheif",
+      "source": "https://github.com/strukturag/libheif/releases/tag/v1.23.5",
+      "exactSource": true,
+      "build": "https://github.com/lovell/sharp-libvips/tree/v1.3.4",
+      "licenseText": "LGPL-3.0",
+      "kind": "engine"
+    },
+    {
+      "id": "libflac",
+      "name": "libFLAC",
+      "version": "git-3f1ecff8 (2026-03-04)",
+      "license": "BSD-3-Clause",
+      "partOf": "@mediabunny/flac-encoder",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://xiph.org/flac/",
+      "source": "https://github.com/xiph/flac/tree/3f1ecff8",
+      "build": "https://github.com/Vanilagy/mediabunny/tree/v1.62.0/packages/flac-encoder#building-and-development",
+      "licenseText": "BSD-3-Clause",
+      "kind": "engine"
+    },
+    {
+      "id": "mozjpeg",
+      "name": "MozJPEG (libjpeg-turbo)",
+      "version": "3.3.1",
+      "license": "IJG AND BSD-3-Clause AND Zlib",
+      "partOf": "@jsquash/jpeg",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/mozilla/mozjpeg",
+      "source": "https://github.com/mozilla/mozjpeg/releases/tag/v3.3.1",
+      "licenseText": "BSD-3-Clause",
+      "kind": "engine"
+    },
+    {
+      "id": "libwebp",
+      "name": "libwebp",
+      "version": "—",
+      "license": "BSD-3-Clause",
+      "partOf": "@jsquash/webp",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://chromium.googlesource.com/webm/libwebp",
+      "licenseText": "BSD-3-Clause",
+      "kind": "engine"
+    },
+    {
+      "id": "libavif",
+      "name": "libavif + libaom (AV1)",
+      "version": "libaom 3.7.0",
+      "license": "BSD-2-Clause",
+      "partOf": "@jsquash/avif",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/AOMediaCodec/libavif",
+      "source": "https://aomedia.googlesource.com/aom/+/refs/tags/v3.7.0",
+      "licenseText": "BSD-2-Clause",
+      "kind": "engine"
+    },
+    {
+      "id": "oxipng",
+      "name": "oxipng",
+      "version": "9.1.1",
+      "license": "MIT",
+      "partOf": "@jsquash/oxipng",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/shssoichiro/oxipng",
+      "source": "https://github.com/shssoichiro/oxipng/releases/tag/v9.1.1",
+      "licenseText": "MIT",
+      "kind": "engine"
+    },
+    {
+      "id": "qpdf",
+      "name": "qpdf",
+      "version": "12.2",
+      "license": "Apache-2.0",
+      "partOf": "@neslinesli93/qpdf-wasm",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://qpdf.sourceforge.io",
+      "licenseText": "Apache-2.0",
+      "kind": "engine"
+    },
+    {
+      "id": "tesseract",
+      "name": "Tesseract OCR + Leptonica",
+      "version": "5",
+      "license": "Apache-2.0 AND BSD-2-Clause",
+      "partOf": "tesseract.js-core",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/tesseract-ocr/tesseract",
+      "licenseText": "Apache-2.0",
+      "kind": "engine"
+    },
+    {
+      "id": "woff2",
+      "name": "google/woff2 + Brotli",
+      "version": "—",
+      "license": "MIT",
+      "partOf": "woff2-encoder",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/google/woff2",
+      "licenseText": "MIT",
+      "kind": "engine"
+    },
+    {
+      "id": "libarchive",
+      "name": "libarchive (Fileflect build)",
+      "version": "3.8.10 (zlib 1.3.2, bzip2 1.0.8, xz 5.8.4)",
+      "license": "BSD-2-Clause AND Zlib AND bzip2-1.0.6 AND 0BSD",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://www.libarchive.org",
+      "source": "https://github.com/libarchive/libarchive/releases/tag/v3.8.10",
+      "build": "/licenses/libarchive-build.txt",
+      "licenseText": "BSD-2-Clause",
+      "kind": "engine"
+    },
+    {
+      "id": "u2netp",
+      "name": "U²-Net (u2netp model, ONNX by rembg)",
+      "version": "u2netp.onnx",
+      "license": "Apache-2.0",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/xuebinqin/U-2-Net",
+      "licenseText": "Apache-2.0",
+      "kind": "data"
+    },
+    {
+      "id": "tessdata",
+      "name": "Tesseract language models (tessdata_best)",
+      "version": "4.0.0_best_int",
+      "license": "Apache-2.0",
+      "partOf": "@tesseract.js-data/*",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/tesseract-ocr/tessdata_best",
+      "licenseText": "Apache-2.0",
+      "kind": "data"
+    },
+    {
+      "id": "gotenberg",
+      "name": "Gotenberg",
+      "version": "8",
+      "license": "MIT",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://gotenberg.dev",
+      "licenseText": "MIT",
+      "kind": "service"
+    },
+    {
+      "id": "libreoffice",
+      "name": "LibreOffice (in Gotenberg)",
+      "version": "—",
+      "license": "MPL-2.0",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://www.libreoffice.org",
+      "licenseText": "MPL-2.0",
+      "kind": "service"
+    },
+    {
+      "id": "chromium",
+      "name": "Chromium (in Gotenberg)",
+      "version": "—",
+      "license": "BSD-3-Clause",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://www.chromium.org",
+      "licenseText": "BSD-3-Clause",
+      "kind": "service"
+    },
+    {
+      "id": "mongodb-server",
+      "name": "MongoDB Server",
+      "version": "7",
+      "license": "SSPL-1.0",
+      "where": [
+        "server"
+      ],
+      "homepage": "https://www.mongodb.com",
+      "licenseText": "",
+      "kind": "service"
+    }
   ]
 }

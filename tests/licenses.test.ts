@@ -1,6 +1,8 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { existsSync } from "node:fs";
 import credits from "@/content/credits.json";
+import { embedded } from "../scripts/licenses/embedded.mjs";
 import {
   chooseLicense,
   documentedDependencies,
@@ -15,7 +17,7 @@ const read = (path: string) => readFileSync(new URL(`../${path}`, import.meta.ur
 const lock = JSON.parse(read("package-lock.json"));
 const pkg = JSON.parse(read("package.json"));
 const documented = documentedDependencies(read("docs/dependencies.md"));
-const documentedNames = new Set(documented.flatMap((row: { names: string[] }) => row.names));
+const documentedNames = new Set(documented.flatMap((row) => row.names));
 const notices = read("public/third-party-notices.txt");
 
 describe("license helpers", () => {
@@ -71,6 +73,43 @@ describe("credits", () => {
       expect(c.url, c.name).toMatch(/^https:\/\//);
       expect(c.where.length, c.name).toBeGreaterThan(0);
       expect(notices).toContain(`\n${c.name} ${c.version}\nLicense: ${c.license}`);
+    }
+  });
+});
+
+describe("embedded components", () => {
+  const packageNames = new Set(credits.packages.map((c) => c.name));
+
+  it("are in the credits data, inside packages we ship", () => {
+    expect(credits.embedded).toEqual(embedded);
+    for (const e of embedded) {
+      if (e.partOf && !e.partOf.endsWith("/*")) expect(packageNames.has(e.partOf), e.id).toBe(true);
+      if (e.kind !== "service") expect(chooseLicense(e.license, e.id).ok, e.id).toBe(true);
+      expect(notices).toContain(`\n${e.name} ${e.version}\nLicense: ${e.license}`);
+    }
+  });
+
+  it("give every LGPL component its license text, source and build", () => {
+    const lgpl = embedded.filter((e) => e.lgpl);
+    for (const id of ["lame", "ffmpeg-aac", "libheif", "libde265", "libvips"]) {
+      expect(lgpl.map((e) => e.id)).toContain(id);
+    }
+    for (const e of lgpl) {
+      expect(e.license, e.id).toMatch(/LGPL/);
+      expect(existsSync(new URL(`../public/licenses/${e.licenseText}.txt`, import.meta.url)), e.id).toBe(true);
+      expect(e.source, e.id).toMatch(/^https:\/\//);
+      expect(e.build, e.id).toMatch(/^(https:\/\/|\/licenses\/)/);
+    }
+    // LAME asks for a link to its home page.
+    expect(embedded.find((e) => e.id === "lame")?.homepage).toBe("https://lame.sourceforge.io");
+  });
+
+  it("covers every package of docs/dependencies.md that bundles an LGPL engine", () => {
+    const lgplRows = documented.filter((row) => /LGPL/.test(row.license) || /LGPL/.test(row.use));
+    const lgplPackages = new Set(embedded.filter((e) => e.lgpl).map((e) => e.partOf));
+    for (const row of lgplRows) {
+      const names = row.names.map((n) => (n.endsWith("*") ? "@img/sharp-libvips-linux-x64" : n));
+      expect(names.some((n) => lgplPackages.has(n)), names.join(", ")).toBe(true);
     }
   });
 });
