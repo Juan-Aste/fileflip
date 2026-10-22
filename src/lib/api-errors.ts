@@ -45,6 +45,10 @@ export const apiErrorCodes = [
   "pdfAlreadySearchable",
   // Client-side only: an ebook locked with DRM (Adobe, LCP, Apple).
   "ebookDrm",
+  // Client-side only: audio without an audio track, in a codec this browser can't decode, or longer than the limit.
+  "noAudioTrack",
+  "audioCodecUnsupported",
+  "audioTooLong",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -85,6 +89,9 @@ const status: Record<ApiErrorCode, number> = {
   archiveEmpty: 422,
   ocrNoText: 422,
   ebookDrm: 422,
+  noAudioTrack: 422,
+  audioCodecUnsupported: 415,
+  audioTooLong: 413,
   tooManyPages: 413,
   pdfAlreadySearchable: 422,
   signInRequired: 401,

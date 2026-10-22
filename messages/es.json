@@ -215,6 +215,9 @@
     "archiveEmpty": "Este archivo comprimido no tiene archivos para extraer (solo carpetas vacías o enlaces).",
     "ocrNoText": "No se encontró texto en la imagen. Prueba con una foto más nítida o elige otro idioma.",
     "ebookDrm": "Este libro tiene DRM (protección anticopia): no se puede convertir. Solo funcionan los EPUB sin DRM.",
+    "noAudioTrack": "Este archivo no tiene una pista de audio.",
+    "audioCodecUnsupported": "Tu navegador no puede leer el audio de este archivo (por ejemplo, AAC en algunos navegadores). Prueba con Chrome, Edge o Safari, o con otro formato.",
+    "audioTooLong": "El audio es demasiado largo: el máximo es de 3 horas por archivo.",
     "tooManyPages": "Este PDF tiene demasiadas páginas para reconocerlas en el navegador (máximo 100).",
     "pdfAlreadySearchable": "Todas las páginas de este PDF ya tienen texto: se puede buscar sin OCR. Usa «PDF a texto» para extraerlo."
   },
@@ -1184,6 +1187,22 @@
         "q4": "¿Es seguro?",
         "a4": "Sí. El contenido se limpia: se quitan scripts, eventos, formularios y enlaces javascript:. Tus archivos no se suben a ningún servidor."
       }
+    },
+    "audio-converter": {
+      "title": "Convertir audio",
+      "description": "Convierte audio entre MP3, WAV, FLAC, OGG y M4A en tu navegador, sin subir tus archivos.",
+      "action": "Convertir audio",
+      "about": "Convierte canciones, notas de voz, podcasts y grabaciones entre los formatos más usados: MP3 para que suene en cualquier lado, WAV o FLAC sin pérdida para editar o archivar, OGG (Opus) para la web y M4A (AAC) para dispositivos Apple. Lee MP3, WAV, FLAC, OGG, Opus, M4A, AAC y WebM, y puedes elegir la calidad. La conversión se hace en tu dispositivo: los archivos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué formato me conviene?",
+        "a1": "MP3 si quieres que se reproduzca en cualquier dispositivo; M4A (AAC) suena un poco mejor con el mismo peso y es el de Apple; OGG (Opus) es el más eficiente para la web; WAV y FLAC no pierden calidad (FLAC ocupa cerca de la mitad que WAV).",
+        "q2": "¿Pierde calidad al convertir?",
+        "a2": "A WAV o FLAC, no: se conserva el sonido tal cual (en 16 bits). A MP3, M4A u OGG se comprime con pérdida: 192 kbps es prácticamente indistinguible del original para la mayoría; convertir de un formato con pérdida a otro no recupera lo que ya se perdió.",
+        "q3": "¿Por qué no puede leer mi archivo M4A?",
+        "a3": "El audio AAC (M4A) se decodifica con el códec del navegador. Chrome, Edge y Safari lo leen; algunos navegadores sin códecs propietarios no. En ese caso verás un aviso: prueba con otro navegador.",
+        "q4": "¿Hay un límite?",
+        "a4": "Hasta 200 MB por archivo con el plan gratuito (500 MB con Pro) y 3 horas de duración, porque el resultado se arma en la memoria de tu navegador. Se conserva solo la pista de audio principal; si el archivo es un video, se ignora la imagen."
+      }
     }
   },
   "ToolUi": {
@@ -2101,5 +2120,27 @@
       "zh": "中文"
     },
     "createNote": "Cada archivo es un capítulo (en el orden de la lista) y cada título principal empieza uno nuevo. Se incluyen las imágenes insertadas en el archivo; las enlazadas a internet no."
+  },
+  "AudioTool": {
+    "target": "Convertir a",
+    "targets": {
+      "mp3": "MP3",
+      "wav": "WAV (sin pérdida)",
+      "flac": "FLAC (sin pérdida)",
+      "ogg": "OGG (Opus)",
+      "m4a": "M4A (AAC)"
+    },
+    "bitrate": "Calidad",
+    "bitrates": {
+      "96": "96 kbps (voz)",
+      "128": "128 kbps",
+      "192": "192 kbps (recomendada)",
+      "256": "256 kbps",
+      "320": "320 kbps (máxima)"
+    },
+    "lossyNote": "Formato comprimido: a mayor calidad, archivo más grande. Se procesa en tu dispositivo.",
+    "losslessNote": "Sin pérdida, en 16 bits: el sonido no cambia. Se procesa en tu dispositivo.",
+    "noAac": "Este navegador no puede leer audio AAC (M4A); los demás formatos funcionan. Para M4A usa Chrome, Edge o Safari.",
+    "noWebCodecs": "Este navegador no puede procesar audio (le falta WebCodecs). Usa una versión reciente de Chrome, Edge, Safari o Firefox."
   }
 }

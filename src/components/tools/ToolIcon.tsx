@@ -12,6 +12,7 @@ import {
   FileSearch,
   BookOpenText,
   BookPlus,
+  AudioLines,
   Archive,
   CaseSensitive,
   ImageDown,
@@ -123,6 +124,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "epub-converter": BookOpenText,
   "epub-to-pdf": BookOpenText,
   "create-epub": BookPlus,
+  "audio-converter": AudioLines,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

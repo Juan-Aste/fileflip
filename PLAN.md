@@ -271,7 +271,9 @@ Libros electrónicos
 - [x] 3C.34 HTML/Markdown → EPUB (generador propio; `mimetype` correcto)
 
 Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo aprobación del dueño)
-- [ ] 3C.35 Detección de capacidades del navegador (qué códecs puede leer/escribir) y conversión de audio entre los formatos disponibles (WAV, MP3, AAC/M4A, OGG/Opus, FLAC, AIFF); límites de tamaño/duración
+- [ ] 3C.35 Detección de capacidades del navegador (qué códecs puede leer/escribir) y conversión de audio entre los formatos disponibles (WAV, MP3, AAC/M4A, OGG/Opus, FLAC, AIFF); límites de tamaño/duración (dividida):
+  - [x] 3C.35a "Convertir audio" con mediabunny (MPL-2.0) + codificadores WASM de sus extensiones (MP3 con LAME, FLAC con libFLAC, AAC con el codificador de FFmpeg; Opus con WebCodecs): entradas WAV, MP3, FLAC, OGG (Vorbis/Opus), M4A/AAC y WebM; salidas WAV, MP3, FLAC, OGG Opus y M4A AAC; detección de lo que el navegador puede leer (AAC no se decodifica en Chromium sin códecs propietarios) con mensaje claro; límites de tamaño y duración; cancelación; fixtures generados con ffmpeg del sistema y salida validada con ffprobe
+  - [ ] 3C.35b AIFF de entrada y salida (lector/escritor PCM propio, big-endian, frecuencia en float de 80 bits) integrado en "Convertir audio"
 - [ ] 3C.36 Audio: recortar, unir, cambiar bitrate/frecuencia/canales y normalizar volumen
 - [ ] 3C.37 Video: convertir entre MP4, WebM, MOV y MKV según el navegador, y extraer audio
 - [ ] 3C.38 Video: comprimir, recortar, cambiar resolución y velocidad, video → GIF (gifenc) y unir

@@ -47,7 +47,14 @@ export type FormatId =
   | "tgz"
   | "7z"
   | "rar"
-  | "epub";
+  | "epub"
+  | "mp3"
+  | "wav"
+  | "flac"
+  | "ogg"
+  | "m4a"
+  | "aac"
+  | "webm";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -109,6 +116,13 @@ export const formats: Record<FormatId, FormatInfo> = {
   "7z": { id: "7z", label: "7Z", mime: "application/x-7z-compressed", extensions: ["7z"], category: "data" },
   rar: { id: "rar", label: "RAR", mime: "application/vnd.rar", extensions: ["rar"], category: "data" },
   epub: { id: "epub", label: "EPUB", mime: "application/epub+zip", extensions: ["epub"], category: "data" },
+  mp3: { id: "mp3", label: "MP3", mime: "audio/mpeg", extensions: ["mp3"], category: "data" },
+  wav: { id: "wav", label: "WAV", mime: "audio/wav", extensions: ["wav", "wave"], category: "data" },
+  flac: { id: "flac", label: "FLAC", mime: "audio/flac", extensions: ["flac"], category: "data" },
+  ogg: { id: "ogg", label: "OGG", mime: "audio/ogg", extensions: ["ogg", "oga", "opus"], category: "data" },
+  m4a: { id: "m4a", label: "M4A", mime: "audio/mp4", extensions: ["m4a"], category: "data" },
+  aac: { id: "aac", label: "AAC", mime: "audio/aac", extensions: ["aac"], category: "data" },
+  webm: { id: "webm", label: "WEBM", mime: "audio/webm", extensions: ["webm", "weba"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 

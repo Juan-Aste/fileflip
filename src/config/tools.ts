@@ -92,6 +92,7 @@ export const toolIds = [
   "epub-converter",
   "epub-to-pdf",
   "create-epub",
+  "audio-converter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -149,6 +150,8 @@ const EPUB_MAX_BYTES = 100 * 1024 * 1024;
 const EPUB_PDF_MAX_BYTES = 50 * 1024 * 1024;
 /** Chapters are sanitized and serialized on the page; room for images embedded as data: URLs. */
 const CREATE_EPUB_MAX_BYTES = 20 * 1024 * 1024;
+/** Audio is streamed from the file, but the converted output is kept in memory until it is downloaded. */
+const AUDIO_MAX_BYTES = 500 * 1024 * 1024;
 /** Markdown/HTML are converted on the page (they need a DOM): keep it responsive. */
 const MARKUP_MAX_BYTES = 5 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
@@ -892,6 +895,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: CREATE_EPUB_MAX_BYTES },
     status: "verified",
     slugs: { es: "crear-epub", en: "create-epub", pt: "criar-epub", fr: "creer-epub", zh: "create-epub" },
+  },
+  "audio-converter": {
+    id: "audio-converter",
+    category: "audio",
+    inputs: ["mp3", "wav", "flac", "ogg", "m4a", "aac", "webm"],
+    outputs: ["mp3", "wav", "flac", "ogg", "m4a"],
+    engine: "browser",
+    libraries: ["mediabunny", "@mediabunny/mp3-encoder (LAME)", "@mediabunny/flac-encoder (libFLAC)", "@mediabunny/aac-encoder (FFmpeg AAC)"],
+    // Per file: a long file is decoded and re-encoded faster than real time, but slow phones need room.
+    limits: { files: "multiple", timeoutMs: 15 * MINUTE, maxFileBytes: AUDIO_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "convertir-audio", en: "audio-converter", pt: "converter-audio", fr: "convertir-audio", zh: "audio-converter" },
   },
 };
 

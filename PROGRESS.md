@@ -604,6 +604,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
   - Audio/video en formatos heredados (AVI, WMV, FLV, 3GP): solo con `@ffmpeg/core` publicado, que es **GPL-2.0-or-later**. Sin aprobación se usa WebCodecs + mediabunny (MPL-2.0) para MP4/WebM/MOV/MKV y audio común.
   - Quitar fondo con `@imgly/background-removal` (**AGPL-3.0**, mejor calidad). Sin aprobación se intenta MediaPipe (Apache-2.0, enfocado en personas).
   - MOBI/AZW (solo con Calibre, GPL-3.0) y DWG (LibreDWG GPL-3.0 u ODA comercial): descartados salvo que el dueño decida otra cosa.
+  - "Convertir audio" incluye LAME (MP3) y el codificador AAC de FFmpeg, ambos **LGPL**, compilados a WASM en las extensiones de mediabunny sin modificar: conviene una página de créditos/licencias con enlaces a su código fuente (LAME pide un enlace a lame.sourceforge.io).
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
 - No quedan tareas sin marcar en PLAN.md y la especificación no tiene puntos sin cubrir. Verificado: `npm ci`, `npm run lint`, `npm run build` y `npm test` (40 archivos, 231 tests) pasan en `dev`.
@@ -2242,3 +2243,27 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - `docs/perf/2026-10-22-3C34.md`: 21 páginas (6 nuevas en el script: extraer ZIP, imagen a texto, hojas de cálculo y las 3 de libros electrónicos), mediana de 3, móvil. Todas **96–98**, accesibilidad y SEO 100, **CLS 0**; las herramientas nuevas cargan 165–166 KB de JS como las demás (los motores se descargan al ejecutar). Sin correcciones necesarias.
 
 **Siguiente**: 3C.35 (audio: capacidades del navegador y conversión con WebCodecs + mediabunny).
+
+## 2026-10-22 03:40 UTC — Fase 3, tarea 3C.35a (convertir audio)
+
+**Qué se hizo**
+- 3C.35 se dividió en 3C.35a (conversor de audio con mediabunny) y 3C.35b (AIFF de entrada y salida, que mediabunny no tiene).
+- **Convertir audio** (`/es/convertir-audio`, `/en/audio-converter`, `/pt/converter-audio`, `/fr/convertir-audio`), primera herramienta de la categoría **Audio** (ahora publicada): entradas **MP3, WAV, FLAC, OGG (Vorbis/Opus), Opus, M4A/AAC y WebM** (lotes; 200 MB gratis / 500 MB Pro, máximo 3 horas) → **MP3, WAV, FLAC, OGG (Opus) o M4A (AAC)**, calidad 96–320 kbps en los formatos con pérdida (192 por defecto; Opus hasta 256). Formatos nuevos `mp3`, `wav`, `flac`, `ogg`, `m4a`, `aac`, `webm` en `formats.ts`.
+- Motor `src/lib/audio/convert.ts` (en la página, import diferido): **mediabunny 1.62.0** (MPL-2.0) lee y escribe los contenedores y decodifica con **WebCodecs**; codifica Opus con WebCodecs y, cuando el navegador no tiene codificador, con las extensiones WASM oficiales, cada una en su propio worker y cargada solo al elegir ese formato: **MP3 con LAME 3.100** (LGPL), **FLAC con libFLAC** (BSD), **AAC con el codificador nativo de FFmpeg** (LGPL, compilado sin `--enable-gpl`). Licencias en `docs/dependencies.md`. `src/lib/audio/options.ts` (sin mediabunny) define cómo se codifica cada salida: WAV/FLAC en 16 bits a la frecuencia original, MP3 a 44,1 kHz, Opus a 48 kHz; los destinos con pérdida se recodifican siempre (la calidad elegida se aplica aunque la entrada ya sea MP3).
+- **Capacidades del navegador**: si falta WebCodecs, o si el navegador no decodifica AAC (pasa en Chromium sin códecs propietarios, el de las pruebas), la herramienta lo avisa antes de convertir; además cada archivo comprueba `track.canDecode()` y falla con el error nuevo `audioCodecUnsupported`. Errores nuevos también `noAudioTrack` y `audioTooLong` (5 idiomas).
+- Cancelar o el **límite de 15 minutos por archivo** detienen la conversión (`conversion.cancel()`); solo se usa la pista de audio principal (el video se descarta).
+- Fixtures con `scripts/fixtures/audio.sh` (**ffmpeg del sistema**, solo para tests): 2 s estéreo con 440 Hz a la izquierda y 660 Hz a la derecha en los 7 formatos de entrada, M4A cortado y texto con extensión .mp3.
+
+**Verificación**
+- 3 tests unitarios de `audioPlan`.
+- `audio-tools.spec.ts` (3 casos en Chromium, salida validada con **ffprobe/ffmpeg**, independientes de mediabunny y del navegador): WAV + FLAC + OGG Vorbis + Opus + WebM + MP3 → 6 MP3 a 44,1 kHz, estéreo, 2,0 s (±0,15), 192 kbps (±20) y **el tono correcto en cada canal** (cruces por cero: 440/660 Hz ±15); MP3 → WAV (PCM 16 bits), FLAC, OGG Opus 48 kHz y M4A AAC con las mismas comprobaciones; M4A cortado, texto disfrazado y M4A AAC (sin decodificador en este Chromium) → mensajes claros y aviso visible, el WAV del mismo lote sí se convierte. Sin llamadas al servidor.
+- La página carga el mismo JS que las demás herramientas (~525 KB sin comprimir, igual que "Convertir EPUB"): mediabunny y los codificadores no entran en la carga inicial. Captura a 360 px oscuro sin desborde (`scrollWidth` 360).
+- Lint, typecheck, tests (888 + 8 saltados), build, `check:static` (907 páginas) y `npm run test:e2e` completo con Gotenberg y EPUBCheck (271/271) pasan.
+
+**Limitaciones**
+- AAC/M4A de entrada depende del navegador (Chrome, Edge y Safari sí; Chromium sin códecs propietarios no). El resultado se arma en memoria (de ahí el límite de 3 horas). Las etiquetas (título, artista) se copian cuando el contenedor de salida las admite; las carátulas no se probaron. Sin AIFF todavía (3C.35b).
+
+**Pendiente del dueño (informativo)**
+- LAME y el codificador AAC de FFmpeg son **LGPL** y van compilados a WASM dentro de las extensiones de mediabunny (sin modificar). Para cumplir la LGPL alcanza con indicar en la página de licencias/créditos que se usan, con enlace a su código fuente (LAME pide además un enlace a lame.sourceforge.io). Queda anotado para la página de créditos.
+
+**Siguiente**: 3C.35b (AIFF de entrada y salida).

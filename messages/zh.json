@@ -215,6 +215,9 @@
     "archiveEmpty": "此压缩包中没有可解压的文件（只有空文件夹或链接）。",
     "ocrNoText": "图片中未找到文字。请尝试更清晰的照片或选择其他语言。",
     "ebookDrm": "这本书受 DRM 版权保护，无法转换。仅支持无 DRM 的 EPUB 文件。",
+    "noAudioTrack": "此文件没有音轨。",
+    "audioCodecUnsupported": "你的浏览器无法读取此文件中的音频（例如某些浏览器不支持 AAC）。请尝试 Chrome、Edge 或 Safari，或换一种格式。",
+    "audioTooLong": "音频太长：每个文件最长 3 小时。",
     "tooManyPages": "此 PDF 页数过多，无法在浏览器中识别（最多 100 页）。",
     "pdfAlreadySearchable": "此 PDF 的所有页面都已有文字：无需 OCR 即可搜索。请使用“PDF 转文本”提取文字。"
   },
@@ -1184,6 +1187,22 @@
         "q4": "安全吗？",
         "a4": "安全。内容会被清理：删除脚本、事件处理程序、表单和 javascript: 链接。你的文件不会上传到任何服务器。"
       }
+    },
+    "audio-converter": {
+      "title": "音频转换器",
+      "description": "在浏览器中将音频在 MP3、WAV、FLAC、OGG 和 M4A 之间转换，无需上传文件。",
+      "action": "转换音频",
+      "about": "在最常用的格式之间转换歌曲、语音消息、播客和录音：MP3 可在任何地方播放，无损的 WAV 或 FLAC 适合编辑或存档，OGG（Opus）适合网页，M4A（AAC）适合苹果设备。可读取 MP3、WAV、FLAC、OGG、Opus、M4A、AAC 和 WebM，并可选择音质。转换在你的设备上进行：文件不会上传到任何服务器。",
+      "faq": {
+        "q1": "应该选择哪种格式？",
+        "a1": "需要在任何设备上播放就选 MP3；M4A（AAC）在相同大小下音质略好，是苹果的格式；OGG（Opus）在网页上效率最高；WAV 和 FLAC 不损失音质（FLAC 约为 WAV 的一半大小）。",
+        "q2": "转换会损失音质吗？",
+        "a2": "转为 WAV 或 FLAC 不会：声音保持原样（16 位）。MP3、M4A 和 OGG 是有损压缩：对大多数人来说 192 kbps 与原始音频几乎没有区别；从一种有损格式转换为另一种无法找回已经损失的部分。",
+        "q3": "为什么无法读取我的 M4A 文件？",
+        "a3": "AAC 音频（M4A）由浏览器的编解码器解码。Chrome、Edge 和 Safari 可以读取；某些不带专有编解码器的浏览器不行。这种情况下会显示提示：请换一个浏览器。",
+        "q4": "有限制吗？",
+        "a4": "免费版每个文件最大 200 MB（Pro 版 500 MB），最长 3 小时，因为结果在浏览器内存中生成。只保留主音轨；如果文件是视频，会忽略画面。"
+      }
     }
   },
   "ToolUi": {
@@ -2101,5 +2120,27 @@
       "zh": "中文"
     },
     "createNote": "每个文件是一章（按列表顺序），每个一级标题开始新的一章。包含嵌入文件中的图片；不包含链接到互联网的图片。"
+  },
+  "AudioTool": {
+    "target": "转换为",
+    "targets": {
+      "mp3": "MP3",
+      "wav": "WAV（无损）",
+      "flac": "FLAC（无损）",
+      "ogg": "OGG（Opus）",
+      "m4a": "M4A（AAC）"
+    },
+    "bitrate": "音质",
+    "bitrates": {
+      "96": "96 kbps（语音）",
+      "128": "128 kbps",
+      "192": "192 kbps（推荐）",
+      "256": "256 kbps",
+      "320": "320 kbps（最高）"
+    },
+    "lossyNote": "压缩格式：音质越高，文件越大。在你的设备上处理。",
+    "losslessNote": "无损，16 位：声音不变。在你的设备上处理。",
+    "noAac": "此浏览器无法读取 AAC（M4A）音频；其他格式可以正常使用。M4A 请使用 Chrome、Edge 或 Safari。",
+    "noWebCodecs": "此浏览器无法处理音频（缺少 WebCodecs）。请使用较新版本的 Chrome、Edge、Safari 或 Firefox。"
   }
 }

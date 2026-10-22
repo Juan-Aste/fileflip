@@ -215,6 +215,9 @@
     "archiveEmpty": "Este arquivo compactado não tem arquivos para extrair (só pastas vazias ou links).",
     "ocrNoText": "Nenhum texto foi encontrado na imagem. Tente uma foto mais nítida ou escolha outro idioma.",
     "ebookDrm": "Este livro tem DRM (proteção contra cópia): não pode ser convertido. Só funcionam EPUB sem DRM.",
+    "noAudioTrack": "Este arquivo não tem uma faixa de áudio.",
+    "audioCodecUnsupported": "Seu navegador não consegue ler o áudio deste arquivo (por exemplo, AAC em alguns navegadores). Tente no Chrome, Edge ou Safari, ou com outro formato.",
+    "audioTooLong": "O áudio é longo demais: o máximo é de 3 horas por arquivo.",
     "tooManyPages": "Este PDF tem páginas demais para reconhecer no navegador (no máximo 100).",
     "pdfAlreadySearchable": "Todas as páginas deste PDF já têm texto: dá para pesquisar sem OCR. Use “PDF para texto” para extraí-lo."
   },
@@ -1184,6 +1187,22 @@
         "q4": "É seguro?",
         "a4": "Sim. O conteúdo é limpo: scripts, eventos, formulários e links javascript: são removidos. Seus arquivos não são enviados a nenhum servidor."
       }
+    },
+    "audio-converter": {
+      "title": "Converter áudio",
+      "description": "Converta áudio entre MP3, WAV, FLAC, OGG e M4A no seu navegador, sem enviar seus arquivos.",
+      "action": "Converter áudio",
+      "about": "Converta músicas, mensagens de voz, podcasts e gravações entre os formatos mais usados: MP3 para tocar em qualquer lugar, WAV ou FLAC sem perda para editar ou arquivar, OGG (Opus) para a web e M4A (AAC) para aparelhos Apple. Lê MP3, WAV, FLAC, OGG, Opus, M4A, AAC e WebM, e você pode escolher a qualidade. A conversão acontece no seu dispositivo: os arquivos não são enviados a nenhum servidor.",
+      "faq": {
+        "q1": "Qual formato devo escolher?",
+        "a1": "MP3 se precisa tocar em qualquer aparelho; M4A (AAC) soa um pouco melhor com o mesmo tamanho e é o formato da Apple; OGG (Opus) é o mais eficiente para a web; WAV e FLAC não perdem qualidade (FLAC ocupa cerca da metade do WAV).",
+        "q2": "Perde qualidade ao converter?",
+        "a2": "Para WAV ou FLAC, não: o som fica igual (em 16 bits). MP3, M4A e OGG comprimem com perda: 192 kbps é praticamente igual ao original para a maioria; converter de um formato com perda para outro não recupera o que já foi perdido.",
+        "q3": "Por que não consegue ler meu arquivo M4A?",
+        "a3": "O áudio AAC (M4A) é decodificado pelo codec do navegador. Chrome, Edge e Safari leem; alguns navegadores sem codecs proprietários não. Nesse caso aparece um aviso: tente outro navegador.",
+        "q4": "Há limite?",
+        "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com o Pro) e 3 horas de duração, porque o resultado é montado na memória do seu navegador. Só a faixa de áudio principal é mantida; se o arquivo for um vídeo, a imagem é ignorada."
+      }
     }
   },
   "ToolUi": {
@@ -2101,5 +2120,27 @@
       "zh": "中文"
     },
     "createNote": "Cada arquivo é um capítulo (na ordem da lista) e cada título principal começa um novo. As imagens inseridas no arquivo são incluídas; as com link para a internet, não."
+  },
+  "AudioTool": {
+    "target": "Converter para",
+    "targets": {
+      "mp3": "MP3",
+      "wav": "WAV (sem perda)",
+      "flac": "FLAC (sem perda)",
+      "ogg": "OGG (Opus)",
+      "m4a": "M4A (AAC)"
+    },
+    "bitrate": "Qualidade",
+    "bitrates": {
+      "96": "96 kbps (voz)",
+      "128": "128 kbps",
+      "192": "192 kbps (recomendada)",
+      "256": "256 kbps",
+      "320": "320 kbps (máxima)"
+    },
+    "lossyNote": "Formato comprimido: mais qualidade, arquivo maior. Processado no seu dispositivo.",
+    "losslessNote": "Sem perda, em 16 bits: o som não muda. Processado no seu dispositivo.",
+    "noAac": "Este navegador não lê áudio AAC (M4A); os outros formatos funcionam. Para M4A use Chrome, Edge ou Safari.",
+    "noWebCodecs": "Este navegador não consegue processar áudio (falta WebCodecs). Use uma versão recente do Chrome, Edge, Safari ou Firefox."
   }
 }

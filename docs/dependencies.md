@@ -27,6 +27,10 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | libheif-js | 1.23.5 | LGPL-3.0 | lector HEIC/HEIF | N (worker, carga diferida, archivo aparte: cumple la LGPL al poder reemplazarse) |
 | woff2-encoder | 2.0.0 | MIT (google/woff2 y Brotli: MIT) | comprimir y descomprimir WOFF2 (codificador de referencia de Google en WASM incrustado, ~1 MB) | N (worker de datos, import diferido: solo el conversor de fuentes) |
 | libarchive-wasm | 1.2.0 | MIT (envoltorio de ofk); incluye **libarchive 3.7.7** (BSD-2-Clause) compilado con emscripten (zlib, bzip2, xz/LZMA: licencias permisivas) | extraer 7Z y RAR 4/5 (solo lectura; 600 KB de WASM) | N (worker de datos, import diferido: solo al abrir un 7Z o RAR) |
+| mediabunny | 1.62.0 | MPL-2.0 (copyleft por archivo: no se modifica) | leer y escribir contenedores de audio (WAV, MP3, FLAC, OGG, MP4/M4A, WebM/MKV, ADTS) y convertir con WebCodecs | N (import diferido al ejecutar "Convertir audio") |
+| @mediabunny/mp3-encoder | 1.62.0 | MPL-2.0; incluye **LAME 3.100** compilado a WASM (**LGPL-2.0**) | codificar MP3 (los navegadores no lo hacen con WebCodecs) | N (ídem, solo al elegir MP3) |
+| @mediabunny/flac-encoder | 1.62.0 | MPL-2.0; incluye **libFLAC** (BSD-3-Clause) en WASM | codificar FLAC | N (ídem, solo al elegir FLAC) |
+| @mediabunny/aac-encoder | 1.62.0 | MPL-2.0; incluye el codificador AAC nativo de **FFmpeg** (LGPL-2.1, compilado con `--disable-everything` y sin `--enable-gpl`) en WASM | codificar AAC/M4A cuando el navegador no tiene codificador AAC | N (ídem, solo al elegir M4A) |
 | tesseract.js | 7.0.0 | Apache-2.0 (dependencias: bmp-js MIT, idb-keyval Apache-2.0, is-url MIT, node-fetch MIT, opencollective-postinstall MIT, regenerator-runtime MIT, wasm-feature-detect Apache-2.0, zlibjs MIT) | OCR de imágenes ("Imagen a texto"); lanza su propio worker | N (import diferido; el worker se sirve desde `/ocr/`, nunca desde un CDN) |
 | tesseract.js-core | 7.0.0 | Apache-2.0 (Tesseract 5 y Leptonica: Apache-2.0 / BSD-2) | motor OCR en WASM; se copian solo las 3 variantes LSTM (~3,9 MB c/u, el worker elige una según SIMD) | N (`/ocr/`, copiado por `scripts/copy-ocr-assets.mjs` antes de cada build) |
 | @tesseract.js-data/{eng,spa,por,fra,chi_sim} | 1.0.0 | MIT (paquete); modelos tessdata_best de Tesseract: Apache-2.0 | modelos de idioma `4.0.0_best_int` (2–4 MB c/u en gzip); se descarga solo el elegido | N (`/ocr/`) |
@@ -56,6 +60,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 |---|---|---|
 | veraPDF (imagen Docker `verapdf/cli`, solo tests) | GPL-3.0+ / MPL-2.0 (doble licencia) | validador de referencia de PDF/A en `src/lib/server/pdfa.test.ts` con `VERAPDF_DOCKER=1`; no se distribuye ni se ejecuta en producción |
 | EPUBCheck 5.2.1 (W3C, jar descargado aparte, solo tests) | BSD-3-Clause | validador de referencia de EPUB en `src/lib/ebook/build.test.ts` y `tests/e2e/ebook-tools.spec.ts` con `EPUBCHECK_JAR=<ruta al jar>` (necesita Java); no se distribuye ni se ejecuta en producción |
+| ffmpeg/ffprobe del sistema (solo tests y fixtures) | LGPL/GPL según el build de la distribución | `scripts/fixtures/audio.sh` genera los fixtures de audio y `tests/e2e/audio-tools.spec.ts` valida las salidas (códec, frecuencia, canales, duración y tono de cada canal); la prueba se salta si no está instalado. No se distribuye ni se ejecuta en producción |
 | Gotenberg 8 (imagen Docker) | MIT | API HTTP de conversión de oficina; corre como servicio aparte en la red privada |
 | └ LibreOffice | MPL-2.0 | motor dentro de Gotenberg (oficina → PDF y PDF → PDF/A) |
 | └ Chromium | BSD-3-Clause (y otras) | motor HTML → PDF dentro de Gotenberg (Markdown → PDF y HTML → PDF; sin JavaScript ni red) |

@@ -215,6 +215,9 @@
     "archiveEmpty": "Cette archive ne contient aucun fichier à extraire (seulement des dossiers vides ou des liens).",
     "ocrNoText": "Aucun texte n’a été trouvé dans l’image. Essayez une photo plus nette ou choisissez une autre langue.",
     "ebookDrm": "Ce livre est protégé par DRM : il ne peut pas être converti. Seuls les EPUB sans DRM fonctionnent.",
+    "noAudioTrack": "Ce fichier n'a pas de piste audio.",
+    "audioCodecUnsupported": "Votre navigateur ne peut pas lire l'audio de ce fichier (par exemple l'AAC dans certains navigateurs). Essayez Chrome, Edge ou Safari, ou un autre format.",
+    "audioTooLong": "L'audio est trop long : le maximum est de 3 heures par fichier.",
     "tooManyPages": "Ce PDF a trop de pages pour être reconnu dans le navigateur (100 au maximum).",
     "pdfAlreadySearchable": "Toutes les pages de ce PDF contiennent déjà du texte : il est consultable sans OCR. Utilisez « PDF en texte » pour l’extraire."
   },
@@ -1184,6 +1187,22 @@
         "q4": "Est-ce sûr ?",
         "a4": "Oui. Le contenu est nettoyé : scripts, gestionnaires d'événements, formulaires et liens javascript: sont supprimés. Vos fichiers ne sont envoyés à aucun serveur."
       }
+    },
+    "audio-converter": {
+      "title": "Convertir de l'audio",
+      "description": "Convertissez de l'audio entre MP3, WAV, FLAC, OGG et M4A dans votre navigateur, sans envoyer vos fichiers.",
+      "action": "Convertir l'audio",
+      "about": "Convertissez chansons, messages vocaux, podcasts et enregistrements entre les formats les plus courants : MP3 pour l'écouter partout, WAV ou FLAC sans perte pour éditer ou archiver, OGG (Opus) pour le web et M4A (AAC) pour les appareils Apple. Lit les MP3, WAV, FLAC, OGG, Opus, M4A, AAC et WebM, et vous pouvez choisir la qualité. La conversion se fait sur votre appareil : les fichiers ne sont envoyés à aucun serveur.",
+      "faq": {
+        "q1": "Quel format choisir ?",
+        "a1": "MP3 s'il doit être lu sur n'importe quel appareil ; le M4A (AAC) sonne un peu mieux à taille égale et c'est le format d'Apple ; l'OGG (Opus) est le plus efficace pour le web ; WAV et FLAC ne perdent pas de qualité (le FLAC prend environ la moitié de la place du WAV).",
+        "q2": "La conversion fait-elle perdre de la qualité ?",
+        "a2": "Vers WAV ou FLAC, non : le son est conservé tel quel (en 16 bits). MP3, M4A et OGG compressent avec perte : 192 kbps est pratiquement identique à l'original pour la plupart des gens ; passer d'un format avec perte à un autre ne récupère pas ce qui a déjà été perdu.",
+        "q3": "Pourquoi mon fichier M4A n'est-il pas lu ?",
+        "a3": "L'audio AAC (M4A) est décodé par le codec du navigateur. Chrome, Edge et Safari le lisent ; certains navigateurs sans codecs propriétaires non. Dans ce cas, un avertissement s'affiche : essayez un autre navigateur.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 3 heures de durée, car le résultat est construit dans la mémoire de votre navigateur. Seule la piste audio principale est conservée ; si le fichier est une vidéo, l'image est ignorée."
+      }
     }
   },
   "ToolUi": {
@@ -2101,5 +2120,27 @@
       "zh": "中文"
     },
     "createNote": "Chaque fichier est un chapitre (dans l'ordre de la liste) et chaque titre principal en commence un nouveau. Les images intégrées au fichier sont incluses ; celles liées à internet, non."
+  },
+  "AudioTool": {
+    "target": "Convertir en",
+    "targets": {
+      "mp3": "MP3",
+      "wav": "WAV (sans perte)",
+      "flac": "FLAC (sans perte)",
+      "ogg": "OGG (Opus)",
+      "m4a": "M4A (AAC)"
+    },
+    "bitrate": "Qualité",
+    "bitrates": {
+      "96": "96 kbps (voix)",
+      "128": "128 kbps",
+      "192": "192 kbps (recommandée)",
+      "256": "256 kbps",
+      "320": "320 kbps (maximale)"
+    },
+    "lossyNote": "Format compressé : plus de qualité, fichier plus lourd. Traité sur votre appareil.",
+    "losslessNote": "Sans perte, en 16 bits : le son ne change pas. Traité sur votre appareil.",
+    "noAac": "Ce navigateur ne lit pas l'audio AAC (M4A) ; les autres formats fonctionnent. Pour le M4A, utilisez Chrome, Edge ou Safari.",
+    "noWebCodecs": "Ce navigateur ne peut pas traiter l'audio (WebCodecs manquant). Utilisez une version récente de Chrome, Edge, Safari ou Firefox."
   }
 }

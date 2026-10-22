@@ -91,7 +91,7 @@ describe("tool registry", () => {
 
   it("groups published tools by category", () => {
     expect(toolsInCategory("pdf").map((t) => t.id)).toContain("merge-pdf");
-    expect(toolsInCategory("audio")).toEqual([]);
+    expect(toolsInCategory("video")).toEqual([]);
   });
 
   it("classifies conversion pages", () => {

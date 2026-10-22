@@ -215,6 +215,9 @@
     "archiveEmpty": "This archive has no files to extract (only empty folders or links).",
     "ocrNoText": "No text was found in the image. Try a sharper photo or choose another language.",
     "ebookDrm": "This book is protected with DRM: it can't be converted. Only DRM-free EPUB files work.",
+    "noAudioTrack": "This file has no audio track.",
+    "audioCodecUnsupported": "Your browser can't read the audio in this file (for example, AAC in some browsers). Try Chrome, Edge or Safari, or another format.",
+    "audioTooLong": "The audio is too long: the maximum is 3 hours per file.",
     "tooManyPages": "This PDF has too many pages to recognize in the browser (100 at most).",
     "pdfAlreadySearchable": "Every page of this PDF already has text: it's searchable without OCR. Use “PDF to text” to extract it."
   },
@@ -1184,6 +1187,22 @@
         "q4": "Is it safe?",
         "a4": "Yes. The content is cleaned: scripts, event handlers, forms and javascript: links are removed. Your files aren't uploaded to any server."
       }
+    },
+    "audio-converter": {
+      "title": "Audio Converter",
+      "description": "Convert audio between MP3, WAV, FLAC, OGG and M4A in your browser, without uploading your files.",
+      "action": "Convert audio",
+      "about": "Convert songs, voice notes, podcasts and recordings between the most used formats: MP3 to play anywhere, lossless WAV or FLAC to edit or archive, OGG (Opus) for the web and M4A (AAC) for Apple devices. Reads MP3, WAV, FLAC, OGG, Opus, M4A, AAC and WebM, and you can choose the quality. The conversion happens on your device: files aren't uploaded to any server.",
+      "faq": {
+        "q1": "Which format should I pick?",
+        "a1": "MP3 if it must play on any device; M4A (AAC) sounds a bit better at the same size and is Apple's format; OGG (Opus) is the most efficient for the web; WAV and FLAC keep full quality (FLAC takes about half the space of WAV).",
+        "q2": "Does converting lose quality?",
+        "a2": "To WAV or FLAC, no: the sound is kept as is (in 16 bits). MP3, M4A and OGG are lossy: 192 kbps is practically indistinguishable from the original for most people; converting from one lossy format to another doesn't bring back what was already lost.",
+        "q3": "Why can't it read my M4A file?",
+        "a3": "AAC audio (M4A) is decoded with the browser's codec. Chrome, Edge and Safari read it; some browsers without proprietary codecs don't. In that case you'll see a notice: try another browser.",
+        "q4": "Is there a limit?",
+        "a4": "Up to 200 MB per file on the free plan (500 MB with Pro) and 3 hours long, because the result is built in your browser's memory. Only the main audio track is kept; if the file is a video, the picture is ignored."
+      }
     }
   },
   "ToolUi": {
@@ -2101,5 +2120,27 @@
       "zh": "中文"
     },
     "createNote": "Each file is a chapter (in the order of the list) and every main heading starts a new one. Images embedded in the file are included; ones linked to the internet are not."
+  },
+  "AudioTool": {
+    "target": "Convert to",
+    "targets": {
+      "mp3": "MP3",
+      "wav": "WAV (lossless)",
+      "flac": "FLAC (lossless)",
+      "ogg": "OGG (Opus)",
+      "m4a": "M4A (AAC)"
+    },
+    "bitrate": "Quality",
+    "bitrates": {
+      "96": "96 kbps (voice)",
+      "128": "128 kbps",
+      "192": "192 kbps (recommended)",
+      "256": "256 kbps",
+      "320": "320 kbps (maximum)"
+    },
+    "lossyNote": "Compressed format: higher quality means a bigger file. Processed on your device.",
+    "losslessNote": "Lossless, 16-bit: the sound doesn't change. Processed on your device.",
+    "noAac": "This browser can't read AAC (M4A) audio; the other formats work. For M4A use Chrome, Edge or Safari.",
+    "noWebCodecs": "This browser can't process audio (it lacks WebCodecs). Use a recent version of Chrome, Edge, Safari or Firefox."
   }
 }
