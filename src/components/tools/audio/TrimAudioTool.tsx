@@ -15,7 +15,7 @@ import ChoiceGroup from "../ChoiceGroup";
 import ToolAlert from "../ToolAlert";
 import ToolShell from "../shell/ToolShell";
 import { renameExtension, type ShellOutput } from "../shell/state";
-import { AUDIO_EXTENSIONS, withTimeLimit } from "./shared";
+import { AUDIO_EXTENSIONS, sameTarget, withTimeLimit } from "./shared";
 
 const tool = tools["trim-audio"];
 const engine = () => import("@/lib/audio/convert");
@@ -24,8 +24,6 @@ const FADE_SECONDS = 2;
 
 type Probe = { status: "loading" } | { status: "ready"; duration: number } | { status: "error"; code: ApiErrorCode };
 
-/** Keeps the output in the input's format when the converter can write it. */
-const sameTarget = (from: FormatId | null): AudioTarget => ((audioTargets as readonly string[]).includes(from ?? "") ? (from as AudioTarget) : "mp3");
 
 /** One audio file → the part between two times, with optional fades, in the browser. */
 export default function TrimAudioTool() {

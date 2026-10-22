@@ -2328,3 +2328,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Sin profundidad de 24 bits en la salida (16 bits como el conversor). Más de 2 canales se mezclan a estéreo o mono solo si se elige; "como el original" los mantiene cuando el formato lo admite.
 
 **Siguiente**: 3C.36c ("Normalizar volumen").
+
+## 2026-10-22 05:20 UTC — Fase 3, tarea 3C.36c (normalizar volumen)
+
+**Qué se hizo**
+- **Normalizar volumen** (`/es/normalizar-audio`, `/en/normalize-audio`, `/pt/normalizar-audio`, `/fr/normaliser-audio`), categoría Audio, en lotes: modo **volumen medio** (RMS a −16 dBFS, con el pico limitado a −1 dBFS) o **pico** (el punto más fuerte a −1 dBFS); salida en el **mismo formato** de cada archivo (por defecto) o en uno elegido, con bitrate. Cada resultado muestra la ganancia aplicada (formateada según el idioma).
+- Dos pasadas: `measureLevels` recorre el audio decodificado con `AudioSampleSink` (solo los cuadros dentro del rango, por si se combina con recorte) y `src/lib/audio/normalize.ts` calcula la ganancia (`normalizeGain`, tope de **+30 dB** para no amplificar ruido; silencio → error nuevo `audioSilent`). La segunda pasada aplica una sola ganancia con el mismo `process` de los fundidos (el progreso se reparte 40 % medir / 60 % convertir). Límite de tiempo de 20 minutos por archivo.
+- Fixture nuevo `silence.wav` (1 s, generado en `audio.sh`). Textos (introducción + 4 preguntas, interfaz, error) en los 5 idiomas.
+
+**Verificación**
+- 4 tests unitarios (pico arriba y abajo, RMS a −16 dB, límite de pico en señales con picos, tope de +30 dB, silencio, medidor por bloques).
+- `audio-tools.spec.ts` (+2, validado con **`volumedetect` de ffmpeg** y ffprobe): WAV + AIFF en modo pico → mismos formatos con **pico −1,0 dB (±0,2)**, ganancia "+17,…" mostrada, duración exacta y tonos; FLAC en volumen medio → MP3 con **media −16 dB (±1)** y pico ≤ −0,5 dB; `silence.wav` → "El audio está en silencio".
+- Lint, typecheck, tests (908 + 8 saltados), build, `check:static` (922 páginas) y `npm run test:e2e` completo (276 pasan, 4 saltados sin Gotenberg/EPUBCheck).
+
+**Limitaciones**
+- El volumen medio es RMS sin ponderar, no LUFS (EBU R128): similar en voz, puede diferir en música con muchos graves. No es un compresor (no cambia la dinámica).
+
+**Siguiente**: 3C.36d ("Unir audio").

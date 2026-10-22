@@ -220,7 +220,8 @@
     "audioTooLong": "The audio is too long: the maximum is 3 hours per file.",
     "tooManyPages": "This PDF has too many pages to recognize in the browser (100 at most).",
     "pdfAlreadySearchable": "Every page of this PDF already has text: it's searchable without OCR. Use “PDF to text” to extract it.",
-    "audioRangeInvalid": "Check the times: the start must come before the end and both must be within the audio."
+    "audioRangeInvalid": "Check the times: the start must come before the end and both must be within the audio.",
+    "audioSilent": "The audio is silent: there's nothing to normalize."
   },
   "Tools": {
     "merge-pdf": {
@@ -1238,6 +1239,22 @@
         "q4": "Is there a limit?",
         "a4": "Up to 200 MB per file on the free plan (500 MB with Pro), 3 hours per file and several files per batch. It reads the same formats as \"Audio converter\"."
       }
+    },
+    "normalize-audio": {
+      "title": "Normalize volume",
+      "description": "Even out the volume of your audio files (MP3, WAV, FLAC, OGG, M4A, AIFF) in the browser, by average loudness or peak, without clipping.",
+      "action": "Normalize volume",
+      "about": "Make a recording that came out too quiet louder, or match several tracks so they sound alike: the tool measures each whole file and applies one gain, so the dynamics don't change and there are no jumps. Choose average loudness (−16 dB, comfortable for voice and podcasts) or peak level (−1 dB). It never clips the peaks. It works in batches and on your device: files aren't uploaded to any server.",
+      "faq": {
+        "q1": "What's the difference between average loudness and peak?",
+        "a1": "Peak only looks at the loudest point and puts it at −1 dB: it's safe, but two files can still sound different. Average loudness evens out how each file sounds (−16 dB RMS); if reaching it would push the peak over −1 dB, it stops at that limit.",
+        "q2": "Does it distort the sound?",
+        "a2": "No: one gain is applied to the whole file and −1 dB is never exceeded, so nothing clips. It isn't a compressor: a part much louder than the rest stays that way.",
+        "q3": "Why did my audio barely change?",
+        "a3": "If its peak is already near −1 dB or its average near −16 dB, the gain needed is small. The applied gain is shown next to each result. To avoid boosting noise, the largest increase is +30 dB.",
+        "q4": "Is there a limit?",
+        "a4": "Up to 200 MB per file on the free plan (500 MB with Pro), 3 hours per file and several files per batch. Each file is read twice (measure, then apply), so it takes a little longer than a conversion."
+      }
     }
   },
   "ToolUi": {
@@ -2198,6 +2215,17 @@
     "sampleRate": "Sample rate",
     "rateOriginal": "Same as original",
     "rateKhz": "{khz} kHz",
-    "opusRate": "OGG (Opus) always uses 48 kHz."
+    "opusRate": "OGG (Opus) always uses 48 kHz.",
+    "normalizeMode": "Normalize by",
+    "normalizeModes": {
+      "loudness": "Average loudness",
+      "peak": "Peak level"
+    },
+    "normalizeHints": {
+      "loudness": "Brings the average level to −16 dB (as in podcasts and voice notes) without letting the peak go over −1 dB.",
+      "peak": "Raises or lowers everything equally until the loudest point sits at −1 dB. The difference between quiet and loud parts doesn't change."
+    },
+    "targetSame": "Same format",
+    "gainApplied": "Gain applied: {gain} dB."
   }
 }

@@ -21,6 +21,8 @@ SRC=(-f lavfi -i "sine=frequency=440:sample_rate=22050:duration=2" -f lavfi -i "
 "${FF[@]}" "${SRC[@]}" -c:a pcm_s16le -f aiff audio.aifc
 # An M4A whose index (moov, written at the end) is cut off, and text named .mp3.
 head -c "$(( $(stat -c %s audio.m4a) / 2 ))" audio.m4a > corrupt/audio-truncated.m4a
+# One second of digital silence (nothing to normalize).
+"${FF[@]}" -f lavfi -i "anullsrc=r=8000:cl=mono" -t 1 -c:a pcm_s16le silence.wav
 # An AIFF cut in half, and a μ-law AIFF-C (compressed: refused).
 head -c "$(( $(stat -c %s audio.aiff) / 2 ))" audio.aiff > corrupt/audio-truncated.aiff
 "${FF[@]}" "${SRC[@]}" -c:a pcm_mulaw -f aiff corrupt/audio-ulaw.aifc

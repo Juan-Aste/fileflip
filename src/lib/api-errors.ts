@@ -51,6 +51,8 @@ export const apiErrorCodes = [
   "audioTooLong",
   // Client-side only: a trim range outside the audio or shorter than a tenth of a second.
   "audioRangeInvalid",
+  // Client-side only: nothing to normalize.
+  "audioSilent",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -95,6 +97,7 @@ const status: Record<ApiErrorCode, number> = {
   audioCodecUnsupported: 415,
   audioTooLong: 413,
   audioRangeInvalid: 422,
+  audioSilent: 422,
   tooManyPages: 413,
   pdfAlreadySearchable: 422,
   signInRequired: 401,

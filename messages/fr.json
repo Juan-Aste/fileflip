@@ -220,7 +220,8 @@
     "audioTooLong": "L'audio est trop long : le maximum est de 3 heures par fichier.",
     "tooManyPages": "Ce PDF a trop de pages pour être reconnu dans le navigateur (100 au maximum).",
     "pdfAlreadySearchable": "Toutes les pages de ce PDF contiennent déjà du texte : il est consultable sans OCR. Utilisez « PDF en texte » pour l’extraire.",
-    "audioRangeInvalid": "Vérifiez les temps : le début doit précéder la fin et les deux doivent être dans l'audio."
+    "audioRangeInvalid": "Vérifiez les temps : le début doit précéder la fin et les deux doivent être dans l'audio.",
+    "audioSilent": "L'audio est silencieux : il n'y a rien à normaliser."
   },
   "Tools": {
     "merge-pdf": {
@@ -1238,6 +1239,22 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Il lit les mêmes formats que « Convertir un audio »."
       }
+    },
+    "normalize-audio": {
+      "title": "Normaliser le volume",
+      "description": "Égalisez le volume de vos audios (MP3, WAV, FLAC, OGG, M4A, AIFF) dans le navigateur, par volume moyen ou par crête, sans saturation.",
+      "action": "Normaliser le volume",
+      "about": "Remontez le volume d'un enregistrement trop faible ou harmonisez plusieurs pistes pour qu'elles sonnent pareil : l'outil mesure chaque fichier entier et applique un seul gain, sans changer la dynamique ni créer de sauts. Choisissez le volume moyen (−16 dB, confortable pour la voix et les podcasts) ou le niveau de crête (−1 dB). Les crêtes ne sont jamais écrêtées. Fonctionne par lots et sur votre appareil : les fichiers ne sont envoyés à aucun serveur.",
+      "faq": {
+        "q1": "Quelle différence entre volume moyen et crête ?",
+        "a1": "La crête ne regarde que le point le plus fort et le place à −1 dB : c'est sûr, mais deux fichiers peuvent encore sonner différemment. Le volume moyen égalise la perception de chaque fichier (−16 dB RMS) ; si cela ferait dépasser −1 dB à la crête, il s'arrête à cette limite.",
+        "q2": "Le son est-il déformé ?",
+        "a2": "Non : un seul gain est appliqué à tout le fichier et −1 dB n'est jamais dépassé, donc rien n'est écrêté. Ce n'est pas un compresseur : un passage beaucoup plus fort que le reste le reste.",
+        "q3": "Pourquoi mon audio a-t-il à peine changé ?",
+        "a3": "Si sa crête est déjà proche de −1 dB ou son niveau moyen proche de −16 dB, le gain nécessaire est faible. Le gain appliqué s'affiche à côté de chaque résultat. Pour ne pas amplifier le bruit, la hausse maximale est de +30 dB.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Chaque fichier est lu deux fois (mesure, puis application) : c'est un peu plus long qu'une conversion."
+      }
     }
   },
   "ToolUi": {
@@ -2198,6 +2215,17 @@
     "sampleRate": "Fréquence d'échantillonnage",
     "rateOriginal": "Comme l'original",
     "rateKhz": "{khz} kHz",
-    "opusRate": "L'OGG (Opus) utilise toujours 48 kHz."
+    "opusRate": "L'OGG (Opus) utilise toujours 48 kHz.",
+    "normalizeMode": "Normaliser selon",
+    "normalizeModes": {
+      "loudness": "Volume moyen",
+      "peak": "Niveau de crête"
+    },
+    "normalizeHints": {
+      "loudness": "Amène le niveau moyen à −16 dB (celui des podcasts et des notes vocales) sans que la crête dépasse −1 dB.",
+      "peak": "Monte ou baisse tout de la même façon jusqu'à ce que le point le plus fort soit à −1 dB. L'écart entre passages doux et forts ne change pas."
+    },
+    "targetSame": "Même format",
+    "gainApplied": "Gain appliqué : {gain} dB."
   }
 }

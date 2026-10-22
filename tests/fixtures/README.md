@@ -45,6 +45,7 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `corrupt/ebook-drm.epub`, `corrupt/ebook-truncated.epub`, `corrupt/ebook-no-container.epub`, `corrupt/ebook-entities.epub` | `ebooks.py`: `encryption.xml` con AES (DRM) / el EPUB cortado a la mitad / sin `META-INF/container.xml` / OPF con entidades DTD anidadas |
 | `audio.{wav,mp3,flac,ogg,opus,m4a,webm}` | `scripts/fixtures/audio.sh` con el ffmpeg del sistema (codificador independiente de mediabunny): 2 s estéreo, tono de 440 Hz a la izquierda y 660 Hz a la derecha; WAV PCM 16 bits 22 050 Hz, MP3 64 kbps, FLAC, OGG Vorbis, Opus y WebM (Opus, 48 kHz), M4A AAC 64 kbps; sin metadatos |
 | `audio.aiff`, `audio-24.aif`, `audio.aifc` | `audio.sh`: la misma señal en AIFF PCM 16 bits big-endian, 1 s de AIFF PCM 24 bits y AIFF-C con muestras little-endian (`sowt`) |
+| `silence.wav` | `audio.sh`: 1 s de silencio digital, mono 8 kHz (para "Normalizar volumen") |
 | `corrupt/audio-truncated.aiff`, `corrupt/audio-ulaw.aifc` | `audio.sh`: el AIFF cortado a la mitad / AIFF-C comprimido en μ-law (no se admite) |
 | `corrupt/audio-truncated.m4a`, `corrupt/not-audio.mp3` | `audio.sh`: el M4A cortado a la mitad (pierde el índice `moov`, que va al final) / texto con extensión .mp3 |
 | `archive.7z`, `corrupt/encrypted.7z`, `corrupt/encrypted-header.7z`, `corrupt/truncated.7z` | `scripts/fixtures/archives_7z_rar.py` con **py7zr** 0.22 (LGPL-2.1, solo para generarlos): el mismo árbol que `archive.zip` en LZMA2 / datos cifrados con contraseña / cabecera cifrada / cortado a la mitad |

@@ -15,12 +15,15 @@ import {
   Output,
   WavOutputFormat,
   AudioSample,
+  AudioSampleSink,
+  type InputAudioTrack,
   canEncodeAudio,
   type AudioCodec,
 } from "mediabunny";
 import { ConversionError } from "@/lib/convert-error";
 import { aiffToWav, isAiff, wavToAiff } from "./aiff";
 import { audioPlan, MAX_AUDIO_SECONDS, type AudioOptions } from "./options";
+import { createLevelMeter, normalizeGain, toDb, type NormalizeMode } from "./normalize";
 import { fadeGain, fadeLengths, validRange, type TrimRange } from "./time";
 
 const encoderExtensions: Partial<Record<AudioCodec, () => Promise<void>>> = {
@@ -52,6 +55,8 @@ export interface AudioResult {
   data: Uint8Array;
   /** Seconds of the input. */
   duration: number;
+  /** Gain applied by normalization, in dB. */
+  gainDb?: number;
 }
 
 /** Edits applied while converting (the audio tools other than the plain converter). */
@@ -64,6 +69,8 @@ export interface AudioEdit {
   /** Output channels (downmix or upmix) and sample rate; Opus always runs at 48 kHz. */
   channels?: 1 | 2;
   sampleRate?: number;
+  /** Measure the levels in a first pass and apply one gain (no clipping). */
+  normalize?: NormalizeMode;
 }
 
 /** Opens a file for mediabunny, checking it holds audio this browser can decode; the caller disposes it. */
@@ -103,6 +110,33 @@ export async function probeAudio(file: Blob): Promise<{ duration: number }> {
   return { duration };
 }
 
+/** Peak and RMS of the decoded track (the first pass of normalization), between `start` and `end` seconds. */
+async function measureLevels(track: InputAudioTrack, signal: AbortSignal | undefined, onProgress: (p: number) => void, start?: number, end?: number) {
+  const meter = createLevelMeter();
+  const sink = new AudioSampleSink(track);
+  const from = start ?? 0;
+  const span = (end ?? (await track.computeDuration())) - from;
+  for await (const sample of sink.samples(start, end)) {
+    try {
+      if (signal?.aborted) throw new ConversionError("jobCancelled");
+      // Only the frames inside the range count (the first and last blocks stick out).
+      const first = Math.max(0, Math.round((from - sample.timestamp) * sample.sampleRate));
+      const last = end === undefined ? sample.numberOfFrames : Math.min(sample.numberOfFrames, Math.round((end - sample.timestamp) * sample.sampleRate));
+      if (last > first) {
+        const block = new Float32Array(last - first);
+        for (let c = 0; c < sample.numberOfChannels; c++) {
+          sample.copyTo(block, { planeIndex: c, format: "f32-planar", frameOffset: first, frameCount: last - first });
+          meter.add(block);
+        }
+      }
+      if (span > 0) onProgress(Math.min(1, (sample.timestamp + sample.duration - from) / span));
+    } finally {
+      sample.close();
+    }
+  }
+  return meter.levels();
+}
+
 /** A copy of `sample` in 32-bit float with each frame scaled by `gainAt(seconds from the start of the result)`. */
 function applyGain(sample: AudioSample, gainAt: (t: number) => number): AudioSample {
   const frames = sample.numberOfFrames;
@@ -124,13 +158,24 @@ export async function convertAudio(
 ): Promise<AudioResult> {
   const plan = audioPlan(options);
   await ensureEncoder(plan.codec);
-  const { input, duration } = await openAudio(file);
+  const { input, track, duration } = await openAudio(file);
   try {
     if (edit.trim && !validRange(edit.trim, duration)) throw new ConversionError("audioRangeInvalid");
     const trim = edit.trim && { start: edit.trim.start, end: Math.min(edit.trim.end, duration) };
     const total = trim ? trim.end - trim.start : duration;
     const fades = fadeLengths(total, edit.fadeIn ?? 0, edit.fadeOut ?? 0);
-    const fading = fades.fadeIn > 0 || fades.fadeOut > 0;
+    // Normalization measures first (40 % of the progress bar), then converts with one gain.
+    let gain = 1;
+    if (edit.normalize) {
+      const levels = await measureLevels(track, signal, (p) => onProgress?.(p * 0.4), trim?.start, trim?.end).catch((error) => {
+        throw signal?.aborted ? new ConversionError("jobCancelled") : error instanceof ConversionError ? error : new ConversionError("fileDamaged");
+      });
+      const found = normalizeGain(levels, edit.normalize);
+      if (found === null) throw new ConversionError("audioSilent");
+      gain = found;
+    }
+    const share = edit.normalize ? 0.6 : 1;
+    const processing = fades.fadeIn > 0 || fades.fadeOut > 0 || gain !== 1;
     const sampleRate = plan.codec === "opus" ? plan.sampleRate : (edit.sampleRate ?? plan.sampleRate);
 
     const output = new Output({ format: outputFormat[options.target](), target: new BufferTarget() });
@@ -146,15 +191,15 @@ export async function convertAudio(
         ...(plan.sampleFormat ? { sampleFormat: plan.sampleFormat } : {}),
         // A lossy target is re-encoded even from the same codec, so the chosen quality applies; a trim is
         // re-encoded too so it cuts at the exact frame instead of at packet boundaries.
-        forceTranscode: plan.lossy || fading || !!trim || !!edit.channels || !!edit.sampleRate,
+        forceTranscode: plan.lossy || processing || !!trim || !!edit.channels || !!edit.sampleRate,
         // Samples arrive with timestamps from the start of the result (the trim offset is already applied).
-        ...(fading ? { process: (sample: AudioSample) => applyGain(sample, (t) => fadeGain(t, total, fades.fadeIn, fades.fadeOut)) } : {}),
+        ...(processing ? { process: (sample: AudioSample) => applyGain(sample, (t) => gain * fadeGain(t, total, fades.fadeIn, fades.fadeOut)) } : {}),
       },
       ...(trim ? { trim } : {}),
       showWarnings: false,
     });
     if (!conversion.isValid) throw new ConversionError("audioCodecUnsupported");
-    conversion.onProgress = (progress) => onProgress?.(progress);
+    conversion.onProgress = (progress) => onProgress?.(1 - share + progress * share);
     const abort = () => void conversion.cancel();
     signal?.addEventListener("abort", abort, { once: true });
     try {
@@ -169,7 +214,7 @@ export async function convertAudio(
     const buffer = (output.target as BufferTarget).buffer;
     if (!buffer || buffer.byteLength === 0) throw new ConversionError("conversionFailed");
     const data = new Uint8Array(buffer);
-    return { data: options.target === "aiff" ? wavToAiff(data) : data, duration };
+    return { data: options.target === "aiff" ? wavToAiff(data) : data, duration, ...(edit.normalize ? { gainDb: toDb(gain) } : {}) };
   } finally {
     input.dispose();
   }

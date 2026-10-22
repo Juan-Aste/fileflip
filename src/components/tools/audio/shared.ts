@@ -1,3 +1,5 @@
+import type { FormatId } from "@/config/formats";
+import { audioTargets, type AudioTarget } from "@/lib/audio/options";
 import { ConversionError } from "@/lib/convert-error";
 
 /** Extensions the audio tools accept; the engine still checks the content. */
@@ -22,3 +24,6 @@ export async function withTimeLimit<T>(timeoutMs: number, signal: AbortSignal | 
     signal?.removeEventListener("abort", cancel);
   }
 }
+
+/** Keeps the output in the input's format when the audio tools can write it, else MP3. */
+export const sameTarget = (from: FormatId | null): AudioTarget => ((audioTargets as readonly string[]).includes(from ?? "") ? (from as AudioTarget) : "mp3");

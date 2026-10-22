@@ -277,7 +277,7 @@ Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo apr
 - [ ] 3C.36 Audio: recortar, unir, cambiar bitrate/frecuencia/canales y normalizar volumen (dividida; mismo motor de 3C.35, `Conversion` de mediabunny con `trim`, `numberOfChannels`, `sampleRate` y `process`):
   - [x] 3C.36a "Recortar audio": un archivo, inicio y fin (mm:ss.d) con validación contra la duración, fundido de entrada/salida opcional, salida en cualquier formato de 3C.35 (por defecto el de entrada si se puede escribir); test con ffprobe de la duración y del tono
   - [x] 3C.36b "Ajustar audio": canales (mono/estéreo), frecuencia (22,05/44,1/48 kHz) y bitrate, en lotes; test con ffprobe de canales, frecuencia y bitrate
-  - [ ] 3C.36c "Normalizar volumen": dos pasadas (medir pico y volumen RMS, aplicar ganancia sin recortar), objetivo de pico −1 dBFS o volumen medio; test midiendo el pico de la salida con ffmpeg (`volumedetect`)
+  - [x] 3C.36c "Normalizar volumen": dos pasadas (medir pico y volumen RMS, aplicar ganancia sin recortar), objetivo de pico −1 dBFS o volumen medio; test midiendo el pico de la salida con ffmpeg (`volumedetect`)
   - [ ] 3C.36d "Unir audio": varios archivos en orden (reordenables con botones), misma frecuencia/canales en la salida (remuestreo), silencio opcional entre pistas; test de duración total y de los tonos en cada tramo
 - [ ] 3C.37 Video: convertir entre MP4, WebM, MOV y MKV según el navegador, y extraer audio
 - [ ] 3C.38 Video: comprimir, recortar, cambiar resolución y velocidad, video → GIF (gifenc) y unir

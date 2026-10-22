@@ -59,6 +59,7 @@ import {
   Type,
   type LucideIcon,
   SlidersHorizontal,
+  Volume2,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
 
@@ -128,6 +129,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "audio-converter": AudioLines,
   "trim-audio": Scissors,
   "adjust-audio": SlidersHorizontal,
+  "normalize-audio": Volume2,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

@@ -2,11 +2,11 @@
 // (independent of mediabunny and of the browser): container, codec, sample
 // rate, channels, duration, and that each channel still carries its tone
 // (left 440 Hz, right 660 Hz, measured by zero crossings).
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { expect, fileOf, openWithFiles, runTool, test, toolAlert, unzipEntries } from "./support";
+import { expect, fileOf, openWithFiles, runTool, test, toolAlert, unzipEntries, waitForResult } from "./support";
 
 const hasFfmpeg = (() => {
   try {
@@ -59,6 +59,15 @@ function probe(buf: Buffer, name: string): Probe & { samples: Int16Array } {
     tones,
     samples,
   };
+}
+
+/** ffmpeg's volumedetect: mean and max level in dBFS. */
+function volume(buf: Buffer, name: string) {
+  const file = join(mkdtempSync(join(tmpdir(), "audio-")), name);
+  writeFileSync(file, buf);
+  const log = spawnSync("ffmpeg", ["-hide_banner", "-nostats", "-i", file, "-af", "volumedetect", "-f", "null", "-"], { encoding: "utf8" }).stderr;
+  const read = (key: string) => Number(new RegExp(`${key}: (-?[\\d.]+) dB`).exec(log)![1]);
+  return { mean: read("mean_volume"), max: read("max_volume") };
 }
 
 /** Root mean square of the left channel between two times, in seconds. */
@@ -292,5 +301,42 @@ test.describe("tool: adjust-audio", () => {
     const q = probe(m4a.buf, m4a.name);
     expect(q).toMatchObject({ codec: "aac", sampleRate: 22050, channels: 2 });
     expectTones(q);
+  });
+});
+
+test.describe("tool: normalize-audio", () => {
+  test.skip(!hasFfmpeg, "needs ffmpeg/ffprobe to check the output");
+
+  test("peak mode keeps each format and brings the peak to -1 dB", async ({ page }) => {
+    await openWithFiles(page, "/en/normalize-audio", ["audio.wav", "audio.aiff"]);
+    await page.getByText("Peak level", { exact: true }).click();
+    await page.getByRole("button", { name: "Normalize volume", exact: true }).click();
+    await expect(page.locator("main li a[download]")).toHaveCount(2, { timeout: 60_000 });
+    // The fixtures peak at -18.1 dB.
+    await expect(page.locator("main")).toContainText("Gain applied: +17.");
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Download all/ }).click()]);
+    const entries = unzipEntries(readFileSync((await download.path())!));
+    expect(entries.map((e) => e.name).sort()).toEqual(["audio.aiff", "audio.wav"]);
+    for (const entry of entries) {
+      const v = volume(entry.data, entry.name);
+      expect(Math.abs(v.max + 1), `${entry.name} peaks at ${v.max} dB`).toBeLessThanOrEqual(0.2);
+      const p = probe(entry.data, entry.name);
+      expect(Math.abs(p.duration - 2)).toBeLessThan(0.005);
+      expectTones(p);
+    }
+  });
+
+  test("average loudness → MP3 at about -16 dB; silence fails clearly", async ({ page }) => {
+    await openWithFiles(page, "/en/normalize-audio", ["audio.flac", "silence.wav"]);
+    await page.getByText("MP3", { exact: true }).click();
+    await page.getByRole("button", { name: "Normalize volume", exact: true }).click();
+    await expect(page.locator("main li a[download]")).toHaveCount(1, { timeout: 60_000 });
+    await expect(page.locator("main")).toContainText("The audio is silent");
+    const out = fileOf(await waitForResult(page, page.locator("main a[download]").first(), toolAlert(page).first()));
+    expect(out.name).toBe("audio.mp3");
+    const v = volume(out.buf, out.name);
+    expect(Math.abs(v.mean + 16), `mean ${v.mean} dB`).toBeLessThan(1);
+    expect(v.max).toBeLessThanOrEqual(-0.5);
+    expectTones(probe(out.buf, out.name));
   });
 });

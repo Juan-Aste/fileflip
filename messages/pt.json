@@ -220,7 +220,8 @@
     "audioTooLong": "O áudio é longo demais: o máximo é de 3 horas por arquivo.",
     "tooManyPages": "Este PDF tem páginas demais para reconhecer no navegador (no máximo 100).",
     "pdfAlreadySearchable": "Todas as páginas deste PDF já têm texto: dá para pesquisar sem OCR. Use “PDF para texto” para extraí-lo.",
-    "audioRangeInvalid": "Confira os tempos: o início deve vir antes do fim e ambos devem estar dentro do áudio."
+    "audioRangeInvalid": "Confira os tempos: o início deve vir antes do fim e ambos devem estar dentro do áudio.",
+    "audioSilent": "O áudio está em silêncio: não há nada para normalizar."
   },
   "Tools": {
     "merge-pdf": {
@@ -1238,6 +1239,22 @@
         "q4": "Há um limite?",
         "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro), 3 horas por arquivo e vários arquivos por lote. Lê os mesmos formatos que \"Converter áudio\"."
       }
+    },
+    "normalize-audio": {
+      "title": "Normalizar volume",
+      "description": "Iguale o volume dos seus áudios (MP3, WAV, FLAC, OGG, M4A, AIFF) no navegador: por volume médio ou por pico, sem distorcer.",
+      "action": "Normalizar volume",
+      "about": "Aumente o volume de uma gravação que ficou baixa ou iguale várias faixas para que soem parecido: a ferramenta mede cada arquivo inteiro e aplica um único ganho, assim a dinâmica não muda e não há saltos. Escolha volume médio (−16 dB, confortável para voz e podcasts) ou pico máximo (−1 dB). Nunca corta os picos. Funciona em lotes e no seu dispositivo: os arquivos não são enviados a nenhum servidor.",
+      "faq": {
+        "q1": "Qual a diferença entre volume médio e pico?",
+        "a1": "O pico só olha o ponto mais forte e o deixa em −1 dB: é seguro, mas dois áudios podem continuar soando diferente. O volume médio iguala como cada arquivo é ouvido (−16 dB RMS); se para isso o pico passaria de −1 dB, ele para nesse limite.",
+        "q2": "O som distorce?",
+        "a2": "Não: um único ganho é aplicado ao arquivo todo e −1 dB nunca é ultrapassado, então não há cortes. Não é um compressor: uma parte muito mais forte que o resto continua assim.",
+        "q3": "Por que meu áudio quase não mudou?",
+        "a3": "Se o pico já está perto de −1 dB ou o volume médio perto de −16 dB, o ganho necessário é pequeno. O ganho aplicado aparece ao lado de cada resultado. Para não amplificar ruído, o aumento máximo é de +30 dB.",
+        "q4": "Há um limite?",
+        "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro), 3 horas por arquivo e vários arquivos por lote. Cada arquivo é lido duas vezes (medir e aplicar), por isso demora um pouco mais que uma conversão."
+      }
     }
   },
   "ToolUi": {
@@ -2198,6 +2215,17 @@
     "sampleRate": "Taxa de amostragem",
     "rateOriginal": "Como o original",
     "rateKhz": "{khz} kHz",
-    "opusRate": "OGG (Opus) sempre usa 48 kHz."
+    "opusRate": "OGG (Opus) sempre usa 48 kHz.",
+    "normalizeMode": "Normalizar por",
+    "normalizeModes": {
+      "loudness": "Volume médio",
+      "peak": "Pico máximo"
+    },
+    "normalizeHints": {
+      "loudness": "Leva o volume médio a −16 dB (o de podcasts e mensagens de voz), sem deixar o pico passar de −1 dB.",
+      "peak": "Sobe ou desce tudo por igual até o ponto mais forte ficar em −1 dB. A diferença entre partes suaves e fortes não muda."
+    },
+    "targetSame": "Mesmo formato",
+    "gainApplied": "Ganho aplicado: {gain} dB."
   }
 }
