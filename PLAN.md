@@ -315,7 +315,7 @@ Mediciones: Lighthouse móvil (≥ 90, CLS 0) después de 3C.10, 3C.23, 3C.34 y 
 - [x] 3D.2 Enlaces internos entre herramientas relacionadas (misma categoría, mismos formatos) generados del registro
 - [x] 3D.3 Accesibilidad y teclado completos; capturas Playwright 360/1280, claro/oscuro, de una muestra de páginas nuevas en `docs/screenshots/`
 - [x] 3D.4 Panel de admin: uso y errores por herramienta y por categoría (con tests de agregación)
-- [ ] 3D.5 Medición final de Lighthouse de la fase 3
+- [x] 3D.5 Medición final de Lighthouse de la fase 3
 
 ### Hito 3E — Informe final
 - [ ] 3E.1 `docs/report-phase3.md`: herramientas verificadas, formatos de entrada y salida, matriz generada desde el registro y los tests, pruebas y resultados, limitaciones, descartes y motivos, dependencias y licencias, rendimiento, seguridad, diseño y SEO, y lo que debe decidir el dueño; "FASE 3 TERMINADA" en PROGRESS.md

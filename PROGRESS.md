@@ -2783,3 +2783,13 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (988 + 8 saltados), build y `check:static` (1007 páginas).
 
 **Siguiente**: 3D.5 (medición final de Lighthouse de la fase 3).
+
+## 2026-10-22 15:45 UTC — Fase 3, tarea 3D.5 (Lighthouse final) — HITO 3D TERMINADO
+
+**Qué se hizo**
+- `docs/perf/2026-10-22-phase3-final.md`: Lighthouse 12.8.2 móvil, mediana de 3, en 29 páginas (se sumaron al script la categoría Audio y 7 herramientas de 3C.35–3C.44).
+- Resultado: **accesibilidad 100 y SEO 100 en todas**; JS inicial 150–184 KB (los motores siguen fuera de la carga inicial); rendimiento 88–97 en la tanda larga. La única por debajo de 90 fue "Convertir DXF" (88): sus corridas lentas tienen el Speed Index en 2,3 s en vez de 1,5 s, la misma firma que aparece hacia el final de la tanda en páginas sin relación (portada, EPUB, 3D). Repetida aislada (5 corridas): DXF 93–96 (mediana 96), 3D 91–97, portada 94–96 → **meta ≥ 90 cumplida**.
+- CLS 0 en 28/29; la categoría PDF dio 0,014 en 1 de 3 corridas (fila de pastillas que se reacomoda al cargar la fuente). Anotado como mejora posible, no corregido.
+- Lighthouse se instala aparte (no es dependencia del proyecto); fuera del script hay que exportar `CHROME_PATH`.
+
+**Siguiente**: 3E.1 (informe final de la fase 3).
