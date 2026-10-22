@@ -1077,9 +1077,9 @@ export const tools: Record<ToolId, ToolInfo> = {
     id: "dxf-converter",
     category: "cad",
     inputs: ["dxf"],
-    outputs: ["svg"],
+    outputs: ["svg", "png", "pdf"],
     engine: "browser",
-    libraries: ["dxf-parser", "own geometry and SVG writer"],
+    libraries: ["dxf-parser", "own geometry and SVG writer", "OffscreenCanvas", "pdf-lib"],
     // Up to MAX_DXF_POINTS (5 million) flattened points per drawing, in the CAD worker.
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
     status: "verified",

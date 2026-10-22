@@ -12,7 +12,7 @@ const MARGIN = 0.02;
 /** Line width, as a share of the longest side. */
 const LINE = 0.001;
 /** Cap height of the sans-serif fonts viewers fall back to, as a share of the font size. */
-const CAP_HEIGHT = 0.7;
+export const CAP_HEIGHT = 0.7;
 
 /** Page size in an SVG unit: meters and feet aren't SVG units, so they become mm and in. */
 const SIZE_UNIT: Record<NonNullable<Drawing["units"]>, [string, number]> = { mm: ["mm", 1], cm: ["cm", 1], m: ["mm", 1000], in: ["in", 1], ft: ["in", 12] };

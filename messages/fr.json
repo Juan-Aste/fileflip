@@ -1434,9 +1434,9 @@
     },
     "dxf-converter": {
       "title": "Convertir un DXF",
-      "description": "Convertissez des plans DXF d'AutoCAD, LibreCAD ou QCAD en SVG dans votre navigateur, sans rien installer.",
+      "description": "Convertissez des plans DXF d'AutoCAD, LibreCAD ou QCAD en SVG, PNG ou PDF dans votre navigateur, sans rien installer.",
       "action": "Convertir le plan",
-      "about": "Transformez un plan DXF en SVG pour le voir dans le navigateur, l'insérer dans une page web, le modifier dans Inkscape ou Illustrator, ou l'envoyer à une découpeuse laser ou vinyle. Sont dessinés les lignes, les polylignes (y compris les segments courbes), les cercles, les arcs, les ellipses, les splines, les solides, les points, les textes simples et multilignes, les blocs insérés (avec échelle, rotation et réseaux) et les cotes, avec la couleur de chaque entité ou de son calque. Les calques désactivés ou gelés ne sont pas dessinés. Quand le fichier indique ses unités (mm, cm, m ou pouces), le SVG a la taille réelle. Tout se passe sur votre appareil : les plans ne sont envoyés à aucun serveur.",
+      "about": "Transformez un plan DXF en SVG pour le modifier dans Inkscape ou Illustrator ou l'envoyer à une découpeuse laser ou vinyle, en PNG pour le voir ou le partager comme image, ou en PDF (A4 ou A3) pour l'imprimer. Sont dessinés les lignes, les polylignes (y compris les segments courbes), les cercles, les arcs, les ellipses, les splines, les solides, les points, les textes simples et multilignes, les blocs insérés (avec échelle, rotation et réseaux) et les cotes, avec la couleur de chaque entité ou de son calque. Les calques désactivés ou gelés ne sont pas dessinés. Quand le fichier indique ses unités (mm, cm, m ou pouces), le SVG a la taille réelle. Tout se passe sur votre appareil : les plans ne sont envoyés à aucun serveur.",
       "faq": {
         "q1": "Quelles entités ne sont pas dessinées ?",
         "a1": "Les hachures (HATCH), les images incorporées, les régions et solides 3D, les multi-repères, les tableaux et les attributs de bloc. Si le plan en contient, nous indiquons à la fin lesquelles et combien ont été omises. Seul l'espace objet est dessiné, pas les présentations (espace papier).",
@@ -1447,7 +1447,9 @@
         "q4": "Pourquoi les textes ont-ils une autre police ?",
         "a4": "Les polices SHX d'AutoCAD ne peuvent pas être incorporées : les textes sont écrits dans une police sans empattement (Arial ou équivalent) de même hauteur, leur largeur peut donc légèrement varier. Les codes de mise en forme MTEXT courants sont interprétés (paragraphes, Ø, °, ±).",
         "q5": "Y a-t-il une limite ?",
-        "a5": "Jusqu'à 50 Mo par fichier (DXF texte ; le DXF binaire n'est pas lu), 5 millions de points une fois les courbes dessinées, des blocs imbriqués jusqu'à 16 niveaux et des réseaux jusqu'à 10 000 copies, et 2 minutes de traitement par fichier."
+        "a5": "Jusqu'à 50 Mo par fichier (DXF texte ; le DXF binaire n'est pas lu), 5 millions de points une fois les courbes dessinées, des blocs imbriqués jusqu'à 16 niveaux et des réseaux jusqu'à 10 000 copies, et 2 minutes de traitement par fichier.",
+        "q6": "À quoi ressemblent le PNG et le PDF ?",
+        "a6": "Le PNG a la largeur choisie (1000, 2000 ou 4000 pixels sur le plus grand côté), avec un fond blanc ou transparent. Le PDF est vectoriel, sur une page A4 ou A3 tournée selon la forme du plan, avec le dessin ajusté dans une marge de 10 mm (pas à l'échelle 1:1). Dans le PDF, les textes contenant des caractères absents de la police standard (chinois, cyrillique…) sont insérés comme images."
       }
     }
   },
@@ -2543,6 +2545,18 @@
     "done": "Plaque de {width} × {height} mm, de {min} à {max} mm d'épaisseur, {triangles} triangles."
   },
   "DxfConverterTool": {
+    "target": "Format de sortie",
+    "targets": {
+      "svg": "SVG (vectoriel)",
+      "png": "PNG (image)",
+      "pdf": "PDF (pour imprimer)"
+    },
+    "pngWidth": "Largeur de l'image (plus grand côté)",
+    "page": "Format de page",
+    "pages": {
+      "a4": "A4 (ajusté, marge de 10 mm)",
+      "a3": "A3 (ajusté, marge de 10 mm)"
+    },
     "background": "Fond blanc (sinon transparent)",
     "note": "Les traits blancs ou de couleur 7 sont dessinés en noir, comme sur papier. Traitement sur votre appareil.",
     "done": "{shapes} tracés et {texts} textes.",

@@ -1434,9 +1434,9 @@
     },
     "dxf-converter": {
       "title": "Converter DXF",
-      "description": "Converta desenhos DXF do AutoCAD, LibreCAD ou QCAD para SVG no seu navegador, sem instalar nada.",
+      "description": "Converta desenhos DXF do AutoCAD, LibreCAD ou QCAD para SVG, PNG ou PDF no seu navegador, sem instalar nada.",
       "action": "Converter desenho",
-      "about": "Transforme um desenho DXF em SVG para vê-lo no navegador, colocá-lo numa página web, editá-lo no Inkscape ou Illustrator, ou enviá-lo a uma cortadora a laser ou de vinil. São desenhadas linhas, polilinhas (também com trechos curvos), círculos, arcos, elipses, splines, sólidos, pontos, textos simples e de várias linhas, blocos inseridos (com escala, rotação e matrizes) e cotas, com a cor de cada entidade ou da sua camada. Camadas desligadas ou congeladas não são desenhadas. Se o arquivo indica suas unidades (mm, cm, m ou polegadas), o SVG tem o tamanho real. Tudo acontece no seu dispositivo: os desenhos não são enviados a nenhum servidor.",
+      "about": "Transforme um desenho DXF em SVG para editá-lo no Inkscape ou Illustrator ou enviá-lo a uma cortadora a laser ou de vinil, em PNG para vê-lo ou compartilhá-lo como imagem, ou em PDF (A4 ou A3) para imprimi-lo. São desenhadas linhas, polilinhas (também com trechos curvos), círculos, arcos, elipses, splines, sólidos, pontos, textos simples e de várias linhas, blocos inseridos (com escala, rotação e matrizes) e cotas, com a cor de cada entidade ou da sua camada. Camadas desligadas ou congeladas não são desenhadas. Se o arquivo indica suas unidades (mm, cm, m ou polegadas), o SVG tem o tamanho real. Tudo acontece no seu dispositivo: os desenhos não são enviados a nenhum servidor.",
       "faq": {
         "q1": "Quais entidades não são desenhadas?",
         "a1": "Hachuras (HATCH), imagens incorporadas, regiões e sólidos 3D, chamadas múltiplas, tabelas e atributos de bloco. Se o desenho tiver alguma, ao terminar informamos quais e quantas foram omitidas. Só o espaço do modelo é desenhado, não os layouts (espaço do papel).",
@@ -1447,7 +1447,9 @@
         "q4": "Por que os textos aparecem com outra fonte?",
         "a4": "As fontes SHX do AutoCAD não podem ser incorporadas: os textos são escritos com uma fonte sem serifa (Arial ou similar) da mesma altura, então a largura pode variar um pouco. Os códigos de formatação habituais do MTEXT são interpretados (parágrafos, Ø, °, ±).",
         "q5": "Existe algum limite?",
-        "a5": "Até 50 MB por arquivo (DXF de texto; DXF binário não é lido), 5 milhões de pontos depois de desenhar as curvas, blocos aninhados até 16 níveis e matrizes de até 10 000 cópias, e 2 minutos de processamento por arquivo."
+        "a5": "Até 50 MB por arquivo (DXF de texto; DXF binário não é lido), 5 milhões de pontos depois de desenhar as curvas, blocos aninhados até 16 níveis e matrizes de até 10 000 cópias, e 2 minutos de processamento por arquivo.",
+        "q6": "Como ficam o PNG e o PDF?",
+        "a6": "O PNG tem a largura que você escolher (1000, 2000 ou 4000 pixels no lado maior), com fundo branco ou transparente. O PDF é vetorial, de uma página A4 ou A3 girada conforme a forma do desenho, com o desenho ajustado dentro de uma margem de 10 mm (não em escala 1:1). No PDF, textos com caracteres que a fonte padrão não tem (chinês, cirílico…) são inseridos como imagem."
       }
     }
   },
@@ -2543,6 +2545,18 @@
     "done": "Placa de {width} × {height} mm, de {min} a {max} mm de espessura, {triangles} triângulos."
   },
   "DxfConverterTool": {
+    "target": "Formato de saída",
+    "targets": {
+      "svg": "SVG (vetorial)",
+      "png": "PNG (imagem)",
+      "pdf": "PDF (para imprimir)"
+    },
+    "pngWidth": "Largura da imagem (lado maior)",
+    "page": "Tamanho da página",
+    "pages": {
+      "a4": "A4 (ajustado com margem de 10 mm)",
+      "a3": "A3 (ajustado com margem de 10 mm)"
+    },
     "background": "Fundo branco (se não, transparente)",
     "note": "Linhas brancas ou de cor 7 são desenhadas em preto, como no papel. Processado no seu dispositivo.",
     "done": "{shapes} traços e {texts} textos.",

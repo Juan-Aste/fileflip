@@ -1434,9 +1434,9 @@
     },
     "dxf-converter": {
       "title": "DXF converter",
-      "description": "Convert DXF drawings from AutoCAD, LibreCAD or QCAD to SVG in your browser, with nothing to install.",
+      "description": "Convert DXF drawings from AutoCAD, LibreCAD or QCAD to SVG, PNG or PDF in your browser, with nothing to install.",
       "action": "Convert drawing",
-      "about": "Turn a DXF drawing into an SVG to view it in the browser, put it on a web page, edit it in Inkscape or Illustrator, or send it to a laser or vinyl cutter. It draws lines, polylines (curved segments too), circles, arcs, ellipses, splines, solids, points, single-line and multiline texts, inserted blocks (with scale, rotation and arrays) and dimensions, in each entity's or layer's color. Layers that are off or frozen aren't drawn. When the file states its units (mm, cm, m or inches), the SVG has the real size. Everything happens on your device: the drawings aren't uploaded to any server.",
+      "about": "Turn a DXF drawing into an SVG to edit it in Inkscape or Illustrator or send it to a laser or vinyl cutter, a PNG to view or share it as a picture, or a PDF (A4 or A3) to print it. It draws lines, polylines (curved segments too), circles, arcs, ellipses, splines, solids, points, single-line and multiline texts, inserted blocks (with scale, rotation and arrays) and dimensions, in each entity's or layer's color. Layers that are off or frozen aren't drawn. When the file states its units (mm, cm, m or inches), the SVG has the real size. Everything happens on your device: the drawings aren't uploaded to any server.",
       "faq": {
         "q1": "Which entities aren't drawn?",
         "a1": "Hatches (HATCH), embedded images, regions and 3D solids, multileaders, tables and block attributes. If the drawing has any, we tell you which ones and how many were left out when it's done. Only model space is drawn, not layouts (paper space).",
@@ -1447,7 +1447,9 @@
         "q4": "Why do texts use a different font?",
         "a4": "AutoCAD SHX fonts can't be embedded: texts are written in a sans-serif font (Arial or similar) at the same height, so their width may differ slightly. The usual MTEXT formatting codes are understood (paragraphs, Ø, °, ±).",
         "q5": "Is there a limit?",
-        "a5": "Up to 50 MB per file (text DXF; binary DXF isn't read), 5 million points once curves are drawn, blocks nested up to 16 levels and arrays of up to 10,000 copies, and 2 minutes of processing per file."
+        "a5": "Up to 50 MB per file (text DXF; binary DXF isn't read), 5 million points once curves are drawn, blocks nested up to 16 levels and arrays of up to 10,000 copies, and 2 minutes of processing per file.",
+        "q6": "What do the PNG and the PDF look like?",
+        "a6": "The PNG has the width you choose (1000, 2000 or 4000 pixels on the longest side), with a white or transparent background. The PDF is vector, one A4 or A3 page turned to match the drawing's shape, with the drawing fitted inside a 10 mm margin (not at 1:1 scale). In the PDF, texts with characters the standard font lacks (Chinese, Cyrillic…) are inserted as images."
       }
     }
   },
@@ -2543,6 +2545,18 @@
     "done": "{width} × {height} mm plate, {min} to {max} mm thick, {triangles} triangles."
   },
   "DxfConverterTool": {
+    "target": "Output format",
+    "targets": {
+      "svg": "SVG (vector)",
+      "png": "PNG (image)",
+      "pdf": "PDF (to print)"
+    },
+    "pngWidth": "Image width (longest side)",
+    "page": "Page size",
+    "pages": {
+      "a4": "A4 (fitted, 10 mm margin)",
+      "a3": "A3 (fitted, 10 mm margin)"
+    },
     "background": "White background (otherwise transparent)",
     "note": "White lines and color 7 are drawn in black, as on paper. Processed on your device.",
     "done": "{shapes} shapes and {texts} texts.",

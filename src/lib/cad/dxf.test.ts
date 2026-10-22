@@ -2,8 +2,10 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { XMLParser } from "fast-xml-parser";
+import { decodePDFRawStream, PDFArray, PDFDocument, PDFRawStream } from "pdf-lib";
 import { ConversionError } from "@/lib/convert-error";
 import { bulgedPolyline, parseDxf, plainText, splinePoints } from "./dxf";
+import { drawingToPdf } from "./pdf";
 import { drawingToSvg } from "./svg";
 
 const fixture = (name: string) => readFileSync(join(__dirname, "../../../tests/fixtures", name), "utf8");
@@ -122,5 +124,50 @@ describe("drawingToSvg", () => {
     expect(plain).toContain('transform="rotate(-90');
     expect(plain).not.toContain("<rect");
     expect(plain).toContain('width="1000"');
+  });
+});
+
+describe("drawingToPdf", () => {
+  /** The page's content streams, decoded. */
+  async function content(bytes: Uint8Array) {
+    const doc = await PDFDocument.load(bytes);
+    const page = doc.getPages()[0]!;
+    const contents = page.node.Contents();
+    const streams = contents instanceof PDFArray ? contents.asArray().map((r) => doc.context.lookup(r)) : [contents];
+    return { doc, page, text: streams.map((st) => new TextDecoder("latin1").decode(decodePDFRawStream(st as PDFRawStream).decode())).join("\n") };
+  }
+
+  it("fits the drawing on a landscape A4 page with colored vector lines and Helvetica texts", async () => {
+    const { data, scale } = await drawingToPdf(parseDxf(fixture("plan.dxf")), { page: "a4", title: "plan" });
+    const { doc, page, text } = await content(data);
+    expect(doc.getPageCount()).toBe(1);
+    expect(page.getSize()).toEqual({ width: 841.89, height: 595.28 });
+    expect(doc.getTitle()).toBe("plan");
+    // 176 mm wide inside 841.89 − 2 × 28.35 pt.
+    expect(scale).toBeCloseTo((841.89 - (2 * 720) / 25.4) / 176, 6);
+    expect(text).toContain("1 0 0 RG"); // the red rectangle
+    expect(text).toContain("0 0 1 RG"); // the blue circle
+    expect(text).toMatch(/\bB\b/); // the filled SOLID (fill and stroke)
+    // The red rectangle starts at its corner (0,0): 13 mm right of the drawing's left edge and 2 mm above its bottom, centered on the page.
+    const lines = text.split("\n");
+    const [mx, my] = lines.slice(lines.indexOf("1 0 0 RG")).find((l) => l.endsWith(" m"))!.split(" ").map(Number);
+    expect(mx).toBeCloseTo((841.89 - 176 * scale) / 2 + 13 * scale, 3);
+    expect(my).toBeCloseTo((595.28 - 95 * scale) / 2 + 2 * scale, 3);
+    expect(text).toMatch(/\/Helvetica-\d+ [\d.]+ Tf/);
+    expect(text).toContain("<46696C65666C65637420706C616E> Tj"); // "Fileflect plan"
+    expect((text.match(/ Tj/g) ?? []).length).toBe(3);
+  });
+
+  it("turns the page upright for tall drawings, uses A3 and replaces unencodable characters without a renderer", async () => {
+    const drawing = {
+      paths: [{ points: [[0, 0], [10, 40]] as [number, number][], closed: false, fill: false, color: "#000000" }],
+      texts: [{ x: 0, y: 0, height: 2, rotation: 0, text: "平面图 A", color: "#000000", align: "start" as const, baseline: "alphabetic" as const }],
+      bounds: [0, 0, 10, 40] as [number, number, number, number],
+      units: null,
+      skipped: {},
+    };
+    const { page, text } = await content((await drawingToPdf(drawing, { page: "a3", title: "tall" })).data);
+    expect(page.getSize()).toEqual({ width: 841.89, height: 1190.55 });
+    expect(text).toMatch(/<3F3F3F2041>|\(\?\?\? A\)/);
   });
 });

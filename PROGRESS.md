@@ -2601,3 +2601,21 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Sin HATCH, imágenes, regiones/sólidos 3D, MLEADER, tablas ni atributos de bloque (se informan). Solo espacio modelo. Grosores y tipos de línea (discontinuas) no se leen: todo continuo y fino. Fuentes SHX reemplazadas por sans-serif. Splines racionales (con pesos) se aproximan sin pesos. DXF binario no.
 
 **Siguiente**: 3C.41b (salidas PNG y PDF).
+
+## 2026-10-22 11:10 UTC — Fase 3, tarea 3C.41b (DXF a PNG y PDF) — 3C.41 TERMINADA
+
+**Qué se hizo**
+- "Convertir DXF" ahora tiene **3 salidas**: SVG, **PNG** y **PDF** (selector de formato; registro actualizado). Las tres salen de la misma lista de dibujo de 3C.41a.
+- **PNG** (`src/lib/cad/raster.ts`): `OffscreenCanvas` en el worker CAD con el mismo marco que el SVG (margen 2 %, Y invertido, grosor mínimo 1 px); ancho del lado mayor elegible **1000 / 2000 (por defecto) / 4000 px**; fondo blanco o transparente; textos con la fuente sans-serif del dispositivo. Sin `OffscreenCanvas` → "navegador no compatible".
+- **PDF** (`src/lib/cad/pdf.ts`, pdf-lib ya instalado): una página **A4 o A3** que se gira según la forma del dibujo, con el dibujo **ajustado dentro de un margen de 10 mm** (no a escala 1:1; la FAQ lo dice), líneas vectoriales de 0,35 pt con su color (operadores de pdf-lib agrupados por color), SOLID relleno, textos en Helvetica con alineación y rotación. Igual que las herramientas de sellos PDF, el texto que Helvetica no puede codificar (chino, cirílico…) se dibuja como **PNG con las fuentes del dispositivo** (renderizador `OffscreenCanvas` a 4× en `cad.worker.ts`); sin renderizador (Node) esos caracteres pasan a "?". Título del documento = nombre del archivo; creador "Fileflect".
+- Textos: descripción, introducción, opciones (formato, ancho, página) y pregunta frecuente nueva sobre PNG/PDF en los 5 idiomas.
+
+**Verificación**
+- `dxf.test.ts` (+2, 11 en total): PDF A4 apaisado 841,89 × 595,28, escala exacta, colores `1 0 0 RG`/`0 0 1 RG`, relleno `B`, **coordenada exacta de la esquina del rectángulo** en el flujo decodificado, 3 textos con Helvetica (hex de "Fileflect plan"); dibujo alto → A3 vertical y "平面图" → "???" sin renderizador.
+- `cad-tools.spec.ts` (+2, 4 en total, Chromium): **PNG de 4000 × 2230 px** leído con sharp (rojo, azul, SOLID oscuro, fondo blanco y píxeles de texto); **PDF A3 (1191 × 842)** sin imágenes, texto extraído con **pdftotext** ("Fileflect plan", "Línea 1", "Línea 2 Ø10") y página rasterizada con **pdftoppm** (poppler) con los mismos controles de color en las coordenadas calculadas; DXF con texto chino → PDF con la imagen (más su máscara alfa) y solo "Plan" como texto. Se salta la parte de poppler si no está instalado.
+- Lint, typecheck, tests (955 + 8 saltados), build sin avisos, `check:static` (992 páginas) y `cad-tools.spec.ts` (4/4).
+
+**Limitaciones**
+- PDF ajustado a la página (sin escala 1:1 ni varias páginas); PNG hasta 4000 px. Lo demás como en 3C.41a.
+
+**Siguiente**: 3C.42 (foto carnet por país).

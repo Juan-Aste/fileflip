@@ -4,23 +4,26 @@ import { useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { tools } from "@/config/tools";
 import type { Locale } from "@/i18n/routing";
-import { dxfExtension, dxfMime, type DxfTarget } from "@/lib/cad/options";
+import { dxfExtension, dxfMime, dxfPages, dxfPngWidths, dxfTargets, type DxfPage, type DxfPngWidth, type DxfTarget } from "@/lib/cad/options";
 import { runBatch } from "@/lib/jobs";
 import { trackTool } from "@/lib/stats-client";
 import Checkbox from "../Checkbox";
+import ChoiceGroup from "../ChoiceGroup";
 import ToolShell from "../shell/ToolShell";
 import { renameExtension, type ShellOutput } from "../shell/state";
 
 const tool = tools["dxf-converter"];
 const engine = () => import("@/lib/cad/client");
 
-/** DXF drawings → SVG, drawn by our own geometry in a worker (dxf-parser reads the file). */
+/** DXF drawings → SVG, PNG or PDF, drawn by our own geometry in a worker (dxf-parser reads the file). */
 export default function DxfConverterTool() {
   const t = useTranslations("DxfConverterTool");
   const tt = useTranslations("Tools.dxf-converter");
   const locale = useLocale() as Locale;
+  const [target, setTarget] = useState<DxfTarget>("svg");
   const [background, setBackground] = useState(true);
-  const target: DxfTarget = "svg";
+  const [pngWidth, setPngWidth] = useState("2000");
+  const [page, setPage] = useState<DxfPage>("a4");
 
   return (
     <ToolShell
@@ -29,7 +32,15 @@ export default function DxfConverterTool() {
       zipName="fileflect-dxf.zip"
       options={
         <div className="flex flex-col gap-4">
-          <Checkbox checked={background} onChange={setBackground} label={t("background")} />
+          <ChoiceGroup legend={t("target")} value={target} onChange={setTarget} options={dxfTargets.map((f) => ({ value: f, label: t(`targets.${f}`) }))} />
+          {target === "png" && (
+            <ChoiceGroup legend={t("pngWidth")} value={pngWidth} onChange={setPngWidth} options={dxfPngWidths.map((w) => ({ value: String(w), label: `${w.toLocaleString(locale)} px` }))} />
+          )}
+          {target === "pdf" ? (
+            <ChoiceGroup legend={t("page")} value={page} onChange={setPage} options={(Object.keys(dxfPages) as DxfPage[]).map((p) => ({ value: p, label: t(`pages.${p}`) }))} />
+          ) : (
+            <Checkbox checked={background} onChange={setBackground} label={t("background")} />
+          )}
           <p className="text-sm text-muted">{t("note")}</p>
         </div>
       }
@@ -40,7 +51,7 @@ export default function DxfConverterTool() {
             trackTool(
               "dxf-converter",
               { from: "dxf", to: target, files: [file] },
-              async () => (await engine()).convertDxfInWorker(file, { to: target, background }, { signal: job.signal, onProgress: job.onProgress, timeoutMs: tool.limits.timeoutMs }),
+              async () => (await engine()).convertDxfInWorker(file, { to: target, background, pngWidth: Number(pngWidth) as DxfPngWidth, page, title: file.name.replace(/\.dxf$/i, "") }, { signal: job.signal, onProgress: job.onProgress, timeoutMs: tool.limits.timeoutMs }),
               (out) => out.data.length,
             ),
           { signal, onProgress },
