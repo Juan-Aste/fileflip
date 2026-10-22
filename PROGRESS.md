@@ -2267,3 +2267,10 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - LAME y el codificador AAC de FFmpeg son **LGPL** y van compilados a WASM dentro de las extensiones de mediabunny (sin modificar). Para cumplir la LGPL alcanza con indicar en la página de licencias/créditos que se usan, con enlace a su código fuente (LAME pide además un enlace a lame.sourceforge.io). Queda anotado para la página de créditos.
 
 **Siguiente**: 3C.35b (AIFF de entrada y salida).
+
+## 2026-10-22 03:45 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas: 3C.33a (EPUB → HTML/TXT), 3C.33b (EPUB → PDF con Gotenberg), 3C.34 (crear EPUB desde Markdown/HTML, validado con EPUBCheck), medición de Lighthouse después de 3C.34 (21 páginas, 96–98, CLS 0) y 3C.35a (convertir audio con mediabunny). 4 herramientas nuevas y 2 categorías publicadas (Libros electrónicos y Audio).
+- En esta ejecución hubo Docker: pruebas con **Gotenberg 8 real**; también **EPUBCheck 5.2.1** (Java) y **ffmpeg/ffprobe** del sistema como validadores independientes. `npm run test:e2e` 271/271 al cierre.
+
+**Siguiente**: 3C.35b (AIFF de entrada y salida en "Convertir audio").
