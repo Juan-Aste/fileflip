@@ -2663,3 +2663,15 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Sin Gotenberg ni EPUBCheck en este entorno (no se corrió la suite e2e completa; sí las de cada herramienta tocada, `search` e `image-tools`).
 
 **Siguiente**: 3C.44 (quitar fondo: MediaPipe Apache-2.0 u onnxruntime-web + modelo Apache-2.0; si no hay calidad suficiente, anotarlo y no publicar).
+
+## 2026-10-22 12:30 UTC — Tarea CI (arreglo del CI de GitHub)
+
+**Causa**
+- El CI de `dev` estaba en rojo desde el commit "create ZIP, TAR and TAR.GZ" (2026-10-22 00:22 UTC). En `src/lib/archive/create.test.ts` el `unzip` del sistema del runner (`ubuntu-latest`, que migra a Ubuntu 26) mostraba el nombre "notas año 2024 — 中文.txt" como "notas a├▒o 2024 тАФ ф╕нцЦЗ.txt" (bytes UTF-8 leídos como CP437): fallaban la extracción ZIP (línea 53) y la comprobación "Stored/Defl:" de `unzip -v` (línea 81, la línea con ese nombre no se encontraba).
+- **Nuestro ZIP es correcto**: fflate pone el bit 11 (0x0800, nombres UTF-8) en el encabezado local y en el directorio central de cada entrada con nombre no ASCII. El problema era solo de la compilación/locale del `unzip` del runner.
+
+**Arreglo**
+- Test nuevo que lee los bytes del ZIP (registro de fin → directorio central → encabezados locales) y comprueba el bit 11 en ambos lugares para el nombre no ASCII; Python también lo confirma (`flag_bits`).
+- La extracción y el listado de ZIP en los tests usan ahora el módulo `zipfile` de Python (`python3 -I -c …`, salida JSON ASCII), que respeta el bit 11 sin depender del locale: tipo de compresión (0 = guardado, 8 = deflate) y fecha por entrada. Verificado también con `LANG=C LC_ALL=C`. TAR sigue validándose con el `tar` de GNU (`LC_ALL=C.UTF-8` en el listado).
+- `ci.yml`: paso "System tools" que falla temprano si faltan `python3` o `tar`.
+- Revisión de los demás tests de Vitest que llaman herramientas del sistema: LibreOffice (`sheet.test.ts`), EPUBCheck (`build.test.ts`, `EPUBCHECK_JAR`) y veraPDF (`pdfa.test.ts`, `VERAPDF_DOCKER=1`) ya son opcionales y se saltean si no están; ffmpeg, ffprobe, pdftoppm y pdftotext solo se usan en tests de Playwright (`tests/e2e`), que el CI no corre y que comprueban su presencia.

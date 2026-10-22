@@ -15,6 +15,10 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      # Unit tests read our archives back with independent tools: Python's
+      # zipfile (ZIP, UTF-8 names) and GNU tar. Fail early if one is missing.
+      - name: System tools
+        run: python3 --version && tar --version | head -1
       - name: Install
         run: npm ci
       - name: Lint

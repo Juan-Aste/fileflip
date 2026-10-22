@@ -308,6 +308,8 @@ Ideas propias y quitar fondo
 
 Mediciones: Lighthouse móvil (≥ 90, CLS 0) después de 3C.10, 3C.23, 3C.34 y 3C.44, en `docs/perf/`.
 
+- [x] CI (2026-10-22) CI de GitHub en rojo desde "create ZIP, TAR and TAR.GZ": `create.test.ts` usaba el `unzip` del sistema, que en el runner mostraba los nombres UTF-8 como CP437. Verificar el bit 11 de nuestros ZIP leyendo los bytes y validar con `zipfile` de Python (`python3 -I`)
+
 ### Hito 3D — Experiencia de usuario del catálogo
 - [ ] 3D.1 Portada que escale a 100+ herramientas: buscador visible, categorías claras, herramientas populares, sin abrumar en móvil
 - [ ] 3D.2 Enlaces internos entre herramientas relacionadas (misma categoría, mismos formatos) generados del registro

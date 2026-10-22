@@ -32,6 +32,42 @@ const expected: Record<string, Uint8Array> = {
 const dirs: string[] = [];
 afterAll(() => dirs.forEach((dir) => rmSync(dir, { recursive: true, force: true })));
 
+/**
+ * Independent ZIP reader: Python's zipfile honours the UTF-8 name flag (bit 11)
+ * whatever the locale, unlike some builds of Info-ZIP's unzip, which showed
+ * the names as CP437 on GitHub's runner. Output is ASCII JSON, so it's locale-proof.
+ */
+function python(script: string, ...args: string[]): string {
+  return execFileSync("python3", ["-I", "-c", script, ...args], { env: { ...process.env, PYTHONIOENCODING: "utf-8" } }).toString();
+}
+const PY_EXTRACT = "import sys, zipfile; zipfile.ZipFile(sys.argv[1]).extractall(sys.argv[2])";
+const PY_LIST =
+  "import sys, json, zipfile; print(json.dumps([[i.filename, i.compress_type, list(i.date_time), i.flag_bits] for i in zipfile.ZipFile(sys.argv[1]).infolist()]))";
+
+/** General purpose flags of every local header and central directory entry, read from the bytes. */
+function zipFlags(zip: Uint8Array): { local: Record<string, number>; central: Record<string, number> } {
+  const view = new DataView(zip.buffer, zip.byteOffset, zip.byteLength);
+  const decoder = new TextDecoder();
+  const local: Record<string, number> = {};
+  const central: Record<string, number> = {};
+  // The central directory is where the end record says; local headers are where the central entries point.
+  let end = zip.length - 22;
+  while (end >= 0 && view.getUint32(end, true) !== 0x06054b50) end--;
+  const count = view.getUint16(end + 10, true);
+  let at = view.getUint32(end + 16, true);
+  for (let i = 0; i < count; i++) {
+    expect(view.getUint32(at, true)).toBe(0x02014b50);
+    const nameLength = view.getUint16(at + 28, true);
+    const name = decoder.decode(zip.subarray(at + 46, at + 46 + nameLength));
+    central[name] = view.getUint16(at + 8, true);
+    const offset = view.getUint32(at + 42, true);
+    expect(view.getUint32(offset, true)).toBe(0x04034b50);
+    local[decoder.decode(zip.subarray(offset + 30, offset + 30 + view.getUint16(offset + 26, true)))] = view.getUint16(offset + 6, true);
+    at += 46 + nameLength + view.getUint16(at + 30, true) + view.getUint16(at + 32, true);
+  }
+  return { local, central };
+}
+
 /** Writes the archive and extracts it with the system's tools (not our code). */
 function extractWithSystem(archive: Uint8Array, format: ArchiveFormat): Record<string, Uint8Array> {
   const dir = mkdtempSync(join(tmpdir(), "archive-"));
@@ -40,7 +76,7 @@ function extractWithSystem(archive: Uint8Array, format: ArchiveFormat): Record<s
   writeFileSync(file, archive);
   const target = join(dir, "x");
   execFileSync("mkdir", [target]);
-  if (format === "zip") execFileSync("unzip", ["-q", file, "-d", target]);
+  if (format === "zip") python(PY_EXTRACT, file, target);
   else execFileSync("tar", [format === "tgz" ? "-xzf" : "-xf", file, "-C", target]);
   return Object.fromEntries(readdirSync(target).map((name) => [name, new Uint8Array(readFileSync(join(target, name)))]));
 }
@@ -75,17 +111,34 @@ describe("createArchive", () => {
     const dir = mkdtempSync(join(tmpdir(), "archive-"));
     dirs.push(dir);
     writeFileSync(join(dir, "out.zip"), zip);
-    const listing = execFileSync("unzip", ["-v", join(dir, "out.zip")], { env: { ...process.env, TZ: "UTC" } }).toString();
-    const line = (name: string) => listing.split("\n").find((l) => l.trimEnd().endsWith(name)) ?? "";
-    expect(line("photo.jpg")).toContain("Stored");
-    expect(line("notas año 2024 — 中文.txt")).toContain("Defl:");
-    expect(line("document.pdf")).toContain("Defl:");
-    expect(line("photo.jpg")).toContain("2024");
+    const listing = JSON.parse(python(PY_LIST, join(dir, "out.zip"))) as [string, number, number[], number][];
+    const entry = (name: string) => listing.find(([n]) => n === name);
+    const [STORED, DEFLATED] = [0, 8];
+    expect(entry("photo.jpg")?.[1]).toBe(STORED);
+    expect(entry("notas año 2024 — 中文.txt")?.[1]).toBe(DEFLATED);
+    expect(entry("document.pdf")?.[1]).toBe(DEFLATED);
+    // DOS time has 2-second resolution and no time zone: the date is written as given.
+    expect(entry("photo.jpg")?.[2].slice(0, 3)).toEqual([2024, 5, 17]);
     const text = entries[2]!.data.length;
     expect(zip.length).toBeLessThan(entries[0]!.data.length + entries[1]!.data.length + text);
     expect(Object.keys(unzipSync(zip))).toHaveLength(7);
     // Level 0 stores everything.
     expect(createArchive(entries, { format: "zip", level: 0 }).length).toBeGreaterThan(zip.length);
+  });
+
+  it("zip: non-ASCII names carry the UTF-8 flag (bit 11) in the local header and the central directory", () => {
+    const { local, central } = zipFlags(createArchive(entries, { format: "zip", level: 6 }));
+    expect(Object.keys(central).sort()).toEqual(Object.keys(expected).sort());
+    expect(Object.keys(local).sort()).toEqual(Object.keys(expected).sort());
+    const UTF8 = 0x0800;
+    expect(local["notas año 2024 — 中文.txt"]! & UTF8).toBe(UTF8);
+    expect(central["notas año 2024 — 中文.txt"]! & UTF8).toBe(UTF8);
+    // Python's reader agrees on the flag.
+    const dir = mkdtempSync(join(tmpdir(), "archive-"));
+    dirs.push(dir);
+    writeFileSync(join(dir, "out.zip"), createArchive(entries, { format: "zip", level: 6 }));
+    const listing = JSON.parse(python(PY_LIST, join(dir, "out.zip"))) as [string, number, number[], number][];
+    expect(listing.find(([n]) => n === "notas año 2024 — 中文.txt")![3] & UTF8).toBe(UTF8);
   });
 
   it("tgz is a gzip of the TAR", () => {
