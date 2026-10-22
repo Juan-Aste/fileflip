@@ -247,3 +247,50 @@ test.describe("tool: trim-audio", () => {
     await expect(page.getByRole("button", { name: "Trim audio", exact: true })).toBeDisabled();
   });
 });
+
+test.describe("tool: adjust-audio", () => {
+  test.skip(!hasFfmpeg, "needs ffmpeg/ffprobe to check the output");
+
+  test("WAV and FLAC → mono MP3 at 48 kHz and 96 kbps", async ({ page }) => {
+    await openWithFiles(page, "/en/adjust-audio", ["audio.wav", "audio.flac"]);
+    await page.getByText("Mono", { exact: true }).click();
+    await page.getByText("48 kHz", { exact: true }).click();
+    await page.getByText("96 kbps (voice)", { exact: true }).click();
+    await page.getByRole("button", { name: "Adjust audio", exact: true }).click();
+    await expect(page.locator("main li a[download]")).toHaveCount(2, { timeout: 60_000 });
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Download all/ }).click()]);
+    const entries = unzipEntries(readFileSync((await download.path())!));
+    expect(entries.map((e) => e.name).sort()).toEqual(["audio (1).mp3", "audio.mp3"]);
+    for (const entry of entries) {
+      const p = probe(entry.data, entry.name);
+      expect(p, entry.name).toMatchObject({ format: "mp3", codec: "mp3", sampleRate: 48000, channels: 1 });
+      expect(Math.abs(p.duration - 2), `${entry.name} lasts ${p.duration} s`).toBeLessThan(0.15);
+      expect(Math.abs(p.bitrate - 96_000), `${entry.name} at ${p.bitrate} bps`).toBeLessThan(10_000);
+      // Both tones are mixed into the one channel: it isn't silent.
+      expect(rms(p.samples, 0.5, 1.5)).toBeGreaterThan(1000);
+    }
+  });
+
+  test("MP3 → stereo WAV at 44.1 kHz and M4A at 22.05 kHz; Opus explains its fixed rate", async ({ page }) => {
+    await openWithFiles(page, "/en/adjust-audio", ["audio.mp3"]);
+    await page.getByText("WAV (lossless)", { exact: true }).click();
+    await page.getByText("44.1 kHz", { exact: true }).click();
+    const wav = fileOf(await runTool(page, "Adjust audio"));
+    const p = probe(wav.buf, wav.name);
+    expect(p).toMatchObject({ format: "wav", codec: "pcm_s16le", sampleRate: 44100, channels: 2 });
+    expectTones(p);
+
+    await page.getByRole("button", { name: "Start over" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(join(__dirname, "../fixtures/audio.mp3"));
+    await page.getByText("OGG (Opus)", { exact: true }).click();
+    await expect(page.locator("main")).toContainText("always uses 48 kHz");
+    await page.getByText("M4A (AAC)", { exact: true }).click();
+    await page.getByText("22.05 kHz", { exact: true }).click();
+    await page.getByText("Stereo", { exact: true }).click();
+    const m4a = fileOf(await runTool(page, "Adjust audio"));
+    expect(m4a.name).toBe("audio.m4a");
+    const q = probe(m4a.buf, m4a.name);
+    expect(q).toMatchObject({ codec: "aac", sampleRate: 22050, channels: 2 });
+    expectTones(q);
+  });
+});

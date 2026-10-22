@@ -1222,6 +1222,22 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Un fichier à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 3 heures de durée. Il lit les mêmes formats que « Convertir un audio » ; le M4A/AAC dépend de la présence de ce décodeur dans votre navigateur."
       }
+    },
+    "adjust-audio": {
+      "title": "Ajuster un audio",
+      "description": "Changez les canaux (mono ou stéréo), la fréquence d'échantillonnage et le débit de vos audios dans le navigateur, par lots.",
+      "action": "Ajuster l'audio",
+      "about": "Préparez vos audios pour leur usage : passez un enregistrement en mono pour qu'il pèse moitié moins, baissez la fréquence à 22,05 kHz pour des notes vocales, passez à 48 kHz pour la vidéo ou choisissez le débit exact demandé par une plateforme. Fonctionne avec plusieurs fichiers à la fois et enregistre en MP3, WAV, FLAC, OGG (Opus), M4A (AAC) ou AIFF. Tout est traité sur votre appareil : les fichiers ne sont envoyés à aucun serveur.",
+      "faq": {
+        "q1": "Quand passer en mono ?",
+        "a1": "Pour la voix (podcasts, cours, interviews), la stéréo n'apporte presque rien : en mono le fichier pèse moitié moins pour la même qualité. Les deux canaux sont mélangés, donc rien de ce qui ne joue que d'un côté n'est perdu.",
+        "q2": "Quelle fréquence choisir ?",
+        "a2": "44,1 kHz est celle de la musique et des CD ; 48 kHz celle de la vidéo ; 22,05 kHz suffit pour la voix et réduit la taille. Augmenter la fréquence n'ajoute pas de qualité. L'OGG (Opus) travaille toujours à 48 kHz.",
+        "q3": "Quel débit me faut-il ?",
+        "a3": "Pour la voix, 64 à 96 kbps en mono ; pour la musique, 192 kbps ou plus. Un débit plus élevé sonne mieux et donne un fichier plus lourd. WAV, FLAC et AIFF n'ont pas de débit car ils sont sans perte.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Il lit les mêmes formats que « Convertir un audio »."
+      }
     }
   },
   "ToolUi": {
@@ -2172,6 +2188,16 @@
     "rangeInvalid": "Temps non valides : saisissez minutes:secondes (par exemple 1:23.5), avec le début avant la fin et sans dépasser {total}.",
     "fadeIn": "Fondu d'entrée ({seconds} s)",
     "fadeOut": "Fondu de sortie ({seconds} s)",
-    "trimmed": "Coupé de {from} à {to}."
+    "trimmed": "Coupé de {from} à {to}.",
+    "channels": "Canaux",
+    "channelOptions": {
+      "1": "Mono",
+      "2": "Stéréo",
+      "original": "Comme l'original"
+    },
+    "sampleRate": "Fréquence d'échantillonnage",
+    "rateOriginal": "Comme l'original",
+    "rateKhz": "{khz} kHz",
+    "opusRate": "L'OGG (Opus) utilise toujours 48 kHz."
   }
 }

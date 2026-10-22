@@ -61,6 +61,9 @@ export interface AudioEdit {
   /** Linear fades, in seconds (each capped at half the result). */
   fadeIn?: number;
   fadeOut?: number;
+  /** Output channels (downmix or upmix) and sample rate; Opus always runs at 48 kHz. */
+  channels?: 1 | 2;
+  sampleRate?: number;
 }
 
 /** Opens a file for mediabunny, checking it holds audio this browser can decode; the caller disposes it. */
@@ -128,6 +131,7 @@ export async function convertAudio(
     const total = trim ? trim.end - trim.start : duration;
     const fades = fadeLengths(total, edit.fadeIn ?? 0, edit.fadeOut ?? 0);
     const fading = fades.fadeIn > 0 || fades.fadeOut > 0;
+    const sampleRate = plan.codec === "opus" ? plan.sampleRate : (edit.sampleRate ?? plan.sampleRate);
 
     const output = new Output({ format: outputFormat[options.target](), target: new BufferTarget() });
     const conversion = await Conversion.init({
@@ -137,11 +141,12 @@ export async function convertAudio(
       audio: {
         codec: plan.codec,
         ...(plan.bitrate ? { bitrate: plan.bitrate } : {}),
-        ...(plan.sampleRate ? { sampleRate: plan.sampleRate } : {}),
+        ...(sampleRate ? { sampleRate } : {}),
+        ...(edit.channels ? { numberOfChannels: edit.channels } : {}),
         ...(plan.sampleFormat ? { sampleFormat: plan.sampleFormat } : {}),
         // A lossy target is re-encoded even from the same codec, so the chosen quality applies; a trim is
         // re-encoded too so it cuts at the exact frame instead of at packet boundaries.
-        forceTranscode: plan.lossy || fading || !!trim,
+        forceTranscode: plan.lossy || fading || !!trim || !!edit.channels || !!edit.sampleRate,
         // Samples arrive with timestamps from the start of the result (the trim offset is already applied).
         ...(fading ? { process: (sample: AudioSample) => applyGain(sample, (t) => fadeGain(t, total, fades.fadeIn, fades.fadeOut)) } : {}),
       },

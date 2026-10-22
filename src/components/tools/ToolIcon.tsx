@@ -58,6 +58,7 @@ import {
   PenTool,
   Type,
   type LucideIcon,
+  SlidersHorizontal,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
 
@@ -126,6 +127,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "create-epub": BookPlus,
   "audio-converter": AudioLines,
   "trim-audio": Scissors,
+  "adjust-audio": SlidersHorizontal,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

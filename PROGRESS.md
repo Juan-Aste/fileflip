@@ -2313,3 +2313,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Un solo tramo por archivo (no se quitan partes del medio). El reproductor depende del navegador (algunos no reproducen FLAC o AIFF), pero los tiempos se pueden escribir igual.
 
 **Siguiente**: 3C.36b ("Ajustar audio": canales, frecuencia y bitrate).
+
+## 2026-10-22 05:00 UTC — Fase 3, tarea 3C.36b (ajustar audio)
+
+**Qué se hizo**
+- **Ajustar audio** (`/es/ajustar-audio`, `/en/adjust-audio`, `/pt/ajustar-audio`, `/fr/ajuster-audio`), categoría Audio, en lotes: **canales** (como el original, mono o estéreo; mono mezcla los dos canales), **frecuencia** (como el original, 22,05, 44,1 o 48 kHz), **formato** (MP3, WAV, FLAC, OGG Opus, M4A AAC, AIFF) y **bitrate** en los formatos con pérdida (128 kbps por defecto, pensado para voz). MP3 no ofrece "como el original" (siempre se remuestrea, 44,1 kHz por defecto) y OGG (Opus) muestra que siempre usa 48 kHz.
+- Motor: `AudioEdit` suma `channels` y `sampleRate` → `numberOfChannels`/`sampleRate` de la `Conversion` de mediabunny (recodifica siempre que se piden). `audioSampleRates` en `options.ts`. Textos (introducción + 4 preguntas, interfaz) en los 5 idiomas.
+
+**Verificación**
+- `audio-tools.spec.ts` (+2, ffprobe/ffmpeg): WAV + FLAC → 2 MP3 **mono, 48 kHz, 96 kbps (±10)**, 2 s, con señal; MP3 → WAV estéreo 44,1 kHz con los tonos correctos en cada canal; aviso de Opus; MP3 → M4A AAC a 22,05 kHz estéreo con tonos.
+- Lint, typecheck, tests (903 + 8 saltados), build, `check:static` (917 páginas) y `npm run test:e2e` completo (274 pasan, 4 saltados sin Gotenberg/EPUBCheck).
+
+**Limitaciones**
+- Sin profundidad de 24 bits en la salida (16 bits como el conversor). Más de 2 canales se mezclan a estéreo o mono solo si se elige; "como el original" los mantiene cuando el formato lo admite.
+
+**Siguiente**: 3C.36c ("Normalizar volumen").

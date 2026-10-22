@@ -1222,6 +1222,22 @@
         "q4": "Is there a limit?",
         "a4": "One file at a time, up to 200 MB on the free plan (500 MB with Pro) and 3 hours long. It reads the same formats as \"Audio converter\"; M4A/AAC depends on your browser having that decoder."
       }
+    },
+    "adjust-audio": {
+      "title": "Adjust audio",
+      "description": "Change the channels (mono or stereo), sample rate and bitrate of your audio files in the browser, in batches.",
+      "action": "Adjust audio",
+      "about": "Get audio ready for where it's going: turn a recording into mono so it takes half the space, lower the sample rate to 22.05 kHz for voice notes, take it to 48 kHz for video, or pick the exact bitrate a platform asks for. It works on several files at once and saves as MP3, WAV, FLAC, OGG (Opus), M4A (AAC) or AIFF. Everything runs on your device: files aren't uploaded to any server.",
+      "faq": {
+        "q1": "When should I switch to mono?",
+        "a1": "For speech (podcasts, lectures, interviews) stereo adds almost nothing: in mono the file is half the size at the same quality. Both channels are mixed together, so nothing that plays on one side only is lost.",
+        "q2": "Which sample rate should I choose?",
+        "a2": "44.1 kHz is the music and CD rate; 48 kHz is the video rate; 22.05 kHz is enough for speech and reduces the size. Raising the rate doesn't add quality. OGG (Opus) always works at 48 kHz.",
+        "q3": "What bitrate do I need?",
+        "a3": "For speech, 64–96 kbps in mono; for music, 192 kbps or more. A higher bitrate sounds better and makes a bigger file. WAV, FLAC and AIFF have no bitrate because they're lossless.",
+        "q4": "Is there a limit?",
+        "a4": "Up to 200 MB per file on the free plan (500 MB with Pro), 3 hours per file and several files per batch. It reads the same formats as \"Audio converter\"."
+      }
     }
   },
   "ToolUi": {
@@ -2172,6 +2188,16 @@
     "rangeInvalid": "Invalid times: type minutes:seconds (for example 1:23.5), with the start before the end and no later than {total}.",
     "fadeIn": "Fade in ({seconds} s)",
     "fadeOut": "Fade out ({seconds} s)",
-    "trimmed": "Trimmed from {from} to {to}."
+    "trimmed": "Trimmed from {from} to {to}.",
+    "channels": "Channels",
+    "channelOptions": {
+      "1": "Mono",
+      "2": "Stereo",
+      "original": "Same as original"
+    },
+    "sampleRate": "Sample rate",
+    "rateOriginal": "Same as original",
+    "rateKhz": "{khz} kHz",
+    "opusRate": "OGG (Opus) always uses 48 kHz."
   }
 }

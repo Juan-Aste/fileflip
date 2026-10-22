@@ -94,6 +94,7 @@ export const toolIds = [
   "create-epub",
   "audio-converter",
   "trim-audio",
+  "adjust-audio",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -919,6 +920,17 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 15 * MINUTE, maxFileBytes: AUDIO_MAX_BYTES },
     status: "verified",
     slugs: { es: "recortar-audio", en: "trim-audio", pt: "cortar-audio", fr: "couper-audio", zh: "trim-audio" },
+  },
+  "adjust-audio": {
+    id: "adjust-audio",
+    category: "audio",
+    inputs: ["mp3", "wav", "flac", "ogg", "m4a", "aac", "webm", "aiff"],
+    outputs: ["mp3", "wav", "flac", "ogg", "m4a", "aiff"],
+    engine: "browser",
+    libraries: ["mediabunny", "@mediabunny/mp3-encoder (LAME)", "@mediabunny/flac-encoder (libFLAC)", "@mediabunny/aac-encoder (FFmpeg AAC)", "AIFF reader/writer (own)"],
+    limits: { files: "multiple", timeoutMs: 15 * MINUTE, maxFileBytes: AUDIO_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "ajustar-audio", en: "adjust-audio", pt: "ajustar-audio", fr: "ajuster-audio", zh: "adjust-audio" },
   },
 };
 

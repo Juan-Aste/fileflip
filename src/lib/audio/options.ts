@@ -47,3 +47,7 @@ export function audioPlan({ target, bitrate }: AudioOptions): AudioPlan {
 
 export const audioExtension: Record<AudioTarget, string> = { mp3: "mp3", wav: "wav", flac: "flac", ogg: "ogg", m4a: "m4a", aiff: "aiff" };
 export const audioMime: Record<AudioTarget, string> = { mp3: "audio/mpeg", wav: "audio/wav", flac: "audio/flac", ogg: "audio/ogg", m4a: "audio/mp4", aiff: "audio/aiff" };
+
+/** Sample rates offered by "Adjust audio" (all valid for LAME, AAC, FLAC and PCM). */
+export const audioSampleRates = [22050, 44100, 48000] as const;
+export type AudioSampleRate = (typeof audioSampleRates)[number];

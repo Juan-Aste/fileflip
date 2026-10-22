@@ -1222,6 +1222,22 @@
         "q4": "Há um limite?",
         "a4": "Um arquivo por vez, de até 200 MB no plano gratuito (500 MB com Pro) e 3 horas de duração. Lê os mesmos formatos que \"Converter áudio\"; o M4A/AAC depende de o seu navegador ter esse decodificador."
       }
+    },
+    "adjust-audio": {
+      "title": "Ajustar áudio",
+      "description": "Mude os canais (mono ou estéreo), a taxa de amostragem e o bitrate dos seus áudios no navegador, em lotes.",
+      "action": "Ajustar áudio",
+      "about": "Prepare áudios para onde você vai usá-los: passe uma gravação para mono para ocupar a metade, baixe a taxa para 22,05 kHz em mensagens de voz, leve para 48 kHz para vídeo ou escolha o bitrate exato que uma plataforma pede. Funciona com vários arquivos de uma vez e salva em MP3, WAV, FLAC, OGG (Opus), M4A (AAC) ou AIFF. Tudo é processado no seu dispositivo: os arquivos não são enviados a nenhum servidor.",
+      "faq": {
+        "q1": "Quando vale passar para mono?",
+        "a1": "Em voz (podcasts, aulas, entrevistas) o estéreo quase não acrescenta nada: em mono o arquivo ocupa a metade com a mesma qualidade. Os dois canais são misturados, então não se perde o que toca só de um lado.",
+        "q2": "Qual taxa escolher?",
+        "a2": "44,1 kHz é a da música e dos CDs; 48 kHz a de vídeo; 22,05 kHz basta para voz e reduz o tamanho. Aumentar a taxa não melhora a qualidade. OGG (Opus) sempre trabalha a 48 kHz.",
+        "q3": "Qual bitrate eu preciso?",
+        "a3": "Para voz, 64–96 kbps em mono; para música, 192 kbps ou mais. Bitrate maior soa melhor e gera arquivo maior. WAV, FLAC e AIFF não usam bitrate porque não têm perda.",
+        "q4": "Há um limite?",
+        "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro), 3 horas por arquivo e vários arquivos por lote. Lê os mesmos formatos que \"Converter áudio\"."
+      }
     }
   },
   "ToolUi": {
@@ -2172,6 +2188,16 @@
     "rangeInvalid": "Tempos inválidos: escreva minutos:segundos (por exemplo 1:23.5), com o início antes do fim e sem passar de {total}.",
     "fadeIn": "Fade in ({seconds} s)",
     "fadeOut": "Fade out ({seconds} s)",
-    "trimmed": "Cortado de {from} a {to}."
+    "trimmed": "Cortado de {from} a {to}.",
+    "channels": "Canais",
+    "channelOptions": {
+      "1": "Mono",
+      "2": "Estéreo",
+      "original": "Como o original"
+    },
+    "sampleRate": "Taxa de amostragem",
+    "rateOriginal": "Como o original",
+    "rateKhz": "{khz} kHz",
+    "opusRate": "OGG (Opus) sempre usa 48 kHz."
   }
 }

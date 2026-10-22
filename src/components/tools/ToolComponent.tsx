@@ -68,6 +68,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "create-epub": dynamic(() => import("./ebook/CreateEpubTool")),
   "audio-converter": dynamic(() => import("./audio/AudioConverterTool")),
   "trim-audio": dynamic(() => import("./audio/TrimAudioTool")),
+  "adjust-audio": dynamic(() => import("./audio/AdjustAudioTool")),
   "html-to-markdown": dynamic(() => import("./markup/MarkdownTools").then((m) => m.HtmlToMarkdownTool)),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),

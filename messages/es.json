@@ -1222,6 +1222,22 @@
         "q4": "¿Hay un límite?",
         "a4": "Un archivo por vez, de hasta 200 MB con el plan gratuito (500 MB con Pro) y 3 horas de duración. Los formatos que lee son los mismos que \"Convertir audio\"; el M4A/AAC depende de que tu navegador tenga ese decodificador."
       }
+    },
+    "adjust-audio": {
+      "title": "Ajustar audio",
+      "description": "Cambia canales (mono o estéreo), frecuencia de muestreo y bitrate de tus audios en el navegador, en lotes.",
+      "action": "Ajustar audio",
+      "about": "Prepara audios para donde los vas a usar: pasa una grabación a mono para que pese la mitad, baja la frecuencia a 22,05 kHz para notas de voz, llévala a 48 kHz para video o elige el bitrate exacto que pide una plataforma. Funciona con varios archivos a la vez y guarda en MP3, WAV, FLAC, OGG (Opus), M4A (AAC) o AIFF. Todo se procesa en tu dispositivo: los archivos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Cuándo conviene pasar a mono?",
+        "a1": "En voz (podcasts, clases, entrevistas) el estéreo casi no aporta: en mono el archivo ocupa la mitad con la misma calidad. Al pasar a mono los dos canales se mezclan, así que no se pierde lo que suena solo de un lado.",
+        "q2": "¿Qué frecuencia elijo?",
+        "a2": "44,1 kHz es la de la música y los CD; 48 kHz la de video; 22,05 kHz alcanza para voz y reduce el tamaño. Subir la frecuencia no agrega calidad. OGG (Opus) siempre trabaja a 48 kHz.",
+        "q3": "¿Qué bitrate necesito?",
+        "a3": "Para voz, 64–96 kbps en mono; para música, 192 kbps o más. A mayor bitrate, mejor sonido y archivo más grande. WAV, FLAC y AIFF no usan bitrate porque no tienen pérdida.",
+        "q4": "¿Hay un límite?",
+        "a4": "Hasta 200 MB por archivo con el plan gratuito (500 MB con Pro), 3 horas por archivo y varios archivos por lote. Lee los mismos formatos que \"Convertir audio\"."
+      }
     }
   },
   "ToolUi": {
@@ -2172,6 +2188,16 @@
     "rangeInvalid": "Tiempos no válidos: escribe minutos:segundos (por ejemplo 1:23.5), con el inicio antes del fin y sin pasar de {total}.",
     "fadeIn": "Fundido de entrada ({seconds} s)",
     "fadeOut": "Fundido de salida ({seconds} s)",
-    "trimmed": "Recortado de {from} a {to}."
+    "trimmed": "Recortado de {from} a {to}.",
+    "channels": "Canales",
+    "channelOptions": {
+      "1": "Mono",
+      "2": "Estéreo",
+      "original": "Como el original"
+    },
+    "sampleRate": "Frecuencia de muestreo",
+    "rateOriginal": "Como el original",
+    "rateKhz": "{khz} kHz",
+    "opusRate": "OGG (Opus) siempre usa 48 kHz."
   }
 }
