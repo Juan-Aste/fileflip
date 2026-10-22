@@ -589,7 +589,13 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
-- Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
+- **(Fase 5, urgente) Email de inicio de sesión por Resend** — Railway bloquea el SMTP saliente salvo en el plan Pro, así que `EMAIL_SERVER` nunca va a funcionar allí:
+  1. En https://resend.com → *API Keys → Create API key* (permiso *Sending access*).
+  2. En Railway, servicio `app` → *Variables*: agregar `RESEND_API_KEY=re_…` con esa clave.
+  3. En Resend → *Domains → Add domain*: agregar el dominio del sitio y crear en el DNS los registros SPF/DKIM que indica, hasta que diga *Verified*. Sin dominio verificado, el remitente `onboarding@resend.dev` solo entrega al email de la propia cuenta de Resend.
+  4. En Railway: `EMAIL_FROM="Fileflect <no-reply@tu-dominio.com>"` (una dirección de ese dominio verificado).
+  5. En Railway: borrar la variable `EMAIL_SERVER`.
+  6. Redesplegar el servicio `app` y probar el login por email; si falla, el log de Railway muestra `[email] Resend rejected the email: HTTP <código> <mensaje>`.
 - Crear cuenta de Mercado Pago y obtener credenciales de prueba (`MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`). Ojo: cada cuenta de Mercado Pago cobra solo en la moneda de su país; para vender en varios países hace falta una cuenta (y un token `MP_ACCESS_TOKEN_XX`) por país.
 - En cada cuenta de Mercado Pago, configurar el webhook (Tus integraciones → Webhooks) apuntando a `https://<dominio>/api/webhooks/mercadopago` con el evento "Planes y suscripciones", y copiar la clave secreta en `MP_WEBHOOK_SECRET` (o `MP_WEBHOOK_SECRET_XX` por país).
 - Elegir proveedor de pagos internacional (por ejemplo Lemon Squeezy o Paddle) para usuarios fuera de los países de Mercado Pago.
@@ -2982,3 +2988,11 @@ Causa: Railway bloquea el SMTP saliente (25/465/587) salvo en el plan Pro, así 
 
 **Verificación**
 - Lint, typecheck, build y tests unitarios pasan; Playwright: `login.spec.ts` (7), `a11y.spec.ts`, `layout-shift.spec.ts` y `search.spec.ts` pasan (32 + 7).
+
+## 2026-10-22 23:13 UTC — Fase 5, tarea 5.3 (pendiente del dueño: Resend)
+
+**Qué se hizo**
+- "Pendiente del dueño": la entrada de SMTP se reemplazó por los pasos para Resend (API key, `RESEND_API_KEY` en Railway, dominio verificado —sin él `onboarding@resend.dev` solo entrega al email de la cuenta de Resend—, `EMAIL_FROM` con ese dominio, quitar `EMAIL_SERVER`, redesplegar).
+
+**Verificación**
+- Solo documentación.
