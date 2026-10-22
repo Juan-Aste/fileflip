@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 import type { Page } from "@playwright/test";
 import { availableTools, tools, type ToolId } from "../../src/config/tools";
 import { allToolsSlugs, categorySlug, publishedCategories } from "../../src/config/categories";
+import { creditsSlugs } from "../../src/config/credits";
 import { expect, fixturePath, test } from "./support";
 
 const axeSource = readFileSync(require.resolve("axe-core/axe.min.js"), "utf8");
@@ -50,6 +51,19 @@ test.describe("axe, light", () => {
     for (const path of ["/es", `/es/${allToolsSlugs.es}`, ...publishedCategories.map((c) => `/es/${categorySlug(c, "es")}`)]) {
       await expectNoViolations(page, path);
     }
+  });
+
+  test("credits and licenses page, light, dark and Chinese", async ({ page }) => {
+    await expectNoViolations(page, `/es/${creditsSlugs.es}`);
+    await page.emulateMedia({ colorScheme: "dark" });
+    await expectNoViolations(page, `/es/${creditsSlugs.es}`);
+    await expectNoViolations(page, `/zh/${creditsSlugs.zh}`);
+    // The download, the LGPL license texts and the footer link work.
+    expect((await page.request.get("/third-party-notices.txt")).ok()).toBe(true);
+    expect((await page.request.get("/licenses/LGPL-2.0.txt")).ok()).toBe(true);
+    await page.goto("/es");
+    await page.locator("footer").getByRole("link", { name: "Créditos" }).click();
+    await expect(page).toHaveURL(/\/es\/creditos$/);
   });
 
   // Split in chunks so the workers share the ~80 pages.

@@ -18,6 +18,8 @@ describe("sitemapEntries", () => {
     expect(urls).toContain("https://fileflip.app/zh");
     expect(urls).toContain("https://fileflip.app/es/unir-pdf");
     expect(urls).toContain("https://fileflip.app/fr/heic-en-jpg");
+    expect(urls).toContain("https://fileflip.app/es/creditos");
+    expect(urls).toContain("https://fileflip.app/zh/credits");
     expect(new Set(urls).size).toBe(urls.length);
   });
 

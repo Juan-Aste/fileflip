@@ -5,6 +5,7 @@ import WithSidebarAd from "@/components/ads/WithSidebarAd";
 import { AllToolsView, CategoryView } from "@/components/catalog/CatalogViews";
 import Converter from "@/components/converter/Converter";
 import ProcessingBadge from "@/components/converter/ProcessingBadge";
+import CreditsPage from "@/components/legal/CreditsPage";
 import ToolComponent from "@/components/tools/ToolComponent";
 import { Cloud, ShieldCheck } from "lucide-react";
 import ToolIcon from "@/components/tools/ToolIcon";
@@ -24,6 +25,7 @@ import {
   conversionSlug,
   relatedConversions,
 } from "@/config/conversion-pages";
+import { creditsSlugs } from "@/config/credits";
 import { formats, type Conversion } from "@/config/formats";
 import {
   availableTools,
@@ -50,6 +52,7 @@ type Params = { locale: string; slug: string };
 
 type Page =
   | { kind: "all" }
+  | { kind: "credits" }
   | { kind: "category"; category: ToolCategory }
   | { kind: "tool"; tool: ToolInfo }
   | { kind: "conversion"; conversion: Conversion }
@@ -58,6 +61,7 @@ type Page =
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) => [
     { locale, slug: allToolsSlugs[locale] },
+    { locale, slug: creditsSlugs[locale] },
     ...publishedCategories.map((c) => ({ locale, slug: categorySlug(c, locale) })),
     ...availableTools.map((id) => ({ locale, slug: tools[id].slugs[locale] })),
     ...conversionPages.map((c) => ({
@@ -76,6 +80,7 @@ export const dynamicParams = false;
 function resolve({ locale, slug }: Params): Page | undefined {
   const decoded = decodeURIComponent(slug);
   if (decoded === allToolsSlugs[locale as Locale]) return { kind: "all" };
+  if (decoded === creditsSlugs[locale as Locale]) return { kind: "credits" };
   const category = categoryFromSlug(locale as Locale, decoded);
   if (category) return { kind: "category", category };
   const tool = toolFromSlug(locale as Locale, decoded);
@@ -90,6 +95,8 @@ function slugFor(page: Exclude<Page, { kind: "longtail" }>, locale: Locale): str
   switch (page.kind) {
     case "all":
       return allToolsSlugs[locale];
+    case "credits":
+      return creditsSlugs[locale];
     case "category":
       return categorySlug(page.category, locale);
     case "tool":
@@ -126,6 +133,10 @@ export async function generateMetadata({
     p.locale as Locale,
     (l) => `/${slugFor(page, l)}`,
   );
+  if (page.kind === "credits") {
+    const t = await getTranslations({ locale: p.locale, namespace: "Credits" });
+    return { title: `${t("metaTitle")} — Fileflect`, description: t("metaDescription"), alternates };
+  }
   if (page.kind === "all" || page.kind === "category") {
     const t = await getTranslations({ locale: p.locale, namespace: "Catalog" });
     if (page.kind === "all") {
@@ -173,6 +184,8 @@ export default async function SlugPage({
   const page = resolve(p);
   if (!page) notFound();
   setRequestLocale(p.locale);
+  // Like the legal pages, the credits page carries no ads.
+  if (page.kind === "credits") return <CreditsPage locale={p.locale as Locale} />;
   return (
     <WithSidebarAd>
       {page.kind === "all" ? (

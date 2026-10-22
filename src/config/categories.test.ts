@@ -36,6 +36,8 @@ describe("catalog categories", () => {
   });
 
   it("resolve slugs and translate paths between languages", () => {
+    expect(translatePathname("/creditos", "es", "en")).toBe("/credits");
+    expect(translatePathname("/credits", "fr", "pt")).toBe("/creditos");
     expect(categoryFromSlug("es", "herramientas-pdf")).toBe("pdf");
     expect(categoryFromSlug("en", "image-tools")).toBe("image");
     expect(translatePathname("/herramientas-pdf", "es", "fr")).toBe("/outils-pdf");

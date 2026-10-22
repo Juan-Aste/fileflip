@@ -2846,3 +2846,19 @@ Todas las tareas de la fase 3 en PLAN.md están marcadas. Informe en `docs/repor
 - Lint, tests (997 + 8 saltados), build y `check:static` pasan.
 
 **Siguiente**: 4.1c (página de créditos).
+
+## 2026-10-22 19:37 UTC — Fase 4, tarea 4.1c (página de créditos y licencias) — HITO 4.1 TERMINADO
+
+**Qué se hizo**
+- Página **Créditos y licencias** en `/es/creditos`, `/en/credits`, `/pt/creditos`, `/fr/credits`, `/zh/credits` (slugs en `src/config/credits.ts`; la resuelve la ruta `[slug]`, sin anuncios, igual que las páginas legales). Componente `src/components/legal/CreditsPage.tsx`, que lee `src/content/credits.json` (generado por `npm run licenses`).
+- Contenido: botón para descargar `/third-party-notices.txt`; **componentes LGPL** en tarjetas (versión, licencia, en qué paquete viene, navegador/servidor, enlaces a proyecto, código fuente de la versión, cómo se compiló y texto de la licencia en `/licenses/`; aviso de LAME con lame.sourceforge.io; nota de FFmpeg sin commit exacto); motores y datos incluidos; servicios del servidor; tabla de los 249 paquetes (nombre con enlace, versión, licencia, autor, dónde) en una región desplazable con nombre; enlace a contacto.
+- Footer: "Créditos" entre Términos y Contacto. Sitemap (+5 URLs, prioridad 0,2), metadatos con título, descripción, canonical y hreflang, y cambio de idioma (`translatePathname`).
+- Textos en los 5 idiomas (namespace `Credits` + `Footer.credits`).
+- Peso: la página pesa ~95 KB comprimida (517 KB sin comprimir por la tabla); los estilos de las celdas van en la tabla para no repetirlos en cada fila.
+
+**Verificación**
+- Capturas 360/1280 claro/oscuro en `docs/screenshots/es_creditos-*.webp`, revisadas: sin desborde horizontal (ancho de página = ancho de pantalla), la tabla se desplaza dentro de su caja en 360 px, contraste correcto en oscuro.
+- `a11y.spec.ts` (+1): axe sin violaciones en claro, oscuro y chino; el archivo de avisos y `/licenses/LGPL-2.0.txt` responden; el enlace del footer lleva a `/es/creditos`. Suite `a11y` completa: 20/20.
+- Tests de sitemap y de traducción de rutas ampliados. Lint, typecheck, tests (997 + 8 saltados), build y `check:static` (1012 páginas) pasan.
+
+**Siguiente**: 4.2a (revisión de pendientes del dueño).

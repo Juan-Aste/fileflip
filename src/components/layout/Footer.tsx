@@ -3,6 +3,7 @@ import { useLocale, useTranslations } from "next-intl";
 import LogoMark from "@/components/brand/LogoMark";
 import { allToolsSlugs, categorySlug, publishedCategories } from "@/config/categories";
 import { conversionSlug, popularConversions } from "@/config/conversion-pages";
+import { creditsSlugs } from "@/config/credits";
 import { formats } from "@/config/formats";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -74,9 +75,9 @@ export default function Footer() {
             {t("headings.company")}
           </h2>
           <ul className="flex flex-col gap-2">
-            {(["pricing", "privacy", "terms", "contact"] as const).map((page) => (
+            {(["pricing", "privacy", "terms", "credits", "contact"] as const).map((page) => (
               <li key={page}>
-                <Link href={`/${page}`} className={linkClass}>
+                <Link href={`/${page === "credits" ? creditsSlugs[locale] : page}`} className={linkClass}>
                   {t(page)}
                 </Link>
               </li>

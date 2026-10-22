@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { allToolsSlugs, categorySlug, publishedCategories } from "@/config/categories";
 import { conversionPages, conversionSlug } from "@/config/conversion-pages";
+import { creditsSlugs } from "@/config/credits";
 import { availableTools, tools } from "@/config/tools";
 import { longtailPages, longtailTranslation } from "@/content/longtail";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
@@ -31,6 +32,7 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
     { path: () => "/privacy", priority: 0.3 },
     { path: () => "/terms", priority: 0.3 },
     { path: () => "/contact", priority: 0.3 },
+    { path: (l: Locale) => `/${creditsSlugs[l]}`, priority: 0.2 },
     { path: (l: Locale) => `/${allToolsSlugs[l]}`, priority: 0.8 },
     ...publishedCategories.map((c) => ({ path: (l: Locale) => `/${categorySlug(c, l)}`, priority: 0.8 })),
     ...availableTools.map((id) => ({ path: (l: Locale) => `/${tools[id].slugs[l]}`, priority: 0.9 })),
