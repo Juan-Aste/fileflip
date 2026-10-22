@@ -61,6 +61,9 @@ export type FormatId =
   | "ply"
   | "glb"
   | "gltf"
+  | "3mf"
+  | "dae"
+  | "fbx"
   | "mp4"
   | "mov"
   | "mkv";
@@ -141,6 +144,9 @@ export const formats: Record<FormatId, FormatInfo> = {
   ply: { id: "ply", label: "PLY", mime: "application/x-ply", extensions: ["ply"], category: "data" },
   glb: { id: "glb", label: "GLB", mime: "model/gltf-binary", extensions: ["glb"], category: "data" },
   gltf: { id: "gltf", label: "glTF", mime: "model/gltf+json", extensions: ["gltf"], category: "data" },
+  "3mf": { id: "3mf", label: "3MF", mime: "model/3mf", extensions: ["3mf"], category: "data" },
+  dae: { id: "dae", label: "DAE", mime: "model/vnd.collada+xml", extensions: ["dae"], category: "data" },
+  fbx: { id: "fbx", label: "FBX", mime: "application/octet-stream", extensions: ["fbx"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 

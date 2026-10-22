@@ -1,10 +1,19 @@
 // "Convert 3D model": formats and limits. No three.js import: the page and the
 // tests read these without the engine.
 
-export const modelInputs = ["stl", "obj", "ply", "glb", "gltf"] as const;
+export const modelInputs = ["stl", "obj", "ply", "glb", "gltf", "3mf", "dae", "fbx"] as const;
 export type ModelInput = (typeof modelInputs)[number];
 export const modelTargets = ["stl", "obj", "ply", "glb"] as const;
 export type ModelTarget = (typeof modelTargets)[number];
+
+/** Inputs that are read but never written: their exporters don't exist (3MF, FBX) or aren't worth shipping (COLLADA). */
+export const readOnlyModelInputs = ["3mf", "dae", "fbx"] as const satisfies readonly ModelInput[];
+
+/**
+ * XML read into a DOM (COLLADA, and the model parts of a 3MF once unzipped): a DOM
+ * takes many times the text's size, so these stop well before the triangle cap.
+ */
+export const MAX_XML_MODEL_BYTES = 100 * 1024 * 1024;
 
 /** Triangles kept in memory at once (a 2-million-triangle mesh is ~100 MB as binary STL). */
 export const MAX_MODEL_TRIANGLES = 3_000_000;

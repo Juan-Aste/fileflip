@@ -231,7 +231,9 @@
     "modelEmpty": "此模型没有可转换的面（三角形）：可能是空模型或点云。",
     "modelTooLarge": "模型太大：最多 300 万个三角形。",
     "modelExternalFiles": "此 glTF 使用了未上传的独立文件（.bin 或贴图）。请先在 3D 软件中将其转换为 GLB（单个文件），或使用内嵌所有数据的 .gltf。",
-    "modelCompressed": "此 glTF 使用了 Draco、meshopt 或 KTX2 压缩，目前还无法读取。请导出为未压缩的版本。"
+    "modelCompressed": "此 glTF 使用了 Draco、meshopt 或 KTX2 压缩，目前还无法读取。请导出为未压缩的版本。",
+    "modelXmlTooLarge": "此 3MF 或 COLLADA 文件太大，无法在浏览器中读取：XML（解压后）最多 100 MB。",
+    "modelFbxVersion": "此 FBX 早于 7.0 版本（2011 年），我们无法读取。请重新导出为 FBX 7.x（二进制或 ASCII）。"
   },
   "Tools": {
     "merge-pdf": {
@@ -1396,9 +1398,9 @@
     },
     "model-converter": {
       "title": "3D 模型转换",
-      "description": "在浏览器中将 3D 模型在 STL、OBJ、PLY 和 GLB（glTF）之间转换，无需安装任何软件。",
+      "description": "在浏览器中将 3D 模型（STL、OBJ、PLY、GLB、glTF、3MF、COLLADA 和 FBX）转换为 STL、OBJ、PLY 或 GLB，无需安装任何软件。",
       "action": "转换模型",
-      "about": "把模型转换成另一种格式，用于 3D 打印、在其他软件中打开或发布到网页：STL 适用于打印机和切片软件，OBJ 和 PLY 适用于编辑器和扫描仪，GLB（二进制 glTF）适用于网页、增强现实和游戏引擎。支持读取 STL（二进制和 ASCII）、OBJ、PLY、GLB 以及内嵌所有数据的 glTF，并保留几何形状、各部件的位置，以及在输出格式支持时（PLY 和 GLB）的顶点颜色。可以一次转换多个文件。全部在你的设备上完成：模型不会上传到任何服务器。",
+      "about": "把模型转换成另一种格式，用于 3D 打印、在其他软件中打开或发布到网页：STL 适用于打印机和切片软件，OBJ 和 PLY 适用于编辑器和扫描仪，GLB（二进制 glTF）适用于网页、增强现实和游戏引擎。支持读取 STL（二进制和 ASCII）、OBJ、PLY、GLB、内嵌所有数据的 glTF、3MF、COLLADA（.dae）和 FBX 7.x（二进制和 ASCII），并保留几何形状、各部件的位置，以及在输出格式支持时（PLY 和 GLB）的顶点颜色。可以一次转换多个文件。全部在你的设备上完成：模型不会上传到任何服务器。",
       "faq": {
         "q1": "材质和贴图会保留吗？",
         "a1": "会保留形状，在 PLY 和 GLB 中还会保留顶点颜色。STL 不保存颜色和材质，生成的 OBJ 不带 .mtl 文件，因此这些输出会丢失贴图和材质。GLB 转 GLB 时会保留材质。",
@@ -1407,7 +1409,9 @@
         "q3": "我的 .gltf 因为独立文件报错，怎么办？",
         "a3": ".gltf 可能依赖 .bin 文件和外部图片，我们无法获取。请将其导出为 GLB（单个文件）或内嵌所有数据的 glTF。使用 Draco 或 meshopt 压缩的 glTF 目前还无法读取。",
         "q4": "有什么限制？",
-        "a4": "每个模型最大 200 MB、300 万个三角形，每个文件最多处理 5 分钟。点云（没有面的 PLY）无法转换为网格。"
+        "a4": "每个模型最大 200 MB、300 万个三角形，每个文件最多处理 5 分钟。点云（没有面的 PLY）无法转换为网格。",
+        "q5": "可以转换 3MF、COLLADA 或 FBX 文件吗？",
+        "a5": "可以，作为输入文件：会读取其几何形状、各部件及其位置（以及 COLLADA 和 FBX 的顶点颜色），并保存为 STL、OBJ、PLY 或 GLB。不会生成 3MF、COLLADA 或 FBX 文件，也不会读取其中的贴图和动画。3MF 和 COLLADA 文件的 XML（解压后）最多 100 MB，FBX 文件须为 7.0 或更高版本。"
       }
     },
     "image-to-lithophane": {
@@ -2484,7 +2488,7 @@
       "ply": "PLY",
       "glb": "GLB（二进制 glTF）"
     },
-    "note": "保留几何形状，在 PLY 和 GLB 中还保留顶点颜色；STL 和 OBJ 不保存材质。每个模型最多 {max} 个三角形。在你的设备上处理。",
+    "note": "保留几何形状，在 PLY 和 GLB 中还保留顶点颜色；STL 和 OBJ 不保存材质；3MF、COLLADA 和 FBX 只读取几何形状及其颜色，不含贴图。每个模型最多 {max} 个三角形。在你的设备上处理。",
     "done": "{triangles} 个三角形。"
   },
   "ModelViewer": {

@@ -1051,7 +1051,7 @@ export const tools: Record<ToolId, ToolInfo> = {
   "model-converter": {
     id: "model-converter",
     category: "3d",
-    inputs: ["stl", "obj", "ply", "glb", "gltf"],
+    inputs: ["stl", "obj", "ply", "glb", "gltf", "3mf", "dae", "fbx"],
     outputs: ["stl", "obj", "ply", "glb"],
     engine: "browser",
     libraries: ["three"],

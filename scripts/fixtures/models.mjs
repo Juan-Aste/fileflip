@@ -117,3 +117,125 @@ const sharp = (await import("sharp")).default;
 const bands = Buffer.alloc(120 * 60 * 3);
 for (let y = 0; y < 60; y++) for (let x = 0; x < 120; x++) bands.fill(x < 40 ? 0 : x < 80 ? 128 : 255, (y * 120 + x) * 3, (y * 120 + x) * 3 + 3);
 await sharp(bands, { raw: { width: 120, height: 60, channels: 3 } }).png().toFile(join(dir, "lithophane-bands.png"));
+
+// --- Read-only inputs: 3MF, COLLADA and FBX (3C.40b) ---
+const { zipSync, strToU8 } = await import("fflate");
+
+// 3MF: the cube as object 1, object 2 made of two copies of it (components, the second moved 20 mm on X),
+// placed by the build item: 24 triangles, box 0..30 × 0..10 × 0..10.
+const model3mf = `<?xml version="1.0" encoding="UTF-8"?>
+<model unit="millimeter" xml:lang="en-US" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02">
+ <metadata name="Title">Fileflect test cubes</metadata>
+ <resources>
+  <object id="1" type="model">
+   <mesh>
+    <vertices>
+${C.map(([x, y, z]) => `     <vertex x="${x}" y="${y}" z="${z}" />`).join("\n")}
+    </vertices>
+    <triangles>
+${cubeFaces.map(([a, b, c]) => `     <triangle v1="${a}" v2="${b}" v3="${c}" />`).join("\n")}
+    </triangles>
+   </mesh>
+  </object>
+  <object id="2" type="model">
+   <components>
+    <component objectid="1" />
+    <component objectid="1" transform="1 0 0 0 1 0 0 0 1 20 0 0" />
+   </components>
+  </object>
+ </resources>
+ <build>
+  <item objectid="2" />
+ </build>
+</model>
+`;
+const contentTypes = `<?xml version="1.0" encoding="UTF-8"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml" /><Default Extension="model" ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml" /></Types>
+`;
+const rels = `<?xml version="1.0" encoding="UTF-8"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Target="/3D/3dmodel.model" Id="rel0" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel" /></Relationships>
+`;
+const package3mf = (model) => Buffer.from(zipSync({ "[Content_Types].xml": strToU8(contentTypes), "_rels/.rels": strToU8(rels), "3D/3dmodel.model": strToU8(model) }, { level: 6 }));
+const cubes3mf = package3mf(model3mf);
+writeFileSync(join(dir, "cubes.3mf"), cubes3mf);
+writeFileSync(join(corrupt, "truncated.3mf"), cubes3mf.subarray(0, Math.floor(cubes3mf.length * 0.6)));
+writeFileSync(join(corrupt, "entity.3mf"), package3mf(model3mf.replace("<model ", `<!DOCTYPE model [<!ENTITY x "${"x".repeat(10)}">]>\n<model `)));
+writeFileSync(join(corrupt, "no-model.3mf"), Buffer.from(zipSync({ "[Content_Types].xml": strToU8(contentTypes), "readme.txt": strToU8("No 3D model part here.\n") })));
+
+// COLLADA: the tetrahedron with its corner colors, its node moved 5 units up (Y up): box 0..30 × 5..35 × 0..30.
+const dae = `<?xml version="1.0" encoding="utf-8"?>
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset><contributor><authoring_tool>Fileflect test fixtures</authoring_tool></contributor><unit name="meter" meter="1"/><up_axis>Y_UP</up_axis></asset>
+  <library_geometries>
+    <geometry id="tetra-mesh" name="tetra">
+      <mesh>
+        <source id="tetra-positions">
+          <float_array id="tetra-positions-array" count="12">${T.flat().join(" ")}</float_array>
+          <technique_common><accessor source="#tetra-positions-array" count="4" stride="3"><param name="X" type="float"/><param name="Y" type="float"/><param name="Z" type="float"/></accessor></technique_common>
+        </source>
+        <source id="tetra-colors">
+          <float_array id="tetra-colors-array" count="12">${colors.flat().map((v) => v / 255).join(" ")}</float_array>
+          <technique_common><accessor source="#tetra-colors-array" count="4" stride="3"><param name="R" type="float"/><param name="G" type="float"/><param name="B" type="float"/></accessor></technique_common>
+        </source>
+        <vertices id="tetra-vertices"><input semantic="POSITION" source="#tetra-positions"/></vertices>
+        <triangles count="4">
+          <input semantic="VERTEX" source="#tetra-vertices" offset="0"/>
+          <input semantic="COLOR" source="#tetra-colors" offset="1"/>
+          <p>${tetraFaces.flat().map((v) => `${v} ${v}`).join(" ")}</p>
+        </triangles>
+      </mesh>
+    </geometry>
+  </library_geometries>
+  <library_visual_scenes>
+    <visual_scene id="scene" name="scene">
+      <node id="tetra-node" name="tetra"><translate>0 5 0</translate><instance_geometry url="#tetra-mesh"/></node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene><instance_visual_scene url="#scene"/></scene>
+</COLLADA>
+`;
+writeFileSync(join(dir, "tetra.dae"), dae);
+writeFileSync(join(corrupt, "entity.dae"), dae.replace("<COLLADA ", `<!DOCTYPE COLLADA [<!ENTITY x SYSTEM "file:///etc/passwd">]>\n<COLLADA `));
+writeFileSync(join(corrupt, "not-collada.dae"), "<html><body>Not a COLLADA file.</body></html>\n");
+
+// FBX 7.4 ASCII: the pyramid (a quad base and four triangles; the last index of each polygon is stored as -(i + 1)).
+const pyramid = [[0, 0, 0], [20, 0, 0], [20, 0, 20], [0, 0, 20], [10, 15, 10]];
+const polys = [[0, 1, 2, 3], [0, 4, 1], [1, 4, 2], [2, 4, 3], [3, 4, 0]];
+const fbx = `; FBX 7.4.0 project file
+; Fileflect test pyramid
+FBXHeaderExtension:  {
+	FBXHeaderVersion: 1003
+	FBXVersion: 7400
+}
+GlobalSettings:  {
+	Version: 1000
+	Properties70:  {
+		P: "UpAxis", "int", "Integer", "",1
+		P: "UpAxisSign", "int", "Integer", "",1
+		P: "UnitScaleFactor", "double", "Number", "",1
+	}
+}
+Objects:  {
+	Geometry: 1000, "Geometry::pyramid", "Mesh" {
+		Vertices: *${pyramid.length * 3} {
+			a: ${pyramid.flat().join(",")}
+		}
+		PolygonVertexIndex: *${polys.flat().length} {
+			a: ${polys.map((p) => p.map((v, i) => (i === p.length - 1 ? -(v + 1) : v)).join(",")).join(",")}
+		}
+		GeometryVersion: 124
+	}
+	Model: 2000, "Model::pyramid", "Mesh" {
+		Version: 232
+		Properties70:  {
+		}
+	}
+}
+Connections:  {
+	C: "OO",2000,0
+	C: "OO",1000,2000
+}
+`;
+writeFileSync(join(dir, "pyramid.fbx"), fbx);
+writeFileSync(join(corrupt, "old-version.fbx"), fbx.replace("FBXVersion: 7400", "FBXVersion: 6100").replace("FBX 7.4.0", "FBX 6.1.0"));
+writeFileSync(join(corrupt, "truncated.fbx"), Buffer.concat([Buffer.from("Kaydara FBX Binary  \0\x1a\0", "latin1"), Buffer.from([0xe8, 0x1c, 0, 0]), Buffer.alloc(40, 7)]));

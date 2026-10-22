@@ -68,7 +68,28 @@ function readPly(buf: Buffer): Mesh {
   return { triangles: faces, vertices, box: box(points), ...(colors.length ? { colors } : {}) };
 }
 
-/** GLB: header, JSON chunk, BIN chunk; positions from the accessors' bounds, colors from COLOR_0. */
+type Mat = number[]; // 4×4, column-major like glTF
+const multiply = (a: Mat, b: Mat): Mat => Array.from({ length: 16 }, (_, i) => [0, 1, 2, 3].reduce((sum, k) => sum + a[k * 4 + (i % 4)]! * b[(i >> 2) * 4 + k]!, 0));
+/** A node's local matrix: `matrix`, or translation × rotation (quaternion) × scale. */
+function localMatrix(node: { matrix?: Mat; translation?: number[]; rotation?: number[]; scale?: number[] }): Mat {
+  if (node.matrix) return node.matrix;
+  const [x, y, z, w] = node.rotation ?? [0, 0, 0, 1];
+  const [sx, sy, sz] = node.scale ?? [1, 1, 1];
+  const [tx, ty, tz] = node.translation ?? [0, 0, 0];
+  return [
+    (1 - 2 * (y! * y! + z! * z!)) * sx!, 2 * (x! * y! + z! * w!) * sx!, 2 * (x! * z! - y! * w!) * sx!, 0,
+    2 * (x! * y! - z! * w!) * sy!, (1 - 2 * (x! * x! + z! * z!)) * sy!, 2 * (y! * z! + x! * w!) * sy!, 0,
+    2 * (x! * z! + y! * w!) * sz!, 2 * (y! * z! - x! * w!) * sz!, (1 - 2 * (x! * x! + y! * y!)) * sz!, 0,
+    tx!, ty!, tz!, 1,
+  ];
+}
+const apply = (m: Mat, [x, y, z]: number[]) => [0, 1, 2].map((r) => m[r]! * x! + m[4 + r]! * y! + m[8 + r]! * z! + m[12 + r]!);
+
+/**
+ * GLB: header, JSON chunk, BIN chunk. Walks the scene's nodes (a mesh used by two
+ * nodes counts twice); the box comes from the accessors' bounds moved by each
+ * node's world matrix, colors from COLOR_0.
+ */
 function readGlb(buf: Buffer): Mesh {
   expect(buf.readUInt32LE(0), "glTF magic").toBe(0x46546c67);
   expect(buf.readUInt32LE(4), "glTF version").toBe(2);
@@ -82,29 +103,36 @@ function readGlb(buf: Buffer): Mesh {
   let vertices = 0;
   const corners: number[][] = [];
   let colors: number[][] | undefined;
-  for (const mesh of json.meshes) {
-    for (const prim of mesh.primitives) {
-      const pos = json.accessors[prim.attributes.POSITION];
-      vertices += pos.count;
-      corners.push(pos.min, pos.max);
-      triangles += (prim.indices !== undefined ? json.accessors[prim.indices].count : pos.count) / 3;
-      if (prim.attributes.COLOR_0 !== undefined) {
-        const acc = json.accessors[prim.attributes.COLOR_0];
-        const view = json.bufferViews[acc.bufferView];
-        // Float, or normalized unsigned byte/short.
-        const [bytes, read] = ({
-          5126: [4, (o: number) => buf.readFloatLE(o)],
-          5121: [1, (o: number) => buf.readUInt8(o) / 255],
-          5123: [2, (o: number) => buf.readUInt16LE(o) / 65535],
-        } as Record<number, [number, (o: number) => number]>)[acc.componentType]!;
-        if (acc.componentType !== 5126) expect(acc.normalized, "normalized colors").toBe(true);
-        const width = acc.type === "VEC4" ? 4 : 3;
-        const start = binStart + (view.byteOffset ?? 0) + (acc.byteOffset ?? 0);
-        const stride = view.byteStride ?? width * bytes;
-        colors = Array.from({ length: acc.count }, (_, i) => [0, 1, 2].map((c) => round(read(start + i * stride + c * bytes))));
+  const visit = (index: number, parent: Mat) => {
+    const node = json.nodes[index];
+    const world = multiply(parent, localMatrix(node));
+    if (node.mesh !== undefined) {
+      for (const prim of json.meshes[node.mesh].primitives) {
+        const pos = json.accessors[prim.attributes.POSITION];
+        vertices += pos.count;
+        for (let c = 0; c < 8; c++) corners.push(apply(world, [0, 1, 2].map((a) => ((c >> a) & 1 ? pos.max : pos.min)[a])));
+        triangles += (prim.indices !== undefined ? json.accessors[prim.indices].count : pos.count) / 3;
+        if (prim.attributes.COLOR_0 !== undefined) {
+          const acc = json.accessors[prim.attributes.COLOR_0];
+          const view = json.bufferViews[acc.bufferView];
+          // Float, or normalized unsigned byte/short.
+          const [bytes, read] = ({
+            5126: [4, (o: number) => buf.readFloatLE(o)],
+            5121: [1, (o: number) => buf.readUInt8(o) / 255],
+            5123: [2, (o: number) => buf.readUInt16LE(o) / 65535],
+          } as Record<number, [number, (o: number) => number]>)[acc.componentType]!;
+          if (acc.componentType !== 5126) expect(acc.normalized, "normalized colors").toBe(true);
+          const width = acc.type === "VEC4" ? 4 : 3;
+          const start = binStart + (view.byteOffset ?? 0) + (acc.byteOffset ?? 0);
+          const stride = view.byteStride ?? width * bytes;
+          colors = Array.from({ length: acc.count }, (_, i) => [0, 1, 2].map((c) => round(read(start + i * stride + c * bytes))));
+        }
       }
     }
-  }
+    for (const child of node.children ?? []) visit(child, world);
+  };
+  const identity = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+  for (const root of json.scenes[json.scene ?? 0].nodes) visit(root, identity);
   return { triangles, vertices, box: box(corners), ...(colors ? { colors } : {}) };
 }
 
@@ -173,6 +201,65 @@ test.describe("tool: model-converter", () => {
     await expect(main).toContainText("comprimido con Draco");
     await expect(main).toContainText("nube de puntos");
     await expect(main).toContainText("no se puede convertir");
+  });
+});
+
+test.describe("tool: model-converter (read-only 3MF, COLLADA and FBX)", () => {
+  test("3MF, COLLADA and FBX → STL, PLY and GLB: parts, positions and colors read in the worker", async ({ page }) => {
+    await openWithFiles(page, "/en/3d-model-converter", ["cubes.3mf", "tetra.dae", "pyramid.fbx"]);
+    await page.getByText("GLB (binary glTF)", { exact: true }).click();
+    await page.getByRole("button", { name: "Convert model", exact: true }).click();
+    await expect(page.locator("main").getByText("24 triangles.")).toBeVisible({ timeout: 30_000 });
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Download all/ }).click()]);
+    const entries = unzipEntries(readFileSync((await download.path())!));
+    expect(entries.map((e) => e.name).sort()).toEqual(["cubes.glb", "pyramid.glb", "tetra.glb"]);
+    const glb = Object.fromEntries(entries.map((e) => [e.name, readGlb(e.data)]));
+    // Two copies of the cube, the second moved 20 mm on X by its component transform.
+    expect(glb["cubes.glb"]).toMatchObject({ triangles: 24, box: [0, 0, 0, 30, 10, 10] });
+    // The COLLADA node is moved 5 up; its corner colors come through.
+    expect(glb["tetra.glb"]).toMatchObject({ triangles: 4, box: [0, 5, 0, 30, 35, 30] });
+    expect(new Set(glb["tetra.glb"]!.colors!.map((c) => c.join()))).toEqual(new Set(TETRA_COLORS.map((c) => c.join())));
+    expect(glb["pyramid.glb"]).toMatchObject({ triangles: 6, box: PYRAMID });
+
+    await page.getByRole("button", { name: "Start over" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(`${__dirname}/../fixtures/cubes.3mf`);
+    await page.getByText("STL", { exact: true }).click();
+    const stl = fileOf(await runTool(page, "Convert model"));
+    expect(stl.name).toBe("cubes.stl");
+    expect(readStl(stl.buf)).toMatchObject({ triangles: 24, box: [0, 0, 0, 30, 10, 10] });
+
+    await page.getByRole("button", { name: "Start over" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(`${__dirname}/../fixtures/tetra.dae`);
+    await page.getByText("PLY", { exact: true }).click();
+    const ply = fileOf(await runTool(page, "Convert model"));
+    const mesh = readPly(ply.buf);
+    expect(mesh).toMatchObject({ triangles: 4, box: [0, 5, 0, 30, 35, 30] });
+    expect(new Set(mesh.colors!.map((c) => c.join()))).toEqual(new Set(TETRA_COLORS.map((c) => c.join())));
+  });
+
+  test("the preview reads 3MF on the page too", async ({ page }) => {
+    await openWithFiles(page, "/en/3d-model-converter", ["cubes.3mf"]);
+    await expect(page.locator("main").getByText("cubes.3mf: 24 triangles · 30 × 10 × 10 (width × height × depth, in the file's units).")).toBeVisible({ timeout: 20_000 });
+  });
+
+  test("damaged, foreign, old and entity-declaring files fail with clear messages", async ({ page }) => {
+    await openWithFiles(page, "/es/convertir-modelo-3d", [
+      "pyramid.fbx",
+      "corrupt/truncated.3mf",
+      "corrupt/no-model.3mf",
+      "corrupt/entity.3mf",
+      "corrupt/entity.dae",
+      "corrupt/not-collada.dae",
+      "corrupt/old-version.fbx",
+      "corrupt/truncated.fbx",
+    ]);
+    await page.getByRole("button", { name: "Convertir modelo", exact: true }).click();
+    const main = page.locator("main");
+    await expect(main.getByText("6 triángulos.")).toBeVisible({ timeout: 30_000 });
+    await expect(main.getByText("dañado o incompleto")).toHaveCount(2);
+    await expect(main.getByText("declara entidades")).toHaveCount(2);
+    await expect(main.getByText("anterior a la 7.0")).toHaveCount(1);
+    await expect(main.getByText("no se puede convertir")).toHaveCount(2);
   });
 });
 

@@ -2560,3 +2560,23 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - En esta ejecución no hubo Gotenberg ni EPUBCheck (4 pruebas de navegador saltadas); ffmpeg/ffprobe y lectores propios validaron todas las salidas. `npm run test:e2e` 308/308 al cierre.
 
 **Siguiente**: 3C.40b (entradas 3MF, COLLADA y FBX; ver la nota sobre `DOMParser` en el PLAN).
+
+## 2026-10-22 10:35 UTC — Fase 3, tarea 3C.40b (entradas 3MF, COLLADA y FBX) — 3C.40 TERMINADA
+
+**Qué se hizo**
+- "Convertir modelo 3D" ahora **lee 3MF, COLLADA (.dae) y FBX 7.x (binario y ASCII)** y los guarda como STL, OBJ, PLY o GLB. Son **solo entrada**: no se anuncia ninguna salida 3MF/DAE/FBX (`readOnlyModelInputs` en `options.ts`). Formatos nuevos `3mf`, `dae`, `fbx` en `formats.ts` y en las entradas del registro; la vista previa 3D también los muestra.
+- **Decisión sobre el DOM**: `3MFLoader` y `ColladaLoader` de three.js usan `DOMParser`/`querySelector`, que no existen en los workers. Se eligió **dar un `DOMParser` al worker con linkedom 0.18.14 (ISC)** en lugar de parsear en el hilo principal (que trabaría la página): se instala en `globalThis` solo si falta y solo al abrir un 3MF o un DAE (import diferido; los loaders nuevos también se importan de forma diferida). Probado en Node (tests) y en Chromium (worker). En el hilo principal (visor) se usa el `DOMParser` nativo. Los `require` opcionales de `canvas` y `cssstyle` de linkedom (dentro de try/catch, con respaldo propio) se ignoran en `next.config.ts` para que el build no tenga avisos.
+- **Seguridad**: el 3MF (un ZIP) se descomprime primero con el extractor protegido de 3C.29 (`extractArchive`, que cuenta bytes al inflar) con tope de **100 MB de XML** (`MAX_XML_MODEL_BYTES`) y 2000 entradas, antes de que el `unzipSync` de three lo haga; sin `_rels/.rels` o sin parte `.model` → formato no admitido. 3MF y DAE con `<!ENTITY` → `xmlEntitiesBlocked` (XXE y "billion laughs"); DAE de más de 100 MB → `modelXmlTooLarge` (un DOM ocupa muchas veces el texto). **Texturas ignoradas** en estos tres formatos: durante el parse (síncrono) `TextureLoader.prototype.load` devuelve una textura vacía y libera las `blob:` que crean los loaders, y un `LoadingManager` responde cualquier otro pedido con `data:,` (un DAE o FBX nunca pide archivos a la red). FBX anterior a 7.0 → `modelFbxVersion`. 2 códigos de error nuevos en los 5 idiomas.
+- **Coordenadas como están guardadas** (convención de 3C.39a): ColladaLoader y FBXLoader rotan los archivos Z-arriba y escalan las unidades a metros; se deshace en la raíz (`asStored`).
+- Textos: descripción, introducción, nota y una pregunta frecuente nueva (q5) en los 5 idiomas. linkedom y sus dependencias anotadas en `docs/dependencies.md`.
+- Fixtures en `scripts/fixtures/models.mjs` (escritos a mano, sin three): `cubes.3mf` (componentes con transformación), `tetra.dae` (colores por vértice, nodo trasladado), `pyramid.fbx` (FBX 7.4 ASCII con un cuadrilátero); corruptos: 3MF cortado, 3MF con entidad, ZIP sin modelo, DAE con XXE, HTML como .dae, FBX 6.1 y FBX binario basura (todos < 2 KB).
+
+**Verificación**
+- `convert.test.ts` (+6, 10 en total): 24 triángulos y caja 0..30 del 3MF; DAE con 4 triángulos, colores y caja 0..30 × 5..35 × 0..30, igual con `Z_UP` y `meter="0.01"` (coordenadas sin tocar); FBX con 6 triángulos; códigos de cada corrupto; **zip bomb** (3MF de < 1 MB que se infla a 101 MB) → `modelXmlTooLarge` sin que three lo descomprima; 3MF → STL (24), DAE → PLY con colores, FBX → OBJ (6 caras).
+- `model-tools.spec.ts` (+3, en Chromium con el worker real): 3MF, DAE y FBX → GLB leídos con el lector GLB propio, que ahora **recorre los nodos y aplica sus matrices** (el exportador reutiliza una sola malla en dos nodos para las dos copias del cubo): 24/4/6 triángulos, cajas correctas y los 4 colores del tetraedro; 3MF → STL y DAE → PLY con colores; la vista previa del 3MF dice "24 triangles · 30 × 10 × 10"; los 7 corruptos muestran su mensaje (2 dañados, 2 con entidades, 1 versión FBX, 2 no admitidos) mientras el FBX bueno se convierte. Sin llamadas al servidor.
+- Lint, typecheck, tests (943 + 8 saltados), build sin avisos, `check:static` (982 páginas) y `model-tools.spec.ts` completo (10/10).
+
+**Limitaciones**
+- Sin texturas, animaciones ni huesos de 3MF/DAE/FBX (solo geometría, piezas, posiciones y colores por vértice; los colores de material del 3MF solo sobreviven en GLB). FBX 6.x y anteriores no se leen. 3MF y COLLADA hasta 100 MB de XML.
+
+**Siguiente**: 3C.41 (DXF → SVG/PNG/PDF).

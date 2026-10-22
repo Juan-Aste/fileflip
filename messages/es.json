@@ -231,7 +231,9 @@
     "modelEmpty": "Este modelo no tiene caras (triángulos) que convertir: puede estar vacío o ser una nube de puntos.",
     "modelTooLarge": "El modelo es demasiado grande: el máximo es de 3 millones de triángulos.",
     "modelExternalFiles": "Este glTF usa archivos aparte (.bin o texturas) que no se subieron. Conviértelo primero a GLB (un solo archivo) en tu programa 3D, o usa un .gltf con todo incluido.",
-    "modelCompressed": "Este glTF está comprimido con Draco, meshopt o KTX2, que todavía no podemos leer. Expórtalo sin compresión."
+    "modelCompressed": "Este glTF está comprimido con Draco, meshopt o KTX2, que todavía no podemos leer. Expórtalo sin compresión.",
+    "modelXmlTooLarge": "Este archivo 3MF o COLLADA es demasiado grande para leerlo en el navegador: el máximo es de 100 MB de XML (descomprimido).",
+    "modelFbxVersion": "Este FBX es de una versión anterior a la 7.0 (2011), que no podemos leer. Vuelve a exportarlo como FBX 7.x (binario o ASCII)."
   },
   "Tools": {
     "merge-pdf": {
@@ -1396,9 +1398,9 @@
     },
     "model-converter": {
       "title": "Convertir modelo 3D",
-      "description": "Convierte modelos 3D entre STL, OBJ, PLY y GLB (glTF) en tu navegador, sin instalar nada.",
+      "description": "Convierte modelos 3D (STL, OBJ, PLY, GLB, glTF, 3MF, COLLADA y FBX) a STL, OBJ, PLY o GLB en tu navegador, sin instalar nada.",
       "action": "Convertir modelo",
-      "about": "Pasa un modelo de un formato a otro para imprimirlo en 3D, abrirlo en otro programa o publicarlo en la web: STL para impresoras y laminadores, OBJ y PLY para editores y escáneres, y GLB (glTF binario) para la web, la realidad aumentada y los motores de juegos. Lee STL (binario y ASCII), OBJ, PLY, GLB y glTF con todo incluido, y conserva la geometría, las posiciones de cada pieza y, cuando el formato de salida lo admite (PLY y GLB), los colores por vértice. Puedes convertir varios archivos a la vez. Todo pasa en tu dispositivo: los modelos no se suben a ningún servidor.",
+      "about": "Pasa un modelo de un formato a otro para imprimirlo en 3D, abrirlo en otro programa o publicarlo en la web: STL para impresoras y laminadores, OBJ y PLY para editores y escáneres, y GLB (glTF binario) para la web, la realidad aumentada y los motores de juegos. Lee STL (binario y ASCII), OBJ, PLY, GLB, glTF con todo incluido, 3MF, COLLADA (.dae) y FBX 7.x (binario y ASCII), y conserva la geometría, las posiciones de cada pieza y, cuando el formato de salida lo admite (PLY y GLB), los colores por vértice. Puedes convertir varios archivos a la vez. Todo pasa en tu dispositivo: los modelos no se suben a ningún servidor.",
       "faq": {
         "q1": "¿Se conservan los materiales y las texturas?",
         "a1": "Se conservan la forma y, en PLY y GLB, los colores por vértice. STL no guarda colores ni materiales, y el OBJ se genera sin archivo .mtl, así que las texturas y los materiales se pierden en esas salidas. De GLB a GLB se mantienen los materiales.",
@@ -1407,7 +1409,9 @@
         "q3": "Mi .gltf da error por archivos aparte, ¿qué hago?",
         "a3": "Un .gltf puede depender de un .bin y de imágenes externas, que no podemos pedir. Expórtalo como GLB (un solo archivo) o como glTF con todo incluido. Los glTF comprimidos con Draco o meshopt todavía no se pueden leer.",
         "q4": "¿Hay algún límite?",
-        "a4": "Hasta 200 MB y 3 millones de triángulos por modelo, y 5 minutos de proceso por archivo. Las nubes de puntos (PLY sin caras) no se pueden convertir a mallas."
+        "a4": "Hasta 200 MB y 3 millones de triángulos por modelo, y 5 minutos de proceso por archivo. Las nubes de puntos (PLY sin caras) no se pueden convertir a mallas.",
+        "q5": "¿Puedo convertir archivos 3MF, COLLADA o FBX?",
+        "a5": "Sí, como archivos de entrada: se leen su geometría, las piezas y sus posiciones (y los colores por vértice de COLLADA y FBX) y se guardan como STL, OBJ, PLY o GLB. No se generan archivos 3MF, COLLADA ni FBX, y sus texturas y animaciones no se leen. Los 3MF y COLLADA admiten hasta 100 MB de XML (descomprimido) y los FBX deben ser de la versión 7.0 o posterior."
       }
     },
     "image-to-lithophane": {
@@ -2484,7 +2488,7 @@
       "ply": "PLY",
       "glb": "GLB (glTF binario)"
     },
-    "note": "Se conservan la geometría y, en PLY y GLB, los colores por vértice; STL y OBJ no guardan materiales. Hasta {max} triángulos por modelo. Se procesa en tu dispositivo.",
+    "note": "Se conservan la geometría y, en PLY y GLB, los colores por vértice; STL y OBJ no guardan materiales; de 3MF, COLLADA y FBX solo se lee la geometría y sus colores, sin texturas. Hasta {max} triángulos por modelo. Se procesa en tu dispositivo.",
     "done": "{triangles} triángulos."
   },
   "ModelViewer": {

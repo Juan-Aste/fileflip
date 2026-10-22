@@ -31,6 +31,9 @@ const nextConfig: NextConfig = {
     // The Emscripten loaders of qpdf and libarchive require fs/path/crypto only when they run in
     // Node; the browser branch never reaches them.
     config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^(fs|path|crypto)$/, contextRegExp: /qpdf-wasm|libarchive-wasm/ }));
+    // linkedom (and its CSSOM) try optional `require("canvas")` / `require("cssstyle")` inside
+    // try/catch and fall back to shims; the DOM it gives the 3D worker never draws or styles.
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^(canvas|cssstyle)$/, contextRegExp: /linkedom|@acemir[\\/]cssom/ }));
     return config;
   },
 };
