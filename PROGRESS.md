@@ -606,6 +606,8 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
   - MOBI/AZW (solo con Calibre, GPL-3.0) y DWG (LibreDWG GPL-3.0 u ODA comercial): descartados salvo que el dueño decida otra cosa.
   - "Convertir audio" incluye LAME (MP3) y el codificador AAC de FFmpeg, ambos **LGPL**, compilados a WASM en las extensiones de mediabunny sin modificar: conviene una página de créditos/licencias con enlaces a su código fuente (LAME pide un enlace a lame.sourceforge.io).
 
+- **Foto carnet (3C.42)**: no se encontraron fuentes oficiales fiables de las medidas por país; la herramienta usa medidas habituales y pide confirmar con la oficina. Si se quieren presets por país (AR, BR, MX, CL, CO, PE, UY), validar cada medida con el organismo correspondiente.
+
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
 - No quedan tareas sin marcar en PLAN.md y la especificación no tiene puntos sin cubrir. Verificado: `npm ci`, `npm run lint`, `npm run build` y `npm test` (40 archivos, 231 tests) pasan en `dev`.
 - Se avisó al dueño que la rutina horaria ya no tiene trabajo y conviene pausarla. Las próximas ejecuciones que encuentren el mismo estado no deben volver a notificar.
@@ -2619,3 +2621,21 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - PDF ajustado a la página (sin escala 1:1 ni varias páginas); PNG hasta 4000 px. Lo demás como en 3C.41a.
 
 **Siguiente**: 3C.42 (foto carnet por país).
+
+## 2026-10-22 11:25 UTC — Fase 3, tarea 3C.42 (foto carnet)
+
+**Qué se hizo**
+- **Foto carnet** (`/es/foto-carnet`, `/en/id-photo-maker`, `/pt/foto-3x4`, `/fr/photo-identite`), categoría Imágenes: una foto (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF o HEIC, hasta 50 MB) → **dos JPG**: la foto sola a **600 ppp** y una **hoja de 10 × 15 cm (4 × 6 in) a 300 ppp** con todas las copias que entran (orientación elegida automáticamente), separación de 2 mm, margen de 3 mm y líneas grises de corte. La resolución se escribe en el encabezado JFIF (`setJpegDpi`), así "tamaño real" imprime a la medida.
+- Medidas: **3 × 4 cm** (9 copias), **4 × 4 cm** (6), **3,5 × 4,5 cm** pasaporte OACI (8), **2,5 × 3 cm** "tamaño infantil" (15) y **2 × 2 in** EE. UU. (2). Encuadre con el `CropEditor` del recorte (proporción fija, arrastre, esquinas, teclado y campos exactos), que ahora acepta una guía propia: **óvalo de cabeza** (de la coronilla al 12 % hasta la barbilla, ~72 % de la altura, el medio del 70–80 % que piden los pasaportes), línea de ojos y eje central, con contorno oscuro para verse en cualquier foto. Aviso si la zona encuadrada tiene menos de 300 ppp. Transparencias → blanco. Procesado en el worker de imágenes existente (`idPhoto`).
+- **Decisión sobre "tamaños oficiales por país"**: se buscaron fuentes (WebSearch) y solo aparecen sitios comerciales, a veces contradictorios; además varios documentos (pasaporte mexicano desde 2018, DNI argentino, cédulas) ya se fotografían en la oficina. Para no prometer medidas "oficiales" sin respaldo, la herramienta ofrece **medidas habituales con sus usos típicos** (Brasil RG/CNH 3 × 4; Argentina 4 × 4; pasaporte/visa OACI 3,5 × 4,5; México infantil 2,5 × 3; EE. UU. 2 × 2 in) y dice siempre "confírmala con la oficina". Perú y Uruguay no tienen preset propio (sin dato fiable). Anotado en "Pendiente del dueño".
+- Textos (introducción + 5 preguntas: medida, cómo tomar la foto, cómo imprimir, sin retoque de fondo, límites) e interfaz en los 5 idiomas; ícono `SquareUser`.
+
+**Verificación**
+- `id-photo.test.ts` (4): cantidad de copias por medida, todas dentro del margen y a ≥ 2 mm entre sí; píxeles a 600 ppp; `setJpegDpi` escribe 600 ppp en JFIF y no toca otros archivos.
+- `image-tools.spec.ts` (+2, Chromium; salida leída con sharp): imagen mitad roja/mitad azul de 1000 px → recuadro centrado 778 × 1000; foto **827 × 1063 px, densidad 600**, izquierda roja y derecha azul; hoja **1800 × 1200 px, densidad 300**, las 8 copias en su posición exacta (mitad roja y mitad azul cada una) y margen blanco; con 3 × 4 y una imagen de 200 px → 709 × 945 px, aviso de baja resolución y 9 copias; PNG cortado → "dañado o incompleto". Las 3 pruebas de "Recortar imagen" siguen pasando. Captura revisada.
+- Lint, typecheck, tests (960 + 8 saltados), build y `check:static` (997 páginas).
+
+**Limitaciones**
+- No quita ni cambia el fondo (3C.44) ni detecta la cara: el encuadre es manual con la guía. Hoja solo de 10 × 15 cm (sin A4).
+
+**Siguiente**: 3C.43 (escanear documento desde el celular).

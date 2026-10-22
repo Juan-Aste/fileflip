@@ -11,6 +11,7 @@ import {
   type CompressionLevel,
 } from "@/lib/image/compress";
 import { isValidCrop, type Rect } from "@/lib/image/crop-rect";
+import { ID_PHOTO_DPI, ID_SHEET_DPI, idPhotoPresets, mmToPx, photoPixels, setJpegDpi, sheetLayout, type IdPhotoPreset } from "@/lib/image/id-photo";
 import { decodeImage } from "@/lib/image/decode";
 import {
   FAVICON_MASTER,
@@ -453,4 +454,68 @@ async function favicon({ input, fit, background, appName }: FaviconArgs, onProgr
   return { result, transfer: files.map((f) => f.buffer) };
 }
 
-exposeHandlers({ compress, resize, transform, strip, preview, crop, overlay, favicon });
+export interface IdPhotoArgs {
+  input: Blob;
+  from: FormatId;
+  /** The framed area, in pixels of the decoded image, with the preset's proportions. */
+  rect: Rect;
+  preset: IdPhotoPreset;
+}
+
+export interface IdPhotoResult {
+  /** The photo at ID_PHOTO_DPI and the 10 × 15 cm sheet at ID_SHEET_DPI, both JPEG with that resolution in their header. */
+  photo: ArrayBuffer;
+  sheet: ArrayBuffer;
+  width: number;
+  height: number;
+  copies: number;
+  /** The framed area has fewer pixels than the print needs at 300 dpi: it will look soft. */
+  lowResolution: boolean;
+}
+
+async function idPhoto({ input, from, rect, preset }: IdPhotoArgs, onProgress: (progress: number) => void) {
+  const image = await decode(await input.arrayBuffer(), from);
+  if (!isValidCrop(rect, image)) throw new ConversionError("invalidRequest");
+  onProgress(0.3);
+  const size = photoPixels(preset);
+  const source = await createImageBitmap(new ImageData(new Uint8ClampedArray(image.data), image.width, image.height));
+  const photoCanvas = new OffscreenCanvas(size.width, size.height);
+  const pc = photoCanvas.getContext("2d")!;
+  pc.imageSmoothingQuality = "high";
+  // White behind transparent areas: documents want a light, even background.
+  pc.fillStyle = "#ffffff";
+  pc.fillRect(0, 0, size.width, size.height);
+  pc.drawImage(source, rect.x, rect.y, rect.width, rect.height, 0, 0, size.width, size.height);
+  source.close();
+  const photo = setJpegDpi(new Uint8Array(await encode(pc.getImageData(0, 0, size.width, size.height), "jpg", KEEP_QUALITY)), ID_PHOTO_DPI);
+  onProgress(0.6);
+
+  const layout = sheetLayout(preset);
+  const sheetCanvas = new OffscreenCanvas(mmToPx(layout.width, ID_SHEET_DPI), mmToPx(layout.height, ID_SHEET_DPI));
+  const sc = sheetCanvas.getContext("2d")!;
+  sc.imageSmoothingQuality = "high";
+  sc.fillStyle = "#ffffff";
+  sc.fillRect(0, 0, sheetCanvas.width, sheetCanvas.height);
+  const { width: wMm, height: hMm } = idPhotoPresets[preset];
+  const [w, h] = [mmToPx(wMm, ID_SHEET_DPI), mmToPx(hMm, ID_SHEET_DPI)];
+  // Thin grey outlines just outside each copy, to cut along.
+  sc.strokeStyle = "#bdbdbd";
+  sc.lineWidth = 1;
+  for (const c of layout.copies) {
+    const [x, y] = [mmToPx(c.x, ID_SHEET_DPI), mmToPx(c.y, ID_SHEET_DPI)];
+    sc.drawImage(photoCanvas, x, y, w, h);
+    sc.strokeRect(x - 1.5, y - 1.5, w + 3, h + 3);
+  }
+  const sheet = setJpegDpi(new Uint8Array(await encode(sc.getImageData(0, 0, sheetCanvas.width, sheetCanvas.height), "jpg", KEEP_QUALITY)), ID_SHEET_DPI);
+  onProgress(1);
+  const result: IdPhotoResult = {
+    photo: photo.buffer as ArrayBuffer,
+    sheet: sheet.buffer as ArrayBuffer,
+    ...size,
+    copies: layout.copies.length,
+    lowResolution: rect.width < mmToPx(wMm, 300) || rect.height < mmToPx(hMm, 300),
+  };
+  return { result, transfer: [result.photo, result.sheet] };
+}
+
+exposeHandlers({ compress, resize, transform, strip, preview, crop, overlay, favicon, idPhoto });

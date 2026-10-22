@@ -724,6 +724,24 @@
         "a4": "Une copie réduite est affichée pour que l'édition reste rapide, mais le recadrage s'applique à l'image d'origine complète : les valeurs en pixels sont celles de la vraie photo."
       }
     },
+    "id-photo": {
+      "title": "Photo d'identité",
+      "description": "Recadrez une photo au format d'un document (3×4, 4×4, 3,5×4,5 cm, 2×2 po…) avec un guide pour le visage, et une planche 10×15 cm de copies à imprimer.",
+      "action": "Créer la photo",
+      "about": "Préparez une photo pour une carte d'identité, un passeport, un visa, un permis ou une carte de membre : choisissez le format, cadrez le visage avec le guide et téléchargez deux fichiers : la photo seule à 600 ppp, prête à envoyer ou à imprimer à sa taille réelle, et une planche 10 × 15 cm avec toutes les copies qui tiennent et des traits de coupe, à imprimer dans n'importe quel laboratoire ou borne photo pour le prix d'un seul tirage. Tout se passe sur votre appareil : la photo n'est envoyée à aucun serveur.",
+      "faq": {
+        "q1": "Quel format me faut-il ?",
+        "a1": "Cela dépend du document et de l'administration. Les plus demandés : 3,5 × 4,5 cm (passeports, cartes d'identité et visas au standard international OACI, comme en France, en Belgique et au Mexique), 3 × 4 cm (Brésil : RG et permis ; nombreuses démarches au Chili et en Colombie), 4 × 4 cm (nombreuses démarches en Argentine), 2,5 × 3 cm (« tamaño infantil » au Mexique) et 2 × 2 pouces (passeport et visa américains). Vérifiez toujours le format et les exigences auprès de l'administration qui la demande.",
+        "q2": "Comment prendre une bonne photo ?",
+        "a2": "De face, en regardant l'objectif, expression neutre et bouche fermée, sans lunettes de soleil ni casquette, devant un mur uni et clair, avec une lumière égale (sans ombre sur le visage) et l'appareil à hauteur des yeux, à un mètre ou plus. Au cadrage, la tête doit remplir l'ovale : le sommet près du bord supérieur et le menton en bas de l'ovale, les yeux sur la ligne pointillée.",
+        "q3": "Comment imprimer la planche ?",
+        "a3": "Commandez un tirage 10 × 15 cm dans un laboratoire, une borne photo ou sur une imprimante photo, sans recadrage ni ajustement : la planche a déjà ce format et les copies ont la taille exacte. Découpez ensuite le long des traits gris. Pour la photo seule, choisissez « taille réelle » ou 100 % : le fichier porte sa résolution (600 ppp).",
+        "q4": "Le fond est-il changé ou le visage retouché ?",
+        "a4": "Non : la photo est recadrée et mise à l'échelle telle quelle, sans retouche. Si le fond doit être clair et uni, prenez la photo devant un mur de cette couleur. Les zones transparentes d'un PNG deviennent blanches.",
+        "q5": "Y a-t-il une limite ?",
+        "a5": "Une photo à la fois, jusqu'à 50 Mo (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF ou HEIC de l'iPhone). Si la zone cadrée a une résolution trop faible pour une impression nette (moins de 300 ppp), nous vous prévenons."
+      }
+    },
     "watermark-image": {
       "title": "Filigrane sur des images",
       "description": "Ajoutez votre nom, un texte ou votre logo en filigrane à de nombreuses photos à la fois, dans un coin ou en mosaïque.",
@@ -2561,5 +2579,22 @@
     "note": "Les traits blancs ou de couleur 7 sont dessinés en noir, comme sur papier. Traitement sur votre appareil.",
     "done": "{shapes} tracés et {texts} textes.",
     "skipped": "Non dessinés (non pris en charge) : {list}."
+  },
+  "IdPhotoTool": {
+    "size": "Format",
+    "presets": {
+      "30x40": "{width} × {height} cm",
+      "40x40": "{width} × {height} cm",
+      "35x45": "{width} × {height} cm (passeport, OACI)",
+      "25x30": "{width} × {height} cm (« infantil », Mexique)",
+      "51x51": "2 × 2 po ({width} × {height} cm, États-Unis)"
+    },
+    "check": "Les formats varient selon la démarche : vérifiez-le auprès de l'administration qui le demande.",
+    "loading": "Chargement de la photo…",
+    "frameHint": "Déplacez et ajustez le cadre pour que la tête soit dans l'ovale et les yeux sur la ligne pointillée.",
+    "donePhoto": "Photo de {size} ({pixels} px à 600 ppp).",
+    "lowResolution": "La zone choisie a une faible résolution : l'impression peut être floue. Utilisez une photo plus grande ou prise de plus près.",
+    "doneSheet": "Planche 10 × 15 cm avec {copies} copies et traits de coupe.",
+    "sheetSuffix": "planche-10x15"
   }
 }

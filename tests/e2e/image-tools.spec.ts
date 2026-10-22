@@ -595,3 +595,65 @@ test.describe("HEIF input", () => {
     expect(await inspectImage(half.buf)).toMatchObject({ format: "jpg", width: 60, height: 40 });
   });
 });
+
+test.describe("tool: id-photo", () => {
+  /** 1000 × 1000: left half red, right half blue (the framing box is centered, so each copy is half and half). */
+  const halves = async (side = 1000) => {
+    const raw = Buffer.alloc(side * side * 3);
+    for (let i = 0; i < side * side; i++) raw.set(i % side < side / 2 ? [220, 30, 30] : [30, 30, 220], i * 3);
+    return sharp(raw, { raw: { width: side, height: side, channels: 3 } }).png().toBuffer();
+  };
+  const isRed = (p: number[]) => p[0]! > 170 && p[1]! < 90 && p[2]! < 90;
+  const isBlue = (p: number[]) => p[2]! > 170 && p[0]! < 90 && p[1]! < 90;
+
+  test("3.5 × 4.5 cm: the photo at 600 dpi and a 10 × 15 cm sheet with 8 copies at 300 dpi", async ({ page }) => {
+    await page.goto("/en/id-photo-maker", { waitUntil: "networkidle" });
+    await page.locator('input[type="file"]').setInputFiles({ name: "me.png", mimeType: "image/png", buffer: await halves() });
+    await expect(page.getByRole("group", { name: /Crop area: 778 × 1000 px/ })).toBeVisible();
+    await page.getByRole("button", { name: "Make ID photo" }).click();
+    await expect(page.getByText("3.5 × 4.5 cm photo (827 × 1063 px at 600 dpi).")).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText("4 × 6 in (10 × 15 cm) sheet with 8 copies and cutting lines.")).toBeVisible();
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Download all/ }).click()]);
+    const entries = unzipEntries(readFileSync((await download.path())!));
+    expect(entries.map((e) => e.name).sort()).toEqual(["me-35x45-sheet-4x6.jpg", "me-35x45.jpg"]);
+
+    const photoBuf = entries.find((e) => e.name === "me-35x45.jpg")!.data;
+    expect(await sharp(photoBuf).metadata()).toMatchObject({ format: "jpeg", width: 827, height: 1063, density: 600 });
+    const photoPx = await sharp(photoBuf).raw().toBuffer();
+    const at = (buf: Buffer, width: number, x: number, y: number) => [...buf.subarray((y * width + x) * 3, (y * width + x) * 3 + 3)];
+    expect(isRed(at(photoPx, 827, 100, 500)) && isBlue(at(photoPx, 827, 727, 500)), "left red, right blue").toBe(true);
+
+    const sheetBuf = entries.find((e) => e.name === "me-35x45-sheet-4x6.jpg")!.data;
+    expect(await sharp(sheetBuf).metadata()).toMatchObject({ format: "jpeg", width: 1800, height: 1200, density: 300 });
+    const sheetPx = await sharp(sheetBuf).raw().toBuffer();
+    // Landscape 152.4 × 101.6 mm: 4 × 2 copies of 35 × 45 mm, 2 mm apart, centered.
+    const mm = (v: number) => Math.round((v / 25.4) * 300);
+    const x0 = (152.4 - (4 * 35 + 3 * 2)) / 2;
+    const y0 = (101.6 - (2 * 45 + 2)) / 2;
+    for (let r = 0; r < 2; r++) {
+      for (let c = 0; c < 4; c++) {
+        const left = x0 + c * 37;
+        const top = y0 + r * 47;
+        expect(isRed(at(sheetPx, 1800, mm(left + 8), mm(top + 22))), `copy ${r},${c} left half`).toBe(true);
+        expect(isBlue(at(sheetPx, 1800, mm(left + 27), mm(top + 22))), `copy ${r},${c} right half`).toBe(true);
+      }
+    }
+    const gap = at(sheetPx, 1800, mm(x0 / 2), mm(50));
+    expect(gap.every((v) => v > 240), "white margin").toBe(true);
+  });
+
+  test("another size, a low-resolution warning and a damaged file", async ({ page }) => {
+    await page.goto("/es/foto-carnet", { waitUntil: "networkidle" });
+    await page.locator('input[type="file"]').setInputFiles({ name: "chica.png", mimeType: "image/png", buffer: await halves(200) });
+    await expect(page.getByRole("group", { name: /Área de recorte: 156 × 200 px/ })).toBeVisible();
+    await page.locator("label").filter({ hasText: /^3 × 4 cm$/ }).click();
+    await expect(page.getByRole("group", { name: /Área de recorte: 150 × 200 px/ })).toBeVisible();
+    await page.getByRole("button", { name: "Crear foto carnet" }).click();
+    await expect(page.getByText(/Foto de 3 × 4 cm \(709 × 945 px a 600 ppp\)\. La zona elegida tiene poca resolución/)).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText("Hoja de 10 × 15 cm con 9 copias y líneas de corte.")).toBeVisible();
+
+    await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+    await page.locator('input[type="file"]').setInputFiles(fixturePath("corrupt/truncated.png"));
+    await expect(page.locator("main")).toContainText("dañado o incompleto");
+  });
+});

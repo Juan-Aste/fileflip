@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { field } from "@/components/ui/styles";
 import { moveRect, resizeCorner, setField, type Corner, type Rect, type Size } from "@/lib/image/crop-rect";
@@ -12,6 +12,8 @@ interface Props {
   rect: Rect;
   ratio: number | null;
   onChange: (rect: Rect) => void;
+  /** Drawn inside the box instead of the rule-of-thirds grid (e.g. a face outline). */
+  guide?: ReactNode;
 }
 
 const corners: Corner[] = ["nw", "ne", "sw", "se"];
@@ -27,7 +29,7 @@ const cornerClass: Record<Corner, string> = {
  * From the keyboard, arrows move it and Shift + arrows resize it; the number
  * fields below set exact pixels.
  */
-export default function CropEditor({ src, image, rect, ratio, onChange }: Props) {
+export default function CropEditor({ src, image, rect, ratio, onChange, guide }: Props) {
   const t = useTranslations("ImageTools");
   const hintId = useId();
   const frame = useRef<HTMLDivElement>(null);
@@ -100,12 +102,14 @@ export default function CropEditor({ src, image, rect, ratio, onChange }: Props)
             height: pct(rect.height, image.height),
           }}
         >
-          {/* Rule-of-thirds guides. */}
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 grid grid-cols-3 grid-rows-3">
-            {Array.from({ length: 9 }, (_, i) => (
-              <div key={i} className="border border-white/25" />
-            ))}
-          </div>
+          {guide ?? (
+            // Rule-of-thirds guides.
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 grid grid-cols-3 grid-rows-3">
+              {Array.from({ length: 9 }, (_, i) => (
+                <div key={i} className="border border-white/25" />
+              ))}
+            </div>
+          )}
           {corners.map((c) => (
             <div
               key={c}

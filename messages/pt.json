@@ -724,6 +724,24 @@
         "a4": "Para editar rápido é mostrada uma cópia reduzida, mas o corte é aplicado na imagem original completa: os valores em pixels são os da foto real."
       }
     },
+    "id-photo": {
+      "title": "Foto 3x4 e documentos",
+      "description": "Recorte uma foto no tamanho de documento (3×4, 4×4, 3,5×4,5 cm, 2×2 pol.…) com guia de rosto e uma folha 10×15 cm com cópias para imprimir.",
+      "action": "Criar foto",
+      "about": "Prepare uma foto para RG, CNH, passaporte, visto, carteirinha ou crachá: escolha o tamanho, enquadre o rosto com a guia e baixe dois arquivos: a foto sozinha a 600 dpi, pronta para enviar ou imprimir no tamanho real, e uma folha 10 × 15 cm com todas as cópias que cabem e linhas de corte, para imprimir em qualquer laboratório ou quiosque de fotos pelo preço de uma só cópia. Tudo acontece no seu dispositivo: a foto não é enviada a nenhum servidor.",
+      "faq": {
+        "q1": "Qual tamanho eu preciso?",
+        "a1": "Depende do documento e do órgão. Os mais pedidos: 3 × 4 cm (Brasil: RG, CNH e carteira de trabalho; também muitos trâmites no Chile, na Colômbia e em outros países), 4 × 4 cm (muitos trâmites na Argentina), 3,5 × 4,5 cm (passaportes e vistos no padrão internacional ICAO, como o mexicano e os europeus), 2,5 × 3 cm (\"tamaño infantil\" no México) e 2 × 2 polegadas (passaporte e visto dos EUA). Confirme sempre o tamanho e as exigências com o órgão que pede: muitos documentos já são fotografados no local.",
+        "q2": "Como tirar uma boa foto?",
+        "a2": "De frente, olhando para a câmera, com expressão neutra e boca fechada, sem óculos escuros nem boné, diante de uma parede lisa e clara, com luz uniforme (sem sombras no rosto) e a câmera na altura dos olhos, a um metro ou mais. Ao enquadrar, a cabeça deve preencher o oval: o topo perto da borda superior e o queixo no fim do oval, com os olhos na linha pontilhada.",
+        "q3": "Como imprimo a folha?",
+        "a3": "Peça uma cópia 10 × 15 cm em um laboratório, quiosque de fotos ou impressora fotográfica, sem cortar nem ajustar: a folha já tem esse tamanho e as cópias têm a medida exata. Depois corte nas linhas cinza. Se imprimir a foto sozinha, escolha \"tamanho real\" ou 100 % na impressora: o arquivo leva sua resolução (600 dpi).",
+        "q4": "Muda o fundo ou retoca o rosto?",
+        "a4": "Não: a foto é recortada e redimensionada como está, sem retoques. Se o documento pede fundo branco, tire a foto diante de uma parede branca. As partes transparentes de um PNG ficam brancas.",
+        "q5": "Existe algum limite?",
+        "a5": "Uma foto por vez, de até 50 MB (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF ou HEIC do iPhone). Se a área enquadrada tiver pouca resolução para imprimir nítida (menos de 300 dpi), avisamos."
+      }
+    },
     "watermark-image": {
       "title": "Marca d'água em imagens",
       "description": "Adicione seu nome, texto ou logo como marca d'água a várias fotos de uma vez, em um canto ou em mosaico.",
@@ -2561,5 +2579,22 @@
     "note": "Linhas brancas ou de cor 7 são desenhadas em preto, como no papel. Processado no seu dispositivo.",
     "done": "{shapes} traços e {texts} textos.",
     "skipped": "Não desenhados (não compatíveis): {list}."
+  },
+  "IdPhotoTool": {
+    "size": "Tamanho",
+    "presets": {
+      "30x40": "{width} × {height} cm",
+      "40x40": "{width} × {height} cm",
+      "35x45": "{width} × {height} cm (passaporte, ICAO)",
+      "25x30": "{width} × {height} cm (infantil, México)",
+      "51x51": "2 × 2 pol. ({width} × {height} cm, EUA)"
+    },
+    "check": "Os tamanhos variam conforme o documento: confirme com o órgão que pede.",
+    "loading": "Carregando a foto…",
+    "frameHint": "Mova e ajuste o quadro para que a cabeça fique dentro do oval e os olhos sobre a linha pontilhada.",
+    "donePhoto": "Foto de {size} ({pixels} px a 600 dpi).",
+    "lowResolution": "A área escolhida tem pouca resolução: pode sair borrada na impressão. Use uma foto maior ou mais próxima.",
+    "doneSheet": "Folha 10 × 15 cm com {copies} cópias e linhas de corte.",
+    "sheetSuffix": "folha-10x15"
   }
 }

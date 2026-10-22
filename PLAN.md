@@ -301,7 +301,7 @@ Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo apr
   - [x] 3C.41b Salidas PNG (OffscreenCanvas en el worker, ancho elegible, fondo blanco o transparente) y PDF (pdf-lib, A4/A3 ajustado con margen, texto con fuente estándar) desde la misma lista de dibujo; tests de píxeles y de PDF (tamaño de página, operadores de trazo)
 
 Ideas propias y quitar fondo
-- [ ] 3C.42 Foto carnet por país (tamaños oficiales AR, BR, MX, CL, CO, PE, UY; guía de rostro; hoja 10×15 con copias)
+- [x] 3C.42 Foto carnet por país (tamaños oficiales AR, BR, MX, CL, CO, PE, UY; guía de rostro; hoja 10×15 con copias) — hecha con medidas habituales y aviso de confirmar con la oficina (no se encontraron fuentes oficiales fiables por país; ver PROGRESS)
 - [ ] 3C.43 Escanear documento desde el celular (foto → recorte de perspectiva → PDF en blanco y negro)
 - [ ] 3C.44 Quitar fondo solo con licencia aceptable (MediaPipe Apache-2.0 u onnxruntime-web + modelo Apache-2.0); si no hay calidad suficiente, anotarlo y no publicar
 - [ ] 3C.45 (mejora de 3C.30) Compilar un WASM propio de libarchive 3.8.x con emscripten (script reproducible, locale UTF-8 al iniciar) para que los nombres no ASCII de los 7Z no se pierdan y para incluir las correcciones de seguridad de 2025 del lector RAR; mismas pruebas de 3C.30. Si el entorno no permite instalar emsdk, anotarlo y dejarlo pendiente

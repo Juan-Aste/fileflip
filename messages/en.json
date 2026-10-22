@@ -724,6 +724,24 @@
         "a4": "A reduced copy is shown so editing stays fast, but the crop is applied to the full original image: the pixel values are those of the real photo."
       }
     },
+    "id-photo": {
+      "title": "ID photo maker",
+      "description": "Crop a photo to a document size (3×4, 4×4, 3.5×4.5 cm, 2×2 in…) with a face guide, plus a 4×6 in sheet of copies to print.",
+      "action": "Make ID photo",
+      "about": "Get a photo ready for your ID card, passport, visa, driver's license or membership card: pick the size, frame your face with the guide and download two files: the photo alone at 600 dpi, ready to upload or print at its real size, and a 10 × 15 cm (4 × 6 in) sheet with as many copies as fit and cutting lines, to print at any photo lab or kiosk for the price of one print. Everything happens on your device: the photo isn't uploaded to any server.",
+      "faq": {
+        "q1": "Which size do I need?",
+        "a1": "It depends on the document and the office. The most requested: 3 × 4 cm (Brazil: RG, CNH and work card; also many procedures in Chile, Colombia and other countries), 4 × 4 cm (many procedures in Argentina), 3.5 × 4.5 cm (passports and visas following the international ICAO standard, such as Mexico's and European ones), 2.5 × 3 cm (\"tamaño infantil\" in Mexico) and 2 × 2 inches (US passport and visa). Always check the size and requirements with the office asking for it: many ID cards are now photographed on site.",
+        "q2": "How do I take a good photo?",
+        "a2": "Facing the camera, with a neutral expression and mouth closed, no sunglasses or cap, against a plain light wall, in even light (no shadows on the face), with the camera at eye level, a meter or more away. When framing, the head should fill the oval: the crown near the top edge and the chin at the bottom of the oval, with the eyes on the dotted line.",
+        "q3": "How do I print the sheet?",
+        "a3": "Order a 4 × 6 in (10 × 15 cm) print at a photo lab, kiosk or photo printer, without cropping or fitting: the sheet already has that size and the copies are exact. Then cut along the grey lines. If you print the single photo, choose \"actual size\" or 100 % in the printer: the file carries its resolution (600 dpi).",
+        "q4": "Does it change the background or retouch the face?",
+        "a4": "No: the photo is cropped and scaled as it is, without retouching. If the office asks for a white or light blue background, take it in front of a wall of that color. Transparent parts of a PNG become white.",
+        "q5": "Is there a limit?",
+        "a5": "One photo at a time, up to 50 MB (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF or iPhone HEIC). If the framed area has too little resolution to print sharp (under 300 dpi), we tell you."
+      }
+    },
     "watermark-image": {
       "title": "Watermark images",
       "description": "Add your name, text or logo as a watermark to many photos at once, in a corner or tiled.",
@@ -2561,5 +2579,22 @@
     "note": "White lines and color 7 are drawn in black, as on paper. Processed on your device.",
     "done": "{shapes} shapes and {texts} texts.",
     "skipped": "Not drawn (not supported): {list}."
+  },
+  "IdPhotoTool": {
+    "size": "Size",
+    "presets": {
+      "30x40": "{width} × {height} cm",
+      "40x40": "{width} × {height} cm",
+      "35x45": "{width} × {height} cm (passport, ICAO)",
+      "25x30": "{width} × {height} cm (Mexican \"infantil\")",
+      "51x51": "2 × 2 in ({width} × {height} cm, US)"
+    },
+    "check": "Sizes vary by procedure: check it with the office that asks for it.",
+    "loading": "Loading the photo…",
+    "frameHint": "Move and resize the box so the head sits inside the oval and the eyes on the dotted line.",
+    "donePhoto": "{size} photo ({pixels} px at 600 dpi).",
+    "lowResolution": "The framed area has low resolution: it may print blurry. Use a bigger or closer photo.",
+    "doneSheet": "4 × 6 in (10 × 15 cm) sheet with {copies} copies and cutting lines.",
+    "sheetSuffix": "sheet-4x6"
   }
 }

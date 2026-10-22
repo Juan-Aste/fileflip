@@ -5,6 +5,8 @@ import type {
   CropArgs,
   FaviconArgs,
   FaviconResult,
+  IdPhotoArgs,
+  IdPhotoResult,
   OverlayArgs,
   PreviewArgs,
   PreviewResult,
@@ -42,6 +44,9 @@ export const cropImageFile = (args: CropArgs, job: JobOptions = {}) =>
 
 export const overlayImageFile = (args: OverlayArgs, job: JobOptions = {}) =>
   pool.run<{ buffer: ArrayBuffer; width: number; height: number }>("overlay", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });
+
+export const idPhotoFile = (args: IdPhotoArgs, job: JobOptions = {}) =>
+  pool.run<IdPhotoResult>("idPhoto", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });
 
 export const faviconPack = (args: FaviconArgs, job: JobOptions = {}) =>
   pool.run<FaviconResult>("favicon", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });

@@ -68,6 +68,7 @@ import {
   Film,
   Box,
   Lamp,
+  SquareUser,
   DraftingCompass,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
@@ -107,6 +108,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "rotate-image": FlipHorizontal2,
   "remove-exif": MapPinOff,
   "crop-image": Crop,
+  "id-photo": SquareUser,
   "watermark-image": Stamp,
   "add-text-to-image": Type,
   "favicon-generator": AppWindow,

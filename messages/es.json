@@ -724,6 +724,24 @@
         "a4": "Para editar rápido se muestra una copia reducida, pero el recorte se aplica sobre la imagen original completa: los valores en píxeles son los de la foto real."
       }
     },
+    "id-photo": {
+      "title": "Foto carnet",
+      "description": "Recorta una foto al tamaño de documento (3×4, 4×4, 3,5×4,5 cm, 2×2 in…) con guía de rostro y una hoja de 10×15 cm con copias para imprimir.",
+      "action": "Crear foto carnet",
+      "about": "Prepara una foto para tu cédula, DNI, pasaporte, visa, licencia o carnet: elige la medida, encuadra la cara con la guía y descarga dos archivos: la foto sola a 600 ppp, lista para subir o imprimir a su tamaño real, y una hoja de 10 × 15 cm con todas las copias que entran y líneas de corte, para imprimirla en cualquier laboratorio o kiosco de fotos por el precio de una sola copia. Todo pasa en tu dispositivo: la foto no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué medida necesito?",
+        "a1": "Depende del trámite y de la oficina. Las más pedidas: 3 × 4 cm (Brasil: RG, CNH y carteira de trabalho; también muchos trámites en Chile, Colombia y otros países), 4 × 4 cm (muchos trámites en Argentina), 3,5 × 4,5 cm (pasaportes y visas con el estándar internacional OACI, como el mexicano y los europeos), 2,5 × 3 cm (\"tamaño infantil\" en México) y 2 × 2 pulgadas (pasaporte y visa de EE. UU.). Confirma siempre la medida y los requisitos con la oficina que te la pide: muchos documentos de identidad ya se fotografían en el lugar.",
+        "q2": "¿Cómo tomo una buena foto?",
+        "a2": "De frente, mirando a la cámara, con expresión neutra y la boca cerrada, sin lentes oscuros ni gorra, sobre una pared lisa y clara, con buena luz pareja (sin sombras en la cara) y la cámara a la altura de los ojos, a un metro o más. Al encuadrar, la cabeza debe ocupar el óvalo: la coronilla cerca del borde superior y la barbilla al final del óvalo, con los ojos en la línea punteada.",
+        "q3": "¿Cómo imprimo la hoja?",
+        "a3": "Pide una copia de 10 × 15 cm (o 4 × 6 pulgadas) en un laboratorio, kiosco de fotos o impresora fotográfica, sin recortar ni ajustar: la hoja ya tiene esa medida y las copias tienen el tamaño exacto. Luego corta por las líneas grises. Si imprimes la foto suelta, elige \"tamaño real\" o 100 % en la impresora: el archivo lleva su resolución (600 ppp).",
+        "q4": "¿Cambia el fondo o retoca la cara?",
+        "a4": "No: la foto se recorta y escala tal cual, sin retoques. Si el trámite pide fondo blanco o celeste, tómala delante de una pared de ese color. Las partes transparentes de un PNG quedan blancas.",
+        "q5": "¿Hay algún límite?",
+        "a5": "Una foto a la vez, de hasta 50 MB (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF o HEIC del iPhone). Si la zona encuadrada tiene poca resolución para imprimirse nítida (menos de 300 ppp), te avisamos."
+      }
+    },
     "watermark-image": {
       "title": "Marca de agua en imágenes",
       "description": "Agrega tu nombre, texto o logo como marca de agua a muchas fotos a la vez, en una esquina o en mosaico.",
@@ -2561,5 +2579,22 @@
     "note": "Las líneas blancas o de color 7 se dibujan en negro, como sobre papel. Se procesa en tu dispositivo.",
     "done": "{shapes} trazos y {texts} textos.",
     "skipped": "No se dibujaron (no compatibles): {list}."
+  },
+  "IdPhotoTool": {
+    "size": "Medida",
+    "presets": {
+      "30x40": "{width} × {height} cm",
+      "40x40": "{width} × {height} cm",
+      "35x45": "{width} × {height} cm (pasaporte, OACI)",
+      "25x30": "{width} × {height} cm (tamaño infantil)",
+      "51x51": "2 × 2 in ({width} × {height} cm, EE. UU.)"
+    },
+    "check": "Las medidas varían según el trámite: confírmala con la oficina que te la pide.",
+    "loading": "Cargando la foto…",
+    "frameHint": "Mueve y ajusta el recuadro para que la cabeza quede dentro del óvalo y los ojos sobre la línea punteada.",
+    "donePhoto": "Foto de {size} ({pixels} px a 600 ppp).",
+    "lowResolution": "La zona elegida tiene poca resolución: puede imprimirse borrosa. Usa una foto más grande o más cercana.",
+    "doneSheet": "Hoja de 10 × 15 cm con {copies} copias y líneas de corte.",
+    "sheetSuffix": "hoja-10x15"
   }
 }

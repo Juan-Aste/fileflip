@@ -73,6 +73,7 @@ export const toolIds = [
   "rotate-image",
   "remove-exif",
   "crop-image",
+  "id-photo",
   "watermark-image",
   "add-text-to-image",
   "favicon-generator",
@@ -689,6 +690,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "recortar-imagen", en: "crop-image", pt: "cortar-imagem", fr: "recadrer-image", zh: "crop-image" },
+  },
+  "id-photo": {
+    id: "id-photo",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "heic"],
+    outputs: ["jpg"],
+    engine: "browser",
+    libraries: ["own layout", "canvas", "@jsquash/jpeg", "libheif-js", "utif2"],
+    // One photo at a time: it is framed on a preview first. Outputs: the photo at 600 dpi and a 10 × 15 cm sheet at 300 dpi.
+    limits: { files: "single", timeoutMs: 2 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "foto-carnet", en: "id-photo-maker", pt: "foto-3x4", fr: "photo-identite", zh: "id-photo-maker" },
   },
 
   "watermark-image": {
