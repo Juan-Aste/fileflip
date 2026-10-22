@@ -38,7 +38,7 @@ export function magicLinkEmail(url: string, locale: Locale) {
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 16px">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;background:#ffffff;border:1px solid #e2e8f0;border-radius:16px">
 <tr><td style="padding:32px">
-<p style="margin:0 0 24px;font-size:20px;font-weight:700">⇄ FileFlip</p>
+<p style="margin:0 0 24px;font-size:20px;font-weight:700">⇄ Fileflect</p>
 <h1 style="margin:0 0 12px;font-size:22px">${escape(t.heading)}</h1>
 <p style="margin:0 0 24px;line-height:1.5">${escape(t.body)}</p>
 <p style="margin:0 0 24px"><a href="${link}" style="display:inline-block;background:#4f46e5;color:#ffffff;text-decoration:none;font-weight:600;padding:12px 24px;border-radius:12px">${escape(t.button)}</a></p>

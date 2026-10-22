@@ -1,15 +1,26 @@
 "use client";
 
 import type { FormatId } from "@/config/formats";
+import { ConversionError, InputFileError, errorCode } from "@/lib/convert-error";
 import { jpegOrientation } from "@/lib/image/exif";
 import { convertImage } from "@/lib/image/client";
-import { createWorkerClient } from "@/lib/worker-rpc";
+import { isDamagedImage } from "@/lib/image/integrity";
+import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type { CompressionLevel, CompressResult } from "./compress";
 import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
+import type { Margins } from "./crop";
+import type { Permissions } from "./password-options";
+import type { SignaturePlacement } from "./sign";
+import type { PageNumberOptions, WatermarkOptions } from "./stamp";
 
-const call = createWorkerClient(
+// One PDF worker at a time (documents can take hundreds of MB). A job that
+// hangs inside pdf-lib is stopped by the time limit, which restarts the worker.
+const PDF_JOB_TIMEOUT_MS = 10 * 60_000;
+const pool = createJobPool(
   () => new Worker(new URL("../../workers/pdf.worker.ts", import.meta.url), { type: "module" }),
 );
+const call = <T>(method: string, args: unknown, options: JobOptions = {}) =>
+  pool.run<T>(method, args, { timeoutMs: PDF_JOB_TIMEOUT_MS, ...options });
 
 const bytesOf = async (file: Blob) => new Uint8Array(await file.arrayBuffer());
 
@@ -52,12 +63,14 @@ const PNG_SOURCES: readonly FormatId[] = ["png", "gif", "ico", "svg"];
 
 /** Gets an image into a form pdf-lib can embed (JPG or PNG, upright). */
 async function toPdfImage(file: Blob, format: FormatId): Promise<PdfImage> {
-  if (format === "jpg") {
+  if (format === "jpg" || format === "png") {
     const bytes = await bytesOf(file);
+    // pdf-lib embeds cut JPEGs silently and can hang on a cut PNG.
+    if (isDamagedImage(bytes, format)) throw new ConversionError("fileDamaged");
+    if (format === "png") return { bytes, type: "png" };
     if (jpegOrientation(bytes) === 1) return { bytes, type: "jpg" };
     // Re-encode so the EXIF rotation is baked into the pixels.
   }
-  if (format === "png") return { bytes: await bytesOf(file), type: "png" };
   const type = PNG_SOURCES.includes(format) ? "png" : "jpg";
   const { blob } = await convertImage(file, format, type, { quality: 92 });
   return { bytes: await bytesOf(blob), type };
@@ -70,7 +83,11 @@ export async function imagesToPdfFile(
 ) {
   const images: PdfImage[] = [];
   for (const [i, { file, format }] of files.entries()) {
-    images.push(await toPdfImage(file, format));
+    try {
+      images.push(await toPdfImage(file, format));
+    } catch (error) {
+      throw new InputFileError(errorCode(error), i);
+    }
     onProgress?.(((i + 1) / files.length) * 0.5);
   }
   const result = await call<Uint8Array>(
@@ -85,4 +102,54 @@ export async function compressPdfFile(file: Blob, level: CompressionLevel, onPro
   const bytes = await bytesOf(file);
   const result = await call<CompressResult>("compress", { bytes, level }, { transfer: [bytes.buffer], onProgress });
   return { blob: pdfBlob(result.bytes), imagesRecompressed: result.imagesRecompressed };
+}
+
+/** Page numbers drawn on every page (or from page 2). */
+export async function numberPdfPages(file: Blob, options: PageNumberOptions, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("pageNumbers", { bytes, options }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** A text watermark on every page (or the chosen ones). */
+export async function watermarkPdf(file: Blob, options: WatermarkOptions, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("watermark", { bytes, options }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** Sets each page's CropBox (null leaves a page as it is). */
+export async function cropPdfFile(file: Blob, margins: (Margins | null)[], job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("crop", { bytes, margins }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** Draws a signature (PNG) at the given places. */
+export async function signPdfFile(file: Blob, png: Blob, placements: SignaturePlacement[], job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  const image = await bytesOf(png);
+  return pdfBlob(await call<Uint8Array>("sign", { bytes, png: image, placements }, { transfer: [bytes.buffer, image.buffer], ...job }));
+}
+
+/** Encrypts with AES-256 and an open password (qpdf). */
+export async function protectPdfFile(file: Blob, password: string, permissions: Permissions, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("protect", { bytes, password, permissions }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** Removes the encryption, given the password (qpdf). */
+export async function unlockPdfFile(file: Blob, password: string, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("unlock", { bytes, password }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** The PDF with each page's OCR layer (invisible text) drawn over it; null leaves a page as it is. */
+export async function addOcrLayersToPdf(file: Blob, layers: (Uint8Array | null)[], job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  const transfer = [bytes.buffer, ...layers.flatMap((l) => (l ? [l.buffer] : []))];
+  return pdfBlob(await call<Uint8Array>("ocrLayers", { bytes, layers }, { transfer, ...job }));
+}
+
+/** The images stored as plain JPEG, by object reference ("12R"), to save them unchanged. */
+export async function originalPdfJpegs(file: Blob, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return call<Record<string, Uint8Array>>("jpegs", bytes, { transfer: [bytes.buffer], ...job });
 }

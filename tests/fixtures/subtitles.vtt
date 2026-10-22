@@ -1,0 +1,14 @@
+WEBVTT - Fileflect sample
+
+NOTE A comment that is not a cue
+
+STYLE
+::cue { color: yellow }
+
+intro
+00:01.000 --> 00:03.500 align:start position:10%
+<v Ana>Hola</v> &amp; bienvenidos
+<i>segunda línea</i>
+
+00:00:04.000 --> 00:00:06.000
+Árvore &lt;3

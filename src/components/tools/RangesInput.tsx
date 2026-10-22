@@ -10,10 +10,12 @@ interface Props {
   valid: boolean;
   pageCount: number;
   placeholder?: string;
+  /** Shown instead of "between 1 and N" when the page count isn't known yet (several files). */
+  invalidHint?: string;
 }
 
 /** Text field for page ranges ("1-3, 5, 8-") with an inline hint/error. */
-export default function RangesInput({ value, onChange, valid, pageCount, placeholder = "1-3, 5, 8-" }: Props) {
+export default function RangesInput({ value, onChange, valid, pageCount, placeholder = "1-3, 5, 8-", invalidHint }: Props) {
   const t = useTranslations("ToolUi");
   const id = useId();
   const invalid = value !== "" && !valid;
@@ -33,7 +35,7 @@ export default function RangesInput({ value, onChange, valid, pageCount, placeho
         className={`h-10 ${field}`}
       />
       <span id={`${id}-hint`} className={`text-xs ${invalid ? "text-danger" : "text-muted"}`}>
-        {invalid ? t("rangesInvalid", { count: pageCount }) : t("rangesHint")}
+        {invalid ? (invalidHint ?? t("rangesInvalid", { count: pageCount })) : t("rangesHint")}
       </span>
     </div>
   );

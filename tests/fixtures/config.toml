@@ -1,0 +1,13 @@
+title = "Fileflect demo"
+
+[owner]
+name = "Ana"
+since = 2024-05-27
+
+[[servers]]
+ip = "10.0.0.1"
+ports = [80, 443]
+
+[[servers]]
+ip = "10.0.0.2"
+ports = [8080]

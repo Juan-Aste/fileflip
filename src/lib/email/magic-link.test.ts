@@ -21,7 +21,7 @@ describe("magicLinkEmail", () => {
   it("is translated and contains the link in HTML and text", () => {
     const url = signIn("/en/account");
     const mail = magicLinkEmail(url, "en");
-    expect(mail.subject).toBe("Your FileFlip sign-in link");
+    expect(mail.subject).toBe("Your Fileflect sign-in link");
     expect(mail.html).toContain('lang="en"');
     expect(mail.html).toContain(url.replace(/&/g, "&amp;"));
     expect(mail.text).toContain(url);

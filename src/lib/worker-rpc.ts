@@ -1,4 +1,5 @@
 // Tiny request/response protocol over postMessage, with progress events.
+// The main-thread side is the job pool in `@/lib/jobs`.
 
 type Message =
   | { id: number; type: "progress"; progress: number }
@@ -31,51 +32,5 @@ export function exposeHandlers(handlers: Record<string, Handler>) {
     } catch (error) {
       post({ id, type: "error", message: error instanceof Error ? error.message : String(error) });
     }
-  };
-}
-
-interface Pending {
-  resolve: (value: unknown) => void;
-  reject: (error: Error) => void;
-  onProgress?: (progress: number) => void;
-}
-
-/** Main-thread side: a lazily started worker that can be called like an async function. */
-export function createWorkerClient(start: () => Worker) {
-  let worker: Worker | null = null;
-  let nextId = 1;
-  const pending = new Map<number, Pending>();
-
-  function get() {
-    if (worker) return worker;
-    worker = start();
-    worker.onmessage = (event: MessageEvent<Message>) => {
-      const msg = event.data;
-      const call = pending.get(msg.id);
-      if (!call) return;
-      if (msg.type === "progress") return call.onProgress?.(msg.progress);
-      pending.delete(msg.id);
-      if (msg.type === "done") call.resolve(msg.result);
-      else call.reject(new Error(msg.message));
-    };
-    worker.onerror = (event) => {
-      for (const call of pending.values()) call.reject(new Error(event.message || "Worker crashed"));
-      pending.clear();
-      worker?.terminate();
-      worker = null;
-    };
-    return worker;
-  }
-
-  return function call<T>(
-    method: string,
-    args: unknown,
-    { transfer = [], onProgress }: { transfer?: Transferable[]; onProgress?: (p: number) => void } = {},
-  ): Promise<T> {
-    const id = nextId++;
-    return new Promise<T>((resolve, reject) => {
-      pending.set(id, { resolve: resolve as (v: unknown) => void, reject, onProgress });
-      get().postMessage({ id, method, args } satisfies Request, transfer);
-    });
   };
 }

@@ -1,10 +1,10 @@
 {
   "Metadata": {
-    "title": "FileFlip — Convierte archivos e imágenes gratis",
+    "title": "Fileflect — Convierte archivos e imágenes gratis",
     "description": "Convierte imágenes y documentos sin marcas de agua ni registro. Lo que se puede, se procesa en tu dispositivo."
   },
   "Common": {
-    "appName": "FileFlip",
+    "appName": "Fileflect",
     "skipToContent": "Saltar al contenido",
     "loading": "Cargando…",
     "close": "Cerrar",
@@ -13,7 +13,7 @@
     "retry": "Reintentar"
   },
   "Header": {
-    "homeLink": "Inicio de FileFlip",
+    "homeLink": "Inicio de Fileflect",
     "nav": {
       "tools": "Herramientas",
       "pricing": "Precios",
@@ -39,21 +39,23 @@
     "tagline": "Conversión de archivos rápida y privada.",
     "privacy": "Privacidad",
     "terms": "Términos",
+    "credits": "Créditos",
     "contact": "Contacto",
     "pricing": "Precios",
-    "copyright": "© {year} FileFlip. Sin marcas de agua, sin registro obligatorio.",
+    "copyright": "© {year} Fileflect. Sin marcas de agua, sin registro obligatorio.",
     "headings": {
-      "tools": "Herramientas PDF",
+      "tools": "Herramientas",
       "conversions": "Conversiones populares",
-      "company": "FileFlip"
-    }
+      "company": "Fileflect"
+    },
+    "allTools": "Todas las herramientas"
   },
   "HomePage": {
     "title": "Convierte tus archivos sin que salgan de tu computadora",
     "tagline": "Imágenes y PDF se procesan directamente en tu navegador: más rápido, más privado y gratis. Sin marcas de agua y sin crear una cuenta.",
     "cta": "Elegir archivos",
     "features": {
-      "heading": "¿Por qué FileFlip?",
+      "heading": "¿Por qué Fileflect?",
       "privacy": {
         "title": "Privado de verdad",
         "body": "Tus imágenes y PDF nunca se suben: todo ocurre en tu dispositivo."
@@ -92,7 +94,7 @@
       "heading": "Preguntas frecuentes",
       "items": {
         "free": {
-          "q": "¿FileFlip es gratis?",
+          "q": "¿Fileflect es gratis?",
           "a": "Sí. Puedes convertir sin pagar, sin crear una cuenta y sin marcas de agua. El plan Pro es opcional: quita los anuncios y amplía los límites."
         },
         "upload": {
@@ -105,7 +107,7 @@
         },
         "mobile": {
           "q": "¿Funciona en el celular?",
-          "a": "Sí. FileFlip funciona en el navegador de tu celular o tablet, sin instalar ninguna aplicación. Por ejemplo, puedes pasar fotos HEIC del iPhone a JPG."
+          "a": "Sí. Fileflect funciona en el navegador de tu celular o tablet, sin instalar ninguna aplicación. Por ejemplo, puedes pasar fotos HEIC del iPhone a JPG."
         },
         "batch": {
           "q": "¿Puedo convertir varios archivos a la vez?",
@@ -116,6 +118,13 @@
           "a": "Tú decides: puedes ajustar la calidad en los formatos con compresión (JPG, WEBP, AVIF). Los formatos sin pérdida, como PNG, mantienen la imagen tal cual."
         }
       }
+    },
+    "catalog": {
+      "searchPlaceholder": "Buscar entre {count} herramientas",
+      "popularHeading": "Herramientas populares",
+      "categoriesHeading": "Explora por categoría",
+      "categoriesSubtitle": "PDF, imágenes, video, audio, documentos, datos y más.",
+      "allTools": "Ver todas las herramientas"
     }
   },
   "Errors": {
@@ -190,39 +199,1320 @@
     "serviceUnavailable": "El servicio no está disponible. Inténtalo más tarde.",
     "browserUnsupported": "Tu navegador no puede convertir este archivo. Prueba con una versión reciente de Chrome, Edge, Firefox o Safari.",
     "pdfHasNoText": "Este PDF es una imagen escaneada: no tiene texto que pasar a Word.",
+    "fileDamaged": "El archivo está dañado o incompleto. Prueba con otra copia.",
+    "invalidData": "No pudimos leer el contenido. Revisa que el formato sea válido (comillas, comas y llaves).",
+    "tomlUnsupported": "TOML no puede representar este contenido: necesita un objeto en la raíz y no admite null dentro de listas.",
+    "xmlEntitiesBlocked": "Este XML declara entidades ('<!ENTITY>'). Por seguridad no se procesan: quita la declaración DOCTYPE e inténtalo de nuevo.",
+    "qrTooLong": "El texto es demasiado largo para un código QR. Acórtalo o baja el nivel de corrección de errores.",
+    "qrNotFound": "No encontramos un código QR legible en la imagen. Prueba con una foto más nítida, de frente y con el código completo.",
+    "targetTooSmall": "No se puede llegar a ese peso sin que la imagen quede demasiado chica. Prueba con un peso mayor.",
     "signInRequired": "Inicia sesión para continuar.",
-    "paymentsUnavailable": "Los pagos todavía no están disponibles en tu país. Vuelve pronto."
+    "paymentsUnavailable": "Los pagos todavía no están disponibles en tu país. Vuelve pronto.",
+    "jobCancelled": "Se canceló el proceso.",
+    "jobTimedOut": "El proceso tardó demasiado y se detuvo. Prueba con un archivo más pequeño.",
+    "pagesOutOfRange": "Las páginas elegidas no existen en este PDF.",
+    "pdfIsScanned": "Este PDF no tiene texto: parece una imagen escaneada. Para sacar su texto hace falta reconocimiento de texto (OCR).",
+    "pdfAlreadyProtected": "Este PDF ya está protegido o tiene restricciones. Quita primero su contraseña con «Quitar contraseña de PDF».",
+    "pdfNotProtected": "Este PDF no tiene contraseña: ya se puede abrir sin ella.",
+    "pdfWrongPassword": "La contraseña no es correcta para este PDF.",
+    "pdfHasNoImages": "Este PDF no tiene imágenes para extraer (o solo tiene imágenes muy pequeñas).",
+    "tooManyCells": "La hoja de cálculo es demasiado grande para procesarla en el navegador (más de 2 millones de celdas).",
+    "archiveTooLarge": "Al descomprimirse ocuparía más de 500 MB o tendría más de 5000 archivos: es demasiado para el navegador (o es una «bomba ZIP»).",
+    "archiveEncrypted": "Este archivo comprimido tiene contraseña: por ahora no se puede extraer.",
+    "archiveUnsupported": "Este archivo comprimido usa un método de compresión que no se puede abrir en el navegador.",
+    "archiveEmpty": "Este archivo comprimido no tiene archivos para extraer (solo carpetas vacías o enlaces).",
+    "ocrNoText": "No se encontró texto en la imagen. Prueba con una foto más nítida o elige otro idioma.",
+    "ebookDrm": "Este libro tiene DRM (protección anticopia): no se puede convertir. Solo funcionan los EPUB sin DRM.",
+    "noAudioTrack": "Este archivo no tiene una pista de audio.",
+    "audioCodecUnsupported": "Tu navegador no puede leer el audio de este archivo (por ejemplo, AAC en algunos navegadores). Prueba con Chrome, Edge o Safari, o con otro formato.",
+    "audioTooLong": "El audio es demasiado largo: el máximo es de 3 horas por archivo.",
+    "tooManyPages": "Este PDF tiene demasiadas páginas para reconocerlas en el navegador (máximo 100).",
+    "pdfAlreadySearchable": "Todas las páginas de este PDF ya tienen texto: se puede buscar sin OCR. Usa «PDF a texto» para extraerlo.",
+    "audioRangeInvalid": "Revisa los tiempos: el inicio debe ser anterior al fin y ambos deben estar dentro del audio.",
+    "audioSilent": "El audio está en silencio: no hay nada que normalizar.",
+    "noVideoTrack": "Este archivo no tiene video.",
+    "videoCodecUnsupported": "Tu navegador no puede leer el video de este archivo (por ejemplo, H.264 o HEVC en algunos navegadores). Prueba con Chrome, Edge o Safari, o elige un formato que no necesite recomprimirlo.",
+    "videoEncoderUnsupported": "Tu navegador no puede crear video en este formato (MOV necesita H.264). Prueba con Chrome, Edge o Safari, o elige MP4, WebM o MKV.",
+    "videoTooLong": "El video es demasiado largo: el máximo es de 2 horas por archivo.",
+    "videoRangeInvalid": "Revisa los tiempos: el inicio debe ser anterior al fin y ambos deben estar dentro del video.",
+    "gifTooManyFrames": "El GIF tendría demasiados cuadros: acorta el tramo o baja los cuadros por segundo.",
+    "modelEmpty": "Este modelo no tiene caras (triángulos) que convertir: puede estar vacío o ser una nube de puntos.",
+    "modelTooLarge": "El modelo es demasiado grande: el máximo es de 3 millones de triángulos.",
+    "modelExternalFiles": "Este glTF usa archivos aparte (.bin o texturas) que no se subieron. Conviértelo primero a GLB (un solo archivo) en tu programa 3D, o usa un .gltf con todo incluido.",
+    "modelCompressed": "Este glTF está comprimido con Draco, meshopt o KTX2, que todavía no podemos leer. Expórtalo sin compresión.",
+    "modelXmlTooLarge": "Este archivo 3MF o COLLADA es demasiado grande para leerlo en el navegador: el máximo es de 100 MB de XML (descomprimido).",
+    "modelFbxVersion": "Este FBX es de una versión anterior a la 7.0 (2011), que no podemos leer. Vuelve a exportarlo como FBX 7.x (binario o ASCII).",
+    "dxfEmpty": "Este DXF no tiene nada visible que dibujar en el espacio modelo: puede estar vacío, tener todas las capas apagadas o usar solo entidades que no dibujamos.",
+    "dxfTooComplex": "Este DXF es demasiado complejo para dibujarlo en el navegador: supera los 5 millones de puntos, anida bloques más de 16 niveles (o un bloque se inserta a sí mismo) o repite un bloque más de 10 000 veces."
   },
   "Tools": {
     "merge-pdf": {
       "title": "Unir PDF",
       "description": "Combina varios PDF en uno solo, en el orden que quieras. Sin subir tus archivos.",
-      "action": "Unir PDF"
+      "action": "Unir PDF",
+      "about": "Unir PDF junta varios documentos en un solo archivo. Puedes cambiar el orden con los botones de subir y bajar antes de unirlos. Las páginas se copian tal cual: el texto, los enlaces y la calidad de las imágenes no cambian.",
+      "faq": {
+        "q1": "¿Se pierde calidad al unir PDF?",
+        "a1": "No. Las páginas se copian sin volver a comprimirse, así que el texto sigue siendo seleccionable y las imágenes conservan su resolución.",
+        "q2": "¿Puedo elegir el orden de los archivos?",
+        "a2": "Sí. Usa los botones de subir y bajar de cada archivo; el PDF final sigue el orden de la lista.",
+        "q3": "¿Puedo unir PDF protegidos con contraseña?",
+        "a3": "No. Un PDF cifrado no se puede leer sin la contraseña; verás un aviso y podrás quitarlo de la lista."
+      }
     },
     "split-pdf": {
       "title": "Dividir PDF",
       "description": "Separa un PDF en varios archivos o extrae solo las páginas que necesitas.",
-      "action": "Dividir PDF"
+      "action": "Dividir PDF",
+      "about": "Dividir PDF separa un documento en varios archivos. Puedes guardar cada página como un PDF, crear un PDF por cada rango (por ejemplo 1-3, 4-6) o extraer solo algunas páginas en un único archivo. Si el resultado tiene varios PDF, se descargan juntos en un ZIP.",
+      "faq": {
+        "q1": "¿Cómo escribo los rangos de páginas?",
+        "a1": "Separa los rangos con comas: 1-3, 5, 8-. Un número suelto es una página y «8-» significa desde la 8 hasta el final.",
+        "q2": "¿Puedo sacar solo unas páginas sin dividir todo?",
+        "a2": "Sí. Elige «Extraer páginas en un solo PDF» y escribe las páginas que quieres conservar.",
+        "q3": "¿El PDF original se modifica?",
+        "a3": "No. Fileflect crea archivos nuevos y tu PDF original queda igual en tu dispositivo."
+      }
     },
     "rotate-pdf": {
       "title": "Rotar PDF",
       "description": "Gira las páginas de un PDF y guárdalo con la orientación correcta.",
-      "action": "Rotar PDF"
+      "action": "Rotar PDF",
+      "about": "Rotar PDF gira las páginas 90° a la derecha, 90° a la izquierda o 180°. Puedes girar todas las páginas o solo las que indiques, por ejemplo las de un escaneo que quedaron al revés. El giro se guarda en el archivo, así que se ve bien en cualquier lector.",
+      "faq": {
+        "q1": "¿Puedo girar solo algunas páginas?",
+        "a1": "Sí. Elige «Solo algunas» y escribe las páginas o rangos, por ejemplo 2, 5-7.",
+        "q2": "¿Girar el PDF reduce la calidad?",
+        "a2": "No. Solo cambia la orientación de las páginas; el contenido no se vuelve a comprimir.",
+        "q3": "¿Se mantiene el giro al abrirlo en otro programa?",
+        "a3": "Sí. La rotación queda guardada en el PDF y la respetan Acrobat, los navegadores y los lectores del celular."
+      }
     },
     "organize-pdf": {
       "title": "Ordenar páginas de PDF",
       "description": "Reordena, gira o elimina páginas de un PDF viendo sus miniaturas.",
-      "action": "Guardar PDF"
+      "action": "Guardar PDF",
+      "about": "Ordenar PDF muestra una miniatura de cada página para que reorganices el documento a la vista: arrastra las páginas a su nuevo lugar (o usa los botones), gira las que lo necesiten y elimina las que sobran. Al terminar, descargas un PDF nuevo con el orden elegido.",
+      "faq": {
+        "q1": "¿Puedo usarlo sin mouse?",
+        "a1": "Sí. Cada página tiene botones para moverla antes o después, girarla y eliminarla, accesibles con el teclado y en pantallas táctiles.",
+        "q2": "¿Me equivoqué al eliminar una página, puedo recuperarla?",
+        "a2": "Sí. El botón «Restaurar todas» vuelve a mostrar el documento original antes de descargar.",
+        "q3": "¿Funciona con PDF de muchas páginas?",
+        "a3": "Sí, aunque las miniaturas tardan más en generarse en documentos largos o con muchas imágenes, sobre todo en el celular."
+      }
     },
     "images-to-pdf": {
       "title": "Imágenes a PDF",
       "description": "Convierte fotos JPG, PNG, HEIC y más en un único PDF.",
-      "action": "Crear PDF"
+      "action": "Crear PDF",
+      "about": "Imágenes a PDF crea un documento con una imagen por página. Acepta JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, HEIC (fotos de iPhone) y SVG. Puedes ordenar las imágenes, elegir el tamaño de página (igual a la imagen, A4 o Carta) y un margen; las fotos se giran según su orientación EXIF.",
+      "faq": {
+        "q1": "¿Puedo pasar fotos del iPhone (HEIC) a PDF?",
+        "a1": "Sí. Las fotos HEIC se decodifican en tu navegador y se agregan al PDF como cualquier otra imagen.",
+        "q2": "¿Qué tamaño de página conviene?",
+        "a2": "«Igual a la imagen» no agrega bordes. A4 o Carta sirven para imprimir o enviar documentos: la imagen se centra y se ajusta sin deformarse.",
+        "q3": "¿Qué pasa si una imagen está dañada?",
+        "a3": "Se muestra un aviso con el nombre del archivo que falló para que lo quites o lo reemplaces; el resto de las imágenes no se pierde."
+      }
     },
     "compress-pdf": {
       "title": "Comprimir PDF",
       "description": "Reduce el peso de tus PDF para enviarlos por correo o WhatsApp.",
-      "action": "Comprimir PDF"
+      "action": "Comprimir PDF",
+      "about": "Comprimir PDF reduce el peso del archivo volviendo a codificar las fotos que contiene, que suelen ser la razón de que un PDF sea pesado. El texto, las fuentes y los dibujos vectoriales se conservan tal cual. Hay tres niveles: baja (mejor calidad), recomendada y fuerte (archivo más liviano).",
+      "faq": {
+        "q1": "¿Por qué mi PDF casi no se redujo?",
+        "a1": "Si el PDF tiene sobre todo texto, o sus imágenes ya están optimizadas, hay poco que reducir. En ese caso Fileflect te avisa en lugar de entregarte un archivo más grande.",
+        "q2": "¿El texto queda borroso?",
+        "a2": "No. Solo se recomprimen las imágenes; el texto sigue siendo nítido y se puede seleccionar y buscar.",
+        "q3": "¿Qué nivel elijo para enviar por correo o WhatsApp?",
+        "a3": "La compresión recomendada suele bastar. Si el archivo sigue siendo grande, prueba la fuerte: las fotos pierden algo de detalle pero el documento sigue legible."
+      }
+    },
+    "json-to-csv": {
+      "title": "JSON a CSV",
+      "description": "Convierte JSON en una tabla CSV o TSV para abrir en Excel o Google Sheets. Sin subir tus datos.",
+      "action": "Convertir a CSV",
+      "about": "JSON a CSV transforma una lista de objetos JSON en una tabla: cada objeto es una fila y cada clave, una columna. Los objetos anidados se convierten en columnas con punto (por ejemplo, direccion.ciudad) y las listas en columnas numeradas (etiquetas.0, etiquetas.1). Puedes elegir coma, punto y coma o tabulación (TSV), y agregar la marca UTF-8 para que Excel muestre bien los acentos.",
+      "faq": {
+        "q1": "¿Qué JSON acepta?",
+        "a1": "Una lista de objetos, un solo objeto, un objeto que envuelve una única lista (como '{'\"items\": [...]'}') o una lista de listas, que se escribe tal cual como filas. Si el JSON tiene un error de sintaxis verás un aviso.",
+        "q2": "¿Por qué Excel muestra mal los acentos o todo en una columna?",
+        "a2": "Deja marcada la opción compatible con Excel (agrega la marca UTF-8). Si tu Excel usa la coma como separador decimal, como en gran parte de Latinoamérica y Europa, elige punto y coma.",
+        "q3": "¿Mis datos se envían a algún servidor?",
+        "a3": "No. La conversión se hace en tu navegador, en segundo plano, y el archivo nunca sale de tu dispositivo."
+      }
+    },
+    "csv-to-json": {
+      "title": "CSV a JSON",
+      "description": "Convierte CSV o TSV en JSON con detección automática del separador. Sin subir tus datos.",
+      "action": "Convertir a JSON",
+      "about": "CSV a JSON lee una tabla con fila de encabezado y genera una lista de objetos JSON, uno por fila. Detecta solo si el archivo usa coma, punto y coma, tabulación o barra vertical, respeta las comillas y los saltos de línea dentro de las celdas, y lee archivos guardados por Excel en UTF-8 o en Windows-1252. Opcionalmente convierte números y true/false, y reconstruye objetos a partir de columnas con punto.",
+      "faq": {
+        "q1": "¿Cómo se tratan los números?",
+        "a1": "Con la opción de convertir valores, un número se escribe como número solo si vuelve a leerse igual: 007 o un número de 20 dígitos quedan como texto para no perder ceros ni precisión. Las celdas vacías pasan a null.",
+        "q2": "¿Qué pasa con encabezados vacíos o repetidos?",
+        "a2": "Reciben un nombre propio (column3, nombre_2) para que ninguna columna se pierda. Las filas con menos celdas se completan con null.",
+        "q3": "¿Puedo obtener objetos anidados?",
+        "a3": "Sí. Las columnas como direccion.ciudad o etiquetas.0 se convierten en objetos y listas. Si una columna choca con otra, se deja tal cual para no perder datos."
+      }
+    },
+    "json-to-yaml": {
+      "title": "JSON a YAML",
+      "description": "Convierte JSON en YAML legible para archivos de configuración, Kubernetes o CI. En tu navegador.",
+      "action": "Convertir a YAML",
+      "about": "JSON a YAML reescribe tus datos JSON como YAML con sangría de bloques, más fácil de leer y editar a mano en archivos de configuración, manifiestos de Kubernetes, docker-compose o pipelines de CI. Los textos que un lector YAML antiguo tomaría como otra cosa (yes, no, on, 007, fechas) se escriben entre comillas para que no cambien de tipo.",
+      "faq": {
+        "q1": "¿Por qué algunos valores aparecen entre comillas?",
+        "a1": "Porque sin comillas algunos lectores de YAML 1.1 los interpretarían distinto: yes y on como verdadero, 007 como número o 2020-01-01 como fecha. Las comillas garantizan que sigan siendo texto.",
+        "q2": "¿Se mantienen el orden y los tipos?",
+        "a2": "Sí. Las claves conservan su orden y los números, booleanos y null se escriben con su tipo YAML. Las líneas largas no se cortan.",
+        "q3": "¿Puedo convertir varios archivos a la vez?",
+        "a3": "Sí. Elige varios archivos .json y descarga cada YAML por separado o todos en un ZIP."
+      }
+    },
+    "yaml-to-json": {
+      "title": "YAML a JSON",
+      "description": "Convierte YAML (también con varios documentos y anclas) en JSON válido. Sin subir tus archivos.",
+      "action": "Convertir a JSON",
+      "about": "YAML a JSON lee archivos YAML 1.2, incluidos los que tienen varios documentos separados por ---, anclas y alias, y claves de combinación (<<) como las de docker-compose o GitLab CI, y genera JSON con sangría. Varios documentos se convierten en una lista. Las etiquetas personalizadas nunca se ejecutan: se leen como texto.",
+      "faq": {
+        "q1": "¿Es seguro abrir un YAML desconocido?",
+        "a1": "Sí. No se ejecuta código, y los archivos con demasiados alias, que pueden multiplicar su tamaño hasta bloquear el equipo (ataque billion laughs), se rechazan con un aviso.",
+        "q2": "¿Por qué yes no se convierte en true?",
+        "a2": "Porque en YAML 1.2, el estándar actual, solo true y false son booleanos. Del mismo modo, las fechas se mantienen como texto en el JSON.",
+        "q3": "¿Qué pasa si hay claves repetidas o un error de sintaxis?",
+        "a3": "Verás un aviso en lugar de un JSON incompleto: una clave repetida en el mismo objeto es un error en YAML."
+      }
+    },
+    "json-to-toml": {
+      "title": "JSON a TOML",
+      "description": "Convierte JSON en TOML para archivos de configuración como pyproject.toml o Cargo.toml. En tu navegador.",
+      "action": "Convertir a TOML",
+      "about": "JSON a TOML transforma un objeto JSON en un archivo TOML con tablas ([seccion]) y listas de tablas ([[elementos]]), el formato de configuración de herramientas como Cargo, Poetry, Hugo o pyproject.toml. Las claves con espacios o símbolos se escriben entre comillas.",
+      "faq": {
+        "q1": "¿Qué JSON se puede convertir?",
+        "a1": "Un objeto en la raíz. TOML no admite una lista ni un valor suelto como documento: en ese caso verás un aviso que lo explica.",
+        "q2": "¿Qué pasa con los valores null?",
+        "a2": "TOML no tiene null: las claves con null se omiten. Si hay un null dentro de una lista no se puede representar y verás un aviso.",
+        "q3": "¿Se pierde información?",
+        "a3": "Fuera de los null, no: textos, números, booleanos, listas y objetos anidados se conservan, y el TOML se vuelve a leer igual."
+      }
+    },
+    "toml-to-json": {
+      "title": "TOML a JSON",
+      "description": "Convierte archivos TOML (Cargo.toml, pyproject.toml, config.toml) en JSON. Sin subir tus archivos.",
+      "action": "Convertir a JSON",
+      "about": "TOML a JSON lee archivos TOML 1.0 con tablas, tablas en línea, listas de tablas y fechas, y genera un JSON con sangría. Sirve para procesar la configuración de un proyecto con herramientas que solo entienden JSON o para revisar su estructura.",
+      "faq": {
+        "q1": "¿Cómo se convierten las fechas?",
+        "a1": "Como texto ISO 8601: una fecha con hora queda como 1979-05-27T07:32:00.000Z y una fecha sola como 1979-05-27.",
+        "q2": "¿Qué pasa con números enteros muy grandes?",
+        "a2": "JSON en el navegador no puede guardar enteros mayores que 2^53 sin perder precisión, así que ese archivo se rechaza con un aviso en lugar de cambiar el valor.",
+        "q3": "¿Mis archivos se suben a algún servidor?",
+        "a3": "No. La conversión se hace en tu navegador y el archivo nunca sale de tu dispositivo."
+      }
+    },
+    "json-to-xml": {
+      "title": "JSON a XML",
+      "description": "Convierte JSON en un documento XML válido y con sangría, con atributos incluidos. En tu navegador.",
+      "action": "Convertir a XML",
+      "about": "JSON a XML genera un documento XML bien formado a partir de tus datos JSON. Las claves que empiezan con @ se escriben como atributos y #text como el texto del elemento; las listas se convierten en elementos repetidos. Si el JSON tiene una sola clave en la raíz, esa clave es el elemento raíz; si no, todo va dentro de '<root>'.",
+      "faq": {
+        "q1": "¿Qué pasa con claves que no son nombres XML válidos?",
+        "a1": "Se corrigen para que el XML sea válido: los espacios y símbolos pasan a guion bajo (mi clave → mi_clave) y a un nombre que empieza con un número se le agrega un guion bajo delante.",
+        "q2": "¿Cómo escribo atributos?",
+        "a2": "Usa claves con @ delante: '{\"libro\": {\"@id\": \"1\", \"titulo\": \"Rayuela\"}}' produce '<libro id=\"1\"><titulo>Rayuela</titulo></libro>'.",
+        "q3": "¿Se escapan los caracteres especiales?",
+        "a3": "Sí. &, '< y >' en los textos y las comillas en los atributos se escriben como entidades, así que el resultado siempre es XML válido."
+      }
+    },
+    "xml-to-json": {
+      "title": "XML a JSON",
+      "description": "Convierte XML en JSON con atributos, elementos repetidos y CDATA. Seguro frente a XXE y sin subir tus archivos.",
+      "action": "Convertir a JSON",
+      "about": "XML a JSON lee documentos XML y los convierte en JSON: cada elemento es una clave, los atributos llevan @ delante, los elementos repetidos forman una lista y el contenido CDATA se conserva como texto. Los valores quedan como texto, porque XML no tiene tipos: 007 sigue siendo 007.",
+      "faq": {
+        "q1": "¿Es seguro abrir un XML desconocido?",
+        "a1": "Sí. Los documentos que declaran entidades ('<!ENTITY>'), la vía de ataques como XXE o billion laughs, se rechazan con un aviso antes de leerlos, y nada se descarga de internet.",
+        "q2": "¿Por qué los números aparecen entre comillas?",
+        "a2": "Porque en XML todo es texto y convertirlo adivinando podría cambiar datos (ceros a la izquierda, códigos). Así obtienes exactamente lo que dice el archivo.",
+        "q3": "¿Se conservan los comentarios?",
+        "a3": "No. Los comentarios y las instrucciones de procesamiento no tienen equivalente en JSON y se omiten; el resto del contenido se mantiene."
+      }
+    },
+    "json-formatter": {
+      "title": "Formatear y validar JSON",
+      "description": "Valida tu JSON, señala la línea y columna del error, y lo ordena con sangría o lo minifica.",
+      "action": "Formatear JSON",
+      "about": "Formatear JSON revisa que tu JSON sea válido y, si lo es, lo reescribe con sangría de 2 o 4 espacios o con tabulaciones, o lo minifica en una sola línea para ocupar menos. Si hay un error, te dice en qué línea y columna está, por ejemplo una coma de más antes de cerrar una llave. También puede ordenar las claves alfabéticamente para comparar archivos.",
+      "faq": {
+        "q1": "¿Cómo encuentro el error en mi JSON?",
+        "a1": "Al formatear, el aviso indica la línea y la columna del primer problema. Los más comunes son comas al final de una lista, comillas simples en lugar de dobles y claves sin comillas.",
+        "q2": "¿Minificar cambia los datos?",
+        "a2": "No. Solo quita espacios y saltos de línea; los valores, el orden y los tipos son los mismos.",
+        "q3": "¿Para qué sirve ordenar las claves?",
+        "a3": "Para comparar dos archivos con las mismas claves en distinto orden, o para que los cambios se vean mejor en un control de versiones. Las listas mantienen su orden."
+      }
+    },
+    "xml-formatter": {
+      "title": "Formatear y validar XML",
+      "description": "Valida tu XML, señala la línea y columna del error, y lo ordena con sangría o lo minifica.",
+      "action": "Formatear XML",
+      "about": "Formatear XML comprueba que el documento esté bien formado (etiquetas cerradas, atributos con comillas) y lo reescribe con sangría o minificado. Conserva comentarios, secciones CDATA, atributos y referencias como &amp; tal como estaban. Si hay un error, indica la línea y la columna.",
+      "faq": {
+        "q1": "¿Qué errores detecta?",
+        "a1": "Etiquetas sin cerrar o mal anidadas, atributos repetidos o sin comillas, y caracteres no permitidos. Es una validación de buena formación: no compara contra un esquema XSD o DTD.",
+        "q2": "¿Se pierde algo al formatear?",
+        "a2": "Los espacios en blanco entre etiquetas se reemplazan por la nueva sangría, y la declaración DOCTYPE se omite. El contenido, los comentarios y CDATA se mantienen.",
+        "q3": "¿Es seguro con archivos desconocidos?",
+        "a3": "Sí. Los documentos que declaran entidades (vía de ataques XXE) se rechazan con un aviso, y nada se descarga de internet."
+      }
+    },
+    "yaml-formatter": {
+      "title": "Formatear y validar YAML",
+      "description": "Valida tu YAML, señala la línea y columna del error y lo vuelve a indentar conservando los comentarios.",
+      "action": "Formatear YAML",
+      "about": "Formatear YAML valida archivos de configuración como docker-compose, Kubernetes o pipelines de CI y los vuelve a indentar con 2 o 4 espacios de forma uniforme. Conserva los comentarios, las anclas y todos los documentos separados por ---. Si hay un error de sintaxis o una clave repetida, indica la línea y la columna.",
+      "faq": {
+        "q1": "¿Por qué no hay opción de tabulaciones?",
+        "a1": "Porque YAML no permite tabulaciones para la sangría: un archivo indentado con tabulaciones no es válido.",
+        "q2": "¿Se mantienen mis comentarios?",
+        "a2": "Sí. Los comentarios de línea y al final de línea se conservan, igual que las anclas y los alias.",
+        "q3": "¿Detecta claves repetidas?",
+        "a3": "Sí. Una clave repetida en el mismo nivel es un error en YAML y muchos programas toman silenciosamente la última; aquí verás un aviso con la posición."
+      }
+    },
+    "base64-encode": {
+      "title": "Codificar a Base64",
+      "description": "Convierte texto o cualquier archivo en Base64 o en una data URL para incrustarlo en HTML, CSS o JSON.",
+      "action": "Codificar a Base64",
+      "about": "Codificar a Base64 transforma texto (como UTF-8) o los bytes de cualquier archivo (imagen, PDF, fuente) en texto Base64, el formato que se usa para incrustar archivos en HTML, CSS, JSON o correos. Puedes obtener Base64 puro, con saltos de línea cada 76 caracteres como en los correos, o una data URL lista para usar en un atributo src.",
+      "faq": {
+        "q1": "¿Cuánto ocupa el resultado?",
+        "a1": "Base64 ocupa alrededor de un 33 % más que el archivo original: 3 bytes se escriben con 4 caracteres.",
+        "q2": "¿Base64 cifra mis datos?",
+        "a2": "No. Es una codificación, no un cifrado: cualquiera puede decodificarla. No la uses para proteger contraseñas ni información privada.",
+        "q3": "¿Qué es una data URL?",
+        "a3": "Es el Base64 precedido del tipo de archivo, por ejemplo data:image/png;base64,…, y se puede usar directamente como src de una imagen o en un CSS."
+      }
+    },
+    "base64-decode": {
+      "title": "Decodificar Base64",
+      "description": "Convierte Base64 o una data URL de nuevo en el texto o el archivo original, con el tipo detectado.",
+      "action": "Decodificar Base64",
+      "about": "Decodificar Base64 recupera los bytes originales de un texto Base64 o de una data URL y te da el archivo para descargar. Detecta el tipo por la data URL o por el contenido (PNG, JPG, PDF y más) y elige la extensión; si el resultado es texto, lo muestra para copiarlo. Acepta saltos de línea, el alfabeto seguro para URL (- y _) y el relleno = ausente.",
+      "faq": {
+        "q1": "¿Cómo sé qué archivo había dentro?",
+        "a1": "Si el Base64 viene en una data URL, se usa el tipo que declara; si no, se reconoce por su contenido. Si no se puede reconocer, se descarga como .bin con los bytes exactos.",
+        "q2": "¿Por qué dice que no es Base64 válido?",
+        "a2": "Porque contiene caracteres que no pertenecen al alfabeto Base64 o le falta un fragmento. Revisa que lo hayas copiado completo.",
+        "q3": "¿El archivo decodificado es idéntico al original?",
+        "a3": "Sí, byte por byte. La decodificación no recomprime ni cambia nada."
+      }
+    },
+    "url-encode": {
+      "title": "Codificar y decodificar URL",
+      "description": "Codifica texto para usarlo en una URL (%20, %C3%B1) o decodifica una URL a texto legible.",
+      "action": "Codificar URL",
+      "about": "Codificar URL convierte espacios, acentos y símbolos en secuencias con porcentaje (por ejemplo, ñ pasa a %C3%B1) para usarlos de forma segura en enlaces y parámetros. Elige codificar un valor, que escapa también / ? & y =, o una URL completa, que los mantiene. El modo decodificar hace lo contrario y puede leer + como espacio, como en los formularios.",
+      "faq": {
+        "q1": "¿Qué diferencia hay entre un valor y una URL completa?",
+        "a1": "Para un parámetro, como el texto de una búsqueda, hay que escapar & = ? y / para que no rompan la URL. En una URL completa esos caracteres tienen función y se dejan tal cual.",
+        "q2": "¿Por qué un + se convierte en espacio?",
+        "a2": "En los formularios web el espacio se envía como +. Desmarca la opción si en tu texto + significa un signo más.",
+        "q3": "¿Qué pasa con un % mal formado?",
+        "a3": "Verás un aviso: una secuencia como %E0%A4%A está incompleta y no corresponde a ningún carácter."
+      }
+    },
+    "hash-generator": {
+      "title": "Generador de hash MD5 y SHA",
+      "description": "Calcula MD5, SHA-1, SHA-256 y SHA-512 de un texto o de archivos y verifica una suma de comprobación.",
+      "action": "Calcular hash",
+      "about": "El generador de hash calcula las sumas MD5, SHA-1, SHA-256 y SHA-512 de un texto (como UTF-8) o de cualquier archivo, sin subirlo: los archivos se leen por partes en tu navegador, así que también funciona con archivos grandes. Pega el hash publicado por quien distribuye un archivo para comprobar que tu descarga está completa y no fue alterada. El resultado se descarga como checksums.txt en el formato que lee sha256sum -c.",
+      "faq": {
+        "q1": "¿Cómo compruebo que una descarga no está dañada?",
+        "a1": "Elige el archivo, pega en «Hash esperado» la suma que publica el sitio oficial y calcula. Verás si coincide y con qué algoritmo; se reconoce por su longitud.",
+        "q2": "¿Qué algoritmo conviene usar?",
+        "a2": "SHA-256 o SHA-512. MD5 y SHA-1 sirven para detectar errores de descarga, pero ya no son seguros frente a alguien que fabrica archivos a propósito con el mismo hash.",
+        "q3": "¿Un hash sirve para guardar contraseñas?",
+        "a3": "No directamente: para contraseñas se usan funciones lentas con sal, como bcrypt o Argon2. Un hash rápido como estos sirve para verificar archivos e integridad."
+      }
+    },
+    "uuid-generator": {
+      "title": "Generador de UUID",
+      "description": "Genera UUID v4 aleatorios o v7 ordenados por tiempo, de uno o en lote, con o sin guiones.",
+      "action": "Generar UUID",
+      "about": "El generador de UUID crea identificadores únicos según la RFC 9562 con el generador criptográfico de tu navegador. La versión 4 es totalmente aleatoria; la versión 7 empieza con la fecha y hora en milisegundos, así que los identificadores quedan ordenados por momento de creación, algo útil como clave primaria en bases de datos. Puedes generar hasta 10 000 de una vez, en mayúsculas o sin guiones, y descargarlos como texto.",
+      "faq": {
+        "q1": "¿Pueden repetirse dos UUID?",
+        "a1": "En la práctica no: un UUID v4 tiene 122 bits aleatorios, así que la probabilidad de repetir uno es despreciable incluso generando miles de millones.",
+        "q2": "¿Cuándo conviene usar la versión 7?",
+        "a2": "Cuando los identificadores van a ser claves en una base de datos: al estar ordenados por tiempo, los índices se fragmentan menos que con UUID v4. Ten en cuenta que revelan el momento de creación.",
+        "q3": "¿Se guardan los UUID generados?",
+        "a3": "No. Se generan en tu navegador y no se envían a ningún servidor."
+      }
+    },
+    "timestamp-converter": {
+      "title": "Conversor de timestamp Unix",
+      "description": "Convierte timestamps Unix en segundos o milisegundos a fecha y hora en cualquier zona horaria, y fechas a timestamp.",
+      "action": "Convertir",
+      "about": "El conversor de timestamp transforma marcas de tiempo Unix (segundos, milisegundos, microsegundos o nanosegundos) en fechas legibles y fechas en timestamps. Pega uno por línea: detecta la unidad por la cantidad de dígitos y también acepta fechas ISO 8601 (2023-11-14T22:13:20Z) o de correo (RFC 2822). Para cada línea obtienes los segundos, los milisegundos, la fecha en UTC y la hora en la zona horaria que elijas, con su diferencia con UTC y el horario de verano aplicado.",
+      "faq": {
+        "q1": "¿Cómo sabe si el número está en segundos o en milisegundos?",
+        "a1": "Por la cantidad de dígitos: hasta 11 son segundos, hasta 14 milisegundos, hasta 17 microsegundos y más, nanosegundos. Si tu dato es distinto, elige la unidad a mano.",
+        "q2": "¿En qué zona se interpreta una fecha sin zona horaria?",
+        "a2": "En la zona elegida en el selector. Si la fecha incluye Z o una diferencia como -03:00, se usa esa.",
+        "q3": "¿Qué pasa con el horario de verano?",
+        "a3": "Se aplica con la base de zonas horarias de tu navegador. Si una hora local se repite al atrasar el reloj, se toma la primera."
+      }
+    },
+    "qr-generator": {
+      "title": "Generador de códigos QR",
+      "description": "Crea códigos QR de texto, enlaces, redes Wi-Fi o contactos y descárgalos en PNG o SVG.",
+      "action": "Crear código QR",
+      "about": "El generador de códigos QR convierte un texto, un enlace, los datos de una red Wi-Fi o una tarjeta de contacto (vCard) en un código que cualquier celular lee con la cámara. Elige el tamaño, el nivel de corrección de errores y los colores, y descárgalo en PNG para usarlo enseguida o en SVG para imprimirlo a cualquier tamaño sin perder nitidez. El código no caduca ni pasa por un acortador: contiene directamente tus datos.",
+      "faq": {
+        "q1": "¿El código QR deja de funcionar con el tiempo?",
+        "a1": "No. Los datos van dentro del propio código, sin redirecciones ni servicios intermedios, así que funciona mientras la imagen se pueda leer.",
+        "q2": "¿Qué nivel de corrección de errores elijo?",
+        "a2": "Medio sirve para casi todo. Usa alto si el código se imprime en superficies que se pueden rayar o manchar; ocupa más módulos y por eso el código se ve más denso.",
+        "q3": "¿Cómo comparto mi Wi-Fi con un QR?",
+        "a3": "Elige Wi-Fi, escribe el nombre de la red y la contraseña con el mismo tipo de seguridad que usa tu router. Al escanearlo, Android y iPhone ofrecen conectarse sin escribir la clave."
+      }
+    },
+    "qr-reader": {
+      "title": "Leer código QR desde una imagen",
+      "description": "Lee el contenido de un código QR en una foto o captura de pantalla, sin usar la cámara.",
+      "action": "Leer código QR",
+      "about": "El lector de códigos QR encuentra el código en una foto o captura de pantalla (PNG, JPG, WEBP, GIF, BMP o AVIF) y te muestra su contenido para copiarlo: un enlace, el texto, los datos de una red Wi-Fi o un contacto. Lee también códigos claros sobre fondo oscuro y prueba varias escalas para encontrar códigos pequeños en fotos grandes. La imagen se analiza en tu navegador.",
+      "faq": {
+        "q1": "¿Por qué no encuentra el código en mi foto?",
+        "a1": "Suele pasar si la foto está borrosa, muy inclinada o el código está cortado. Recorta la imagen alrededor del código o toma la foto de frente y con buena luz.",
+        "q2": "¿Abre el enlace automáticamente?",
+        "a2": "No. Solo muestra el contenido, para que puedas revisar a dónde lleva un enlace antes de abrirlo.",
+        "q3": "¿Puede leer varios códigos a la vez?",
+        "a3": "Puedes elegir varias imágenes y obtendrás el contenido de cada una; de cada imagen se lee un código."
+      }
+    },
+    "password-generator": {
+      "title": "Generador de contraseñas",
+      "description": "Crea contraseñas seguras y aleatorias con la longitud y los caracteres que elijas.",
+      "action": "Generar contraseñas",
+      "about": "El generador de contraseñas crea claves aleatorias con el generador criptográfico de tu navegador, sin sesgos: cada carácter tiene la misma probabilidad. Elige la longitud, si quieres mayúsculas, minúsculas, números y símbolos, y si prefieres evitar caracteres que se confunden como l, 1, O y 0. Cada contraseña incluye al menos un carácter de cada tipo elegido, y verás su fuerza en bits de entropía.",
+      "faq": {
+        "q1": "¿Qué tan larga debe ser una contraseña?",
+        "a1": "Al menos 16 caracteres con letras, números y símbolos (unos 100 bits). Para la clave principal de un gestor de contraseñas, mejor 20 o más.",
+        "q2": "¿Guardan o ven las contraseñas que genero?",
+        "a2": "No. Se generan en tu navegador y nunca se envían a ningún servidor. Cierra la pestaña cuando termines.",
+        "q3": "¿Qué significan los bits de entropía?",
+        "a3": "Miden cuántos intentos haría falta para adivinarla: cada bit duplica la cantidad. Desde 80 bits una contraseña aleatoria resiste ataques de fuerza bruta incluso fuera de línea."
+      }
+    },
+    "word-counter": {
+      "title": "Contador de palabras y caracteres",
+      "description": "Cuenta palabras, caracteres, oraciones y párrafos mientras escribes, y cambia el texto a mayúsculas o minúsculas.",
+      "action": "Contar",
+      "about": "El contador de palabras muestra al instante cuántas palabras, caracteres (con y sin espacios), oraciones, párrafos y líneas tiene tu texto, y el tiempo aproximado de lectura. Cuenta los caracteres como se ven, así que un emoji o una letra con tilde valen uno, y separa palabras también en chino, que no usa espacios. Además puedes pasar el texto a MAYÚSCULAS, minúsculas, Tipo Título o Tipo oración, copiarlo o descargarlo.",
+      "faq": {
+        "q1": "¿Cuenta igual que Word o Google Docs?",
+        "a1": "Casi siempre coincide. Puede variar en palabras con guion o números con coma, porque cada programa aplica reglas distintas; aquí se usan las reglas de Unicode para el idioma de la página.",
+        "q2": "¿Puedo contar un archivo?",
+        "a2": "Sí: abre un archivo de texto (.txt, .md, .csv, .srt…) y se cargará en el cuadro. Si viene de Windows con acentos en otra codificación, se detecta solo.",
+        "q3": "¿Cómo se calcula el tiempo de lectura?",
+        "a3": "Con un ritmo de 200 palabras por minuto, redondeado hacia arriba."
+      }
+    },
+    "color-converter": {
+      "title": "Conversor de colores",
+      "description": "Convierte colores entre HEX, RGB, HSL y OKLCH y comprueba el contraste para accesibilidad (WCAG).",
+      "action": "Convertir color",
+      "about": "El conversor de colores lee un color en HEX, RGB, HSL, OKLCH o por su nombre CSS y te lo muestra en todos esos formatos, listo para copiar en tu CSS o en tu herramienta de diseño. También calcula el contraste del color sobre un fondo según las pautas WCAG 2 e indica si cumple los niveles AA y AAA para texto normal y grande, para que tus textos se lean bien.",
+      "faq": {
+        "q1": "¿Qué es OKLCH y para qué sirve?",
+        "a1": "Es una forma de describir colores por luminosidad, croma y tono que se parece a cómo los percibimos. Facilita crear paletas armónicas y todos los navegadores modernos la aceptan en CSS.",
+        "q2": "¿Qué contraste necesita un texto?",
+        "a2": "El nivel AA pide al menos 4,5:1 para texto normal y 3:1 para texto grande; el nivel AAA, 7:1 y 4,5:1.",
+        "q3": "¿Acepta colores con transparencia?",
+        "a3": "Sí: #RRGGBBAA, rgb(… / 0,5) y similares. Para el contraste, el color se mezcla con el fondo como lo haría el navegador."
+      }
+    },
+    "unit-converter": {
+      "title": "Conversor de unidades",
+      "description": "Convierte longitud, peso, temperatura, volumen, superficie, velocidad, datos y tiempo entre unidades métricas e imperiales.",
+      "action": "Convertir",
+      "about": "El conversor de unidades pasa al instante un valor entre unidades métricas, imperiales y estadounidenses: longitud, peso, temperatura, volumen, superficie, velocidad, tamaño de datos y tiempo. Usa las definiciones exactas (1 pulgada = 2,54 cm, 1 libra = 453,59237 g) y muestra el valor en todas las unidades a la vez. Acepta coma o punto decimal.",
+      "faq": {
+        "q1": "¿Las tazas y galones son de Estados Unidos o del Reino Unido?",
+        "a1": "Las cucharaditas, cucharadas, tazas, pintas, cuartos y galones son las medidas de Estados Unidos; el galón imperial británico aparece aparte.",
+        "q2": "¿Por qué un GB no son 1024 MB?",
+        "a2": "Con prefijos del sistema internacional, 1 GB = 1000 MB. Los sistemas operativos a veces cuentan en potencias de 2: eso son GiB y MiB, que también puedes convertir.",
+        "q3": "¿Qué tan precisos son los resultados?",
+        "a3": "Se muestran hasta 10 cifras significativas. Las equivalencias son exactas por definición; solo se redondea al mostrar el número."
+      }
+    },
+    "compress-image": {
+      "title": "Comprimir imagen",
+      "description": "Reduce el peso de fotos JPG, PNG, WEBP y AVIF, o ajústalas a un peso exacto para un trámite.",
+      "action": "Comprimir imágenes",
+      "about": "Comprimir imagen vuelve a codificar tus fotos para que pesen menos sin cambiar su tamaño en píxeles. Elige un nivel (baja, recomendada o fuerte) o un peso máximo exacto, como los 100 KB o 200 KB que piden muchos formularios y trámites: buscamos la mejor calidad que entra en ese peso y, si no alcanza, achicamos la imagen. Los PNG se optimizan sin pérdida en el nivel bajo y se reducen a una paleta de colores en los demás. También puedes pasar a WEBP o AVIF, que pesan menos con la misma calidad. Todo ocurre en tu navegador y los metadatos (como la ubicación GPS) se quitan.",
+      "faq": {
+        "q1": "¿Cuánto se reduce una foto?",
+        "a1": "Depende de la foto: una foto de celular en JPG suele bajar entre 40 % y 80 % con el nivel recomendado. Si la imagen ya estaba optimizada y no se puede reducir, te devolvemos el original sin cambios.",
+        "q2": "¿Cómo dejo una foto en menos de 100 KB para un trámite?",
+        "a2": "Elige «A un peso exacto» y el botón de 100 KB (o escribe otro peso). La foto resultante pesa como máximo eso; si hace falta, también se reduce su tamaño en píxeles y te avisamos cuánto.",
+        "q3": "¿Por qué mi PNG se guardó como JPG?",
+        "a3": "En el modo de peso exacto los PNG se guardan como JPG, porque el PNG no tiene un ajuste de calidad. Si tu PNG tiene transparencia, elige WEBP para conservarla.",
+        "q4": "¿Se pierde calidad?",
+        "a4": "En JPG, WEBP y AVIF sí, un poco: el nivel bajo casi no se nota y el fuerte prioriza el peso. El PNG en nivel bajo no pierde nada."
+      }
+    },
+    "resize-image": {
+      "title": "Redimensionar imagen",
+      "description": "Cambia el tamaño de tus imágenes en píxeles, en porcentaje o a las medidas de cada red social.",
+      "action": "Redimensionar imágenes",
+      "about": "Redimensionar imagen cambia el ancho y el alto de tus fotos: escribe los píxeles que quieres (con o sin mantener las proporciones), un porcentaje, o elige una medida lista para redes sociales, como la publicación cuadrada de Instagram, una historia o la miniatura de YouTube. Si la proporción no coincide, puedes recortar los bordes o agregar bordes para no perder nada de la foto. Funciona con JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF y HEIC, en lotes, y puedes cambiar el formato al mismo tiempo. Todo se procesa en tu navegador.",
+      "faq": {
+        "q1": "¿Se agranda una imagen más chica que el tamaño pedido?",
+        "a1": "En el modo en píxeles con proporciones, no, salvo que marques «Permitir agrandar imágenes más chicas», porque agrandar no agrega detalle. Las medidas de redes sociales sí la agrandan para llenar el formato.",
+        "q2": "¿Qué pasa si la foto no tiene la proporción de la red social?",
+        "a2": "Con «Recortar los bordes» se conserva el centro de la foto y se recorta lo que sobra. Con «Agregar bordes» entra la foto completa y se completan los costados (blancos en JPG, transparentes en PNG, WEBP y AVIF).",
+        "q3": "¿Hay un tamaño máximo?",
+        "a3": "El resultado puede tener hasta unos 36 megapíxeles (por ejemplo, 6928 × 5196); si pides más, se reduce manteniendo la forma. Cada archivo puede pesar hasta 50 MB.",
+        "q4": "¿Funciona con GIF animados?",
+        "a4": "Se redimensiona solo el primer cuadro. Para GIF animados, la herramienta de video a GIF llegará más adelante."
+      }
+    },
+    "rotate-image": {
+      "title": "Rotar imagen",
+      "description": "Gira tus fotos 90° o 180° y voltéalas en espejo, en lotes.",
+      "action": "Rotar imágenes",
+      "about": "Rotar imagen gira tus fotos 90° a la derecha, 90° a la izquierda o 180°, y también puede voltearlas en espejo (horizontal) o de arriba abajo (vertical). Antes de girar se aplica la orientación que guardó la cámara, así que el resultado queda tal como lo ves en pantalla y se ve igual en cualquier programa. Funciona con JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF y HEIC, en lotes, y conserva el formato (los HEIC se guardan como JPG). Todo se procesa en tu navegador.",
+      "faq": {
+        "q1": "Mi foto se ve bien en el celular pero de costado en la computadora. ¿Sirve esto?",
+        "a1": "Sí. Elige «Solo enderezar»: se aplica la orientación que guardó la cámara y la foto queda derecha en cualquier programa, sin girarla de más.",
+        "q2": "¿Se pierde calidad al rotar?",
+        "a2": "Los PNG, BMP, TIFF y GIF no pierden nada. JPG, WEBP y AVIF se vuelven a guardar con calidad alta (92), una diferencia que en la práctica no se ve.",
+        "q3": "¿Puedo girar y voltear a la vez?",
+        "a3": "Sí: primero se gira y después se voltea. Por ejemplo, 90° a la derecha con volteo horizontal.",
+        "q4": "¿Se conservan los datos EXIF?",
+        "a4": "No: al guardar la imagen girada se quitan los metadatos, incluida la ubicación GPS. Si solo quieres quitar los metadatos sin tocar la imagen, usa «Quitar metadatos EXIF»."
+      }
+    },
+    "remove-exif": {
+      "title": "Quitar metadatos EXIF",
+      "description": "Borra la ubicación GPS, la cámara y la fecha de tus fotos sin perder calidad.",
+      "action": "Quitar metadatos",
+      "about": "Quitar metadatos EXIF borra de tus fotos la información que no se ve pero viaja con el archivo: la ubicación GPS donde se tomó, la marca y el modelo de la cámara o el celular, la fecha y hora, el programa usado y el autor. Antes de borrar te mostramos qué tenía cada foto. En JPG, PNG y WEBP la imagen no se vuelve a comprimir: se copian los mismos datos de la imagen sin los metadatos, así que la calidad es idéntica. En los JPG se conserva solo la orientación, para que la foto no aparezca de costado, y el perfil de color. Los HEIC se guardan como JPG sin metadatos. Todo ocurre en tu navegador.",
+      "faq": {
+        "q1": "¿Por qué quitar los metadatos antes de compartir una foto?",
+        "a1": "Una foto tomada con el celular puede llevar las coordenadas exactas de tu casa o tu trabajo. Muchas redes las borran, pero el correo, los chats con archivos adjuntos y las nubes suelen enviar el archivo original.",
+        "q2": "¿Pierde calidad la foto?",
+        "a2": "No en JPG, PNG ni WEBP: los datos de la imagen se copian byte a byte. Solo los HEIC se vuelven a guardar, como JPG de calidad alta.",
+        "q3": "¿Qué se conserva?",
+        "a3": "Lo necesario para ver bien la foto: la orientación (en JPG) y el perfil de color. Se quitan GPS, cámara, fechas, programa, autor, miniaturas, XMP, IPTC y comentarios.",
+        "q4": "¿Cómo compruebo que se borró la ubicación?",
+        "a4": "Vuelve a pasar la foto limpia por esta herramienta: debería decir que no encontró metadatos. También puedes mirar las propiedades del archivo en tu computadora."
+      }
+    },
+    "crop-image": {
+      "title": "Recortar imagen",
+      "description": "Recorta tus fotos a mano o con proporciones fijas (1:1, 4:3, 16:9, 9:16…), con precisión de píxel y sin subirlas a ningún servidor.",
+      "action": "Recortar imagen",
+      "about": "Recortar imagen te deja elegir la parte de la foto que quieres conservar: arrastra el recuadro y sus esquinas, o escribe la posición y el tamaño exactos en píxeles. Puedes fijar una proporción (cuadrada 1:1 para perfiles, 4:5 para Instagram, 16:9 para portadas y videos, 9:16 para historias, la proporción original…) o recortar libremente. También funciona solo con el teclado. Acepta JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF y HEIC, y puedes cambiar el formato al guardar. Todo se procesa en tu navegador.",
+      "faq": {
+        "q1": "¿Se pierde calidad al recortar?",
+        "a1": "Los píxeles de la zona elegida se copian tal cual, sin achicar ni agrandar. PNG, BMP, TIFF y GIF no pierden nada; JPG, WEBP y AVIF se guardan de nuevo con calidad alta (92).",
+        "q2": "¿Cómo recorto usando solo el teclado?",
+        "a2": "Pasa con Tab al recuadro de recorte: las flechas lo mueven y Mayús + flechas cambian su tamaño (un 1 % de la imagen por pulsación). Para valores exactos, escribe X, Y, ancho y alto en píxeles y presiona Enter.",
+        "q3": "¿Puedo recortar varias fotos a la vez?",
+        "a3": "No: el recorte se ajusta sobre cada foto, así que se hace de a una. Para llevar muchas fotos a la misma medida, usa «Redimensionar imagen» con una medida de redes sociales y la opción de recortar los bordes.",
+        "q4": "¿Por qué la vista previa se ve más chica que mi foto?",
+        "a4": "Para editar rápido se muestra una copia reducida, pero el recorte se aplica sobre la imagen original completa: los valores en píxeles son los de la foto real."
+      }
+    },
+    "id-photo": {
+      "title": "Foto carnet",
+      "description": "Recorta una foto al tamaño de documento (3×4, 4×4, 3,5×4,5 cm, 2×2 in…) con guía de rostro y una hoja de 10×15 cm con copias para imprimir.",
+      "action": "Crear foto carnet",
+      "about": "Prepara una foto para tu cédula, DNI, pasaporte, visa, licencia o carnet: elige la medida, encuadra la cara con la guía y descarga dos archivos: la foto sola a 600 ppp, lista para subir o imprimir a su tamaño real, y una hoja de 10 × 15 cm con todas las copias que entran y líneas de corte, para imprimirla en cualquier laboratorio o kiosco de fotos por el precio de una sola copia. Todo pasa en tu dispositivo: la foto no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué medida necesito?",
+        "a1": "Depende del trámite y de la oficina. Las más pedidas: 3 × 4 cm (Brasil: RG, CNH y carteira de trabalho; también muchos trámites en Chile, Colombia y otros países), 4 × 4 cm (muchos trámites en Argentina), 3,5 × 4,5 cm (pasaportes y visas con el estándar internacional OACI, como el mexicano y los europeos), 2,5 × 3 cm (\"tamaño infantil\" en México) y 2 × 2 pulgadas (pasaporte y visa de EE. UU.). Confirma siempre la medida y los requisitos con la oficina que te la pide: muchos documentos de identidad ya se fotografían en el lugar.",
+        "q2": "¿Cómo tomo una buena foto?",
+        "a2": "De frente, mirando a la cámara, con expresión neutra y la boca cerrada, sin lentes oscuros ni gorra, sobre una pared lisa y clara, con buena luz pareja (sin sombras en la cara) y la cámara a la altura de los ojos, a un metro o más. Al encuadrar, la cabeza debe ocupar el óvalo: la coronilla cerca del borde superior y la barbilla al final del óvalo, con los ojos en la línea punteada.",
+        "q3": "¿Cómo imprimo la hoja?",
+        "a3": "Pide una copia de 10 × 15 cm (o 4 × 6 pulgadas) en un laboratorio, kiosco de fotos o impresora fotográfica, sin recortar ni ajustar: la hoja ya tiene esa medida y las copias tienen el tamaño exacto. Luego corta por las líneas grises. Si imprimes la foto suelta, elige \"tamaño real\" o 100 % en la impresora: el archivo lleva su resolución (600 ppp).",
+        "q4": "¿Cambia el fondo o retoca la cara?",
+        "a4": "No: la foto se recorta y escala tal cual, sin retoques. Si el trámite pide fondo blanco o celeste, tómala delante de una pared de ese color. Las partes transparentes de un PNG quedan blancas.",
+        "q5": "¿Hay algún límite?",
+        "a5": "Una foto a la vez, de hasta 50 MB (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF o HEIC del iPhone). Si la zona encuadrada tiene poca resolución para imprimirse nítida (menos de 300 ppp), te avisamos."
+      }
+    },
+    "remove-background": {
+      "title": "Quitar fondo de imagen",
+      "description": "Quita el fondo de fotos de personas, productos o mascotas y descárgalas en PNG transparente o sobre un color.",
+      "action": "Quitar fondo",
+      "about": "Separa el sujeto principal de la foto (una persona, un producto, una mascota, un objeto) y elimina el fondo: descarga un PNG con fondo transparente para usar en presentaciones, tiendas en línea o diseños, o un JPG sobre blanco o el color que elijas. Funciona con un modelo de inteligencia artificial pequeño (U²-Net) que corre en tu dispositivo: la foto no se sube a ningún servidor. Puedes procesar varias fotos a la vez.",
+      "faq": {
+        "q1": "¿Con qué fotos funciona mejor?",
+        "a1": "Con un sujeto principal claro que se distinga del fondo: un retrato, un producto sobre una mesa, una mascota, un objeto. Con fondos muy cargados, varios sujetos del mismo tamaño o sujetos que ocupan casi toda la foto el resultado puede ser impreciso. Los bordes muy finos (pelo suelto, pelaje, ramas) quedan suavizados.",
+        "q2": "¿Mis fotos se suben a internet?",
+        "a2": "No. El modelo se descarga una sola vez desde nuestro sitio (unos 19 MB, menos comprimido) y luego todo el proceso ocurre en tu navegador. Ni la foto ni el resultado salen de tu dispositivo.",
+        "q3": "¿Qué formato descargo?",
+        "a3": "Con fondo transparente, PNG (el único de los habituales que guarda la transparencia de forma universal). Con fondo blanco o de color, JPG, más liviano y aceptado en cualquier sitio. La foto conserva su tamaño original.",
+        "q4": "¿Sirve para la foto carnet?",
+        "a4": "Sí: quita el fondo con la opción blanco (o celeste, con un color) y después usa la herramienta Foto carnet para recortarla al tamaño del documento. Revisa siempre los requisitos del trámite: algunos no aceptan fotos editadas.",
+        "q5": "¿Hay límites?",
+        "a5": "Hasta 30 MB y 40 megapíxeles por foto, en JPG, PNG, WEBP, AVIF, GIF (primer cuadro) o BMP, y hasta 3 minutos por foto. El modelo analiza la imagen a 320 × 320 y el recorte se escala al tamaño original, por eso es suave en los bordes: no es un recorte a mano píxel por píxel."
+      }
+    },
+    "scan-document": {
+      "title": "Escanear documento",
+      "description": "Convierte fotos de documentos hechas con el celular en un PDF escaneado: endereza la perspectiva y deja el papel blanco y el texto negro.",
+      "action": "Crear PDF",
+      "about": "Sacaste una foto a un contrato, una factura o un formulario con el celular y necesitas enviarlo como escaneo. Sube una o varias fotos (una por página), marca las cuatro esquinas de la hoja en cada una y obtén un PDF con las páginas derechas, vistas de frente y recortadas al borde del papel. El modo blanco y negro limpia sombras y luz despareja para que se vea como una fotocopia; también puedes elegir escala de grises con más contraste o color. Todo pasa en tu dispositivo: las fotos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Cómo saco una buena foto para escanear?",
+        "a1": "Apoya la hoja sobre una superficie oscura y lisa que contraste con el papel, con buena luz y sin flash directo (que deja un reflejo blanco). Encuadra la hoja entera, con algo de margen, y sostén el celular lo más paralelo posible al papel. No hace falta que salga perfectamente derecha: eso se corrige al marcar las esquinas.",
+        "q2": "¿Cómo marco las esquinas?",
+        "a2": "Arrastra cada uno de los cuatro círculos hasta una esquina de la hoja (con el mouse o el dedo), o selecciona uno con Tab y muévelo con las flechas (Mayús + flecha para pasos grandes). Si hay varias páginas, elige cada una con los botones \"Página 1\", \"Página 2\"… El orden del PDF es el de la lista de archivos.",
+        "q3": "¿Qué modo elijo?",
+        "a3": "Blanco y negro para texto (contratos, facturas, apuntes): queda limpio, nítido y el PDF pesa poco. Escala de grises si hay firmas suaves, sellos o fotos que quieres conservar. Color para documentos con colores importantes, como gráficos o carnets.",
+        "q4": "¿El texto se puede buscar o copiar?",
+        "a4": "No: el PDF contiene imágenes de las páginas. Para hacerlo buscable, pásalo luego por \"OCR de PDF escaneado\", que agrega una capa de texto invisible.",
+        "q5": "¿Hay algún límite?",
+        "a5": "Fotos JPG, PNG, WEBP, AVIF o HEIC del iPhone, de hasta 50 MB cada una. Cada página se endereza a un máximo de 2400 píxeles en su lado más largo (unos 200 ppp en A4) y el proceso completo tiene 5 minutos. Las esquinas se ponen a mano: no se detecta la hoja automáticamente."
+      }
+    },
+    "watermark-image": {
+      "title": "Marca de agua en imágenes",
+      "description": "Agrega tu nombre, texto o logo como marca de agua a muchas fotos a la vez, en una esquina o en mosaico.",
+      "action": "Agregar marca de agua",
+      "about": "Marca de agua en imágenes protege tus fotos con un texto (tu nombre, tu marca, «muestra», «confidencial») o con tu logo. Elige la posición en una cuadrícula de 9 lugares o un mosaico inclinado que cubre toda la imagen, el tamaño, el color y la opacidad, y mira el resultado en la vista previa antes de procesar. Se aplica igual a todas las fotos del lote, con un tamaño proporcional a cada una. Funciona con JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF y HEIC, y todo se procesa en tu navegador.",
+      "faq": {
+        "q1": "¿Puedo usar mi logo con fondo transparente?",
+        "a1": "Sí: elige «Logo o imagen» y sube un PNG o WEBP con transparencia. El logo se escala a un porcentaje del ancho de cada foto, así se ve igual en fotos grandes y chicas.",
+        "q2": "¿Para qué sirve el mosaico?",
+        "a2": "Repite la marca de agua inclinada sobre toda la imagen. Es más difícil de recortar o borrar que una marca en una esquina, por eso conviene para documentos o fotos que compartes como muestra.",
+        "q3": "¿Se puede quitar la marca de agua después?",
+        "a3": "No desde el archivo nuevo: la marca queda dibujada en los píxeles. Guarda tus originales sin marca; la herramienta nunca los modifica.",
+        "q4": "¿Se pierde calidad?",
+        "a4": "PNG, BMP, TIFF y GIF no pierden nada. JPG, WEBP y AVIF se guardan de nuevo con calidad alta (92). El tamaño en píxeles no cambia."
+      }
+    },
+    "add-text-to-image": {
+      "title": "Agregar texto a una imagen",
+      "description": "Escribe sobre tus fotos con el tipo de letra, tamaño, color, contorno y posición que elijas, con vista previa al instante.",
+      "action": "Agregar texto",
+      "about": "Agregar texto a una imagen te permite escribir una o varias líneas sobre una foto: un título, una fecha, un precio, una frase para compartir. Elige el tipo de letra, negrita, tamaño, color, un contorno que se lee sobre cualquier fondo o un recuadro detrás del texto, y la posición en una cuadrícula de 9 lugares. La vista previa se actualiza mientras escribes. Puedes aplicar el mismo texto a varias imágenes. Funciona con JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF y HEIC, en tu navegador.",
+      "faq": {
+        "q1": "¿Puedo escribir en varias líneas?",
+        "a1": "Sí: cada salto de línea del cuadro de texto es una línea nueva, centradas entre sí. Puedes escribir hasta 500 caracteres.",
+        "q2": "¿Qué tipos de letra hay?",
+        "a2": "Sin serifa, con serifa y monoespaciada, usando las fuentes de tu sistema; los acentos, la ñ, los emojis y el chino se ven como en tu dispositivo.",
+        "q3": "El texto no se lee bien sobre mi foto. ¿Qué hago?",
+        "a3": "Activa «Contorno», que agrega un borde de color opuesto alrededor de cada letra, o «Fondo detrás del texto», que pone un recuadro semitransparente.",
+        "q4": "¿El tamaño del texto depende de la foto?",
+        "a4": "Sí: se calcula como un porcentaje del lado más corto de la imagen, así el texto se ve igual de grande en una foto del celular y en una captura chica."
+      }
+    },
+    "favicon-generator": {
+      "title": "Generador de favicon",
+      "description": "Crea el favicon de tu sitio web desde una imagen o un SVG: ICO, PNG para Apple y Android, manifest y etiquetas HTML.",
+      "action": "Crear favicon",
+      "about": "El generador de favicon convierte tu logo en todos los íconos que necesita un sitio web: favicon.ico con 16, 32 y 48 píxeles para pestañas y marcadores, PNG de 16 y 32 px, el ícono de 180 px para la pantalla de inicio del iPhone (apple-touch-icon), los de 192 y 512 px para Android, el archivo site.webmanifest y un fragmento HTML listo para pegar en el head. Acepta PNG, JPG, WEBP, AVIF, GIF, BMP, TIFF, HEIC y SVG; si la imagen no es cuadrada, puedes ajustarla con márgenes o recortarla. Todo se genera en tu navegador.",
+      "faq": {
+        "q1": "¿Dónde pongo los archivos?",
+        "a1": "En la raíz de tu sitio (junto a la página de inicio), y pega el contenido de favicon-head.html dentro del head de tus páginas. Si usas otra carpeta, cambia las rutas que empiezan con «/».",
+        "q2": "¿Por qué el ícono de Apple tiene fondo?",
+        "a2": "El iPhone pinta de negro las zonas transparentes del ícono de la pantalla de inicio, así que apple-touch-icon.png se guarda con el fondo elegido (o blanco). Los demás conservan la transparencia si elegiste fondo transparente.",
+        "q3": "¿Qué imagen conviene usar?",
+        "a3": "Un SVG o un PNG cuadrado de al menos 512 × 512 px, con un dibujo simple y contrastado: a 16 px los detalles finos y los textos largos no se distinguen.",
+        "q4": "¿Es seguro subir un SVG?",
+        "a4": "El SVG se dibuja en tu navegador como imagen, sin ejecutar scripts ni cargar recursos externos, y nunca se envía a ningún servidor."
+      }
+    },
+    "svg-converter": {
+      "title": "Convertir SVG a PNG, JPG o WEBP",
+      "description": "Pasa tus gráficos SVG a imágenes PNG, JPG o WEBP en alta resolución (2×, 4× o el ancho que quieras), en lotes.",
+      "action": "Convertir SVG",
+      "about": "Convertir SVG transforma logos, íconos e ilustraciones vectoriales en imágenes que se pueden usar en cualquier lugar: redes sociales, documentos, presentaciones o sitios que no aceptan SVG. Como un SVG es vectorial, se dibuja directamente al tamaño pedido y queda nítido aunque lo agrandes: elige 1×, 2×, 4× o un ancho exacto en píxeles. PNG y WEBP conservan la transparencia; JPG la rellena de blanco. Puedes convertir muchos archivos a la vez y todo ocurre en tu navegador.",
+      "faq": {
+        "q1": "¿Se ve pixelado si lo agrando?",
+        "a1": "No: el SVG se dibuja de nuevo al tamaño final, así que a 2× o 4× las líneas y los textos quedan nítidos. El límite es de 16 384 px por lado.",
+        "q2": "¿Es seguro convertir un SVG que no hice yo?",
+        "a2": "Sí. El SVG se dibuja como una imagen: los scripts que pueda tener no se ejecutan y no se cargan archivos externos. Además, nunca se sube a ningún servidor.",
+        "q3": "Mi SVG usa una fuente especial y el texto se ve distinto. ¿Por qué?",
+        "a3": "Si el SVG usa una fuente que no está incrustada en el archivo, el navegador la reemplaza por una del sistema. Convierte los textos a trazos en tu editor (Inkscape, Illustrator, Figma) antes de exportar.",
+        "q4": "¿Qué tamaño tiene el resultado en 1×?",
+        "a4": "El que declara el SVG en sus atributos width y height (o su viewBox). Si no declara ninguno, se usa 1024 px. El mensaje del resultado muestra el tamaño final de cada imagen."
+      }
+    },
+    "subtitle-converter": {
+      "title": "Convertir subtítulos SRT, VTT, ASS y SSA",
+      "description": "Convierte subtítulos entre SRT, WebVTT, ASS y SSA conservando tiempos, cursivas y negritas, en lotes y sin subir tus archivos.",
+      "action": "Convertir subtítulos",
+      "about": "Convertir subtítulos pasa tus archivos entre SRT (el más compatible: reproductores, televisores y YouTube), WebVTT (el de los videos en páginas web con HTML5), ASS y SSA (los de Aegisub, con estilos). Los tiempos se mantienen exactos, igual que los saltos de línea, las cursivas, las negritas y los subrayados. Detecta la codificación: un SRT antiguo guardado en Windows-1252 se lee con sus tildes y eñes, y el resultado siempre se guarda en UTF-8. Puedes convertir varios archivos a la vez o pegar el texto.",
+      "faq": {
+        "q1": "¿Se pierde algo al convertir de ASS a SRT?",
+        "a1": "SRT y VTT no tienen fuentes, colores ni posiciones como ASS. Se conservan el texto, los tiempos, las cursivas, las negritas y los subrayados; el resto se quita y te avisamos debajo del resultado cuando pasa.",
+        "q2": "Mis subtítulos muestran símbolos raros en lugar de tildes. ¿Se arregla?",
+        "a2": "Sí, en la mayoría de los casos. Si el archivo no es UTF-8 válido se lee como Windows-1252 (lo habitual en archivos viejos en español o portugués) y el resultado se guarda en UTF-8, que entienden todos los reproductores modernos.",
+        "q3": "¿Qué pasa con los comentarios y los estilos de un archivo VTT?",
+        "a3": "Los bloques NOTE se ignoran porque no son subtítulos. Los bloques STYLE, las posiciones de cada línea y los nombres de quien habla se quitan al convertir a otro formato.",
+        "q4": "¿Mis archivos se suben a algún servidor?",
+        "a4": "No. La conversión se hace en tu navegador; tus subtítulos no salen de tu dispositivo."
+      }
+    },
+    "subtitle-sync": {
+      "title": "Sincronizar subtítulos (adelantar, atrasar y cambiar FPS)",
+      "description": "Adelanta o atrasa todos los subtítulos de un SRT, VTT, ASS o SSA y corrige el desfase entre 23,976, 24, 25 y 30 FPS.",
+      "action": "Sincronizar subtítulos",
+      "about": "Sincronizar subtítulos corrige los archivos que aparecen antes o después de lo que se habla. Escribe cuántos segundos moverlos (un número negativo los adelanta) y, si el desfase va creciendo a lo largo de la película, cambia la velocidad de cuadros: es el caso típico de un subtítulo hecho para 23,976 FPS sobre un video de 25 FPS. Solo cambian los tiempos: el formato, los estilos, las posiciones y los comentarios del archivo quedan intactos. Ningún tiempo queda antes del inicio del video.",
+      "faq": {
+        "q1": "¿Cómo sé cuántos segundos mover?",
+        "a1": "Busca en el video una frase clara, anota en qué segundo se dice y compárala con el tiempo de esa línea en el subtítulo. Si el subtítulo aparece 2 segundos tarde, escribe -2; si aparece antes, un número positivo.",
+        "q2": "Al principio coincide pero al final va desfasado. ¿Qué hago?",
+        "a2": "Es un problema de velocidad de cuadros: el subtítulo se hizo para otra versión del video. Activa \"Cambiar la velocidad de cuadros\" y elige la de origen y la de destino; las combinaciones más comunes son 23,976 ↔ 25 y 25 ↔ 23,976.",
+        "q3": "¿Qué pasa con las líneas que quedarían antes del inicio?",
+        "a3": "Las que terminan antes del segundo cero se eliminan (y te decimos cuántas) y las que lo cruzan empiezan en cero. En un SRT se vuelven a numerar.",
+        "q4": "¿Se pierden los estilos de mi archivo ASS?",
+        "a4": "No. Solo se reescriben los tiempos de inicio y fin de cada línea; estilos, posiciones, efectos y comentarios quedan como estaban."
+      }
+    },
+    "font-converter": {
+      "title": "Convertir fuentes TTF, OTF, WOFF y WOFF2",
+      "description": "Convierte fuentes TTF u OTF a WOFF2 o WOFF para tu sitio web, o pasa WOFF/WOFF2 a TTF/OTF para instalarlas. Gratis y en tu navegador.",
+      "action": "Convertir fuentes",
+      "about": "Convertir fuentes prepara tipografías para la web y para el escritorio. WOFF2 comprime la fuente con Brotli y suele pesar un 30 % menos que WOFF y la mitad que el TTF original, así tu sitio carga más rápido; WOFF sirve para navegadores muy antiguos. Al revés, si solo tienes un WOFF o WOFF2, obtienes el TTF u OTF para instalarlo en Windows, macOS o Linux. Los glifos, métricas y nombres no cambian: solo cambia el envoltorio.",
+      "faq": {
+        "q1": "¿Se pierde calidad al convertir?",
+        "a1": "No. WOFF y WOFF2 son formas comprimidas de la misma fuente: al volver a TTF u OTF obtienes los mismos glifos, métricas, kerning y nombres.",
+        "q2": "¿Puedo convertir OTF a TTF?",
+        "a2": "No: esta herramienta no cambia el tipo de contornos (CFF ↔ TrueType), solo el contenedor. Una fuente OTF (CFF) sale como .otf; los programas de escritorio la instalan igual que un TTF.",
+        "q3": "¿Puedo usar cualquier fuente en mi sitio?",
+        "a3": "Depende de su licencia. Muchas fuentes comerciales prohíben convertirlas o usarlas en la web; las de Google Fonts y otras con licencia OFL lo permiten. Revisa la licencia antes de publicarla.",
+        "q4": "¿Mis fuentes se suben a internet?",
+        "a4": "No. La conversión se hace en tu navegador y los archivos no salen de tu dispositivo."
+      }
+    },
+    "markdown-to-html": {
+      "title": "Markdown a HTML",
+      "description": "Convierte Markdown (con tablas y listas de tareas de GitHub) en HTML limpio y seguro, como fragmento o página completa. En tu navegador.",
+      "action": "Convertir a HTML",
+      "about": "Markdown a HTML transforma tus notas, README o documentación escritos en Markdown en HTML listo para pegar en un sitio, un correo o un CMS. Admite el formato de GitHub: tablas, tachado, listas de tareas y bloques de código con lenguaje. Puedes obtener solo el contenido o una página completa con título y estilos legibles en modo claro y oscuro.",
+      "faq": {
+        "q1": "¿Qué variante de Markdown admite?",
+        "a1": "CommonMark con las extensiones de GitHub (GFM): tablas, tachado con ~~, listas de tareas, enlaces automáticos y bloques de código con lenguaje.",
+        "q2": "¿Es seguro el HTML que genera?",
+        "a2": "Sí. Se limpia con DOMPurify: no quedan scripts, atributos de eventos (onclick, onerror), formularios ni enlaces javascript:. El HTML escrito dentro del Markdown se conserva solo si es seguro.",
+        "q3": "¿Puedo convertir varios archivos?",
+        "a3": "Sí. Elige varios .md y descárgalos en un ZIP, o pega el texto directamente.",
+        "q4": "¿Mis archivos se suben a internet?",
+        "a4": "No. La conversión se hace en tu navegador."
+      }
+    },
+    "html-to-markdown": {
+      "title": "HTML a Markdown",
+      "description": "Convierte páginas o fragmentos HTML en Markdown limpio (con tablas de GitHub) para documentación, wikis o notas. En tu navegador.",
+      "action": "Convertir a Markdown",
+      "about": "HTML a Markdown pasa el contenido de una página web, un correo o un exportado de CMS a Markdown fácil de editar: títulos con #, listas, negritas, enlaces, imágenes, tablas y bloques de código con lenguaje. Los scripts, estilos y formularios se descartan. Ideal para migrar contenido a GitHub, Notion, Obsidian o un generador de sitios estáticos.",
+      "faq": {
+        "q1": "¿Se ejecuta algo del HTML?",
+        "a1": "No. El HTML se analiza como texto inerte: los scripts no se ejecutan y no se carga ninguna imagen ni recurso externo.",
+        "q2": "¿Qué pasa con estilos, colores y diseño?",
+        "a2": "Markdown no tiene estilos: se conserva la estructura (títulos, listas, tablas, énfasis) y se pierden colores, fuentes y posiciones.",
+        "q3": "¿Conserva las tablas?",
+        "a3": "Sí, como tablas de Markdown de GitHub. Las tablas con celdas combinadas no existen en Markdown y se simplifican.",
+        "q4": "¿Mis archivos se suben a internet?",
+        "a4": "No. Todo se hace en tu navegador."
+      }
+    },
+    "delete-pdf-pages": {
+      "title": "Eliminar páginas de un PDF",
+      "description": "Quita las páginas que sobran de un PDF eligiéndolas sobre las miniaturas o por número, sin subir el archivo.",
+      "action": "Eliminar páginas",
+      "about": "Eliminar páginas de un PDF te deja quitar hojas en blanco, anexos o páginas repetidas antes de enviar un documento. Verás una miniatura de cada página: toca las que sobran (se marcan en rojo) o escribe sus números, por ejemplo 2, 5-7. El resto del documento queda igual, en el mismo orden y con la misma calidad, porque las páginas se copian sin volver a comprimirlas.",
+      "faq": {
+        "q1": "¿Se pierde calidad al eliminar páginas?",
+        "a1": "No. Las páginas que quedan se copian tal como están, con su texto seleccionable, sus imágenes y sus enlaces internos de página.",
+        "q2": "¿Puedo elegir las páginas escribiendo los números?",
+        "a2": "Sí. Escribe rangos separados por comas, como 1-3, 8 o 10- (de la 10 al final). Las miniaturas se marcan solas, y si tocas una miniatura el campo se actualiza.",
+        "q3": "¿Por qué no puedo eliminar todas las páginas?",
+        "a3": "Un PDF sin páginas no es válido y la mayoría de los programas no lo abre. Deja al menos una página.",
+        "q4": "¿Mi PDF se sube a internet?",
+        "a4": "No. Las miniaturas y el nuevo PDF se generan en tu navegador; el archivo no sale de tu dispositivo."
+      }
+    },
+    "extract-pdf-pages": {
+      "title": "Extraer páginas de un PDF",
+      "description": "Elige páginas sobre las miniaturas y guárdalas en un PDF nuevo, o cada una en su propio PDF.",
+      "action": "Extraer páginas",
+      "about": "Extraer páginas de un PDF crea un documento nuevo solo con las páginas que eliges: el certificado de un expediente, el capítulo de un libro o las hojas que hay que firmar. Toca las miniaturas (se marcan con un tilde) o escribe los números, y decide si quieres un solo PDF o un PDF por página dentro de un ZIP. Las páginas se ordenan como en el original y se copian sin perder calidad.",
+      "faq": {
+        "q1": "¿En qué orden quedan las páginas extraídas?",
+        "a1": "En el mismo orden que en el documento original. Si necesitas otro orden, usa después Ordenar PDF.",
+        "q2": "¿Qué diferencia hay con Dividir PDF?",
+        "a2": "Dividir PDF separa todo el documento por rangos. Aquí eliges a la vista solo las páginas que te interesan, una por una.",
+        "q3": "¿Puedo sacar cada página en un archivo separado?",
+        "a3": "Sí. Elige «Un PDF por página (ZIP)» y descargarás un ZIP con un PDF por cada página seleccionada, con el número de página en el nombre.",
+        "q4": "¿El PDF original cambia?",
+        "a4": "No. Se crea un archivo nuevo en tu navegador y el original queda igual en tu dispositivo."
+      }
+    },
+    "pdf-page-numbers": {
+      "title": "Numerar páginas de un PDF",
+      "description": "Agrega números de página a tus PDF en la posición y el formato que elijas, también en páginas giradas.",
+      "action": "Numerar páginas",
+      "about": "Numerar páginas de un PDF agrega el número en cada hoja de una tesis, un contrato o un expediente. Elige la esquina o el centro, arriba o abajo, el formato (1, «1 / 10» o «Página 1 de 10»), el tamaño y desde qué número empezar; puedes dejar la portada sin número. Los números se escriben como texto real y quedan derechos aunque una página esté guardada de costado. Puedes numerar varios PDF a la vez.",
+      "faq": {
+        "q1": "¿Puedo dejar la portada sin número?",
+        "a1": "Sí. Marca «Sin número en la primera página»: la numeración empieza en la segunda hoja con el número que elijas (por ejemplo 1).",
+        "q2": "¿Qué pasa con las páginas horizontales o giradas?",
+        "a2": "El número se ubica según cómo se ve la página al abrirla: abajo al centro es abajo al centro también en una página apaisada o escaneada de costado.",
+        "q3": "¿Se puede empezar en otro número?",
+        "a3": "Sí. Escribe el número inicial, por ejemplo 15 si el PDF continúa otro documento. El total de «Página N de M» se ajusta solo.",
+        "q4": "¿Mis PDF se suben a un servidor?",
+        "a4": "No. Los números se agregan en tu navegador y tus archivos no salen de tu dispositivo."
+      }
+    },
+    "pdf-watermark": {
+      "title": "Agregar marca de agua a un PDF",
+      "description": "Pon un texto como CONFIDENCIAL o BORRADOR sobre tus PDF, en diagonal, horizontal o en mosaico, con la opacidad que quieras.",
+      "action": "Agregar marca de agua",
+      "about": "Agregar marca de agua a un PDF estampa un texto sobre las páginas para indicar que es una copia, un borrador o un documento confidencial, o para identificar a quién se lo enviaste. Elige el texto, la disposición (una diagonal grande, una línea horizontal al centro o un mosaico repetido que cubre toda la hoja), el tamaño, el color y la opacidad, y si va en todas las páginas o solo en algunas. Funciona con tildes, eñes y también con chino o emojis.",
+      "faq": {
+        "q1": "¿La marca de agua tapa el contenido?",
+        "a1": "Se dibuja encima con la opacidad que elijas: con 20–30 % el texto del documento se sigue leyendo bien.",
+        "q2": "¿Se puede quitar después?",
+        "a2": "Queda escrita en las páginas como parte del contenido, así que no se borra con un clic. Aun así, alguien con un editor de PDF podría quitarla: no reemplaza una firma ni una protección con contraseña.",
+        "q3": "¿Puedo marcar solo algunas páginas?",
+        "a3": "Sí. Elige «Solo algunas» y escribe las páginas o rangos, por ejemplo 1, 3-5. Si marcas varios PDF, las páginas se aplican a cada uno.",
+        "q4": "¿Mi PDF se sube a internet?",
+        "a4": "No. La marca de agua se agrega en tu navegador y el archivo no sale de tu dispositivo."
+      }
+    },
+    "pdf-to-text": {
+      "title": "PDF a texto",
+      "description": "Extrae el texto de tus PDF a un archivo TXT para copiarlo, buscarlo o reutilizarlo, sin subirlos.",
+      "action": "Extraer texto",
+      "about": "PDF a texto copia todo el texto de un PDF a un archivo TXT en UTF-8, página por página y en orden de lectura, para pegarlo en un correo, buscar una frase o reutilizar un contrato sin volver a tipearlo. Puedes marcar dónde empieza cada página y procesar varios PDF a la vez. Si el PDF es un escaneo (solo imágenes), te avisamos: ese texto necesita reconocimiento óptico (OCR).",
+      "faq": {
+        "q1": "¿Se mantiene el formato, las tablas o las columnas?",
+        "a1": "No. El resultado es texto plano: se conservan las palabras y los saltos de línea, pero no fuentes, colores ni la posición exacta. Las tablas quedan como líneas de texto.",
+        "q2": "¿Por qué dice que mi PDF no tiene texto?",
+        "a2": "Porque es una imagen escaneada o una foto guardada como PDF: no contiene letras, solo píxeles. Para sacar ese texto hace falta OCR.",
+        "q3": "¿Funciona con acentos y otros idiomas?",
+        "a3": "Sí. El texto se guarda en UTF-8, con tildes, eñes, cedillas y también chino, siempre que el PDF tenga esas letras como texto.",
+        "q4": "¿Mis PDF se suben a un servidor?",
+        "a4": "No. El texto se extrae en tu navegador y tus archivos no salen de tu dispositivo."
+      }
+    },
+    "crop-pdf": {
+      "title": "Recortar márgenes de un PDF",
+      "description": "Quita los márgenes blancos de un PDF de forma automática o con medidas en milímetros, sin perder calidad.",
+      "action": "Recortar PDF",
+      "about": "Recortar PDF quita los márgenes que sobran: ideal para leer un artículo en el celular o en un lector de libros, o para ajustar un documento escaneado con bordes. En modo automático detecta dónde termina el contenido de cada página y deja 3 mm alrededor; en modo manual quitas los milímetros que elijas de cada lado. Se cambia el área visible (CropBox), así que el texto y las imágenes no se recomprimen.",
+      "faq": {
+        "q1": "¿Lo recortado se borra del archivo?",
+        "a1": "No. Queda oculto fuera del área visible y los visores no lo muestran ni lo imprimen, pero sigue dentro del archivo. No uses esta herramienta para ocultar datos privados.",
+        "q2": "¿Cómo funciona el modo automático?",
+        "a2": "Cada página se dibuja en baja resolución para encontrar el contenido que no es blanco, y se recorta alrededor con 3 mm de margen. Una página en blanco queda como está.",
+        "q3": "¿Funciona con páginas giradas o apaisadas?",
+        "a3": "Sí. Arriba, abajo, izquierda y derecha se toman según cómo se ve la página al abrirla.",
+        "q4": "¿Mi PDF se sube a internet?",
+        "a4": "No. Todo se hace en tu navegador y el archivo no sale de tu dispositivo."
+      }
+    },
+    "sign-pdf": {
+      "title": "Firmar PDF",
+      "description": "Dibuja tu firma o sube una foto y colócala en cualquier página de un PDF, sin imprimir ni escanear.",
+      "action": "Firmar y descargar",
+      "about": "Firmar PDF te deja poner tu firma manuscrita en un contrato, una autorización o un formulario sin imprimirlo ni escanearlo. Dibújala con el dedo o el mouse, o sube una foto de tu firma en papel (el fondo blanco se quita solo). Después elige la página, toca dónde va y ajusta el tamaño. La firma se guarda como una imagen sobre la página, con transparencia. Es una firma visible: no es una firma digital con certificado.",
+      "faq": {
+        "q1": "¿Tiene validez legal?",
+        "a1": "Depende del trámite y del país. Es equivalente a pegar una firma escaneada: sirve en muchos acuerdos privados, pero no es una firma digital certificada como la de un token o un certificado oficial. Si te piden firma digital, esta no la reemplaza.",
+        "q2": "¿Puedo usar una foto de mi firma?",
+        "a2": "Sí. Firma sobre un papel blanco, sácale una foto con buena luz y súbela: quitamos el blanco del papel y recortamos los bordes para que solo quede el trazo.",
+        "q3": "¿Puedo mover la firma con el teclado?",
+        "a3": "Sí. Selecciona la firma con Tab y muévela con las flechas; con Mayús se mueve más rápido.",
+        "q4": "¿Mi firma o mi PDF se suben a un servidor?",
+        "a4": "No. Todo se hace en tu navegador: ni la firma ni el documento salen de tu dispositivo, y no guardamos tu firma."
+      }
+    },
+    "protect-pdf": {
+      "title": "Proteger PDF con contraseña",
+      "description": "Pon una contraseña a tu PDF con cifrado AES de 256 bits y elige si se puede imprimir o copiar. Gratis y en tu navegador.",
+      "action": "Proteger PDF",
+      "about": "Proteger PDF agrega una contraseña de apertura a tus documentos: sin ella, ningún visor puede mostrar el contenido. Se usa cifrado AES de 256 bits, el más fuerte que admite el formato PDF, y puedes elegir si quien lo abre podrá imprimirlo, copiar el texto o modificarlo. Sirve para enviar recibos, contratos o historias clínicas por correo con más tranquilidad.",
+      "faq": {
+        "q1": "¿Qué tan seguro es?",
+        "a1": "Se usa AES de 256 bits (PDF 2.0). La seguridad depende de la contraseña: usa una larga, con palabras o caracteres variados, y compártela por otro medio que no sea el mismo correo.",
+        "q2": "¿Qué pasa si olvido la contraseña?",
+        "a2": "No se puede recuperar: no la guardamos en ningún lado. Conserva una copia del PDF original sin contraseña.",
+        "q3": "¿Funcionan los permisos de imprimir y copiar?",
+        "a3": "Los respetan Adobe Acrobat, los navegadores y la mayoría de los visores, pero algunos programas los ignoran. La contraseña de apertura, en cambio, siempre es obligatoria.",
+        "q4": "¿Mi PDF se sube a internet?",
+        "a4": "No. El cifrado se hace en tu navegador con qpdf y ni el archivo ni la contraseña salen de tu dispositivo."
+      }
+    },
+    "unlock-pdf": {
+      "title": "Quitar contraseña de un PDF",
+      "description": "Quita la contraseña de un PDF que puedes abrir: escríbela una vez y descarga una copia sin contraseña ni restricciones.",
+      "action": "Quitar contraseña",
+      "about": "Si tienes un PDF protegido (un resumen bancario, una factura o un documento de trabajo) y te cansaste de escribir la contraseña cada vez que lo abres, aquí la escribes una vez y obtienes una copia sin cifrar. También quita las restricciones de imprimir o copiar si conoces la contraseña de permisos. No sirve para abrir PDF de otras personas: hace falta la contraseña correcta.",
+      "faq": {
+        "q1": "¿Puede averiguar una contraseña que no sé?",
+        "a1": "No. La herramienta solo quita la contraseña si la escribes bien. No probamos contraseñas ni rompemos el cifrado.",
+        "q2": "¿Qué contraseña tengo que escribir?",
+        "a2": "La que usas para abrir el PDF. Si el PDF se abre sin contraseña pero no deja imprimir o copiar, escribe la contraseña de permisos (propietario).",
+        "q3": "¿Se pierde algo del documento?",
+        "a3": "No. Se quita el cifrado y el contenido (texto, imágenes, formularios y enlaces) queda igual.",
+        "q4": "¿Mi PDF y la contraseña se suben a internet?",
+        "a4": "No. Todo se hace en tu navegador y nada sale de tu dispositivo."
+      }
+    },
+    "extract-pdf-images": {
+      "title": "Extraer imágenes de un PDF",
+      "description": "Descarga todas las imágenes de un PDF en su calidad original: fotos en JPG tal cual y el resto en PNG, en un ZIP.",
+      "action": "Extraer imágenes",
+      "about": "Extraer imágenes saca las fotos, logos e ilustraciones que hay dentro de un PDF para que las uses por separado: las fotos de un catálogo, las imágenes de una presentación o los gráficos de un informe. No es una captura de la página: obtienes cada imagen con su resolución original. Las que se repiten en varias páginas se descargan una sola vez.",
+      "faq": {
+        "q1": "¿Pierden calidad las imágenes?",
+        "a1": "No. Las fotos guardadas en JPG dentro del PDF se copian byte a byte; las demás se decodifican y se guardan en PNG, que no tiene pérdida.",
+        "q2": "¿Por qué no aparece el texto o los dibujos?",
+        "a2": "Solo se extraen imágenes. El texto y los dibujos vectoriales (líneas, tablas, muchos logos) no son imágenes; para guardarlos usa PDF a JPG, que convierte la página entera.",
+        "q3": "¿Qué pasa con un PDF escaneado?",
+        "a3": "Cada página escaneada es una imagen, así que obtendrás una imagen por página, con la resolución del escaneo.",
+        "q4": "¿Mi PDF se sube a internet?",
+        "a4": "No. Todo se hace en tu navegador y el archivo no sale de tu dispositivo."
+      }
+    },
+    "markdown-to-pdf": {
+      "title": "Markdown a PDF",
+      "description": "Convierte Markdown (con tablas, listas de tareas y código) en un PDF bien maquetado, en A4 o Carta.",
+      "action": "Convertir a PDF",
+      "about": "Markdown a PDF convierte tus notas, README, apuntes o documentación escritos en Markdown en un PDF listo para imprimir o enviar. Admite el formato de GitHub: tablas, tachado, listas de tareas y bloques de código. Los títulos, las listas y las tablas se maquetan con márgenes y tipografía legibles, y los enlaces siguen funcionando dentro del PDF.",
+      "faq": {
+        "q1": "¿Qué elementos de Markdown se conservan?",
+        "a1": "Títulos, negritas, cursivas, listas (también de tareas), tablas, citas, bloques de código, enlaces y líneas horizontales, con el formato de GitHub (GFM). El título del PDF es el primer encabezado de nivel 1.",
+        "q2": "¿Se incluyen las imágenes?",
+        "a2": "Solo las que vienen dentro del propio Markdown como data URL (data:image/png;base64,…). Las imágenes enlazadas a internet o a archivos de tu equipo no se descargan: en su lugar se muestra su texto alternativo. Así el servidor nunca accede a direcciones externas.",
+        "q3": "¿Qué pasa con el HTML escrito dentro del Markdown?",
+        "a3": "Por seguridad se conserva solo su texto: etiquetas, scripts, estilos e iframes se quitan antes de generar el PDF.",
+        "q4": "¿Mis archivos se suben a un servidor?",
+        "a4": "Sí: el PDF se genera en nuestro servidor (no en un servicio de terceros), por conexión cifrada, y el archivo se procesa en memoria sin guardarse. Si prefieres que nada salga de tu equipo, usa Markdown a HTML y luego imprime la página como PDF desde tu navegador."
+      }
+    },
+    "html-to-pdf": {
+      "title": "HTML a PDF",
+      "description": "Convierte un archivo HTML en PDF conservando sus estilos, tablas e imágenes incrustadas, en A4 o Carta.",
+      "action": "Convertir a PDF",
+      "about": "HTML a PDF imprime tus páginas HTML guardadas, plantillas de correo, facturas o informes exportados como un PDF listo para enviar. Se respetan los estilos escritos dentro del archivo (etiquetas y atributos style), las tablas y las imágenes incrustadas como data URL. Si el HTML define su propio tamaño de página con @page, se usa ese.",
+      "faq": {
+        "q1": "¿Puedo convertir una página web a partir de su dirección (URL)?",
+        "a1": "No: subes o pegas el archivo HTML. Por seguridad nuestro servidor no visita direcciones de internet ni de redes internas mientras genera el PDF.",
+        "q2": "¿Por qué no aparecen algunas imágenes o estilos?",
+        "a2": "Solo se usa lo que está dentro del archivo: estilos en etiquetas o atributos style, e imágenes incrustadas como data URL. Hojas de estilo, fuentes e imágenes enlazadas (link, src o url() hacia otro archivo o sitio) no se descargan.",
+        "q3": "¿Se ejecuta el JavaScript de la página?",
+        "a3": "No. Antes de imprimir se quitan scripts, atributos de eventos, iframes, objetos, formularios automáticos y redirecciones; el resultado es lo que se ve sin JavaScript. Las páginas que construyen su contenido con JavaScript saldrán incompletas.",
+        "q4": "¿Mis archivos se suben a un servidor?",
+        "a4": "Sí: el PDF se genera en nuestro servidor (no en un servicio de terceros), por conexión cifrada, y el archivo se procesa en memoria sin guardarse."
+      }
+    },
+    "pdf-to-pdfa": {
+      "title": "PDF a PDF/A",
+      "description": "Convierte un PDF al formato de archivo PDF/A (1b, 2b o 3b) para guardarlo a largo plazo o presentarlo en trámites.",
+      "action": "Convertir a PDF/A",
+      "about": "PDF a PDF/A transforma tus PDF en el formato de archivo a largo plazo que piden muchos organismos públicos, juzgados y universidades. El PDF/A incrusta todas las fuentes, fija los colores con un perfil y guarda los metadatos dentro del archivo, para que el documento se vea igual dentro de muchos años. El resultado se comprueba con el validador de referencia veraPDF.",
+      "faq": {
+        "q1": "¿Qué versión de PDF/A elijo?",
+        "a1": "Si el trámite no indica otra, PDF/A-2b: es la más aceptada y admite transparencias y compresión moderna. PDF/A-1b es para sistemas antiguos que solo aceptan la primera versión; PDF/A-3b permite además adjuntar archivos dentro del PDF (por ejemplo, facturas electrónicas).",
+        "q2": "¿Cambia el aspecto del documento?",
+        "a2": "El contenido y las páginas se mantienen. Puede variar algún detalle: las fuentes se incrustan y, en PDF/A-1b, las transparencias se aplanan. Los enlaces y formularios interactivos pueden perderse porque el formato de archivo no los admite.",
+        "q3": "¿Puedo convertir un PDF con contraseña?",
+        "a3": "No: el PDF/A no permite cifrado. Quita primero la contraseña con «Quitar contraseña de un PDF» y luego conviértelo.",
+        "q4": "¿Mis archivos se suben a un servidor?",
+        "a4": "Sí: la conversión se hace en nuestro servidor (no en un servicio de terceros), por conexión cifrada, y el archivo se procesa en memoria sin guardarse."
+      }
+    },
+    "spreadsheet-converter": {
+      "title": "Convertir hoja de cálculo",
+      "description": "Convierte entre Excel (XLSX, XLS), OpenDocument (ODS) y CSV: todas las hojas, valores y fórmulas, en tu navegador.",
+      "action": "Convertir",
+      "about": "Convierte hojas de cálculo entre Excel (XLSX y el antiguo XLS), OpenDocument (ODS, de LibreOffice) y CSV o TSV. Pasa de un CSV exportado por un sistema a un Excel listo para trabajar, o de un Excel a CSV para cargarlo en otra aplicación. Al leer un CSV detecta el separador y reconoce números con coma decimal; al crear un CSV puedes elegir coma o punto y coma para que Excel en español lo abra bien.",
+      "faq": {
+        "q1": "¿Qué se conserva al convertir?",
+        "a1": "Todas las hojas, los valores (texto, números, fechas) y las fórmulas con su último resultado. No se conserva el formato visual: colores, fuentes, bordes, anchos de columna, gráficos ni imágenes.",
+        "q2": "¿Por qué Excel me muestra mal los acentos o todo en una columna?",
+        "a2": "Excel en español espera punto y coma como separador y coma decimal. Elige «Punto y coma» y deja marcada la opción de UTF-8 con BOM: así los acentos y la ñ se ven bien al hacer doble clic.",
+        "q3": "¿Qué pasa con un libro de varias hojas al pasarlo a CSV?",
+        "a3": "Un CSV solo tiene una tabla, así que se crea un CSV por hoja (con el nombre de la hoja en el archivo), o solo el de la primera hoja si desmarcas la opción.",
+        "q4": "¿Hay un límite de tamaño?",
+        "a4": "Hasta 50 MB por archivo y 2 millones de celdas con datos, porque todo se procesa en la memoria de tu navegador. Tus archivos no se suben a ningún servidor."
+      }
+    },
+    "create-archive": {
+      "title": "Crear ZIP",
+      "description": "Junta varios archivos en un ZIP, TAR o TAR.GZ en tu navegador, sin subirlos a ningún servidor.",
+      "action": "Crear archivo",
+      "about": "Reúne varios archivos en uno solo para enviarlos por correo, subirlos a un formulario o guardarlos juntos. Elige ZIP, el formato que abren Windows, macOS, Android e iPhone sin instalar nada, o TAR y TAR.GZ, los habituales en Linux y en servidores. Puedes elegir cuánto comprimir: las fotos, videos y documentos de Office ya vienen comprimidos y se guardan tal cual, así no se pierde tiempo; los textos, PDF y otros archivos sí se reducen.",
+      "faq": {
+        "q1": "¿Qué formato me conviene: ZIP, TAR o TAR.GZ?",
+        "a1": "ZIP si vas a enviarlo a otras personas: cualquier computadora o celular lo abre. TAR.GZ es el estándar en Linux y para subir archivos a un servidor. TAR solo junta los archivos sin comprimirlos.",
+        "q2": "¿Por qué el ZIP pesa casi lo mismo que mis archivos?",
+        "a2": "Las fotos (JPG, PNG, WEBP), los videos, el audio y los documentos de Office ya están comprimidos por dentro, así que comprimirlos de nuevo no los achica. Para reducir el peso de las fotos usa «Comprimir imagen» antes de crear el ZIP.",
+        "q3": "¿Se conservan los nombres con acentos, ñ o en chino?",
+        "a3": "Sí. Los nombres se guardan en UTF-8, como lo esperan los programas actuales. Si dos archivos se llaman igual, el segundo pasa a llamarse «nombre (1)». Las barras de los nombres se reemplazan para que nadie pueda escribir fuera de la carpeta al extraer.",
+        "q4": "¿Hay un límite de tamaño? ¿Puedo poner contraseña?",
+        "a4": "Todo se arma en la memoria de tu navegador, por eso el total de los archivos puede ser de hasta 500 MB. Por ahora no se puede poner contraseña al ZIP: si necesitas proteger un documento, usa «Proteger PDF con contraseña»."
+      }
+    },
+    "extract-archive": {
+      "title": "Extraer ZIP",
+      "description": "Abre archivos ZIP, RAR, 7Z, TAR, TAR.GZ y GZ en tu navegador y descarga lo que tienen dentro, con sus carpetas.",
+      "action": "Extraer archivos",
+      "about": "Abre un archivo comprimido sin instalar ningún programa: ideal en el celular, en una computadora del trabajo o en una tableta. Ves la lista de archivos que contiene y puedes descargar cada uno por separado o todos juntos en un ZIP con las mismas carpetas. Funciona con ZIP (también los creados en Windows antiguos, con nombres con ñ y acentos), RAR (versiones 4 y 5), 7Z, TAR, TAR.GZ/TGZ y GZ. El archivo se abre en tu dispositivo: no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Es seguro abrir un ZIP que me enviaron?",
+        "a1": "Se abre como un archivo potencialmente hostil: no se ejecuta nada, las rutas que intentan salir de la carpeta (como «../») se corrigen, los enlaces simbólicos y los archivos especiales se omiten, y las «bombas ZIP» se detienen al superar el límite. Aun así, revisa con un antivirus los programas que descargues de fuentes desconocidas.",
+        "q2": "¿Qué formatos puede abrir?",
+        "a2": "ZIP, RAR (4 y 5), 7Z, TAR, TAR.GZ (o TGZ) y GZ. Los archivos con contraseña todavía no se pueden abrir aquí, y tampoco los ZIP con métodos de compresión poco comunes ni los RAR divididos en partes.",
+        "q3": "¿Hay un límite?",
+        "a3": "El archivo comprimido puede pesar hasta 500 MB (los RAR y 7Z, hasta 250 MB), y lo que tiene dentro puede ocupar hasta 500 MB y 5000 archivos en total, porque todo se descomprime en la memoria de tu navegador.",
+        "q4": "¿Se mantienen las carpetas?",
+        "a4": "Sí: cada archivo muestra su ruta, y al descargar todo juntos se crea un ZIP con la misma estructura de carpetas. Las carpetas vacías no se incluyen."
+      }
+    },
+    "image-to-text": {
+      "title": "Imagen a texto (OCR)",
+      "description": "Extrae el texto de fotos, capturas y documentos escaneados con OCR, en tu navegador y sin subir las imágenes.",
+      "action": "Extraer texto",
+      "about": "Convierte en texto editable lo que está escrito en una imagen: una foto de un documento, una captura de pantalla, un recibo o una página escaneada. Elige el idioma del texto (español, inglés, portugués, francés o chino) para que el reconocimiento sea más preciso. Todo ocurre en tu dispositivo: el motor de OCR y el idioma se descargan una sola vez desde nuestro sitio y las imágenes no se suben a ningún servidor. Obtienes un archivo .txt por imagen, que también puedes copiar directamente.",
+      "faq": {
+        "q1": "¿Qué tan preciso es?",
+        "a1": "Con texto impreso, nítido y derecho suele acertar casi todo. Las fotos borrosas, torcidas, con poca luz o con letra manuscrita dan peores resultados; si la confianza es baja te avisamos para que revises el texto.",
+        "q2": "¿Mis imágenes se suben a algún servidor?",
+        "a2": "No. El reconocimiento se hace en tu navegador. Solo se descarga, la primera vez, el motor de OCR y el modelo del idioma elegido (unos 2 a 4 MB), desde nuestro propio sitio.",
+        "q3": "¿Qué formatos e idiomas admite?",
+        "a3": "JPG, PNG, WEBP, BMP, GIF, TIFF, HEIC y AVIF, hasta 50 MB por imagen. Idiomas: español, inglés, portugués, francés y chino simplificado. Elige el idioma en el que está escrito el texto.",
+        "q4": "¿Sirve para PDF escaneados?",
+        "a4": "Si tu PDF es un escaneo, usa «OCR de PDF escaneado»: reconoce todas las páginas y te devuelve un PDF con texto buscable o un .txt."
+      }
+    },
+    "ocr-pdf": {
+      "title": "OCR de PDF escaneado",
+      "description": "Convierte un PDF escaneado en un PDF con texto que se puede buscar y copiar, o extrae su texto, en tu navegador.",
+      "action": "Reconocer texto",
+      "about": "Un PDF escaneado es solo una foto de cada página: no puedes buscar una palabra ni copiar el texto. Esta herramienta reconoce el texto de cada página con OCR y lo agrega como una capa invisible sobre la página original, que no cambia: el PDF se ve igual, pero ahora puedes buscar, seleccionar y copiar. También puedes obtener solo el texto en un archivo .txt. Las páginas que ya tienen texto digital se dejan como están. Todo se procesa en tu dispositivo.",
+      "faq": {
+        "q1": "¿Cambia el aspecto del PDF?",
+        "a1": "No. Las páginas originales se conservan tal cual (misma calidad, mismo tamaño); el texto reconocido se agrega encima, invisible, en la misma posición que las palabras de la imagen.",
+        "q2": "¿Cuántas páginas puede procesar?",
+        "a2": "Hasta 100 páginas y 100 MB por PDF. Cada página se reconoce en tu navegador y tarda unos segundos, así que un documento largo puede demorar varios minutos.",
+        "q3": "¿Qué pasa con las páginas que ya tienen texto?",
+        "a3": "Si la opción está marcada, se dejan como están y su texto se incluye tal cual en el .txt. Desmárcala si una página tiene solo un poco de texto digital (por ejemplo, un sello) además del escaneo.",
+        "q4": "¿Mis documentos se suben a un servidor?",
+        "a4": "No. El PDF se abre, se lee y se reconoce en tu navegador; solo se descarga una vez el motor de OCR y el modelo del idioma desde nuestro sitio."
+      }
+    },
+    "epub-converter": {
+      "title": "Convertir EPUB",
+      "description": "Convierte libros EPUB en una página HTML o en texto plano (TXT), con imágenes e índice. En tu navegador.",
+      "action": "Convertir libro",
+      "about": "Convierte un libro electrónico EPUB en un solo archivo HTML que se abre en cualquier navegador, con portada, índice, capítulos en orden e imágenes incluidas, o en texto plano (.txt) para leerlo en cualquier dispositivo, buscar en él o copiarlo. Funciona con EPUB 2 y EPUB 3 sin DRM. Los enlaces entre capítulos siguen funcionando dentro de la página. El libro se abre en tu dispositivo: no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Funciona con libros comprados con DRM?",
+        "a1": "No. Los EPUB protegidos con DRM (Adobe, Readium LCP, Apple) están cifrados y no se pueden leer sin la aplicación de la tienda; la herramienta te avisa. Funcionan los EPUB sin DRM: libros de dominio público, de editoriales sin DRM o creados por ti.",
+        "q2": "¿Es seguro el HTML que genera?",
+        "a2": "Sí. Se quitan scripts, eventos, formularios y enlaces javascript:, y la página incluye una política de seguridad que impide cargar cualquier recurso de internet: las imágenes van dentro del archivo. Las hojas de estilo del libro no se usan; la página tiene estilos de lectura propios, claros y oscuros.",
+        "q3": "¿Qué se pierde al convertir?",
+        "a3": "Los estilos del libro (fuentes, colores, márgenes), el audio, el video y las imágenes externas. En el texto plano se conservan los párrafos, los títulos, las listas (con guiones) y las tablas (separadas por tabulaciones).",
+        "q4": "¿Hay un límite de tamaño?",
+        "a4": "Hasta 100 MB por libro y 300 MB descomprimido, porque todo se procesa en la memoria de tu navegador. Puedes convertir varios libros a la vez y descargarlos en un ZIP."
+      }
+    },
+    "epub-to-pdf": {
+      "title": "EPUB a PDF",
+      "description": "Convierte libros EPUB en PDF listos para imprimir o leer en cualquier dispositivo, con índice e imágenes.",
+      "action": "Convertir a PDF",
+      "about": "Convierte un libro electrónico EPUB en un PDF con portada, índice, cada capítulo en una página nueva e imágenes incluidas, en tamaño A4 o Carta. Útil para imprimir un libro, leerlo en un dispositivo que no abre EPUB o compartirlo con quien no tiene un lector de libros. Funciona con EPUB 2 y EPUB 3 sin DRM. El libro se abre en tu navegador y solo la página ya armada (sin scripts) se envía a nuestro servidor para imprimirla; se borra al terminar.",
+      "faq": {
+        "q1": "¿Funciona con libros comprados con DRM?",
+        "a1": "No. Los EPUB protegidos con DRM (Adobe, Readium LCP, Apple) están cifrados y no se pueden leer fuera de la aplicación de la tienda; la herramienta te avisa antes de enviar nada.",
+        "q2": "¿Se conserva el diseño del libro?",
+        "a2": "Se conservan el texto, los títulos, las listas, las tablas, las imágenes y los enlaces entre capítulos, con un diseño de lectura propio: cada capítulo empieza en una página nueva. No se usan las fuentes, los colores ni los márgenes del libro.",
+        "q3": "¿Qué se envía al servidor?",
+        "a3": "El libro se lee en tu navegador y se convierte en una sola página HTML sin scripts; solo esa página se envía para imprimirla en PDF. En el servidor se limpia otra vez, no puede cargar nada de internet y no se guarda: se borra al terminar.",
+        "q4": "¿Hay un límite de tamaño?",
+        "a4": "La página armada (con las imágenes) puede pesar hasta 15 MB con el plan gratuito y 50 MB con Pro. Si tu libro tiene muchas imágenes y supera el límite, desmarca \"Incluir las imágenes del libro\"."
+      }
+    },
+    "create-epub": {
+      "title": "Crear EPUB",
+      "description": "Convierte Markdown o HTML en un libro EPUB con índice, capítulos e imágenes, listo para cualquier lector. En tu navegador.",
+      "action": "Crear EPUB",
+      "about": "Convierte tus textos en Markdown o HTML en un libro electrónico EPUB 3 que se abre en Apple Books, Google Play Libros, Kobo, Calibre y casi cualquier lector. Cada archivo es un capítulo, en el orden de la lista, y dentro de cada uno empieza un capítulo nuevo en cada título principal (# en Markdown, h1 en HTML). Se genera el índice, se incluyen las imágenes insertadas en el archivo y puedes poner título, autor e idioma. Todo se hace en tu navegador.",
+      "faq": {
+        "q1": "¿Cómo se dividen los capítulos?",
+        "a1": "Cada archivo empieza un capítulo, en el orden en que aparecen en la lista, y dentro de cada archivo hay un capítulo nuevo en cada título principal (# en Markdown o h1 en HTML). El índice se arma con esos títulos.",
+        "q2": "¿Qué pasa con las imágenes?",
+        "a2": "Se incluyen en el libro las imágenes insertadas en el propio archivo (data URL en PNG, JPG, GIF o WEBP). Las imágenes enlazadas a internet o a otros archivos no se pueden descargar y se reemplazan por su texto alternativo.",
+        "q3": "¿Funciona en Kindle?",
+        "a3": "Los Kindle actuales aceptan EPUB con \"Enviar a Kindle\" de Amazon, que lo convierte a su formato. El archivo sigue el estándar EPUB 3 e incluye también el índice de EPUB 2 para lectores antiguos.",
+        "q4": "¿Es seguro?",
+        "a4": "Sí. El contenido se limpia: se quitan scripts, eventos, formularios y enlaces javascript:. Tus archivos no se suben a ningún servidor."
+      }
+    },
+    "audio-converter": {
+      "title": "Convertir audio",
+      "description": "Convierte audio entre MP3, WAV, FLAC, OGG, M4A y AIFF en tu navegador, sin subir tus archivos.",
+      "action": "Convertir audio",
+      "about": "Convierte canciones, notas de voz, podcasts y grabaciones entre los formatos más usados: MP3 para que suene en cualquier lado, WAV, FLAC o AIFF sin pérdida para editar o archivar, OGG (Opus) para la web y M4A (AAC) para dispositivos Apple. Lee MP3, WAV, FLAC, OGG, Opus, M4A, AAC, WebM y AIFF, y puedes elegir la calidad. La conversión se hace en tu dispositivo: los archivos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué formato me conviene?",
+        "a1": "MP3 si quieres que se reproduzca en cualquier dispositivo; M4A (AAC) suena un poco mejor con el mismo peso y es el de Apple; OGG (Opus) es el más eficiente para la web; WAV y FLAC no pierden calidad (FLAC ocupa cerca de la mitad que WAV).",
+        "q2": "¿Pierde calidad al convertir?",
+        "a2": "A WAV o FLAC, no: se conserva el sonido tal cual (en 16 bits). A MP3, M4A u OGG se comprime con pérdida: 192 kbps es prácticamente indistinguible del original para la mayoría; convertir de un formato con pérdida a otro no recupera lo que ya se perdió.",
+        "q3": "¿Por qué no puede leer mi archivo M4A?",
+        "a3": "El audio AAC (M4A) se decodifica con el códec del navegador. Chrome, Edge y Safari lo leen; algunos navegadores sin códecs propietarios no. En ese caso verás un aviso: prueba con otro navegador.",
+        "q4": "¿Hay un límite?",
+        "a4": "Hasta 200 MB por archivo con el plan gratuito (500 MB con Pro) y 3 horas de duración, porque el resultado se arma en la memoria de tu navegador. Se conserva solo la pista de audio principal; si el archivo es un video, se ignora la imagen.",
+        "q5": "¿Qué es AIFF y cuándo usarlo?",
+        "a5": "AIFF es el formato sin pérdida de Apple, el equivalente de WAV en Mac, Logic o GarageBand. Se leen AIFF y AIFF-C sin comprimir (8, 16, 24 y 32 bits) y se escribe en 16 bits; los AIFF-C comprimidos (por ejemplo μ-law) no se admiten."
+      }
+    },
+    "trim-audio": {
+      "title": "Recortar audio",
+      "description": "Corta un fragmento de una canción o grabación (MP3, WAV, FLAC, OGG, M4A, AIFF) en tu navegador, con fundidos opcionales.",
+      "action": "Recortar audio",
+      "about": "Quédate solo con la parte que necesitas de una canción, un audio de WhatsApp, un podcast o una grabación: elige el inicio y el fin escribiendo los minutos y segundos o con el reproductor (\"Usar posición actual\"), agrega si quieres un fundido de entrada o de salida y descarga el resultado en MP3, WAV, FLAC, OGG, M4A o AIFF. El corte es exacto a la muestra y se hace en tu dispositivo: el archivo no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Cómo elijo el fragmento exacto?",
+        "a1": "Reproduce el audio, pausa donde quieres empezar y toca \"Usar posición actual\" junto a Inicio; haz lo mismo con Fin. También puedes escribir los tiempos como minutos:segundos con décimas, por ejemplo 0:12.5 o 1:05.",
+        "q2": "¿Para qué sirven los fundidos?",
+        "a2": "El fundido de entrada sube el volumen desde cero durante los primeros 2 segundos y el de salida lo baja hasta cero en los últimos 2, para que el fragmento no empiece ni termine de golpe (útil para tonos de llamada). En fragmentos cortos cada fundido dura como máximo la mitad.",
+        "q3": "¿Pierde calidad?",
+        "a3": "Si eliges WAV, FLAC o AIFF, no: el fragmento se guarda sin pérdida (en 16 bits). En MP3, M4A u OGG se vuelve a comprimir con la calidad que elijas; 192 kbps es prácticamente indistinguible del original.",
+        "q4": "¿Hay un límite?",
+        "a4": "Un archivo por vez, de hasta 200 MB con el plan gratuito (500 MB con Pro) y 3 horas de duración. Los formatos que lee son los mismos que \"Convertir audio\"; el M4A/AAC depende de que tu navegador tenga ese decodificador."
+      }
+    },
+    "adjust-audio": {
+      "title": "Ajustar audio",
+      "description": "Cambia canales (mono o estéreo), frecuencia de muestreo y bitrate de tus audios en el navegador, en lotes.",
+      "action": "Ajustar audio",
+      "about": "Prepara audios para donde los vas a usar: pasa una grabación a mono para que pese la mitad, baja la frecuencia a 22,05 kHz para notas de voz, llévala a 48 kHz para video o elige el bitrate exacto que pide una plataforma. Funciona con varios archivos a la vez y guarda en MP3, WAV, FLAC, OGG (Opus), M4A (AAC) o AIFF. Todo se procesa en tu dispositivo: los archivos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Cuándo conviene pasar a mono?",
+        "a1": "En voz (podcasts, clases, entrevistas) el estéreo casi no aporta: en mono el archivo ocupa la mitad con la misma calidad. Al pasar a mono los dos canales se mezclan, así que no se pierde lo que suena solo de un lado.",
+        "q2": "¿Qué frecuencia elijo?",
+        "a2": "44,1 kHz es la de la música y los CD; 48 kHz la de video; 22,05 kHz alcanza para voz y reduce el tamaño. Subir la frecuencia no agrega calidad. OGG (Opus) siempre trabaja a 48 kHz.",
+        "q3": "¿Qué bitrate necesito?",
+        "a3": "Para voz, 64–96 kbps en mono; para música, 192 kbps o más. A mayor bitrate, mejor sonido y archivo más grande. WAV, FLAC y AIFF no usan bitrate porque no tienen pérdida.",
+        "q4": "¿Hay un límite?",
+        "a4": "Hasta 200 MB por archivo con el plan gratuito (500 MB con Pro), 3 horas por archivo y varios archivos por lote. Lee los mismos formatos que \"Convertir audio\"."
+      }
+    },
+    "normalize-audio": {
+      "title": "Normalizar volumen",
+      "description": "Iguala el volumen de tus audios (MP3, WAV, FLAC, OGG, M4A, AIFF) en el navegador: por volumen medio o por pico, sin saturar.",
+      "action": "Normalizar volumen",
+      "about": "Sube el volumen de una grabación que quedó baja o iguala varias pistas para que suenen parecido: la herramienta mide cada archivo completo y aplica una sola ganancia, así no cambia la dinámica ni aparecen saltos. Elige volumen medio (−16 dB, cómodo para voz y podcasts) o pico máximo (−1 dB). Nunca recorta los picos. Funciona en lotes y en tu dispositivo: los archivos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué diferencia hay entre volumen medio y pico?",
+        "a1": "El pico solo mira el punto más fuerte y lo deja en −1 dB: es seguro, pero dos audios pueden seguir sonando distinto. El volumen medio iguala cómo se escucha cada archivo (−16 dB RMS); si para lograrlo el pico pasaría de −1 dB, se queda en ese límite.",
+        "q2": "¿Se distorsiona el sonido?",
+        "a2": "No: se aplica una única ganancia a todo el archivo y nunca se superan −1 dB, así que no hay recortes. No es un compresor: si una parte es mucho más fuerte que el resto, seguirá siéndolo.",
+        "q3": "¿Por qué mi audio casi no cambió?",
+        "a3": "Si ya tiene un pico cerca de −1 dB o un volumen medio cercano a −16 dB, la ganancia necesaria es pequeña. La ganancia aplicada aparece junto a cada resultado. Para no amplificar ruido, el aumento máximo es de +30 dB.",
+        "q4": "¿Hay un límite?",
+        "a4": "Hasta 200 MB por archivo con el plan gratuito (500 MB con Pro), 3 horas por archivo y varios archivos por lote. El archivo se lee dos veces (medir y aplicar), por eso tarda un poco más que una conversión."
+      }
+    },
+    "join-audio": {
+      "title": "Unir audio",
+      "description": "Une varios audios (MP3, WAV, FLAC, OGG, M4A, AIFF) en un solo archivo, en el orden que elijas, en tu navegador.",
+      "action": "Unir audio",
+      "about": "Junta canciones, partes de una grabación, audios de WhatsApp o pistas de un podcast en un único archivo: ordénalos con las flechas, agrega si quieres un silencio entre pistas y descarga el resultado en MP3, WAV, FLAC, OGG, M4A o AIFF. Puedes mezclar formatos distintos: cada archivo se decodifica y se iguala en frecuencia y canales antes de unirlo. Todo pasa en tu dispositivo: los archivos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Puedo unir archivos de formatos distintos?",
+        "a1": "Sí: por ejemplo un MP3, un WAV y un audio M4A. Cada uno se decodifica y se lleva a la misma frecuencia y cantidad de canales (la mayor entre ellos, como máximo estéreo) antes de unirlos en el formato que elijas.",
+        "q2": "¿Cómo cambio el orden?",
+        "a2": "Los archivos se unen en el orden de la lista. Usa las flechas de cada fila para subirlo o bajarlo; el número de la izquierda indica su posición.",
+        "q3": "¿Queda un corte entre pistas?",
+        "a3": "No se agregan pausas salvo que elijas un silencio entre pistas (0,5, 1 o 2 segundos). Las pistas se encadenan muestra a muestra; si una canción termina de golpe, el cambio se va a notar igual que en el original.",
+        "q4": "¿Hay un límite?",
+        "a4": "Hasta 200 MB por archivo con el plan gratuito (500 MB con Pro) y 3 horas en total, porque el resultado se arma en la memoria de tu navegador. Si un archivo está dañado, se indica cuál."
+      }
+    },
+    "video-converter": {
+      "title": "Convertir video",
+      "description": "Convierte videos entre MP4, MOV, MKV y WebM en tu navegador, sin subir tus archivos.",
+      "action": "Convertir video",
+      "about": "Cambia el formato de tus videos entre MP4 (el que reproduce cualquier celular, televisor o red social), MOV (el de iPhone y Mac), MKV y WebM (el de la web). Si el video ya está en un códec que el formato elegido admite, se copia sin recomprimir: tarda segundos y no pierde calidad. Si no, se vuelve a codificar en alta calidad con el códec de tu navegador. El sonido viaja junto con la imagen. Todo pasa en tu dispositivo: los videos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Pierde calidad al convertir?",
+        "a1": "Si el video solo cambia de contenedor (por ejemplo, un MP4 con H.264 a MOV o MKV), no: se copia tal cual. Si hay que recomprimirlo (por ejemplo, a WebM), se usa una calidad alta, que en la práctica no se distingue del original. Cada resultado indica si se copió o se recomprimió.",
+        "q2": "¿Qué formato elijo?",
+        "a2": "MP4 si tiene que verse en cualquier lado; MOV para editar en iMovie o Final Cut; WebM para una página web; MKV si quieres conservar todo tal como está.",
+        "q3": "¿Por qué mi MP4 salió en VP9 o AV1?",
+        "a3": "Algunos navegadores (como Chromium o Firefox en Linux) no traen codificador H.264. En ese caso el MP4 se crea con VP9 o AV1, que se ven en Chrome, Edge, Firefox y Android, pero quizá no en iPhone. Para obtener H.264 usa Chrome, Edge o Safari; verás un aviso cuando falte.",
+        "q4": "¿Hay algún límite?",
+        "a4": "Hasta 200 MB por archivo en el plan gratis (500 MB con Pro) y 2 horas de duración, porque el video se arma en la memoria de tu navegador. Se conservan la pista de video y la de audio principales; los subtítulos incrustados no se copian. AVI, WMV y FLV todavía no se pueden leer."
+      }
+    },
+    "extract-audio": {
+      "title": "Extraer audio de un video",
+      "description": "Saca el sonido de un video MP4, MOV, MKV o WebM y guárdalo como M4A, MP3, WAV, FLAC u OGG, en tu navegador.",
+      "action": "Extraer audio",
+      "about": "Guarda solo el sonido de un video: la música de un clip, la charla de una clase grabada o el audio de un video de WhatsApp. Con «Original» la pista se copia tal cual, sin recomprimir: tarda segundos y conserva la calidad exacta (un video de celular da un M4A con AAC). Si prefieres otro formato, elige MP3, WAV, FLAC, OGG (Opus), M4A (AAC) o AIFF y la calidad. Acepta MP4, MOV, MKV y WebM, varios a la vez. Todo pasa en tu dispositivo: los videos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué formato elijo?",
+        "a1": "«Original» es lo más rápido y no pierde nada: el audio queda en el formato que ya tenía dentro del video (casi siempre AAC, en un archivo .m4a que abren iPhone, Android, Windows y Mac). Elige MP3 si necesitas máxima compatibilidad, o WAV/FLAC para editarlo.",
+        "q2": "¿Por qué mi archivo salió en MP3 con «Original»?",
+        "a2": "Algunos códecs de audio no tienen un formato propio en el que copiarse tal cual (por ejemplo, AC-3 de algunas películas). En ese caso se convierte a MP3 de 192 kbps y el resultado lo indica.",
+        "q3": "¿Puedo extraer el audio de un video de YouTube?",
+        "a3": "Solo de archivos que ya tengas en tu dispositivo y tengas derecho a usar. Esta herramienta no descarga videos de internet.",
+        "q4": "¿Hay algún límite?",
+        "a4": "Hasta 200 MB por video en el plan gratis (500 MB con Pro) y 3 horas de audio. Se extrae la pista de audio principal. Para convertir el audio de un MP4 con AAC a otro formato hace falta un navegador que lea AAC (Chrome, Edge o Safari); con «Original» funciona en todos."
+      }
+    },
+    "compress-video": {
+      "title": "Comprimir video",
+      "description": "Reduce el peso de tus videos MP4, MOV, MKV o WebM bajando la calidad o la resolución, en tu navegador.",
+      "action": "Comprimir video",
+      "about": "Achica videos para mandarlos por WhatsApp o por correo, subirlos a un formulario o liberar espacio en el celular. Elige la calidad (alta, media o baja) y, si quieres, una resolución menor: pasar un video de 1080p a 720p suele reducir mucho el peso sin que se note en una pantalla de teléfono. Los videos verticales también se respetan. El resultado sale en MP4 (el más compatible) o WebM y te mostramos cuánto bajó. Todo pasa en tu dispositivo: los videos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué opciones elijo?",
+        "a1": "Para compartir por mensajería, calidad media y 720p es un buen equilibrio. Si todavía pesa mucho, prueba calidad baja o 480p. Para conservar los detalles, calidad alta y resolución original.",
+        "q2": "¿Por qué a veces casi no baja el peso?",
+        "a2": "Si el video ya estaba muy comprimido (por ejemplo, descargado de una red social), recomprimirlo apenas ahorra espacio. En ese caso el resultado avisa que no quedó más liviano: baja la resolución para ganar más.",
+        "q3": "¿Cuánto tarda?",
+        "a3": "Se decodifica y vuelve a codificar cada cuadro con el códec de tu navegador: en una computadora suele ir más rápido que la duración del video; en celulares antiguos, puede tardar más. Puedes cancelar en cualquier momento.",
+        "q4": "¿Hay algún límite?",
+        "a4": "Hasta 200 MB por video en el plan gratis (500 MB con Pro), 2 horas de duración y 30 minutos de proceso por archivo. Nunca se agranda la imagen. El MP4 se crea en H.264 cuando el navegador lo permite (Chrome, Edge, Safari); si no, en VP9 o AV1."
+      }
+    },
+    "trim-video": {
+      "title": "Recortar video",
+      "description": "Corta un video MP4, MOV, MKV o WebM y quédate con la parte que quieres, en tu navegador.",
+      "action": "Recortar video",
+      "about": "Quédate solo con el momento que importa: el gol, el saludo o la parte de una reunión grabada. Reproduce el video, marca el inicio y el fin con «Usar posición actual» (o escribe los tiempos) y descarga el tramo en el mismo formato. El modo exacto corta en el cuadro preciso volviendo a codificar el video; el modo rápido copia sin recomprimir, en segundos y sin pérdida, empezando en el fotograma clave anterior al inicio. Todo pasa en tu dispositivo: el video no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué diferencia hay entre exacto y rápido?",
+        "a1": "El exacto empieza justo donde marcaste, pero tiene que volver a codificar el video (tarda más y recomprime con calidad alta). El rápido copia el video tal cual, así que tarda segundos y no pierde nada, pero solo puede empezar en un fotograma clave: el resultado puede comenzar hasta unos segundos antes.",
+        "q2": "¿Cómo encuentro el momento justo?",
+        "a2": "Reproduce el video y pausa donde quieras; «Usar posición actual» copia ese tiempo en el campo. También puedes escribir minutos:segundos, por ejemplo 1:23.5.",
+        "q3": "¿Puedo quitar una parte del medio?",
+        "a3": "Por ahora se conserva un solo tramo por vez. Para quitar algo del medio, recorta las dos partes y únelas con «Unir videos».",
+        "q4": "¿Hay algún límite?",
+        "a4": "Un video por vez, hasta 200 MB en el plan gratis (500 MB con Pro) y 2 horas de duración. Si tu navegador no puede reproducir el archivo (por ejemplo MKV o H.264 en algunos), igual puedes escribir los tiempos."
+      }
+    },
+    "video-to-gif": {
+      "title": "Video a GIF",
+      "description": "Convierte un fragmento de un video MP4, MOV, MKV o WebM en un GIF animado, en tu navegador.",
+      "action": "Crear GIF",
+      "about": "Convierte un momento de un video en un GIF animado para chats, foros, presentaciones o documentación. Marca el inicio y el fin con el reproductor, elige el ancho (de 240 a 640 px) y los cuadros por segundo, y decide si se repite sin fin. Cada cuadro usa su propia paleta de 256 colores para que se vea lo mejor posible. Todo pasa en tu dispositivo: el video no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Por qué el GIF pesa tanto?",
+        "a1": "El GIF es un formato antiguo que guarda cada cuadro casi como una imagen aparte. Para que pese menos: acorta el tramo, baja el ancho (320 px alcanza para un chat) o usa 5–10 cuadros por segundo.",
+        "q2": "¿Cuánto puede durar?",
+        "a2": "Hasta 300 cuadros: 30 s a 10 cuadros por segundo, 20 s a 15 o 60 s a 5. Si te pasas, te avisamos antes de empezar.",
+        "q3": "¿Tiene sonido?",
+        "a3": "No: el formato GIF no admite sonido. Si necesitas el audio, usa «Recortar video» y comparte el video.",
+        "q4": "¿Hay algún límite?",
+        "a4": "Un video por vez, hasta 200 MB en el plan gratis (500 MB con Pro). El navegador tiene que poder decodificar el video (H.264 no se decodifica en algunos navegadores sin códecs propietarios). Nunca se agranda la imagen."
+      }
+    },
+    "video-speed": {
+      "title": "Cambiar velocidad del video",
+      "description": "Acelera o pon en cámara lenta un video MP4, MOV, MKV o WebM (de 0,25× a 4×), en tu navegador.",
+      "action": "Cambiar velocidad",
+      "about": "Acelera un tutorial largo, una grabación de pantalla o un time-lapse, o pon en cámara lenta una jugada o un momento divertido. Elige la velocidad entre 0,25× y 4× y decide si conservar el sonido (acelerado o ralentizado, con el tono más agudo o más grave, como una cinta) o quitarlo. El resultado se descarga en el mismo formato que el original y puedes procesar varios videos a la vez. Todo pasa en tu dispositivo: el video no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué pasa con el sonido?",
+        "a1": "Si lo conservas, se acelera o se ralentiza junto con la imagen, así que el tono cambia: a 2× las voces suenan más agudas y a 0,5× más graves. Si prefieres un video sin sonido (por ejemplo, para ponerle música después), elige «Quitar sonido».",
+        "q2": "¿La cámara lenta queda fluida?",
+        "a2": "Cada cuadro se muestra más tiempo, así que a 0,25× un video de 30 cuadros por segundo se ve a unos 7,5. Para una cámara lenta suave conviene grabar a 60 cuadros por segundo o más. Al acelerar, los cuadros sobrantes se descartan para no pasar de 60 por segundo.",
+        "q3": "¿Se pierde calidad?",
+        "a3": "El video se vuelve a codificar en calidad alta, en el mismo formato que el original (MP4, MOV, MKV o WebM). La resolución no cambia.",
+        "q4": "¿Hay algún límite?",
+        "a4": "Hasta 200 MB por video en el plan gratis (500 MB con Pro), 2 horas de duración y 30 minutos de proceso por archivo. Tu navegador tiene que poder decodificar el video (H.264 no se decodifica en algunos navegadores sin códecs propietarios)."
+      }
+    },
+    "join-videos": {
+      "title": "Unir videos",
+      "description": "Une varios videos MP4, MOV, MKV o WebM en uno solo, en el orden que elijas, en tu navegador.",
+      "action": "Unir videos",
+      "about": "Junta los clips de un viaje, las partes de una clase grabada o varias tomas del celular en un único video. Agrega los archivos, ordénalos con las flechas y descarga el resultado en MP4 o WebM. El video final toma el tamaño del primero: los que tienen otra forma (por ejemplo, verticales junto a horizontales) se encajan con bandas negras, sin deformarse ni recortarse. El sonido de todos se iguala y, si un clip no tiene sonido, queda en silencio durante ese tramo. Todo pasa en tu dispositivo: los videos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Puedo unir videos de distintos formatos o tamaños?",
+        "a1": "Sí: puedes mezclar MP4, MOV, MKV y WebM, y videos horizontales y verticales. El resultado tiene el tamaño del primero de la lista (como máximo 1080p) y los demás se centran con bandas negras.",
+        "q2": "¿Cómo cambio el orden?",
+        "a2": "Los videos se unen en el orden de la lista. Usa las flechas de cada archivo para subirlo o bajarlo antes de unir.",
+        "q3": "¿Se pierde calidad?",
+        "a3": "Todo el video se vuelve a codificar en calidad alta para que las partes encajen. Si los clips son más grandes que el primero, se reducen a su tamaño.",
+        "q4": "¿Hay algún límite?",
+        "a4": "Hasta 200 MB por video en el plan gratis (500 MB con Pro), 2 horas en total y 30 minutos de proceso. El resultado se arma en la memoria del dispositivo, así que en celulares conviene unir videos cortos. Tu navegador tiene que poder decodificar cada video (H.264 no se decodifica en algunos navegadores sin códecs propietarios)."
+      }
+    },
+    "model-converter": {
+      "title": "Convertir modelo 3D",
+      "description": "Convierte modelos 3D (STL, OBJ, PLY, GLB, glTF, 3MF, COLLADA y FBX) a STL, OBJ, PLY o GLB en tu navegador, sin instalar nada.",
+      "action": "Convertir modelo",
+      "about": "Pasa un modelo de un formato a otro para imprimirlo en 3D, abrirlo en otro programa o publicarlo en la web: STL para impresoras y laminadores, OBJ y PLY para editores y escáneres, y GLB (glTF binario) para la web, la realidad aumentada y los motores de juegos. Lee STL (binario y ASCII), OBJ, PLY, GLB, glTF con todo incluido, 3MF, COLLADA (.dae) y FBX 7.x (binario y ASCII), y conserva la geometría, las posiciones de cada pieza y, cuando el formato de salida lo admite (PLY y GLB), los colores por vértice. Puedes convertir varios archivos a la vez. Todo pasa en tu dispositivo: los modelos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Se conservan los materiales y las texturas?",
+        "a1": "Se conservan la forma y, en PLY y GLB, los colores por vértice. STL no guarda colores ni materiales, y el OBJ se genera sin archivo .mtl, así que las texturas y los materiales se pierden en esas salidas. De GLB a GLB se mantienen los materiales.",
+        "q2": "¿Cambia el tamaño o la orientación del modelo?",
+        "a2": "No: las coordenadas se copian tal cual, sin escalar ni rotar. Ten en cuenta que muchos programas de impresión usan el eje Z hacia arriba y glTF usa el Y, así que al pasar de STL a GLB el modelo puede verse acostado; rótalo en tu visor si hace falta.",
+        "q3": "Mi .gltf da error por archivos aparte, ¿qué hago?",
+        "a3": "Un .gltf puede depender de un .bin y de imágenes externas, que no podemos pedir. Expórtalo como GLB (un solo archivo) o como glTF con todo incluido. Los glTF comprimidos con Draco o meshopt todavía no se pueden leer.",
+        "q4": "¿Hay algún límite?",
+        "a4": "Hasta 200 MB y 3 millones de triángulos por modelo, y 5 minutos de proceso por archivo. Las nubes de puntos (PLY sin caras) no se pueden convertir a mallas.",
+        "q5": "¿Puedo convertir archivos 3MF, COLLADA o FBX?",
+        "a5": "Sí, como archivos de entrada: se leen su geometría, las piezas y sus posiciones (y los colores por vértice de COLLADA y FBX) y se guardan como STL, OBJ, PLY o GLB. No se generan archivos 3MF, COLLADA ni FBX, y sus texturas y animaciones no se leen. Los 3MF y COLLADA admiten hasta 100 MB de XML (descomprimido) y los FBX deben ser de la versión 7.0 o posterior."
+      }
+    },
+    "image-to-lithophane": {
+      "title": "Imagen a litofanía",
+      "description": "Convierte una foto en una litofanía 3D (STL) lista para imprimir, en tu navegador.",
+      "action": "Crear litofanía",
+      "about": "Una litofanía es una placa fina que, a contraluz, muestra una foto: las zonas oscuras son más gruesas y dejan pasar menos luz. Sube una imagen, elige el ancho de la placa, el nivel de detalle y el grosor, y descarga un STL cerrado (sin agujeros) listo para el laminador de tu impresora 3D. Puedes agregar un marco que le da rigidez. Todo pasa en tu dispositivo: la foto no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Cómo la imprimo?",
+        "a1": "Acuéstala con el lado plano sobre la cama, usa filamento blanco (PLA blanco es lo más común), relleno del 100 % y una altura de capa de 0,1–0,15 mm. Ilumínala desde atrás para ver la foto; se lee de frente desde el lado con relieve.",
+        "q2": "¿Qué fotos funcionan mejor?",
+        "a2": "Las de buen contraste y con el sujeto grande: retratos, mascotas, paisajes con cielo. Las zonas muy claras quedan casi transparentes y las muy oscuras, opacas. La foto se pasa a escala de grises.",
+        "q3": "¿Qué significan el detalle y el grosor?",
+        "a3": "El detalle es la distancia entre puntos de la superficie: 0,4 mm es suficiente para una boquilla de 0,4 mm y genera archivos más livianos; 0,2 mm conserva más detalle. El grosor va del blanco (más fino) al negro (más grueso): uno mayor da más contraste pero necesita más luz.",
+        "q4": "¿Hay algún límite?",
+        "a4": "Una imagen por vez, de hasta 50 MB (JPG, PNG, WEBP, GIF, BMP o AVIF). La superficie tiene como máximo unos 560 000 puntos: en imágenes muy altas el detalle se reduce automáticamente. La placa es plana (sin curvatura)."
+      }
+    },
+    "dxf-converter": {
+      "title": "Convertir DXF",
+      "description": "Convierte planos DXF de AutoCAD, LibreCAD o QCAD a SVG, PNG o PDF en tu navegador, sin instalar nada.",
+      "action": "Convertir plano",
+      "about": "Pasa un plano DXF a SVG para editarlo en Inkscape o Illustrator o enviarlo a una cortadora láser o de vinilo, a PNG para verlo o compartirlo como imagen, o a PDF (A4 o A3) para imprimirlo. Se dibujan líneas, polilíneas (también con tramos curvos), círculos, arcos, elipses, splines, sólidos, puntos, textos y textos de varias líneas, bloques insertados (con escala, rotación y arreglos) y cotas, con el color de cada entidad o de su capa. Las capas apagadas o congeladas no se dibujan. Si el archivo indica sus unidades (mm, cm, m o pulgadas), el SVG tiene el tamaño real. Todo pasa en tu dispositivo: los planos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué entidades no se dibujan?",
+        "a1": "Los sombreados (HATCH), las imágenes incrustadas, las regiones y sólidos 3D, las directrices múltiples, las tablas y los atributos de bloque. Si el plano tiene alguna, al terminar te decimos cuáles y cuántas se omitieron. Solo se dibuja el espacio modelo, no las presentaciones (espacio papel).",
+        "q2": "¿Puedo convertir archivos DWG?",
+        "a2": "No. DWG es un formato cerrado de Autodesk y los motores que lo leen son GPL (LibreDWG) o comerciales (ODA), así que no podemos incluirlos. Desde AutoCAD, BricsCAD, DraftSight, LibreCAD o el conversor gratuito ODA File Converter puedes guardar el plano como DXF y convertirlo aquí.",
+        "q3": "¿Se respeta la escala?",
+        "a3": "Sí: las coordenadas se copian sin cambios y, si el DXF dice sus unidades ($INSUNITS en mm, cm, m o pulgadas), el SVG se crea con ese tamaño real, listo para imprimir o cortar 1:1. Sin unidades, el lado más largo mide 1000 píxeles. El grosor de línea es fino y uniforme (no se leen los grosores de línea del archivo).",
+        "q4": "¿Por qué los textos se ven con otra fuente?",
+        "a4": "Las fuentes SHX de AutoCAD no se pueden incrustar: los textos se escriben con una fuente sin serifa (Arial o similar) de la misma altura, así que su ancho puede variar un poco. Se interpretan los códigos de formato habituales de MTEXT (párrafos, Ø, °, ±).",
+        "q5": "¿Hay algún límite?",
+        "a5": "Hasta 50 MB por archivo (DXF de texto; el DXF binario no se lee), 5 millones de puntos una vez dibujadas las curvas, bloques anidados hasta 16 niveles y arreglos de hasta 10 000 copias, y 2 minutos de proceso por archivo.",
+        "q6": "¿Cómo quedan el PNG y el PDF?",
+        "a6": "El PNG tiene el ancho que elijas (1000, 2000 o 4000 píxeles en el lado más largo), con fondo blanco o transparente. El PDF es vectorial, de una página A4 o A3 que se gira según la forma del plano, con el dibujo ajustado dentro de un margen de 10 mm (no a escala 1:1). En el PDF, los textos con caracteres que la fuente estándar no tiene (chino, cirílico…) se insertan como imagen."
+      }
     }
   },
   "ToolUi": {
@@ -272,12 +1562,81 @@
     "levelRecommended": "Recomendada",
     "levelStrong": "Fuerte (archivo más liviano)",
     "reduced": "{before} → {after} ({percent} menos)",
-    "alreadyOptimized": "Este PDF ya está optimizado: no pudimos reducirlo más."
+    "alreadyOptimized": "Este PDF ya está optimizado: no pudimos reducirlo más.",
+    "cancel": "Cancelar",
+    "limitsMultiple": "Hasta {count} archivos de {size} como máximo cada uno.",
+    "limitsSingle": "Un archivo de {size} como máximo.",
+    "preview": "Vista previa",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "previewTruncated": "La vista previa muestra solo el comienzo; el archivo descargado tiene todo.",
+    "errorAt": "(línea {line}, columna {column})",
+    "pickDeleteHint": "Toca las páginas que quieres eliminar o escribe sus números.",
+    "pickExtractHint": "Toca las páginas que quieres extraer o escribe sus números.",
+    "selectAll": "Seleccionar todas",
+    "selectNone": "Quitar la selección",
+    "pagesToDelete": "{count, plural, =0 {Ninguna página seleccionada.} one {Se eliminará # página de {total}.} other {Se eliminarán # páginas de {total}.}}",
+    "pagesToExtract": "{count, plural, =0 {Ninguna página seleccionada.} one {Se extraerá # página de {total}.} other {Se extraerán # páginas de {total}.}}",
+    "cannotDeleteAll": "No se pueden eliminar todas las páginas: deja al menos una.",
+    "extractOutput": "Resultado",
+    "extractSingle": "Un solo PDF con esas páginas",
+    "extractEach": "Un PDF por página (ZIP)"
+  },
+  "DataTools": {
+    "delimiter": "Separador",
+    "auto": "Detectar",
+    "comma": "Coma (,)",
+    "semicolon": "Punto y coma (;)",
+    "tab": "Tabulación (TSV)",
+    "flatten": "Convertir objetos anidados en columnas (direccion.ciudad)",
+    "bom": "Compatible con Excel (UTF-8 con marca BOM)",
+    "typed": "Convertir números, true/false y celdas vacías",
+    "nested": "Reconstruir objetos desde columnas con punto",
+    "pasteJson": "O pega tu JSON",
+    "pasteCsv": "O pega tu CSV",
+    "paste": "O pega tu {format}",
+    "layout": "Formato",
+    "indent2": "2 espacios",
+    "indent4": "4 espacios",
+    "indentTab": "Tabulaciones",
+    "minify": "Minificar",
+    "sortKeys": "Ordenar las claves alfabéticamente",
+    "pasteText": "O escribe o pega el texto",
+    "output": "Resultado",
+    "dataUrl": "Data URL",
+    "wrap76": "Saltos de línea cada 76 caracteres (correo)",
+    "mode": "Modo",
+    "encode": "Codificar",
+    "decode": "Decodificar",
+    "decodeAction": "Decodificar URL",
+    "scope": "Qué vas a codificar",
+    "scopeComponent": "Un valor o parámetro",
+    "scopeUrl": "Una URL completa",
+    "plusIsSpace": "Leer + como espacio (formularios)",
+    "algorithms": "Algoritmos",
+    "upperCase": "Hexadecimal en mayúsculas",
+    "expectedHash": "Hash esperado (opcional)",
+    "expectedHashHint": "Pega una suma MD5, SHA-1, SHA-256 o SHA-512 para comprobar si coincide.",
+    "hashMatches": "Coincide: el {algorithm} de {name} es igual al hash esperado.",
+    "hashMismatch": "No coincide: ningún archivo tiene el hash esperado.",
+    "hashNotComparable": "No se pudo comparar: el hash esperado no tiene la longitud de ninguno de los algoritmos elegidos.",
+    "uuidVersion": "Versión",
+    "uuidV4": "v4 (aleatorio)",
+    "uuidV7": "v7 (ordenado por tiempo)",
+    "uuidCount": "Cantidad (hasta {max})",
+    "uuidHyphens": "Con guiones",
+    "timestampInput": "Timestamps o fechas, uno por línea",
+    "timestampUnit": "Unidad de los números",
+    "unitAuto": "Detectar",
+    "unitSeconds": "Segundos",
+    "unitMilliseconds": "Milisegundos",
+    "timeZone": "Zona horaria",
+    "timeZoneHint": "Se usa para mostrar la hora local y para leer fechas sin zona."
   },
   "Email": {
-    "subject": "Tu enlace para entrar a FileFlip",
+    "subject": "Tu enlace para entrar a Fileflect",
     "preheader": "Entra con un clic, sin contraseña.",
-    "heading": "Entra a FileFlip",
+    "heading": "Entra a Fileflect",
     "body": "Haz clic en el botón para iniciar sesión. El enlace vale por 24 horas y solo se puede usar una vez.",
     "button": "Iniciar sesión",
     "fallback": "Si el botón no funciona, copia y pega este enlace en tu navegador:",
@@ -306,7 +1665,7 @@
     "freeBody": "Todas las herramientas sin costo, con límites en las conversiones de servidor.",
     "upgrade": "Pasar a Pro",
     "signOut": "Cerrar sesión",
-    "planProBody": "Gracias por apoyar FileFlip. Disfrutas límites ampliados y sin publicidad.",
+    "planProBody": "Gracias por apoyar Fileflect. Disfrutas límites ampliados y sin publicidad.",
     "billing": "{amount} cada {period, select, yearly {año} other {mes}}",
     "nextPayment": "Próximo cobro: {date}",
     "paidUntil": "Tu Pro sigue activo hasta el {date}. No se te volverá a cobrar.",
@@ -339,7 +1698,7 @@
       "serverPro": "Documentos de hasta {size} y {count} por lote",
       "browserPro": "Imágenes y PDF de hasta {size} en tu dispositivo",
       "noAds": "Sin publicidad",
-      "support": "Ayudas a mantener FileFlip"
+      "support": "Ayudas a mantener Fileflect"
     },
     "intlNote": "Muy pronto podrás pagar desde tu país. Mientras tanto, todo sigue gratis.",
     "billedVia": "Pago seguro con {provider}. Cancelas cuando quieras desde Mi cuenta.",
@@ -356,8 +1715,8 @@
     "recommended": "Recomendado"
   },
   "Billing": {
-    "monthly": "FileFlip Pro mensual",
-    "yearly": "FileFlip Pro anual"
+    "monthly": "Fileflect Pro mensual",
+    "yearly": "Fileflect Pro anual"
   },
   "Ads": {
     "label": "Publicidad",
@@ -376,7 +1735,8 @@
     "privacyBrowser": "Tus archivos {from} se convierten directamente en tu navegador: nunca se suben a internet, así que la conversión es privada y muy rápida.",
     "privacyServer": "Los documentos se convierten en nuestro servidor con LibreOffice, por conexión cifrada, y se borran automáticamente en menos de 1 hora.",
     "relatedTitle": "Otras conversiones",
-    "linkLabel": "{from} a {to}"
+    "linkLabel": "{from} a {to}",
+    "toolsTitle": "Más herramientas para tus archivos {from} y {to}"
   },
   "Longtail": {
     "faqTitle": "Preguntas frecuentes"
@@ -385,7 +1745,7 @@
     "updated": "Última actualización: {date}",
     "privacy": {
       "title": "Política de privacidad",
-      "intro": "En FileFlip la privacidad es el centro del producto. Esta página explica qué datos tratamos, por qué y por cuánto tiempo.",
+      "intro": "En Fileflect la privacidad es el centro del producto. Esta página explica qué datos tratamos, por qué y por cuánto tiempo.",
       "sections": [
         {
           "heading": "Archivos procesados en tu dispositivo",
@@ -415,11 +1775,11 @@
     },
     "terms": {
       "title": "Términos de uso",
-      "intro": "Al usar FileFlip aceptas estos términos. Están escritos para ser claros; si algo no se entiende, escríbenos.",
+      "intro": "Al usar Fileflect aceptas estos términos. Están escritos para ser claros; si algo no se entiende, escríbenos.",
       "sections": [
         {
           "heading": "El servicio",
-          "body": "FileFlip convierte, comprime y organiza archivos. Las funciones básicas son gratuitas y no requieren cuenta. El plan Pro amplía los límites y quita la publicidad."
+          "body": "Fileflect convierte, comprime y organiza archivos. Las funciones básicas son gratuitas y no requieren cuenta. El plan Pro amplía los límites y quita la publicidad."
         },
         {
           "heading": "Tus archivos",
@@ -427,7 +1787,7 @@
         },
         {
           "heading": "Uso aceptable",
-          "body": "No uses FileFlip para actividades ilegales, para enviar malware ni para sobrecargar el servicio (por ejemplo, con envíos automatizados masivos). Podemos limitar el uso para proteger el servicio."
+          "body": "No uses Fileflect para actividades ilegales, para enviar malware ni para sobrecargar el servicio (por ejemplo, con envíos automatizados masivos). Podemos limitar el uso para proteger el servicio."
         },
         {
           "heading": "Suscripción Pro",
@@ -453,5 +1813,902 @@
       "write": "Escribir un correo"
     },
     "contents": "Contenido"
+  },
+  "Catalog": {
+    "allTitle": "Todas las herramientas",
+    "allDescription": "Convierte, comprime y edita imágenes, PDF y documentos. Casi todo se procesa en tu dispositivo, gratis y sin marcas de agua.",
+    "categoriesNav": "Categorías",
+    "toolsHeading": "Herramientas",
+    "conversionsHeading": "Conversiones",
+    "conversionsFrom": "Desde {format}",
+    "toolCount": "{count, plural, one {# herramienta} other {# herramientas}}",
+    "conversionCount": "{count, plural, one {# conversión} other {# conversiones}}",
+    "seeCategory": "Ver todo en {category}",
+    "categoryTitle": "{category}: herramientas online",
+    "categories": {
+      "image": {
+        "name": "Imágenes",
+        "description": "Convierte entre JPG, PNG, WEBP, AVIF, HEIC y más, comprime y cambia el tamaño de tus fotos en el navegador."
+      },
+      "pdf": {
+        "name": "PDF",
+        "description": "Une, divide, rota, ordena y comprime PDF, o crea PDF a partir de imágenes, sin subir tus archivos."
+      },
+      "document": {
+        "name": "Documentos",
+        "description": "Pasa Word, Excel, PowerPoint, OpenDocument y texto a PDF, o un PDF a Word."
+      },
+      "data": {
+        "name": "Datos",
+        "description": "Convierte datos entre JSON, CSV, XML, YAML y TOML."
+      },
+      "developer": {
+        "name": "Desarrolladores",
+        "description": "Herramientas para desarrolladores: codificar, decodificar, formatear y calcular hashes."
+      },
+      "utility": {
+        "name": "Utilidades",
+        "description": "Utilidades rápidas para el día a día."
+      },
+      "subtitle": {
+        "name": "Subtítulos",
+        "description": "Convierte subtítulos entre SRT, VTT, ASS y SSA y sincronízalos con tu video."
+      },
+      "font": {
+        "name": "Fuentes",
+        "description": "Convierte fuentes tipográficas para la web."
+      },
+      "archive": {
+        "name": "Archivos comprimidos",
+        "description": "Crea y extrae archivos comprimidos de forma segura."
+      },
+      "ocr": {
+        "name": "OCR",
+        "description": "Reconoce el texto de imágenes y PDF escaneados."
+      },
+      "ebook": {
+        "name": "Libros electrónicos",
+        "description": "Convierte libros electrónicos."
+      },
+      "audio": {
+        "name": "Audio",
+        "description": "Convierte y edita audio en tu dispositivo."
+      },
+      "video": {
+        "name": "Video",
+        "description": "Convierte y edita video en tu dispositivo."
+      },
+      "3d": {
+        "name": "3D",
+        "description": "Convierte y visualiza modelos 3D."
+      },
+      "cad": {
+        "name": "CAD",
+        "description": "Visualiza y convierte planos CAD."
+      }
+    }
+  },
+  "Search": {
+    "button": "Buscar",
+    "label": "Buscar herramientas",
+    "placeholder": "Busca una herramienta o un formato (p. ej. HEIC a JPG)",
+    "noResults": "No encontramos nada para «{query}».",
+    "hint": "Escribe para buscar entre todas las herramientas y conversiones.",
+    "close": "Cerrar",
+    "loading": "Cargando…",
+    "error": "No se pudo cargar el buscador. Revisa tu conexión.",
+    "results": "{count, plural, =0 {Sin resultados} one {# resultado} other {# resultados}}",
+    "kinds": {
+      "tool": "Herramienta",
+      "category": "Categoría",
+      "conversion": "Conversión",
+      "guide": "Guía"
+    }
+  },
+  "ToolPage": {
+    "aboutTitle": "Qué hace {tool}",
+    "limitsTitle": "Límites",
+    "limitSingle": "Un archivo por vez, de hasta {size}.",
+    "limitMultiple": "Hasta {count} archivos por vez, de hasta {size} cada uno.",
+    "limitPro": "Con Pro: archivos de hasta {size} y hasta {count} por lote.",
+    "limitProBatch": "Con Pro: hasta {count} archivos por lote.",
+    "limitTime": "Si un trabajo tarda más de {minutes, plural, one {# minuto} other {# minutos}}, se detiene para no bloquear tu dispositivo.",
+    "limitBrowser": "Se procesa en tu navegador: tus archivos no se suben a ningún servidor.",
+    "limitServer": "Se procesa en nuestro servidor por conexión cifrada y el archivo se borra en menos de 1 hora.",
+    "faqTitle": "Preguntas frecuentes",
+    "relatedTitle": "Herramientas relacionadas"
+  },
+  "QrTools": {
+    "content": "Contenido",
+    "contentText": "Texto o enlace",
+    "contentWifi": "Wi-Fi",
+    "contentContact": "Contacto",
+    "text": "Texto o enlace",
+    "ssid": "Nombre de la red (SSID)",
+    "password": "Contraseña",
+    "security": "Seguridad",
+    "noPassword": "Sin contraseña",
+    "hidden": "Red oculta",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "organization": "Empresa",
+    "website": "Sitio web",
+    "format": "Formato",
+    "svgLabel": "SVG (vectorial)",
+    "size": "Tamaño",
+    "correction": "Corrección de errores",
+    "correctionL": "Baja (7 %)",
+    "correctionM": "Media (15 %)",
+    "correctionQ": "Alta (25 %)",
+    "correctionH": "Máxima (30 %)",
+    "darkColor": "Color del código",
+    "lightColor": "Color de fondo",
+    "transparent": "Fondo transparente",
+    "lowContrast": "Con tan poco contraste entre los colores, muchos celulares no podrán leer el código."
+  },
+  "TextTools": {
+    "length": "Longitud: {length} caracteres",
+    "count": "Cantidad (hasta {max})",
+    "characters": "Caracteres",
+    "upper": "Mayúsculas (A-Z)",
+    "lower": "Minúsculas (a-z)",
+    "digits": "Números (0-9)",
+    "symbols": "Símbolos (!#$%…)",
+    "avoidAmbiguous": "Evitar caracteres que se confunden (l, 1, O, 0…)",
+    "strong": "Fuerte: {bits} bits de entropía.",
+    "weak": "Débil: {bits} bits de entropía. Aumenta la longitud o agrega tipos de caracteres.",
+    "chooseSet": "Elige al menos un tipo de carácter.",
+    "words": "Palabras",
+    "charactersCount": "Caracteres",
+    "charactersNoSpaces": "Sin espacios",
+    "sentences": "Oraciones",
+    "paragraphs": "Párrafos",
+    "lines": "Líneas",
+    "readingTime": "Tiempo de lectura: {minutes, plural, =0 {menos de 1 minuto} one {# minuto} other {# minutos}}.",
+    "textLabel": "Escribe o pega tu texto",
+    "openFile": "Abrir archivo",
+    "fileTooLarge": "El archivo es demasiado grande (máximo 2 millones de caracteres).",
+    "changeCase": "Cambiar mayúsculas y minúsculas",
+    "case": {
+      "upper": "MAYÚSCULAS",
+      "lower": "minúsculas",
+      "title": "Tipo Título",
+      "sentence": "Tipo oración"
+    },
+    "copy": "Copiar texto",
+    "copied": "Copiado",
+    "download": "Descargar .txt"
+  },
+  "UtilityTools": {
+    "copied": "Copiado",
+    "copyValue": "Copiar {value}",
+    "pick": "Elegir {label}",
+    "invalidColor": "No es un color válido. Prueba con #0f766e, rgb(15 118 110), hsl(175 77% 26%), oklch(51% 0.09 186) o un nombre como teal.",
+    "color": "Color (HEX, RGB, HSL, OKLCH o nombre CSS)",
+    "preview": "Muestra del color {color}",
+    "contrastTitle": "Contraste para texto",
+    "background": "Color de fondo",
+    "sample": "Texto de ejemplo sobre el fondo",
+    "ratio": "Contraste: {ratio}:1",
+    "textSize": "Tamaño del texto",
+    "normalText": "Texto normal",
+    "largeText": "Texto grande (18 pt o 14 pt en negrita)",
+    "pass": "Cumple",
+    "fail": "No cumple",
+    "versus": "Contraste con blanco: {white}:1 · con negro: {black}:1",
+    "category": "Magnitud",
+    "value": "Valor",
+    "from": "De",
+    "to": "A",
+    "swap": "Intercambiar unidades",
+    "invalidNumber": "Escribe un número, por ejemplo 12,5 o 12.5.",
+    "allUnits": "{value} en todas las unidades",
+    "categories": {
+      "length": "Longitud",
+      "mass": "Peso",
+      "temperature": "Temperatura",
+      "volume": "Volumen",
+      "area": "Superficie",
+      "speed": "Velocidad",
+      "data": "Datos",
+      "time": "Tiempo"
+    },
+    "unit": {
+      "length": {
+        "mm": "Milímetros",
+        "cm": "Centímetros",
+        "m": "Metros",
+        "km": "Kilómetros",
+        "in": "Pulgadas",
+        "ft": "Pies",
+        "yd": "Yardas",
+        "mi": "Millas",
+        "nmi": "Millas náuticas"
+      },
+      "mass": {
+        "mg": "Miligramos",
+        "g": "Gramos",
+        "kg": "Kilogramos",
+        "t": "Toneladas",
+        "oz": "Onzas",
+        "lb": "Libras",
+        "st": "Stones"
+      },
+      "temperature": {
+        "c": "Grados Celsius",
+        "f": "Grados Fahrenheit",
+        "k": "Kelvin"
+      },
+      "volume": {
+        "ml": "Mililitros",
+        "l": "Litros",
+        "m3": "Metros cúbicos",
+        "tsp": "Cucharaditas (EE. UU.)",
+        "tbsp": "Cucharadas (EE. UU.)",
+        "floz": "Onzas líquidas (EE. UU.)",
+        "cup": "Tazas (EE. UU.)",
+        "pt": "Pintas (EE. UU.)",
+        "qt": "Cuartos (EE. UU.)",
+        "gal": "Galones (EE. UU.)",
+        "ukgal": "Galones imperiales"
+      },
+      "area": {
+        "cm2": "Centímetros cuadrados",
+        "m2": "Metros cuadrados",
+        "ha": "Hectáreas",
+        "km2": "Kilómetros cuadrados",
+        "in2": "Pulgadas cuadradas",
+        "ft2": "Pies cuadrados",
+        "yd2": "Yardas cuadradas",
+        "ac": "Acres",
+        "mi2": "Millas cuadradas"
+      },
+      "speed": {
+        "ms": "Metros por segundo",
+        "kmh": "Kilómetros por hora",
+        "mph": "Millas por hora",
+        "kn": "Nudos",
+        "fts": "Pies por segundo"
+      },
+      "data": {
+        "bit": "Bits",
+        "b": "Bytes",
+        "kb": "Kilobytes",
+        "mb": "Megabytes",
+        "gb": "Gigabytes",
+        "tb": "Terabytes",
+        "kib": "Kibibytes",
+        "mib": "Mebibytes",
+        "gib": "Gibibytes",
+        "tib": "Tebibytes"
+      },
+      "time": {
+        "ms": "Milisegundos",
+        "s": "Segundos",
+        "min": "Minutos",
+        "h": "Horas",
+        "d": "Días",
+        "wk": "Semanas",
+        "yr": "Años"
+      }
+    }
+  },
+  "ImageTools": {
+    "mode": "¿Cómo quieres comprimir?",
+    "modeLevel": "Por nivel",
+    "modeTarget": "A un peso exacto",
+    "target": "Peso máximo",
+    "targetCustom": "Otro",
+    "targetKb": "Peso máximo en KB",
+    "targetInvalid": "Escribe un peso de al menos 10 KB.",
+    "targetHint": "Para formularios y trámites que piden un peso máximo. Buscamos la mejor calidad que entra; si no alcanza, achicamos la imagen.",
+    "format": "Formato de salida",
+    "formatSame": "Igual que el original",
+    "pngToJpg": "En este modo los PNG se guardan como JPG (con fondo blanco si tienen transparencia).",
+    "kept": "ya estaba optimizada, así que te devolvemos el original sin cambios.",
+    "resized": "Se redujo a {width} × {height} px para llegar al peso.",
+    "resizeMode": "¿Cómo quieres cambiar el tamaño?",
+    "byPixels": "En píxeles",
+    "byPercent": "En porcentaje",
+    "bySocial": "Redes sociales",
+    "width": "Ancho (px)",
+    "height": "Alto (px)",
+    "keepRatio": "Mantener proporciones",
+    "enlarge": "Permitir agrandar imágenes más chicas",
+    "stretchHint": "Sin mantener proporciones, la imagen se estira al ancho y alto exactos.",
+    "pixelsInvalid": "Escribe el ancho, el alto o ambos, en píxeles enteros.",
+    "percent": "Porcentaje (%)",
+    "percentInvalid": "Escribe un porcentaje entre 1 y 400.",
+    "preset": "Medida",
+    "fit": "Si la proporción no coincide",
+    "fitCrop": "Recortar los bordes",
+    "fitPad": "Agregar bordes",
+    "resizedTo": "{name}: {before} → {after} px",
+    "presets": {
+      "instagramSquare": "Instagram cuadrada",
+      "instagramPortrait": "Instagram vertical",
+      "story": "Historia (Instagram, TikTok, WhatsApp)",
+      "facebookPost": "Publicación de Facebook / enlace",
+      "facebookCover": "Portada de Facebook",
+      "xPost": "Publicación de X",
+      "xHeader": "Encabezado de X",
+      "youtubeThumbnail": "Miniatura de YouTube",
+      "linkedinBanner": "Banner de LinkedIn",
+      "profilePhoto": "Foto de perfil"
+    },
+    "rotateNone": "Solo enderezar",
+    "flipH": "Voltear horizontalmente (espejo)",
+    "flipV": "Voltear verticalmente",
+    "orientationHint": "Primero se aplica la orientación guardada por la cámara, así que la foto gira tal como la ves.",
+    "rotatedTo": "{name}: {size} px",
+    "foundGps": "ubicación GPS ({latitude}, {longitude})",
+    "foundCamera": "cámara {camera}",
+    "foundDate": "fecha {date}",
+    "foundSoftware": "programa {software}",
+    "foundAuthor": "autor {author}",
+    "removedFound": "{name}: se quitó {found}.",
+    "removedBytes": "{name}: se quitaron {size} de metadatos (no tenía ubicación ni datos de cámara).",
+    "nothingFound": "{name}: no tenía metadatos que quitar.",
+    "heicReencoded": "Se guardó como JPG.",
+    "cropAspect": "Proporción",
+    "aspectFree": "Libre",
+    "aspectOriginal": "Original",
+    "cropLoading": "Preparando la vista previa…",
+    "cropArea": "Área de recorte: {width} × {height} px desde ({x}, {y})",
+    "cropKeyboardHint": "Arrastra el recuadro o sus esquinas. Con el teclado: flechas para mover, Mayús + flechas para cambiar el tamaño.",
+    "crop": {
+      "x": "X (px)",
+      "y": "Y (px)",
+      "width": "Ancho (px)",
+      "height": "Alto (px)"
+    },
+    "cropSize": "Recorte de {width} × {height} px (la imagen mide {imageWidth} × {imageHeight} px)",
+    "croppedTo": "{name}: recortada a {size} px",
+    "overlayPreview": "Vista previa (primera imagen)",
+    "overlayMode": "Tipo de marca de agua",
+    "modeText": "Texto",
+    "modeLogo": "Logo o imagen",
+    "logoFile": "Logo (PNG, JPG o WEBP)",
+    "logoHint": "Un PNG con fondo transparente queda mejor. Hasta 10 MB.",
+    "logoInvalid": "No se pudo leer el logo: elige un PNG, JPG o WEBP de hasta 10 MB.",
+    "watermarkText": "Texto de la marca de agua",
+    "watermarkDefault": "© Tu nombre",
+    "textContent": "Texto",
+    "textDefault": "Tu texto aquí",
+    "font": "Tipo de letra",
+    "fonts": {
+      "sans": "Sin serifa",
+      "serif": "Con serifa",
+      "mono": "Monoespaciada"
+    },
+    "textColor": "Color",
+    "bold": "Negrita",
+    "outline": "Contorno (se lee sobre cualquier fondo)",
+    "textBackground": "Fondo detrás del texto",
+    "overlaySize": "Tamaño",
+    "overlaySizes": {
+      "s": "Chico",
+      "m": "Mediano",
+      "l": "Grande",
+      "xl": "Muy grande"
+    },
+    "opacity": "Opacidad: {value} %",
+    "overlayPosition": "Posición",
+    "positions": {
+      "tl": "Arriba a la izquierda",
+      "tc": "Arriba al centro",
+      "tr": "Arriba a la derecha",
+      "ml": "Centro a la izquierda",
+      "mc": "Centro",
+      "mr": "Centro a la derecha",
+      "bl": "Abajo a la izquierda",
+      "bc": "Abajo al centro",
+      "br": "Abajo a la derecha"
+    },
+    "positionTile": "Mosaico (toda la imagen)",
+    "faviconFit": "Si la imagen no es cuadrada",
+    "faviconContain": "Ajustar con márgenes",
+    "faviconCover": "Recortar al cuadrado",
+    "faviconBackground": "Fondo",
+    "faviconTransparent": "Transparente",
+    "faviconColor": "De color",
+    "faviconAppName": "Nombre del sitio o app (opcional, para el manifest)",
+    "faviconHint": "Recibirás favicon.ico (16, 32 y 48 px), PNG de 16, 32, 180, 192 y 512 px, site.webmanifest y favicon-head.html con las etiquetas para el head. Usa una imagen de al menos 512 × 512 px o un SVG.",
+    "svgScale": "Tamaño",
+    "svgByWidth": "Ancho exacto",
+    "svgWidthInvalid": "Escribe un ancho entero entre 1 y {max} px.",
+    "svgHint": "1× usa el tamaño declarado en el SVG (1024 px si no declara ninguno). En JPG las zonas transparentes quedan blancas.",
+    "svgSize": "{name}: {size} px"
+  },
+  "SubtitleTools": {
+    "paste": "O pega tus subtítulos",
+    "target": "Convertir a",
+    "format": {
+      "srt": "SRT",
+      "vtt": "WebVTT (.vtt)",
+      "ass": "ASS (Advanced SubStation)",
+      "ssa": "SSA (SubStation Alpha)"
+    },
+    "cues": "{count, plural, one {# subtítulo.} other {# subtítulos.}}",
+    "dropped": "{count, plural, one {Se quitó # línea que terminaba antes del inicio.} other {Se quitaron # líneas que terminaban antes del inicio.}}",
+    "lostStyling": "Se quitaron colores, fuentes o posiciones que este formato no admite.",
+    "offset": "Mover los tiempos (segundos)",
+    "offsetHint": "Negativo para adelantar, positivo para atrasar. Ejemplo: -2,5",
+    "offsetInvalid": "Escribe un número de segundos, por ejemplo -2,5 o 1.",
+    "changeFps": "Cambiar la velocidad de cuadros (FPS)",
+    "fpsFrom": "FPS del subtítulo",
+    "fpsTo": "FPS del video",
+    "fpsValue": "{fps} FPS"
+  },
+  "PdfTools": {
+    "position": "Posición",
+    "numberStyle": "Formato del número",
+    "pageOf": "Página {n} de {total}",
+    "textSize": "Tamaño",
+    "sizes": {
+      "small": "Pequeño",
+      "medium": "Mediano",
+      "large": "Grande"
+    },
+    "positions": {
+      "bottom-center": "Abajo al centro",
+      "bottom-right": "Abajo a la derecha",
+      "bottom-left": "Abajo a la izquierda",
+      "top-center": "Arriba al centro",
+      "top-right": "Arriba a la derecha",
+      "top-left": "Arriba a la izquierda"
+    },
+    "startAt": "Empezar a contar desde",
+    "skipFirst": "Sin número en la primera página (portada)",
+    "watermarkText": "Texto de la marca de agua",
+    "defaultWatermark": "CONFIDENCIAL",
+    "layout": "Disposición",
+    "layouts": {
+      "diagonal": "Diagonal",
+      "horizontal": "Horizontal",
+      "tiled": "Mosaico (repetida)"
+    },
+    "color": "Color",
+    "opacity": "Opacidad: {value} %",
+    "pagesScope": "Páginas",
+    "allPages": "Todas",
+    "somePages": "Solo algunas",
+    "rangesSyntax": "Escribe páginas o rangos separados por comas, por ejemplo 1-3, 5.",
+    "pageHeadings": "Marcar el comienzo de cada página",
+    "pageHeading": "--- Página {n} ---",
+    "cropMode": "Cómo recortar",
+    "cropAuto": "Automático: quitar el blanco alrededor del contenido",
+    "cropManual": "Márgenes fijos en milímetros",
+    "cropMargins": "Milímetros a quitar de cada lado",
+    "sides": {
+      "top": "Arriba",
+      "right": "Derecha",
+      "bottom": "Abajo",
+      "left": "Izquierda"
+    },
+    "cropInvalid": "Escribe números de 0 a 999 (al menos uno mayor que 0).",
+    "cropNote": "Se cambia el área visible de cada página (CropBox): lo recortado queda oculto, no se borra del archivo.",
+    "password": "Contraseña",
+    "confirmPassword": "Repite la contraseña",
+    "currentPassword": "Contraseña del PDF",
+    "showPassword": "Mostrar contraseña",
+    "passwordMismatch": "Las contraseñas no coinciden.",
+    "permissionsLegend": "Quien abra el PDF podrá:",
+    "permissions": {
+      "print": "Imprimir",
+      "copy": "Copiar texto e imágenes",
+      "modify": "Modificar el documento"
+    },
+    "protectNote": "Se cifra con AES de 256 bits. Guarda la contraseña: si la olvidas, nadie puede recuperarla.",
+    "unlockNote": "Necesitas la contraseña: esta herramienta no adivina ni rompe contraseñas. El PDF resultante se abre sin contraseña y sin restricciones.",
+    "skipSmallImages": "Ignorar imágenes pequeñas (menos de {size} px de lado)",
+    "extractImagesNote": "Las fotos guardadas como JPG se descargan tal cual, sin perder calidad; las demás imágenes se guardan como PNG (con transparencia si la tienen)."
+  },
+  "SignPdf": {
+    "notCertified": "Esta firma es una imagen visible sobre el PDF, como firmar a mano. No es una firma digital certificada (con certificado o token) y no reemplaza a una cuando un trámite la exige.",
+    "source": "Tu firma",
+    "draw": "Dibujarla",
+    "upload": "Subir una foto o imagen",
+    "ink": "Color de la tinta",
+    "inkBlue": "Azul",
+    "inkBlack": "Negro",
+    "padLabel": "Recuadro para dibujar la firma",
+    "padHint": "Firma con el dedo, el mouse o un lápiz.",
+    "clear": "Borrar",
+    "uploadHint": "PNG, JPG o WEBP de hasta 10 MB. Una foto de tu firma en papel blanco funciona bien.",
+    "removeWhite": "Quitar el fondo blanco del papel",
+    "noSignature": "No encontramos ninguna firma: dibújala o elige una imagen con trazos oscuros.",
+    "useSignature": "Usar esta firma",
+    "pageOf": "Página {n} de {total}",
+    "changeSignature": "Cambiar la firma",
+    "placeHint": "Toca la página donde quieres la firma o arrástrala. Con el teclado, usa las flechas (Mayús para moverla más rápido).",
+    "signatureHandle": "Firma en la página",
+    "positionValue": "{x} % desde la izquierda, {y} % desde arriba",
+    "size": "Tamaño de la firma: {value} % del ancho",
+    "prevPage": "Página anterior",
+    "nextPage": "Página siguiente"
+  },
+  "FontTools": {
+    "target": "Convertir a",
+    "targets": {
+      "woff2": "WOFF2 (web, el más liviano)",
+      "woff": "WOFF (web, navegadores antiguos)",
+      "sfnt": "TTF / OTF (para instalar en la computadora)"
+    },
+    "note": "Se conserva el tipo de contornos: una fuente TrueType sale como .ttf y una OpenType CFF como .otf. Para la web, debajo del resultado tienes la regla @font-face lista para copiar."
+  },
+  "MarkupTools": {
+    "fullDocument": "Página HTML completa (con título y estilos legibles)",
+    "sanitizeNote": "El HTML se limpia: se quitan scripts, eventos, formularios y enlaces javascript:, así es seguro publicarlo.",
+    "htmlNote": "Se conservan títulos, negritas, listas, tablas, bloques de código, enlaces e imágenes; scripts, estilos y formularios se descartan.",
+    "pageSize": "Tamaño de página",
+    "pageSize_a4": "A4 (210 × 297 mm)",
+    "pageSize_letter": "Carta (216 × 279 mm)",
+    "pdfNote": "Las imágenes enlazadas no se descargan (solo las incluidas como data URL) y el HTML escrito en el Markdown se reduce a su texto.",
+    "htmlPdfNote": "Se usan los estilos y las imágenes incluidos en el archivo; lo enlazado a otros archivos o sitios no se descarga y el JavaScript no se ejecuta."
+  },
+  "PdfaTool": {
+    "standard": "Versión de PDF/A",
+    "hint_1b": "La primera versión: para sistemas que solo aceptan PDF/A-1. Las transparencias se aplanan.",
+    "hint_2b": "Recomendada: la más aceptada en trámites y archivos.",
+    "hint_3b": "Como 2b, y además admite archivos adjuntos dentro del PDF."
+  },
+  "SheetTool": {
+    "target": "Convertir a",
+    "targets": {
+      "xlsx": "Excel (XLSX)",
+      "ods": "OpenDocument (ODS)",
+      "csv": "CSV"
+    },
+    "delimiter": "Separador del CSV",
+    "delimiterComma": "Coma ( , ) y punto decimal",
+    "delimiterSemicolon": "Punto y coma ( ; ) y coma decimal — Excel en español",
+    "allSheets": "Un CSV por cada hoja (si no, solo la primera)",
+    "bom": "UTF-8 con BOM (Excel muestra bien los acentos)",
+    "note": "Se conservan hojas, valores y fórmulas; el formato visual (colores, bordes, anchos) no."
+  },
+  "ArchiveTool": {
+    "format": "Formato",
+    "formats": {
+      "zip": "ZIP",
+      "tar": "TAR",
+      "tgz": "TAR.GZ"
+    },
+    "level": "Compresión",
+    "levels": {
+      "0": "Sin comprimir (más rápido)",
+      "6": "Normal",
+      "9": "Máxima (más lento)"
+    },
+    "name": "Nombre del archivo (opcional)",
+    "notes": {
+      "zip": "Se abre en Windows, macOS, Android e iPhone sin instalar nada. Fotos, videos y documentos de Office se guardan sin recomprimir. Hasta {size} en total.",
+      "tar": "Junta los archivos sin comprimirlos (habitual en Linux). Hasta {size} en total.",
+      "tgz": "TAR comprimido con gzip, el estándar en Linux y en servidores. Hasta {size} en total."
+    },
+    "extractNote": "Se abre en tu dispositivo como un archivo no confiable: rutas peligrosas corregidas, enlaces omitidos y límite contra «bombas ZIP» (500 MB y 5000 archivos al descomprimir).",
+    "skipped": "{count, plural, one {Se omitió # enlace o archivo especial por seguridad.} other {Se omitieron # enlaces o archivos especiales por seguridad.}}"
+  },
+  "OcrTool": {
+    "language": "Idioma del texto",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文（简体）"
+    },
+    "note": "Se procesa en tu dispositivo. La primera vez se descarga el modelo del idioma (2–4 MB); después queda guardado en tu navegador.",
+    "lowConfidence": "Confianza baja ({confidence} %): revisa el texto, la imagen puede estar borrosa o torcida.",
+    "output": "Resultado",
+    "outputPdf": "PDF con texto buscable",
+    "outputTxt": "Solo el texto (.txt)",
+    "skipText": "Dejar como están las páginas que ya tienen texto",
+    "pdfNote": "Hasta {pages} páginas por PDF. Cada página se reconoce en tu dispositivo y tarda unos segundos."
+  },
+  "EbookTool": {
+    "target": "Convertir a",
+    "targets": {
+      "html": "HTML (una página con índice)",
+      "txt": "Texto plano (.txt)"
+    },
+    "images": "Incluir las imágenes del libro",
+    "contents": "Contenido",
+    "htmlNote": "Las imágenes se incluyen dentro del archivo; los scripts, los estilos del libro y lo que esté en internet no se usan.",
+    "textNote": "Se conservan párrafos, títulos, listas y tablas; las imágenes se reemplazan por su descripción, si la tienen.",
+    "pdfNote": "Las imágenes se incluyen en el PDF; cada capítulo empieza en una página nueva. El libro se lee en tu navegador y solo la página ya armada se envía a nuestro servidor para imprimirla.",
+    "title": "Título del libro",
+    "titlePlaceholder": "Si lo dejas vacío, se usa el primer título",
+    "author": "Autor (opcional)",
+    "language": "Idioma del libro",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文"
+    },
+    "createNote": "Cada archivo es un capítulo (en el orden de la lista) y cada título principal empieza uno nuevo. Se incluyen las imágenes insertadas en el archivo; las enlazadas a internet no."
+  },
+  "AudioTool": {
+    "target": "Convertir a",
+    "targets": {
+      "mp3": "MP3",
+      "wav": "WAV (sin pérdida)",
+      "flac": "FLAC (sin pérdida)",
+      "ogg": "OGG (Opus)",
+      "m4a": "M4A (AAC)",
+      "aiff": "AIFF (sin pérdida)"
+    },
+    "bitrate": "Calidad",
+    "bitrates": {
+      "96": "96 kbps (voz)",
+      "128": "128 kbps",
+      "192": "192 kbps (recomendada)",
+      "256": "256 kbps",
+      "320": "320 kbps (máxima)"
+    },
+    "lossyNote": "Formato comprimido: a mayor calidad, archivo más grande. Se procesa en tu dispositivo.",
+    "losslessNote": "Sin pérdida, en 16 bits: el sonido no cambia. Se procesa en tu dispositivo.",
+    "noAac": "Este navegador no puede leer audio AAC (M4A); los demás formatos funcionan. Para M4A usa Chrome, Edge o Safari.",
+    "noWebCodecs": "Este navegador no puede procesar audio (le falta WebCodecs). Usa una versión reciente de Chrome, Edge, Safari o Firefox.",
+    "reading": "Leyendo el audio…",
+    "player": "Reproductor del audio",
+    "start": "Inicio",
+    "end": "Fin",
+    "startHere": "Usar posición actual",
+    "endHere": "Usar posición actual",
+    "selection": "Se conservan {length} de {total}. Formato: minutos:segundos (por ejemplo 1:23.5).",
+    "rangeInvalid": "Tiempos no válidos: escribe minutos:segundos (por ejemplo 1:23.5), con el inicio antes del fin y sin pasar de {total}.",
+    "fadeIn": "Fundido de entrada ({seconds} s)",
+    "fadeOut": "Fundido de salida ({seconds} s)",
+    "trimmed": "Recortado de {from} a {to}.",
+    "channels": "Canales",
+    "channelOptions": {
+      "1": "Mono",
+      "2": "Estéreo",
+      "original": "Como el original"
+    },
+    "sampleRate": "Frecuencia de muestreo",
+    "rateOriginal": "Como el original",
+    "rateKhz": "{khz} kHz",
+    "opusRate": "OGG (Opus) siempre usa 48 kHz.",
+    "normalizeMode": "Normalizar según",
+    "normalizeModes": {
+      "loudness": "Volumen medio",
+      "peak": "Pico máximo"
+    },
+    "normalizeHints": {
+      "loudness": "Lleva el volumen medio a −16 dB (el de podcasts y notas de voz), sin que el pico pase de −1 dB.",
+      "peak": "Sube o baja todo por igual hasta que el punto más fuerte quede en −1 dB. No cambia la diferencia entre partes suaves y fuertes."
+    },
+    "targetSame": "Mismo formato",
+    "gainApplied": "Ganancia aplicada: {gain} dB.",
+    "joinNeedsTwo": "Elige al menos 2 archivos; se unen en el orden de la lista (usa las flechas para cambiarlo).",
+    "gap": "Silencio entre pistas",
+    "gaps": {
+      "0": "Sin silencio",
+      "1": "1 s",
+      "2": "2 s",
+      "0_5": "0,5 s"
+    },
+    "joinNote": "Si los archivos tienen distinta frecuencia o canales, se igualan a la mayor (como máximo estéreo).",
+    "joinedSuffix": "unido",
+    "joined": "{count} archivos unidos: {length} en total."
+  },
+  "VideoTool": {
+    "target": "Convertir a",
+    "targets": {
+      "mp4": "MP4",
+      "webm": "WebM",
+      "mov": "MOV",
+      "mkv": "MKV"
+    },
+    "copyNote": "Si el códec del video ya sirve para el formato elegido, se copia sin recomprimir (rápido y sin pérdida). Se procesa en tu dispositivo.",
+    "noH264": "Este navegador no puede crear video H.264: los MP4 se guardarán con VP9 o AV1 y MOV solo funciona si el video ya es H.264. Para H.264 usa Chrome, Edge o Safari.",
+    "noWebCodecs": "Este navegador no puede procesar video (no tiene WebCodecs). Usa una versión reciente de Chrome, Edge, Safari o Firefox.",
+    "copied": "Video copiado sin recomprimir ({codec}).",
+    "encoded": "Video recodificado en {codec}."
+  },
+  "ExtractAudioTool": {
+    "original": "Original (sin recomprimir)",
+    "originalNote": "Copia la pista de audio tal como está en el video: rápido y sin pérdida. Se procesa en tu dispositivo.",
+    "copied": "Audio copiado sin recomprimir ({codec}).",
+    "converted": "Audio convertido a {format}."
+  },
+  "CompressVideoTool": {
+    "quality": "Calidad",
+    "qualities": {
+      "high": "Alta",
+      "medium": "Media (recomendada)",
+      "low": "Baja (más liviano)"
+    },
+    "resolution": "Resolución máxima",
+    "original": "Original",
+    "note": "La resolución se mide en el lado más corto, así que también sirve para videos verticales. Nunca se agranda. Se procesa en tu dispositivo.",
+    "size": "{width} × {height} px.",
+    "notSmaller": "El resultado no quedó más liviano que el original: prueba una calidad o resolución menor."
+  },
+  "TrimVideoTool": {
+    "reading": "Leyendo el video…",
+    "player": "Reproductor del video",
+    "mode": "Modo de corte",
+    "modes": {
+      "exact": "Exacto",
+      "fast": "Rápido (sin recomprimir)"
+    },
+    "exactNote": "Corta en el cuadro exacto: el video se vuelve a codificar en calidad alta. Se procesa en tu dispositivo.",
+    "fastNote": "Copia sin recomprimir, en segundos y sin pérdida; empieza en el fotograma clave anterior al inicio, así que puede comenzar un poco antes."
+  },
+  "VideoToGifTool": {
+    "width": "Ancho",
+    "fps": "Cuadros por segundo",
+    "fpsValue": "{fps} por segundo",
+    "loop": "Repetir sin fin",
+    "note": "Hasta {max} cuadros. Sin sonido (el GIF no lo admite). Se procesa en tu dispositivo.",
+    "tooManyFrames": "Demasiados cuadros: el máximo es {max}. Acorta el tramo o baja los cuadros por segundo.",
+    "made": "{frames} cuadros de {width} × {height} px."
+  },
+  "VideoSpeedTool": {
+    "speed": "Velocidad",
+    "sound": "Sonido",
+    "sounds": {
+      "keep": "Conservar (cambia el tono)",
+      "remove": "Quitar sonido"
+    },
+    "note": "Menos de 1× es cámara lenta; más de 1×, acelerado. El video se vuelve a codificar en calidad alta, en el mismo formato. Se procesa en tu dispositivo.",
+    "done": "Velocidad {speed}: dura {length}."
+  },
+  "JoinVideosTool": {
+    "note": "El resultado toma el tamaño del primer video (máximo 1080p); los demás se encajan con bandas negras. Se recodifica en calidad alta, en tu dispositivo.",
+    "size": "{width} × {height} px."
+  },
+  "ModelConverterTool": {
+    "target": "Convertir a",
+    "targets": {
+      "stl": "STL",
+      "obj": "OBJ",
+      "ply": "PLY",
+      "glb": "GLB (glTF binario)"
+    },
+    "note": "Se conservan la geometría y, en PLY y GLB, los colores por vértice; STL y OBJ no guardan materiales; de 3MF, COLLADA y FBX solo se lee la geometría y sus colores, sin texturas. Hasta {max} triángulos por modelo. Se procesa en tu dispositivo.",
+    "done": "{triangles} triángulos."
+  },
+  "ModelViewer": {
+    "loading": "Preparando la vista previa…",
+    "label": "Vista previa 3D de {name}.",
+    "keys": "Arrastra para girar y usa la rueda o dos dedos para acercar; con el teclado: flechas para girar, + y − para acercar, 0 para volver a la vista inicial.",
+    "summary": "{name}: {triangles} triángulos · {x} × {y} × {z} (ancho × alto × profundidad, en las unidades del archivo).",
+    "rotateLeft": "Girar a la izquierda",
+    "rotateRight": "Girar a la derecha",
+    "zoomIn": "Acercar",
+    "zoomOut": "Alejar",
+    "reset": "Volver a la vista inicial",
+    "resetShort": "Centrar",
+    "tooLarge": "El modelo pesa más de 50 MB: se puede convertir, pero no lo mostramos para no trabar la página."
+  },
+  "LithophaneTool": {
+    "width": "Ancho de la placa",
+    "detail": "Detalle",
+    "details": {
+      "normal": "Normal (0,4 mm)",
+      "fine": "Fino (0,2 mm)"
+    },
+    "thickness": "Grosor",
+    "thicknesses": {
+      "thin": "Fino ({min}–{max} mm)",
+      "standard": "Estándar ({min}–{max} mm)",
+      "thick": "Grueso ({min}–{max} mm)"
+    },
+    "border": "Agregar un marco de 2 mm",
+    "note": "Lo oscuro queda más grueso y lo claro más fino. Se procesa en tu dispositivo.",
+    "suffix": "litofania",
+    "done": "Placa de {width} × {height} mm, de {min} a {max} mm de grosor, {triangles} triángulos."
+  },
+  "DxfConverterTool": {
+    "target": "Formato de salida",
+    "targets": {
+      "svg": "SVG (vectorial)",
+      "png": "PNG (imagen)",
+      "pdf": "PDF (para imprimir)"
+    },
+    "pngWidth": "Ancho de la imagen (lado más largo)",
+    "page": "Tamaño de página",
+    "pages": {
+      "a4": "A4 (ajustado con margen de 10 mm)",
+      "a3": "A3 (ajustado con margen de 10 mm)"
+    },
+    "background": "Fondo blanco (si no, transparente)",
+    "note": "Las líneas blancas o de color 7 se dibujan en negro, como sobre papel. Se procesa en tu dispositivo.",
+    "done": "{shapes} trazos y {texts} textos.",
+    "skipped": "No se dibujaron (no compatibles): {list}."
+  },
+  "IdPhotoTool": {
+    "size": "Medida",
+    "presets": {
+      "30x40": "{width} × {height} cm",
+      "40x40": "{width} × {height} cm",
+      "35x45": "{width} × {height} cm (pasaporte, OACI)",
+      "25x30": "{width} × {height} cm (tamaño infantil)",
+      "51x51": "2 × 2 in ({width} × {height} cm, EE. UU.)"
+    },
+    "check": "Las medidas varían según el trámite: confírmala con la oficina que te la pide.",
+    "loading": "Cargando la foto…",
+    "frameHint": "Mueve y ajusta el recuadro para que la cabeza quede dentro del óvalo y los ojos sobre la línea punteada.",
+    "donePhoto": "Foto de {size} ({pixels} px a 600 ppp).",
+    "lowResolution": "La zona elegida tiene poca resolución: puede imprimirse borrosa. Usa una foto más grande o más cercana.",
+    "doneSheet": "Hoja de 10 × 15 cm con {copies} copias y líneas de corte.",
+    "sheetSuffix": "hoja-10x15"
+  },
+  "RemoveBackgroundTool": {
+    "background": "Fondo",
+    "transparent": "Transparente (PNG)",
+    "white": "Blanco (JPG)",
+    "color": "Color (JPG)",
+    "colorLabel": "Color del fondo",
+    "note": "La primera vez se descarga el modelo desde nuestro sitio (unos {size} MB); después funciona sin conexión a nuestros servidores. Funciona mejor con un sujeto principal claro.",
+    "done": "Fondo quitado ({pixels} px).",
+    "suffix": "sin-fondo"
+  },
+  "ScanDocumentTool": {
+    "mode": "Modo",
+    "modes": {
+      "bw": "Blanco y negro (texto)",
+      "gray": "Escala de grises",
+      "color": "Color"
+    },
+    "paper": "Tamaño de página",
+    "papers": {
+      "a4": "A4",
+      "letter": "Carta",
+      "fit": "Del tamaño de la hoja"
+    },
+    "pages": "Páginas",
+    "page": "Página {n}",
+    "loading": "Cargando la foto…",
+    "hint": "Arrastra los círculos a las cuatro esquinas de la hoja.",
+    "cornersHint": "Arrastra las esquinas, o elígelas con Tab y muévelas con las flechas (Mayús para pasos grandes).",
+    "corners": {
+      "topLeft": "Esquina superior izquierda ({x}, {y})",
+      "topRight": "Esquina superior derecha ({x}, {y})",
+      "bottomRight": "Esquina inferior derecha ({x}, {y})",
+      "bottomLeft": "Esquina inferior izquierda ({x}, {y})"
+    },
+    "done": "PDF con {pages, plural, one {# página} other {# páginas}}."
+  },
+  "Credits": {
+    "metaTitle": "Créditos y licencias",
+    "metaDescription": "Software libre y de código abierto que usa Fileflect: componentes, versiones, licencias y enlaces al código fuente, incluidos los componentes LGPL.",
+    "title": "Créditos y licencias",
+    "intro": "Fileflect existe gracias al software libre y de código abierto. Aquí está cada componente de terceros que llega a tu navegador o corre en nuestro servidor, con su versión, su licencia y dónde encontrar su código.",
+    "download": "Descargar los avisos de terceros (.txt)",
+    "downloadHint": "Textos completos de las licencias, avisos de copyright y archivos NOTICE de todos los componentes.",
+    "lgplHeading": "Componentes bajo LGPL",
+    "lgplIntro": "Estos componentes se usan bajo la Licencia Pública General Reducida de GNU (LGPL), sin modificaciones y como archivos separados (módulos WebAssembly o bibliotecas dinámicas) que se pueden reemplazar por otra versión. Puedes descargar su código fuente exacto y las instrucciones con las que se compilaron desde los enlaces de cada uno.",
+    "enginesHeading": "Motores y datos incluidos",
+    "enginesIntro": "Bibliotecas compiladas a WebAssembly que vienen dentro de los paquetes de abajo, nuestra propia compilación de libarchive y los modelos que servimos desde nuestro dominio.",
+    "servicesHeading": "Servicios del servidor",
+    "servicesIntro": "Programas que corren aparte en nuestro servidor (no se distribuyen con Fileflect): convierten documentos de oficina y guardan los datos de las cuentas.",
+    "packagesHeading": "Paquetes de JavaScript ({count})",
+    "packagesIntro": "Todas las dependencias de producción, incluidas las indirectas, generadas a partir de los paquetes instalados.",
+    "tableLabel": "Paquetes de JavaScript con su versión, licencia, autor y dónde se usan",
+    "name": "Componente",
+    "version": "Versión",
+    "license": "Licencia",
+    "author": "Autor o proyecto",
+    "where": "Dónde",
+    "browser": "Navegador",
+    "server": "Servidor",
+    "includedIn": "Incluido en {package}",
+    "project": "Proyecto",
+    "source": "Código fuente de esta versión",
+    "sourceRepo": "Repositorio del código fuente",
+    "sourceNotExact": "La compilación no registra el commit exacto de FFmpeg; la versión de libavcodec es {version}.",
+    "build": "Cómo se compiló",
+    "licenseText": "Texto de la licencia",
+    "lameThanks": "Este sitio usa código del proyecto LAME (lame.sourceforge.io) para codificar MP3.",
+    "questions": "¿Falta algo o necesitas una copia del código fuente? Escríbenos desde la página de contacto."
   }
 }

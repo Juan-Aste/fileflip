@@ -1,9 +1,10 @@
 import { ShieldCheck } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import LogoMark from "@/components/brand/LogoMark";
+import { allToolsSlugs, categorySlug, publishedCategories } from "@/config/categories";
 import { conversionSlug, popularConversions } from "@/config/conversion-pages";
+import { creditsSlugs } from "@/config/credits";
 import { formats } from "@/config/formats";
-import { availableTools, tools } from "@/config/tools";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 
@@ -11,7 +12,7 @@ const linkClass = "text-muted transition hover:text-brand";
 
 export default function Footer() {
   const t = useTranslations("Footer");
-  const tt = useTranslations("Tools");
+  const tcat = useTranslations("Catalog");
   const tc = useTranslations("ConversionPage");
   const th = useTranslations("HomePage");
   const locale = useLocale() as Locale;
@@ -24,7 +25,7 @@ export default function Footer() {
           <Link href="/" className="flex items-center gap-2 font-display text-lg font-extrabold tracking-tight">
             <LogoMark className="h-7 w-7" />
             <span>
-              File<span className="text-brand">Flip</span>
+              File<span className="text-brand">flect</span>
             </span>
           </Link>
           <p className="max-w-xs text-muted">{t("tagline")}</p>
@@ -39,13 +40,18 @@ export default function Footer() {
             {t("headings.tools")}
           </h2>
           <ul className="flex flex-col gap-2">
-            {availableTools.map((id) => (
-              <li key={id}>
-                <Link href={`/${tools[id].slugs[locale]}`} className={linkClass}>
-                  {tt(`${id}.title`)}
+            {publishedCategories.map((c) => (
+              <li key={c}>
+                <Link href={`/${categorySlug(c, locale)}`} className={linkClass}>
+                  {tcat(`categories.${c}.name`)}
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href={`/${allToolsSlugs[locale]}`} className={`${linkClass} font-semibold`}>
+                {t("allTools")}
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -69,9 +75,9 @@ export default function Footer() {
             {t("headings.company")}
           </h2>
           <ul className="flex flex-col gap-2">
-            {(["pricing", "privacy", "terms", "contact"] as const).map((page) => (
+            {(["pricing", "privacy", "terms", "credits", "contact"] as const).map((page) => (
               <li key={page}>
-                <Link href={`/${page}`} className={linkClass}>
+                <Link href={`/${page === "credits" ? creditsSlugs[locale] : page}`} className={linkClass}>
                   {t(page)}
                 </Link>
               </li>

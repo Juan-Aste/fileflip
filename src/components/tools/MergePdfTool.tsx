@@ -43,7 +43,7 @@ export default function MergePdfTool() {
     return (
       <ToolResult
         blob={result}
-        filename="fileflip-merged.pdf"
+        filename="fileflect-merged.pdf"
         onReset={() => {
           setResult(null);
           clear();

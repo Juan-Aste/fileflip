@@ -16,6 +16,10 @@ services:
     command:
       - "gotenberg"
       - "--api-timeout=90s"
+      # Markdown → PDF prints app-generated pages: no JavaScript and no network (SSRF).
+      - "--chromium-disable-javascript=true"
+      - "--chromium-deny-private-ips=true"
+      - "--chromium-deny-public-ips=true"
 
 volumes:
   mongo-data:

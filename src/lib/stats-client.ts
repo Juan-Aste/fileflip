@@ -3,6 +3,7 @@
 import type { FormatId } from "@/config/formats";
 import type { ToolId } from "@/config/tools";
 import type { ApiErrorCode } from "./api-errors";
+import { errorCode } from "./convert-error";
 
 /** Reports a browser conversion's metadata (formats, sizes and timing only). */
 export function reportConversion(entry: {
@@ -47,7 +48,7 @@ export async function trackTool<T>(
     reportConversion({ ...base, outputSize: outputSize(result), success: true, durationMs: Math.round(performance.now() - start) });
     return result;
   } catch (error) {
-    reportConversion({ ...base, success: false, durationMs: Math.round(performance.now() - start), errorCode: "conversionFailed" });
+    reportConversion({ ...base, success: false, durationMs: Math.round(performance.now() - start), errorCode: errorCode(error) });
     throw error;
   }
 }

@@ -44,7 +44,7 @@ describe("subscription lifecycle (mock provider)", () => {
       email: "ana@example.com",
       region: "AR",
       period: "monthly",
-      reason: "FileFlip Pro",
+      reason: "Fileflect Pro",
       backUrl: "http://localhost/es/account",
     });
     expect(url).toMatch(/^\/api\/billing\/mock-checkout\?id=mock-/);

@@ -13,12 +13,15 @@ import {
   Zap,
 } from "lucide-react";
 import WithSidebarAd from "@/components/ads/WithSidebarAd";
+import HomeCatalog from "@/components/catalog/HomeCatalog";
+import HeroSearch from "@/components/search/HeroSearch";
 import Converter from "@/components/converter/Converter";
 import FaqList from "@/components/ui/FaqList";
 import PillLink from "@/components/ui/PillLink";
 import { badge, card } from "@/components/ui/styles";
 import { conversionSlug, popularConversions } from "@/config/conversion-pages";
 import { formats } from "@/config/formats";
+import { availableTools } from "@/config/tools";
 import type { Locale } from "@/i18n/routing";
 import { alternatesFor } from "@/lib/seo";
 
@@ -70,6 +73,7 @@ export default function HomePage({
             {t("title")}
           </h1>
           <p className="max-w-2xl text-lg text-muted text-pretty">{t("tagline")}</p>
+          <HeroSearch count={availableTools.length} />
         </div>
 
         <section id="converter" aria-label={t("cta")} className="scroll-mt-24">
@@ -89,6 +93,7 @@ export default function HomePage({
                 ))}
               </ul>
             </nav>
+            <HomeCatalog />
             {/* Inside the ad column's row so the sticky ad doesn't leave a gap beside it on wide screens. */}
             <section aria-labelledby="how-heading" className="pt-16 sm:pt-20">
               <div className="mb-10 text-center">

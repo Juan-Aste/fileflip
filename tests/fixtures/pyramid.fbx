@@ -1,0 +1,34 @@
+; FBX 7.4.0 project file
+; Fileflect test pyramid
+FBXHeaderExtension:  {
+	FBXHeaderVersion: 1003
+	FBXVersion: 7400
+}
+GlobalSettings:  {
+	Version: 1000
+	Properties70:  {
+		P: "UpAxis", "int", "Integer", "",1
+		P: "UpAxisSign", "int", "Integer", "",1
+		P: "UnitScaleFactor", "double", "Number", "",1
+	}
+}
+Objects:  {
+	Geometry: 1000, "Geometry::pyramid", "Mesh" {
+		Vertices: *15 {
+			a: 0,0,0,20,0,0,20,0,20,0,0,20,10,15,10
+		}
+		PolygonVertexIndex: *16 {
+			a: 0,1,2,-4,0,4,-2,1,4,-3,2,4,-4,3,4,-1
+		}
+		GeometryVersion: 124
+	}
+	Model: 2000, "Model::pyramid", "Mesh" {
+		Version: 232
+		Properties70:  {
+		}
+	}
+}
+Connections:  {
+	C: "OO",2000,0
+	C: "OO",1000,2000
+}

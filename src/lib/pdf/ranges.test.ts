@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parsePageRanges, rangeLabel } from "./ranges";
+import { formatPageRanges, parsePageRanges, rangeLabel } from "./ranges";
 
 describe("parsePageRanges", () => {
   it("parses single pages and ranges", () => {
@@ -24,5 +24,18 @@ describe("rangeLabel", () => {
     expect(rangeLabel([0, 1, 2])).toBe("1-3");
     expect(rangeLabel([4])).toBe("5");
     expect(rangeLabel([])).toBe("");
+  });
+});
+
+describe("formatPageRanges", () => {
+  it("joins consecutive pages into ranges, sorted and without repeats", () => {
+    expect(formatPageRanges([4, 0, 1, 2, 2, 9])).toBe("1-3, 5, 10");
+    expect(formatPageRanges([])).toBe("");
+    expect(formatPageRanges(new Set([7]))).toBe("8");
+  });
+
+  it("round-trips with parsePageRanges", () => {
+    const pages = [0, 2, 3, 4, 8];
+    expect(parsePageRanges(formatPageRanges(pages), 10)!.flat()).toEqual(pages);
   });
 });

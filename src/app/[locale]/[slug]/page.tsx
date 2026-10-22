@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import WithSidebarAd from "@/components/ads/WithSidebarAd";
+import { AllToolsView, CategoryView } from "@/components/catalog/CatalogViews";
 import Converter from "@/components/converter/Converter";
 import ProcessingBadge from "@/components/converter/ProcessingBadge";
+import CreditsPage from "@/components/legal/CreditsPage";
 import ToolComponent from "@/components/tools/ToolComponent";
 import { Cloud, ShieldCheck } from "lucide-react";
 import ToolIcon from "@/components/tools/ToolIcon";
@@ -12,16 +14,26 @@ import PageHero from "@/components/ui/PageHero";
 import PillLink from "@/components/ui/PillLink";
 import { card } from "@/components/ui/styles";
 import {
+  allToolsSlugs,
+  categoryFromSlug,
+  categorySlug,
+  publishedCategories,
+} from "@/config/categories";
+import {
   conversionFromSlug,
   conversionPages,
   conversionSlug,
   relatedConversions,
 } from "@/config/conversion-pages";
+import { creditsSlugs } from "@/config/credits";
 import { formats, type Conversion } from "@/config/formats";
 import {
   availableTools,
+  relatedTools,
+  toolsForConversion,
   toolFromSlug,
   tools,
+  type ToolCategory,
   type ToolInfo,
 } from "@/config/tools";
 import {
@@ -31,17 +43,26 @@ import {
   type LongtailPage,
 } from "@/content/longtail";
 import { routing, type Locale } from "@/i18n/routing";
-import { alternatesFor } from "@/lib/seo";
+import { limits } from "@/config/limits";
+import { jsonLdString } from "@/lib/faq";
+import { formatBytes } from "@/lib/format";
+import { alternatesFor, siteUrl, softwareApplicationJsonLd } from "@/lib/seo";
 
 type Params = { locale: string; slug: string };
 
 type Page =
+  | { kind: "all" }
+  | { kind: "credits" }
+  | { kind: "category"; category: ToolCategory }
   | { kind: "tool"; tool: ToolInfo }
   | { kind: "conversion"; conversion: Conversion }
   | { kind: "longtail"; page: LongtailPage };
 
 export function generateStaticParams() {
   return routing.locales.flatMap((locale) => [
+    { locale, slug: allToolsSlugs[locale] },
+    { locale, slug: creditsSlugs[locale] },
+    ...publishedCategories.map((c) => ({ locale, slug: categorySlug(c, locale) })),
     ...availableTools.map((id) => ({ locale, slug: tools[id].slugs[locale] })),
     ...conversionPages.map((c) => ({
       locale,
@@ -58,6 +79,10 @@ export const dynamicParams = false;
 
 function resolve({ locale, slug }: Params): Page | undefined {
   const decoded = decodeURIComponent(slug);
+  if (decoded === allToolsSlugs[locale as Locale]) return { kind: "all" };
+  if (decoded === creditsSlugs[locale as Locale]) return { kind: "credits" };
+  const category = categoryFromSlug(locale as Locale, decoded);
+  if (category) return { kind: "category", category };
   const tool = toolFromSlug(locale as Locale, decoded);
   if (tool && availableTools.includes(tool.id)) return { kind: "tool", tool };
   const conversion = conversionFromSlug(locale as Locale, decoded);
@@ -66,10 +91,20 @@ function resolve({ locale, slug }: Params): Page | undefined {
   return page ? { kind: "longtail", page } : undefined;
 }
 
-const slugFor = (page: Exclude<Page, { kind: "longtail" }>, locale: Locale) =>
-  page.kind === "tool"
-    ? page.tool.slugs[locale]
-    : conversionSlug(page.conversion, locale);
+function slugFor(page: Exclude<Page, { kind: "longtail" }>, locale: Locale): string {
+  switch (page.kind) {
+    case "all":
+      return allToolsSlugs[locale];
+    case "credits":
+      return creditsSlugs[locale];
+    case "category":
+      return categorySlug(page.category, locale);
+    case "tool":
+      return page.tool.slugs[locale];
+    case "conversion":
+      return conversionSlug(page.conversion, locale);
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -86,7 +121,7 @@ export async function generateMetadata({
       return t ? [[l, `/${l}/${t.slug}`] as const] : [];
     });
     return {
-      title: `${lt.metaTitle} — FileFlip`,
+      title: `${lt.metaTitle} — Fileflect`,
       description: lt.metaDescription,
       alternates: {
         canonical: `/${lt.locale}/${lt.slug}`,
@@ -98,13 +133,29 @@ export async function generateMetadata({
     p.locale as Locale,
     (l) => `/${slugFor(page, l)}`,
   );
+  if (page.kind === "credits") {
+    const t = await getTranslations({ locale: p.locale, namespace: "Credits" });
+    return { title: `${t("metaTitle")} — Fileflect`, description: t("metaDescription"), alternates };
+  }
+  if (page.kind === "all" || page.kind === "category") {
+    const t = await getTranslations({ locale: p.locale, namespace: "Catalog" });
+    if (page.kind === "all") {
+      return { title: `${t("allTitle")} — Fileflect`, description: t("allDescription"), alternates };
+    }
+    const name = t(`categories.${page.category}.name`);
+    return {
+      title: `${t("categoryTitle", { category: name })} — Fileflect`,
+      description: t(`categories.${page.category}.description`),
+      alternates,
+    };
+  }
   if (page.kind === "tool") {
     const t = await getTranslations({
       locale: p.locale,
       namespace: `Tools.${page.tool.id}`,
     });
     return {
-      title: `${t("title")} — FileFlip`,
+      title: `${t("title")} — Fileflect`,
       description: t("description"),
       alternates,
     };
@@ -118,7 +169,7 @@ export async function generateMetadata({
     to: formats[page.conversion.to].label,
   };
   return {
-    title: `${t("metaTitle", names)} — FileFlip`,
+    title: `${t("metaTitle", names)} — Fileflect`,
     description: t("description", names),
     alternates,
   };
@@ -133,9 +184,15 @@ export default async function SlugPage({
   const page = resolve(p);
   if (!page) notFound();
   setRequestLocale(p.locale);
+  // Like the legal pages, the credits page carries no ads.
+  if (page.kind === "credits") return <CreditsPage locale={p.locale as Locale} />;
   return (
     <WithSidebarAd>
-      {page.kind === "tool" ? (
+      {page.kind === "all" ? (
+        <AllToolsView />
+      ) : page.kind === "category" ? (
+        <CategoryView category={page.category} />
+      ) : page.kind === "tool" ? (
         <ToolView tool={page.tool} />
       ) : page.kind === "conversion" ? (
         <ConversionView conversion={page.conversion} />
@@ -148,13 +205,97 @@ export default async function SlugPage({
 
 async function ToolView({ tool }: { tool: ToolInfo }) {
   const t = await getTranslations(`Tools.${tool.id}`);
+  const tp = await getTranslations("ToolPage");
+  const tcat = await getTranslations("Catalog");
+  const locale = (await getLocale()) as Locale;
+  const tt = await getTranslations("Tools");
+  // Questions are numbered q1/a1, q2/a2... in the messages (at least 3 per tool).
+  const faq = Array.from({ length: 12 }, (_, i) => i + 1)
+    .filter((n) => t.has(`faq.q${n}`))
+    .map((n) => ({ q: t(`faq.q${n}`), a: t(`faq.a${n}`) }));
+  const related = relatedTools(tool.id);
+  const size = (bytes: number) => formatBytes(bytes, locale);
+  // The same caps ToolShell enforces: the plan's, or the tool's own when lower.
+  const onServer = tool.engine === "server";
+  const fileCap = (plan: keyof typeof limits) =>
+    Math.min(tool.limits.maxFileBytes ?? Infinity, onServer ? limits[plan].serverMaxFileBytes : limits[plan].browserMaxFileBytes);
+  const batch = (plan: keyof typeof limits) => (onServer ? limits[plan].serverMaxBatch : limits[plan].browserMaxBatch);
+  const fileLimits =
+    tool.limits.files === "none"
+      ? []
+      : [
+          tool.limits.files === "single"
+            ? tp("limitSingle", { size: size(fileCap("free")) })
+            : tp("limitMultiple", { count: batch("free"), size: size(fileCap("free")) }),
+          fileCap("pro") > fileCap("free")
+            ? tp("limitPro", { size: size(fileCap("pro")), count: batch("pro") })
+            : tp("limitProBatch", { count: batch("pro") }),
+        ];
+  const limitItems = [
+    ...fileLimits,
+    tp("limitTime", { minutes: Math.round(tool.limits.timeoutMs / 60_000) }),
+    tool.engine === "browser" ? tp("limitBrowser") : tp("limitServer"),
+  ];
+  const jsonLd = softwareApplicationJsonLd({
+    name: t("title"),
+    description: t("description"),
+    url: `${siteUrl()}/${locale}/${tool.slugs[locale]}`,
+    locale,
+  });
+
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-8 py-12">
-      <PageHero icon={<ToolIcon id={tool.id} className="h-7 w-7" />} title={t("title")}>
-        <p className="max-w-xl text-lg text-muted text-pretty">{t("description")}</p>
-        <ProcessingBadge engine={tool.engine} />
-      </PageHero>
-      <ToolComponent id={tool.id} />
+    <div className="mx-auto flex max-w-3xl flex-col gap-12 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdString(jsonLd) }} />
+      <div className="flex flex-col gap-8">
+        <PageHero icon={<ToolIcon id={tool.id} className="h-7 w-7" />} title={t("title")}>
+          <p className="max-w-xl text-lg text-muted text-pretty">{t("description")}</p>
+          <ProcessingBadge engine={tool.engine} />
+        </PageHero>
+        <ToolComponent id={tool.id} />
+      </div>
+
+      <section aria-labelledby="about" className="flex flex-col gap-3">
+        <h2 id="about" className="text-2xl font-bold">
+          {tp("aboutTitle", { tool: t("title") })}
+        </h2>
+        <p className="leading-relaxed text-foreground/85">{t("about")}</p>
+      </section>
+
+      <section aria-labelledby="limits" className={`${card} flex flex-col gap-3 p-6`}>
+        <h2 id="limits" className="text-xl font-bold">
+          {tp("limitsTitle")}
+        </h2>
+        <ul className="flex list-disc flex-col gap-1.5 pl-5 text-foreground/85">
+          {limitItems.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-labelledby="faq" className="flex flex-col gap-4">
+        <h2 id="faq" className="text-2xl font-bold">
+          {tp("faqTitle")}
+        </h2>
+        <FaqList items={faq} locale={locale} />
+      </section>
+
+      <nav aria-labelledby="related" className="flex flex-col gap-4">
+        <h2 id="related" className="text-2xl font-bold">
+          {tp("relatedTitle")}
+        </h2>
+        <ul className="flex flex-wrap gap-2">
+          {related.map((other) => (
+            <li key={other.id}>
+              <PillLink href={`/${other.slugs[locale]}`}>{tt(`${other.id}.title`)}</PillLink>
+            </li>
+          ))}
+          <li>
+            <PillLink href={`/${categorySlug(tool.category, locale)}`}>
+              {tcat("seeCategory", { category: tcat(`categories.${tool.category}.name`) })}
+            </PillLink>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }
@@ -167,6 +308,8 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
     to: formats[conversion.to].label,
   };
   const related = relatedConversions(conversion);
+  const nextTools = toolsForConversion(conversion);
+  const tt = await getTranslations("Tools");
   // Server (document) conversions have no quality or size options.
   const steps = ["step1", conversion.engine === "browser" ? "step2" : "step2Document", "step3"] as const;
   const PrivacyIcon = conversion.engine === "browser" ? ShieldCheck : Cloud;
@@ -212,6 +355,21 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
           </p>
         </div>
       </section>
+
+      {nextTools.length > 0 && (
+        <nav aria-labelledby="next-tools" className="flex flex-col gap-4">
+          <h2 id="next-tools" className="text-2xl font-bold">
+            {t("toolsTitle", names)}
+          </h2>
+          <ul className="flex flex-wrap gap-2">
+            {nextTools.map((tool) => (
+              <li key={tool.id}>
+                <PillLink href={`/${tool.slugs[locale]}`}>{tt(`${tool.id}.title`)}</PillLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
 
       {related.length > 0 && (
         <nav aria-labelledby="related" className="flex flex-col gap-4">

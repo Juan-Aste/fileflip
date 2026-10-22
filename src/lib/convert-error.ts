@@ -15,6 +15,26 @@ export class ConversionError extends Error {
   }
 }
 
+/** A failure caused by one of several input files (its position in the list). */
+export class InputFileError extends ConversionError {
+  constructor(
+    code: ApiErrorCode,
+    readonly index: number,
+  ) {
+    super(code);
+  }
+}
+
+/** A syntax error in a text input, with where it is (1-based line and column). */
+export class TextPositionError extends ConversionError {
+  constructor(
+    code: ApiErrorCode,
+    readonly position: { line: number; column: number },
+  ) {
+    super(code);
+  }
+}
+
 export function errorCode(error: unknown): ApiErrorCode {
   return error instanceof ConversionError && isApiErrorCode(error.code) ? error.code : "conversionFailed";
 }

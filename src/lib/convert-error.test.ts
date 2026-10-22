@@ -1,12 +1,19 @@
 import { describe, expect, it } from "vitest";
 import { apiError } from "./api-errors";
-import { ConversionError, errorCode, isLoggedByServerCode } from "./convert-error";
+import { ConversionError, InputFileError, errorCode, isLoggedByServerCode } from "./convert-error";
 
 describe("errorCode", () => {
   it("keeps known codes and hides unexpected errors behind a generic one", () => {
     expect(errorCode(new ConversionError("rateLimited"))).toBe("rateLimited");
     expect(errorCode(new Error("Out of memory"))).toBe("conversionFailed");
     expect(errorCode("weird")).toBe("conversionFailed");
+  });
+
+  it("keeps the code of a failure tied to one input file", () => {
+    const error = new InputFileError("fileDamaged", 2);
+    expect(error).toBeInstanceOf(ConversionError);
+    expect(errorCode(error)).toBe("fileDamaged");
+    expect(error.index).toBe(2);
   });
 });
 

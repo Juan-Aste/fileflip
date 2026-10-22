@@ -7,7 +7,7 @@ import { join } from "node:path";
 // uploads, future engines) goes under this folder, which is swept so no file
 // outlives TEMP_FILE_TTL_MINUTES (60 by default, our privacy promise).
 
-export const TEMP_ROOT = join(tmpdir(), "fileflip");
+export const TEMP_ROOT = join(tmpdir(), "fileflect");
 
 export const ttlMs = () => (Number(process.env.TEMP_FILE_TTL_MINUTES) || 60) * 60_000;
 

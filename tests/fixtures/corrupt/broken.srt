@@ -1,0 +1,7 @@
+1
+this is not a timing line
+Hello
+
+2
+00:00:99,000 -> nope
+Bye

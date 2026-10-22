@@ -109,7 +109,7 @@ export function canConvertImageInBrowser(to: FormatId) {
  * Workers have no DOM to render SVG, so it is rasterized here, directly at
  * the requested size (vectors stay sharp when enlarged).
  */
-async function rasterizeSvg(file: Blob, options: ImageOptions) {
+export async function rasterizeSvg(file: Blob, options: ImageOptions) {
   // A vector has no pixels to crop: "cover" just fits it into the box.
   const resize =
     options.resize?.mode === "cover"

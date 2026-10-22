@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-# FileFlip web app — Next.js standalone output (see DEPLOY.md).
+# Fileflect web app — Next.js standalone output (see DEPLOY.md).
 
 # Overridable to use a registry mirror (e.g. mirror.gcr.io/library/node:22-bookworm-slim).
 ARG NODE_IMAGE=node:22-bookworm-slim

@@ -61,5 +61,5 @@ export default async function LegalPage({ locale, doc }: { locale: Locale; doc: 
 export async function legalMetadata(locale: Locale, doc: "privacy" | "terms" | "contact", path: string) {
   const t = await getTranslations({ locale, namespace: "Legal" });
   const { alternatesFor } = await import("@/lib/seo");
-  return { title: `${t(`${doc}.title`)} — FileFlip`, alternates: alternatesFor(locale, () => path) };
+  return { title: `${t(`${doc}.title`)} — Fileflect`, alternates: alternatesFor(locale, () => path) };
 }

@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
   // Always put <title>/<meta> in the <head>, also on dynamic pages (pricing):
   // streamed metadata ends up in <body>, which some crawlers and tools miss.
   htmlLimitedBots: /.*/,
+  async headers() {
+    // The OCR engine and models are served under versioned paths (src/lib/ocr/assets.ts).
+    return [{ source: "/ocr/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] }];
+  },
   webpack(config, { webpack }) {
     // The multithreaded AVIF encoder only runs on cross-origin-isolated pages
     // (we are not) and its self-spawning pthread worker creates a circular
@@ -24,6 +28,12 @@ const nextConfig: NextConfig = {
         },
       ),
     );
+    // The Emscripten loaders of qpdf and libarchive require fs/path/crypto only when they run in
+    // Node; the browser branch never reaches them.
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^(fs|path|crypto)$/, contextRegExp: /qpdf-wasm|libarchive-wasm/ }));
+    // linkedom (and its CSSOM) try optional `require("canvas")` / `require("cssstyle")` inside
+    // try/catch and fall back to shims; the DOM it gives the 3D worker never draws or styles.
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^(canvas|cssstyle)$/, contextRegExp: /linkedom|@acemir[\\/]cssom/ }));
     return config;
   },
 };

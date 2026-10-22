@@ -24,9 +24,53 @@ export type FormatId =
   | "ods"
   | "odp"
   | "rtf"
-  | "txt";
+  | "txt"
+  | "json"
+  | "tsv"
+  | "yaml"
+  | "toml"
+  | "xml"
+  | "base64"
+  | "bin"
+  | "srt"
+  | "vtt"
+  | "ass"
+  | "ssa"
+  | "ttf"
+  | "otf"
+  | "woff"
+  | "woff2"
+  | "md"
+  | "html"
+  | "zip"
+  | "tar"
+  | "tgz"
+  | "7z"
+  | "rar"
+  | "epub"
+  | "mp3"
+  | "wav"
+  | "flac"
+  | "ogg"
+  | "m4a"
+  | "aac"
+  | "webm"
+  | "aiff"
+  | "stl"
+  | "obj"
+  | "ply"
+  | "glb"
+  | "gltf"
+  | "3mf"
+  | "dae"
+  | "fbx"
+  | "dxf"
+  | "mp4"
+  | "mov"
+  | "mkv";
 
-export type FormatCategory = "image" | "pdf" | "document";
+/** "data" formats are only read and written by the data tools, not the converter. */
+export type FormatCategory = "image" | "pdf" | "document" | "data";
 export type Engine = "browser" | "server";
 
 export interface FormatInfo {
@@ -62,6 +106,50 @@ export const formats: Record<FormatId, FormatInfo> = {
   odp: { id: "odp", label: "ODP", mime: "application/vnd.oasis.opendocument.presentation", extensions: ["odp"], category: "document" },
   rtf: { id: "rtf", label: "RTF", mime: "application/rtf", extensions: ["rtf"], category: "document" },
   txt: { id: "txt", label: "TXT", mime: "text/plain", extensions: ["txt"], category: "document" },
+  json: { id: "json", label: "JSON", mime: "application/json", extensions: ["json"], category: "data" },
+  tsv: { id: "tsv", label: "TSV", mime: "text/tab-separated-values", extensions: ["tsv", "tab"], category: "data" },
+  yaml: { id: "yaml", label: "YAML", mime: "application/yaml", extensions: ["yaml", "yml"], category: "data" },
+  toml: { id: "toml", label: "TOML", mime: "application/toml", extensions: ["toml"], category: "data" },
+  xml: { id: "xml", label: "XML", mime: "application/xml", extensions: ["xml"], category: "data" },
+  base64: { id: "base64", label: "Base64", mime: "text/plain", extensions: ["b64", "base64"], category: "data" },
+  /** Any file, as raw bytes (Base64 tools). */
+  srt: { id: "srt", label: "SRT", mime: "application/x-subrip", extensions: ["srt"], category: "data" },
+  vtt: { id: "vtt", label: "VTT", mime: "text/vtt", extensions: ["vtt"], category: "data" },
+  ass: { id: "ass", label: "ASS", mime: "text/x-ssa", extensions: ["ass"], category: "data" },
+  ssa: { id: "ssa", label: "SSA", mime: "text/x-ssa", extensions: ["ssa"], category: "data" },
+  ttf: { id: "ttf", label: "TTF", mime: "font/ttf", extensions: ["ttf"], category: "data" },
+  otf: { id: "otf", label: "OTF", mime: "font/otf", extensions: ["otf"], category: "data" },
+  woff: { id: "woff", label: "WOFF", mime: "font/woff", extensions: ["woff"], category: "data" },
+  woff2: { id: "woff2", label: "WOFF2", mime: "font/woff2", extensions: ["woff2"], category: "data" },
+  md: { id: "md", label: "Markdown", mime: "text/markdown", extensions: ["md", "markdown"], category: "data" },
+  html: { id: "html", label: "HTML", mime: "text/html", extensions: ["html", "htm"], category: "data" },
+  zip: { id: "zip", label: "ZIP", mime: "application/zip", extensions: ["zip"], category: "data" },
+  tar: { id: "tar", label: "TAR", mime: "application/x-tar", extensions: ["tar"], category: "data" },
+  tgz: { id: "tgz", label: "TAR.GZ", mime: "application/gzip", extensions: ["tgz", "gz"], category: "data" },
+  "7z": { id: "7z", label: "7Z", mime: "application/x-7z-compressed", extensions: ["7z"], category: "data" },
+  rar: { id: "rar", label: "RAR", mime: "application/vnd.rar", extensions: ["rar"], category: "data" },
+  epub: { id: "epub", label: "EPUB", mime: "application/epub+zip", extensions: ["epub"], category: "data" },
+  mp3: { id: "mp3", label: "MP3", mime: "audio/mpeg", extensions: ["mp3"], category: "data" },
+  wav: { id: "wav", label: "WAV", mime: "audio/wav", extensions: ["wav", "wave"], category: "data" },
+  flac: { id: "flac", label: "FLAC", mime: "audio/flac", extensions: ["flac"], category: "data" },
+  ogg: { id: "ogg", label: "OGG", mime: "audio/ogg", extensions: ["ogg", "oga", "opus"], category: "data" },
+  m4a: { id: "m4a", label: "M4A", mime: "audio/mp4", extensions: ["m4a"], category: "data" },
+  aac: { id: "aac", label: "AAC", mime: "audio/aac", extensions: ["aac"], category: "data" },
+  mp4: { id: "mp4", label: "MP4", mime: "video/mp4", extensions: ["mp4", "m4v"], category: "data" },
+  mov: { id: "mov", label: "MOV", mime: "video/quicktime", extensions: ["mov", "qt"], category: "data" },
+  mkv: { id: "mkv", label: "MKV", mime: "video/x-matroska", extensions: ["mkv"], category: "data" },
+  webm: { id: "webm", label: "WEBM", mime: "audio/webm", extensions: ["webm", "weba"], category: "data" },
+  aiff: { id: "aiff", label: "AIFF", mime: "audio/aiff", extensions: ["aiff", "aif", "aifc"], category: "data" },
+  stl: { id: "stl", label: "STL", mime: "model/stl", extensions: ["stl"], category: "data" },
+  obj: { id: "obj", label: "OBJ", mime: "model/obj", extensions: ["obj"], category: "data" },
+  ply: { id: "ply", label: "PLY", mime: "application/x-ply", extensions: ["ply"], category: "data" },
+  glb: { id: "glb", label: "GLB", mime: "model/gltf-binary", extensions: ["glb"], category: "data" },
+  gltf: { id: "gltf", label: "glTF", mime: "model/gltf+json", extensions: ["gltf"], category: "data" },
+  "3mf": { id: "3mf", label: "3MF", mime: "model/3mf", extensions: ["3mf"], category: "data" },
+  dae: { id: "dae", label: "DAE", mime: "model/vnd.collada+xml", extensions: ["dae"], category: "data" },
+  fbx: { id: "fbx", label: "FBX", mime: "application/octet-stream", extensions: ["fbx"], category: "data" },
+  dxf: { id: "dxf", label: "DXF", mime: "image/vnd.dxf", extensions: ["dxf"], category: "data" },
+  bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 
 /** Raster formats we can encode as output in the browser. */

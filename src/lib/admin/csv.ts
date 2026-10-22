@@ -49,6 +49,16 @@ export const csvTables = {
       ["server", s.engines.server],
     ],
   }),
+  "usage-by-tool": table({
+    source: "tools",
+    header: ["tool", "count", "failed", "top_error"],
+    rows: (s) => s.byTool.map((u) => [u.tool, u.total, u.failed, u.topError]),
+  }),
+  "usage-by-category": table({
+    source: "tools",
+    header: ["category", "count", "failed"],
+    rows: (s) => s.byCategory.map((c) => [c.category, c.total, c.failed]),
+  }),
   errors: table({ source: "quality", header: ["error_code", "count"], rows: (s) => s.errors.map((e) => [e.code, e.count]) }),
   "visits-per-day": table({ source: "visits", header: ["period", "visits"], rows: (s) => s.perBucket.map((b) => [b.key, b.count]) }),
   "visits-by-locale": table({ source: "visits", header: ["locale", "count"], rows: (s) => countRows(s.byLocale) }),

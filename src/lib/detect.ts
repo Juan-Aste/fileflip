@@ -32,13 +32,14 @@ function detectFtyp(bytes: Uint8Array): FormatId | null {
   return null;
 }
 
-/** ZIP containers: OpenDocument (mimetype entry) or Office Open XML (part names). */
+/** ZIP containers: OpenDocument and EPUB (mimetype entry) or Office Open XML (part names). */
 function detectZip(bytes: Uint8Array, ext: FormatId | null): FormatId | null {
   if (ascii(bytes, 30, 8) === "mimetype") {
     const mime = ascii(bytes, 38, 50);
     if (mime.startsWith("application/vnd.oasis.opendocument.text")) return "odt";
     if (mime.startsWith("application/vnd.oasis.opendocument.spreadsheet")) return "ods";
     if (mime.startsWith("application/vnd.oasis.opendocument.presentation")) return "odp";
+    if (mime.startsWith("application/epub+zip")) return "epub";
   }
   if (includesAscii(bytes, "word/")) return "docx";
   if (includesAscii(bytes, "xl/")) return "xlsx";

@@ -52,6 +52,6 @@ describe("GET /api/admin/stats", () => {
     expect(body.period).toMatchObject({ preset: "7d", bucket: "day" });
     expect(body.stats.conversions).toMatchObject({ total: 1 });
     expect(body.stats.conversions.perBucket).toHaveLength(7);
-    expect(Object.keys(body.stats).sort()).toEqual(["accounts", "conversions", "quality", "temp", "visits"]);
+    expect(Object.keys(body.stats).sort()).toEqual(["accounts", "conversions", "quality", "temp", "tools", "visits"]);
   });
 });

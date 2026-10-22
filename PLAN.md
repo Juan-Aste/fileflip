@@ -1,4 +1,4 @@
-# PLAN de FileFlip
+# PLAN de Fileflect (antes FileFlip)
 
 Micro-SaaS de conversión de archivos e imágenes: interfaz limpia y fácil, sin marcas de agua, sin registro obligatorio. **Todo lo que se pueda se procesa en el dispositivo del usuario** (privacidad + velocidad); solo los documentos de oficina van al servidor.
 
@@ -170,3 +170,170 @@ Ruta `/[locale]/admin`, solo para usuarios logueados con email en `ADMIN_EMAILS`
 - [x] 2C.9 Gráficos livianos cargados solo en el panel (línea de conversiones por día, barras de top 10, etc.)
 - [x] 2C.10 Exportar a CSV las tablas principales + tests
 - [x] 2C.11 Revisión final de la fase 2: lint, build, tests, mediciones finales y "FASE 2 TERMINADA" en PROGRESS.md
+
+---
+
+## Fase 3
+
+Cambio de nombre a **Fileflect** y ampliación del catálogo de herramientas para competir con sitios como fileflip.org. Orden de hitos: 3.0 → 3A → 3B → 3C → 3D → 3E. Las tareas de 3B a 3E se escriben en detalle cuando termine la auditoría (3A), a partir de `docs/audit.md`.
+
+Principios (resumen): una herramienta solo cuenta si procesa archivos reales de punta a punta, con tests que validan el archivo de salida; un formato solo se muestra si hay un motor que lo lee/genera y un fixture que lo prueba; primero el navegador (WASM/JS en workers, carga diferida), servidor solo si hace falta; nunca servicios de terceros; nada de librerías de conversión en el bundle de la portada; Lighthouse móvil ≥ 90 y CLS 0 al final de cada hito; licencias en `docs/dependencies.md` (sin GPL/AGPL sin aprobación del dueño); límites, cancelación, limpieza y protecciones (zip bomb, zip slip, XXE) en todas las herramientas; sin COOP/COEP en todo el sitio.
+
+### Hito 3.0 — Cambio de nombre a Fileflect
+- [x] 3.0.1 Textos: reemplazar "FileFlip" por "Fileflect" en `messages/*.json` (5 idiomas + admin), metadatos, títulos, Open Graph, manifest, emails de login, descripciones de pagos de Mercado Pago, panel de admin, páginas legales y nombres de descarga (CSV, ZIP); `package.json` (name); `EMAIL_FROM` por defecto en `.env.example` = "Fileflect <no-reply@example.com>"; tests actualizados
+- [x] 3.0.2 Documentación: README, DEPLOY.md, docs/design.md y encabezados de PLAN.md/PROGRESS.md; búsqueda insensible a mayúsculas en todo el repo para confirmar que no queda "FileFlip" visible (solo nombres internos del repo y URLs de GitHub); "Pendiente del dueño": verificar disponibilidad del nombre/dominio/marca/redes y, si quiere, renombrar el repo
+- [x] 3.0.3 Logo SVG, favicon/íconos de app e imágenes Open Graph con el nombre Fileflect, respetando `docs/design.md`; capturas con Playwright (360/1280, claro/oscuro) revisadas
+
+### Hito 3A — Auditoría y comparación
+- [x] 3A.1 Fixtures: script reproducible `scripts/fixtures/generate.mjs` que crea en `tests/fixtures/` archivos pequeños (< 200 KB) de cada formato actual (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF, ICO, SVG, HEIC, PDF de varias páginas, DOCX, XLSX, PPTX, ODT, ODS, RTF, TXT, CSV) más corruptos/truncados; sin derechos de autor ni datos personales; `tests/fixtures/README.md` con el origen de cada uno
+- [x] 3A.2 Inventario en el servidor: tests de integración que pasan cada fixture por las APIs actuales (respaldo de imágenes con sharp, documentos → PDF y PDF → Word con Gotenberg simulado o real si está disponible) y validan la salida; anotar funciona/falla/incompleto
+- [x] 3A.3a Inventario del conversor en el navegador: script Playwright (`scripts/audit/browser.mjs`) que sube cada fixture al conversor, descarga cada salida y la valida con lectores independientes (sharp, encabezados BMP/ICO, pdf-lib, fflate), con el servidor bloqueado; corruptos; resultados en `docs/audit-inventory.md`
+- [x] 3A.3b Inventario de las 6 herramientas PDF en el navegador (unir, dividir, rotar, ordenar, imágenes → PDF, comprimir) con el mismo script: salida validada con pdf-lib (páginas, rotación, orden, tamaño) y PDF corruptos
+- [x] 3A.3c Corregir archivos corruptos en el conversor del navegador: un JPEG truncado se convierte sin aviso (rechazarlo como hace sharp, p. ej. exigiendo el marcador EOI o detectando el error del decodificador) y un PNG/JPEG que el navegador no puede decodificar por estar dañado no debe reintentarse en el servidor (solo los formatos que el navegador no soporta); tests unitarios + script de auditoría sin fallas
+- [x] 3A.3d Corregir "Imágenes a PDF" (y imagen → PDF del conversor): con un PNG truncado entre los archivos se queda colgado en 75 % sin error; debe fallar con un mensaje claro (idealmente indicando qué archivo) y liberar el estado; test unitario + `scripts/audit/pdf-tools.mjs` sin fallas
+- [x] 3A.4 Comparación con fileflip.org y 2–3 competidores (solo funcionalidades: categorías, herramientas, formatos), con WebFetch
+- [x] 3A.5 `docs/audit.md`: tabla herramienta/par de formatos (¿lo tenemos?, ¿funciona?, ¿competencia?, navegador/servidor, motor propuesto, licencia, dificultad, riesgos, tests) + ideas propias para LatAm + lista priorizada; `docs/dependencies.md` con las licencias actuales
+- [x] 3A.6 Escribir en PLAN.md las tareas detalladas de 3B a 3E según la auditoría y el orden de prioridad acordado
+
+### Hito 3B — Base del catálogo
+Antes de sumar herramientas. Todo lo visible (buscador, categorías, páginas, sitemap, selector) sale del registro, y el registro solo publica herramientas con estado `verified`.
+- [x] 3B.1 Registro único (`src/config/tools.ts`, ampliado): id, categoría, formatos de entrada/salida, dónde corre (navegador/servidor), motor, límites (tamaño, páginas, lote, tiempo máximo), estado (`draft`/`verified`), ícono y slugs traducidos; migrar las 6 herramientas PDF y el conversor; `generateStaticParams`, sitemap, `translatePathname` y `ToolComponent` leen solo las `verified`; tests: slugs únicos entre herramientas, conversiones y cola larga; cada herramienta verificada tiene textos en los 5 idiomas y componente
+- [x] 3B.2 Categorías: página por categoría con slug traducido (`/es/herramientas-pdf`, `/en/pdf-tools`…) y página "Todas las herramientas" con filtros por categoría; enlaces en header/footer; sitemap; tests de rutas
+- [x] 3B.3 Buscador: diálogo accesible (combobox ARIA) con atajo `Ctrl/⌘+K` y `/`, búsqueda sin acentos sobre nombre, palabras clave y formatos en el idioma actual, índice construido del registro sin cargar motores; botón visible en el header; tests de la función de búsqueda
+- [x] 3B.4 Motor de trabajos genérico (`src/lib/jobs/`): ejecutar una tarea en un worker con progreso, cancelación (`AbortSignal` → `worker.terminate()`), **tiempo máximo por trabajo** que termina el worker, cola por lotes con concurrencia limitada (reusar el pool), errores con códigos traducidos y liberación de object URLs; tests
+- [x] 3B.5 Interfaz genérica de herramienta (`ToolShell`): entrada de archivos o de texto, opciones, ejecutar, lista de resultados con descarga individual o ZIP, estados vacío/procesando/listo/error como el conversor; límites reales visibles; tests de la lógica de estado
+- [x] 3B.6 Plantilla de página de herramienta: encabezado, herramienta, "qué hace", límites (del registro), preguntas frecuentes con FAQ schema, datos estructurados `SoftwareApplication` y herramientas relacionadas; textos en `messages/*.json` (`Catalog.<id>`); test de que cada herramienta verificada tiene introducción y ≥ 3 preguntas en los 5 idiomas
+- [x] 3B.7 Infraestructura de tests de navegador: `tests/e2e/` con utilidades comunes (levantar `next start`, Chromium del entorno, subir un fixture, esperar la descarga, validadores independientes de imagen/PDF/ZIP/JSON/CSV/texto) y `npm run test:e2e`; migrar los scripts de `scripts/audit/` a esa base; una prueba por herramienta registrada
+- [x] 3B.8 Cierre de 3B: Lighthouse móvil de portada, una categoría y una herramienta (≥ 90, CLS 0) en `docs/perf/`
+
+### Hito 3C — Herramientas
+Por cada herramienta: procesamiento real, interfaz y textos en los 5 idiomas, página con metadatos y FAQ, tests unitarios con archivos válidos y corruptos que validan la salida, prueba de navegador, límites documentados, licencias en `docs/dependencies.md`, estado `verified` solo al final.
+
+Datos y desarrolladores
+- [x] 3C.1 JSON ↔ CSV y JSON ↔ TSV (papaparse, MIT): aplanado de objetos anidados, delimitador detectado (`,` `;` tab), BOM, comillas y saltos de línea
+- [x] 3C.2 JSON ↔ YAML (`yaml`, ISC, en lugar de js-yaml: trae límite de alias) y JSON ↔ TOML (smol-toml)
+- [x] 3C.3 JSON ↔ XML (fast-xml-parser, sin resolver entidades: test de XXE y "billion laughs")
+- [x] 3C.4 Formateador y validador de JSON, XML y YAML (sangría, minificar, error con línea y columna)
+- [x] 3C.5 Base64 de texto (UTF-8) y de archivos (ida y vuelta con bytes idénticos, data URL) + codificar/decodificar URL
+- [x] 3C.6 Hashes MD5, SHA-1, SHA-256, SHA-512 de texto y archivos (hash-wasm, por bloques); vectores conocidos y comparación con `crypto` de Node
+- [x] 3C.7 Generador de UUID (v4, v7, en lote) y conversor de timestamps (Unix s/ms ↔ fecha, zonas horarias)
+
+Utilidades
+- [x] 3C.8 Generador de QR (texto, URL, Wi-Fi, contacto; PNG y SVG; qrcode, MIT) y lector de QR desde imagen (jsQR, Apache-2.0); test: generar y volver a leer
+- [x] 3C.9 Generador de contraseñas (sin sesgo) y contador de palabras/caracteres con mayúsculas/minúsculas (`Intl.Segmenter`, también chino)
+- [x] 3C.10 Selector y conversor de colores (HEX, RGB, HSL, OKLCH, contraste AA) y conversor de unidades
+
+Imágenes (las más buscadas primero)
+- [x] 3C.11 "Comprimir imagen" con página propia (JPG, PNG, WEBP, AVIF; niveles simples; antes/después; lotes) y "comprimir a un peso objetivo" (búsqueda de calidad + reducción de tamaño si no alcanza; presets de trámites)
+- [x] 3C.12 "Redimensionar imagen" con página propia (píxeles, porcentaje, presets de redes sociales)
+- [x] 3C.13 Rotar/voltear y quitar metadatos EXIF/GPS (aplicando antes la orientación; exifr para mostrar qué se quita)
+- [x] 3C.14 Recortar imagen con proporciones fijas (accesible con teclado)
+- [x] 3C.15 Marca de agua (texto o imagen) y agregar texto a una imagen
+- [x] 3C.16 Paquete de favicon, SVG → PNG/JPG con página propia y HEIF como entrada (dividida):
+  - [x] 3C.16a Generador de favicon: PNG 16, 32, 180 (Apple), 192 y 512 (Android), ICO con 16/32/48, `site.webmanifest` y fragmento HTML; ajustar con márgenes o recortar al cuadrado, fondo transparente o de color; SVG como entrada (rasterizado en `<img>`, sin scripts); descarga individual o ZIP
+  - [x] 3C.16b SVG → PNG/JPG con página propia (tamaño/escala y fondo; prueba de que un `<script>` del SVG no se ejecuta) y HEIF como entrada (fixture `.heif` y página de conversión si corresponde)
+
+Subtítulos
+- [x] 3C.17 SRT ↔ VTT ↔ ASS/SSA, desplazar tiempos y ajustar FPS (detección de codificación; aviso de estilos que se pierden)
+
+PDF
+- [x] 3C.18 Eliminar páginas y extraer páginas (con miniaturas)
+- [x] 3C.19 Numerar páginas y marca de agua de texto (posición, tamaño, opacidad; páginas rotadas)
+- [x] 3C.20 PDF → texto (pdf.js; aviso si no tiene texto: sugerir OCR) y recortar márgenes (CropBox)
+- [x] 3C.21 Firmar PDF dibujando la firma o subiendo una foto (aclarando que no es firma digital certificada)
+- [x] 3C.22 Proteger con contraseña y quitar la contraseña conociéndola (qpdf-wasm, ISC/Apache-2.0)
+- [x] 3C.23 Extraer imágenes de un PDF (ZIP)
+
+Fuentes y documentos
+- [x] 3C.24 TTF/OTF ↔ WOFF/WOFF2 (fonteditor-core + wawoff2, confirmar licencias; fixture de fuente propia)
+- [x] 3C.25 Markdown ↔ HTML y Markdown → PDF (dividida):
+  - [x] 3C.25a Markdown ↔ HTML en el navegador (marked + turndown + turndown-plugin-gfm, saneado con DOMPurify)
+  - [x] 3C.25b Markdown → PDF (HTML saneado de 3C.25a → Gotenberg/Chromium, sin acceso a red externa)
+- [x] 3C.26 HTML → PDF con Gotenberg sin acceso a red externa (protección SSRF), fixture PPT generado en el test y PDF/A (Gotenberg) (dividida):
+  - [x] 3C.26a HTML → PDF (servidor): HTML del usuario saneado en el servidor con parse5 (sin scripts, eventos, meta/base/link, iframes, objetos ni URLs que no sean `data:`), la misma CSP y Gotenberg endurecido; prueba de SSRF
+  - [x] 3C.26b PDF → PDF/A (Gotenberg, PDF/A-1b/2b/3b) con validación de los metadatos `pdfaid` en los tests
+  - [x] 3C.26c Fixture PPT (97-2003) generado con el LibreOffice de la imagen de Gotenberg y prueba PPT → PDF en el inventario
+- [x] 3C.27 Hojas de cálculo XLSX ↔ CSV ↔ ODS en el navegador (SheetJS CE desde el tarball oficial o exceljs; límite de celdas; elegir hoja)
+
+Archivos comprimidos
+- [x] 3C.28 Crear ZIP, TAR y TAR.GZ (fflate + escritor TAR propio; test leyendo la salida con `tar` del sistema)
+- [x] 3C.29 Extraer ZIP, TAR y TAR.GZ con protecciones (zip bomb por tamaño y cantidad de entradas en streaming, zip slip, symlinks); fixtures maliciosos generados por script
+- [x] 3C.30 Extraer 7Z y RAR (solo lectura) con libarchive.js y las mismas protecciones
+
+OCR
+- [x] 3C.31 Imagen → texto con tesseract.js (datos de idioma servidos desde nuestro dominio, solo el idioma pedido: es, en, pt, fr, zh)
+- [x] 3C.32 PDF escaneado → PDF con texto buscable y → texto (límite de páginas)
+
+Libros electrónicos
+- [x] 3C.33 EPUB → HTML/TXT (navegador, saneado, sin XXE) y EPUB → PDF (Gotenberg) (dividida):
+  - [x] 3C.33a EPUB → HTML (una página con índice e imágenes incluidas, saneada, CSP sin red) y → TXT, en el navegador; DRM detectado
+  - [x] 3C.33b EPUB → PDF (HTML de 3C.33a saneado de nuevo en el servidor → Gotenberg/Chromium con la CSP de 3C.26a)
+- [x] 3C.34 HTML/Markdown → EPUB (generador propio; `mimetype` correcto)
+
+Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo aprobación del dueño)
+- [x] 3C.35 Detección de capacidades del navegador (qué códecs puede leer/escribir) y conversión de audio entre los formatos disponibles (WAV, MP3, AAC/M4A, OGG/Opus, FLAC, AIFF); límites de tamaño/duración (dividida):
+  - [x] 3C.35a "Convertir audio" con mediabunny (MPL-2.0) + codificadores WASM de sus extensiones (MP3 con LAME, FLAC con libFLAC, AAC con el codificador de FFmpeg; Opus con WebCodecs): entradas WAV, MP3, FLAC, OGG (Vorbis/Opus), M4A/AAC y WebM; salidas WAV, MP3, FLAC, OGG Opus y M4A AAC; detección de lo que el navegador puede leer (AAC no se decodifica en Chromium sin códecs propietarios) con mensaje claro; límites de tamaño y duración; cancelación; fixtures generados con ffmpeg del sistema y salida validada con ffprobe
+  - [x] 3C.35b AIFF de entrada y salida (lector/escritor PCM propio, big-endian, frecuencia en float de 80 bits) integrado en "Convertir audio"
+- [x] 3C.36 Audio: recortar, unir, cambiar bitrate/frecuencia/canales y normalizar volumen (dividida; mismo motor de 3C.35, `Conversion` de mediabunny con `trim`, `numberOfChannels`, `sampleRate` y `process`):
+  - [x] 3C.36a "Recortar audio": un archivo, inicio y fin (mm:ss.d) con validación contra la duración, fundido de entrada/salida opcional, salida en cualquier formato de 3C.35 (por defecto el de entrada si se puede escribir); test con ffprobe de la duración y del tono
+  - [x] 3C.36b "Ajustar audio": canales (mono/estéreo), frecuencia (22,05/44,1/48 kHz) y bitrate, en lotes; test con ffprobe de canales, frecuencia y bitrate
+  - [x] 3C.36c "Normalizar volumen": dos pasadas (medir pico y volumen RMS, aplicar ganancia sin recortar), objetivo de pico −1 dBFS o volumen medio; test midiendo el pico de la salida con ffmpeg (`volumedetect`)
+  - [x] 3C.36d "Unir audio": varios archivos en orden (reordenables con botones), misma frecuencia/canales en la salida (remuestreo), silencio opcional entre pistas; test de duración total y de los tonos en cada tramo
+- [x] 3C.37 Video: convertir entre MP4, WebM, MOV y MKV según el navegador, y extraer audio (dividida):
+  - [x] 3C.37a "Convertir video" con mediabunny + WebCodecs: entradas MP4, MOV, MKV y WebM; salidas MP4, WebM, MOV y MKV; copia sin recomprimir cuando el contenedor admite el códec (H.264 → MOV/MKV), si no recodifica (H.264 si el navegador lo tiene; MP4 con VP9/AV1 como respaldo y aviso; MOV exige H.264); archivos cortados detectados; límites de tamaño (200/500 MB) y duración (2 h); fixtures generados con ffmpeg y salida validada con ffprobe (códecs, tamaño, duración, colores de los cuadros y tonos)
+  - [x] 3C.37b "Extraer audio de un video": MP4/MOV/MKV/WebM → MP3, WAV, FLAC, OGG (Opus), M4A (AAC) o AIFF, reutilizando el motor de audio; copia de la pista sin recomprimir cuando el formato lo permite si es viable; test con ffprobe y tonos
+- [x] 3C.38 Video: comprimir, recortar, cambiar resolución y velocidad, video → GIF (gifenc) y unir (dividida; mismo motor de 3C.37):
+  - [x] 3C.38a "Comprimir video": calidad (alta/media/baja) y resolución máxima (original, 1080p, 720p, 480p, 360p; sin agrandar, dimensiones pares, rotación respetada), salida MP4 o WebM, audio copiado si cabe; muestra el ahorro; test con ffprobe (dimensiones, duración, colores, tonos, tamaño menor)
+  - [x] 3C.38b "Recortar video": inicio y fin con reproductor y "usar posición actual", corte exacto (recodifica) o rápido en fotogramas clave (copia); test de duración y colores de cada tramo
+  - [x] 3C.38c "Video a GIF": tramo, ancho (240–720 px), FPS (5–15) y bucle, con gifenc (MIT) en worker; límites de cuadros; test leyendo el GIF con sharp/ffprobe (cuadros, tamaño, colores)
+  - [x] 3C.38d "Cambiar velocidad del video": 0,25×–4× (timestamps del video; audio remuestreado o quitado, aviso de que cambia el tono); test de duración
+  - [x] 3C.38e "Unir videos": varios archivos en orden, misma resolución de salida (encaje con bandas), audio igualado; test de duración total y colores por tramo
+
+3D y CAD
+- [x] 3C.39 Modelos 3D con three.js (MIT, cargado solo en esas páginas): STL ↔ OBJ ↔ PLY ↔ GLB/glTF con visor y límite de vértices (dividida):
+  - [x] 3C.39a "Convertir modelo 3D" en un worker: entradas STL (binario/ASCII), OBJ, PLY, GLB y glTF autocontenido; salidas STL binario, OBJ, PLY binario y GLB; colores por vértice donde el formato los admite; glTF con archivos externos o comprimido (Draco/meshopt/KTX2) rechazado sin pedir nada a la red; límite de triángulos; fixtures escritos a mano y salida validada con lectores propios (no three.js)
+  - [x] 3C.39b Visor 3D en la página (three.js con WebGL, cargado solo al elegir un modelo): orbitar/zoom con mouse, toque y teclado, encuadre automático, cantidad de triángulos y medidas (caja envolvente); sin WebGL, aviso y la conversión sigue funcionando; captura de Playwright revisada
+- [x] 3C.40 Entradas 3MF, COLLADA y FBX (solo lectura; sin anunciar salidas que no existen) e imagen → litofanía (STL) (dividida):
+  - [x] 3C.40a "Imagen a litofanía": foto → placa STL cerrada (más gruesa donde es más oscura) con ancho, detalle, grosor y marco opcional, generada en el worker 3D sin dependencias nuevas; tests de geometría (estanqueidad, normales, alturas) y de navegador con lector STL propio
+  - [x] 3C.40b Entradas 3MF, COLLADA (.dae) y FBX en "Convertir modelo 3D" (y en el visor). Ojo: `3MFLoader` y `ColladaLoader` de three.js usan `DOMParser`/`querySelector`, que **no existen en los workers**: o se cargan en el hilo principal (import diferido, solo esos formatos, con límite de tamaño menor) o se agrega un DOM mínimo al worker con licencia aceptable. 3MF es un ZIP: revisar tamaños declarados y cantidad de entradas antes de `unzipSync` (zip bomb) con la protección de 3C.29. FBX no usa DOM, pero sus texturas usan `TextureLoader` (necesita `document`): ignorar texturas en el worker. Fixtures generados (3MF a mano con fflate; DAE a mano; FBX ASCII a mano o binario con una herramienta libre) y salida validada con los lectores propios
+- [x] 3C.41 DXF → SVG/PNG/PDF con dxf-parser (MIT) y aviso de entidades omitidas; DWG documentado como no viable (dividida):
+  - [x] 3C.41a "Convertir DXF" → SVG: dxf-parser (MIT) en un worker propio; geometría propia (líneas, polilíneas con arcos de bulge, círculos, arcos, elipses, splines por de Boor, sólidos, puntos, TEXT/MTEXT, bloques INSERT anidados con escala/rotación/arreglos, cotas como bloques), colores ACI/por capa/por bloque, capas apagadas o congeladas fuera, OCS invertido (extrusión Z −1); unidades `$INSUNITS` → tamaño del SVG en mm/cm/in; aviso con las entidades omitidas (HATCH, IMAGE…); límites (tamaño, segmentos, anidamiento y ciclos de bloques); DXF binario rechazado; fixtures escritos a mano y salida validada con un lector SVG independiente; FAQ con DWG como no viable (formato cerrado, motores GPL/comerciales)
+  - [x] 3C.41b Salidas PNG (OffscreenCanvas en el worker, ancho elegible, fondo blanco o transparente) y PDF (pdf-lib, A4/A3 ajustado con margen, texto con fuente estándar) desde la misma lista de dibujo; tests de píxeles y de PDF (tamaño de página, operadores de trazo)
+
+Ideas propias y quitar fondo
+- [x] 3C.42 Foto carnet por país (tamaños oficiales AR, BR, MX, CL, CO, PE, UY; guía de rostro; hoja 10×15 con copias) — hecha con medidas habituales y aviso de confirmar con la oficina (no se encontraron fuentes oficiales fiables por país; ver PROGRESS)
+- [x] 3C.43 Escanear documento desde el celular (foto → recorte de perspectiva → PDF en blanco y negro) — esquinas a mano; detección automática de la hoja como mejora posible
+- [x] 3C.44 Quitar fondo solo con licencia aceptable (MediaPipe Apache-2.0 u onnxruntime-web + modelo Apache-2.0); si no hay calidad suficiente, anotarlo y no publicar
+- [x] 3C.45 (mejora de 3C.30) Compilar un WASM propio de libarchive 3.8.x con emscripten (script reproducible, locale UTF-8 al iniciar) para que los nombres no ASCII de los 7Z no se pierdan y para incluir las correcciones de seguridad de 2025 del lector RAR; mismas pruebas de 3C.30. Si el entorno no permite instalar emsdk, anotarlo y dejarlo pendiente
+
+Mediciones: Lighthouse móvil (≥ 90, CLS 0) después de 3C.10, 3C.23, 3C.34 y 3C.44, en `docs/perf/`.
+
+- [x] CI (2026-10-22) CI de GitHub en rojo desde "create ZIP, TAR and TAR.GZ": `create.test.ts` usaba el `unzip` del sistema, que en el runner mostraba los nombres UTF-8 como CP437. Verificar el bit 11 de nuestros ZIP leyendo los bytes y validar con `zipfile` de Python (`python3 -I`)
+
+### Hito 3D — Experiencia de usuario del catálogo
+- [x] 3D.1 Portada que escale a 100+ herramientas: buscador visible, categorías claras, herramientas populares, sin abrumar en móvil
+- [x] 3D.2 Enlaces internos entre herramientas relacionadas (misma categoría, mismos formatos) generados del registro
+- [x] 3D.3 Accesibilidad y teclado completos; capturas Playwright 360/1280, claro/oscuro, de una muestra de páginas nuevas en `docs/screenshots/`
+- [x] 3D.4 Panel de admin: uso y errores por herramienta y por categoría (con tests de agregación)
+- [x] 3D.5 Medición final de Lighthouse de la fase 3
+
+### Hito 3E — Informe final
+- [x] 3E.1 `docs/report-phase3.md`: herramientas verificadas, formatos de entrada y salida, matriz generada desde el registro y los tests, pruebas y resultados, limitaciones, descartes y motivos, dependencias y licencias, rendimiento, seguridad, diseño y SEO, y lo que debe decidir el dueño; "FASE 3 TERMINADA" en PROGRESS.md
+
+## Fase 4
+
+Cierre antes de publicar: tareas chicas que no requieren decisiones del dueño. No se agregan dependencias GPL ni AGPL.
+
+### Hito 4.1 — Créditos y licencias
+- [x] 4.1a `npm run licenses`: genera los datos de créditos desde `node_modules` (dependencias de producción del `package-lock.json`, licencia, autor y enlace reales) y `docs/dependencies.md`, más un archivo descargable de avisos de terceros (textos de licencia, copyright y NOTICE de Apache-2.0); test que falla si una dependencia de producción no tiene entrada en los créditos o si aparece una GPL/AGPL no aprobada
+- [x] 4.1b Componentes embebidos y LGPL: LAME (con enlace a https://lame.sourceforge.io), codificador AAC de FFmpeg, libFLAC, libheif, libvips, libarchive (build propio) y modelos de datos (u2netp, tessdata): aviso LGPL, texto de la licencia y enlace al código fuente exacto de la versión usada y a sus scripts de compilación; lo que no se pueda ubicar va a "Pendiente del dueño"
+- [x] 4.1c Página `/[locale]/credits` (slugs traducidos: `/es/creditos`, `/en/credits`, `/pt/creditos`, `/fr/credits`, `/zh/credits`), enlazada desde el footer, textos en los 5 idiomas, metadatos, sitemap, diseño de `docs/design.md`; capturas Playwright 360/1280 claro/oscuro
+
+### Hito 4.2 — Pendientes resolubles en código
+- [x] 4.2a Revisar "Pendiente del dueño" (PROGRESS.md) y la sección 10 de `docs/report-phase3.md`: clasificar cada punto (código / dueño) y dejar la lista del dueño al día
+- [x] 4.2b CLS de la página de la categoría PDF (0,014 en 1 de 3 corridas: la fila de pastillas se reacomoda al cargar la fuente): dejarlo en 0
+- [x] 4.2c Prueba automatizada de arrastrar y soltar miniaturas en "Ordenar PDF" (quedó como revisión manual en la fase 1)
+- [x] 4.2d `/ads.txt` generado desde `NEXT_PUBLIC_ADSENSE_CLIENT` (AdSense lo pide para servir anuncios; sin la variable, 404)
+
+### Hito 4.3 — Lista para publicar
+- [x] 4.3 `docs/launch-checklist.md`: pasos concretos y en orden para publicar (variables de Railway con valor de ejemplo, Gotenberg, dominio y DNS, Google OAuth, Resend, Mercado Pago, AdSense, Search Console, mergear `dev` en `main`, qué verificar después)

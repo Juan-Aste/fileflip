@@ -4,11 +4,12 @@ import { dayKey, resolvePeriod } from "@/lib/admin/period";
 import { accountStats } from "@/lib/admin/stats/accounts";
 import { conversionStats } from "@/lib/admin/stats/conversions";
 import { qualityStats } from "@/lib/admin/stats/quality";
+import { toolStats } from "@/lib/admin/stats/tools";
 import { visitStats } from "@/lib/admin/stats/visits";
 
 export const dynamic = "force-dynamic";
 
-const sources = { conversions: conversionStats, quality: qualityStats, visits: visitStats, accounts: accountStats };
+const sources = { conversions: conversionStats, quality: qualityStats, tools: toolStats, visits: visitStats, accounts: accountStats };
 
 /**
  * GET /api/admin/export?table=top-conversions&period=7d (same period params
@@ -26,7 +27,7 @@ export async function GET(request: Request) {
   try {
     const stats = { [source]: await sources[source](period) };
     const lastDay = dayKey(new Date(period.end.getTime() - 1));
-    const filename = `fileflip-${query.table}-${dayKey(period.start)}_${lastDay}.csv`;
+    const filename = `fileflect-${query.table}-${dayKey(period.start)}_${lastDay}.csv`;
     return new Response(tableCsv(query.table, stats as Parameters<typeof tableCsv>[1]), {
       headers: {
         "Content-Type": "text/csv; charset=utf-8",

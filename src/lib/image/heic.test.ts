@@ -18,6 +18,14 @@ describe("decodeHeic", () => {
     expect(g).toBeGreaterThan(80);
   });
 
+  it("decodes a .heif with the generic mif1 brand", async () => {
+    const file = readFileSync(join(__dirname, "../../../tests/fixtures/photo.heif"));
+    expect(file.toString("ascii", 8, 12)).toBe("mif1");
+    const image = await decodeHeic(file.buffer.slice(file.byteOffset, file.byteOffset + file.byteLength));
+    expect([image.width, image.height]).toEqual([120, 80]);
+    expect(image.data[2]).toBeGreaterThan(200); // blue on the left
+  });
+
   it("rejects files without images", async () => {
     await expect(decodeHeic(new ArrayBuffer(16))).rejects.toThrow();
   });

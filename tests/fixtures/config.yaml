@@ -1,0 +1,11 @@
+# Sample service config
+defaults: &defaults
+  retries: 3
+  debug: no
+service:
+  <<: *defaults
+  name: "web"
+  ports: [80, 443]
+  zip: "007"
+---
+name: second document

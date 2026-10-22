@@ -72,7 +72,7 @@ export async function pdfToDocx(bytes: Uint8Array): Promise<Buffer> {
     // Points → twentieths of a point (twips), keeping the PDF's page size.
     const twips = (pt: number) => Math.round(pt * 20);
     const doc = new Document({
-      creator: "FileFlip",
+      creator: "Fileflect",
       sections: [
         {
           properties: pageSize

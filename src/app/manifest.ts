@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "FileFlip",
-    short_name: "FileFlip",
+    name: "Fileflect",
+    short_name: "Fileflect",
     start_url: "/",
     display: "standalone",
     background_color: "#f6f5f1",

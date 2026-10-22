@@ -1,0 +1,13 @@
+1
+00:00:01,000 --> 00:00:03,500
+Hola, ¿cómo estás?
+<i>Ñandú en cursiva</i>
+
+2
+00:00:04,000 --> 00:00:06,250
+<font color="#ff0000">Texto en rojo</font>
+Second line
+
+3
+00:01:02,003 --> 00:01:05,000
+中文字幕 & <b>negrita</b>

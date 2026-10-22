@@ -6,7 +6,7 @@ import PageHero from "@/components/ui/PageHero";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Login" });
-  return { title: `${t("verifyTitle")} — FileFlip`, robots: { index: false } };
+  return { title: `${t("verifyTitle")} — Fileflect`, robots: { index: false } };
 }
 
 export default async function VerifyPage({ params }: { params: Promise<{ locale: string }> }) {

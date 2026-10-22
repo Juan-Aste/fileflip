@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
+import { allToolsSlugs, categorySlug, publishedCategories } from "@/config/categories";
 import { conversionPages, conversionSlug } from "@/config/conversion-pages";
+import { creditsSlugs } from "@/config/credits";
 import { availableTools, tools } from "@/config/tools";
 import { longtailPages, longtailTranslation } from "@/content/longtail";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
@@ -30,6 +32,9 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
     { path: () => "/privacy", priority: 0.3 },
     { path: () => "/terms", priority: 0.3 },
     { path: () => "/contact", priority: 0.3 },
+    { path: (l: Locale) => `/${creditsSlugs[l]}`, priority: 0.2 },
+    { path: (l: Locale) => `/${allToolsSlugs[l]}`, priority: 0.8 },
+    ...publishedCategories.map((c) => ({ path: (l: Locale) => `/${categorySlug(c, l)}`, priority: 0.8 })),
     ...availableTools.map((id) => ({ path: (l: Locale) => `/${tools[id].slugs[l]}`, priority: 0.9 })),
     ...conversionPages.map((c) => ({ path: (l: Locale) => `/${conversionSlug(c, l)}`, priority: 0.8 })),
   ];
@@ -55,4 +60,30 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
     };
   });
   return [...localized, ...longtail];
+}
+
+/** SoftwareApplication structured data (schema.org) for a free web tool page. */
+export function softwareApplicationJsonLd({
+  name,
+  description,
+  url,
+  locale,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  locale: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name,
+    description,
+    url,
+    inLanguage: locale,
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Web browser",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  };
 }
