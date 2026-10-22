@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { csvField, csvTables, isCsvTable, tableCsv, toCsv } from "./csv";
 import type { ConversionStats } from "./stats/conversions";
+import type { ToolStats } from "./stats/tools";
 import type { VisitStats } from "./stats/visits";
 
 describe("csvField", () => {
@@ -44,6 +45,20 @@ describe("tableCsv", () => {
     expect(tableCsv("conversions-per-day", { conversions })).toBe("period,total,failed\r\n2026-10-19,3,1\r\n2026-10-20,0,0\r\n");
     expect(tableCsv("top-conversions", { conversions })).toBe("tool,from,to,count\r\nconvert,jpg,webp,2\r\nmerge-pdf,,,1\r\n");
     expect(tableCsv("engines", { conversions })).toBe("engine,count\r\nbrowser,2\r\nserver,1\r\n");
+  });
+
+  it("exports usage per tool and per category", () => {
+    const tools = {
+      byTool: [
+        { tool: "compress-image", total: 5, failed: 2, topError: "fileDamaged" },
+        { tool: "convert", total: 3, failed: 0, topError: null },
+      ],
+      byCategory: [{ category: "image", total: 8, failed: 2 }],
+    } as ToolStats;
+    expect(tableCsv("usage-by-tool", { tools })).toBe(
+      "tool,count,failed,top_error\r\ncompress-image,5,2,fileDamaged\r\nconvert,3,0,\r\n",
+    );
+    expect(tableCsv("usage-by-category", { tools })).toBe("category,count,failed\r\nimage,8,2\r\n");
   });
 
   it("exports count tables", () => {

@@ -66,15 +66,6 @@
       "count": "Cantidad",
       "unknownCountry": "Desconocido",
       "unknownError": "Sin código",
-      "tools": {
-        "convert": "Conversor",
-        "merge-pdf": "Unir PDF",
-        "split-pdf": "Dividir PDF",
-        "rotate-pdf": "Rotar PDF",
-        "organize-pdf": "Ordenar PDF",
-        "images-to-pdf": "Imágenes a PDF",
-        "compress-pdf": "Comprimir PDF"
-      },
       "kinds": {
         "home": "Portada",
         "conversion": "Conversión",
@@ -84,6 +75,19 @@
         "legal": "Legales",
         "account": "Cuenta",
         "other": "Otras"
+      },
+      "byCategory": "Uso por categoría",
+      "byToolTitle": "Uso y errores por herramienta",
+      "byToolCaption": "Intentos del período por herramienta (el conversor de formatos cuenta como una), con las fallas, su porcentaje y el error más frecuente.",
+      "failedByTool": "Fallas por herramienta",
+      "columns": {
+        "tool": "Herramienta",
+        "category": "Categoría",
+        "uses": "Usos",
+        "failed": "Fallas",
+        "failRate": "% de fallas",
+        "topError": "Error más frecuente",
+        "several": "Varias (según el par)"
       }
     }
   }

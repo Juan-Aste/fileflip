@@ -1,6 +1,8 @@
 import BarList from "@/components/admin/BarList";
 import LineChart from "@/components/admin/LineChart";
+import ToolUsageTable from "@/components/admin/ToolUsageTable";
 import { formatNumber } from "@/lib/format";
+import { categoryLabel, toolLabel } from "@/lib/admin/labels";
 import { adminTranslator } from "@/lib/admin/messages";
 import type { CsvTableId } from "@/lib/admin/csv";
 import type { AdminStats } from "@/lib/admin/stats";
@@ -17,19 +19,18 @@ function displayName(names: Intl.DisplayNames, code: string) {
   }
 }
 
-export function conversionLabel(row: Pick<TopConversion, "tool" | "from" | "to">, toolName: (tool: string) => string) {
+export function conversionLabel(row: Pick<TopConversion, "tool" | "from" | "to">, toolName: (tool: TopConversion["tool"]) => string) {
   return row.tool === "convert" ? `${(row.from ?? "?").toUpperCase()} → ${(row.to ?? "?").toUpperCase()}` : toolName(row.tool);
 }
 
 /** Every chart of the panel; server components only, so nothing here ships JS. */
 export default function Charts({ stats, csvHref }: { stats: AdminStats; csvHref: (table: CsvTableId) => string }) {
   const t = adminTranslator();
-  const { conversions, quality, visits, accounts } = stats;
+  const { conversions, quality, tools, visits, accounts } = stats;
   const monthly = conversions.perBucket.length > 0 && conversions.perBucket[0].key.length === 7;
   const per = (day: Parameters<typeof t>[0], month: Parameters<typeof t>[0]) => t(monthly ? month : day);
   const total = (n: number) => t("charts.total", { total: formatNumber(n, "es") });
   const bars = { empty: t("charts.empty"), labelHeader: t("charts.label"), countHeader: t("charts.count") };
-  const toolName = (tool: string) => t(`charts.tools.${tool}` as Parameters<typeof t>[0]);
   return (
     <section aria-labelledby="charts-title" className="flex flex-col gap-3">
       <h2 id="charts-title" className="text-xl font-bold">
@@ -60,7 +61,7 @@ export default function Charts({ stats, csvHref }: { stats: AdminStats; csvHref:
           {...bars}
           title={t("charts.topConversions")}
           csvHref={csvHref("top-conversions")}
-          rows={conversions.top.map((row) => ({ label: conversionLabel(row, toolName), count: row.count }))}
+          rows={conversions.top.map((row) => ({ label: conversionLabel(row, toolLabel), count: row.count }))}
         />
         <div className="flex flex-col gap-3">
           <BarList
@@ -83,6 +84,25 @@ export default function Charts({ stats, csvHref }: { stats: AdminStats; csvHref:
             rows={quality.errors.map((e) => ({ label: e.code === "unknown" ? t("charts.unknownError") : e.code, count: e.count }))}
           />
         </div>
+        {/* min-w-0: the wide table scrolls in its box instead of widening the grid on a phone. */}
+        <div className="min-w-0 lg:col-span-2">
+          <ToolUsageTable rows={tools.byTool} csvHref={csvHref("usage-by-tool")} />
+        </div>
+        <BarList
+          {...bars}
+          title={t("charts.byCategory")}
+          csvHref={csvHref("usage-by-category")}
+          rows={tools.byCategory.map((c) => ({ label: categoryLabel(c.category), count: c.total }))}
+        />
+        <BarList
+          {...bars}
+          title={t("charts.failedByTool")}
+          rows={tools.byTool
+            .filter((u) => u.failed > 0)
+            .sort((a, b) => b.failed - a.failed)
+            .slice(0, 10)
+            .map((u) => ({ label: toolLabel(u.tool), count: u.failed }))}
+        />
         <BarList
           {...bars}
           title={t("charts.byLocale")}

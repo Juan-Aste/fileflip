@@ -2768,3 +2768,18 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - La prueba de teclado verifica que el foco se vea, no el contraste del anillo.
 
 **Siguiente**: 3D.4 (panel de admin: uso y errores por herramienta y categoría).
+
+## 2026-10-22 15:15 UTC — Fase 3, tarea 3D.4 (panel de admin: uso y errores por herramienta y categoría)
+
+**Qué se hizo**
+- `src/lib/admin/stats/tools.ts`: `toolStats(period)` hace **una agregación** sobre `ConversionLog` agrupando por (herramienta, par de formatos solo para el conversor, código de error) y `foldToolRows` (pura) la pliega en **uso por herramienta** (usos, fallas, error más frecuente; empate → alfabético) y **uso por categoría** (de la herramienta según el registro; del conversor según el par con `conversionCategory`, p. ej. DOCX → PDF cuenta en Documentos). Orden: más usos, luego más fallas, luego orden del registro. Entradas viejas sin `tool` = conversor; herramientas que ya no están en el registro se omiten.
+- Panel: tabla "Uso y errores por herramienta" (herramienta, categoría, usos, fallas, % de fallas resaltado en rojo desde 20 %, error más frecuente), "Uso por categoría" y "Fallas por herramienta" (top 10). La tabla se desplaza dentro de su caja en el celular (región enfocable con nombre); `min-w-0` evita que ensanche la grilla (la captura a 360 px daba 501 px de ancho).
+- CSV nuevos: `usage-by-tool` y `usage-by-category` (`/api/admin/export`). `/api/admin/stats` devuelve también `tools`.
+- **Bug corregido**: el "Top 10" nombraba las herramientas con un mapa del panel que solo tenía las 7 originales (las 75 nuevas habrían salido como claves sin traducir). Ahora los nombres salen del registro/mensajes públicos en español (`src/lib/admin/labels.ts`: `toolLabel`, `categoryLabel`); se quitó ese mapa de `admin.es.json`.
+- Capturas `docs/screenshots/es_admin-*` (360/1280, claro/oscuro) rehechas con datos de prueba (MongoDB en memoria + sesión de admin simulada), revisadas.
+
+**Verificación**
+- `tools.test.ts` (4): categoría de cada entrada, plegado con empates y sin datos, y agregación real con mongodb-memory-server (período, entradas sin `tool`, error sin código → "unknown", período anterior fuera). `csv.test.ts` (+1) y `route.test.ts` actualizados.
+- Lint, typecheck, tests (988 + 8 saltados), build y `check:static` (1007 páginas).
+
+**Siguiente**: 3D.5 (medición final de Lighthouse de la fase 3).

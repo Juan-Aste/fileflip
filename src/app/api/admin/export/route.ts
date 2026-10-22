@@ -4,11 +4,12 @@ import { dayKey, resolvePeriod } from "@/lib/admin/period";
 import { accountStats } from "@/lib/admin/stats/accounts";
 import { conversionStats } from "@/lib/admin/stats/conversions";
 import { qualityStats } from "@/lib/admin/stats/quality";
+import { toolStats } from "@/lib/admin/stats/tools";
 import { visitStats } from "@/lib/admin/stats/visits";
 
 export const dynamic = "force-dynamic";
 
-const sources = { conversions: conversionStats, quality: qualityStats, visits: visitStats, accounts: accountStats };
+const sources = { conversions: conversionStats, quality: qualityStats, tools: toolStats, visits: visitStats, accounts: accountStats };
 
 /**
  * GET /api/admin/export?table=top-conversions&period=7d (same period params
