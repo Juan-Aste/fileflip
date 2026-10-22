@@ -2957,3 +2957,17 @@ Todas las tareas de la fase 4 están marcadas y el CI de GitHub está en verde e
 ## 2026-10-22 22:57 UTC — Inicio de la fase 5
 
 Correcciones de bugs reportados por el dueño en producción (ver "Fase 5" en PLAN.md): login por email que no envía en Railway (SMTP bloqueado), estados del formulario de login y pasos del dueño para Resend.
+
+## 2026-10-22 23:05 UTC — Fase 5, tarea 5.1 (login por email en Railway)
+
+Causa: Railway bloquea el SMTP saliente (25/465/587) salvo en el plan Pro, así que nodemailer terminaba en `Connection timeout` tras minutos.
+
+**Qué se hizo**
+- `src/lib/email/send.ts`: con `RESEND_API_KEY` el magic link se envía por la API HTTP de Resend (`fetch` a `https://api.resend.com/emails`, sin dependencias nuevas), con `AbortSignal.timeout(10 s)`; si la respuesta no es 2xx se registra `[email] Resend rejected the email: HTTP <código> <mensaje>` (nunca la clave) y se lanza el error, que Auth.js convierte en `/login?error=…`. Sin `RESEND_API_KEY`, SMTP (`EMAIL_SERVER`) con `connectionTimeout`, `greetingTimeout` y `socketTimeout` de 10 s (nodemailer ignora opciones extra si recibe la URL, por eso se parsea). Resend tiene prioridad. Sin ninguno, el enlace va al log (desarrollo / `AUTH_EMAIL_LOG_LINKS`).
+- `src/auth.ts`: el proveedor conserva el id `nodemailer` (no cambia el formulario) y se habilita con `RESEND_API_KEY` o `EMAIL_SERVER`.
+- `.env.example`, `DEPLOY.md` y `docs/launch-checklist.md` (sección Resend y tabla de variables): `RESEND_API_KEY` en lugar de `EMAIL_SERVER`. La página de créditos no cambia (Resend es un servicio, no una dependencia).
+- Tests `src/lib/email/send.test.ts`: cuerpo, cabeceras, from/to e idioma del envío a Resend; errores 422/500 y timeout se propagan y se registran sin la clave; error de red; prioridad Resend sobre SMTP; SMTP con los tres timeouts.
+
+**Verificación**
+- Lint, typecheck, build y tests unitarios (1009) pasan.
+- `next start` con MongoDB en memoria y una clave falsa: el POST a `/api/auth/signin/nodemailer` llega a la API real de Resend y responde en 0,2 s con `/login?error=Configuration`; el log muestra `HTTP 401 API key is invalid` sin la clave.
