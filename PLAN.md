@@ -337,3 +337,11 @@ Cierre antes de publicar: tareas chicas que no requieren decisiones del dueño. 
 
 ### Hito 4.3 — Lista para publicar
 - [x] 4.3 `docs/launch-checklist.md`: pasos concretos y en orden para publicar (variables de Railway con valor de ejemplo, Gotenberg, dominio y DNS, Google OAuth, Resend, Mercado Pago, AdSense, Search Console, mergear `dev` en `main`, qué verificar después)
+
+## Fase 5
+
+Correcciones de bugs reportados por el dueño en producción. Sin dependencias nuevas.
+
+- [ ] 5.1 Login por email no envía nada en producción (URGENTE): Railway bloquea el SMTP saliente salvo en Pro (`Connection timeout` de nodemailer). Enviar por la API HTTP de Resend si existe `RESEND_API_KEY` (fetch con timeout de 10 s, error claro sin registrar la clave); SMTP (`EMAIL_SERVER`) como alternativa con timeouts cortos; Resend tiene prioridad. Actualizar `.env.example`, `DEPLOY.md`, `docs/launch-checklist.md` y créditos si corresponde. Tests de Resend (cuerpo, cabeceras, idioma, errores 4xx/5xx, timeout), prioridad y timeouts SMTP
+- [ ] 5.2 Formulario de login por email con estados: "Enviando…" con indicador, botón deshabilitado sin envíos dobles, error traducido (5 idiomas, aria-live, foco) ante error del servidor, timeout de ~20 s o red; éxito → página de verificación; validación del email; mismo estado de carga para "Continuar con Google"; test Playwright con `page.route` (lento, error, éxito, sin doble envío)
+- [ ] 5.3 "Pendiente del dueño" en PROGRESS.md: API key de Resend, `RESEND_API_KEY` en Railway, dominio verificado en Resend, `EMAIL_FROM` con ese dominio, quitar `EMAIL_SERVER`, redesplegar

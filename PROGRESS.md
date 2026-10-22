@@ -2953,3 +2953,7 @@ Todas las tareas de la fase 4 están marcadas y el CI de GitHub está en verde e
 **Para publicar**: seguir `docs/launch-checklist.md`. Lo que queda depende solo del dueño (ver "Pendiente del dueño"), incluido el commit exacto de FFmpeg (AAC) para la LGPL.
 
 **La tarea programada de desarrollo autónomo ya no tiene trabajo: conviene pausarla.**
+
+## 2026-10-22 22:57 UTC — Inicio de la fase 5
+
+Correcciones de bugs reportados por el dueño en producción (ver "Fase 5" en PLAN.md): login por email que no envía en Railway (SMTP bloqueado), estados del formulario de login y pasos del dueño para Resend.
