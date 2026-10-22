@@ -2996,3 +2996,16 @@ Causa: Railway bloquea el SMTP saliente (25/465/587) salvo en el plan Pro, así 
 
 **Verificación**
 - Solo documentación.
+
+## 2026-10-22 23:17 UTC — FASE 5 TERMINADA
+
+Todas las tareas de la fase 5 están marcadas y el CI de GitHub está en verde en `6e97659`.
+
+**Resumen**
+- 5.1 El email de inicio de sesión se envía por la API HTTP de Resend cuando hay `RESEND_API_KEY` (Railway bloquea el SMTP salvo en Pro), con timeout de 10 s y errores claros en el log; SMTP queda como alternativa con timeouts de 10 s.
+- 5.2 El formulario de login muestra "Enviando…", no permite envíos dobles, corta a los 20 s y muestra errores traducidos y accesibles; "Continuar con Google" muestra "Redirigiendo…".
+- 5.3 Pasos del dueño para Resend en "Pendiente del dueño".
+
+**Para publicar**: seguir los pasos de Resend en "Pendiente del dueño" (`RESEND_API_KEY`, dominio verificado, `EMAIL_FROM`, quitar `EMAIL_SERVER`, redesplegar) y mergear `dev` en `main`.
+
+**La tarea programada ya no tiene trabajo de la fase 5: conviene pausarla.**
