@@ -2894,3 +2894,16 @@ Se revisó cada punto de "Pendiente del dueño" y de la sección 10 de `docs/rep
 
 **Qué se hizo**
 - "Pendiente del dueño": la página de créditos queda marcada como hecha; se agregó el punto del commit exacto de FFmpeg (4.1b).
+
+## 2026-10-22 19:45 UTC — Fase 4, tarea 4.2b (CLS 0 con fuentes tardías)
+
+**Qué se hizo**
+- Medido con Playwright (412 px, fuentes demoradas): la categoría PDF daba CLS **0,077** cuando Figtree llegaba tarde (la fila de pastillas se volvía a partir), la portada 0,017. Causa: `font-display: swap` en la fuente de texto.
+- `src/app/fonts.ts`: la fuente de texto (precargada) pasa a `font-display: optional`; con carga normal se sigue usando Figtree (verificado), con carga lenta queda el respaldo sin reacomodos. Los títulos siguen con `swap`.
+- Nueva prueba `tests/e2e/layout-shift.spec.ts`: con las fuentes demoradas 1 s, CLS = 0 en portada, categoría PDF (es/en), "Unir PDF" y créditos. Detalle y mediciones en `docs/perf/2026-10-22-phase4-cls.md`.
+
+**Verificación**
+- Lighthouse móvil (3 corridas): categoría PDF mediana 93, portada 97, créditos 92; accesibilidad 100 y **CLS 0 en todas**.
+- Lint, typecheck y build pasan; `layout-shift` 5/5.
+
+**Siguiente**: 4.2c (prueba de arrastrar y soltar en "Ordenar PDF") y 4.3 (lista para publicar).

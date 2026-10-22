@@ -5,7 +5,9 @@ import localFont from "next/font/local";
 export const bodyFont = localFont({
   src: "../../node_modules/@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2",
   weight: "300 900",
-  display: "swap",
+  // Preloaded, so it is normally ready before the first paint; if it is late,
+  // the page keeps the fallback instead of re-wrapping text (CLS 0).
+  display: "optional",
   variable: "--font-body",
   fallback: ["ui-sans-serif", "system-ui", "Arial"],
 });
