@@ -2932,3 +2932,11 @@ Al preparar la lista para publicar se vio que faltaba `ads.txt`, que AdSense exi
 
 **Verificación**
 - Lint, build y tests unitarios pasan; `next start` sin la variable: `/ads.txt` → 404 (el middleware de idiomas no lo intercepta).
+
+## 2026-10-22 20:32 UTC — Fase 4, tarea 4.3 (lista para publicar) — HITO 4.3 TERMINADO
+
+**Qué se hizo**
+- `docs/launch-checklist.md`: pasos en orden para publicar — decisiones previas (dominio, textos legales, precios), servicios de Railway y comando de inicio de Gotenberg, tabla de variables con valor de ejemplo, healthcheck, dominio y DNS, Google OAuth (incluida la publicación de la pantalla de consentimiento), Resend (dominio verificado y `EMAIL_SERVER` SMTP), Mercado Pago por país, mergear `dev` en `main`, AdSense (con el nuevo `/ads.txt`), Search Console y qué verificar después. Enlaza a las secciones de `DEPLOY.md` en vez de repetirlas.
+
+**Verificación**
+- Lint y tests unitarios (999) pasan; solo documentación.

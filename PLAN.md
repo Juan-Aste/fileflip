@@ -336,4 +336,4 @@ Cierre antes de publicar: tareas chicas que no requieren decisiones del dueño. 
 - [x] 4.2d `/ads.txt` generado desde `NEXT_PUBLIC_ADSENSE_CLIENT` (AdSense lo pide para servir anuncios; sin la variable, 404)
 
 ### Hito 4.3 — Lista para publicar
-- [ ] 4.3 `docs/launch-checklist.md`: pasos concretos y en orden para publicar (variables de Railway con valor de ejemplo, Gotenberg, dominio y DNS, Google OAuth, Resend, Mercado Pago, AdSense, Search Console, mergear `dev` en `main`, qué verificar después)
+- [x] 4.3 `docs/launch-checklist.md`: pasos concretos y en orden para publicar (variables de Railway con valor de ejemplo, Gotenberg, dominio y DNS, Google OAuth, Resend, Mercado Pago, AdSense, Search Console, mergear `dev` en `main`, qué verificar después)
