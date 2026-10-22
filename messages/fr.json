@@ -1291,6 +1291,22 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée, car la vidéo est assemblée dans la mémoire du navigateur. Les pistes vidéo et audio principales sont conservées ; les sous-titres intégrés ne sont pas copiés. AVI, WMV et FLV ne sont pas encore lus."
       }
+    },
+    "extract-audio": {
+      "title": "Extraire l'audio d'une vidéo",
+      "description": "Récupérez le son d'une vidéo MP4, MOV, MKV ou WebM et enregistrez-le en M4A, MP3, WAV, FLAC ou OGG, dans votre navigateur.",
+      "action": "Extraire l'audio",
+      "about": "Gardez seulement le son d'une vidéo : la musique d'un clip, la parole d'un cours enregistré ou l'audio d'une vidéo WhatsApp. Avec « Original », la piste est copiée telle quelle, sans réencodage : quelques secondes suffisent et la qualité reste identique (une vidéo de téléphone donne un M4A en AAC). Pour un autre format, choisissez MP3, WAV, FLAC, OGG (Opus), M4A (AAC) ou AIFF et la qualité. Accepte MP4, MOV, MKV et WebM, plusieurs à la fois. Tout se passe sur votre appareil : les vidéos ne sont envoyées à aucun serveur.",
+      "faq": {
+        "q1": "Quel format choisir ?",
+        "a1": "« Original » est le plus rapide et ne perd rien : l'audio garde le format qu'il avait dans la vidéo (presque toujours AAC, dans un fichier .m4a que lisent iPhone, Android, Windows et Mac). Choisissez MP3 pour une compatibilité maximale, ou WAV/FLAC pour le monter.",
+        "q2": "Pourquoi mon fichier est-il en MP3 avec « Original » ?",
+        "a2": "Certains codecs audio n'ont pas de format propre dans lequel être copiés tels quels (par exemple l'AC-3 de certains films). Il est alors converti en MP3 à 192 kbit/s et le résultat l'indique.",
+        "q3": "Puis-je extraire l'audio d'une vidéo YouTube ?",
+        "a3": "Uniquement à partir de fichiers déjà présents sur votre appareil et que vous avez le droit d'utiliser. Cet outil ne télécharge pas de vidéos depuis internet.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro) et 3 heures d'audio. La piste audio principale est extraite. Convertir l'audio AAC d'un MP4 vers un autre format exige un navigateur qui lit l'AAC (Chrome, Edge ou Safari) ; « Original » fonctionne partout."
+      }
     }
   },
   "ToolUi": {
@@ -2288,5 +2304,11 @@
     "noWebCodecs": "Ce navigateur ne peut pas traiter de vidéo (WebCodecs absent). Utilisez une version récente de Chrome, Edge, Safari ou Firefox.",
     "copied": "Vidéo copiée sans réencodage ({codec}).",
     "encoded": "Vidéo réencodée en {codec}."
+  },
+  "ExtractAudioTool": {
+    "original": "Original (sans réencodage)",
+    "originalNote": "Copie la piste audio telle qu'elle est dans la vidéo : rapide et sans perte. Traitement sur votre appareil.",
+    "copied": "Audio copié sans réencodage ({codec}).",
+    "converted": "Audio converti en {format}."
   }
 }

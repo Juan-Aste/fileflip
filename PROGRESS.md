@@ -2389,3 +2389,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Depende de WebCodecs del navegador: H.264/HEVC de entrada solo se recodifican donde el navegador los decodifica (Chrome, Edge, Safari); copiar entre MP4/MOV/MKV funciona siempre. AVI, WMV, FLV y 3GP no se leen (requieren `@ffmpeg/core` GPL: decisión del dueño). Solo se conservan la pista de video y la de audio principales (sin subtítulos). Entrada y salida en memoria (de ahí el límite de 500 MB).
 
 **Siguiente**: 3C.37b (extraer audio de un video).
+
+## 2026-10-22 07:20 UTC — Fase 3, tarea 3C.37b (extraer audio de un video) — 3C.37 TERMINADA
+
+**Qué se hizo**
+- **Extraer audio de un video** (`/es/extraer-audio-de-video`, `/en/extract-audio-from-video`, `/pt/extrair-audio-de-video`, `/fr/extraire-audio-video`), categoría Video, en lotes: MP4, MOV, MKV y WebM (200 MB gratis / 500 MB Pro) → **Original (sin recomprimir)**, por defecto, o MP3, WAV, FLAC, OGG (Opus), M4A (AAC) o AIFF con calidad.
+- "Original": `copyAudioTrack` (en `src/lib/audio/convert.ts`) copia los paquetes de la pista principal sin decodificar (`copy: { mode: "forced", shiftTolerance: 0.5 }`) a su contenedor propio: AAC → .m4a, MP3 → .mp3, Opus/Vorbis → .ogg, FLAC → .flac, PCM → .wav. Funciona aunque el navegador no decodifique AAC. Si el códec no tiene contenedor propio (p. ej. AC-3) o no se puede copiar, se convierte a MP3 192 kbps y el resultado lo dice ("Audio convertido a MP3"). Con otro formato elegido se usa `convertAudio` (que ya descartaba el video).
+- `assertComplete` (último paquete presente y duración > 0) se movió al motor de audio y ahora lo usan **todas las herramientas de audio** y el conversor de video: un archivo cortado cuyo índice sigue completo ya no da una salida a medias.
+- Fixture nuevo `video-no-audio.webm`. Textos (introducción + 4 preguntas, interfaz) en los 5 idiomas; en las preguntas se aclara que no descarga videos de internet.
+
+**Verificación**
+- `video-tools.spec.ts` (+3, ffprobe/ffmpeg): MP4 + MOV + WebM + MKV con "Original" → 2 M4A AAC y 2 OGG (Opus y Vorbis) **sin pista de video**, 2 s y tonos 440/660 Hz en cada canal (en un Chromium que no decodifica AAC: la copia queda demostrada); WebM + MKV → MP3 y MKV → WAV PCM con tonos; video sin sonido ("no tiene pista de audio"), MP4 cortado y texto disfrazado → mensajes claros y el bueno se extrae.
+- Lint, typecheck, tests (915 + 8 saltados), build, `check:static` (942 páginas) y `npm run test:e2e` completo: 286 pasan, 4 saltados (sin Gotenberg ni EPUBCheck). Las pruebas de audio existentes siguen pasando con la comprobación nueva.
+
+**Limitaciones**
+- Solo la pista de audio principal (no se elige entre idiomas). AVI/WMV/FLV no se leen (motor GPL, decisión del dueño).
+
+**Siguiente**: 3C.38 (video: comprimir, recortar, cambiar resolución y velocidad, video → GIF y unir).

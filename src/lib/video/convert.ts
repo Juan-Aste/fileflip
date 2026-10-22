@@ -8,7 +8,6 @@ import {
   BlobSource,
   BufferTarget,
   Conversion,
-  EncodedPacketSink,
   Input,
   MkvOutputFormat,
   MovOutputFormat,
@@ -20,7 +19,7 @@ import {
   type VideoCodec,
 } from "mediabunny";
 import { ConversionError } from "@/lib/convert-error";
-import { ensureEncoder } from "@/lib/audio/convert";
+import { assertComplete, ensureEncoder } from "@/lib/audio/convert";
 import { encodersFor, MAX_VIDEO_SECONDS, videoPlan, type VideoTarget } from "./options";
 
 const outputFormat: Record<VideoTarget, () => Mp4OutputFormat | MovOutputFormat | WebMOutputFormat | MkvOutputFormat> = {
@@ -56,10 +55,7 @@ async function openVideo(file: Blob) {
       throw new ConversionError("fileDamaged");
     });
     if (duration > MAX_VIDEO_SECONDS) throw new ConversionError("videoTooLong");
-    // A cut file still lists every frame in its index, but the demuxer stops quietly at the
-    // end of the data: without its last frame the output would be silently incomplete.
-    const last = await new EncodedPacketSink(video).getPacket(Infinity).catch(() => null);
-    if (!last || duration <= 0) throw new ConversionError("fileDamaged");
+    await assertComplete(video, duration);
     return { input, video, audio, duration };
   } catch (error) {
     input.dispose();

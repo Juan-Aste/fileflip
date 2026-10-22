@@ -14,6 +14,7 @@ import {
   BookPlus,
   AudioLines,
   Clapperboard,
+  FileAudio,
   Archive,
   CaseSensitive,
   ImageDown,
@@ -133,6 +134,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "normalize-audio": Volume2,
   "join-audio": Layers,
   "video-converter": Clapperboard,
+  "extract-audio": FileAudio,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

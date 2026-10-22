@@ -279,9 +279,9 @@ Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo apr
   - [x] 3C.36b "Ajustar audio": canales (mono/estéreo), frecuencia (22,05/44,1/48 kHz) y bitrate, en lotes; test con ffprobe de canales, frecuencia y bitrate
   - [x] 3C.36c "Normalizar volumen": dos pasadas (medir pico y volumen RMS, aplicar ganancia sin recortar), objetivo de pico −1 dBFS o volumen medio; test midiendo el pico de la salida con ffmpeg (`volumedetect`)
   - [x] 3C.36d "Unir audio": varios archivos en orden (reordenables con botones), misma frecuencia/canales en la salida (remuestreo), silencio opcional entre pistas; test de duración total y de los tonos en cada tramo
-- [ ] 3C.37 Video: convertir entre MP4, WebM, MOV y MKV según el navegador, y extraer audio (dividida):
+- [x] 3C.37 Video: convertir entre MP4, WebM, MOV y MKV según el navegador, y extraer audio (dividida):
   - [x] 3C.37a "Convertir video" con mediabunny + WebCodecs: entradas MP4, MOV, MKV y WebM; salidas MP4, WebM, MOV y MKV; copia sin recomprimir cuando el contenedor admite el códec (H.264 → MOV/MKV), si no recodifica (H.264 si el navegador lo tiene; MP4 con VP9/AV1 como respaldo y aviso; MOV exige H.264); archivos cortados detectados; límites de tamaño (200/500 MB) y duración (2 h); fixtures generados con ffmpeg y salida validada con ffprobe (códecs, tamaño, duración, colores de los cuadros y tonos)
-  - [ ] 3C.37b "Extraer audio de un video": MP4/MOV/MKV/WebM → MP3, WAV, FLAC, OGG (Opus), M4A (AAC) o AIFF, reutilizando el motor de audio; copia de la pista sin recomprimir cuando el formato lo permite si es viable; test con ffprobe y tonos
+  - [x] 3C.37b "Extraer audio de un video": MP4/MOV/MKV/WebM → MP3, WAV, FLAC, OGG (Opus), M4A (AAC) o AIFF, reutilizando el motor de audio; copia de la pista sin recomprimir cuando el formato lo permite si es viable; test con ffprobe y tonos
 - [ ] 3C.38 Video: comprimir, recortar, cambiar resolución y velocidad, video → GIF (gifenc) y unir
 
 3D y CAD

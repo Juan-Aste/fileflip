@@ -18,6 +18,8 @@ import {
   AudioSampleSink,
   AudioSampleSource,
   NullTarget,
+  EncodedPacketSink,
+  type InputTrack,
   type InputAudioTrack,
   canEncodeAudio,
   type AudioCodec,
@@ -75,6 +77,16 @@ export interface AudioEdit {
   normalize?: NormalizeMode;
 }
 
+/**
+ * A cut file may still list every packet in its index while the demuxer stops
+ * quietly at the end of the data: without its last packet the output would be
+ * silently incomplete, so that is reported as damage.
+ */
+export async function assertComplete(track: InputTrack, duration: number) {
+  const last = await new EncodedPacketSink(track).getPacket(Infinity).catch(() => null);
+  if (!last || duration <= 0) throw new ConversionError("fileDamaged");
+}
+
 /** Opens a file for mediabunny, checking it holds audio this browser can decode; the caller disposes it. */
 async function openAudio(file: Blob) {
   // mediabunny has no AIFF demuxer: an AIFF input is rewritten as WAV first.
@@ -98,6 +110,7 @@ async function openAudio(file: Blob) {
       throw new ConversionError("fileDamaged");
     });
     if (duration > MAX_AUDIO_SECONDS) throw new ConversionError("audioTooLong");
+    await assertComplete(track, duration);
     return { input, track, duration };
   } catch (error) {
     input.dispose();
@@ -332,3 +345,79 @@ export async function joinAudio(
     for (const o of opened) o.input.dispose();
   }
 }
+
+/** Containers that hold each source codec as it is, for "Extract audio" without re-encoding. */
+const copyContainers: Partial<Record<AudioCodec, { format: () => Mp4OutputFormat | Mp3OutputFormat | OggOutputFormat | FlacOutputFormat | WavOutputFormat; ext: string; mime: string }>> = {
+  aac: { format: () => new Mp4OutputFormat({ fastStart: "in-memory" }), ext: "m4a", mime: "audio/mp4" },
+  mp3: { format: () => new Mp3OutputFormat(), ext: "mp3", mime: "audio/mpeg" },
+  opus: { format: () => new OggOutputFormat(), ext: "ogg", mime: "audio/ogg" },
+  vorbis: { format: () => new OggOutputFormat(), ext: "ogg", mime: "audio/ogg" },
+  flac: { format: () => new FlacOutputFormat(), ext: "flac", mime: "audio/flac" },
+  "pcm-s16": { format: () => new WavOutputFormat(), ext: "wav", mime: "audio/wav" },
+  "pcm-s24": { format: () => new WavOutputFormat(), ext: "wav", mime: "audio/wav" },
+  "pcm-f32": { format: () => new WavOutputFormat(), ext: "wav", mime: "audio/wav" },
+};
+
+export interface CopiedAudio extends AudioResult {
+  codec: AudioCodec;
+  ext: string;
+  mime: string;
+}
+
+/**
+ * The audio track of a video (or any file) copied as it is into a container
+ * of its own: no decoding, no quality loss. Null when its codec has no such
+ * container or the packets can't be copied; the caller then converts it.
+ */
+export async function copyAudioTrack(file: Blob, { signal, onProgress }: { signal?: AbortSignal; onProgress?: (progress: number) => void } = {}): Promise<CopiedAudio | null> {
+  const input = new Input({ source: new BlobSource(file), formats: ALL_FORMATS });
+  try {
+    try {
+      await input.getFormat();
+    } catch {
+      throw new ConversionError("unsupportedFormat");
+    }
+    const track = await input.getPrimaryAudioTrack().catch(() => {
+      throw new ConversionError("fileDamaged");
+    });
+    if (!track) throw new ConversionError("noAudioTrack");
+    const duration = await input.computeDuration([track]).catch(() => {
+      throw new ConversionError("fileDamaged");
+    });
+    if (duration > MAX_AUDIO_SECONDS) throw new ConversionError("audioTooLong");
+    await assertComplete(track, duration);
+    const codec = track.codec;
+    const container = codec && copyContainers[codec];
+    if (!codec || !container) return null;
+    const output = new Output({ format: container.format(), target: new BufferTarget() });
+    const conversion = await Conversion.init({
+      input,
+      output,
+      tracks: "primary",
+      video: { discard: true },
+      audio: { codec },
+      // Only a copy is wanted here; AAC's encoder priming (before 0 s) is shifted, keeping sync.
+      copy: { mode: "forced", shiftTolerance: 0.5 },
+      showWarnings: false,
+    });
+    if (!conversion.isValid || conversion.discardedTracks.some((d) => d.track === track)) return null;
+    conversion.onProgress = (progress) => onProgress?.(progress);
+    const abort = () => void conversion.cancel();
+    signal?.addEventListener("abort", abort, { once: true });
+    try {
+      if (signal?.aborted) throw new ConversionError("jobCancelled");
+      await conversion.execute();
+    } catch (error) {
+      if (signal?.aborted) throw new ConversionError("jobCancelled");
+      throw error instanceof ConversionError ? error : new ConversionError("fileDamaged");
+    } finally {
+      signal?.removeEventListener("abort", abort);
+    }
+    const buffer = (output.target as BufferTarget).buffer;
+    if (!buffer || buffer.byteLength === 0) throw new ConversionError("conversionFailed");
+    return { data: new Uint8Array(buffer), duration, codec, ext: container.ext, mime: container.mime };
+  } finally {
+    input.dispose();
+  }
+}
+

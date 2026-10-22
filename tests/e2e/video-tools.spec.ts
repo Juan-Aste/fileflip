@@ -1,4 +1,4 @@
-// Video converter: outputs are checked with the system's ffprobe/ffmpeg
+// Video converter and "Extract audio": outputs are checked with the system's ffprobe/ffmpeg
 // (independent of mediabunny and of the browser): container, codecs, size,
 // duration, the picture (red in the first second, blue in the second) and the
 // sound (left 440 Hz, right 660 Hz, measured by zero crossings).
@@ -36,7 +36,7 @@ function probe(buf: Buffer, name: string): VideoProbe {
   const info = JSON.parse(execFileSync("ffprobe", ["-v", "error", "-show_streams", "-show_format", "-of", "json", file], { encoding: "utf8" }));
   const v = info.streams.find((s: { codec_type: string }) => s.codec_type === "video");
   const a = info.streams.find((s: { codec_type: string }) => s.codec_type === "audio");
-  const colors = [0.5, 1.5].map((at) => {
+  const colors = (v ? [0.5, 1.5] : []).map((at) => {
     const rgb = execFileSync("ffmpeg", ["-v", "error", "-ss", String(at), "-i", file, "-frames:v", "1", "-vf", "scale=1:1:flags=area", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]);
     return [rgb[0]!, rgb[1]!, rgb[2]!] as [number, number, number];
   });
@@ -146,3 +146,66 @@ test.describe("tool: video-converter", () => {
     }
   });
 });
+
+test.describe("tool: extract-audio", () => {
+  test.skip(!hasFfmpeg, "needs ffmpeg/ffprobe to check the output");
+
+  const expectAudioOnly = (p: VideoProbe, label: string) => {
+    expect(p.video, `${label} has no picture`).toBeUndefined();
+    expect(Math.abs(p.duration - 2), `${label} lasts ${p.duration} s`).toBeLessThan(0.15);
+    expect(Math.abs(p.tones[0]! - 440), `${label} left ${p.tones[0]} Hz`).toBeLessThan(15);
+    expect(Math.abs(p.tones[1]! - 660), `${label} right ${p.tones[1]} Hz`).toBeLessThan(15);
+  };
+
+  test("“Original” copies AAC, Opus and Vorbis tracks as they are (no decoder needed)", async ({ page }) => {
+    await openWithFiles(page, "/es/extraer-audio-de-video", ["video.mp4", "video.mov", "video.webm", "video.mkv"]);
+    await page.getByRole("button", { name: "Extraer audio", exact: true }).click();
+    await expect(page.locator("main li a[download]")).toHaveCount(4, { timeout: 60_000 });
+    for (const codec of ["AAC", "Opus", "Vorbis"]) await expect(page.locator("main").getByText(`Audio copiado sin recomprimir (${codec}).`).first()).toBeVisible();
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Descargar todo/ }).click()]);
+    const entries = unzipEntries(readFileSync((await download.path())!));
+    expect(entries.map((e) => e.name).sort()).toEqual(["video (1).m4a", "video (1).ogg", "video.m4a", "video.ogg"]);
+    const codecs = entries.map((entry) => {
+      const p = probe(entry.data, entry.name);
+      expect(p.format, entry.name).toMatch(entry.name.endsWith(".m4a") ? /mp4/ : /ogg/);
+      expectAudioOnly(p, entry.name);
+      return p.audio;
+    });
+    expect(codecs.sort()).toEqual(["aac", "aac", "opus", "vorbis"]);
+  });
+
+  test("a chosen format converts: WebM and MKV → MP3 at 192 kbps; MKV → WAV", async ({ page }) => {
+    await openWithFiles(page, "/en/extract-audio-from-video", ["video.webm", "video.mkv"]);
+    await page.getByText("MP3", { exact: true }).click();
+    await page.getByRole("button", { name: "Extract audio", exact: true }).click();
+    await expect(page.locator("main li a[download]")).toHaveCount(2, { timeout: 60_000 });
+    await expect(page.locator("main").getByText("Audio converted to MP3.", { exact: true })).toHaveCount(2);
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Download all/ }).click()]);
+    for (const entry of unzipEntries(readFileSync((await download.path())!))) {
+      const p = probe(entry.data, entry.name);
+      expect(p, entry.name).toMatchObject({ format: "mp3", audio: "mp3" });
+      expectAudioOnly(p, entry.name);
+    }
+
+    await page.getByRole("button", { name: "Start over" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(join(__dirname, "../fixtures/video.mkv"));
+    await page.getByText("WAV (lossless)", { exact: true }).click();
+    const out = fileOf(await runTool(page, "Extract audio"));
+    expect(out.name).toBe("video.wav");
+    const p = probe(out.buf, out.name);
+    expect(p).toMatchObject({ format: "wav", audio: "pcm_s16le" });
+    expectAudioOnly(p, "WAV");
+  });
+
+  test("a video without sound, a cut MP4 and a fake file fail with clear messages", async ({ page }) => {
+    await openWithFiles(page, "/en/extract-audio-from-video", ["video-no-audio.webm", "corrupt/video-truncated.mp4", "corrupt/not-video.mp4", "video.webm"]);
+    await page.getByRole("button", { name: "Extract audio", exact: true }).click();
+    await expect(page.locator("main li a[download]")).toHaveCount(1, { timeout: 60_000 });
+    const main = page.locator("main");
+    await expect(main).toContainText("This file has no audio track.");
+    await expect(main).toContainText("damaged or incomplete");
+    await expect(main).toContainText("can't be converted this way");
+    await expect(page.locator("main li a[download]")).toHaveAttribute("download", "video.ogg");
+  });
+});
+

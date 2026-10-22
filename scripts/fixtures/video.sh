@@ -14,6 +14,8 @@ SRC=(-f lavfi -i "color=c=red:s=320x240:r=24:d=1,format=yuv420p" -f lavfi -i "co
 "${FF[@]}" "${SRC[@]}" -c:v libx264 -preset veryfast -crf 30 -c:a aac -b:a 64k video.mov
 "${FF[@]}" "${SRC[@]}" -c:v libvpx-vp9 -b:v 150k -deadline realtime -cpu-used 8 -c:a libopus -b:a 48k video.webm
 "${FF[@]}" "${SRC[@]}" -c:v libvpx -b:v 150k -deadline realtime -cpu-used 8 -c:a libvorbis -q:a 2 video.mkv
+# The same picture without sound (for "Extract audio").
+"${FF[@]}" -f lavfi -i "color=c=red:s=320x240:r=24:d=1" -c:v libvpx-vp9 -b:v 100k -deadline realtime -cpu-used 8 -map_metadata -1 video-no-audio.webm
 # An MP4 cut in half (frames missing) and text named .mp4.
 head -c "$(( $(stat -c %s video.mp4) / 2 ))" video.mp4 > corrupt/video-truncated.mp4
 printf 'This is not a video, just text with an .mp4 name.\n%.0s' {1..40} > corrupt/not-video.mp4
