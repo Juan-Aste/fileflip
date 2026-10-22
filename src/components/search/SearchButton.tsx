@@ -58,7 +58,13 @@ export default function SearchButton({ className = "" }: { className?: string })
       >
         <Search aria-hidden="true" className="h-4 w-4" />
         <span className="hidden lg:inline">{t("button")}</span>
-        <kbd className="hidden rounded border border-border px-1.5 font-sans text-xs lg:inline">Ctrl K</kbd>
+        {/* The hint is CSS content: text nodes inside a button with aria-label must
+            be part of its name (WCAG 2.5.3), and the shortcut is aria-keyshortcuts. */}
+        <kbd
+          aria-hidden="true"
+          data-shortcut="Ctrl K"
+          className="hidden rounded border border-border px-1.5 font-sans text-xs before:content-[attr(data-shortcut)] lg:inline"
+        />
       </button>
       {used && <SearchDialog open={open} onClose={() => setOpen(false)} />}
     </>

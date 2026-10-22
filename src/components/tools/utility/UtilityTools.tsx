@@ -123,10 +123,12 @@ export function ColorConverterTool() {
             {(["hex", "rgb", "hsl", "oklch"] as const).map((key) => (
               <div key={key} className="flex items-center gap-3 rounded-xl border border-border px-3 py-1.5">
                 <dt className="w-14 shrink-0 text-xs font-semibold uppercase text-muted">{key}</dt>
-                <dd className="min-w-0 flex-1 break-words font-mono text-sm" data-format={key}>
-                  {formats[key]}
+                <dd className="flex min-w-0 flex-1 items-center gap-3">
+                  <span className="min-w-0 flex-1 break-words font-mono text-sm" data-format={key}>
+                    {formats[key]}
+                  </span>
+                  <CopyButton text={formats[key]} label={formats[key]} />
                 </dd>
-                <CopyButton text={formats[key]} label={formats[key]} />
               </div>
             ))}
           </dl>

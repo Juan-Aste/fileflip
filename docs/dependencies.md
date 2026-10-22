@@ -82,6 +82,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | vitest | 3.2.7 | MIT |
 | mongodb-memory-server | 11.3.0 | MIT |
 | playwright-core, @playwright/test | 1.56.0 | Apache-2.0 |
+| axe-core (auditoría de accesibilidad en `tests/e2e/a11y.spec.ts`) | 4.14.0 | MPL-2.0 |
 | @next/bundle-analyzer | 15.5.4 | MIT |
 | @formatjs/icu-messageformat-parser | 3.5.21 | MIT |
 | @types/* (incluido @types/papaparse) | — | MIT |

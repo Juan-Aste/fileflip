@@ -1,10 +1,9 @@
 import { ShieldCheck } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import LogoMark from "@/components/brand/LogoMark";
-import { allToolsSlugs } from "@/config/categories";
+import { allToolsSlugs, categorySlug, publishedCategories } from "@/config/categories";
 import { conversionSlug, popularConversions } from "@/config/conversion-pages";
 import { formats } from "@/config/formats";
-import { availableTools, tools } from "@/config/tools";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 
@@ -12,7 +11,7 @@ const linkClass = "text-muted transition hover:text-brand";
 
 export default function Footer() {
   const t = useTranslations("Footer");
-  const tt = useTranslations("Tools");
+  const tcat = useTranslations("Catalog");
   const tc = useTranslations("ConversionPage");
   const th = useTranslations("HomePage");
   const locale = useLocale() as Locale;
@@ -40,10 +39,10 @@ export default function Footer() {
             {t("headings.tools")}
           </h2>
           <ul className="flex flex-col gap-2">
-            {availableTools.map((id) => (
-              <li key={id}>
-                <Link href={`/${tools[id].slugs[locale]}`} className={linkClass}>
-                  {tt(`${id}.title`)}
+            {publishedCategories.map((c) => (
+              <li key={c}>
+                <Link href={`/${categorySlug(c, locale)}`} className={linkClass}>
+                  {tcat(`categories.${c}.name`)}
                 </Link>
               </li>
             ))}

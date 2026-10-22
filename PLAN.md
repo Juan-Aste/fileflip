@@ -313,7 +313,7 @@ Mediciones: Lighthouse móvil (≥ 90, CLS 0) después de 3C.10, 3C.23, 3C.34 y 
 ### Hito 3D — Experiencia de usuario del catálogo
 - [x] 3D.1 Portada que escale a 100+ herramientas: buscador visible, categorías claras, herramientas populares, sin abrumar en móvil
 - [x] 3D.2 Enlaces internos entre herramientas relacionadas (misma categoría, mismos formatos) generados del registro
-- [ ] 3D.3 Accesibilidad y teclado completos; capturas Playwright 360/1280, claro/oscuro, de una muestra de páginas nuevas en `docs/screenshots/`
+- [x] 3D.3 Accesibilidad y teclado completos; capturas Playwright 360/1280, claro/oscuro, de una muestra de páginas nuevas en `docs/screenshots/`
 - [ ] 3D.4 Panel de admin: uso y errores por herramienta y por categoría (con tests de agregación)
 - [ ] 3D.5 Medición final de Lighthouse de la fase 3
 

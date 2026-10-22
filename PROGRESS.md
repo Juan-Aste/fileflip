@@ -2747,3 +2747,24 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (983 + 8 saltados), build y `check:static` (1007 páginas).
 
 **Siguiente**: 3D.3 (accesibilidad y teclado; capturas 360/1280 claro/oscuro).
+
+## 2026-10-22 14:55 UTC — Fase 3, tarea 3D.3 (accesibilidad, teclado y capturas)
+
+**Qué se hizo**
+- `tests/e2e/a11y.spec.ts` (nuevo, 21 pruebas): **axe-core 4.14** (WCAG 2.0/2.1 A y AA; se excluyen solo los bloques de anuncios) sobre **las 82 herramientas publicadas** (`availableTools`, en tandas de 12), la portada, "Todas las herramientas" y las 15 categorías, en modo claro; una muestra de 13 herramientas + portada en **modo oscuro**; portada, "Recortar imagen" y "Recortar audio" en **en, pt, fr y zh**; y el **estado terminado** (resultado + error) de "Comprimir imagen" (foto válida + JPEG truncado) y "JSON a CSV", en claro y oscuro.
+- Teclado: el primer Tab enfoca "Saltar al contenido", visible, y Enter lleva el foco al `<main>`; recorrido con Tab de 6 herramientas con controles propios (recortar imagen, colores, contraseñas, firmar PDF, recortar video, foto carnet): cada parada es visible y muestra indicador de foco (outline o anillo; los inputs nativos/ocultos lo muestran en su etiqueta).
+- Fallas encontradas y corregidas:
+  - **Botón Buscar del header** (todas las páginas): su `aria-label` ("Buscar herramientas") no contenía el texto visible "Ctrl K" (WCAG 2.5.3, `label-content-name-mismatch`). `aria-hidden` en el `<kbd>` no alcanza (axe cuenta el texto igual): el atajo se pinta ahora con CSS (`before:content-[attr(data-shortcut)]`) y se anuncia con `aria-keyshortcuts`.
+  - **Conversor de colores**: el `<dl>` tenía el botón Copiar como hijo directo del grupo `dt`/`dd` (`definition-list`): el botón va dentro del `<dd>`.
+  - **Pie de página**: la columna "Herramientas PDF" listaba las 82 herramientas (JSON, YAML, audio…) bajo ese título y ocupaba varias pantallas en el celular. Ahora se llama "Herramientas" y enlaza las 15 categorías publicadas + "Todas las herramientas" (5 idiomas).
+- Capturas 360/1280 claro/oscuro de 7 páginas nuevas en `docs/screenshots/` (`es_quitar-fondo`, `es_foto-carnet`, `es_recortar-video`, `es_convertir-dxf`, `es_json-a-csv`, `es_conversor-de-colores`, `es_herramientas-de-audio`), WEBP, revisadas: sin desbordes horizontales, contraste correcto en oscuro, preguntas y relacionadas legibles en 360 px.
+- `axe-core` pasa a devDependency explícita (antes llegaba solo por eslint-plugin-jsx-a11y); licencia en `docs/dependencies.md`.
+
+**Verificación**
+- `a11y` + `search` + `utility-tools` + `converter` de navegador: 123/123. Lint, typecheck, tests (983 + 8 saltados), build y `check:static` (1007 páginas).
+
+**Limitaciones**
+- axe revisa el estado inicial de cada herramienta (y el terminado en dos); los estados intermedios (diálogos de recorte, visor 3D, reproductor) se cubren con las pruebas de teclado y las de cada herramienta, no con axe.
+- La prueba de teclado verifica que el foco se vea, no el contraste del anillo.
+
+**Siguiente**: 3D.4 (panel de admin: uso y errores por herramienta y categoría).
