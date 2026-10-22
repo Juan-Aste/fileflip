@@ -1357,6 +1357,22 @@
         "q4": "Existe algum limite?",
         "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro). O navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários). A imagem nunca é ampliada."
       }
+    },
+    "video-speed": {
+      "title": "Alterar velocidade do vídeo",
+      "description": "Acelere ou deixe em câmera lenta um vídeo MP4, MOV, MKV ou WebM (de 0,25× a 4×), no seu navegador.",
+      "action": "Alterar velocidade",
+      "about": "Acelere um tutorial longo, uma gravação de tela ou um time-lapse, ou deixe em câmera lenta uma jogada ou um momento engraçado. Escolha a velocidade entre 0,25× e 4× e decida se mantém o som (acelerado ou desacelerado, com o tom mais agudo ou mais grave, como uma fita) ou se o remove. O resultado é baixado no mesmo formato do original e você pode processar vários vídeos de uma vez. Tudo acontece no seu dispositivo: o vídeo não é enviado a nenhum servidor.",
+      "faq": {
+        "q1": "O que acontece com o som?",
+        "a1": "Se você o mantiver, ele acelera ou desacelera junto com a imagem, então o tom muda: a 2× as vozes ficam mais agudas e a 0,5× mais graves. Se preferir um vídeo sem som (por exemplo, para colocar música depois), escolha “Remover som”.",
+        "q2": "A câmera lenta fica fluida?",
+        "a2": "Cada quadro aparece por mais tempo, então a 0,25× um vídeo de 30 quadros por segundo fica com cerca de 7,5. Para uma câmera lenta suave, grave a 60 quadros por segundo ou mais. Ao acelerar, os quadros que sobram são descartados para não passar de 60 por segundo.",
+        "q3": "Perde qualidade?",
+        "a3": "O vídeo é codificado de novo em alta qualidade, no mesmo formato do original (MP4, MOV, MKV ou WebM). A resolução não muda.",
+        "q4": "Existe algum limite?",
+        "a4": "Até 200 MB por vídeo no plano gratuito (500 MB com o Pro), 2 horas de duração e 30 minutos de processamento por arquivo. Seu navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários)."
+      }
     }
   },
   "ToolUi": {
@@ -2393,5 +2409,15 @@
     "note": "Até {max} quadros. Sem som (o GIF não tem). Processado no seu dispositivo.",
     "tooManyFrames": "Quadros demais: o máximo é {max}. Encurte o trecho ou diminua os quadros por segundo.",
     "made": "{frames} quadros de {width} × {height} px."
+  },
+  "VideoSpeedTool": {
+    "speed": "Velocidade",
+    "sound": "Som",
+    "sounds": {
+      "keep": "Manter (o tom muda)",
+      "remove": "Remover som"
+    },
+    "note": "Abaixo de 1× é câmera lenta; acima de 1×, acelerado. O vídeo é codificado de novo em alta qualidade, no mesmo formato. Processado no seu dispositivo.",
+    "done": "Velocidade {speed}: dura {length}."
   }
 }

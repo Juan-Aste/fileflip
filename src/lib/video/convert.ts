@@ -16,13 +16,15 @@ import {
   QUALITY_HIGH,
   Quality,
   WebMOutputFormat,
+  AudioSample,
+  type VideoSample,
   canEncodeVideo,
   type VideoCodec,
 } from "mediabunny";
 import { ConversionError } from "@/lib/convert-error";
-import { assertComplete, ensureEncoder } from "@/lib/audio/convert";
+import { assertComplete, ensureEncoder, planarData } from "@/lib/audio/convert";
 import { validRange, type TrimRange } from "@/lib/audio/time";
-import { encodersFor, MAX_VIDEO_SECONDS, scaledSize, videoPlan, type VideoQuality, type VideoTarget } from "./options";
+import { encodersFor, MAX_VIDEO_SECONDS, scaledSize, SPEED_AUDIO_RATE, speedFrameRate, videoPlan, type VideoQuality, type VideoSpeed, type VideoTarget } from "./options";
 
 const outputFormat: Record<VideoTarget, () => Mp4OutputFormat | MovOutputFormat | WebMOutputFormat | MkvOutputFormat> = {
   mp4: () => new Mp4OutputFormat({ fastStart: "in-memory" }),
@@ -41,6 +43,10 @@ export interface VideoEdit {
   trim?: TrimRange;
   /** Cut at the exact frame (re-encodes) instead of at the key frame before the start (copies). */
   exact?: boolean;
+  /** "Change video speed": playback factor (re-encodes both tracks; the sound's pitch changes with it). */
+  speed?: VideoSpeed;
+  /** With a speed: drop the sound instead. */
+  removeAudio?: boolean;
 }
 
 /** Duration in seconds of a video, with the same checks as a conversion. */
@@ -104,22 +110,42 @@ export async function convertVideo(
   const { input, video, audio, duration } = await openVideo(file);
   try {
     const { width, height } = scaledSize(video.displayWidth, video.displayHeight, edit?.maxShortSide);
-    const reencode = edit !== undefined && (edit.quality !== undefined || edit.maxShortSide !== undefined || (edit.trim !== undefined && !!edit.exact));
+    const speed = edit?.speed;
+    const reencode = edit !== undefined && (edit.quality !== undefined || edit.maxShortSide !== undefined || (edit.trim !== undefined && !!edit.exact) || speed !== undefined);
+    const keepAudio = audio && !(speed && edit?.removeAudio) ? audio : null;
     if (edit?.trim && !validRange(edit.trim, duration)) throw new ConversionError("videoRangeInvalid");
     const trim = edit?.trim && { start: edit.trim.start, end: Math.min(edit.trim.end, duration) };
-    const plan = videoPlan(target, { video: video.codec, audio: audio?.codec ?? null }, await encodableVideo(target, width, height), reencode);
+    const plan = videoPlan(target, { video: video.codec, audio: keepAudio?.codec ?? null }, await encodableVideo(target, width, height), reencode, speed !== undefined);
     if (!plan) throw new ConversionError("videoEncoderUnsupported");
     // Re-encoding needs the browser to decode the source first (H.264 and HEVC aren't
     // decodable in every browser; AAC neither).
     if (!plan.copyVideo && !(await video.canDecode())) throw new ConversionError("videoCodecUnsupported");
-    if (audio && plan.audio) {
-      if (!plan.copyAudio && !(await audio.canDecode())) throw new ConversionError("audioCodecUnsupported");
+    if (keepAudio && plan.audio) {
+      if (!plan.copyAudio && !(await keepAudio.canDecode())) throw new ConversionError("audioCodecUnsupported");
       // Even a copied track may be re-encoded when its packets can't be copied as they are, so the
       // encoder is loaded when there is one (Vorbis has none: it can only be copied).
       await ensureEncoder(plan.audio).catch((error: unknown) => {
         if (!plan.copyAudio) throw error;
       });
     }
+
+    // A different speed scales every timestamp. The video is first thinned to a frame rate that stays
+    // reasonable once sped up; the sound is resampled to SPEED_AUDIO_RATE / speed and then labelled
+    // SPEED_AUDIO_RATE, so it plays `speed` times faster (and higher), like a tape.
+    const frameRate = speed && speed > 1 ? speedFrameRate((await video.computePacketStats(100)).averagePacketRate, speed) : undefined;
+    const speedVideo = speed && {
+      ...(frameRate ? { frameRate } : {}),
+      process: (sample: VideoSample) => {
+        sample.setTimestamp(sample.timestamp / speed);
+        sample.setDuration(sample.duration / speed);
+        return sample;
+      },
+    };
+    const speedAudio = speed && {
+      sampleRate: Math.round(SPEED_AUDIO_RATE / speed),
+      processedSampleRate: SPEED_AUDIO_RATE,
+      process: (sample: AudioSample) => relabel(sample, SPEED_AUDIO_RATE, sample.timestamp / speed),
+    };
 
     const output = new Output({ format: outputFormat[target](), target: new BufferTarget() });
     const conversion = await Conversion.init({
@@ -131,8 +157,9 @@ export async function convertVideo(
         codec: plan.video,
         ...(plan.copyVideo ? {} : { quality: new Quality(edit?.quality ?? "high") }),
         ...(width !== video.displayWidth || height !== video.displayHeight ? { width, height, fit: "fill" as const } : {}),
+        ...speedVideo,
       },
-      audio: plan.audio ? { codec: plan.audio, ...(plan.copyAudio ? {} : { quality: QUALITY_HIGH }) } : { discard: true },
+      audio: plan.audio ? { codec: plan.audio, ...(plan.copyAudio ? {} : { quality: QUALITY_HIGH }), ...speedAudio } : { discard: true },
       // AAC starts with encoder priming before 0 s, which MKV/WebM can't hold: shifting the whole
       // file by that much (mediabunny keeps the tracks in sync) lets the packets be copied.
       // A fast trim copies from the key frame before the start (it may begin a little earlier).
@@ -143,7 +170,7 @@ export async function convertVideo(
     // A conversion that would silently drop the picture or the sound is an error instead.
     for (const dropped of conversion.discardedTracks) {
       if (dropped.track === video) throw new ConversionError(dropped.reason === "no_encodable_target_codec" ? "videoEncoderUnsupported" : "videoCodecUnsupported");
-      if (dropped.track === audio && plan.audio) throw new ConversionError("audioCodecUnsupported");
+      if (dropped.track === keepAudio && plan.audio) throw new ConversionError("audioCodecUnsupported");
     }
     if (!conversion.isValid) throw new ConversionError("videoCodecUnsupported");
     conversion.onProgress = (progress) => onProgress?.(progress);
@@ -160,8 +187,13 @@ export async function convertVideo(
     }
     const buffer = (output.target as BufferTarget).buffer;
     if (!buffer || buffer.byteLength === 0) throw new ConversionError("conversionFailed");
-    return { data: new Uint8Array(buffer), duration: trim ? trim.end - trim.start : duration, videoCodec: plan.video, copied: plan.copyVideo, width, height };
+    return { data: new Uint8Array(buffer), duration: (trim ? trim.end - trim.start : duration) / (speed ?? 1), videoCodec: plan.video, copied: plan.copyVideo, width, height };
   } finally {
     input.dispose();
   }
+}
+
+/** The same frames as `sample` (copied), presented at another sample rate and timestamp. */
+function relabel(sample: AudioSample, sampleRate: number, timestamp: number): AudioSample {
+  return new AudioSample({ data: planarData(sample), format: "f32-planar", numberOfChannels: sample.numberOfChannels, sampleRate, timestamp });
 }

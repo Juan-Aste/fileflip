@@ -23,6 +23,9 @@ SRC=(-f lavfi -i "color=c=red:s=320x240:r=24:d=1,format=yuv420p" -f lavfi -i "co
 "${FF[@]}" -display_rotation 90 -i video.webm -c copy video-rotated.mp4
 # The same picture without sound (for "Extract audio").
 "${FF[@]}" -f lavfi -i "color=c=red:s=320x240:r=24:d=1" -c:v libvpx-vp9 -b:v 100k -deadline realtime -cpu-used 8 -map_metadata -1 video-no-audio.webm
+# 60 fps, no sound (for "Change video speed": sped up, it is thinned to at most 60 fps).
+"${FF[@]}" -f lavfi -i "color=c=red:s=160x120:r=60:d=1" -f lavfi -i "color=c=blue:s=160x120:r=60:d=1" -filter_complex "[0:v][1:v]concat=n=2:v=1:a=0,format=yuv420p[v]" -map "[v]" \
+  -map_metadata -1 -g 60 -c:v libvpx-vp9 -b:v 60k -deadline realtime -cpu-used 8 video-60fps.webm
 # An MP4 cut in half (frames missing) and text named .mp4.
 head -c "$(( $(stat -c %s video.mp4) / 2 ))" video.mp4 > corrupt/video-truncated.mp4
 printf 'This is not a video, just text with an .mp4 name.\n%.0s' {1..40} > corrupt/not-video.mp4

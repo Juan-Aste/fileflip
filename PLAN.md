@@ -286,7 +286,7 @@ Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo apr
   - [x] 3C.38a "Comprimir video": calidad (alta/media/baja) y resolución máxima (original, 1080p, 720p, 480p, 360p; sin agrandar, dimensiones pares, rotación respetada), salida MP4 o WebM, audio copiado si cabe; muestra el ahorro; test con ffprobe (dimensiones, duración, colores, tonos, tamaño menor)
   - [x] 3C.38b "Recortar video": inicio y fin con reproductor y "usar posición actual", corte exacto (recodifica) o rápido en fotogramas clave (copia); test de duración y colores de cada tramo
   - [x] 3C.38c "Video a GIF": tramo, ancho (240–720 px), FPS (5–15) y bucle, con gifenc (MIT) en worker; límites de cuadros; test leyendo el GIF con sharp/ffprobe (cuadros, tamaño, colores)
-  - [ ] 3C.38d "Cambiar velocidad del video": 0,25×–4× (timestamps del video; audio remuestreado o quitado, aviso de que cambia el tono); test de duración
+  - [x] 3C.38d "Cambiar velocidad del video": 0,25×–4× (timestamps del video; audio remuestreado o quitado, aviso de que cambia el tono); test de duración
   - [ ] 3C.38e "Unir videos": varios archivos en orden, misma resolución de salida (encaje con bandas), audio igualado; test de duración total y colores por tramo
 
 3D y CAD

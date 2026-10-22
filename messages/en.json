@@ -1357,6 +1357,22 @@
         "q4": "Is there a limit?",
         "a4": "One video at a time, up to 200 MB on the free plan (500 MB with Pro). The browser has to be able to decode the video (H.264 isn't decoded in some browsers without proprietary codecs). The picture is never enlarged."
       }
+    },
+    "video-speed": {
+      "title": "Change video speed",
+      "description": "Speed up or slow down an MP4, MOV, MKV or WebM video (0.25× to 4×), in your browser.",
+      "action": "Change speed",
+      "about": "Speed up a long tutorial, a screen recording or a time-lapse, or slow down a play or a funny moment. Pick a speed between 0.25× and 4× and decide whether to keep the sound (sped up or slowed down, higher or lower in pitch, like a tape) or remove it. The result downloads in the same format as the original, and you can process several videos at once. Everything happens on your device: the video isn't uploaded to any server.",
+      "faq": {
+        "q1": "What happens to the sound?",
+        "a1": "If you keep it, it speeds up or slows down with the picture, so its pitch changes: at 2× voices sound higher and at 0.5× lower. If you'd rather have a silent video (to add music later, for example), choose “Remove sound”.",
+        "q2": "Is the slow motion smooth?",
+        "a2": "Each frame is shown for longer, so at 0.25× a 30 frames-per-second video plays at about 7.5. For smooth slow motion, record at 60 frames per second or more. When speeding up, extra frames are dropped so the result stays at 60 per second at most.",
+        "q3": "Is quality lost?",
+        "a3": "The video is re-encoded at high quality, in the same format as the original (MP4, MOV, MKV or WebM). The resolution doesn't change.",
+        "q4": "Is there a limit?",
+        "a4": "Up to 200 MB per video on the free plan (500 MB with Pro), 2 hours long and 30 minutes of processing per file. Your browser has to be able to decode the video (H.264 isn't decoded in some browsers without proprietary codecs)."
+      }
     }
   },
   "ToolUi": {
@@ -2393,5 +2409,15 @@
     "note": "Up to {max} frames. No sound (GIF doesn't support it). Processed on your device.",
     "tooManyFrames": "Too many frames: the maximum is {max}. Shorten the clip or lower the frames per second.",
     "made": "{frames} frames of {width} × {height} px."
+  },
+  "VideoSpeedTool": {
+    "speed": "Speed",
+    "sound": "Sound",
+    "sounds": {
+      "keep": "Keep (pitch changes)",
+      "remove": "Remove sound"
+    },
+    "note": "Below 1× is slow motion; above 1×, sped up. The video is re-encoded at high quality, in the same format. Processed on your device.",
+    "done": "Speed {speed}: lasts {length}."
   }
 }

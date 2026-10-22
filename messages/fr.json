@@ -1357,6 +1357,22 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro). Le navigateur doit pouvoir décoder la vidéo (certains navigateurs sans codecs propriétaires ne décodent pas le H.264). L'image n'est jamais agrandie."
       }
+    },
+    "video-speed": {
+      "title": "Changer la vitesse d'une vidéo",
+      "description": "Accélérez ou ralentissez une vidéo MP4, MOV, MKV ou WebM (de 0,25× à 4×), dans votre navigateur.",
+      "action": "Changer la vitesse",
+      "about": "Accélérez un long tutoriel, un enregistrement d'écran ou un time-lapse, ou passez au ralenti une action ou un moment drôle. Choisissez une vitesse entre 0,25× et 4× et décidez de garder le son (accéléré ou ralenti, plus aigu ou plus grave, comme une cassette) ou de le supprimer. Le résultat se télécharge dans le même format que l'original, et vous pouvez traiter plusieurs vidéos à la fois. Tout se passe sur votre appareil : la vidéo n'est envoyée à aucun serveur.",
+      "faq": {
+        "q1": "Que devient le son ?",
+        "a1": "Si vous le gardez, il accélère ou ralentit avec l'image, donc sa hauteur change : à 2× les voix sont plus aiguës et à 0,5× plus graves. Si vous préférez une vidéo muette (pour ajouter une musique ensuite, par exemple), choisissez « Supprimer le son ».",
+        "q2": "Le ralenti est-il fluide ?",
+        "a2": "Chaque image reste affichée plus longtemps : à 0,25×, une vidéo à 30 images par seconde passe à environ 7,5. Pour un ralenti fluide, filmez à 60 images par seconde ou plus. En accélérant, les images en trop sont supprimées pour ne pas dépasser 60 par seconde.",
+        "q3": "Perd-on en qualité ?",
+        "a3": "La vidéo est réencodée en haute qualité, dans le même format que l'original (MP4, MOV, MKV ou WebM). La résolution ne change pas.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. Votre navigateur doit pouvoir décoder la vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
+      }
     }
   },
   "ToolUi": {
@@ -2393,5 +2409,15 @@
     "note": "Jusqu'à {max} images. Sans son (le GIF ne le gère pas). Traitement sur votre appareil.",
     "tooManyFrames": "Trop d'images : le maximum est {max}. Raccourcissez l'extrait ou baissez le nombre d'images par seconde.",
     "made": "{frames} images de {width} × {height} px."
+  },
+  "VideoSpeedTool": {
+    "speed": "Vitesse",
+    "sound": "Son",
+    "sounds": {
+      "keep": "Garder (la hauteur change)",
+      "remove": "Supprimer le son"
+    },
+    "note": "Moins de 1× : ralenti ; plus de 1× : accéléré. La vidéo est réencodée en haute qualité, dans le même format. Traitement sur votre appareil.",
+    "done": "Vitesse {speed} : dure {length}."
   }
 }

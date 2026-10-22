@@ -64,6 +64,7 @@ import {
   type LucideIcon,
   SlidersHorizontal,
   Volume2,
+  FastForward,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
 
@@ -140,6 +141,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "compress-video": FileVideo,
   "trim-video": Scissors,
   "video-to-gif": ImagePlay,
+  "video-speed": FastForward,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

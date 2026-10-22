@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { VideoCodec } from "mediabunny";
 import { tools } from "@/config/tools";
-import { gifFrameTimes, gifSize, MAX_GIF_FRAMES, scaledSize, videoExtension, videoPlan, videoTargets } from "./options";
+import { gifFrameTimes, gifSize, MAX_GIF_FRAMES, MAX_SPEED_FPS, scaledSize, SPEED_AUDIO_RATE, speedFrameRate, videoExtension, videoPlan, videoSpeeds, videoTargets } from "./options";
 
 const all = () => true;
 const noH264 = (codec: VideoCodec) => codec !== "avc";
@@ -61,3 +61,23 @@ describe("GIF frames", () => {
   });
 });
 
+
+describe("video speed", () => {
+  it("re-encodes the audio too when asked (a copied track can't change speed)", () => {
+    const all = () => true;
+    expect(videoPlan("webm", { video: "vp9", audio: "opus" }, all, true, true)).toEqual({ video: "vp9", copyVideo: false, audio: "opus", copyAudio: false });
+    expect(videoPlan("mkv", { video: "vp8", audio: "vorbis" }, all, true, true)).toMatchObject({ audio: "opus", copyAudio: false });
+    expect(videoPlan("mp4", { video: "avc", audio: null }, all, true, true)).toEqual({ video: "avc", copyVideo: false, copyAudio: false });
+  });
+
+  it("every speed resamples the audio to a whole rate", () => {
+    for (const speed of videoSpeeds) expect(Number.isInteger(SPEED_AUDIO_RATE / speed), `${speed}×`).toBe(true);
+  });
+
+  it("thins fast videos so the result stays at most 60 fps", () => {
+    expect(speedFrameRate(30, 2)).toBeUndefined();
+    expect(speedFrameRate(60, 2)).toBe(MAX_SPEED_FPS / 2);
+    expect(speedFrameRate(30, 4)).toBe(15);
+    expect(speedFrameRate(25, 0.5)).toBeUndefined();
+  });
+});

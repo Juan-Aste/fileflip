@@ -357,3 +357,75 @@ test.describe("tool: video-to-gif", () => {
     await expect(page.locator("main")).toContainText("can't be converted this way");
   });
 });
+
+test.describe("tool: video-speed", () => {
+  test.skip(!hasFfmpeg, "needs ffmpeg/ffprobe to check the output");
+
+  const isRed = (c: number[]) => c[0]! > 180 && c[2]! < 80;
+  const isBlue = (c: number[]) => c[2]! > 180 && c[0]! < 80;
+
+  test("2×: WebM and MKV → 1 s each, red then blue, tones an octave higher", async ({ page }) => {
+    await openWithFiles(page, "/en/change-video-speed", ["video.webm", "video.mkv"]);
+    await expect(page.getByText("2×", { exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Change speed", exact: true }).click();
+    await expect(page.locator("main").getByText("Speed 2×: lasts 0:01.0.")).toHaveCount(2, { timeout: 60_000 });
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Download all/ }).click()]);
+    const entries = unzipEntries(readFileSync((await download.path())!));
+    expect(entries.map((e) => e.name).sort()).toEqual(["video-2x.mkv", "video-2x.webm"]);
+    for (const entry of entries) {
+      const p = probe(entry.data, entry.name, [0.25, 0.75]);
+      expect(p.display, entry.name).toBe("320x240");
+      expect(Math.abs(p.duration - 1), `${entry.name} lasts ${p.duration} s`).toBeLessThan(0.1);
+      expect(isRed(p.colors[0]!), `${entry.name} red at 0.25 s: ${p.colors[0]}`).toBe(true);
+      expect(isBlue(p.colors[1]!), `${entry.name} blue at 0.75 s: ${p.colors[1]}`).toBe(true);
+      expect(p.audio, entry.name).toBe("opus");
+      expect(Math.abs(p.tones[0]! - 880), `${entry.name} left ${p.tones[0]} Hz`).toBeLessThan(25);
+      expect(Math.abs(p.tones[1]! - 1320), `${entry.name} right ${p.tones[1]} Hz`).toBeLessThan(25);
+    }
+  });
+
+  test("0.5× → 4 s with tones an octave lower; “remove sound” leaves only the picture", async ({ page }) => {
+    await openWithFiles(page, "/es/cambiar-velocidad-video", ["video.webm"]);
+    await page.getByText("0,5×", { exact: true }).click();
+    let out = fileOf(await runTool(page, "Cambiar velocidad"));
+    expect(out.name).toBe("video-0.5x.webm");
+    await expect(page.locator("main")).toContainText("Velocidad 0,5×: dura 0:04.0.");
+    let p = probe(out.buf, out.name, [1, 3]);
+    expect(Math.abs(p.duration - 4), `lasts ${p.duration} s`).toBeLessThan(0.15);
+    expect(isRed(p.colors[0]!) && isBlue(p.colors[1]!), `colors ${p.colors}`).toBe(true);
+    expect(Math.abs(p.tones[0]! - 220), `left ${p.tones[0]} Hz`).toBeLessThan(10);
+    expect(Math.abs(p.tones[1]! - 330), `right ${p.tones[1]} Hz`).toBeLessThan(10);
+
+    await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(join(__dirname, "../fixtures/video.webm"));
+    await page.getByText("4×", { exact: true }).click();
+    await page.getByText("Quitar sonido", { exact: true }).click();
+    out = fileOf(await runTool(page, "Cambiar velocidad"));
+    p = probe(out.buf, out.name, [0.1, 0.4]);
+    expect(p.audio).toBeUndefined();
+    expect(Math.abs(p.duration - 0.5), `lasts ${p.duration} s`).toBeLessThan(0.1);
+    expect(isRed(p.colors[0]!) && isBlue(p.colors[1]!), `colors ${p.colors}`).toBe(true);
+  });
+
+  test("a 60 fps video at 2× is thinned to 60 fps instead of 120", async ({ page }) => {
+    await openWithFiles(page, "/en/change-video-speed", ["video-60fps.webm"]);
+    const out = fileOf(await runTool(page, "Change speed"));
+    const p = probe(out.buf, out.name, [0.25, 0.75]);
+    expect(Math.abs(p.duration - 1), `lasts ${p.duration} s`).toBeLessThan(0.1);
+    expect(isRed(p.colors[0]!) && isBlue(p.colors[1]!), `colors ${p.colors}`).toBe(true);
+    const file = join(mkdtempSync(join(tmpdir(), "video-")), out.name);
+    writeFileSync(file, out.buf);
+    const frames = Number(execFileSync("ffprobe", ["-v", "error", "-count_frames", "-select_streams", "v:0", "-show_entries", "stream=nb_read_frames", "-of", "csv=p=0", file], { encoding: "utf8" }).trim());
+    expect(frames, `${frames} frames in 1 s`).toBeGreaterThan(50);
+    expect(frames, `${frames} frames in 1 s`).toBeLessThanOrEqual(62);
+  });
+
+  test("a cut MP4 and a fake file fail with clear messages while the good one is processed", async ({ page }) => {
+    await openWithFiles(page, "/en/change-video-speed", ["video.webm", "corrupt/video-truncated.mp4", "corrupt/not-video.mp4"]);
+    await page.getByRole("button", { name: "Change speed", exact: true }).click();
+    const main = page.locator("main");
+    await expect(main.getByText("Speed 2×: lasts 0:01.0.")).toBeVisible({ timeout: 60_000 });
+    await expect(main).toContainText("can't be converted this way");
+    await expect(main).toContainText("damaged");
+  });
+});

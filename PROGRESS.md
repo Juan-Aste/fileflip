@@ -2465,3 +2465,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - En esta ejecución no hubo Gotenberg ni EPUBCheck (4 pruebas de navegador saltadas); ffmpeg/ffprobe y sharp validaron todas las salidas. `npm run test:e2e` 294/294 al cierre. El proceso de la sesión se reinició una vez a mitad de 3C.37b (sin pérdida de trabajo).
 
 **Siguiente**: 3C.38d ("Cambiar velocidad del video").
+
+## 2026-10-22 08:30 UTC — Fase 3, tarea 3C.38d (cambiar velocidad del video)
+
+**Qué se hizo**
+- **Cambiar velocidad del video** (`/es/cambiar-velocidad-video`, `/en/change-video-speed`, `/pt/alterar-velocidade-video`, `/fr/changer-vitesse-video`), categoría Video, en lotes: MP4, MOV, MKV y WebM → el mismo contenedor, a **0,25×, 0,5×, 0,75×, 1,25×, 1,5×, 2× (por defecto), 3× o 4×**, con el sonido **conservado (cambia el tono, como una cinta)** o **quitado**. Nombre del resultado: `<nombre>-2x.<ext>`; el mensaje dice la duración nueva.
+- Motor: `VideoEdit` suma `speed` y `removeAudio`. El video se recodifica en calidad alta y el `process` de mediabunny divide timestamp y duración de cada cuadro por la velocidad. Al acelerar, si la fuente pasaría de **60 fps** (`MAX_SPEED_FPS`; fps medido con `computePacketStats`), se usa `frameRate = 60 / velocidad` sobre la entrada para descartar cuadros (`speedFrameRate`, con tests). El audio se **remuestrea a 48 000 / velocidad Hz** con el remuestreador de mediabunny y luego se reetiqueta a 48 kHz con timestamp / velocidad (`relabel`), así suena `velocidad` veces más rápido y el filtro antialiasing lo pone el remuestreador; todas las velocidades dan frecuencias enteras (test). `videoPlan` acepta `reencodeAudio` (una pista copiada no puede cambiar de velocidad: Vorbis de MKV pasa a Opus). `planarData` se exporta desde el motor de audio y se reutiliza.
+- Fixture nuevo `video-60fps.webm` (160×120, 60 fps, 3,5 KB) en `scripts/fixtures/video.sh`. Textos (introducción + 4 preguntas, interfaz) en los 5 idiomas; ícono `FastForward`.
+
+**Verificación**
+- +3 tests unitarios (`videoPlan` con audio recodificado, frecuencias enteras, límite de 60 fps).
+- `video-tools.spec.ts` (+4, ffprobe/ffmpeg): WebM + MKV a 2× → ZIP con `video-2x.webm` y `video-2x.mkv`, **1 s (±0,1)**, rojo a 0,25 s y azul a 0,75 s, Opus, **tonos 880/1320 Hz** (una octava arriba); WebM a 0,5× → **4 s**, **tonos 220/330 Hz**; a 4× con "Quitar sonido" → 0,5 s **sin pista de audio**; 60 fps a 2× → **≤ 62 cuadros en 1 s** (no 120); MP4 cortado y texto disfrazado → mensajes claros y el bueno se procesa.
+- Lint, typecheck, tests (926 + 8 saltados), build, `check:static` (962 páginas) y `npm run test:e2e` completo: 298 pasan, 4 saltados (sin Gotenberg ni EPUBCheck).
+
+**Limitaciones**
+- El tono cambia con la velocidad (no hay estiramiento de tiempo que conserve el tono: requeriría un algoritmo tipo WSOLA; mejora posible). La cámara lenta repite cada cuadro (sin interpolación). Velocidades fijas (no un valor libre). El navegador tiene que decodificar el video (H.264 no se decodifica en Chromium sin códecs propietarios).
+
+**Siguiente**: 3C.38e ("Unir videos").

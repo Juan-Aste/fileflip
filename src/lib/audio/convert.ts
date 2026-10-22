@@ -153,7 +153,7 @@ async function measureLevels(track: InputAudioTrack, signal: AbortSignal | undef
 }
 
 /** The samples of `sample` as 32-bit float, one channel after another (planar). */
-function planarData(sample: AudioSample): Float32Array<ArrayBuffer> {
+export function planarData(sample: AudioSample): Float32Array<ArrayBuffer> {
   const frames = sample.numberOfFrames;
   const data = new Float32Array(frames * sample.numberOfChannels);
   for (let c = 0; c < sample.numberOfChannels; c++) sample.copyTo(data.subarray(c * frames, (c + 1) * frames), { planeIndex: c, format: "f32-planar" });

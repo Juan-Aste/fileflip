@@ -51,6 +51,7 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `video.{mp4,mov,webm,mkv}` | `scripts/fixtures/video.sh` con el ffmpeg del sistema (codificador independiente de mediabunny): 2 s, 320×240, 24 fps, rojo el primer segundo y azul el segundo, con tono estéreo de 440 Hz (izquierda) y 660 Hz (derecha) a 48 kHz; MP4 y MOV con H.264 + AAC, WebM con VP9 + Opus, MKV con VP8 + Vorbis; sin metadatos |
 | `video-640.webm` | `video.sh`: 640×480 VP9 (CRF 20) + Opus, rojo y luego azul con grano leve (difícil de comprimir), mismos tonos; para "Comprimir video" |
 | `video-rotated.mp4` | `video.sh`: `video.webm` (VP9 + Opus) copiado a MP4 con rotación de 90° en los metadatos (como un celular en vertical) |
+| `video-60fps.webm` | `video.sh`: 2 s, 160×120 a 60 fps en VP9 sin audio, rojo y luego azul (para "Cambiar velocidad del video": al acelerar se limita a 60 fps) |
 | `video-no-audio.webm` | `video.sh`: 1 s rojo en VP9 sin pista de audio (para "Extraer audio") |
 | `corrupt/video-truncated.mp4`, `corrupt/not-video.mp4` | `video.sh`: el MP4 cortado a la mitad (el índice `moov` está al principio, faltan cuadros) / texto con extensión .mp4 |
 | `archive.7z`, `corrupt/encrypted.7z`, `corrupt/encrypted-header.7z`, `corrupt/truncated.7z` | `scripts/fixtures/archives_7z_rar.py` con **py7zr** 0.22 (LGPL-2.1, solo para generarlos): el mismo árbol que `archive.zip` en LZMA2 / datos cifrados con contraseña / cabecera cifrada / cortado a la mitad |

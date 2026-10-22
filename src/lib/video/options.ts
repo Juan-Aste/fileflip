@@ -48,12 +48,14 @@ export function videoPlan(
   encodable: (codec: VideoCodec) => boolean,
   /** The picture changes (compression, size...): the video is always encoded. */
   reencode = false,
+  /** The sound changes too (speed): the audio is always encoded. */
+  reencodeAudio = false,
 ): VideoPlan | null {
   const c = targetCodecs[target];
   const copyVideo = !reencode && source.video !== null && c.copyVideo.includes(source.video);
   const video = copyVideo ? source.video : c.encodeVideo.find(encodable);
   if (!video) return null;
-  const copyAudio = source.audio !== null && c.copyAudio.includes(source.audio);
+  const copyAudio = !reencodeAudio && source.audio !== null && c.copyAudio.includes(source.audio);
   return { video, copyVideo, copyAudio, ...(source.audio === null ? {} : { audio: copyAudio ? source.audio : c.encodeAudio }) };
 }
 
@@ -98,3 +100,21 @@ export function gifSize(width: number, height: number, maxWidth: number) {
   return { width: Math.max(1, Math.round(width * scale)), height: Math.max(1, Math.round(height * scale)) };
 }
 
+
+/** "Change video speed": factors offered (each one keeps 48 kHz / speed a whole sample rate). */
+export const videoSpeeds = [0.25, 0.5, 0.75, 1.25, 1.5, 2, 3, 4] as const;
+export type VideoSpeed = (typeof videoSpeeds)[number];
+
+/** Sample rate of the sped-up audio; the source is resampled to `SPEED_AUDIO_RATE / speed` first and then relabelled. */
+export const SPEED_AUDIO_RATE = 48_000;
+
+/** Frame rates above this are thinned when speeding up (a 60 fps video at 4× would be 240 fps). */
+export const MAX_SPEED_FPS = 60;
+
+/**
+ * Input frame rate to resample to before scaling the timestamps by `speed`, so
+ * the result has at most MAX_SPEED_FPS; undefined when the source is slow enough.
+ */
+export function speedFrameRate(sourceFps: number, speed: number): number | undefined {
+  return sourceFps * speed > MAX_SPEED_FPS ? MAX_SPEED_FPS / speed : undefined;
+}
