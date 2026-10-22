@@ -1255,6 +1255,22 @@
         "q4": "¿Hay un límite?",
         "a4": "Hasta 200 MB por archivo con el plan gratuito (500 MB con Pro), 3 horas por archivo y varios archivos por lote. El archivo se lee dos veces (medir y aplicar), por eso tarda un poco más que una conversión."
       }
+    },
+    "join-audio": {
+      "title": "Unir audio",
+      "description": "Une varios audios (MP3, WAV, FLAC, OGG, M4A, AIFF) en un solo archivo, en el orden que elijas, en tu navegador.",
+      "action": "Unir audio",
+      "about": "Junta canciones, partes de una grabación, audios de WhatsApp o pistas de un podcast en un único archivo: ordénalos con las flechas, agrega si quieres un silencio entre pistas y descarga el resultado en MP3, WAV, FLAC, OGG, M4A o AIFF. Puedes mezclar formatos distintos: cada archivo se decodifica y se iguala en frecuencia y canales antes de unirlo. Todo pasa en tu dispositivo: los archivos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Puedo unir archivos de formatos distintos?",
+        "a1": "Sí: por ejemplo un MP3, un WAV y un audio M4A. Cada uno se decodifica y se lleva a la misma frecuencia y cantidad de canales (la mayor entre ellos, como máximo estéreo) antes de unirlos en el formato que elijas.",
+        "q2": "¿Cómo cambio el orden?",
+        "a2": "Los archivos se unen en el orden de la lista. Usa las flechas de cada fila para subirlo o bajarlo; el número de la izquierda indica su posición.",
+        "q3": "¿Queda un corte entre pistas?",
+        "a3": "No se agregan pausas salvo que elijas un silencio entre pistas (0,5, 1 o 2 segundos). Las pistas se encadenan muestra a muestra; si una canción termina de golpe, el cambio se va a notar igual que en el original.",
+        "q4": "¿Hay un límite?",
+        "a4": "Hasta 200 MB por archivo con el plan gratuito (500 MB con Pro) y 3 horas en total, porque el resultado se arma en la memoria de tu navegador. Si un archivo está dañado, se indica cuál."
+      }
     }
   },
   "ToolUi": {
@@ -2226,6 +2242,17 @@
       "peak": "Sube o baja todo por igual hasta que el punto más fuerte quede en −1 dB. No cambia la diferencia entre partes suaves y fuertes."
     },
     "targetSame": "Mismo formato",
-    "gainApplied": "Ganancia aplicada: {gain} dB."
+    "gainApplied": "Ganancia aplicada: {gain} dB.",
+    "joinNeedsTwo": "Elige al menos 2 archivos; se unen en el orden de la lista (usa las flechas para cambiarlo).",
+    "gap": "Silencio entre pistas",
+    "gaps": {
+      "0": "Sin silencio",
+      "1": "1 s",
+      "2": "2 s",
+      "0_5": "0,5 s"
+    },
+    "joinNote": "Si los archivos tienen distinta frecuencia o canales, se igualan a la mayor (como máximo estéreo).",
+    "joinedSuffix": "unido",
+    "joined": "{count} archivos unidos: {length} en total."
   }
 }

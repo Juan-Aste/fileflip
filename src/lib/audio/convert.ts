@@ -16,11 +16,13 @@ import {
   WavOutputFormat,
   AudioSample,
   AudioSampleSink,
+  AudioSampleSource,
+  NullTarget,
   type InputAudioTrack,
   canEncodeAudio,
   type AudioCodec,
 } from "mediabunny";
-import { ConversionError } from "@/lib/convert-error";
+import { ConversionError, InputFileError } from "@/lib/convert-error";
 import { aiffToWav, isAiff, wavToAiff } from "./aiff";
 import { audioPlan, MAX_AUDIO_SECONDS, type AudioOptions } from "./options";
 import { createLevelMeter, normalizeGain, toDb, type NormalizeMode } from "./normalize";
@@ -137,18 +139,28 @@ async function measureLevels(track: InputAudioTrack, signal: AbortSignal | undef
   return meter.levels();
 }
 
+/** The samples of `sample` as 32-bit float, one channel after another (planar). */
+function planarData(sample: AudioSample): Float32Array<ArrayBuffer> {
+  const frames = sample.numberOfFrames;
+  const data = new Float32Array(frames * sample.numberOfChannels);
+  for (let c = 0; c < sample.numberOfChannels; c++) sample.copyTo(data.subarray(c * frames, (c + 1) * frames), { planeIndex: c, format: "f32-planar" });
+  return data;
+}
+
+const planarSample = (sample: AudioSample, data: Float32Array<ArrayBuffer>, timestamp: number) =>
+  new AudioSample({ data, format: "f32-planar", numberOfChannels: sample.numberOfChannels, sampleRate: sample.sampleRate, timestamp });
+
 /** A copy of `sample` in 32-bit float with each frame scaled by `gainAt(seconds from the start of the result)`. */
 function applyGain(sample: AudioSample, gainAt: (t: number) => number): AudioSample {
   const frames = sample.numberOfFrames;
   const channels = sample.numberOfChannels;
-  const data = new Float32Array(frames * channels);
-  for (let c = 0; c < channels; c++) sample.copyTo(data.subarray(c * frames, (c + 1) * frames), { planeIndex: c, format: "f32-planar" });
+  const data = planarData(sample);
   for (let i = 0; i < frames; i++) {
     const gain = gainAt(sample.timestamp + i / sample.sampleRate);
     if (gain === 1) continue;
     for (let c = 0; c < channels; c++) data[c * frames + i]! *= gain;
   }
-  return new AudioSample({ data, format: "f32-planar", numberOfChannels: channels, sampleRate: sample.sampleRate, timestamp: sample.timestamp });
+  return planarSample(sample, data, sample.timestamp);
 }
 
 export async function convertAudio(
@@ -217,5 +229,106 @@ export async function convertAudio(
     return { data: options.target === "aiff" ? wavToAiff(data) : data, duration, ...(edit.normalize ? { gainDb: toDb(gain) } : {}) };
   } finally {
     input.dispose();
+  }
+}
+
+/**
+ * Joins several audio files, in order, into one: every input is decoded and
+ * resampled/remixed to common parameters (the highest sample rate and channel
+ * count among them, at most stereo; MP3 and Opus keep their fixed rates) by its
+ * own Conversion, whose samples are forwarded to one shared encoder.
+ * `gapSeconds` of silence goes between inputs.
+ */
+export async function joinAudio(
+  files: readonly Blob[],
+  options: AudioOptions,
+  { signal, onProgress, gapSeconds = 0 }: { signal?: AbortSignal; onProgress?: (progress: number) => void; gapSeconds?: number } = {},
+): Promise<AudioResult> {
+  const plan = audioPlan(options);
+  await ensureEncoder(plan.codec);
+  const opened: Awaited<ReturnType<typeof openAudio>>[] = [];
+  try {
+    for (let i = 0; i < files.length; i++) {
+      try {
+        opened.push(await openAudio(files[i]!));
+      } catch (error) {
+        // Say which file failed: the batch has a single output.
+        throw new InputFileError(error instanceof ConversionError ? error.code : "fileDamaged", i);
+      }
+    }
+    const total = opened.reduce((sum, o) => sum + o.duration, 0) + gapSeconds * (opened.length - 1);
+    if (total > MAX_AUDIO_SECONDS) throw new ConversionError("audioTooLong");
+    const channels = Math.min(2, Math.max(...opened.map((o) => o.track.numberOfChannels)));
+    const sampleRate = plan.sampleRate ?? Math.max(...opened.map((o) => o.track.sampleRate));
+
+    const output = new Output({ format: outputFormat[options.target](), target: new BufferTarget() });
+    const source = new AudioSampleSource({
+      codec: plan.codec,
+      ...(plan.bitrate ? { bitrate: plan.bitrate } : {}),
+      ...(plan.sampleFormat ? { transform: { sampleFormat: plan.sampleFormat } } : {}),
+    });
+    output.addAudioTrack(source);
+    await output.start();
+
+    let written = 0; // frames sent to the encoder
+    let done = 0; // seconds of input finished
+    const add = async (sample: AudioSample) => {
+      const copy = planarSample(sample, planarData(sample), written / sampleRate);
+      written += copy.numberOfFrames;
+      try {
+        await source.add(copy);
+      } finally {
+        copy.close();
+      }
+    };
+    for (let i = 0; i < opened.length; i++) {
+      if (signal?.aborted) throw new ConversionError("jobCancelled");
+      if (i > 0 && gapSeconds > 0) {
+        const frames = Math.round(gapSeconds * sampleRate);
+        const silence = new AudioSample({ data: new Float32Array(frames * channels), format: "f32-planar", numberOfChannels: channels, sampleRate, timestamp: 0 });
+        await add(silence);
+        silence.close();
+      }
+      const { input, duration } = opened[i]!;
+      // This Conversion decodes and resamples; its own WAV output goes to a NullTarget (mediabunny
+      // won't finalize an empty one, so the samples pass through to it too: PCM, cheap, nothing kept).
+      const conversion = await Conversion.init({
+        input,
+        output: new Output({ format: new WavOutputFormat(), target: new NullTarget() }),
+        video: { discard: true },
+        audio: {
+          codec: "pcm-s16",
+          numberOfChannels: channels,
+          sampleRate,
+          forceTranscode: true,
+          process: async (sample: AudioSample) => {
+            await add(sample);
+            return sample;
+          },
+        },
+        showWarnings: false,
+      });
+      if (!conversion.isValid) throw new InputFileError("audioCodecUnsupported", i);
+      conversion.onProgress = (p) => onProgress?.(Math.min(1, (done + p * duration) / Math.max(total, 0.001)));
+      const abort = () => void conversion.cancel();
+      signal?.addEventListener("abort", abort, { once: true });
+      try {
+        await conversion.execute();
+      } catch (error) {
+        if (signal?.aborted) throw new ConversionError("jobCancelled");
+        throw error instanceof ConversionError ? error : new InputFileError("fileDamaged", i);
+      } finally {
+        signal?.removeEventListener("abort", abort);
+      }
+      done += duration + gapSeconds;
+    }
+    source.close();
+    await output.finalize();
+    const buffer = (output.target as BufferTarget).buffer;
+    if (!buffer || buffer.byteLength === 0) throw new ConversionError("conversionFailed");
+    const data = new Uint8Array(buffer);
+    return { data: options.target === "aiff" ? wavToAiff(data) : data, duration: written / sampleRate };
+  } finally {
+    for (const o of opened) o.input.dispose();
   }
 }

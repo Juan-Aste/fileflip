@@ -274,11 +274,11 @@ Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo apr
 - [x] 3C.35 Detección de capacidades del navegador (qué códecs puede leer/escribir) y conversión de audio entre los formatos disponibles (WAV, MP3, AAC/M4A, OGG/Opus, FLAC, AIFF); límites de tamaño/duración (dividida):
   - [x] 3C.35a "Convertir audio" con mediabunny (MPL-2.0) + codificadores WASM de sus extensiones (MP3 con LAME, FLAC con libFLAC, AAC con el codificador de FFmpeg; Opus con WebCodecs): entradas WAV, MP3, FLAC, OGG (Vorbis/Opus), M4A/AAC y WebM; salidas WAV, MP3, FLAC, OGG Opus y M4A AAC; detección de lo que el navegador puede leer (AAC no se decodifica en Chromium sin códecs propietarios) con mensaje claro; límites de tamaño y duración; cancelación; fixtures generados con ffmpeg del sistema y salida validada con ffprobe
   - [x] 3C.35b AIFF de entrada y salida (lector/escritor PCM propio, big-endian, frecuencia en float de 80 bits) integrado en "Convertir audio"
-- [ ] 3C.36 Audio: recortar, unir, cambiar bitrate/frecuencia/canales y normalizar volumen (dividida; mismo motor de 3C.35, `Conversion` de mediabunny con `trim`, `numberOfChannels`, `sampleRate` y `process`):
+- [x] 3C.36 Audio: recortar, unir, cambiar bitrate/frecuencia/canales y normalizar volumen (dividida; mismo motor de 3C.35, `Conversion` de mediabunny con `trim`, `numberOfChannels`, `sampleRate` y `process`):
   - [x] 3C.36a "Recortar audio": un archivo, inicio y fin (mm:ss.d) con validación contra la duración, fundido de entrada/salida opcional, salida en cualquier formato de 3C.35 (por defecto el de entrada si se puede escribir); test con ffprobe de la duración y del tono
   - [x] 3C.36b "Ajustar audio": canales (mono/estéreo), frecuencia (22,05/44,1/48 kHz) y bitrate, en lotes; test con ffprobe de canales, frecuencia y bitrate
   - [x] 3C.36c "Normalizar volumen": dos pasadas (medir pico y volumen RMS, aplicar ganancia sin recortar), objetivo de pico −1 dBFS o volumen medio; test midiendo el pico de la salida con ffmpeg (`volumedetect`)
-  - [ ] 3C.36d "Unir audio": varios archivos en orden (reordenables con botones), misma frecuencia/canales en la salida (remuestreo), silencio opcional entre pistas; test de duración total y de los tonos en cada tramo
+  - [x] 3C.36d "Unir audio": varios archivos en orden (reordenables con botones), misma frecuencia/canales en la salida (remuestreo), silencio opcional entre pistas; test de duración total y de los tonos en cada tramo
 - [ ] 3C.37 Video: convertir entre MP4, WebM, MOV y MKV según el navegador, y extraer audio
 - [ ] 3C.38 Video: comprimir, recortar, cambiar resolución y velocidad, video → GIF (gifenc) y unir
 

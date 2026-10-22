@@ -70,6 +70,13 @@ function volume(buf: Buffer, name: string) {
   return { mean: read("mean_volume"), max: read("max_volume") };
 }
 
+/** Tone in Hz of one channel between two times (zero crossings). */
+function toneAt(samples: Int16Array, channel: 0 | 1, from: number, to: number) {
+  let crossings = 0;
+  for (let i = Math.floor(from * 44100) + 1; i < Math.floor(to * 44100); i++) if (samples[i * 2 + channel]! >= 0 !== samples[(i - 1) * 2 + channel]! >= 0) crossings++;
+  return Math.round(crossings / 2 / (to - from));
+}
+
 /** Root mean square of the left channel between two times, in seconds. */
 function rms(samples: Int16Array, from: number, to: number) {
   let sum = 0;
@@ -338,5 +345,57 @@ test.describe("tool: normalize-audio", () => {
     expect(Math.abs(v.mean + 16), `mean ${v.mean} dB`).toBeLessThan(1);
     expect(v.max).toBeLessThanOrEqual(-0.5);
     expectTones(probe(out.buf, out.name));
+  });
+});
+
+test.describe("tool: join-audio", () => {
+  test.skip(!hasFfmpeg, "needs ffmpeg/ffprobe to check the output");
+
+  test("AIFF, WAV and MP3, reordered, with 1 s of silence between them → one WAV", async ({ page }) => {
+    await openWithFiles(page, "/en/join-audio", ["audio.aiff", "audio-24.aif", "audio.mp3"]);
+    // Move the MP3 up one place: AIFF, MP3, 24-bit AIFF.
+    await page.getByRole("button", { name: "Move audio.mp3 up" }).click();
+    await expect(page.locator("main ul li").nth(1)).toContainText("audio.mp3");
+    await page.getByText("1 s", { exact: true }).click();
+    await page.getByText("WAV (lossless)", { exact: true }).click();
+    const out = fileOf(await runTool(page, "Join audio"));
+    expect(out.name).toBe("audio-joined.wav");
+    // MP3 decoders add a few hundredths of padding: 0:07.0 or 0:07.1.
+    await expect(page.locator("main")).toContainText(/3 files joined: 0:07\.[01] in total/);
+    const p = probe(out.buf, out.name);
+    expect(p).toMatchObject({ format: "wav", codec: "pcm_s16le", sampleRate: 22050, channels: 2 });
+    // 2 s + 1 s gap + 2 s (MP3) + 1 s gap + 1 s (the 24-bit AIFF).
+    expect(Math.abs(p.duration - 7), `lasts ${p.duration} s`).toBeLessThan(0.15);
+    const level = rms(p.samples, 0.5, 1.5);
+    expect(level).toBeGreaterThan(1000);
+    for (const [from, to] of [[2.2, 2.8], [5.2, 5.8]] as const) expect(rms(p.samples, from, to), `silence at ${from} s`).toBeLessThan(level / 50);
+    for (const [from, to] of [[0.5, 1.5], [3.5, 4.5], [6.2, 6.8]] as const) {
+      expect(rms(p.samples, from, to) / level, `level at ${from} s`).toBeGreaterThan(0.8);
+      expect(Math.abs(toneAt(p.samples, 0, from, to) - 440), `left at ${from} s`).toBeLessThan(15);
+      expect(Math.abs(toneAt(p.samples, 1, from, to) - 660), `right at ${from} s`).toBeLessThan(15);
+    }
+  });
+
+  test("Opus at 48 kHz and WAV at 22 kHz → MP3; a fake file is named in the error", async ({ page }) => {
+    await openWithFiles(page, "/en/join-audio", ["audio.opus", "audio.wav"]);
+    const mp3 = fileOf(await runTool(page, "Join audio"));
+    expect(mp3.name).toBe("audio-joined.mp3");
+    const p = probe(mp3.buf, mp3.name);
+    expect(p).toMatchObject({ format: "mp3", codec: "mp3", sampleRate: 44100, channels: 2 });
+    expect(Math.abs(p.duration - 4), `lasts ${p.duration} s`).toBeLessThan(0.15);
+    expectTones(p);
+
+    await page.getByRole("button", { name: "Start over" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(["audio.wav", "corrupt/not-audio.mp3"].map((f) => join(__dirname, "../fixtures", f)));
+    await page.getByRole("button", { name: "Join audio", exact: true }).click();
+    await expect(page.locator("main")).toContainText("not-audio.mp3", { timeout: 30_000 });
+    await expect(page.locator("main")).toContainText("can't be converted this way");
+    await expect(page.locator("main a[download]")).toHaveCount(0);
+  });
+
+  test("a single file can't be joined", async ({ page }) => {
+    await openWithFiles(page, "/en/join-audio", ["audio.wav"]);
+    await expect(page.getByRole("button", { name: "Join audio", exact: true })).toBeDisabled();
+    await expect(page.locator("main")).toContainText("Choose at least 2 files");
   });
 });

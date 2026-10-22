@@ -1255,6 +1255,22 @@
         "q4": "Há um limite?",
         "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro), 3 horas por arquivo e vários arquivos por lote. Cada arquivo é lido duas vezes (medir e aplicar), por isso demora um pouco mais que uma conversão."
       }
+    },
+    "join-audio": {
+      "title": "Juntar áudio",
+      "description": "Junte vários áudios (MP3, WAV, FLAC, OGG, M4A, AIFF) em um só arquivo, na ordem que você escolher, no seu navegador.",
+      "action": "Juntar áudio",
+      "about": "Junte músicas, partes de uma gravação, áudios do WhatsApp ou trechos de um podcast em um único arquivo: ordene com as setas, adicione se quiser um silêncio entre as faixas e baixe o resultado em MP3, WAV, FLAC, OGG, M4A ou AIFF. Você pode misturar formatos diferentes: cada arquivo é decodificado e igualado em taxa e canais antes de juntar. Tudo acontece no seu dispositivo: os arquivos não são enviados a nenhum servidor.",
+      "faq": {
+        "q1": "Posso juntar arquivos de formatos diferentes?",
+        "a1": "Sim: por exemplo um MP3, um WAV e um M4A. Cada um é decodificado e levado à mesma taxa e quantidade de canais (a maior entre eles, no máximo estéreo) antes de juntar no formato escolhido.",
+        "q2": "Como mudo a ordem?",
+        "a2": "Os arquivos são unidos na ordem da lista. Use as setas de cada linha para subir ou descer; o número à esquerda indica a posição.",
+        "q3": "Fica um corte entre as faixas?",
+        "a3": "Nenhuma pausa é adicionada, a menos que você escolha um silêncio entre faixas (0,5, 1 ou 2 segundos). As faixas são encadeadas amostra por amostra; se uma música termina de repente, a mudança vai ser tão perceptível quanto no original.",
+        "q4": "Há um limite?",
+        "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro) e 3 horas no total, porque o resultado é montado na memória do navegador. Se um arquivo estiver danificado, é indicado qual."
+      }
     }
   },
   "ToolUi": {
@@ -2226,6 +2242,17 @@
       "peak": "Sobe ou desce tudo por igual até o ponto mais forte ficar em −1 dB. A diferença entre partes suaves e fortes não muda."
     },
     "targetSame": "Mesmo formato",
-    "gainApplied": "Ganho aplicado: {gain} dB."
+    "gainApplied": "Ganho aplicado: {gain} dB.",
+    "joinNeedsTwo": "Escolha pelo menos 2 arquivos; eles são unidos na ordem da lista (use as setas para mudar).",
+    "gap": "Silêncio entre faixas",
+    "gaps": {
+      "0": "Sem silêncio",
+      "1": "1 s",
+      "2": "2 s",
+      "0_5": "0,5 s"
+    },
+    "joinNote": "Se os arquivos têm taxa ou canais diferentes, são igualados ao maior (no máximo estéreo).",
+    "joinedSuffix": "unido",
+    "joined": "{count} arquivos unidos: {length} no total."
   }
 }

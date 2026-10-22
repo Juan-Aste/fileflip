@@ -130,6 +130,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "trim-audio": Scissors,
   "adjust-audio": SlidersHorizontal,
   "normalize-audio": Volume2,
+  "join-audio": Layers,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

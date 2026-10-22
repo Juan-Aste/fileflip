@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { Check, CheckCircle2, Copy, Download, FileText, RotateCcw, X, XCircle } from "lucide-react";
+import { Check, CheckCircle2, ChevronDown, ChevronUp, Copy, Download, FileText, RotateCcw, X, XCircle } from "lucide-react";
 import AdSlot from "@/components/ads/AdSlot";
 import Dropzone from "@/components/converter/Dropzone";
 import { useSessionInfo } from "@/components/session/SessionInfo";
@@ -40,6 +40,8 @@ export type ShellInput =
       maxFileBytes?: number;
       /** Also lets the user paste the content instead of picking a file. */
       paste?: { label: string; placeholder?: string };
+      /** Shows the files numbered with buttons to reorder them (the order is the one `process` receives). */
+      reorderable?: boolean;
       /** False while the tool is still preparing the picked files (e.g. a preview) or its options are invalid. */
       ready?: boolean;
     }
@@ -73,6 +75,13 @@ interface Picked {
 
 let nextId = 0;
 
+function moveItem<T>(list: readonly T[], from: number, to: number): T[] {
+  const next = [...list];
+  const [item] = next.splice(from, 1);
+  next.splice(to, 0, item!);
+  return next;
+}
+
 /** Pasted text up to this length; bigger content goes through a file. */
 const MAX_PASTE_CHARS = 5_000_000;
 /** The in-page preview of a text output stops here (the download has everything). */
@@ -104,6 +113,7 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
   const planBatch = engine === "server" ? planLimits.serverMaxBatch : planLimits.browserMaxBatch;
   const planFileBytes = engine === "server" ? planLimits.serverMaxFileBytes : planLimits.browserMaxFileBytes;
   const maxFiles = input.kind === "files" ? (input.multiple ? Math.min(input.maxFiles ?? Infinity, planBatch) : 1) : 0;
+  const reorderable = input.kind === "files" && !!input.reorderable && input.multiple;
   const maxFileBytes = input.kind === "files" ? Math.min(input.maxFileBytes ?? Infinity, planFileBytes) : 0;
 
   const filesListener = useRef(onFilesChange);
@@ -303,11 +313,31 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
         <div className={`${card} flex flex-col gap-4 p-4 sm:p-6`}>
           {files.length > 0 && (
             <ul className="flex flex-col gap-2">
-              {files.map((f) => (
+              {files.map((f, i) => (
                 <li key={f.id} className="flex items-center gap-2 rounded-xl border border-border p-2.5 text-sm">
-                  <FileText aria-hidden="true" className="h-4 w-4 shrink-0 text-muted" />
+                  {reorderable ? (
+                    <span className="w-5 shrink-0 text-right text-muted tabular-nums">{i + 1}</span>
+                  ) : (
+                    <FileText aria-hidden="true" className="h-4 w-4 shrink-0 text-muted" />
+                  )}
                   <span className="min-w-0 flex-1 truncate font-medium">{f.file.name}</span>
                   <span className="shrink-0 text-muted tabular-nums">{formatBytes(f.file.size, locale)}</span>
+                  {reorderable &&
+                    ([
+                      [-1, ChevronUp, "moveUp"],
+                      [1, ChevronDown, "moveDown"],
+                    ] as const).map(([delta, Icon, label]) => (
+                      <button
+                        key={label}
+                        type="button"
+                        disabled={processing || i + delta < 0 || i + delta >= files.length}
+                        onClick={() => setFiles((prev) => moveItem(prev, i, i + delta))}
+                        aria-label={t(label, { name: f.file.name })}
+                        className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-muted hover:bg-surface-2 hover:text-foreground disabled:opacity-30"
+                      >
+                        <Icon aria-hidden="true" className="h-4 w-4" />
+                      </button>
+                    ))}
                   <button
                     type="button"
                     disabled={processing}

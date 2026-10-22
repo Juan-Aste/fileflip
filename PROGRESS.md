@@ -2345,3 +2345,26 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - El volumen medio es RMS sin ponderar, no LUFS (EBU R128): similar en voz, puede diferir en música con muchos graves. No es un compresor (no cambia la dinámica).
 
 **Siguiente**: 3C.36d ("Unir audio").
+
+## 2026-10-22 05:55 UTC — Fase 3, tarea 3C.36d (unir audio) — 3C.36 TERMINADA
+
+**Qué se hizo**
+- **Unir audio** (`/es/unir-audio`, `/en/join-audio`, `/pt/juntar-audio`, `/fr/fusionner-audio`), categoría Audio: 2 o más archivos (formatos mezclados, AIFF incluido) en el orden de la lista → un solo MP3, WAV, FLAC, OGG (Opus), M4A (AAC) o AIFF, con **silencio opcional entre pistas** (0,5, 1 o 2 s). Nombre del resultado: `<primero>-joined.<ext>` (sufijo traducido). Si un archivo falla, el error dice cuál (`InputFileError`).
+- `ToolShell`: opción nueva `reorderable` (número de posición y botones subir/bajar con las etiquetas existentes `moveUp`/`moveDown`); el orden es el que recibe `process`.
+- Motor `joinAudio` (en `convert.ts`, en streaming, sin guardar el audio decodificado): parámetros comunes = la mayor frecuencia y la mayor cantidad de canales de las entradas (máximo estéreo; MP3 a 44,1 kHz y Opus a 48 kHz como en el conversor). Cada entrada pasa por su propia `Conversion` de mediabunny que decodifica y remuestrea/mezcla; su `process` reenvía cada muestra (con timestamp continuo calculado por cuadros escritos, sin huecos ni solapes) a un único `AudioSampleSource` de la salida. La salida propia de esas conversiones va a un `NullTarget` en WAV (mediabunny no finaliza un WAV vacío, por eso las muestras siguen pasando: PCM, barato, no se guarda nada). Límite: 3 horas en total; 30 minutos por trabajo.
+- Refactor: `planarData`/`planarSample` compartidos entre la ganancia (fundidos/normalización) y la unión. Textos (introducción + 4 preguntas, interfaz) en los 5 idiomas.
+
+**Verificación**
+- `audio-tools.spec.ts` (+3, ffprobe/ffmpeg): AIFF + AIFF 24 bits + MP3, **reordenados con los botones**, con 1 s de silencio → WAV 22 050 Hz estéreo de **7 s (±0,15)**; silencio real en los huecos (RMS < 2 %) y **tonos 440/660 Hz en cada tramo**; Opus 48 kHz + WAV 22 kHz → MP3 44,1 kHz de 4 s con tonos; un texto disfrazado de MP3 → error que nombra `not-audio.mp3` y sin descarga; un solo archivo → acción deshabilitada con aviso.
+- Lint, typecheck, tests (909 + 8 saltados), build, `check:static` (927 páginas) y `npm run test:e2e` completo: 279/279 (+4 saltados sin Gotenberg/EPUBCheck). En una corrida anterior la prueba de "Normalizar volumen" (modo pico) falló una vez y pasó al reintento; no se reprodujo en 60 repeticiones de todo `audio-tools.spec.ts` (probablemente el evento `download` de Chromium bajo carga, ya conocido desde 3B.7).
+
+**Limitaciones**
+- El MP3 de entrada suma unas centésimas de relleno del decodificador (el total puede verse 0,1 s más largo). Sin fundido cruzado entre pistas.
+
+**Siguiente**: 3C.37 (video: convertir entre MP4, WebM, MOV y MKV según el navegador, y extraer audio).
+
+## 2026-10-22 05:55 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas: 3C.35b (AIFF en "Convertir audio"), 3C.36a (Recortar audio), 3C.36b (Ajustar audio), 3C.36c (Normalizar volumen) y 3C.36d (Unir audio). 4 herramientas nuevas en la categoría Audio (ahora 5). En esta ejecución no hubo Gotenberg ni EPUBCheck (4 pruebas de navegador saltadas); ffmpeg/ffprobe del sistema validaron todas las salidas de audio.
+
+**Siguiente**: 3C.37 (video).

@@ -1255,6 +1255,22 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Chaque fichier est lu deux fois (mesure, puis application) : c'est un peu plus long qu'une conversion."
       }
+    },
+    "join-audio": {
+      "title": "Fusionner des audios",
+      "description": "Assemblez plusieurs audios (MP3, WAV, FLAC, OGG, M4A, AIFF) en un seul fichier, dans l'ordre choisi, dans votre navigateur.",
+      "action": "Fusionner les audios",
+      "about": "Réunissez des chansons, les parties d'un enregistrement, des messages vocaux ou les segments d'un podcast dans un seul fichier : ordonnez-les avec les flèches, ajoutez si vous voulez un silence entre les pistes et téléchargez le résultat en MP3, WAV, FLAC, OGG, M4A ou AIFF. Vous pouvez mélanger des formats différents : chaque fichier est décodé et aligné en fréquence et en canaux avant l'assemblage. Tout se passe sur votre appareil : les fichiers ne sont envoyés à aucun serveur.",
+      "faq": {
+        "q1": "Puis-je assembler des fichiers de formats différents ?",
+        "a1": "Oui : par exemple un MP3, un WAV et un M4A. Chacun est décodé et ramené à la même fréquence et au même nombre de canaux (le plus élevé, stéréo au maximum) avant d'être assemblé dans le format choisi.",
+        "q2": "Comment changer l'ordre ?",
+        "a2": "Les fichiers sont assemblés dans l'ordre de la liste. Utilisez les flèches de chaque ligne pour le monter ou le descendre ; le numéro à gauche indique sa position.",
+        "q3": "Y a-t-il une coupure entre les pistes ?",
+        "a3": "Aucune pause n'est ajoutée, sauf si vous choisissez un silence entre les pistes (0,5, 1 ou 2 secondes). Les pistes s'enchaînent échantillon par échantillon ; si une chanson se termine brusquement, le changement s'entendra comme dans l'original.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 3 heures au total, car le résultat est construit dans la mémoire du navigateur. Si un fichier est endommagé, il est indiqué."
+      }
     }
   },
   "ToolUi": {
@@ -2226,6 +2242,17 @@
       "peak": "Monte ou baisse tout de la même façon jusqu'à ce que le point le plus fort soit à −1 dB. L'écart entre passages doux et forts ne change pas."
     },
     "targetSame": "Même format",
-    "gainApplied": "Gain appliqué : {gain} dB."
+    "gainApplied": "Gain appliqué : {gain} dB.",
+    "joinNeedsTwo": "Choisissez au moins 2 fichiers ; ils sont assemblés dans l'ordre de la liste (utilisez les flèches pour le changer).",
+    "gap": "Silence entre les pistes",
+    "gaps": {
+      "0": "Sans silence",
+      "1": "1 s",
+      "2": "2 s",
+      "0_5": "0,5 s"
+    },
+    "joinNote": "Si les fichiers ont des fréquences ou des canaux différents, ils sont alignés sur le plus élevé (stéréo au maximum).",
+    "joinedSuffix": "fusionne",
+    "joined": "{count} fichiers assemblés : {length} au total."
   }
 }

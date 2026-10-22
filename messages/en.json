@@ -1255,6 +1255,22 @@
         "q4": "Is there a limit?",
         "a4": "Up to 200 MB per file on the free plan (500 MB with Pro), 3 hours per file and several files per batch. Each file is read twice (measure, then apply), so it takes a little longer than a conversion."
       }
+    },
+    "join-audio": {
+      "title": "Join audio",
+      "description": "Join several audio files (MP3, WAV, FLAC, OGG, M4A, AIFF) into one, in the order you choose, in your browser.",
+      "action": "Join audio",
+      "about": "Put songs, parts of a recording, voice messages or podcast segments together into a single file: order them with the arrows, add a silence between tracks if you like, and download the result as MP3, WAV, FLAC, OGG, M4A or AIFF. You can mix different formats: each file is decoded and matched in sample rate and channels before joining. Everything happens on your device: files aren't uploaded to any server.",
+      "faq": {
+        "q1": "Can I join files in different formats?",
+        "a1": "Yes: for example an MP3, a WAV and an M4A. Each one is decoded and brought to the same sample rate and channel count (the highest among them, at most stereo) before being joined in the format you choose.",
+        "q2": "How do I change the order?",
+        "a2": "Files are joined in the order of the list. Use the arrows on each row to move it up or down; the number on the left shows its position.",
+        "q3": "Is there a break between tracks?",
+        "a3": "No pauses are added unless you choose a silence between tracks (0.5, 1 or 2 seconds). Tracks are chained sample by sample; if a song ends abruptly, the change will be as noticeable as in the original.",
+        "q4": "Is there a limit?",
+        "a4": "Up to 200 MB per file on the free plan (500 MB with Pro) and 3 hours in total, because the result is built in your browser's memory. If a file is damaged, you're told which one."
+      }
     }
   },
   "ToolUi": {
@@ -2226,6 +2242,17 @@
       "peak": "Raises or lowers everything equally until the loudest point sits at −1 dB. The difference between quiet and loud parts doesn't change."
     },
     "targetSame": "Same format",
-    "gainApplied": "Gain applied: {gain} dB."
+    "gainApplied": "Gain applied: {gain} dB.",
+    "joinNeedsTwo": "Choose at least 2 files; they're joined in the order of the list (use the arrows to change it).",
+    "gap": "Silence between tracks",
+    "gaps": {
+      "0": "No silence",
+      "1": "1 s",
+      "2": "2 s",
+      "0_5": "0.5 s"
+    },
+    "joinNote": "If the files have different sample rates or channels, they're matched to the highest (at most stereo).",
+    "joinedSuffix": "joined",
+    "joined": "{count} files joined: {length} in total."
   }
 }

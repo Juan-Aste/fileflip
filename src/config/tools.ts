@@ -96,6 +96,7 @@ export const toolIds = [
   "trim-audio",
   "adjust-audio",
   "normalize-audio",
+  "join-audio",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -944,6 +945,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 20 * MINUTE, maxFileBytes: AUDIO_MAX_BYTES },
     status: "verified",
     slugs: { es: "normalizar-audio", en: "normalize-audio", pt: "normalizar-audio", fr: "normaliser-audio", zh: "normalize-audio" },
+  },
+  "join-audio": {
+    id: "join-audio",
+    category: "audio",
+    inputs: ["mp3", "wav", "flac", "ogg", "m4a", "aac", "webm", "aiff"],
+    outputs: ["mp3", "wav", "flac", "ogg", "m4a", "aiff"],
+    engine: "browser",
+    libraries: ["mediabunny", "@mediabunny/mp3-encoder (LAME)", "@mediabunny/flac-encoder (libFLAC)", "@mediabunny/aac-encoder (FFmpeg AAC)", "AIFF reader/writer (own)"],
+    // The whole join is one job.
+    limits: { files: "multiple", timeoutMs: 30 * MINUTE, maxFileBytes: AUDIO_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "unir-audio", en: "join-audio", pt: "juntar-audio", fr: "fusionner-audio", zh: "join-audio" },
   },
 };
 
