@@ -2726,10 +2726,24 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
   - **Explora por categoría**: una tarjeta por categoría publicada con su ícono y la cantidad de herramientas (o de conversiones si no tiene herramientas), enlace a la página de la categoría, y "Ver todas las herramientas".
   - Las secciones van dentro de la columna con el anuncio lateral, entre las conversiones populares y "Cómo funciona"; sin texto largo (las descripciones viven en las páginas de categoría), así no abruma en móvil.
 - Textos en los 5 idiomas (`HomePage.catalog`). Componente de servidor (`HomeCatalog`): no suma JS a la portada salvo el botón del buscador (ruta `/[locale]`: 1,49 kB).
-- Capturas en `docs/screenshots/home-catalog-360-light.png` y `home-catalog-1280-dark.png`, revisadas.
+- Capturas en `docs/screenshots/home-catalog-360-light.webp` y `home-catalog-1280-dark.webp`, revisadas.
 
 **Verificación**
 - `search.spec.ts` (+2, a 360 y 1280 px): sin scroll horizontal; ≥ 8 populares con "Quitar fondo de imagen" → `/es/quitar-fondo`; la tarjeta "Audio N herramientas" → `/es/herramientas-de-audio`; tantas tarjetas de categoría como categorías publicadas en "Todas las herramientas"; el campo del hero abre el diálogo, "quitar fondo" + Enter navega. `search` + `converter` de navegador: 99/99.
 - Lint, typecheck, tests (980 + 8 saltados), build y `check:static` (1007 páginas).
 
 **Siguiente**: 3D.2 (enlaces internos entre herramientas relacionadas).
+
+## 2026-10-22 14:10 UTC — Fase 3, tarea 3D.2 (enlaces internos entre herramientas)
+
+**Qué se hizo**
+- `relatedTools` (registro) rehecho: hasta 4 de la misma categoría tomando sus **vecinos en el orden del registro, alternando adelante/atrás y dando la vuelta**, así cada herramienta de una categoría grande queda enlazada desde dos vecinas (antes siempre salían las 6 primeras de la categoría y varias nunca recibían enlaces); luego herramientas de **otras categorías** que toman la salida de esta ("siguiente paso", peso 3) o leen los mismos archivos (hasta 2). TXT no cuenta como salida para el siguiente paso (casi todas las herramientas de texto lo leen y generaba enlaces sin sentido como "Imagen a texto → Base64"). Ejemplos: Quitar fondo → Foto carnet, Imágenes a PDF; Escanear documento → OCR de PDF; Imagen a texto → OCR de PDF.
+- Páginas de conversión: nueva sección "Más herramientas para tus archivos {origen} y {destino}" con hasta 4 herramientas (`toolsForConversion`: primero las que toman el formato de salida, luego el de entrada). Enlaza las 96 páginas de conversión con el catálogo. Texto en 5 idiomas (`ConversionPage.toolsTitle`).
+- Capturas de 3D.1 pasadas a WEBP como las demás de `docs/screenshots/`.
+
+**Verificación**
+- `tools.test.ts` (+3): toda herramienta publicada recibe al menos un enlace desde otra (salvo las que están solas en su categoría y ningún otra herramienta comparte o produce su entrada: hoy solo el conversor de fuentes; su categoría y la portada la enlazan); siguientes pasos esperados; las de categorías con más de una herramienta tienen enlaces; conversiones → herramientas verificadas que leen el destino.
+- `search.spec.ts` (+1): `/es/heic-a-jpg` muestra 4 herramientas y cada enlace responde 200; `/es/quitar-fondo` enlaza "Foto carnet" e "Imágenes a PDF".
+- Lint, typecheck, tests (983 + 8 saltados), build y `check:static` (1007 páginas).
+
+**Siguiente**: 3D.3 (accesibilidad y teclado; capturas 360/1280 claro/oscuro).

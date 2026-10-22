@@ -1734,7 +1734,8 @@
     "privacyBrowser": "Vos fichiers {from} sont convertis directement dans votre navigateur : ils ne sont jamais envoyés, la conversion est donc confidentielle et très rapide.",
     "privacyServer": "Les documents sont convertis sur notre serveur avec LibreOffice, via une connexion chiffrée, et supprimés automatiquement sous 1 heure.",
     "relatedTitle": "Autres conversions",
-    "linkLabel": "{from} en {to}"
+    "linkLabel": "{from} en {to}",
+    "toolsTitle": "Plus d'outils pour vos fichiers {from} et {to}"
   },
   "Longtail": {
     "faqTitle": "Questions fréquentes"

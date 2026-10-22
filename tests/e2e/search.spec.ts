@@ -65,3 +65,16 @@ test.describe("home catalog", () => {
     });
   }
 });
+
+test("related links: a conversion page links tools for its result, a tool links the next step", async ({ page, request }) => {
+  await page.goto("/es/heic-a-jpg", { waitUntil: "networkidle" });
+  const tools = page.getByRole("navigation", { name: "Más herramientas para tus archivos HEIC y JPG" }).getByRole("link");
+  await expect(tools).toHaveCount(4);
+  for (const href of await tools.evaluateAll((links) => links.map((a) => a.getAttribute("href")!))) {
+    expect((await request.get(href)).status(), href).toBe(200);
+  }
+  await page.goto("/es/quitar-fondo", { waitUntil: "networkidle" });
+  const related = page.getByRole("navigation", { name: "Herramientas relacionadas" });
+  await expect(related.getByRole("link", { name: "Foto carnet" })).toHaveAttribute("href", "/es/foto-carnet");
+  await expect(related.getByRole("link", { name: "Imágenes a PDF" })).toBeVisible();
+});

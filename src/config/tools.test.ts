@@ -9,6 +9,8 @@ import {
   availableTools,
   conversionCategory,
   relatedTools,
+  toolsForConversion,
+  type ToolId,
   toolCategories,
   toolFromSlug,
   toolIds,
@@ -87,6 +89,33 @@ describe("tool registry", () => {
     }
     expect(relatedTools("merge-pdf").map((t) => t.id)).toContain("split-pdf");
     expect(relatedTools("merge-pdf", 2)).toHaveLength(2);
+  });
+
+  it("every published tool is linked from at least one other tool's page", () => {
+    const linked = new Set(availableTools.flatMap((id) => relatedTools(id).map((t) => t.id)));
+    // Only a tool alone in its category that no other tool shares an input with or produces one for
+    // stays out (its category page links it).
+    const isolated = (id: ToolId) =>
+      toolsInCategory(tools[id].category).length === 1 &&
+      !availableTools.some((o) => o !== id && [...tools[o].inputs, ...tools[o].outputs].some((f) => tools[id].inputs.includes(f)));
+    expect(availableTools.filter((id) => !linked.has(id) && !isolated(id))).toEqual([]);
+  });
+
+  it("links the next step in other categories: tools that take this tool's output", () => {
+    const related = relatedTools("remove-background").map((t) => t.id);
+    expect(related).toContain("id-photo");
+    expect(related).toContain("images-to-pdf");
+    expect(relatedTools("scan-document").map((t) => t.id)).toContain("ocr-pdf");
+    for (const id of availableTools) {
+      if (toolsInCategory(tools[id].category).length > 1) expect(relatedTools(id).length, id).toBeGreaterThan(0);
+    }
+  });
+
+  it("conversion pages link tools for their result first, then their input", () => {
+    const heic = toolsForConversion({ from: "heic", to: "jpg" });
+    expect(heic.length).toBe(4);
+    expect(heic.every((t) => t.status === "verified" && t.inputs.includes("jpg"))).toBe(true);
+    expect(toolsForConversion({ from: "docx", to: "pdf" }).every((t) => t.inputs.includes("pdf"))).toBe(true);
   });
 
   it("groups published tools by category", () => {

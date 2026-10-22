@@ -1734,7 +1734,8 @@
     "privacyBrowser": "Your {from} files are converted right in your browser: they are never uploaded, so the conversion is private and very fast.",
     "privacyServer": "Documents are converted on our server with LibreOffice over an encrypted connection, and automatically deleted within 1 hour.",
     "relatedTitle": "Other conversions",
-    "linkLabel": "{from} to {to}"
+    "linkLabel": "{from} to {to}",
+    "toolsTitle": "More tools for your {from} and {to} files"
   },
   "Longtail": {
     "faqTitle": "Frequently asked questions"

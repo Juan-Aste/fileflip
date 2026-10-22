@@ -1734,7 +1734,8 @@
     "privacyBrowser": "Tus archivos {from} se convierten directamente en tu navegador: nunca se suben a internet, así que la conversión es privada y muy rápida.",
     "privacyServer": "Los documentos se convierten en nuestro servidor con LibreOffice, por conexión cifrada, y se borran automáticamente en menos de 1 hora.",
     "relatedTitle": "Otras conversiones",
-    "linkLabel": "{from} a {to}"
+    "linkLabel": "{from} a {to}",
+    "toolsTitle": "Más herramientas para tus archivos {from} y {to}"
   },
   "Longtail": {
     "faqTitle": "Preguntas frecuentes"

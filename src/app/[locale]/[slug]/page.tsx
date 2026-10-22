@@ -28,6 +28,7 @@ import { formats, type Conversion } from "@/config/formats";
 import {
   availableTools,
   relatedTools,
+  toolsForConversion,
   toolFromSlug,
   tools,
   type ToolCategory,
@@ -294,6 +295,8 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
     to: formats[conversion.to].label,
   };
   const related = relatedConversions(conversion);
+  const nextTools = toolsForConversion(conversion);
+  const tt = await getTranslations("Tools");
   // Server (document) conversions have no quality or size options.
   const steps = ["step1", conversion.engine === "browser" ? "step2" : "step2Document", "step3"] as const;
   const PrivacyIcon = conversion.engine === "browser" ? ShieldCheck : Cloud;
@@ -339,6 +342,21 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
           </p>
         </div>
       </section>
+
+      {nextTools.length > 0 && (
+        <nav aria-labelledby="next-tools" className="flex flex-col gap-4">
+          <h2 id="next-tools" className="text-2xl font-bold">
+            {t("toolsTitle", names)}
+          </h2>
+          <ul className="flex flex-wrap gap-2">
+            {nextTools.map((tool) => (
+              <li key={tool.id}>
+                <PillLink href={`/${tool.slugs[locale]}`}>{tt(`${tool.id}.title`)}</PillLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
 
       {related.length > 0 && (
         <nav aria-labelledby="related" className="flex flex-col gap-4">

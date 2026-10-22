@@ -1172,16 +1172,41 @@ export function conversionCategory(conversion: Pick<Conversion, "from" | "to">):
   return "image";
 }
 
+/** How many formats two lists share. */
+const shared = (a: readonly FormatId[], b: readonly FormatId[]) => a.filter((f) => b.includes(f)).length;
+
 /**
- * Published tools to link from a tool's page: same category first, then
- * tools sharing an input format, in registry order.
+ * Published tools to link from a tool's page: up to 4 of the same category,
+ * its nearest neighbors in registry order going round (so every tool of a
+ * big category is linked from two others), then tools of other categories
+ * that take this tool's output ("next step") or read the same files.
  */
 export function relatedTools(id: ToolId, max = 6): ToolInfo[] {
   const tool = tools[id];
-  const others = availableTools.map((other) => tools[other]).filter((other) => other.id !== id);
-  const sameCategory = others.filter((other) => other.category === tool.category);
-  const sharedInput = others.filter(
-    (other) => other.category !== tool.category && other.inputs.some((f) => tool.inputs.includes(f)),
-  );
-  return [...sameCategory, ...sharedInput].slice(0, max);
+  const category = toolsInCategory(tool.category);
+  const at = category.findIndex((t) => t.id === id);
+  // Alternating after and before: +1, -1, +2, -2...
+  const sameCategory = Array.from({ length: category.length - 1 }, (_, i) => {
+    const step = Math.floor(i / 2) + 1;
+    return category[(at + (i % 2 === 0 ? step : category.length - step)) % category.length]!;
+  }).filter((t, i, list) => list.indexOf(t) === i);
+  // Plain text is read by most text tools: as an output it says nothing about the next step.
+  const outputs = tool.outputs.filter((f) => f !== "txt");
+  const nextStep = (other: ToolInfo) => (shared(other.inputs, outputs) > 0 ? 3 : 0) + Math.min(shared(other.inputs, tool.inputs), 2);
+  const otherCategories = availableTools
+    .map((other) => tools[other])
+    .filter((other) => other.category !== tool.category && nextStep(other) > 0)
+    .sort((a, b) => nextStep(b) - nextStep(a));
+  const fromCategory = sameCategory.slice(0, Math.max(Math.min(4, max), max - otherCategories.length));
+  return [...fromCategory, ...otherCategories].slice(0, max);
+}
+
+/** Published tools to link from a conversion page: the ones that take its result, then its input. */
+export function toolsForConversion(conversion: Pick<Conversion, "from" | "to">, max = 4): ToolInfo[] {
+  const score = (tool: ToolInfo) => (tool.inputs.includes(conversion.to) ? 2 : 0) + (tool.inputs.includes(conversion.from) ? 1 : 0);
+  return availableTools
+    .map((id) => tools[id])
+    .filter((tool) => score(tool) > 0)
+    .sort((a, b) => score(b) - score(a))
+    .slice(0, max);
 }
