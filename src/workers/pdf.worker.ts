@@ -18,6 +18,7 @@ import { cropPdf, type Margins } from "@/lib/pdf/crop";
 import { signPdf, type SignaturePlacement } from "@/lib/pdf/sign";
 import { originalJpegs } from "@/lib/pdf/jpegs";
 import { protectPdf, unlockPdf, type Permissions, type Qpdf, type QpdfFactory } from "@/lib/pdf/password";
+import { addTextLayers } from "@/lib/pdf/ocr-layer";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
 /** Text Helvetica can't encode (Chinese, emoji...) drawn with the device's fonts at 4× for print. */
@@ -90,6 +91,10 @@ exposeHandlers({
   },
   protect: async ({ bytes, password, permissions }: { bytes: Uint8Array; password: string; permissions: Permissions }) => {
     const result = await protectPdf(bytes, password, permissions, loadQpdf);
+    return { result, transfer: [result.buffer] };
+  },
+  ocrLayers: async ({ bytes, layers }: { bytes: Uint8Array; layers: (Uint8Array | null)[] }) => {
+    const result = await addTextLayers(bytes, layers);
     return { result, transfer: [result.buffer] };
   },
   unlock: async ({ bytes, password }: { bytes: Uint8Array; password: string }) => {

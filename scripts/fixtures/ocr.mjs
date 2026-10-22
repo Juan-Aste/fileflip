@@ -7,6 +7,7 @@
 // - ocr-blank.png: an image with no text at all.
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { PDFDocument, StandardFonts, degrees } from "pdf-lib";
 import sharp from "sharp";
 
 const out = new URL("../../tests/fixtures/", import.meta.url).pathname;
@@ -58,3 +59,22 @@ write("ocr-en.jpg", noisy);
 
 write("ocr-zh.png", await sharp(svg(OCR_TEXT.zh, { width: 520, size: 48, family: "WenQuanYi Zen Hei" })).png({ compressionLevel: 9, palette: true }).toBuffer());
 write("ocr-blank.png", await sharp({ create: { width: 400, height: 300, channels: 3, background: "#f4f1ea" } }).png().toBuffer());
+
+// A scanned document: page 1 is the Spanish page as an image (A4), page 2 the
+// English photo on a page with /Rotate 90 (the image drawn sideways so it reads
+// upright), page 3 real digital text (must be left alone by OCR).
+const pdf = await PDFDocument.create();
+const A4 = [595.28, 841.89];
+const esImage = await pdf.embedPng(await sharp(es).flatten({ background: "#ffffff" }).greyscale().png().toBuffer());
+const p1 = pdf.addPage(A4);
+p1.drawImage(esImage, { x: 40, y: A4[1] - 40 - esImage.height * 0.55, width: esImage.width * 0.55, height: esImage.height * 0.55 });
+const enImage = await pdf.embedJpg(noisy);
+const p2 = pdf.addPage(A4);
+p2.setRotation(degrees(90));
+// Rotated page: seen in landscape; draw the image turned 90° counter-clockwise so it is upright for the reader.
+const scale = 0.6;
+p2.drawImage(enImage, { x: 60 + enImage.height * scale, y: 60, width: enImage.width * scale, height: enImage.height * scale, rotate: degrees(90) });
+const p3 = pdf.addPage(A4);
+p3.drawText("Texto digital existente en la tercera pagina.", { x: 60, y: 700, size: 16, font: await pdf.embedFont(StandardFonts.Helvetica) });
+pdf.setTitle("Fileflect OCR test");
+write("scan-text.pdf", await pdf.save());

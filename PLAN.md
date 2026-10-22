@@ -262,7 +262,7 @@ Archivos comprimidos
 
 OCR
 - [x] 3C.31 Imagen → texto con tesseract.js (datos de idioma servidos desde nuestro dominio, solo el idioma pedido: es, en, pt, fr, zh)
-- [ ] 3C.32 PDF escaneado → PDF con texto buscable y → texto (límite de páginas)
+- [x] 3C.32 PDF escaneado → PDF con texto buscable y → texto (límite de páginas)
 
 Libros electrónicos
 - [ ] 3C.33 EPUB → HTML/TXT (navegador, saneado, sin XXE) y EPUB → PDF (Gotenberg)

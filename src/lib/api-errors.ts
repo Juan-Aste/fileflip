@@ -40,6 +40,9 @@ export const apiErrorCodes = [
   "archiveEmpty",
   // Client-side only: OCR found no text in the image.
   "ocrNoText",
+  // Client-side only: OCR of a PDF with too many pages, or whose pages all have text already.
+  "tooManyPages",
+  "pdfAlreadySearchable",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -79,6 +82,8 @@ const status: Record<ApiErrorCode, number> = {
   archiveUnsupported: 415,
   archiveEmpty: 422,
   ocrNoText: 422,
+  tooManyPages: 413,
+  pdfAlreadySearchable: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

@@ -88,6 +88,7 @@ export const toolIds = [
   "create-archive",
   "extract-archive",
   "image-to-text",
+  "ocr-pdf",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -137,6 +138,8 @@ const SHEET_MAX_BYTES = 50 * 1024 * 1024;
 const ARCHIVE_MAX_BYTES = 500 * 1024 * 1024;
 /** Photos and scans; they are resized to at most 4000 px before OCR (ocrSize). */
 const OCR_MAX_BYTES = 50 * 1024 * 1024;
+/** Scanned PDFs are rendered page by page; the original is kept whole to add the text layers. */
+const OCR_PDF_MAX_BYTES = 100 * 1024 * 1024;
 /** Markdown/HTML are converted on the page (they need a DOM): keep it responsive. */
 const MARKUP_MAX_BYTES = 5 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
@@ -834,6 +837,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 3 * MINUTE, maxFileBytes: OCR_MAX_BYTES },
     status: "verified",
     slugs: { es: "imagen-a-texto", en: "image-to-text", pt: "imagem-para-texto", fr: "image-en-texte", zh: "image-to-text" },
+  },
+  "ocr-pdf": {
+    id: "ocr-pdf",
+    category: "ocr",
+    inputs: ["pdf"],
+    outputs: ["pdf", "txt"],
+    engine: "browser",
+    libraries: ["pdf.js", "tesseract.js", "pdf-lib"],
+    // Per page (MAX_OCR_PAGES pages at most).
+    limits: { files: "multiple", timeoutMs: 3 * MINUTE, maxFileBytes: OCR_PDF_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "ocr-pdf", en: "ocr-pdf", pt: "ocr-pdf", fr: "ocr-pdf", zh: "ocr-pdf" },
   },
 };
 

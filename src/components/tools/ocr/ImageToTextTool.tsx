@@ -11,28 +11,13 @@ import { trackTool } from "@/lib/stats-client";
 import { detectFileFormat } from "@/lib/detect";
 import ChoiceGroup from "../ChoiceGroup";
 import ToolShell from "../shell/ToolShell";
+import { withTimeout } from "./timeout";
 import type { ShellOutput } from "../shell/state";
 
 const extensions = ["jpg", "jpeg", "jfif", "png", "webp", "bmp", "gif", "tif", "tiff", "heic", "heif", "avif"];
 /** Below this mean confidence the result gets a "check the text" warning. */
 const LOW_CONFIDENCE = 60;
 const baseName = (name: string) => name.replace(/\.[^.]+$/, "") || "image";
-
-/** A signal that aborts with the user's cancel or, with a TimeoutError, after `ms`. */
-function withTimeout(signal: AbortSignal, ms: number) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(new DOMException("OCR time limit", "TimeoutError")), ms);
-  const cancel = () => controller.abort(signal.reason);
-  if (signal.aborted) cancel();
-  signal.addEventListener("abort", cancel, { once: true });
-  return {
-    signal: controller.signal,
-    done: () => {
-      clearTimeout(timer);
-      signal.removeEventListener("abort", cancel);
-    },
-  };
-}
 
 /** Images → text with tesseract.js on the device (lib/ocr/client.ts). */
 export default function ImageToTextTool() {

@@ -5,7 +5,7 @@ import { ConversionError } from "@/lib/convert-error";
 import { detectFileFormat } from "@/lib/detect";
 import { convertImage } from "@/lib/image/client";
 import { ocrAssets } from "./assets";
-import { cleanOcrText, ocrSize, tesseractLanguage, type OcrLanguage } from "./text";
+import { cleanOcrText, OCR_PARAMETERS, ocrSize, tesseractLanguage, type OcrLanguage } from "./text";
 
 // OCR with tesseract.js, all on the user's device: the engine, its WASM core
 // and the language model come from our own domain (/ocr, see assets.ts), and
@@ -15,10 +15,12 @@ export interface OcrResult {
   text: string;
   /** Tesseract's mean word confidence, 0–100. */
   confidence: number;
+  /** With `pdf`: a one-page PDF with only the invisible text, sized like the image at 300 dpi. */
+  pdf?: Uint8Array;
 }
 
 export interface OcrSession {
-  recognize: (image: Blob, options: { signal?: AbortSignal; onProgress?: (p: number) => void }) => Promise<OcrResult>;
+  recognize: (image: Blob, options: { signal?: AbortSignal; onProgress?: (p: number) => void; pdf?: boolean }) => Promise<OcrResult>;
   terminate: () => Promise<void>;
 }
 
@@ -71,14 +73,18 @@ export async function createOcrSession(language: OcrLanguage, signal?: AbortSign
   });
   // Cancelled while loading: stop the engine once it is up.
   const worker: TesseractWorker = await abortable(starting, signal, () => void starting.then((w) => w.terminate(), () => {}));
-  // Images rarely carry a real resolution; 300 dpi is what the models expect.
-  await worker.setParameters({ user_defined_dpi: "300" });
+  await worker.setParameters(OCR_PARAMETERS);
   return {
-    async recognize(image, { signal: jobSignal, onProgress }) {
+    async recognize(image, { signal: jobSignal, onProgress, pdf = false }) {
       report = onProgress;
       try {
-        const { data } = await abortable(worker.recognize(image), jobSignal, () => void worker.terminate());
-        return { text: cleanOcrText(data.text, language), confidence: Math.round(data.confidence) };
+        const job = pdf ? worker.recognize(image, { pdfTextOnly: true }, { text: true, pdf: true }) : worker.recognize(image);
+        const { data } = await abortable(job, jobSignal, () => void worker.terminate());
+        return {
+          text: cleanOcrText(data.text, language),
+          confidence: Math.round(data.confidence),
+          ...(pdf && data.pdf ? { pdf: new Uint8Array(data.pdf) } : {}),
+        };
       } finally {
         report = undefined;
       }

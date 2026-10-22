@@ -9,6 +9,7 @@ import {
   FolderArchive,
   FolderOpen,
   ScanText,
+  FileSearch,
   Archive,
   CaseSensitive,
   ImageDown,
@@ -116,6 +117,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "create-archive": FolderArchive,
   "extract-archive": FolderOpen,
   "image-to-text": ScanText,
+  "ocr-pdf": FileSearch,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

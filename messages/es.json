@@ -213,7 +213,9 @@
     "archiveEncrypted": "Este archivo comprimido tiene contraseña: por ahora no se puede extraer.",
     "archiveUnsupported": "Este archivo comprimido usa un método de compresión que no se puede abrir en el navegador.",
     "archiveEmpty": "Este archivo comprimido no tiene archivos para extraer (solo carpetas vacías o enlaces).",
-    "ocrNoText": "No se encontró texto en la imagen. Prueba con una foto más nítida o elige otro idioma."
+    "ocrNoText": "No se encontró texto en la imagen. Prueba con una foto más nítida o elige otro idioma.",
+    "tooManyPages": "Este PDF tiene demasiadas páginas para reconocerlas en el navegador (máximo 100).",
+    "pdfAlreadySearchable": "Todas las páginas de este PDF ya tienen texto: se puede buscar sin OCR. Usa «PDF a texto» para extraerlo."
   },
   "Tools": {
     "merge-pdf": {
@@ -1115,7 +1117,23 @@
         "q3": "¿Qué formatos e idiomas admite?",
         "a3": "JPG, PNG, WEBP, BMP, GIF, TIFF, HEIC y AVIF, hasta 50 MB por imagen. Idiomas: español, inglés, portugués, francés y chino simplificado. Elige el idioma en el que está escrito el texto.",
         "q4": "¿Sirve para PDF escaneados?",
-        "a4": "Esta herramienta trabaja con imágenes. Si tu PDF es un escaneo, primero conviértelo a imágenes con «PDF a JPG» y luego extrae el texto de cada página."
+        "a4": "Si tu PDF es un escaneo, usa «OCR de PDF escaneado»: reconoce todas las páginas y te devuelve un PDF con texto buscable o un .txt."
+      }
+    },
+    "ocr-pdf": {
+      "title": "OCR de PDF escaneado",
+      "description": "Convierte un PDF escaneado en un PDF con texto que se puede buscar y copiar, o extrae su texto, en tu navegador.",
+      "action": "Reconocer texto",
+      "about": "Un PDF escaneado es solo una foto de cada página: no puedes buscar una palabra ni copiar el texto. Esta herramienta reconoce el texto de cada página con OCR y lo agrega como una capa invisible sobre la página original, que no cambia: el PDF se ve igual, pero ahora puedes buscar, seleccionar y copiar. También puedes obtener solo el texto en un archivo .txt. Las páginas que ya tienen texto digital se dejan como están. Todo se procesa en tu dispositivo.",
+      "faq": {
+        "q1": "¿Cambia el aspecto del PDF?",
+        "a1": "No. Las páginas originales se conservan tal cual (misma calidad, mismo tamaño); el texto reconocido se agrega encima, invisible, en la misma posición que las palabras de la imagen.",
+        "q2": "¿Cuántas páginas puede procesar?",
+        "a2": "Hasta 100 páginas y 100 MB por PDF. Cada página se reconoce en tu navegador y tarda unos segundos, así que un documento largo puede demorar varios minutos.",
+        "q3": "¿Qué pasa con las páginas que ya tienen texto?",
+        "a3": "Si la opción está marcada, se dejan como están y su texto se incluye tal cual en el .txt. Desmárcala si una página tiene solo un poco de texto digital (por ejemplo, un sello) además del escaneo.",
+        "q4": "¿Mis documentos se suben a un servidor?",
+        "a4": "No. El PDF se abre, se lee y se reconoce en tu navegador; solo se descarga una vez el motor de OCR y el modelo del idioma desde nuestro sitio."
       }
     }
   },
@@ -2004,6 +2022,11 @@
       "zh": "中文（简体）"
     },
     "note": "Se procesa en tu dispositivo. La primera vez se descarga el modelo del idioma (2–4 MB); después queda guardado en tu navegador.",
-    "lowConfidence": "Confianza baja ({confidence} %): revisa el texto, la imagen puede estar borrosa o torcida."
+    "lowConfidence": "Confianza baja ({confidence} %): revisa el texto, la imagen puede estar borrosa o torcida.",
+    "output": "Resultado",
+    "outputPdf": "PDF con texto buscable",
+    "outputTxt": "Solo el texto (.txt)",
+    "skipText": "Dejar como están las páginas que ya tienen texto",
+    "pdfNote": "Hasta {pages} páginas por PDF. Cada página se reconoce en tu dispositivo y tarda unos segundos."
   }
 }

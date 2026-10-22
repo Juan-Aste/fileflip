@@ -2059,7 +2059,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Siguiente**: 3C.28 (crear ZIP, TAR y TAR.GZ).
 
-## 2026-10-22 00:40 UTC — Fase 3, tarea 3C.28 (crear ZIP, TAR y TAR.GZ)
+## 2026-10-22 00:22 UTC — Fase 3, tarea 3C.28 (crear ZIP, TAR y TAR.GZ)
 
 **Qué se hizo**
 - **Crear ZIP** (`/es/crear-zip`, `/en/create-zip`, `/pt/criar-zip`, `/fr/creer-zip`), primera herramienta de la categoría **Archivos comprimidos** (`/es/archivos-comprimidos`…, ahora publicada). Cualquier archivo de entrada (lote del plan: 50 gratis / 500 Pro); salida **ZIP**, **TAR** o **TAR.GZ**; compresión sin comprimir / normal (6) / máxima (9) para ZIP y TAR.GZ; nombre del archivo opcional (se limpian separadores y la extensión repetida; por defecto `archive.<ext>`).
@@ -2080,7 +2080,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Siguiente**: 3C.29 (extraer ZIP, TAR y TAR.GZ con protecciones).
 
-## 2026-10-22 01:20 UTC — Fase 3, tarea 3C.29 (extraer ZIP, TAR y TAR.GZ)
+## 2026-10-22 00:44 UTC — Fase 3, tarea 3C.29 (extraer ZIP, TAR y TAR.GZ)
 
 **Qué se hizo**
 - **Extraer ZIP** (`/es/extraer-zip`, `/en/extract-zip`, `/pt/extrair-zip`, `/fr/extraire-zip`), categoría Archivos comprimidos: entradas **ZIP, TAR, TAR.GZ/TGZ y GZ** (lotes); cada archivo de adentro se descarga por separado (con su ruta) o todos en `fileflect-extracted.zip` **con las mismas carpetas**; con varios archivos comprimidos, cada uno va en una carpeta con su nombre.
@@ -2104,7 +2104,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Siguiente**: 3C.30 (extraer 7Z y RAR con libarchive.js).
 
-## 2026-10-22 01:55 UTC — Fase 3, tarea 3C.30 (extraer 7Z y RAR)
+## 2026-10-22 00:57 UTC — Fase 3, tarea 3C.30 (extraer 7Z y RAR)
 
 **Qué se hizo**
 - "Extraer ZIP" ahora abre también **7Z y RAR (versiones 4 y 5)**, solo lectura. Formatos nuevos `7z` y `rar` en `formats.ts`; textos (descripción, introducción y FAQ de formatos y límites) actualizados en los 5 idiomas.
@@ -2130,7 +2130,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Siguiente**: 3C.31 (imagen → texto con tesseract.js).
 
-## 2026-10-22 02:35 UTC — Fase 3, tarea 3C.31 (imagen a texto con OCR)
+## 2026-10-22 01:16 UTC — Fase 3, tarea 3C.31 (imagen a texto con OCR)
 
 **Qué se hizo**
 - **Imagen a texto (OCR)** (`/es/imagen-a-texto`, `/en/image-to-text`, `/pt/imagem-para-texto`, `/fr/image-en-texte`), primera herramienta de la categoría **OCR** (ahora publicada): JPG, PNG, WEBP, BMP, GIF, TIFF, HEIC y AVIF (hasta 50 MB, lotes) → un `.txt` por imagen con vista previa para copiar; idioma español, inglés, portugués, francés o chino simplificado (por defecto, el de la interfaz). Aviso si la confianza media es < 60 %. Error nuevo `ocrNoText` (5 idiomas).
@@ -2149,3 +2149,31 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - El build copia ~20 MB a `public/ocr` (imagen Docker un poco más grande).
 
 **Siguiente**: 3C.32 (PDF escaneado → PDF con texto buscable y → texto).
+
+## 2026-10-22 01:33 UTC — Fase 3, tarea 3C.32 (OCR de PDF escaneado)
+
+**Qué se hizo**
+- **OCR de PDF escaneado** (`/es/ocr-pdf`, mismo slug en todos los idiomas: es el término que se busca), categoría OCR: PDF (hasta **100 páginas** y 100 MB, lotes) → **PDF con texto buscable** (por defecto) o **solo el texto** (.txt). Idioma como en "Imagen a texto". Opción (activada) para dejar como están las páginas que ya tienen texto digital (≥ 20 caracteres): no se reconocen y su texto va tal cual al .txt. Errores nuevos `tooManyPages` y `pdfAlreadySearchable` (todas las páginas ya tenían texto); PDF con contraseña → `pdfAlreadyProtected`.
+- Cómo funciona: pdf.js renderiza cada página a **300 dpi** (máx. 4000 px), tesseract la reconoce y con `pdfTextOnly` devuelve una página PDF **solo con el texto invisible** (fuente GlyphLessFont); en el worker de PDF, `src/lib/pdf/ocr-layer.ts` (pdf-lib) la dibuja **encima de la página original**, que no se toca (misma calidad, imágenes, tamaño y rotación), usando `visualPage`/`placeBox` de `stamp.ts` para cuadro de recorte y `/Rotate`. Límite de 3 minutos **por página**; cancelar detiene el motor.
+- **Umbral adaptativo (Sauvola)** en todas las herramientas de OCR (`OCR_PARAMETERS` en `text.ts`): la foto de papel gris pegada en una página blanca no daba **ningún texto** con el Otsu global de tesseract (todo el gris quedaba negro); con Sauvola se lee perfecto (confianza 95) y los demás fixtures dan el mismo texto que antes.
+- La FAQ de "Imagen a texto" ahora remite a esta herramienta para PDF escaneados (5 idiomas). Textos (introducción + 4 preguntas, opciones) en los 5 idiomas.
+- Fixture nuevo `scan-text.pdf` (3 páginas: escaneo en español, foto inglesa en página con `/Rotate 90`, página con texto digital) en `scripts/fixtures/ocr.mjs`.
+
+**Verificación**
+- `ocr-layer.test.ts` (OCR real en Node con los modelos que se sirven + pdf.js como lector): las páginas 1 y 2 pasan a tener texto ("papaya", "1.250", "Invoice", "lazy"), la 3 queda igual; mismos tamaños; todas las palabras caen dentro de la página vista por el lector y en la página girada las líneas se leen de arriba abajo y de izquierda a derecha; rotación 90 conservada; PDF dañado, cantidad de capas incorrecta y capa inválida → errores.
+- `ocr-tools.spec.ts` (+3 casos): `scan-text.pdf` → `scan-text-ocr.pdf` con 3 páginas, rotaciones [0, 90, 0], mismos tamaños y **misma cantidad de imágenes**, texto buscable en las páginas escaneadas y la digital igual, sin peticiones fuera de localhost; salida .txt con el texto de la foto y el de la página digital, `document.pdf` (digital) → .txt, PDF cortado → "damaged", y como PDF buscable → "already has text"; PDF de 101 páginas → rechazado antes del OCR.
+- Lint, typecheck, tests (864 + 7 saltados sin Gotenberg), build, `check:static` (877 páginas) y `npm run test:e2e` completo (258 + 3 saltados sin Gotenberg) pasan.
+
+**Limitaciones**
+- El texto invisible sigue el diseño que detecta tesseract: columnas complejas o tablas pueden quedar en un orden de lectura raro al copiar. Sin corrección de páginas torcidas ni de orientación (una página escaneada de costado sin `/Rotate` no se lee). Unos segundos por página en el navegador.
+
+**Siguiente**: 3C.33 (EPUB → HTML/TXT y EPUB → PDF).
+
+## 2026-10-22 01:33 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas: 3C.28 (crear ZIP/TAR/TAR.GZ), 3C.29 (extraer ZIP/TAR/TAR.GZ/GZ con protecciones), 3C.30 (extraer 7Z y RAR con libarchive), 3C.31 (imagen a texto con OCR) y 3C.32 (OCR de PDF escaneado). 5 herramientas nuevas y 2 categorías publicadas (Archivos comprimidos y OCR).
+- Arreglos generales: errores largos en la lista de resultados ya no desbordan a 360 px; prueba inestable de marca de agua/texto en imagen corregida; las horas de las entradas de esta ejecución se corrigieron según los commits.
+- Nueva tarea 3C.45 (WASM propio de libarchive 3.8 con locale UTF-8).
+- `npm run test:e2e` 258/258 (+3 saltados sin Gotenberg) al cierre.
+
+**Siguiente**: 3C.33 (EPUB → HTML/TXT y EPUB → PDF).

@@ -2,7 +2,7 @@ import { join } from "node:path";
 import { createWorker, OEM } from "tesseract.js";
 import { describe, expect, it } from "vitest";
 import { TESSDATA_VARIANT } from "./assets";
-import { cleanOcrText, tesseractLanguage, type OcrLanguage } from "./text";
+import { cleanOcrText, OCR_PARAMETERS, tesseractLanguage, type OcrLanguage } from "./text";
 
 // The real engine and the very language models we serve (node_modules/@tesseract.js-data),
 // on fixtures whose text is known (scripts/fixtures/ocr.mjs).
@@ -14,7 +14,7 @@ async function ocr(fixture: string, language: OcrLanguage) {
     cacheMethod: "none",
   });
   try {
-    await worker.setParameters({ user_defined_dpi: "300" });
+    await worker.setParameters(OCR_PARAMETERS);
     const { data } = await worker.recognize(join(root, "tests/fixtures", fixture));
     return { text: cleanOcrText(data.text, language), confidence: data.confidence };
   } finally {

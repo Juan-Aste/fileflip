@@ -141,6 +141,13 @@ export async function unlockPdfFile(file: Blob, password: string, job: JobOption
   return pdfBlob(await call<Uint8Array>("unlock", { bytes, password }, { transfer: [bytes.buffer], ...job }));
 }
 
+/** The PDF with each page's OCR layer (invisible text) drawn over it; null leaves a page as it is. */
+export async function addOcrLayersToPdf(file: Blob, layers: (Uint8Array | null)[], job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  const transfer = [bytes.buffer, ...layers.flatMap((l) => (l ? [l.buffer] : []))];
+  return pdfBlob(await call<Uint8Array>("ocrLayers", { bytes, layers }, { transfer, ...job }));
+}
+
 /** The images stored as plain JPEG, by object reference ("12R"), to save them unchanged. */
 export async function originalPdfJpegs(file: Blob, job: JobOptions = {}) {
   const bytes = await bytesOf(file);

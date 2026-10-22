@@ -7,6 +7,15 @@ export type OcrLanguage = (typeof ocrLanguages)[number];
 /** Tesseract model names. */
 export const tesseractLanguage: Record<OcrLanguage, string> = { es: "spa", en: "eng", pt: "por", fr: "fra", zh: "chi_sim" };
 
+/**
+ * Tesseract settings for every recognition. Images rarely carry a real
+ * resolution and 300 dpi is what the models expect. Sauvola (adaptive)
+ * thresholding instead of the default global Otsu: on a photo of grey paper
+ * pasted on a white page, Otsu turned the whole grey area black and no text
+ * was found at all; the clean fixtures read the same either way.
+ */
+export const OCR_PARAMETERS = { user_defined_dpi: "300", thresholding_method: "2" } as const;
+
 /** Beyond this the image is reduced: bigger only costs time and memory. */
 export const OCR_MAX_SIDE = 4000;
 

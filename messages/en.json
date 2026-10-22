@@ -213,7 +213,9 @@
     "archiveEncrypted": "This archive is password-protected: it can't be extracted yet.",
     "archiveUnsupported": "This archive uses a compression method that can't be opened in the browser.",
     "archiveEmpty": "This archive has no files to extract (only empty folders or links).",
-    "ocrNoText": "No text was found in the image. Try a sharper photo or choose another language."
+    "ocrNoText": "No text was found in the image. Try a sharper photo or choose another language.",
+    "tooManyPages": "This PDF has too many pages to recognize in the browser (100 at most).",
+    "pdfAlreadySearchable": "Every page of this PDF already has text: it's searchable without OCR. Use “PDF to text” to extract it."
   },
   "Tools": {
     "merge-pdf": {
@@ -1115,7 +1117,23 @@
         "q3": "Which formats and languages are supported?",
         "a3": "JPG, PNG, WEBP, BMP, GIF, TIFF, HEIC and AVIF, up to 50 MB per image. Languages: Spanish, English, Portuguese, French and Simplified Chinese. Choose the language the text is written in.",
         "q4": "Does it work with scanned PDFs?",
-        "a4": "This tool works with images. If your PDF is a scan, first convert it to images with “PDF to JPG” and then extract the text from each page."
+        "a4": "If your PDF is a scan, use “OCR scanned PDF”: it recognizes every page and gives you a searchable PDF or a .txt file."
+      }
+    },
+    "ocr-pdf": {
+      "title": "OCR scanned PDF",
+      "description": "Turn a scanned PDF into a PDF with text you can search and copy, or extract its text, in your browser.",
+      "action": "Recognize text",
+      "about": "A scanned PDF is just a picture of each page: you can't search for a word or copy the text. This tool recognizes the text of each page with OCR and adds it as an invisible layer over the original page, which doesn't change: the PDF looks the same, but now you can search, select and copy. You can also get only the text as a .txt file. Pages that already have digital text are left as they are. Everything is processed on your device.",
+      "faq": {
+        "q1": "Does the PDF look different?",
+        "a1": "No. The original pages are kept as they are (same quality, same size); the recognized text is added on top, invisible, in the same position as the words in the image.",
+        "q2": "How many pages can it process?",
+        "a2": "Up to 100 pages and 100 MB per PDF. Each page is recognized in your browser and takes a few seconds, so a long document can take several minutes.",
+        "q3": "What about pages that already have text?",
+        "a3": "With the option checked they are left as they are, and their text goes into the .txt unchanged. Uncheck it if a page has only a little digital text (a stamp, for example) besides the scan.",
+        "q4": "Are my documents uploaded to a server?",
+        "a4": "No. The PDF is opened, read and recognized in your browser; only the OCR engine and the language model are downloaded once from our site."
       }
     }
   },
@@ -2004,6 +2022,11 @@
       "zh": "中文（简体）"
     },
     "note": "Processed on your device. The first time, the language model is downloaded (2–4 MB); after that it stays saved in your browser.",
-    "lowConfidence": "Low confidence ({confidence} %): check the text, the image may be blurry or tilted."
+    "lowConfidence": "Low confidence ({confidence} %): check the text, the image may be blurry or tilted.",
+    "output": "Result",
+    "outputPdf": "Searchable PDF",
+    "outputTxt": "Text only (.txt)",
+    "skipText": "Leave pages that already have text as they are",
+    "pdfNote": "Up to {pages} pages per PDF. Each page is recognized on your device and takes a few seconds."
   }
 }

@@ -213,7 +213,9 @@
     "archiveEncrypted": "Cette archive est protégée par un mot de passe : elle ne peut pas encore être extraite.",
     "archiveUnsupported": "Cette archive utilise une méthode de compression qui ne peut pas être ouverte dans le navigateur.",
     "archiveEmpty": "Cette archive ne contient aucun fichier à extraire (seulement des dossiers vides ou des liens).",
-    "ocrNoText": "Aucun texte n’a été trouvé dans l’image. Essayez une photo plus nette ou choisissez une autre langue."
+    "ocrNoText": "Aucun texte n’a été trouvé dans l’image. Essayez une photo plus nette ou choisissez une autre langue.",
+    "tooManyPages": "Ce PDF a trop de pages pour être reconnu dans le navigateur (100 au maximum).",
+    "pdfAlreadySearchable": "Toutes les pages de ce PDF contiennent déjà du texte : il est consultable sans OCR. Utilisez « PDF en texte » pour l’extraire."
   },
   "Tools": {
     "merge-pdf": {
@@ -1115,7 +1117,23 @@
         "q3": "Quels formats et quelles langues sont pris en charge ?",
         "a3": "JPG, PNG, WEBP, BMP, GIF, TIFF, HEIC et AVIF, jusqu’à 50 Mo par image. Langues : espagnol, anglais, portugais, français et chinois simplifié. Choisissez la langue dans laquelle le texte est écrit.",
         "q4": "Fonctionne-t-il avec des PDF numérisés ?",
-        "a4": "Cet outil fonctionne avec des images. Si votre PDF est un scan, convertissez-le d’abord en images avec « PDF en JPG », puis extrayez le texte de chaque page."
+        "a4": "Si votre PDF est un scan, utilisez « OCR de PDF numérisé » : il reconnaît toutes les pages et vous rend un PDF avec texte recherchable ou un .txt."
+      }
+    },
+    "ocr-pdf": {
+      "title": "OCR de PDF numérisé",
+      "description": "Transformez un PDF numérisé en PDF dont le texte peut être recherché et copié, ou extrayez son texte, dans votre navigateur.",
+      "action": "Reconnaître le texte",
+      "about": "Un PDF numérisé n’est qu’une photo de chaque page : impossible d’y chercher un mot ou d’en copier le texte. Cet outil reconnaît le texte de chaque page par OCR et l’ajoute comme couche invisible au-dessus de la page d’origine, qui ne change pas : le PDF reste identique, mais vous pouvez désormais rechercher, sélectionner et copier. Vous pouvez aussi obtenir uniquement le texte dans un fichier .txt. Les pages qui contiennent déjà du texte numérique sont laissées telles quelles. Tout est traité sur votre appareil.",
+      "faq": {
+        "q1": "L’aspect du PDF change-t-il ?",
+        "a1": "Non. Les pages d’origine sont conservées telles quelles (même qualité, même taille) ; le texte reconnu est ajouté par-dessus, invisible, à l’emplacement des mots de l’image.",
+        "q2": "Combien de pages peut-il traiter ?",
+        "a2": "Jusqu’à 100 pages et 100 Mo par PDF. Chaque page est reconnue dans votre navigateur en quelques secondes : un long document peut prendre plusieurs minutes.",
+        "q3": "Et les pages qui ont déjà du texte ?",
+        "a3": "Si l’option est cochée, elles sont laissées telles quelles et leur texte est repris tel quel dans le .txt. Décochez-la si une page ne contient qu’un peu de texte numérique (un tampon, par exemple) en plus du scan.",
+        "q4": "Mes documents sont-ils envoyés sur un serveur ?",
+        "a4": "Non. Le PDF est ouvert, lu et reconnu dans votre navigateur ; seuls le moteur OCR et le modèle de langue sont téléchargés une fois depuis notre site."
       }
     }
   },
@@ -2004,6 +2022,11 @@
       "zh": "中文（简体）"
     },
     "note": "Traitement sur votre appareil. La première fois, le modèle de la langue est téléchargé (2 à 4 Mo) ; il reste ensuite enregistré dans votre navigateur.",
-    "lowConfidence": "Confiance faible ({confidence} %) : vérifiez le texte, l’image est peut-être floue ou inclinée."
+    "lowConfidence": "Confiance faible ({confidence} %) : vérifiez le texte, l’image est peut-être floue ou inclinée.",
+    "output": "Résultat",
+    "outputPdf": "PDF avec texte recherchable",
+    "outputTxt": "Texte seulement (.txt)",
+    "skipText": "Laisser telles quelles les pages qui ont déjà du texte",
+    "pdfNote": "Jusqu’à {pages} pages par PDF. Chaque page est reconnue sur votre appareil en quelques secondes."
   }
 }
