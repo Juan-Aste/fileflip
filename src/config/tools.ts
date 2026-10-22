@@ -811,10 +811,10 @@ export const tools: Record<ToolId, ToolInfo> = {
   "extract-archive": {
     id: "extract-archive",
     category: "archive",
-    inputs: ["zip", "tar", "tgz"],
+    inputs: ["zip", "tar", "tgz", "7z", "rar"],
     outputs: ["bin"],
     engine: "browser",
-    libraries: ["fflate"],
+    libraries: ["fflate", "libarchive-wasm (libarchive)"],
     // The extracted files are also capped: EXTRACT_LIMITS (500 MB, 5000 files).
     limits: { files: "multiple", timeoutMs: 10 * MINUTE, maxFileBytes: ARCHIVE_MAX_BYTES },
     status: "verified",

@@ -17,7 +17,7 @@ export interface ExtractLimits {
 /** Everything extracted is held in memory, and each file becomes a result row. */
 export const EXTRACT_LIMITS: ExtractLimits = { maxBytes: 500 * 1024 * 1024, maxEntries: 5000 };
 
-export type ArchiveKind = "zip" | "tar" | "tgz" | "gz";
+export type ArchiveKind = "zip" | "tar" | "tgz" | "gz" | "7z" | "rar";
 
 export interface ExtractedFile {
   /** Relative path with "/" separators; always inside the extraction folder. */
@@ -60,12 +60,17 @@ export function extractArchive(bytes: Uint8Array, archiveName: string, limits: E
       result = { kind: "gz", files: [{ path: name, data: inner }], skipped: 0 };
     }
   }
+  return withUniquePaths(result);
+}
+
+/** Two entries can end up with the same safe path ("a/../b" and "b"): keep both. */
+export function withUniquePaths(result: ExtractResult): ExtractResult {
   const paths = uniqueNames(result.files.map((f) => f.path));
   result.files.forEach((f, i) => (f.path = paths[i]!));
   return result;
 }
 
-class Budget {
+export class Budget {
   bytes = 0;
   entries = 0;
   constructor(private readonly limits: ExtractLimits) {}

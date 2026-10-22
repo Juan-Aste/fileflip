@@ -2103,3 +2103,29 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - No se extraen 7Z ni RAR (3C.30), ni ZIP con contraseña. Las carpetas vacías no se incluyen. Un TAR cortado justo en el límite de un bloque, entre dos archivos, no se puede distinguir de uno completo sin marca de fin (como en GNU tar).
 
 **Siguiente**: 3C.30 (extraer 7Z y RAR con libarchive.js).
+
+## 2026-10-22 01:55 UTC — Fase 3, tarea 3C.30 (extraer 7Z y RAR)
+
+**Qué se hizo**
+- "Extraer ZIP" ahora abre también **7Z y RAR (versiones 4 y 5)**, solo lectura. Formatos nuevos `7z` y `rar` en `formats.ts`; textos (descripción, introducción y FAQ de formatos y límites) actualizados en los 5 idiomas.
+- Motor: **libarchive-wasm 1.2.0** (envoltorio MIT de ofk, con **libarchive 3.7.7**, BSD-2-Clause, 600 KB de WASM) en `src/lib/archive/libarchive.ts`, dentro del worker de datos con import diferido (`detect.ts` reconoce las firmas sin cargar nada). Verificado: la página y un ZIP no piden el WASM; un 7Z sí (una petición).
+- Se eligió frente a **libarchive.js 2.0.2** (MIT, libarchive 3.7.2): esa versión es más vieja (CVE-2024-26256 y CVE-2024-48957/48958 en el lector RAR) y lanza su propio worker sin límites de tamaño. 7z-wasm (7-Zip) se descartó por la restricción de licencia unRAR.
+- Protecciones (las mismas de 3C.29 más):
+  - **Instancia nueva de WASM por archivo** (no queda estado de un archivo hostil) y archivo de entrada ≤ **250 MB** (todo vive en el heap de 2 GB del WASM).
+  - Tamaño declarado de cada entrada contra el tope (500 MB / 5000 archivos) **antes** de leerla; libarchive nunca escribe más que ese tamaño en el búfer, y si entrega menos → `fileDamaged`.
+  - Enlaces simbólicos y duros, dispositivos, sockets y FIFOs se omiten; rutas con `safePath`.
+  - 7Z: libarchive termina en silencio si el archivo está cortado antes de la cabecera (va al final), así que se valida el *start header* (CRC de los 20 bytes, posición y CRC de la cabecera siguiente) antes de abrirlo.
+  - Entradas o cabeceras cifradas → `archiveEncrypted`; errores de libarchive → `fileDamaged`.
+- `next.config.ts`: el `IgnorePlugin` de fs/path/crypto (ramas de Node del cargador de Emscripten) se extiende a libarchive-wasm.
+- Fixtures con `scripts/fixtures/archives_7z_rar.py`: 7Z con **py7zr** (LGPL, solo para generarlos); como no hay escritor RAR libre, los RAR son **archivos de prueba del propio libarchive** (BSD, etiqueta v3.7.7) descargados y decodificados; detalle en `tests/fixtures/README.md`.
+
+**Limitación conocida (anotada en la FAQ)**
+- Este build de libarchive corre en el locale "C": en los **7Z** (nombres en UTF-16) y en RAR 4 sin marca Unicode, las letras no ASCII de los **nombres** se pierden (`año` → `a_o`); el contenido queda intacto. RAR 5 conserva bien los nombres (incluso emoji). Además libarchive 3.7.7 no tiene las correcciones de 2025 (p. ej. CVE-2025-5914 en RAR); el riesgo queda contenido en el sandbox WASM del worker, sin acceso a la página. Se agregó la tarea **3C.45** para compilar un WASM propio de libarchive 3.8.x con locale UTF-8.
+- RAR divididos en partes y archivos con contraseña no se abren.
+
+**Verificación**
+- 6 tests unitarios con libarchive real en Node: 7Z de py7zr byte a byte (PNG, PDF, texto, vacío); RAR 5 comprimido validado con el patrón `verify_data` de los tests de libarchive; RAR 4 con enlace omitido; RAR 5 con emoji, enlace duro y simbólico omitidos; 7Z con datos cifrados y con cabecera cifrada, RAR cifrado → `archiveEncrypted`; 7Z y RAR cortados, un byte alterado y entrada de más de 250 MB → error; límites de tamaño y cantidad; firmas.
+- `archive-tools.spec.ts` (+1 caso): 7Z + RAR 4 + RAR cifrado + 7Z cortado en Chromium → 7 archivos, aviso de 1 enlace omitido, mensajes de contraseña y dañado, ZIP de descarga con los bytes originales.
+- Lint, typecheck, tests (853 + 7 saltados sin Gotenberg), build, `check:static` (862 páginas) y `npm run test:e2e` completo (251 + 3 saltados sin Gotenberg) pasan.
+
+**Siguiente**: 3C.31 (imagen → texto con tesseract.js).

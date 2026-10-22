@@ -1087,16 +1087,16 @@
     },
     "extract-archive": {
       "title": "Extrair ZIP",
-      "description": "Abra arquivos ZIP, TAR, TAR.GZ e GZ no seu navegador e baixe o que há dentro, com as pastas.",
+      "description": "Abra arquivos ZIP, RAR, 7Z, TAR, TAR.GZ e GZ no seu navegador e baixe o que há dentro, com as pastas.",
       "action": "Extrair arquivos",
-      "about": "Abra um arquivo compactado sem instalar nenhum programa: ideal no celular, num computador do trabalho ou num tablet. Você vê a lista de arquivos e pode baixar cada um separadamente ou todos juntos em um ZIP com as mesmas pastas. Funciona com ZIP (inclusive os criados em versões antigas do Windows, com nomes acentuados), TAR, TAR.GZ/TGZ e GZ. O arquivo é aberto no seu dispositivo: não é enviado a nenhum servidor.",
+      "about": "Abra um arquivo compactado sem instalar nenhum programa: ideal no celular, num computador do trabalho ou num tablet. Você vê a lista de arquivos e pode baixar cada um separadamente ou todos juntos em um ZIP com as mesmas pastas. Funciona com ZIP (inclusive os criados em versões antigas do Windows, com nomes acentuados), RAR (versões 4 e 5), 7Z, TAR, TAR.GZ/TGZ e GZ. O arquivo é aberto no seu dispositivo: não é enviado a nenhum servidor.",
       "faq": {
         "q1": "É seguro abrir um ZIP que me enviaram?",
         "a1": "Ele é aberto como um arquivo potencialmente hostil: nada é executado, caminhos que tentam sair da pasta (como “../”) são corrigidos, links simbólicos e arquivos especiais são ignorados e as “bombas ZIP” param ao passar do limite. Mesmo assim, verifique com um antivírus os programas baixados de fontes desconhecidas.",
         "q2": "Quais formatos ele abre?",
-        "a2": "ZIP, TAR, TAR.GZ (ou TGZ) e GZ. ZIPs com senha, os que usam métodos de compressão incomuns e arquivos 7Z e RAR ainda não podem ser abertos aqui.",
+        "a2": "ZIP, RAR (4 e 5), 7Z, TAR, TAR.GZ (ou TGZ) e GZ. Arquivos com senha ainda não podem ser abertos aqui, nem ZIPs com métodos de compressão incomuns ou RARs divididos em partes. Nos 7Z, letras acentuadas ou de outros alfabetos nos nomes podem ser trocadas por “_”; o conteúdo não muda.",
         "q3": "Existe limite?",
-        "a3": "O arquivo compactado pode ter até 500 MB, e o conteúdo até 500 MB e 5.000 arquivos no total, porque tudo é extraído na memória do seu navegador.",
+        "a3": "O arquivo compactado pode ter até 500 MB (RAR e 7Z até 250 MB), e o conteúdo até 500 MB e 5.000 arquivos no total, porque tudo é extraído na memória do seu navegador.",
         "q4": "As pastas são mantidas?",
         "a4": "Sim: cada arquivo mostra seu caminho, e ao baixar tudo junto é criado um ZIP com a mesma estrutura de pastas. Pastas vazias não são incluídas."
       }

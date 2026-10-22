@@ -44,7 +44,9 @@ export type FormatId =
   | "html"
   | "zip"
   | "tar"
-  | "tgz";
+  | "tgz"
+  | "7z"
+  | "rar";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -103,6 +105,8 @@ export const formats: Record<FormatId, FormatInfo> = {
   zip: { id: "zip", label: "ZIP", mime: "application/zip", extensions: ["zip"], category: "data" },
   tar: { id: "tar", label: "TAR", mime: "application/x-tar", extensions: ["tar"], category: "data" },
   tgz: { id: "tgz", label: "TAR.GZ", mime: "application/gzip", extensions: ["tgz", "gz"], category: "data" },
+  "7z": { id: "7z", label: "7Z", mime: "application/x-7z-compressed", extensions: ["7z"], category: "data" },
+  rar: { id: "rar", label: "RAR", mime: "application/vnd.rar", extensions: ["rar"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 

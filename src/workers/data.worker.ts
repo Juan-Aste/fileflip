@@ -12,10 +12,15 @@ import { convertFont, type FontContainer, type Woff2Codec } from "@/lib/font/fon
 import type { SheetOptions } from "@/lib/sheet/sheet";
 import { createArchive, type ArchiveOptions } from "@/lib/archive/create";
 import { extractArchive } from "@/lib/archive/extract";
+import { detectLibarchiveFormat } from "@/lib/archive/detect";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
 // Google's WOFF2 encoder (WASM, ~1 MB): only downloaded by the font converter.
 const woff2Codec = (): Promise<Woff2Codec> => import("woff2-encoder").then(({ compress, decompress }) => ({ compress, decompress }));
+
+// libarchive (600 KB of WASM): only downloaded to open 7Z and RAR files, one fresh instance per archive.
+const libarchiveWasmUrl = new URL("../../node_modules/libarchive-wasm/dist/libarchive.wasm", import.meta.url).href;
+const loadLibarchive = async () => (await import("libarchive-wasm")).libarchiveWasm({ locateFile: () => libarchiveWasmUrl });
 
 // SheetJS (~1 MB): only downloaded by the spreadsheet converter.
 const sheetEngine = () => import("@/lib/sheet/sheet");
@@ -63,7 +68,10 @@ exposeHandlers({
     return { result, transfer: [result.buffer] };
   },
   extractArchive: async ({ input }: { input: File }) => {
-    const result = extractArchive(new Uint8Array(await input.arrayBuffer()), input.name);
+    const bytes = new Uint8Array(await input.arrayBuffer());
+    const result = detectLibarchiveFormat(bytes)
+      ? await (await import("@/lib/archive/libarchive")).extractWithLibarchive(bytes, loadLibarchive)
+      : extractArchive(bytes, input.name);
     return { result, transfer: result.files.map((f) => f.data.buffer) };
   },
   syncSubtitles: async ({ input, options }: Input<SyncOptions>) => ({ result: syncSubtitles(await textOf(input), options) }),

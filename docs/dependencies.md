@@ -26,6 +26,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | utif2 | 4.1.0 | MIT | lector/escritor TIFF | N (worker) |
 | libheif-js | 1.23.5 | LGPL-3.0 | lector HEIC/HEIF | N (worker, carga diferida, archivo aparte: cumple la LGPL al poder reemplazarse) |
 | woff2-encoder | 2.0.0 | MIT (google/woff2 y Brotli: MIT) | comprimir y descomprimir WOFF2 (codificador de referencia de Google en WASM incrustado, ~1 MB) | N (worker de datos, import diferido: solo el conversor de fuentes) |
+| libarchive-wasm | 1.2.0 | MIT (envoltorio de ofk); incluye **libarchive 3.7.7** (BSD-2-Clause) compilado con emscripten (zlib, bzip2, xz/LZMA: licencias permisivas) | extraer 7Z y RAR 4/5 (solo lectura; 600 KB de WASM) | N (worker de datos, import diferido: solo al abrir un 7Z o RAR) |
 | xlsx (SheetJS CE) | 0.20.3 | Apache-2.0 | Lectura de XLSX/XLS/ODS y escritura de XLSX/ODS en "Convertir hoja de cálculo". Instalada desde el **tarball oficial** `https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz` (la versión de npm, 0.18.5, está abandonada y tiene CVE-2023-30533 y CVE-2024-22363, corregidas desde 0.20.2) | N (worker de datos, import diferido) |
 | parse5 | 8.0.1 | MIT | Parser HTML5 en el servidor: sanea el HTML de "HTML a PDF" antes de imprimirlo | N (solo servidor) |
 | marked | 18.1.1 | MIT | Markdown (CommonMark + GFM) → HTML (en el navegador para Markdown → HTML; en el servidor para Markdown → PDF) | N (chunk de la herramienta, import diferido) |

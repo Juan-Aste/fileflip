@@ -1087,16 +1087,16 @@
     },
     "extract-archive": {
       "title": "Extraer ZIP",
-      "description": "Abre archivos ZIP, TAR, TAR.GZ y GZ en tu navegador y descarga lo que tienen dentro, con sus carpetas.",
+      "description": "Abre archivos ZIP, RAR, 7Z, TAR, TAR.GZ y GZ en tu navegador y descarga lo que tienen dentro, con sus carpetas.",
       "action": "Extraer archivos",
-      "about": "Abre un archivo comprimido sin instalar ningún programa: ideal en el celular, en una computadora del trabajo o en una tableta. Ves la lista de archivos que contiene y puedes descargar cada uno por separado o todos juntos en un ZIP con las mismas carpetas. Funciona con ZIP (también los creados en Windows antiguos, con nombres con ñ y acentos), TAR, TAR.GZ/TGZ y GZ. El archivo se abre en tu dispositivo: no se sube a ningún servidor.",
+      "about": "Abre un archivo comprimido sin instalar ningún programa: ideal en el celular, en una computadora del trabajo o en una tableta. Ves la lista de archivos que contiene y puedes descargar cada uno por separado o todos juntos en un ZIP con las mismas carpetas. Funciona con ZIP (también los creados en Windows antiguos, con nombres con ñ y acentos), RAR (versiones 4 y 5), 7Z, TAR, TAR.GZ/TGZ y GZ. El archivo se abre en tu dispositivo: no se sube a ningún servidor.",
       "faq": {
         "q1": "¿Es seguro abrir un ZIP que me enviaron?",
         "a1": "Se abre como un archivo potencialmente hostil: no se ejecuta nada, las rutas que intentan salir de la carpeta (como «../») se corrigen, los enlaces simbólicos y los archivos especiales se omiten, y las «bombas ZIP» se detienen al superar el límite. Aun así, revisa con un antivirus los programas que descargues de fuentes desconocidas.",
         "q2": "¿Qué formatos puede abrir?",
-        "a2": "ZIP, TAR, TAR.GZ (o TGZ) y GZ. Los ZIP con contraseña, los que usan métodos de compresión poco comunes y los formatos 7Z y RAR todavía no se pueden abrir aquí.",
+        "a2": "ZIP, RAR (4 y 5), 7Z, TAR, TAR.GZ (o TGZ) y GZ. Los archivos con contraseña todavía no se pueden abrir aquí, y tampoco los ZIP con métodos de compresión poco comunes ni los RAR divididos en partes. En los 7Z, las letras con acento o en otros alfabetos de los nombres pueden reemplazarse por «_»; el contenido no cambia.",
         "q3": "¿Hay un límite?",
-        "a3": "El archivo comprimido puede pesar hasta 500 MB, y lo que tiene dentro puede ocupar hasta 500 MB y 5000 archivos en total, porque todo se descomprime en la memoria de tu navegador.",
+        "a3": "El archivo comprimido puede pesar hasta 500 MB (los RAR y 7Z, hasta 250 MB), y lo que tiene dentro puede ocupar hasta 500 MB y 5000 archivos en total, porque todo se descomprime en la memoria de tu navegador.",
         "q4": "¿Se mantienen las carpetas?",
         "a4": "Sí: cada archivo muestra su ruta, y al descargar todo juntos se crea un ZIP con la misma estructura de carpetas. Las carpetas vacías no se incluyen."
       }

@@ -24,9 +24,9 @@ const nextConfig: NextConfig = {
         },
       ),
     );
-    // qpdf's Emscripten loader requires fs/path/crypto only when it runs in
+    // The Emscripten loaders of qpdf and libarchive require fs/path/crypto only when they run in
     // Node; the browser branch never reaches them.
-    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^(fs|path|crypto)$/, contextRegExp: /qpdf-wasm/ }));
+    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /^(fs|path|crypto)$/, contextRegExp: /qpdf-wasm|libarchive-wasm/ }));
     return config;
   },
 };

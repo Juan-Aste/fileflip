@@ -119,4 +119,23 @@ test.describe("tool: extract-archive", () => {
       ["zip-slip/evil.txt", "zip-slip/etc/evil-abs.txt", "zip-slip/Windows/evil-win.txt", "zip-slip/ok/evil-mid.txt", "zip-slip/evil-back.txt", "zip-slip/safe.txt", "links/escape.txt", "links/safe.txt"].sort(),
     );
   });
+
+  test("7Z and RAR (libarchive in WebAssembly): files byte for byte, links skipped, encrypted and cut files refused", async ({ page }) => {
+    await openWithFiles(page, "/es/extraer-zip", ["archive.7z", "archive-rar4.rar", "corrupt/encrypted.rar", "corrupt/truncated.7z"]);
+    await page.getByRole("button", { name: "Extraer archivos", exact: true }).click();
+    const links = page.locator("main li a[download]");
+    await expect(links).toHaveCount(7, { timeout: 45_000 });
+    const main = page.locator("main");
+    await expect(main).toContainText("Se omitió 1 enlace o archivo especial por seguridad.");
+    await expect(main).toContainText("tiene contraseña");
+    await expect(main).toContainText("dañado");
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Descargar todo/ }).click()]);
+    const entries = unzipEntries(readFileSync((await download.path())!));
+    const get = (name: string) => entries.find((e) => e.name === name)!.data;
+    expect(get("archive/images/image.png").equals(original("image.png"))).toBe(true);
+    expect(get("archive/document-1page.pdf").equals(original("document-1page.pdf"))).toBe(true);
+    expect(get("archive/docs/readme.txt").toString("utf8")).toContain("ñandú 中文");
+    expect(get("archive-rar4/testdir/test.txt").toString("utf8")).toBe("test text document\r\n");
+    expect(entries.filter((e) => e.name.startsWith("archive-rar4/"))).toHaveLength(2);
+  });
 });

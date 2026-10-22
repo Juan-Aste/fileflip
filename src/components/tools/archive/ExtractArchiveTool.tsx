@@ -10,15 +10,18 @@ import { trackTool } from "@/lib/stats-client";
 import ToolShell from "../shell/ToolShell";
 import type { ShellOutput } from "../shell/state";
 
-const extensions = ["zip", "tar", "tgz", "gz"];
-const archiveBase = (name: string) => name.replace(/\.(zip|tar|tgz|tar\.gz|gz)$/i, "") || "archive";
-const sourceFormat = (name: string): FormatId => (/\.zip$/i.test(name) ? "zip" : /\.tar$/i.test(name) ? "tar" : "tgz");
+const extensions = ["zip", "tar", "tgz", "gz", "7z", "rar"];
+const archiveBase = (name: string) => name.replace(/\.(zip|tar|tgz|tar\.gz|gz|7z|rar)$/i, "") || "archive";
+const sourceFormat = (name: string): FormatId => {
+  const ext = /\.(zip|tar|7z|rar)$/i.exec(name)?.[1]?.toLowerCase();
+  return (ext ?? "tgz") as FormatId;
+};
 const mimeOf = (path: string) => {
   const format = formatFromExtension(path);
   return format ? formats[format].mime : "application/octet-stream";
 };
 
-/** ZIP, TAR, TAR.GZ and GZ → the files inside, in the data worker (see lib/archive/extract.ts). */
+/** ZIP, TAR, TAR.GZ, GZ, 7Z and RAR → the files inside, in the data worker (see lib/archive/extract.ts). */
 export default function ExtractArchiveTool() {
   const t = useTranslations("ArchiveTool");
   const tt = useTranslations("Tools.extract-archive");

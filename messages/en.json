@@ -1087,16 +1087,16 @@
     },
     "extract-archive": {
       "title": "Extract ZIP",
-      "description": "Open ZIP, TAR, TAR.GZ and GZ files in your browser and download what's inside, with its folders.",
+      "description": "Open ZIP, RAR, 7Z, TAR, TAR.GZ and GZ files in your browser and download what's inside, with its folders.",
       "action": "Extract files",
-      "about": "Open an archive without installing any program: handy on a phone, a work computer or a tablet. You see the list of files it holds and can download each one separately or all together in a ZIP with the same folders. Works with ZIP (including ones made by older Windows versions, with accented names), TAR, TAR.GZ/TGZ and GZ. The archive is opened on your device: it isn't uploaded to any server.",
+      "about": "Open an archive without installing any program: handy on a phone, a work computer or a tablet. You see the list of files it holds and can download each one separately or all together in a ZIP with the same folders. Works with ZIP (including ones made by older Windows versions, with accented names), RAR (versions 4 and 5), 7Z, TAR, TAR.GZ/TGZ and GZ. The archive is opened on your device: it isn't uploaded to any server.",
       "faq": {
         "q1": "Is it safe to open a ZIP someone sent me?",
         "a1": "It is opened as a potentially hostile file: nothing is run, paths that try to leave the folder (like “../”) are fixed, symbolic links and special files are skipped, and “zip bombs” stop once they pass the limit. Still, scan programs downloaded from unknown sources with an antivirus.",
         "q2": "Which formats can it open?",
-        "a2": "ZIP, TAR, TAR.GZ (or TGZ) and GZ. Password-protected ZIPs, ones using unusual compression methods, and 7Z and RAR files can't be opened here yet.",
+        "a2": "ZIP, RAR (4 and 5), 7Z, TAR, TAR.GZ (or TGZ) and GZ. Password-protected archives can't be opened here yet, nor ZIPs using unusual compression methods or RARs split into parts. In 7Z files, accented letters or other scripts in names may be replaced with “_”; the content doesn't change.",
         "q3": "Is there a limit?",
-        "a3": "The archive can be up to 500 MB, and its contents up to 500 MB and 5,000 files in total, because everything is extracted in your browser's memory.",
+        "a3": "The archive can be up to 500 MB (RAR and 7Z up to 250 MB), and its contents up to 500 MB and 5,000 files in total, because everything is extracted in your browser's memory.",
         "q4": "Are folders kept?",
         "a4": "Yes: each file shows its path, and downloading everything together creates a ZIP with the same folder structure. Empty folders are not included."
       }

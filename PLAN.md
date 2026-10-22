@@ -258,7 +258,7 @@ Fuentes y documentos
 Archivos comprimidos
 - [x] 3C.28 Crear ZIP, TAR y TAR.GZ (fflate + escritor TAR propio; test leyendo la salida con `tar` del sistema)
 - [x] 3C.29 Extraer ZIP, TAR y TAR.GZ con protecciones (zip bomb por tamaño y cantidad de entradas en streaming, zip slip, symlinks); fixtures maliciosos generados por script
-- [ ] 3C.30 Extraer 7Z y RAR (solo lectura) con libarchive.js y las mismas protecciones
+- [x] 3C.30 Extraer 7Z y RAR (solo lectura) con libarchive.js y las mismas protecciones
 
 OCR
 - [ ] 3C.31 Imagen → texto con tesseract.js (datos de idioma servidos desde nuestro dominio, solo el idioma pedido: es, en, pt, fr, zh)
@@ -283,6 +283,7 @@ Ideas propias y quitar fondo
 - [ ] 3C.42 Foto carnet por país (tamaños oficiales AR, BR, MX, CL, CO, PE, UY; guía de rostro; hoja 10×15 con copias)
 - [ ] 3C.43 Escanear documento desde el celular (foto → recorte de perspectiva → PDF en blanco y negro)
 - [ ] 3C.44 Quitar fondo solo con licencia aceptable (MediaPipe Apache-2.0 u onnxruntime-web + modelo Apache-2.0); si no hay calidad suficiente, anotarlo y no publicar
+- [ ] 3C.45 (mejora de 3C.30) Compilar un WASM propio de libarchive 3.8.x con emscripten (script reproducible, locale UTF-8 al iniciar) para que los nombres no ASCII de los 7Z no se pierdan y para incluir las correcciones de seguridad de 2025 del lector RAR; mismas pruebas de 3C.30. Si el entorno no permite instalar emsdk, anotarlo y dejarlo pendiente
 
 Mediciones: Lighthouse móvil (≥ 90, CLS 0) después de 3C.10, 3C.23, 3C.34 y 3C.44, en `docs/perf/`.
 
