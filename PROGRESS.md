@@ -2458,3 +2458,10 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Sin sonido (el GIF no lo admite) y sin dithering. El GIF puede pesar mucho (formato antiguo): la página lo explica y sugiere 320 px / 5–10 fps. Los videos que el navegador no decodifica (H.264 en Chromium sin códecs propietarios) no se pueden convertir.
 
 **Siguiente**: 3C.38d ("Cambiar velocidad del video").
+
+## 2026-10-22 08:25 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas: 3C.37a (Convertir video), 3C.37b (Extraer audio de un video), 3C.38a (Comprimir video), 3C.38b (Recortar video) y 3C.38c (Video a GIF). Categoría **Video** publicada con 5 herramientas, todas en el navegador con mediabunny + WebCodecs (sin dependencias nuevas). Además, todas las herramientas de audio detectan ahora archivos cortados con el índice completo.
+- En esta ejecución no hubo Gotenberg ni EPUBCheck (4 pruebas de navegador saltadas); ffmpeg/ffprobe y sharp validaron todas las salidas. `npm run test:e2e` 294/294 al cierre. El proceso de la sesión se reinició una vez a mitad de 3C.37b (sin pérdida de trabajo).
+
+**Siguiente**: 3C.38d ("Cambiar velocidad del video").
