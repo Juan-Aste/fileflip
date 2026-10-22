@@ -2177,3 +2177,23 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - `npm run test:e2e` 258/258 (+3 saltados sin Gotenberg) al cierre.
 
 **Siguiente**: 3C.33 (EPUB → HTML/TXT y EPUB → PDF).
+
+## 2026-10-22 02:35 UTC — Fase 3, tarea 3C.33a (convertir EPUB a HTML y TXT)
+
+**Qué se hizo**
+- 3C.33 se dividió en 3C.33a (EPUB → HTML/TXT en el navegador) y 3C.33b (EPUB → PDF con Gotenberg).
+- **Convertir EPUB** (`/es/convertir-epub`, `/en/epub-converter`, `/pt/converter-epub`, `/fr/convertir-epub`), primera herramienta de la categoría **Libros electrónicos** (ahora publicada): EPUB 2 y 3 sin DRM (hasta 100 MB, lotes) → **HTML** (una sola página: título, autores, índice, capítulos en el orden del *spine*, imágenes incluidas como `data:` o, si se desmarca la opción, reemplazadas por su texto alternativo) o **texto plano** (párrafos, títulos, listas con `- `, celdas separadas por tabulación; con vista previa). Formato nuevo `epub` en `formats.ts` y en `detect.ts` (entrada `mimetype` = `application/epub+zip`).
+- `src/lib/ebook/epub.ts` (worker de datos): el ZIP pasa por el lector hostil de 3C.29 (`extractArchive` con tope de **300 MB descomprimidos y 5000 entradas**, rutas seguras, CRC). `container.xml`, `encryption.xml` y el OPF se leen con fast-xml-parser; **si declaran `<!ENTITY` se rechazan** (`fileDamaged`). Los `href` del manifiesto se resuelven con `resolveHref` (decodifica `%20`, no puede salir del libro ni apuntar a URLs). Las imágenes solo se aceptan si su tipo declarado es `image/*` **y** el contenido lo confirma (`detectFormat`).
+- **DRM**: `rights.xml` (Adobe), `license.lcpl` (LCP), `sinf.xml` (Apple) o un `encryption.xml` con algoritmos que no sean la ofuscación de fuentes (IDPF/Adobe) → error nuevo `ebookDrm` en 5 idiomas.
+- `src/lib/ebook/render.ts` (en la página, con import diferido): cada capítulo XHTML se analiza con `DOMParser` **como HTML** (inerte y sin entidades DTD; antes se quitan la declaración XML y el DOCTYPE con subconjunto interno, y los `<a id="x"/>` autocerrados se abren y cierran para que no se traguen el capítulo). Los `id` pasan a `c<n>-<id>` y los enlaces entre capítulos a anclas de la página (`ch2.xhtml#llegada` → `#c2-llegada`); quedan solo enlaces `http(s)`/`mailto`. Las portadas SVG con una sola `<image>` pasan a `<img>`. Se descartan las hojas de estilo del libro, audio, video y formularios; **DOMPurify** sanea cada capítulo y la página lleva una **CSP** `default-src 'none'; img-src data:; style-src 'unsafe-inline'` (no puede pedir nada a la red). Estilos de lectura propios claro/oscuro.
+- Fixtures con `scripts/fixtures/ebooks.py` (zipfile de Python): `book.epub`, `book-epub2.epub` y 4 corruptos (DRM, cortado, sin contenedor, entidades). Textos (introducción + 4 preguntas, opciones) en los 5 idiomas.
+
+**Verificación**
+- 11 tests unitarios: metadatos y orden del spine (sin el `nav`), EPUB 2 con UTF-16 y ruta con espacios, imágenes verificadas por contenido, DRM/sin contenedor/entidades/cortado/no ZIP, ofuscación de fuentes aceptada, ruta `../../etc/passwd` del manifiesto ignorada, `resolveHref`; HTML (jsdom): CSP, índice, enlaces que llegan a un `id` existente, sin scripts/eventos/`javascript:`/imagen remota/CSS del libro, imágenes `data:` o texto alternativo; texto plano con listas, tablas y `&#160;`.
+- `ebook-tools.spec.ts` (3 casos en Chromium, salida leída con jsdom): EPUB 3 → HTML seguro sin peticiones fuera de localhost y `pwned` sin definir; EPUB 2 → TXT con vista previa; lote con DRM, cortado y con entidades → mensajes claros y el libro bueno se convierte. Sin llamadas al servidor.
+- Lint, typecheck, tests (876 + 7 saltados sin Gotenberg), build, `check:static` (887 páginas) y `npm run test:e2e` completo (261 + 3 saltados sin Gotenberg) pasan. Capturas revisadas: la herramienta a 360 px oscuro (`scrollWidth` 360) y el HTML generado abierto en Chromium (índice, portada, imágenes y tabla).
+
+**Limitaciones**
+- Sin estilos del libro (fuentes, colores), audio ni video; MOBI/AZW no (sin motor con licencia aceptable). Todo el libro se arma en la memoria de la pestaña.
+
+**Siguiente**: 3C.33b (EPUB → PDF con Gotenberg).

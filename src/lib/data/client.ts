@@ -8,6 +8,7 @@ import type { FontContainer, FontFlavor } from "@/lib/font/font";
 import type { SheetFile, SheetOptions } from "@/lib/sheet/sheet";
 import type { ArchiveOptions } from "@/lib/archive/create";
 import type { ExtractResult } from "@/lib/archive/extract";
+import type { EpubBook } from "@/lib/ebook/epub";
 import type { FormatResult, JsonFormatOptions, XmlFormatOptions, YamlFormatOptions } from "./format";
 
 // One data worker, started on first use. Text formats are parsed whole, so a
@@ -83,3 +84,6 @@ export const createArchiveFile = (files: File[], options: ArchiveOptions, job: J
 /** The files inside a ZIP, TAR, TAR.GZ or GZ (links and special entries are skipped). */
 export const extractArchiveFile = (file: File, job: JobOptions = {}) =>
   call<ExtractResult>("extractArchive", { input: file }, { timeoutMs: 10 * 60_000, ...job });
+
+/** An EPUB's metadata, chapters (spine order) and images, unpacked in the worker (see lib/ebook/epub.ts). */
+export const readEpubFile = (file: File, job: JobOptions = {}) => call<EpubBook>("readEpub", { input: file }, job);

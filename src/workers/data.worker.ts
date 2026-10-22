@@ -13,6 +13,7 @@ import type { SheetOptions } from "@/lib/sheet/sheet";
 import { createArchive, type ArchiveOptions } from "@/lib/archive/create";
 import { extractArchive } from "@/lib/archive/extract";
 import { detectLibarchiveFormat } from "@/lib/archive/detect";
+import { readEpub } from "@/lib/ebook/epub";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
 // Google's WOFF2 encoder (WASM, ~1 MB): only downloaded by the font converter.
@@ -73,6 +74,10 @@ exposeHandlers({
       ? await (await import("@/lib/archive/libarchive")).extractWithLibarchive(bytes, loadLibarchive)
       : extractArchive(bytes, input.name);
     return { result, transfer: result.files.map((f) => f.data.buffer) };
+  },
+  readEpub: async ({ input }: { input: File }) => {
+    const result = readEpub(new Uint8Array(await input.arrayBuffer()));
+    return { result, transfer: [...new Set(result.images.map((image) => image.data.buffer))] };
   },
   syncSubtitles: async ({ input, options }: Input<SyncOptions>) => ({ result: syncSubtitles(await textOf(input), options) }),
   // Formatters answer with a result (with the error position) instead of throwing.

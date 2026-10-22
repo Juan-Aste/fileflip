@@ -43,6 +43,8 @@ export const apiErrorCodes = [
   // Client-side only: OCR of a PDF with too many pages, or whose pages all have text already.
   "tooManyPages",
   "pdfAlreadySearchable",
+  // Client-side only: an ebook locked with DRM (Adobe, LCP, Apple).
+  "ebookDrm",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -82,6 +84,7 @@ const status: Record<ApiErrorCode, number> = {
   archiveUnsupported: 415,
   archiveEmpty: 422,
   ocrNoText: 422,
+  ebookDrm: 422,
   tooManyPages: 413,
   pdfAlreadySearchable: 422,
   signInRequired: 401,

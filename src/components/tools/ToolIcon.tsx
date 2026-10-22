@@ -10,6 +10,7 @@ import {
   FolderOpen,
   ScanText,
   FileSearch,
+  BookOpenText,
   Archive,
   CaseSensitive,
   ImageDown,
@@ -118,6 +119,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "extract-archive": FolderOpen,
   "image-to-text": ScanText,
   "ocr-pdf": FileSearch,
+  "epub-converter": BookOpenText,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

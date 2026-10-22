@@ -214,6 +214,7 @@
     "archiveUnsupported": "This archive uses a compression method that can't be opened in the browser.",
     "archiveEmpty": "This archive has no files to extract (only empty folders or links).",
     "ocrNoText": "No text was found in the image. Try a sharper photo or choose another language.",
+    "ebookDrm": "This book is protected with DRM: it can't be converted. Only DRM-free EPUB files work.",
     "tooManyPages": "This PDF has too many pages to recognize in the browser (100 at most).",
     "pdfAlreadySearchable": "Every page of this PDF already has text: it's searchable without OCR. Use “PDF to text” to extract it."
   },
@@ -1135,6 +1136,22 @@
         "q4": "Are my documents uploaded to a server?",
         "a4": "No. The PDF is opened, read and recognized in your browser; only the OCR engine and the language model are downloaded once from our site."
       }
+    },
+    "epub-converter": {
+      "title": "EPUB Converter",
+      "description": "Convert EPUB books into one HTML page or plain text (TXT), with images and a table of contents. In your browser.",
+      "action": "Convert book",
+      "about": "Turn an EPUB ebook into a single HTML file that opens in any browser, with the cover, a table of contents, the chapters in order and the images included, or into plain text (.txt) to read it on any device, search it or copy from it. Works with DRM-free EPUB 2 and EPUB 3 books. Links between chapters keep working inside the page. The book is opened on your device: it isn't uploaded to any server.",
+      "faq": {
+        "q1": "Does it work with books bought with DRM?",
+        "a1": "No. EPUBs protected with DRM (Adobe, Readium LCP, Apple) are encrypted and can only be read in the store's app; the tool tells you so. DRM-free EPUBs work: public domain books, books from DRM-free publishers or ones you made.",
+        "q2": "Is the HTML it makes safe?",
+        "a2": "Yes. Scripts, event handlers, forms and javascript: links are removed, and the page carries a security policy that blocks loading anything from the internet: images are stored inside the file. The book's stylesheets aren't used; the page has its own reading styles, light and dark.",
+        "q3": "What is lost in the conversion?",
+        "a3": "The book's styles (fonts, colors, margins), audio, video and external images. Plain text keeps paragraphs, headings, lists (with dashes) and tables (cells separated by tabs).",
+        "q4": "Is there a size limit?",
+        "a4": "Up to 100 MB per book and 300 MB unpacked, because everything is processed in your browser's memory. You can convert several books at once and download them in a ZIP."
+      }
     }
   },
   "ToolUi": {
@@ -2028,5 +2045,16 @@
     "outputTxt": "Text only (.txt)",
     "skipText": "Leave pages that already have text as they are",
     "pdfNote": "Up to {pages} pages per PDF. Each page is recognized on your device and takes a few seconds."
+  },
+  "EbookTool": {
+    "target": "Convert to",
+    "targets": {
+      "html": "HTML (one page with contents)",
+      "txt": "Plain text (.txt)"
+    },
+    "images": "Include the book's images",
+    "contents": "Contents",
+    "htmlNote": "Images are stored inside the file; scripts, the book's styles and anything on the internet are not used.",
+    "textNote": "Paragraphs, headings, lists and tables are kept; images are replaced by their description, when they have one."
   }
 }

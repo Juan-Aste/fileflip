@@ -214,6 +214,7 @@
     "archiveUnsupported": "Cette archive utilise une méthode de compression qui ne peut pas être ouverte dans le navigateur.",
     "archiveEmpty": "Cette archive ne contient aucun fichier à extraire (seulement des dossiers vides ou des liens).",
     "ocrNoText": "Aucun texte n’a été trouvé dans l’image. Essayez une photo plus nette ou choisissez une autre langue.",
+    "ebookDrm": "Ce livre est protégé par DRM : il ne peut pas être converti. Seuls les EPUB sans DRM fonctionnent.",
     "tooManyPages": "Ce PDF a trop de pages pour être reconnu dans le navigateur (100 au maximum).",
     "pdfAlreadySearchable": "Toutes les pages de ce PDF contiennent déjà du texte : il est consultable sans OCR. Utilisez « PDF en texte » pour l’extraire."
   },
@@ -1135,6 +1136,22 @@
         "q4": "Mes documents sont-ils envoyés sur un serveur ?",
         "a4": "Non. Le PDF est ouvert, lu et reconnu dans votre navigateur ; seuls le moteur OCR et le modèle de langue sont téléchargés une fois depuis notre site."
       }
+    },
+    "epub-converter": {
+      "title": "Convertir un EPUB",
+      "description": "Convertissez des livres EPUB en une page HTML ou en texte brut (TXT), avec images et table des matières. Dans votre navigateur.",
+      "action": "Convertir le livre",
+      "about": "Transformez un livre numérique EPUB en un seul fichier HTML qui s'ouvre dans n'importe quel navigateur, avec la couverture, une table des matières, les chapitres dans l'ordre et les images incluses, ou en texte brut (.txt) pour le lire sur n'importe quel appareil, y chercher ou en copier des passages. Fonctionne avec les EPUB 2 et EPUB 3 sans DRM. Les liens entre chapitres continuent de fonctionner dans la page. Le livre est ouvert sur votre appareil : il n'est envoyé à aucun serveur.",
+      "faq": {
+        "q1": "Fonctionne-t-il avec des livres achetés avec DRM ?",
+        "a1": "Non. Les EPUB protégés par DRM (Adobe, Readium LCP, Apple) sont chiffrés et ne se lisent que dans l'application de la librairie ; l'outil vous le signale. Les EPUB sans DRM fonctionnent : livres du domaine public, d'éditeurs sans DRM ou créés par vous.",
+        "q2": "Le HTML produit est-il sûr ?",
+        "a2": "Oui. Les scripts, gestionnaires d'événements, formulaires et liens javascript: sont supprimés, et la page contient une politique de sécurité qui empêche de charger quoi que ce soit depuis internet : les images sont stockées dans le fichier. Les feuilles de style du livre ne sont pas utilisées ; la page a ses propres styles de lecture, clairs et sombres.",
+        "q3": "Que perd-on à la conversion ?",
+        "a3": "Les styles du livre (polices, couleurs, marges), l'audio, la vidéo et les images externes. Le texte brut conserve les paragraphes, les titres, les listes (avec des tirets) et les tableaux (cellules séparées par des tabulations).",
+        "q4": "Y a-t-il une limite de taille ?",
+        "a4": "Jusqu'à 100 Mo par livre et 300 Mo une fois décompressé, car tout est traité dans la mémoire de votre navigateur. Vous pouvez convertir plusieurs livres à la fois et les télécharger dans un ZIP."
+      }
     }
   },
   "ToolUi": {
@@ -2028,5 +2045,16 @@
     "outputTxt": "Texte seulement (.txt)",
     "skipText": "Laisser telles quelles les pages qui ont déjà du texte",
     "pdfNote": "Jusqu’à {pages} pages par PDF. Chaque page est reconnue sur votre appareil en quelques secondes."
+  },
+  "EbookTool": {
+    "target": "Convertir en",
+    "targets": {
+      "html": "HTML (une page avec sommaire)",
+      "txt": "Texte brut (.txt)"
+    },
+    "images": "Inclure les images du livre",
+    "contents": "Sommaire",
+    "htmlNote": "Les images sont stockées dans le fichier ; les scripts, les styles du livre et tout ce qui est sur internet ne sont pas utilisés.",
+    "textNote": "Paragraphes, titres, listes et tableaux sont conservés ; les images sont remplacées par leur description, si elles en ont une."
   }
 }

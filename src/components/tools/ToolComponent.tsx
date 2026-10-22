@@ -63,6 +63,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "extract-archive": dynamic(() => import("./archive/ExtractArchiveTool")),
   "image-to-text": dynamic(() => import("./ocr/ImageToTextTool")),
   "ocr-pdf": dynamic(() => import("./ocr/OcrPdfTool")),
+  "epub-converter": dynamic(() => import("./ebook/EpubConverterTool")),
   "html-to-markdown": dynamic(() => import("./markup/MarkdownTools").then((m) => m.HtmlToMarkdownTool)),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),

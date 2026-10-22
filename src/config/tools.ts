@@ -89,6 +89,7 @@ export const toolIds = [
   "extract-archive",
   "image-to-text",
   "ocr-pdf",
+  "epub-converter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -140,6 +141,8 @@ const ARCHIVE_MAX_BYTES = 500 * 1024 * 1024;
 const OCR_MAX_BYTES = 50 * 1024 * 1024;
 /** Scanned PDFs are rendered page by page; the original is kept whole to add the text layers. */
 const OCR_PDF_MAX_BYTES = 100 * 1024 * 1024;
+/** Books are unpacked in the worker (EPUB_LIMITS) and assembled into one page in the tab. */
+const EPUB_MAX_BYTES = 100 * 1024 * 1024;
 /** Markdown/HTML are converted on the page (they need a DOM): keep it responsive. */
 const MARKUP_MAX_BYTES = 5 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
@@ -849,6 +852,17 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 3 * MINUTE, maxFileBytes: OCR_PDF_MAX_BYTES },
     status: "verified",
     slugs: { es: "ocr-pdf", en: "ocr-pdf", pt: "ocr-pdf", fr: "ocr-pdf", zh: "ocr-pdf" },
+  },
+  "epub-converter": {
+    id: "epub-converter",
+    category: "ebook",
+    inputs: ["epub"],
+    outputs: ["html", "txt"],
+    engine: "browser",
+    libraries: ["fflate", "fast-xml-parser", "dompurify"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: EPUB_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "convertir-epub", en: "epub-converter", pt: "converter-epub", fr: "convertir-epub", zh: "epub-converter" },
   },
 };
 

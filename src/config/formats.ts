@@ -46,7 +46,8 @@ export type FormatId =
   | "tar"
   | "tgz"
   | "7z"
-  | "rar";
+  | "rar"
+  | "epub";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -107,6 +108,7 @@ export const formats: Record<FormatId, FormatInfo> = {
   tgz: { id: "tgz", label: "TAR.GZ", mime: "application/gzip", extensions: ["tgz", "gz"], category: "data" },
   "7z": { id: "7z", label: "7Z", mime: "application/x-7z-compressed", extensions: ["7z"], category: "data" },
   rar: { id: "rar", label: "RAR", mime: "application/vnd.rar", extensions: ["rar"], category: "data" },
+  epub: { id: "epub", label: "EPUB", mime: "application/epub+zip", extensions: ["epub"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 

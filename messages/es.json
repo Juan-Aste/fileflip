@@ -214,6 +214,7 @@
     "archiveUnsupported": "Este archivo comprimido usa un método de compresión que no se puede abrir en el navegador.",
     "archiveEmpty": "Este archivo comprimido no tiene archivos para extraer (solo carpetas vacías o enlaces).",
     "ocrNoText": "No se encontró texto en la imagen. Prueba con una foto más nítida o elige otro idioma.",
+    "ebookDrm": "Este libro tiene DRM (protección anticopia): no se puede convertir. Solo funcionan los EPUB sin DRM.",
     "tooManyPages": "Este PDF tiene demasiadas páginas para reconocerlas en el navegador (máximo 100).",
     "pdfAlreadySearchable": "Todas las páginas de este PDF ya tienen texto: se puede buscar sin OCR. Usa «PDF a texto» para extraerlo."
   },
@@ -1135,6 +1136,22 @@
         "q4": "¿Mis documentos se suben a un servidor?",
         "a4": "No. El PDF se abre, se lee y se reconoce en tu navegador; solo se descarga una vez el motor de OCR y el modelo del idioma desde nuestro sitio."
       }
+    },
+    "epub-converter": {
+      "title": "Convertir EPUB",
+      "description": "Convierte libros EPUB en una página HTML o en texto plano (TXT), con imágenes e índice. En tu navegador.",
+      "action": "Convertir libro",
+      "about": "Convierte un libro electrónico EPUB en un solo archivo HTML que se abre en cualquier navegador, con portada, índice, capítulos en orden e imágenes incluidas, o en texto plano (.txt) para leerlo en cualquier dispositivo, buscar en él o copiarlo. Funciona con EPUB 2 y EPUB 3 sin DRM. Los enlaces entre capítulos siguen funcionando dentro de la página. El libro se abre en tu dispositivo: no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Funciona con libros comprados con DRM?",
+        "a1": "No. Los EPUB protegidos con DRM (Adobe, Readium LCP, Apple) están cifrados y no se pueden leer sin la aplicación de la tienda; la herramienta te avisa. Funcionan los EPUB sin DRM: libros de dominio público, de editoriales sin DRM o creados por ti.",
+        "q2": "¿Es seguro el HTML que genera?",
+        "a2": "Sí. Se quitan scripts, eventos, formularios y enlaces javascript:, y la página incluye una política de seguridad que impide cargar cualquier recurso de internet: las imágenes van dentro del archivo. Las hojas de estilo del libro no se usan; la página tiene estilos de lectura propios, claros y oscuros.",
+        "q3": "¿Qué se pierde al convertir?",
+        "a3": "Los estilos del libro (fuentes, colores, márgenes), el audio, el video y las imágenes externas. En el texto plano se conservan los párrafos, los títulos, las listas (con guiones) y las tablas (separadas por tabulaciones).",
+        "q4": "¿Hay un límite de tamaño?",
+        "a4": "Hasta 100 MB por libro y 300 MB descomprimido, porque todo se procesa en la memoria de tu navegador. Puedes convertir varios libros a la vez y descargarlos en un ZIP."
+      }
     }
   },
   "ToolUi": {
@@ -2028,5 +2045,16 @@
     "outputTxt": "Solo el texto (.txt)",
     "skipText": "Dejar como están las páginas que ya tienen texto",
     "pdfNote": "Hasta {pages} páginas por PDF. Cada página se reconoce en tu dispositivo y tarda unos segundos."
+  },
+  "EbookTool": {
+    "target": "Convertir a",
+    "targets": {
+      "html": "HTML (una página con índice)",
+      "txt": "Texto plano (.txt)"
+    },
+    "images": "Incluir las imágenes del libro",
+    "contents": "Contenido",
+    "htmlNote": "Las imágenes se incluyen dentro del archivo; los scripts, los estilos del libro y lo que esté en internet no se usan.",
+    "textNote": "Se conservan párrafos, títulos, listas y tablas; las imágenes se reemplazan por su descripción, si la tienen."
   }
 }
