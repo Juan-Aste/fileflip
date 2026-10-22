@@ -2807,3 +2807,11 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 ## FASE 3 TERMINADA
 
 Todas las tareas de la fase 3 en PLAN.md están marcadas. Informe en `docs/report-phase3.md`. Quedan decisiones del dueño (licencias GPL/AGPL, nombre y dominio, Gotenberg en Railway, página de créditos LGPL) en la sección 10 del informe y en "Pendiente del dueño".
+
+## Inicio de la fase 4
+
+## 2026-10-22 19:10 UTC — Fase 4: plan
+
+- PLAN.md: nueva sección "Fase 4" (cierre antes de publicar) con los hitos 4.1 (créditos y licencias), 4.2 (pendientes resolubles en código) y 4.3 (lista para publicar).
+- Revisión rápida de los pendientes para armar el plan: de "Pendiente del dueño" y de la sección 10 del informe de la fase 3, solo la página de créditos (4.1), el CLS de la categoría PDF (4.2b) y la prueba manual de "Ordenar PDF" (4.2c) se resuelven en código; el resto necesita cuentas, credenciales, dominio o decisiones del dueño (se detalla en 4.2a).
+- CI de `dev` en verde al empezar (264bf57).

@@ -319,3 +319,20 @@ Mediciones: Lighthouse móvil (≥ 90, CLS 0) después de 3C.10, 3C.23, 3C.34 y 
 
 ### Hito 3E — Informe final
 - [x] 3E.1 `docs/report-phase3.md`: herramientas verificadas, formatos de entrada y salida, matriz generada desde el registro y los tests, pruebas y resultados, limitaciones, descartes y motivos, dependencias y licencias, rendimiento, seguridad, diseño y SEO, y lo que debe decidir el dueño; "FASE 3 TERMINADA" en PROGRESS.md
+
+## Fase 4
+
+Cierre antes de publicar: tareas chicas que no requieren decisiones del dueño. No se agregan dependencias GPL ni AGPL.
+
+### Hito 4.1 — Créditos y licencias
+- [ ] 4.1a `npm run licenses`: genera los datos de créditos desde `node_modules` (dependencias de producción del `package-lock.json`, licencia, autor y enlace reales) y `docs/dependencies.md`, más un archivo descargable de avisos de terceros (textos de licencia, copyright y NOTICE de Apache-2.0); test que falla si una dependencia de producción no tiene entrada en los créditos o si aparece una GPL/AGPL no aprobada
+- [ ] 4.1b Componentes embebidos y LGPL: LAME (con enlace a https://lame.sourceforge.io), codificador AAC de FFmpeg, libFLAC, libheif, libvips, libarchive (build propio) y modelos de datos (u2netp, tessdata): aviso LGPL, texto de la licencia y enlace al código fuente exacto de la versión usada y a sus scripts de compilación; lo que no se pueda ubicar va a "Pendiente del dueño"
+- [ ] 4.1c Página `/[locale]/credits` (slugs traducidos: `/es/creditos`, `/en/credits`, `/pt/creditos`, `/fr/credits`, `/zh/credits`), enlazada desde el footer, textos en los 5 idiomas, metadatos, sitemap, diseño de `docs/design.md`; capturas Playwright 360/1280 claro/oscuro
+
+### Hito 4.2 — Pendientes resolubles en código
+- [ ] 4.2a Revisar "Pendiente del dueño" (PROGRESS.md) y la sección 10 de `docs/report-phase3.md`: clasificar cada punto (código / dueño) y dejar la lista del dueño al día
+- [ ] 4.2b CLS de la página de la categoría PDF (0,014 en 1 de 3 corridas: la fila de pastillas se reacomoda al cargar la fuente): dejarlo en 0
+- [ ] 4.2c Prueba automatizada de arrastrar y soltar miniaturas en "Ordenar PDF" (quedó como revisión manual en la fase 1)
+
+### Hito 4.3 — Lista para publicar
+- [ ] 4.3 `docs/launch-checklist.md`: pasos concretos y en orden para publicar (variables de Railway con valor de ejemplo, Gotenberg, dominio y DNS, Google OAuth, Resend, Mercado Pago, AdSense, Search Console, mergear `dev` en `main`, qué verificar después)
