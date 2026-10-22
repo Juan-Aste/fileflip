@@ -105,6 +105,7 @@ export const toolIds = [
   "video-speed",
   "join-videos",
   "model-converter",
+  "image-to-lithophane",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -1058,6 +1059,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: MODEL_MAX_BYTES },
     status: "verified",
     slugs: { es: "convertir-modelo-3d", en: "3d-model-converter", pt: "converter-modelo-3d", fr: "convertir-modele-3d", zh: "3d-model-converter" },
+  },
+  "image-to-lithophane": {
+    id: "image-to-lithophane",
+    category: "3d",
+    inputs: ["jpg", "png", "webp", "gif", "bmp", "avif"],
+    outputs: ["stl"],
+    engine: "browser",
+    libraries: ["native canvas", "own STL writer"],
+    // The picture is scaled to at most MAX_LITHOPHANE_POINTS grid points (~1.1 million triangles) in the 3D worker.
+    limits: { files: "single", timeoutMs: 2 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "imagen-a-litofania", en: "image-to-lithophane", pt: "imagem-para-litofania", fr: "image-en-lithophanie", zh: "image-to-lithophane" },
   },
 
 

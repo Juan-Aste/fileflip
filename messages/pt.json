@@ -1409,6 +1409,22 @@
         "q4": "Existe algum limite?",
         "a4": "Até 200 MB e 3 milhões de triângulos por modelo, e 5 minutos de processamento por arquivo. Nuvens de pontos (PLY sem faces) não podem ser convertidas em malhas."
       }
+    },
+    "image-to-lithophane": {
+      "title": "Imagem para litofania",
+      "description": "Transforme uma foto em uma litofania 3D (STL) pronta para imprimir, no seu navegador.",
+      "action": "Criar litofania",
+      "about": "Uma litofania é uma placa fina que, contra a luz, mostra uma foto: as áreas escuras são mais grossas e deixam passar menos luz. Envie uma imagem, escolha a largura da placa, o nível de detalhe e a espessura, e baixe um STL fechado (sem furos) pronto para o fatiador da sua impressora 3D. Você pode adicionar uma moldura para dar rigidez. Tudo acontece no seu dispositivo: a foto não é enviada a nenhum servidor.",
+      "faq": {
+        "q1": "Como imprimo?",
+        "a1": "Deite-a com o lado plano sobre a mesa, use filamento branco (PLA branco é o mais comum), preenchimento de 100 % e altura de camada de 0,1–0,15 mm. Ilumine por trás para ver a foto; ela fica legível pelo lado com relevo.",
+        "q2": "Quais fotos funcionam melhor?",
+        "a2": "As com bom contraste e o assunto grande: retratos, animais, paisagens com céu. Áreas muito claras ficam quase transparentes e as muito escuras, opacas. A foto é convertida para tons de cinza.",
+        "q3": "O que significam detalhe e espessura?",
+        "a3": "O detalhe é a distância entre os pontos da superfície: 0,4 mm basta para um bico de 0,4 mm e gera arquivos mais leves; 0,2 mm conserva mais detalhes. A espessura vai do branco (mais fino) ao preto (mais grosso): uma faixa maior dá mais contraste, mas precisa de mais luz.",
+        "q4": "Existe algum limite?",
+        "a4": "Uma imagem por vez, de até 50 MB (JPG, PNG, WEBP, GIF, BMP ou AVIF). A superfície tem no máximo cerca de 560 000 pontos: em imagens muito altas o detalhe é reduzido automaticamente. A placa é plana (sem curvatura)."
+      }
     }
   },
   "ToolUi": {
@@ -2483,5 +2499,23 @@
     "reset": "Voltar à vista inicial",
     "resetShort": "Centralizar",
     "tooLarge": "O modelo tem mais de 50 MB: pode ser convertido, mas não o mostramos para não travar a página."
+  },
+  "LithophaneTool": {
+    "width": "Largura da placa",
+    "detail": "Detalhe",
+    "details": {
+      "normal": "Normal (0,4 mm)",
+      "fine": "Fino (0,2 mm)"
+    },
+    "thickness": "Espessura",
+    "thicknesses": {
+      "thin": "Fina ({min}–{max} mm)",
+      "standard": "Padrão ({min}–{max} mm)",
+      "thick": "Grossa ({min}–{max} mm)"
+    },
+    "border": "Adicionar uma moldura de 2 mm",
+    "note": "O escuro fica mais grosso e o claro mais fino. Processado no seu dispositivo.",
+    "suffix": "litofania",
+    "done": "Placa de {width} × {height} mm, de {min} a {max} mm de espessura, {triangles} triângulos."
   }
 }

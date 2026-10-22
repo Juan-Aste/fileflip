@@ -1409,6 +1409,22 @@
         "q4": "Is there a limit?",
         "a4": "Up to 200 MB and 3 million triangles per model, and 5 minutes of processing per file. Point clouds (PLY without faces) can't be converted to meshes."
       }
+    },
+    "image-to-lithophane": {
+      "title": "Image to lithophane",
+      "description": "Turn a photo into a 3D lithophane (STL) ready to print, in your browser.",
+      "action": "Create lithophane",
+      "about": "A lithophane is a thin plate that shows a photo when light shines through it: dark areas are thicker and let less light pass. Upload a picture, choose the plate width, the level of detail and the thickness, and download a closed (watertight) STL ready for your 3D printer's slicer. You can add a frame for stiffness. Everything happens on your device: the photo isn't uploaded to any server.",
+      "faq": {
+        "q1": "How do I print it?",
+        "a1": "Lay it flat side down on the bed, use white filament (white PLA is the usual choice), 100% infill and a layer height of 0.1–0.15 mm. Light it from behind to see the photo; it reads correctly from the relief side.",
+        "q2": "Which photos work best?",
+        "a2": "Ones with good contrast and a large subject: portraits, pets, landscapes with sky. Very light areas end up almost transparent and very dark ones opaque. The photo is turned to grayscale.",
+        "q3": "What do detail and thickness mean?",
+        "a3": "Detail is the distance between points of the surface: 0.4 mm is enough for a 0.4 mm nozzle and makes lighter files; 0.2 mm keeps more detail. Thickness goes from white (thinnest) to black (thickest): a larger range gives more contrast but needs more light.",
+        "q4": "Is there a limit?",
+        "a4": "One image at a time, up to 50 MB (JPG, PNG, WEBP, GIF, BMP or AVIF). The surface has about 560,000 points at most: for very tall pictures the detail is reduced automatically. The plate is flat (not curved)."
+      }
     }
   },
   "ToolUi": {
@@ -2483,5 +2499,23 @@
     "reset": "Back to the initial view",
     "resetShort": "Center",
     "tooLarge": "The model is over 50 MB: it can be converted, but we don't preview it so the page doesn't freeze."
+  },
+  "LithophaneTool": {
+    "width": "Plate width",
+    "detail": "Detail",
+    "details": {
+      "normal": "Normal (0.4 mm)",
+      "fine": "Fine (0.2 mm)"
+    },
+    "thickness": "Thickness",
+    "thicknesses": {
+      "thin": "Thin ({min}–{max} mm)",
+      "standard": "Standard ({min}–{max} mm)",
+      "thick": "Thick ({min}–{max} mm)"
+    },
+    "border": "Add a 2 mm frame",
+    "note": "Dark areas come out thicker and light areas thinner. Processed on your device.",
+    "suffix": "lithophane",
+    "done": "{width} × {height} mm plate, {min} to {max} mm thick, {triangles} triangles."
   }
 }

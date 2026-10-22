@@ -230,3 +230,52 @@ test.describe("tool: model-converter (3D preview)", () => {
     await expect(page.locator("main canvas")).toHaveCount(0);
   });
 });
+
+test.describe("tool: image-to-lithophane", () => {
+  /** Thickest point of the plate near `x` mm, in the middle rows (y 15–25 mm, away from a frame), read from the STL triangles. */
+  function heightNear(buf: Buffer, x: number) {
+    let best = 0;
+    for (let i = 0; i < buf.readUInt32LE(80); i++) {
+      for (let v = 0; v < 3; v++) {
+        const o = 84 + i * 50 + 12 + v * 12;
+        const y = buf.readFloatLE(o + 4);
+        if (Math.abs(buf.readFloatLE(o) - x) < 0.5 && y > 15 && y < 25) best = Math.max(best, buf.readFloatLE(o + 8));
+      }
+    }
+    return best;
+  }
+
+  test("black, grey and white bands → an 80 mm plate 3.2, 2.0 and 0.8 mm thick; a frame keeps the edges thick", async ({ page }) => {
+    await openWithFiles(page, "/en/image-to-lithophane", ["lithophane-bands.png"]);
+    await page.getByText("80 mm", { exact: true }).click();
+    await page.getByText("Add a 2 mm frame", { exact: true }).click();
+    let out = fileOf(await runTool(page, "Create lithophane"));
+    expect(out.name).toBe("lithophane-bands-lithophane.stl");
+    await expect(page.locator("main")).toContainText("80 × 40 mm plate, 0.8 to 3.2 mm thick, 41,800 triangles.");
+    const plate = readStl(out.buf);
+    expect(plate).toMatchObject({ triangles: 41_800 });
+    expect(plate.box.slice(0, 5)).toEqual([0, 0, 0, 80, 40]);
+    expect(plate.box[5]).toBeCloseTo(3.2, 2);
+    expect(heightNear(out.buf, 10)).toBeCloseTo(3.2, 1);
+    expect(heightNear(out.buf, 40)).toBeCloseTo(2.0, 1);
+    expect(heightNear(out.buf, 70)).toBeCloseTo(0.8, 1);
+
+    await page.getByRole("button", { name: "Start over" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(`${__dirname}/../fixtures/lithophane-bands.png`);
+    await page.getByText("100 mm", { exact: true }).click();
+    await expect(page.getByRole("checkbox", { name: "Add a 2 mm frame" })).not.toBeChecked();
+    await page.getByText("Add a 2 mm frame", { exact: true }).click();
+    await page.getByText("Thick (1.2–4 mm)", { exact: true }).click();
+    out = fileOf(await runTool(page, "Create lithophane"));
+    expect(heightNear(out.buf, 70), "white band, thick preset").toBeCloseTo(1.2, 1);
+    await expect(page.locator("main")).toContainText("100 × 50 mm plate, 1.2 to 4 mm thick");
+    expect(heightNear(out.buf, 99.5), "the frame at the white edge").toBeCloseTo(4, 1);
+    expect(heightNear(out.buf, 97), "white just inside the frame").toBeCloseTo(1.2, 1);
+  });
+
+  test("a damaged image shows a clear error", async ({ page }) => {
+    await openWithFiles(page, "/es/imagen-a-litofania", ["corrupt/truncated.png"]);
+    const result = await runTool(page, "Crear litofanía");
+    expect(result.error).toContain("dañado o incompleto");
+  });
+});

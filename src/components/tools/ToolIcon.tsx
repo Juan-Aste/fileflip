@@ -67,6 +67,7 @@ import {
   FastForward,
   Film,
   Box,
+  Lamp,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
 
@@ -146,6 +147,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "video-speed": FastForward,
   "join-videos": Film,
   "model-converter": Box,
+  "image-to-lithophane": Lamp,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

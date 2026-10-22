@@ -2535,3 +2535,28 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - La vista previa usa un solo modelo (el primero de la lista). Sin medidas en milímetros (los formatos no guardan unidades, salvo glTF en metros). Las texturas de un GLB se ven; las de OBJ no (no se sube el `.mtl`).
 
 **Siguiente**: 3C.40 (entradas 3MF, COLLADA y FBX e imagen → litofanía).
+
+## 2026-10-22 09:40 UTC — Fase 3, tarea 3C.40a (imagen a litofanía)
+
+**Qué se hizo**
+- 3C.40 se dividió: 3C.40a (litofanía, hecha) y 3C.40b (entradas 3MF/COLLADA/FBX). Se revisó que `3MFLoader` y `ColladaLoader` de three.js usan `DOMParser` y `querySelector`, que no existen en los workers; la decisión de cómo cargarlos (hilo principal con límite menor o DOM mínimo en el worker) y la protección contra zip bombs del 3MF quedan anotadas en la tarea 3C.40b del PLAN.
+- **Imagen a litofanía** (`/es/imagen-a-litofania`, `/en/image-to-lithophane`, `/pt/imagem-para-litofania`, `/fr/image-en-lithophanie`), categoría 3D: una imagen JPG, PNG, WEBP, GIF, BMP o AVIF (hasta 50 MB) → **placa STL binaria cerrada** para imprimir en 3D, más gruesa donde la foto es más oscura. Opciones: ancho 80/100 (por defecto)/150 mm, detalle normal 0,4 mm o fino 0,2 mm por punto, grosor fino 0,6–2,4 / estándar 0,8–3,2 / grueso 1,2–4 mm, y **marco de 2 mm** al grosor máximo (activado por defecto). El resultado dice medidas, grosor y triángulos.
+- Geometría propia y pura (`src/lib/model3d/lithophane.ts`, sin dependencias): una malla de puntos (uno por píxel de la imagen escalada) con relieve, paredes laterales y fondo plano en abanico desde el centro, de modo que **cada arista la comparten exactamente dos triángulos** (sin agujeros ni uniones en T) y las normales apuntan hacia afuera. Se lee de frente desde el lado con relieve. Máximo 562 500 puntos (~1,1 M triángulos): en imágenes muy altas el detalle se reduce solo (`lithophanePlan`).
+- La imagen se decodifica en el **worker 3D** (`createImageBitmap` + `OffscreenCanvas`, transparencias como blanco, luminancia Rec. 709) y se escala al tamaño de la malla; la herramienta no carga three.js. Fixture nuevo `lithophane-bands.png` (bandas negra, gris 128 y blanca) en `scripts/fixtures/models.mjs`. Textos (introducción + 4 preguntas, interfaz) en los 5 idiomas; ícono `Lamp`.
+
+**Verificación**
+- `lithophane.test.ts` (4): triángulos, tamaño y grosor por píxel (negro 3,2, gris 2,0, blanco 0,8 mm); **estanqueidad** (cada arista dirigida aparece una vez y su inversa también) y **volumen con signo positivo** (normales hacia afuera, entre 0,8 y 3,2 mm de grosor medio); marco al grosor máximo; tamaño de la malla y tope de puntos.
+- `model-tools.spec.ts` (+2, lector STL propio): bandas a 80 mm sin marco → placa **80 × 40 mm**, 41 800 triángulos, grosor 3,2 / 2,0 / 0,8 mm en cada banda; a 100 mm con preset grueso y marco → blanco a 1,2 mm y **marco a 4 mm** en el borde blanco; PNG truncado → "dañado o incompleto".
+- Lint, typecheck, tests (937 + 8 saltados), build, `check:static` (982 páginas) y `npm run test:e2e` completo: 308 pasan, 4 saltados (sin Gotenberg ni EPUBCheck).
+
+**Limitaciones**
+- Placa plana (sin curva ni formas de lámpara), sin vista previa 3D del resultado (se puede abrir el STL en "Convertir modelo 3D"). HEIC y TIFF no se aceptan (el navegador no los decodifica en el worker).
+
+**Siguiente**: 3C.40b (entradas 3MF, COLLADA y FBX).
+
+## 2026-10-22 09:45 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas: 3C.38d (Cambiar velocidad del video), 3C.38e (Unir videos), 3C.39a (Convertir modelo 3D), 3C.39b (visor 3D) y 3C.40a (Imagen a litofanía). La categoría **Video** queda completa con 7 herramientas y se publicó la categoría **3D** (2 herramientas). Dependencia nueva: three 0.186.1 (MIT), solo en chunks diferidos.
+- En esta ejecución no hubo Gotenberg ni EPUBCheck (4 pruebas de navegador saltadas); ffmpeg/ffprobe y lectores propios validaron todas las salidas. `npm run test:e2e` 308/308 al cierre.
+
+**Siguiente**: 3C.40b (entradas 3MF, COLLADA y FBX; ver la nota sobre `DOMParser` en el PLAN).

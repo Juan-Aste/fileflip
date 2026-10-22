@@ -1409,6 +1409,22 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Jusqu'à 200 Mo et 3 millions de triangles par modèle, et 5 minutes de traitement par fichier. Les nuages de points (PLY sans faces) ne peuvent pas être convertis en maillages."
       }
+    },
+    "image-to-lithophane": {
+      "title": "Image en lithophanie",
+      "description": "Transformez une photo en lithophanie 3D (STL) prête à imprimer, dans votre navigateur.",
+      "action": "Créer la lithophanie",
+      "about": "Une lithophanie est une plaque fine qui révèle une photo à contre-jour : les zones sombres sont plus épaisses et laissent passer moins de lumière. Envoyez une image, choisissez la largeur de la plaque, le niveau de détail et l'épaisseur, et téléchargez un STL fermé (étanche) prêt pour le trancheur de votre imprimante 3D. Vous pouvez ajouter un cadre pour la rigidité. Tout se passe sur votre appareil : la photo n'est envoyée à aucun serveur.",
+      "faq": {
+        "q1": "Comment l'imprimer ?",
+        "a1": "Posez-la côté plat sur le plateau, utilisez du filament blanc (le PLA blanc est le plus courant), un remplissage de 100 % et une hauteur de couche de 0,1 à 0,15 mm. Éclairez-la par l'arrière pour voir la photo ; elle se lit à l'endroit côté relief.",
+        "q2": "Quelles photos donnent le meilleur résultat ?",
+        "a2": "Celles qui ont un bon contraste et un grand sujet : portraits, animaux, paysages avec du ciel. Les zones très claires deviennent presque transparentes et les très sombres, opaques. La photo est convertie en niveaux de gris.",
+        "q3": "Que signifient le détail et l'épaisseur ?",
+        "a3": "Le détail est la distance entre les points de la surface : 0,4 mm suffit pour une buse de 0,4 mm et donne des fichiers plus légers ; 0,2 mm garde plus de détails. L'épaisseur va du blanc (le plus fin) au noir (le plus épais) : un écart plus grand donne plus de contraste mais demande plus de lumière.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Une image à la fois, jusqu'à 50 Mo (JPG, PNG, WEBP, GIF, BMP ou AVIF). La surface compte au maximum environ 560 000 points : pour les images très hautes, le détail est réduit automatiquement. La plaque est plate (non incurvée)."
+      }
     }
   },
   "ToolUi": {
@@ -2483,5 +2499,23 @@
     "reset": "Revenir à la vue initiale",
     "resetShort": "Centrer",
     "tooLarge": "Le modèle dépasse 50 Mo : il peut être converti, mais nous ne l'affichons pas pour ne pas bloquer la page."
+  },
+  "LithophaneTool": {
+    "width": "Largeur de la plaque",
+    "detail": "Détail",
+    "details": {
+      "normal": "Normal (0,4 mm)",
+      "fine": "Fin (0,2 mm)"
+    },
+    "thickness": "Épaisseur",
+    "thicknesses": {
+      "thin": "Fine ({min}–{max} mm)",
+      "standard": "Standard ({min}–{max} mm)",
+      "thick": "Épaisse ({min}–{max} mm)"
+    },
+    "border": "Ajouter un cadre de 2 mm",
+    "note": "Le sombre devient plus épais et le clair plus fin. Traitement sur votre appareil.",
+    "suffix": "lithophanie",
+    "done": "Plaque de {width} × {height} mm, de {min} à {max} mm d'épaisseur, {triangles} triangles."
   }
 }

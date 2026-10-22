@@ -111,3 +111,9 @@ writeFileSync(join(corrupt, "draco.gltf"), JSON.stringify({ ...gltf({ byteLength
 const badGlb = glb(gltf({ byteLength: bin.length }), bin);
 badGlb.write("XXXX", 0, "ascii");
 writeFileSync(join(corrupt, "bad-magic.glb"), badGlb);
+
+// "Image to lithophane": 120 × 60 px, three vertical bands: black, mid grey (128) and white.
+const sharp = (await import("sharp")).default;
+const bands = Buffer.alloc(120 * 60 * 3);
+for (let y = 0; y < 60; y++) for (let x = 0; x < 120; x++) bands.fill(x < 40 ? 0 : x < 80 ? 128 : 255, (y * 120 + x) * 3, (y * 120 + x) * 3 + 3);
+await sharp(bands, { raw: { width: 120, height: 60, channels: 3 } }).png().toFile(join(dir, "lithophane-bands.png"));
