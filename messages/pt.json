@@ -226,7 +226,8 @@
     "videoCodecUnsupported": "Seu navegador não consegue ler o vídeo deste arquivo (por exemplo, H.264 ou HEVC em alguns navegadores). Tente o Chrome, o Edge ou o Safari, ou escolha um formato que não precise recomprimi-lo.",
     "videoEncoderUnsupported": "Seu navegador não consegue criar vídeo neste formato (MOV precisa de H.264). Tente o Chrome, o Edge ou o Safari, ou escolha MP4, WebM ou MKV.",
     "videoTooLong": "O vídeo é longo demais: o máximo é de 2 horas por arquivo.",
-    "videoRangeInvalid": "Confira os tempos: o início deve vir antes do fim e ambos devem estar dentro do vídeo."
+    "videoRangeInvalid": "Confira os tempos: o início deve vir antes do fim e ambos devem estar dentro do vídeo.",
+    "gifTooManyFrames": "O GIF teria quadros demais: encurte o trecho ou diminua os quadros por segundo."
   },
   "Tools": {
     "merge-pdf": {
@@ -1340,6 +1341,22 @@
         "q4": "Existe algum limite?",
         "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro) e 2 horas de duração. Se o navegador não reproduzir o arquivo (por exemplo MKV ou H.264 em alguns), você ainda pode digitar os tempos."
       }
+    },
+    "video-to-gif": {
+      "title": "Vídeo para GIF",
+      "description": "Transforme um trecho de um vídeo MP4, MOV, MKV ou WebM num GIF animado, no seu navegador.",
+      "action": "Criar GIF",
+      "about": "Transforme um momento de um vídeo num GIF animado para chats, fóruns, apresentações ou documentação. Marque o início e o fim com o player, escolha a largura (de 240 a 640 px) e os quadros por segundo, e decida se ele se repete sem parar. Cada quadro usa sua própria paleta de 256 cores para ficar o melhor possível. Tudo acontece no seu dispositivo: o vídeo não é enviado a nenhum servidor.",
+      "faq": {
+        "q1": "Por que o GIF fica tão pesado?",
+        "a1": "O GIF é um formato antigo que guarda cada quadro quase como uma imagem separada. Para ficar mais leve: encurte o trecho, diminua a largura (320 px basta para um chat) ou use 5–10 quadros por segundo.",
+        "q2": "Quanto tempo pode durar?",
+        "a2": "Até 300 quadros: 30 s a 10 quadros por segundo, 20 s a 15 ou 60 s a 5. Se passar disso, avisamos antes de começar.",
+        "q3": "Tem som?",
+        "a3": "Não: o formato GIF não tem som. Se precisar do áudio, use «Cortar vídeo» e compartilhe o vídeo.",
+        "q4": "Existe algum limite?",
+        "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro). O navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários). A imagem nunca é ampliada."
+      }
     }
   },
   "ToolUi": {
@@ -2367,5 +2384,14 @@
     },
     "exactNote": "Corta no quadro exato: o vídeo é recodificado em alta qualidade. Processado no seu dispositivo.",
     "fastNote": "Copia sem recomprimir, em segundos e sem perda; começa no quadro-chave anterior ao início, então pode começar um pouco antes."
+  },
+  "VideoToGifTool": {
+    "width": "Largura",
+    "fps": "Quadros por segundo",
+    "fpsValue": "{fps} por segundo",
+    "loop": "Repetir sem parar",
+    "note": "Até {max} quadros. Sem som (o GIF não tem). Processado no seu dispositivo.",
+    "tooManyFrames": "Quadros demais: o máximo é {max}. Encurte o trecho ou diminua os quadros por segundo.",
+    "made": "{frames} quadros de {width} × {height} px."
   }
 }

@@ -6,6 +6,7 @@ import { execFileSync } from "node:child_process";
 import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import sharp from "sharp";
 import { expect, fileOf, openWithFiles, runTool, test, unzipEntries } from "./support";
 
 const hasFfmpeg = (() => {
@@ -310,3 +311,49 @@ test.describe("tool: trim-video", () => {
   });
 });
 
+
+test.describe("tool: video-to-gif", () => {
+  test.skip(!hasFfmpeg, "needs ffmpeg/ffprobe to check the output");
+
+  test("WebM 0–2 s at 240 px and 10 fps → a looping GIF of 20 frames, red then blue", async ({ page }) => {
+    await openWithFiles(page, "/en/video-to-gif", ["video.webm"]);
+    await expect(page.getByRole("textbox", { name: "End" })).toHaveValue("0:02.0");
+    await page.getByText("240 px", { exact: true }).click();
+    const out = fileOf(await runTool(page, "Create GIF"));
+    expect(out.name).toBe("video.gif");
+    await expect(page.locator("main")).toContainText("20 frames of 240 × 180 px.");
+    const meta = await sharp(out.buf, { animated: true }).metadata();
+    expect(meta).toMatchObject({ format: "gif", width: 240, pages: 20, pageHeight: 180, loop: 0 });
+    expect(meta.delay?.every((d) => d === 100)).toBe(true);
+    expect(out.buf.includes(Buffer.from("NETSCAPE2.0"))).toBe(true);
+    const p = probe(out.buf, out.name);
+    expect(p.display).toBe("240x180");
+    expect(Math.abs(p.duration - 2), `lasts ${p.duration} s`).toBeLessThan(0.15);
+    const [first, second] = p.colors;
+    expect(first![0] > 180 && first![2] < 80, `red at 0.5 s: ${first}`).toBe(true);
+    expect(second![2] > 180 && second![0] < 80, `blue at 1.5 s: ${second}`).toBe(true);
+  });
+
+  test("a rotated phone video stays upright; no loop when unchecked; 5 fps", async ({ page }) => {
+    await openWithFiles(page, "/es/video-a-gif", ["video-rotated.mp4"]);
+    await expect(page.getByRole("textbox", { name: "Fin" })).toHaveValue("0:02.0");
+    await page.getByText("5 por segundo", { exact: true }).click();
+    await page.getByText("Repetir sin fin", { exact: true }).click();
+    const out = fileOf(await runTool(page, "Crear GIF"));
+    const meta = await sharp(out.buf, { animated: true }).metadata();
+    expect(meta).toMatchObject({ format: "gif", width: 240, pageHeight: 320, pages: 10 });
+    expect(out.buf.includes(Buffer.from("NETSCAPE2.0")), "no loop extension").toBe(false);
+  });
+
+  test("H.264 that this browser can't decode and a fake file show clear errors", async ({ page }) => {
+    await openWithFiles(page, "/en/video-to-gif", ["video.mp4"]);
+    const h264 = await page.evaluate(async () => (await VideoDecoder.isConfigSupported({ codec: "avc1.64000d", codedWidth: 320, codedHeight: 240 })).supported);
+    const result = await runTool(page, "Create GIF");
+    if (h264) expect(fileOf(result).name).toBe("video.gif");
+    else expect(result.error).toContain("can't read the video in this file");
+    // After an error the file stays selected; after a GIF the page offers to start over.
+    await page.getByRole("button", { name: h264 ? "Start over" : "Remove video.mp4" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(join(__dirname, "../fixtures/corrupt/not-video.mp4"));
+    await expect(page.locator("main")).toContainText("can't be converted this way");
+  });
+});

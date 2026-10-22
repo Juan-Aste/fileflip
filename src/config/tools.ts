@@ -101,6 +101,7 @@ export const toolIds = [
   "extract-audio",
   "compress-video",
   "trim-video",
+  "video-to-gif",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -1006,7 +1007,19 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 30 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
     status: "verified",
     slugs: { es: "recortar-video", en: "trim-video", pt: "cortar-video", fr: "couper-video", zh: "trim-video" },
+  },  "video-to-gif": {
+    id: "video-to-gif",
+    category: "video",
+    inputs: ["mp4", "mov", "mkv", "webm"],
+    outputs: ["gif"],
+    engine: "browser",
+    libraries: ["mediabunny", "gifenc"],
+    // At most 300 frames (MAX_GIF_FRAMES), each decoded, scaled and quantized in a worker.
+    limits: { files: "single", timeoutMs: 10 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "video-a-gif", en: "video-to-gif", pt: "video-para-gif", fr: "video-en-gif", zh: "video-to-gif" },
   },
+
 
 
 

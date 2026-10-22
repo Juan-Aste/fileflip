@@ -226,7 +226,8 @@
     "videoCodecUnsupported": "Your browser can't read the video in this file (for example, H.264 or HEVC in some browsers). Try Chrome, Edge or Safari, or choose a format that doesn't need to re-encode it.",
     "videoEncoderUnsupported": "Your browser can't create video in this format (MOV needs H.264). Try Chrome, Edge or Safari, or choose MP4, WebM or MKV.",
     "videoTooLong": "The video is too long: the maximum is 2 hours per file.",
-    "videoRangeInvalid": "Check the times: the start must come before the end and both must be inside the video."
+    "videoRangeInvalid": "Check the times: the start must come before the end and both must be inside the video.",
+    "gifTooManyFrames": "The GIF would have too many frames: shorten the clip or lower the frames per second."
   },
   "Tools": {
     "merge-pdf": {
@@ -1340,6 +1341,22 @@
         "q4": "Is there a limit?",
         "a4": "One video at a time, up to 200 MB on the free plan (500 MB with Pro) and 2 hours long. If your browser can't play the file (for example MKV or H.264 in some), you can still type the times."
       }
+    },
+    "video-to-gif": {
+      "title": "Video to GIF",
+      "description": "Turn a part of an MP4, MOV, MKV or WebM video into an animated GIF, in your browser.",
+      "action": "Create GIF",
+      "about": "Turn a moment of a video into an animated GIF for chats, forums, presentations or documentation. Mark the start and end with the player, choose the width (240 to 640 px) and the frames per second, and decide whether it repeats forever. Each frame gets its own 256-color palette so it looks as good as possible. Everything happens on your device: the video isn't uploaded to any server.",
+      "faq": {
+        "q1": "Why is the GIF so big?",
+        "a1": "GIF is an old format that stores each frame almost as a separate image. To make it smaller: shorten the clip, lower the width (320 px is enough for a chat) or use 5–10 frames per second.",
+        "q2": "How long can it be?",
+        "a2": "Up to 300 frames: 30 s at 10 frames per second, 20 s at 15 or 60 s at 5. If you go over, we tell you before starting.",
+        "q3": "Does it have sound?",
+        "a3": "No: the GIF format has no sound. If you need the audio, use “Trim video” and share the video.",
+        "q4": "Is there a limit?",
+        "a4": "One video at a time, up to 200 MB on the free plan (500 MB with Pro). The browser has to be able to decode the video (H.264 isn't decoded in some browsers without proprietary codecs). The picture is never enlarged."
+      }
     }
   },
   "ToolUi": {
@@ -2367,5 +2384,14 @@
     },
     "exactNote": "Cuts at the exact frame: the video is re-encoded at high quality. Processed on your device.",
     "fastNote": "Copies without re-encoding, in seconds and losslessly; it starts at the key frame before the start, so it may begin a little earlier."
+  },
+  "VideoToGifTool": {
+    "width": "Width",
+    "fps": "Frames per second",
+    "fpsValue": "{fps} per second",
+    "loop": "Loop forever",
+    "note": "Up to {max} frames. No sound (GIF doesn't support it). Processed on your device.",
+    "tooManyFrames": "Too many frames: the maximum is {max}. Shorten the clip or lower the frames per second.",
+    "made": "{frames} frames of {width} × {height} px."
   }
 }

@@ -16,6 +16,7 @@ import {
   Clapperboard,
   FileAudio,
   FileVideo,
+  ImagePlay,
   Archive,
   CaseSensitive,
   ImageDown,
@@ -138,6 +139,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "extract-audio": FileAudio,
   "compress-video": FileVideo,
   "trim-video": Scissors,
+  "video-to-gif": ImagePlay,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

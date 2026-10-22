@@ -80,3 +80,21 @@ export function scaledSize(width: number, height: number, maxShortSide?: number)
   return { width: even(width * scale), height: even(height * scale) };
 }
 
+/** "Video to GIF": widths and frame rates offered, and the frame cap (each frame is a full image in memory). */
+export const gifWidths = [240, 320, 480, 640] as const;
+export const gifFrameRates = [5, 10, 15] as const;
+export const MAX_GIF_FRAMES = 300;
+
+/** Times (seconds) of the frames of a GIF of `range` at `fps`; null when it would exceed the frame cap. */
+export function gifFrameTimes(range: { start: number; end: number }, fps: number): number[] | null {
+  const count = Math.max(1, Math.round((range.end - range.start) * fps));
+  if (count > MAX_GIF_FRAMES) return null;
+  return Array.from({ length: count }, (_, i) => range.start + i / fps);
+}
+
+/** GIF size for a video `width`×`height` shown at most `maxWidth` wide (never enlarged). */
+export function gifSize(width: number, height: number, maxWidth: number) {
+  const scale = Math.min(1, maxWidth / width);
+  return { width: Math.max(1, Math.round(width * scale)), height: Math.max(1, Math.round(height * scale)) };
+}
+

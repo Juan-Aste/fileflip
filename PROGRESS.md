@@ -2440,3 +2440,21 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Un solo tramo por archivo. En modo rápido el resultado puede empezar antes del inicio marcado (hasta el fotograma clave anterior; en videos de celular suele ser ≤ 1–2 s). El reproductor depende del navegador (MKV o H.264 pueden no reproducirse), pero los tiempos se pueden escribir.
 
 **Siguiente**: 3C.38c ("Video a GIF").
+
+## 2026-10-22 08:20 UTC — Fase 3, tarea 3C.38c (video a GIF)
+
+**Qué se hizo**
+- **Video a GIF** (`/es/video-a-gif`, `/en/video-to-gif`, `/pt/video-para-gif`, `/fr/video-en-gif`), categoría Video: un archivo MP4, MOV, MKV o WebM → GIF animado del tramo elegido (al principio, los primeros 5 s), **ancho** 240/320/480 (por defecto)/640 px sin agrandar, **5/10/15 cuadros por segundo** y **repetir sin fin** (bloque NETSCAPE2.0; desmarcado = se reproduce una vez). Máximo **300 cuadros** (`MAX_GIF_FRAMES`): si el tramo los supera, la acción queda deshabilitada con aviso, y el motor también lo rechaza (error nuevo `gifTooManyFrames`, 5 idiomas).
+- Motor `src/lib/video/gif.ts` **en un Web Worker** (`workers/video-gif.worker.ts` + `lib/video/gif-client.ts` con el pool de trabajos: cancelación y límite de 10 minutos terminan el worker): `CanvasSink` de mediabunny decodifica (WebCodecs) y escala los cuadros en los tiempos pedidos aplicando la rotación de los metadatos; gifenc (MIT, ya era dependencia) cuantiza cada cuadro con su propia paleta de 256 colores y escribe el GIF. Los tiempos anteriores al primer cuadro (archivos que empiezan unos ms después de 0) usan el primer cuadro.
+- `VideoRangePicker` (reproductor + Inicio/Fin + validación) extraído de "Recortar video" y compartido por ambas herramientas. Helpers puros `gifFrameTimes` y `gifSize` con tests.
+- Textos (introducción + 4 preguntas, interfaz) en los 5 idiomas.
+
+**Verificación**
+- +2 tests unitarios (tiempos de cuadros y tope; tamaño sin agrandar).
+- `video-tools.spec.ts` (+3; GIF leído con **sharp** y **ffprobe/ffmpeg**): WebM 0–2 s a 240 px y 10 fps → GIF de **20 cuadros 240×180**, demora 100 ms, `loop` 0, rojo a 0,5 s y azul a 1,5 s, 2 s; MP4 rotado a 5 fps sin repetir → **240×320 (de pie), 10 cuadros, sin NETSCAPE2.0**; H.264 sin decodificador → mensaje claro; texto disfrazado → error.
+- Lint, typecheck, tests (922 + 8 saltados), build, `check:static` (957 páginas) y `npm run test:e2e` completo: 294 pasan, 4 saltados (sin Gotenberg ni EPUBCheck).
+
+**Limitaciones**
+- Sin sonido (el GIF no lo admite) y sin dithering. El GIF puede pesar mucho (formato antiguo): la página lo explica y sugiere 320 px / 5–10 fps. Los videos que el navegador no decodifica (H.264 en Chromium sin códecs propietarios) no se pueden convertir.
+
+**Siguiente**: 3C.38d ("Cambiar velocidad del video").

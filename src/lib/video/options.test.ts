@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { VideoCodec } from "mediabunny";
 import { tools } from "@/config/tools";
-import { scaledSize, videoExtension, videoPlan, videoTargets } from "./options";
+import { gifFrameTimes, gifSize, MAX_GIF_FRAMES, scaledSize, videoExtension, videoPlan, videoTargets } from "./options";
 
 const all = () => true;
 const noH264 = (codec: VideoCodec) => codec !== "avc";
@@ -44,6 +44,20 @@ describe("scaledSize", () => {
     expect(scaledSize(640, 480, 360)).toEqual({ width: 480, height: 360 });
     expect(scaledSize(320, 240, 720)).toEqual({ width: 320, height: 240 });
     expect(scaledSize(321, 241)).toEqual({ width: 322, height: 242 });
+  });
+});
+
+describe("GIF frames", () => {
+  it("samples the range at the frame rate, up to the cap", () => {
+    expect(gifFrameTimes({ start: 1, end: 2 }, 5)).toEqual([1, 1.2, 1.4, 1.6, 1.8]);
+    expect(gifFrameTimes({ start: 0, end: 0.05 }, 10)).toEqual([0]);
+    expect(gifFrameTimes({ start: 0, end: MAX_GIF_FRAMES / 10 }, 10)).toHaveLength(MAX_GIF_FRAMES);
+    expect(gifFrameTimes({ start: 0, end: 60 }, 15)).toBeNull();
+  });
+
+  it("scales down to the width, never up", () => {
+    expect(gifSize(1920, 1080, 480)).toEqual({ width: 480, height: 270 });
+    expect(gifSize(320, 240, 640)).toEqual({ width: 320, height: 240 });
   });
 });
 

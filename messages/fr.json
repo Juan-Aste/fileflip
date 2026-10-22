@@ -226,7 +226,8 @@
     "videoCodecUnsupported": "Votre navigateur ne peut pas lire la vidéo de ce fichier (par exemple H.264 ou HEVC dans certains navigateurs). Essayez Chrome, Edge ou Safari, ou choisissez un format qui n'oblige pas à la réencoder.",
     "videoEncoderUnsupported": "Votre navigateur ne peut pas créer de vidéo dans ce format (MOV exige H.264). Essayez Chrome, Edge ou Safari, ou choisissez MP4, WebM ou MKV.",
     "videoTooLong": "La vidéo est trop longue : le maximum est de 2 heures par fichier.",
-    "videoRangeInvalid": "Vérifiez les temps : le début doit précéder la fin et les deux doivent être dans la vidéo."
+    "videoRangeInvalid": "Vérifiez les temps : le début doit précéder la fin et les deux doivent être dans la vidéo.",
+    "gifTooManyFrames": "Le GIF aurait trop d'images : raccourcissez l'extrait ou baissez le nombre d'images par seconde."
   },
   "Tools": {
     "merge-pdf": {
@@ -1340,6 +1341,22 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée. Si votre navigateur ne lit pas le fichier (par exemple MKV ou H.264 dans certains), vous pouvez quand même saisir les temps."
       }
+    },
+    "video-to-gif": {
+      "title": "Vidéo en GIF",
+      "description": "Transformez un extrait d'une vidéo MP4, MOV, MKV ou WebM en GIF animé, dans votre navigateur.",
+      "action": "Créer le GIF",
+      "about": "Transformez un moment d'une vidéo en GIF animé pour les discussions, les forums, les présentations ou la documentation. Marquez le début et la fin avec le lecteur, choisissez la largeur (de 240 à 640 px) et le nombre d'images par seconde, et décidez s'il tourne en boucle. Chaque image a sa propre palette de 256 couleurs pour un rendu optimal. Tout se passe sur votre appareil : la vidéo n'est envoyée à aucun serveur.",
+      "faq": {
+        "q1": "Pourquoi le GIF est-il si lourd ?",
+        "a1": "Le GIF est un ancien format qui stocke chaque image presque séparément. Pour l'alléger : raccourcissez l'extrait, réduisez la largeur (320 px suffisent pour une discussion) ou utilisez 5 à 10 images par seconde.",
+        "q2": "Quelle durée maximale ?",
+        "a2": "Jusqu'à 300 images : 30 s à 10 images par seconde, 20 s à 15 ou 60 s à 5. En cas de dépassement, nous vous prévenons avant de commencer.",
+        "q3": "Y a-t-il du son ?",
+        "a3": "Non : le format GIF ne gère pas le son. Si vous avez besoin de l'audio, utilisez « Couper une vidéo » et partagez la vidéo.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro). Le navigateur doit pouvoir décoder la vidéo (certains navigateurs sans codecs propriétaires ne décodent pas le H.264). L'image n'est jamais agrandie."
+      }
     }
   },
   "ToolUi": {
@@ -2367,5 +2384,14 @@
     },
     "exactNote": "Coupe à l'image exacte : la vidéo est réencodée en haute qualité. Traitement sur votre appareil.",
     "fastNote": "Copie sans réencodage, en quelques secondes et sans perte ; commence à l'image clé précédant le début, donc un peu plus tôt."
+  },
+  "VideoToGifTool": {
+    "width": "Largeur",
+    "fps": "Images par seconde",
+    "fpsValue": "{fps} par seconde",
+    "loop": "Lire en boucle",
+    "note": "Jusqu'à {max} images. Sans son (le GIF ne le gère pas). Traitement sur votre appareil.",
+    "tooManyFrames": "Trop d'images : le maximum est {max}. Raccourcissez l'extrait ou baissez le nombre d'images par seconde.",
+    "made": "{frames} images de {width} × {height} px."
   }
 }

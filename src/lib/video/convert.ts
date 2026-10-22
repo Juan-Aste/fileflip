@@ -63,7 +63,7 @@ export interface VideoResult {
 }
 
 /** Opens a file for mediabunny, checking it holds video this browser can read; the caller disposes it. */
-async function openVideo(file: Blob) {
+export async function openVideo(file: Blob) {
   const input = new Input({ source: new BlobSource(file), formats: ALL_FORMATS });
   try {
     try {
