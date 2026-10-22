@@ -15,6 +15,13 @@ SRC=(-f lavfi -i "sine=frequency=440:sample_rate=22050:duration=2" -f lavfi -i "
 "${FF[@]}" "${SRC[@]}" -ar 48000 -c:a libopus -b:a 48k audio.opus
 "${FF[@]}" "${SRC[@]}" -c:a aac -b:a 64k audio.m4a
 "${FF[@]}" "${SRC[@]}" -ar 48000 -c:a libopus -b:a 48k audio.webm
+# AIFF (16-bit big-endian), 1 s of 24-bit AIFF, and AIFF-C with little-endian samples ("sowt").
+"${FF[@]}" "${SRC[@]}" -c:a pcm_s16be audio.aiff
+"${FF[@]}" "${SRC[@]}" -t 1 -c:a pcm_s24be audio-24.aif
+"${FF[@]}" "${SRC[@]}" -c:a pcm_s16le -f aiff audio.aifc
 # An M4A whose index (moov, written at the end) is cut off, and text named .mp3.
 head -c "$(( $(stat -c %s audio.m4a) / 2 ))" audio.m4a > corrupt/audio-truncated.m4a
+# An AIFF cut in half, and a μ-law AIFF-C (compressed: refused).
+head -c "$(( $(stat -c %s audio.aiff) / 2 ))" audio.aiff > corrupt/audio-truncated.aiff
+"${FF[@]}" "${SRC[@]}" -c:a pcm_mulaw -f aiff corrupt/audio-ulaw.aifc
 printf 'This is not audio, just text with an .mp3 name.\n%.0s' {1..40} > corrupt/not-audio.mp3

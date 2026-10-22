@@ -2,7 +2,7 @@
 // the page and the tests read these without loading the engine.
 import type { AudioCodec } from "mediabunny";
 
-export const audioTargets = ["mp3", "wav", "flac", "ogg", "m4a"] as const;
+export const audioTargets = ["mp3", "wav", "flac", "ogg", "m4a", "aiff"] as const;
 export type AudioTarget = (typeof audioTargets)[number];
 
 /** Lossy targets offer these bitrates (kbps); 192 by default. */
@@ -29,6 +29,8 @@ export interface AudioPlan {
 export function audioPlan({ target, bitrate }: AudioOptions): AudioPlan {
   switch (target) {
     case "wav":
+    case "aiff":
+      // AIFF is written as a 16-bit WAV first, then rewritten big-endian (aiff.ts).
       return { codec: "pcm-s16", lossy: false };
     case "flac":
       return { codec: "flac", lossy: false, sampleFormat: "s16" };
@@ -43,5 +45,5 @@ export function audioPlan({ target, bitrate }: AudioOptions): AudioPlan {
   }
 }
 
-export const audioExtension: Record<AudioTarget, string> = { mp3: "mp3", wav: "wav", flac: "flac", ogg: "ogg", m4a: "m4a" };
-export const audioMime: Record<AudioTarget, string> = { mp3: "audio/mpeg", wav: "audio/wav", flac: "audio/flac", ogg: "audio/ogg", m4a: "audio/mp4" };
+export const audioExtension: Record<AudioTarget, string> = { mp3: "mp3", wav: "wav", flac: "flac", ogg: "ogg", m4a: "m4a", aiff: "aiff" };
+export const audioMime: Record<AudioTarget, string> = { mp3: "audio/mpeg", wav: "audio/wav", flac: "audio/flac", ogg: "audio/ogg", m4a: "audio/mp4", aiff: "audio/aiff" };

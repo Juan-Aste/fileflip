@@ -2274,3 +2274,23 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - En esta ejecución hubo Docker: pruebas con **Gotenberg 8 real**; también **EPUBCheck 5.2.1** (Java) y **ffmpeg/ffprobe** del sistema como validadores independientes. `npm run test:e2e` 271/271 al cierre.
 
 **Siguiente**: 3C.35b (AIFF de entrada y salida en "Convertir audio").
+
+## 2026-10-22 04:25 UTC — Fase 3, tarea 3C.35b (AIFF en "Convertir audio") — 3C.35 TERMINADA
+
+**Qué se hizo**
+- `src/lib/audio/aiff.ts` (funciones puras, sin mediabunny): lector y escritor propios de **AIFF / AIFF-C**. Entrada: se recorren los chunks (`COMM`, `SSND`, con relleno par y tamaños fuera de rango controlados), frecuencia en **float extendido de 80 bits**, PCM 8/16/24/32 bits big-endian (`NONE`, `twos`) o little-endian (`sowt`); se reescribe como WAV PCM little-endian (el de 8 bits con signo pasa a 16 bits) que mediabunny lee. Salida: mediabunny escribe WAV 16 bits y se reescribe como AIFF (`FORM`/`AIFF`, `COMM`, `SSND`).
+- `convert.ts`: si los primeros 12 bytes son `FORM`+`AIFF`/`AIFC`, el archivo se convierte a WAV antes de abrirlo; la salida `aiff` usa el plan de WAV y se reescribe al final. Formato nuevo `aiff` (`.aiff`, `.aif`, `.aifc`) en `formats.ts`; registro: entrada y salida AIFF.
+- AIFF-C comprimidos (μ-law, A-law, IMA…) → `unsupportedFormat` ("Este formato no se puede convertir así"); cortado (menos datos que los cuadros declarados) o sin `COMM`/`SSND` → `fileDamaged`.
+- Textos: opción "AIFF (sin pérdida)", descripción, introducción y una pregunta nueva sobre AIFF en los 5 idiomas.
+- Fixtures (`scripts/fixtures/audio.sh`, ffmpeg del sistema): `audio.aiff` (16 bits), `audio-24.aif` (1 s, 24 bits), `audio.aifc` (`sowt`), `corrupt/audio-truncated.aiff` y `corrupt/audio-ulaw.aifc`.
+
+**Verificación**
+- 8 tests unitarios: float de 80 bits ida y vuelta (8 kHz…192 kHz) y bytes exactos de 44 100 Hz; AIFF y AIFF-C `sowt` dan **las mismas muestras que el WAV** de referencia; 24 bits conservados; 8 bits con signo; cortado, μ-law, WAV, encabezado incompleto y tamaño de chunk enorme rechazados; WAV → AIFF → WAV idéntico muestra a muestra.
+- `audio-tools.spec.ts` (+2, salida validada con **ffprobe/ffmpeg**): AIFF + AIFF 24 bits + AIFF-C → 3 MP3 (44,1 kHz, estéreo, duración y tono correcto en cada canal); MP3 → AIFF (`pcm_s16be`, 22 050 Hz, 2 s, tonos); AIFF cortado y AIFF-C μ-law → mensajes claros y el bueno se convierte. Sin llamadas al servidor.
+- Lint, typecheck, tests (896 + 8 saltados), build y `check:static` (907 páginas) pasan; `npm run test:e2e` completo: 269 pasan y 4 saltados (en esta ejecución no hay Gotenberg ni EPUBCheck).
+
+**Limitaciones**
+- Salida AIFF siempre en 16 bits (como WAV/FLAC). AIFF-C comprimido no se lee. Los chunks de texto (`NAME`, `AUTH`) y marcadores no se copian.
+
+**Siguiente**: 3C.36 (audio: recortar, unir, bitrate/frecuencia/canales, normalizar).
+- La tarea 3C.36 se dividió en 3C.36a–d en PLAN.md.

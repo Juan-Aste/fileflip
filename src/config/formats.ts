@@ -54,7 +54,8 @@ export type FormatId =
   | "ogg"
   | "m4a"
   | "aac"
-  | "webm";
+  | "webm"
+  | "aiff";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -123,6 +124,7 @@ export const formats: Record<FormatId, FormatInfo> = {
   m4a: { id: "m4a", label: "M4A", mime: "audio/mp4", extensions: ["m4a"], category: "data" },
   aac: { id: "aac", label: "AAC", mime: "audio/aac", extensions: ["aac"], category: "data" },
   webm: { id: "webm", label: "WEBM", mime: "audio/webm", extensions: ["webm", "weba"], category: "data" },
+  aiff: { id: "aiff", label: "AIFF", mime: "audio/aiff", extensions: ["aiff", "aif", "aifc"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 

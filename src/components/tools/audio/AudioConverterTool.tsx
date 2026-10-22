@@ -13,7 +13,7 @@ import ToolShell from "../shell/ToolShell";
 import { renameExtension, type ShellOutput } from "../shell/state";
 
 const tool = tools["audio-converter"];
-const extensions = ["mp3", "wav", "wave", "flac", "ogg", "oga", "opus", "m4a", "aac", "webm", "weba"];
+const extensions = ["mp3", "wav", "wave", "flac", "ogg", "oga", "opus", "m4a", "aac", "webm", "weba", "aiff", "aif", "aifc"];
 // mediabunny and the WASM encoders load when the tool runs.
 const engine = () => import("@/lib/audio/convert");
 
@@ -46,13 +46,13 @@ async function decodeSupport(): Promise<Support> {
   return aac.supported ? "full" : "noAac";
 }
 
-/** MP3, WAV, FLAC, OGG, M4A/AAC and WebM audio → MP3, WAV, FLAC, OGG (Opus) or M4A (AAC), in the browser. */
+/** MP3, WAV, FLAC, OGG, M4A/AAC, WebM and AIFF audio → MP3, WAV, FLAC, OGG (Opus), M4A (AAC) or AIFF, in the browser. */
 export default function AudioConverterTool() {
   const t = useTranslations("AudioTool");
   const tt = useTranslations("Tools.audio-converter");
   const [target, setTarget] = useState<AudioTarget>("mp3");
   const [bitrate, setBitrate] = useState<AudioBitrate>(192);
-  const lossy = target !== "wav" && target !== "flac";
+  const lossy = target !== "wav" && target !== "flac" && target !== "aiff";
   const [support, setSupport] = useState<Support>("checking");
   useEffect(() => {
     void decodeSupport().then(setSupport);

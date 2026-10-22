@@ -18,6 +18,7 @@ import {
   type AudioCodec,
 } from "mediabunny";
 import { ConversionError } from "@/lib/convert-error";
+import { aiffToWav, isAiff, wavToAiff } from "./aiff";
 import { audioPlan, MAX_AUDIO_SECONDS, type AudioOptions } from "./options";
 
 const encoderExtensions: Partial<Record<AudioCodec, () => Promise<void>>> = {
@@ -42,6 +43,7 @@ const outputFormat = {
   flac: () => new FlacOutputFormat(),
   ogg: () => new OggOutputFormat(),
   m4a: () => new Mp4OutputFormat({ fastStart: "in-memory" }),
+  aiff: () => new WavOutputFormat(),
 } as const;
 
 export interface AudioResult {
@@ -57,7 +59,11 @@ export async function convertAudio(
 ): Promise<AudioResult> {
   const plan = audioPlan(options);
   await ensureEncoder(plan.codec);
-  const input = new Input({ source: new BlobSource(file), formats: ALL_FORMATS });
+  // mediabunny has no AIFF demuxer: an AIFF input is rewritten as WAV first.
+  const source = isAiff(new Uint8Array(await file.slice(0, 12).arrayBuffer()))
+    ? new Blob([aiffToWav(new Uint8Array(await file.arrayBuffer())).wav as Uint8Array<ArrayBuffer>])
+    : file;
+  const input = new Input({ source: new BlobSource(source), formats: ALL_FORMATS });
   try {
     try {
       await input.getFormat();
@@ -105,7 +111,8 @@ export async function convertAudio(
     }
     const buffer = (output.target as BufferTarget).buffer;
     if (!buffer || buffer.byteLength === 0) throw new ConversionError("conversionFailed");
-    return { data: new Uint8Array(buffer), duration };
+    const data = new Uint8Array(buffer);
+    return { data: options.target === "aiff" ? wavToAiff(data) : data, duration };
   } finally {
     input.dispose();
   }

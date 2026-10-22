@@ -899,10 +899,10 @@ export const tools: Record<ToolId, ToolInfo> = {
   "audio-converter": {
     id: "audio-converter",
     category: "audio",
-    inputs: ["mp3", "wav", "flac", "ogg", "m4a", "aac", "webm"],
-    outputs: ["mp3", "wav", "flac", "ogg", "m4a"],
+    inputs: ["mp3", "wav", "flac", "ogg", "m4a", "aac", "webm", "aiff"],
+    outputs: ["mp3", "wav", "flac", "ogg", "m4a", "aiff"],
     engine: "browser",
-    libraries: ["mediabunny", "@mediabunny/mp3-encoder (LAME)", "@mediabunny/flac-encoder (libFLAC)", "@mediabunny/aac-encoder (FFmpeg AAC)"],
+    libraries: ["mediabunny", "@mediabunny/mp3-encoder (LAME)", "@mediabunny/flac-encoder (libFLAC)", "@mediabunny/aac-encoder (FFmpeg AAC)", "AIFF reader/writer (own)"],
     // Per file: a long file is decoded and re-encoded faster than real time, but slow phones need room.
     limits: { files: "multiple", timeoutMs: 15 * MINUTE, maxFileBytes: AUDIO_MAX_BYTES },
     status: "verified",

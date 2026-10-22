@@ -105,6 +105,44 @@ test.describe("tool: audio-converter", () => {
     }
   });
 
+  test("AIFF, 24-bit AIFF and AIFF-C (sowt) → MP3; MP3 → AIFF", async ({ page }) => {
+    await openWithFiles(page, "/en/audio-converter", ["audio.aiff", "audio-24.aif", "audio.aifc"]);
+    await page.getByRole("button", { name: "Convert audio", exact: true }).click();
+    await expect(page.locator("main li a[download]")).toHaveCount(3, { timeout: 60_000 });
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Download all/ }).click()]);
+    const entries = unzipEntries(readFileSync((await download.path())!));
+    expect(entries.map((e) => e.name).sort()).toEqual(["audio (1).mp3", "audio-24.mp3", "audio.mp3"]);
+    for (const entry of entries) {
+      const p = probe(entry.data, entry.name);
+      expect(p, entry.name).toMatchObject({ format: "mp3", codec: "mp3", sampleRate: 44100, channels: 2 });
+      // audio-24.aif lasts 1 s, the others 2 s.
+      const seconds = entry.name === "audio-24.mp3" ? 1 : 2;
+      expect(Math.abs(p.duration - seconds), `${entry.name} lasts ${p.duration} s`).toBeLessThan(0.15);
+      expectTones(p);
+    }
+
+    await page.getByRole("button", { name: "Start over" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(join(__dirname, "../fixtures/audio.mp3"));
+    await page.getByText("AIFF (lossless)", { exact: true }).click();
+    const out = fileOf(await runTool(page, "Convert audio"));
+    expect(out.name).toBe("audio.aiff");
+    expect(out.buf.subarray(0, 4).toString("latin1") + out.buf.subarray(8, 12).toString("latin1")).toBe("FORMAIFF");
+    const p = probe(out.buf, out.name);
+    expect(p).toMatchObject({ format: "aiff", codec: "pcm_s16be", sampleRate: 22050, channels: 2 });
+    expect(Math.abs(p.duration - 2), `lasts ${p.duration} s`).toBeLessThan(0.15);
+    expectTones(p);
+  });
+
+  test("a cut AIFF and a compressed (μ-law) AIFF-C fail with clear messages", async ({ page }) => {
+    await openWithFiles(page, "/en/audio-converter", ["corrupt/audio-truncated.aiff", "corrupt/audio-ulaw.aifc", "audio.aiff"]);
+    await page.getByRole("button", { name: "Convert audio", exact: true }).click();
+    await expect(page.locator("main li a[download]")).toHaveCount(1, { timeout: 60_000 });
+    const main = page.locator("main");
+    await expect(main).toContainText("damaged or incomplete");
+    await expect(main).toContainText("can't be converted this way");
+    await expect(page.locator("main li a[download]")).toHaveAttribute("download", "audio.mp3");
+  });
+
   test("damaged, fake and (in this Chromium) undecodable AAC files fail with clear messages", async ({ page }) => {
     await openWithFiles(page, "/en/audio-converter", ["corrupt/audio-truncated.m4a", "corrupt/not-audio.mp3", "audio.m4a", "audio.wav"]);
     // Playwright's Chromium is built without proprietary codecs: no AAC decoder.

@@ -1190,9 +1190,9 @@
     },
     "audio-converter": {
       "title": "Convertir audio",
-      "description": "Convierte audio entre MP3, WAV, FLAC, OGG y M4A en tu navegador, sin subir tus archivos.",
+      "description": "Convierte audio entre MP3, WAV, FLAC, OGG, M4A y AIFF en tu navegador, sin subir tus archivos.",
       "action": "Convertir audio",
-      "about": "Convierte canciones, notas de voz, podcasts y grabaciones entre los formatos más usados: MP3 para que suene en cualquier lado, WAV o FLAC sin pérdida para editar o archivar, OGG (Opus) para la web y M4A (AAC) para dispositivos Apple. Lee MP3, WAV, FLAC, OGG, Opus, M4A, AAC y WebM, y puedes elegir la calidad. La conversión se hace en tu dispositivo: los archivos no se suben a ningún servidor.",
+      "about": "Convierte canciones, notas de voz, podcasts y grabaciones entre los formatos más usados: MP3 para que suene en cualquier lado, WAV, FLAC o AIFF sin pérdida para editar o archivar, OGG (Opus) para la web y M4A (AAC) para dispositivos Apple. Lee MP3, WAV, FLAC, OGG, Opus, M4A, AAC, WebM y AIFF, y puedes elegir la calidad. La conversión se hace en tu dispositivo: los archivos no se suben a ningún servidor.",
       "faq": {
         "q1": "¿Qué formato me conviene?",
         "a1": "MP3 si quieres que se reproduzca en cualquier dispositivo; M4A (AAC) suena un poco mejor con el mismo peso y es el de Apple; OGG (Opus) es el más eficiente para la web; WAV y FLAC no pierden calidad (FLAC ocupa cerca de la mitad que WAV).",
@@ -1201,7 +1201,9 @@
         "q3": "¿Por qué no puede leer mi archivo M4A?",
         "a3": "El audio AAC (M4A) se decodifica con el códec del navegador. Chrome, Edge y Safari lo leen; algunos navegadores sin códecs propietarios no. En ese caso verás un aviso: prueba con otro navegador.",
         "q4": "¿Hay un límite?",
-        "a4": "Hasta 200 MB por archivo con el plan gratuito (500 MB con Pro) y 3 horas de duración, porque el resultado se arma en la memoria de tu navegador. Se conserva solo la pista de audio principal; si el archivo es un video, se ignora la imagen."
+        "a4": "Hasta 200 MB por archivo con el plan gratuito (500 MB con Pro) y 3 horas de duración, porque el resultado se arma en la memoria de tu navegador. Se conserva solo la pista de audio principal; si el archivo es un video, se ignora la imagen.",
+        "q5": "¿Qué es AIFF y cuándo usarlo?",
+        "a5": "AIFF es el formato sin pérdida de Apple, el equivalente de WAV en Mac, Logic o GarageBand. Se leen AIFF y AIFF-C sin comprimir (8, 16, 24 y 32 bits) y se escribe en 16 bits; los AIFF-C comprimidos (por ejemplo μ-law) no se admiten."
       }
     }
   },
@@ -2128,7 +2130,8 @@
       "wav": "WAV (sin pérdida)",
       "flac": "FLAC (sin pérdida)",
       "ogg": "OGG (Opus)",
-      "m4a": "M4A (AAC)"
+      "m4a": "M4A (AAC)",
+      "aiff": "AIFF (sin pérdida)"
     },
     "bitrate": "Calidad",
     "bitrates": {

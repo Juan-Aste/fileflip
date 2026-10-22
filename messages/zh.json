@@ -1190,9 +1190,9 @@
     },
     "audio-converter": {
       "title": "音频转换器",
-      "description": "在浏览器中将音频在 MP3、WAV、FLAC、OGG 和 M4A 之间转换，无需上传文件。",
+      "description": "在浏览器中将音频在 MP3、WAV、FLAC、OGG、M4A 和 AIFF 之间转换，无需上传文件。",
       "action": "转换音频",
-      "about": "在最常用的格式之间转换歌曲、语音消息、播客和录音：MP3 可在任何地方播放，无损的 WAV 或 FLAC 适合编辑或存档，OGG（Opus）适合网页，M4A（AAC）适合苹果设备。可读取 MP3、WAV、FLAC、OGG、Opus、M4A、AAC 和 WebM，并可选择音质。转换在你的设备上进行：文件不会上传到任何服务器。",
+      "about": "在最常用的格式之间转换歌曲、语音消息、播客和录音：MP3 可在任何地方播放，无损的 WAV、FLAC 或 AIFF 适合编辑或存档，OGG（Opus）适合网页，M4A（AAC）适合苹果设备。可读取 MP3、WAV、FLAC、OGG、Opus、M4A、AAC、WebM 和 AIFF，并可选择音质。转换在你的设备上进行：文件不会上传到任何服务器。",
       "faq": {
         "q1": "应该选择哪种格式？",
         "a1": "需要在任何设备上播放就选 MP3；M4A（AAC）在相同大小下音质略好，是苹果的格式；OGG（Opus）在网页上效率最高；WAV 和 FLAC 不损失音质（FLAC 约为 WAV 的一半大小）。",
@@ -1201,7 +1201,9 @@
         "q3": "为什么无法读取我的 M4A 文件？",
         "a3": "AAC 音频（M4A）由浏览器的编解码器解码。Chrome、Edge 和 Safari 可以读取；某些不带专有编解码器的浏览器不行。这种情况下会显示提示：请换一个浏览器。",
         "q4": "有限制吗？",
-        "a4": "免费版每个文件最大 200 MB（Pro 版 500 MB），最长 3 小时，因为结果在浏览器内存中生成。只保留主音轨；如果文件是视频，会忽略画面。"
+        "a4": "免费版每个文件最大 200 MB（Pro 版 500 MB），最长 3 小时，因为结果在浏览器内存中生成。只保留主音轨；如果文件是视频，会忽略画面。",
+        "q5": "什么是 AIFF，什么时候用？",
+        "a5": "AIFF 是苹果的无损格式，相当于 Mac、Logic 或 GarageBand 上的 WAV。可读取未压缩的 AIFF 和 AIFF-C（8、16、24 和 32 位），输出为 16 位 AIFF；不支持压缩的 AIFF-C（例如 μ-law）。"
       }
     }
   },
@@ -2128,7 +2130,8 @@
       "wav": "WAV（无损）",
       "flac": "FLAC（无损）",
       "ogg": "OGG（Opus）",
-      "m4a": "M4A（AAC）"
+      "m4a": "M4A（AAC）",
+      "aiff": "AIFF（无损）"
     },
     "bitrate": "音质",
     "bitrates": {
