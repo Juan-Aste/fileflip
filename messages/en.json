@@ -742,6 +742,24 @@
         "a5": "One photo at a time, up to 50 MB (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF or iPhone HEIC). If the framed area has too little resolution to print sharp (under 300 dpi), we tell you."
       }
     },
+    "scan-document": {
+      "title": "Scan document",
+      "description": "Turn phone photos of documents into a scanned PDF: straightens the perspective and makes the paper white and the text black.",
+      "action": "Create PDF",
+      "about": "You took a phone photo of a contract, an invoice or a form and need to send it as a scan. Upload one or more photos (one per page), mark the sheet's four corners on each, and get a PDF with the pages straight, seen from the front and cropped to the paper's edge. Black and white mode cleans up shadows and uneven light so it looks like a photocopy; you can also choose higher-contrast greyscale or color. Everything happens on your device: the photos aren't uploaded to any server.",
+      "faq": {
+        "q1": "How do I take a good photo to scan?",
+        "a1": "Lay the sheet on a dark, plain surface that contrasts with the paper, in good light and without direct flash (which leaves a white glare). Frame the whole sheet with some margin and hold the phone as parallel to the paper as you can. It doesn't have to be perfectly straight: marking the corners fixes that.",
+        "q2": "How do I mark the corners?",
+        "a2": "Drag each of the four circles to a corner of the sheet (with the mouse or a finger), or select one with Tab and move it with the arrow keys (Shift + arrow for big steps). With several pages, pick each one with the \"Page 1\", \"Page 2\"… buttons. The PDF follows the order of the file list.",
+        "q3": "Which mode should I choose?",
+        "a3": "Black and white for text (contracts, invoices, notes): clean, sharp and a small PDF. Greyscale for faint signatures, stamps or pictures you want to keep. Color for documents where colors matter, like charts or ID cards.",
+        "q4": "Can the text be searched or copied?",
+        "a4": "No: the PDF holds pictures of the pages. To make it searchable, run it through \"OCR scanned PDF\", which adds an invisible text layer.",
+        "q5": "Is there a limit?",
+        "a5": "JPG, PNG, WEBP, AVIF or iPhone HEIC photos, up to 50 MB each. Each page is straightened to at most 2400 pixels on its longest side (about 200 dpi on A4) and the whole job has 5 minutes. Corners are placed by hand: the sheet isn't detected automatically."
+      }
+    },
     "watermark-image": {
       "title": "Watermark images",
       "description": "Add your name, text or logo as a watermark to many photos at once, in a corner or tiled.",
@@ -2596,5 +2614,31 @@
     "lowResolution": "The framed area has low resolution: it may print blurry. Use a bigger or closer photo.",
     "doneSheet": "4 × 6 in (10 × 15 cm) sheet with {copies} copies and cutting lines.",
     "sheetSuffix": "sheet-4x6"
+  },
+  "ScanDocumentTool": {
+    "mode": "Mode",
+    "modes": {
+      "bw": "Black and white (text)",
+      "gray": "Greyscale",
+      "color": "Color"
+    },
+    "paper": "Page size",
+    "papers": {
+      "a4": "A4",
+      "letter": "Letter",
+      "fit": "Same as the sheet"
+    },
+    "pages": "Pages",
+    "page": "Page {n}",
+    "loading": "Loading the photo…",
+    "hint": "Drag the circles to the sheet's four corners.",
+    "cornersHint": "Drag the corners, or pick them with Tab and move them with the arrow keys (Shift for big steps).",
+    "corners": {
+      "topLeft": "Top left corner ({x}, {y})",
+      "topRight": "Top right corner ({x}, {y})",
+      "bottomRight": "Bottom right corner ({x}, {y})",
+      "bottomLeft": "Bottom left corner ({x}, {y})"
+    },
+    "done": "PDF with {pages, plural, one {# page} other {# pages}}."
   }
 }

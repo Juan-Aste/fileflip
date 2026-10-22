@@ -12,6 +12,7 @@ import type {
   PreviewResult,
   ResizeArgs,
   ResizeResult,
+  ScanArgs,
   StripArgs,
   StripResult,
   TransformArgs,
@@ -47,6 +48,9 @@ export const overlayImageFile = (args: OverlayArgs, job: JobOptions = {}) =>
 
 export const idPhotoFile = (args: IdPhotoArgs, job: JobOptions = {}) =>
   pool.run<IdPhotoResult>("idPhoto", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });
+
+export const scanToPdf = (args: ScanArgs, job: JobOptions = {}) =>
+  pool.run<{ buffer: ArrayBuffer; pages: number }>("scan", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });
 
 export const faviconPack = (args: FaviconArgs, job: JobOptions = {}) =>
   pool.run<FaviconResult>("favicon", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });

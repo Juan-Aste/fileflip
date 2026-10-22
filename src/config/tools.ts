@@ -74,6 +74,7 @@ export const toolIds = [
   "remove-exif",
   "crop-image",
   "id-photo",
+  "scan-document",
   "watermark-image",
   "add-text-to-image",
   "favicon-generator",
@@ -702,6 +703,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 2 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "foto-carnet", en: "id-photo-maker", pt: "foto-3x4", fr: "photo-identite", zh: "id-photo-maker" },
+  },
+  "scan-document": {
+    id: "scan-document",
+    category: "pdf",
+    inputs: ["jpg", "png", "webp", "avif", "heic"],
+    outputs: ["pdf"],
+    engine: "browser",
+    libraries: ["own perspective and threshold", "gifenc", "@jsquash/jpeg", "libheif-js", "pdf-lib"],
+    // Pages are straightened one after another (each up to 2400 px on its longest side) and kept until the PDF is written.
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "escanear-documento", en: "scan-document", pt: "escanear-documento", fr: "scanner-document", zh: "scan-document" },
   },
 
   "watermark-image": {

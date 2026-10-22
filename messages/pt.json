@@ -742,6 +742,24 @@
         "a5": "Uma foto por vez, de até 50 MB (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF ou HEIC do iPhone). Se a área enquadrada tiver pouca resolução para imprimir nítida (menos de 300 dpi), avisamos."
       }
     },
+    "scan-document": {
+      "title": "Escanear documento",
+      "description": "Transforme fotos de documentos tiradas com o celular em um PDF escaneado: endireita a perspectiva e deixa o papel branco e o texto preto.",
+      "action": "Criar PDF",
+      "about": "Você fotografou um contrato, uma nota fiscal ou um formulário com o celular e precisa enviar como escaneamento. Envie uma ou várias fotos (uma por página), marque os quatro cantos da folha em cada uma e receba um PDF com as páginas retas, vistas de frente e recortadas na borda do papel. O modo preto e branco limpa sombras e luz irregular para parecer uma fotocópia; você também pode escolher tons de cinza com mais contraste ou cor. Tudo acontece no seu dispositivo: as fotos não são enviadas a nenhum servidor.",
+      "faq": {
+        "q1": "Como tirar uma boa foto para escanear?",
+        "a1": "Apoie a folha sobre uma superfície escura e lisa que contraste com o papel, com boa luz e sem flash direto (que deixa um reflexo branco). Enquadre a folha inteira, com alguma margem, e segure o celular o mais paralelo possível ao papel. Não precisa sair perfeitamente reta: isso é corrigido ao marcar os cantos.",
+        "q2": "Como marco os cantos?",
+        "a2": "Arraste cada um dos quatro círculos até um canto da folha (com o mouse ou o dedo), ou selecione um com Tab e mova com as setas (Shift + seta para passos grandes). Com várias páginas, escolha cada uma nos botões \"Página 1\", \"Página 2\"… A ordem do PDF é a da lista de arquivos.",
+        "q3": "Qual modo escolher?",
+        "a3": "Preto e branco para texto (contratos, notas, anotações): fica limpo, nítido e o PDF fica leve. Tons de cinza para assinaturas fracas, carimbos ou fotos que você quer manter. Cor para documentos em que as cores importam, como gráficos ou carteirinhas.",
+        "q4": "O texto pode ser pesquisado ou copiado?",
+        "a4": "Não: o PDF contém imagens das páginas. Para torná-lo pesquisável, passe-o depois pelo \"OCR de PDF digitalizado\", que adiciona uma camada de texto invisível.",
+        "q5": "Existe algum limite?",
+        "a5": "Fotos JPG, PNG, WEBP, AVIF ou HEIC do iPhone, de até 50 MB cada. Cada página é endireitada para no máximo 2400 pixels no lado maior (cerca de 200 dpi em A4) e o processo inteiro tem 5 minutos. Os cantos são marcados à mão: a folha não é detectada automaticamente."
+      }
+    },
     "watermark-image": {
       "title": "Marca d'água em imagens",
       "description": "Adicione seu nome, texto ou logo como marca d'água a várias fotos de uma vez, em um canto ou em mosaico.",
@@ -2596,5 +2614,31 @@
     "lowResolution": "A área escolhida tem pouca resolução: pode sair borrada na impressão. Use uma foto maior ou mais próxima.",
     "doneSheet": "Folha 10 × 15 cm com {copies} cópias e linhas de corte.",
     "sheetSuffix": "folha-10x15"
+  },
+  "ScanDocumentTool": {
+    "mode": "Modo",
+    "modes": {
+      "bw": "Preto e branco (texto)",
+      "gray": "Tons de cinza",
+      "color": "Cor"
+    },
+    "paper": "Tamanho da página",
+    "papers": {
+      "a4": "A4",
+      "letter": "Carta",
+      "fit": "Do tamanho da folha"
+    },
+    "pages": "Páginas",
+    "page": "Página {n}",
+    "loading": "Carregando a foto…",
+    "hint": "Arraste os círculos para os quatro cantos da folha.",
+    "cornersHint": "Arraste os cantos, ou escolha-os com Tab e mova com as setas (Shift para passos grandes).",
+    "corners": {
+      "topLeft": "Canto superior esquerdo ({x}, {y})",
+      "topRight": "Canto superior direito ({x}, {y})",
+      "bottomRight": "Canto inferior direito ({x}, {y})",
+      "bottomLeft": "Canto inferior esquerdo ({x}, {y})"
+    },
+    "done": "PDF com {pages, plural, one {# página} other {# páginas}}."
   }
 }

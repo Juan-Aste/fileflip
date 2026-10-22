@@ -2639,3 +2639,27 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - No quita ni cambia el fondo (3C.44) ni detecta la cara: el encuadre es manual con la guía. Hoja solo de 10 × 15 cm (sin A4).
 
 **Siguiente**: 3C.43 (escanear documento desde el celular).
+
+## 2026-10-22 11:50 UTC — Fase 3, tarea 3C.43 (escanear documento)
+
+**Qué se hizo**
+- **Escanear documento** (`/es/escanear-documento`, `/en/scan-document`, `/pt/escanear-documento`, `/fr/scanner-document`), categoría PDF: una o varias fotos de hojas (JPG, PNG, WEBP, AVIF o HEIC, hasta 50 MB cada una; una por página, en el orden de la lista) → **un PDF**. En cada foto se marcan las **cuatro esquinas** de la hoja (`CornerEditor` nuevo: círculos que se arrastran con mouse o dedo, o con Tab + flechas, Mayús para pasos grandes; sombreado fuera de la hoja; los movimientos que cruzarían el contorno o saldrían de la foto se ignoran); botones "Página N" para pasar de una foto a otra.
+- Motor propio y puro (`src/lib/image/scan.ts`): **homografía** de 4 puntos (eliminación gaussiana con pivoteo), **enderezado** con muestreo bilineal (tamaño = promedio de lados opuestos, máximo 2400 px ≈ A4 a 200 ppp), **blanco y negro adaptativo** (Bradley–Roth con imagen integral, ventana de 1/8 de la página: sombras y luz despareja quedan blancas), **gris con contraste estirado** (percentiles 1–99) o color. En el worker de imágenes (`scan`), con pdf-lib importado solo al usarlo: B/N como **PNG de 2 colores** (gifenc), gris/color como JPEG 85; página **A4, Carta o del tamaño de la hoja**, girada según la forma y con la imagen ajustada y centrada.
+- Textos (introducción + 5 preguntas: cómo sacar la foto, cómo marcar esquinas, qué modo, OCR enlazando a "OCR de PDF escaneado", límites) e interfaz en los 5 idiomas; ícono `FileScan`.
+
+**Verificación**
+- `scan.test.ts` (6): la homografía lleva cada esquina a su destino y mantiene rectas; validación de cuadriláteros (cruzado, antihorario, colineal, diminuto, fuera); tamaño; enderezado de un trapecio sintético (el cuarto azul queda arriba a la izquierda y no queda "mesa" en los bordes); umbral con luz que cae de 250 a 120 (tinta negra en ambos extremos, papel en sombra blanco, < 3 % negro); contraste del gris.
+- `scan-tools.spec.ts` (2, Chromium): foto sintética de 1000 × 1300 con mesa verde y una hoja inclinada con 4 líneas de texto, dibujada con una **homografía propia del test** y renderizada con sharp; se arrastran las 4 esquinas con el mouse (quedan a < 6 px), el teclado mueve y devuelve una esquina; PDF **A4 595 × 842** con 1 imagen, rasterizado con **pdftoppm**: las 4 líneas en su altura exacta, papel debajo de cada una y **papel (no verde) en los 8 puntos de borde**; dos fotos en B/N → PDF de 2 páginas casi sin grises; JPEG cortado → "dañado o incompleto". Sin llamadas al servidor.
+- Lint, typecheck, tests (967 + 8 saltados), build, `check:static` (1002 páginas) y `image-tools` + `search` de navegador (31/31).
+
+**Limitaciones**
+- Las esquinas se ponen a mano (no hay detección automática de la hoja). El PDF es de imágenes (sin texto: usar el OCR de PDF). Sin rotación de 90° por página (la página se gira según la forma de la hoja).
+
+**Siguiente**: 3C.44 (quitar fondo con licencia aceptable).
+
+## 2026-10-22 11:50 UTC — Fin de la ejecución (tope de 5 tareas)
+
+- Hechas: 3C.40b (entradas 3MF, COLLADA y FBX en el conversor 3D), 3C.41a (Convertir DXF → SVG, primera herramienta CAD), 3C.41b (DXF → PNG y PDF), 3C.42 (Foto carnet) y 3C.43 (Escanear documento). Categoría **CAD** publicada. Dependencias nuevas: linkedom 0.18.14 (ISC) y dxf-parser 1.1.2 (MIT), ambas solo en workers con import diferido.
+- Sin Gotenberg ni EPUBCheck en este entorno (no se corrió la suite e2e completa; sí las de cada herramienta tocada, `search` e `image-tools`).
+
+**Siguiente**: 3C.44 (quitar fondo: MediaPipe Apache-2.0 u onnxruntime-web + modelo Apache-2.0; si no hay calidad suficiente, anotarlo y no publicar).

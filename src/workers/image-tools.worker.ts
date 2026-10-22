@@ -11,6 +11,7 @@ import {
   type CompressionLevel,
 } from "@/lib/image/compress";
 import { isValidCrop, type Rect } from "@/lib/image/crop-rect";
+import { adaptiveThreshold, enhancedGray, isValidQuad, scanSize, warpQuad, type Quad, type ScanMode } from "@/lib/image/scan";
 import { ID_PHOTO_DPI, ID_SHEET_DPI, idPhotoPresets, mmToPx, photoPixels, setJpegDpi, sheetLayout, type IdPhotoPreset } from "@/lib/image/id-photo";
 import { decodeImage } from "@/lib/image/decode";
 import {
@@ -518,4 +519,39 @@ async function idPhoto({ input, from, rect, preset }: IdPhotoArgs, onProgress: (
   return { result, transfer: [result.photo, result.sheet] };
 }
 
-exposeHandlers({ compress, resize, transform, strip, preview, crop, overlay, favicon, idPhoto });
+export interface ScanArgs {
+  pages: { input: Blob; from: FormatId; quad: Quad }[];
+  mode: ScanMode;
+  paper: ScanPaper;
+}
+export type ScanPaper = "a4" | "letter" | "fit";
+
+/** Page sizes in points; "fit" uses the straightened photo's own proportions at 200 dpi. */
+const PAPERS = { a4: [595.28, 841.89], letter: [612, 792] } as const;
+
+/** Photos of pages → one PDF: each page straightened, cleaned up and filling its page (turned to match). */
+async function scan({ pages, mode, paper }: ScanArgs, onProgress: (progress: number) => void) {
+  const { PDFDocument } = await import("pdf-lib");
+  const doc = await PDFDocument.create();
+  doc.setCreator("Fileflect");
+  doc.setProducer("Fileflect (pdf-lib)");
+  for (const [i, page] of pages.entries()) {
+    const image = await decode(await page.input.arrayBuffer(), page.from);
+    if (!isValidQuad(page.quad, image.width, image.height)) throw new ConversionError("invalidRequest");
+    const flat = warpQuad(image, page.quad, scanSize(page.quad));
+    const clean = mode === "bw" ? adaptiveThreshold(flat) : mode === "gray" ? enhancedGray(flat) : flat;
+    // Two-color PNG for black and white (small and sharp), JPEG for photos of grey or color pages.
+    const embedded = mode === "bw" ? await doc.embedPng(await quantizedPng(clean, 2)) : await doc.embedJpg(await encode(clean, "jpg", 85));
+    const [w, h] = paper === "fit" ? [(clean.width / 200) * 72, (clean.height / 200) * 72] : clean.width > clean.height ? [PAPERS[paper][1], PAPERS[paper][0]] : PAPERS[paper];
+    const pdfPage = doc.addPage([w, h]);
+    const k = Math.min(w / clean.width, h / clean.height);
+    pdfPage.drawImage(embedded, { x: (w - clean.width * k) / 2, y: (h - clean.height * k) / 2, width: clean.width * k, height: clean.height * k });
+    onProgress((i + 1) / (pages.length + 0.2));
+  }
+  const pdf = await doc.save();
+  onProgress(1);
+  const buffer = pdf.buffer.slice(pdf.byteOffset, pdf.byteOffset + pdf.byteLength) as ArrayBuffer;
+  return { result: { buffer, pages: pages.length }, transfer: [buffer] };
+}
+
+exposeHandlers({ compress, resize, transform, strip, preview, crop, overlay, favicon, idPhoto, scan });

@@ -69,6 +69,7 @@ import {
   Box,
   Lamp,
   SquareUser,
+  FileScan,
   DraftingCompass,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
@@ -109,6 +110,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "remove-exif": MapPinOff,
   "crop-image": Crop,
   "id-photo": SquareUser,
+  "scan-document": FileScan,
   "watermark-image": Stamp,
   "add-text-to-image": Type,
   "favicon-generator": AppWindow,

@@ -742,6 +742,24 @@
         "a5": "Une photo à la fois, jusqu'à 50 Mo (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF ou HEIC de l'iPhone). Si la zone cadrée a une résolution trop faible pour une impression nette (moins de 300 ppp), nous vous prévenons."
       }
     },
+    "scan-document": {
+      "title": "Scanner un document",
+      "description": "Transformez des photos de documents prises au téléphone en PDF scanné : la perspective est redressée, le papier devient blanc et le texte noir.",
+      "action": "Créer le PDF",
+      "about": "Vous avez photographié un contrat, une facture ou un formulaire avec votre téléphone et devez l'envoyer comme un scan. Ajoutez une ou plusieurs photos (une par page), placez les quatre coins de la feuille sur chacune et obtenez un PDF aux pages droites, vues de face et recadrées au bord du papier. Le mode noir et blanc nettoie les ombres et l'éclairage inégal pour un rendu de photocopie ; vous pouvez aussi choisir des niveaux de gris plus contrastés ou la couleur. Tout se passe sur votre appareil : les photos ne sont envoyées à aucun serveur.",
+      "faq": {
+        "q1": "Comment prendre une bonne photo à scanner ?",
+        "a1": "Posez la feuille sur une surface sombre et unie qui contraste avec le papier, sous une bonne lumière et sans flash direct (qui laisse un reflet blanc). Cadrez toute la feuille avec un peu de marge et tenez le téléphone aussi parallèle au papier que possible. Inutile qu'elle soit parfaitement droite : placer les coins corrige cela.",
+        "q2": "Comment placer les coins ?",
+        "a2": "Faites glisser chacun des quatre cercles sur un coin de la feuille (à la souris ou au doigt), ou sélectionnez-en un avec Tab et déplacez-le avec les flèches (Maj + flèche pour de grands pas). Avec plusieurs pages, choisissez chacune avec les boutons « Page 1 », « Page 2 »… L'ordre du PDF suit celui de la liste des fichiers.",
+        "q3": "Quel mode choisir ?",
+        "a3": "Noir et blanc pour le texte (contrats, factures, notes) : net, propre et léger. Niveaux de gris pour les signatures pâles, les tampons ou les images à conserver. Couleur pour les documents où les couleurs comptent, comme des graphiques ou des cartes.",
+        "q4": "Le texte est-il recherchable ou copiable ?",
+        "a4": "Non : le PDF contient des images des pages. Pour le rendre recherchable, passez-le ensuite dans « OCR de PDF numérisé », qui ajoute une couche de texte invisible.",
+        "q5": "Y a-t-il une limite ?",
+        "a5": "Photos JPG, PNG, WEBP, AVIF ou HEIC de l'iPhone, jusqu'à 50 Mo chacune. Chaque page est redressée à 2400 pixels au plus sur son plus grand côté (environ 200 ppp en A4) et le traitement complet dispose de 5 minutes. Les coins se placent à la main : la feuille n'est pas détectée automatiquement."
+      }
+    },
     "watermark-image": {
       "title": "Filigrane sur des images",
       "description": "Ajoutez votre nom, un texte ou votre logo en filigrane à de nombreuses photos à la fois, dans un coin ou en mosaïque.",
@@ -2596,5 +2614,31 @@
     "lowResolution": "La zone choisie a une faible résolution : l'impression peut être floue. Utilisez une photo plus grande ou prise de plus près.",
     "doneSheet": "Planche 10 × 15 cm avec {copies} copies et traits de coupe.",
     "sheetSuffix": "planche-10x15"
+  },
+  "ScanDocumentTool": {
+    "mode": "Mode",
+    "modes": {
+      "bw": "Noir et blanc (texte)",
+      "gray": "Niveaux de gris",
+      "color": "Couleur"
+    },
+    "paper": "Format de page",
+    "papers": {
+      "a4": "A4",
+      "letter": "Lettre US",
+      "fit": "Taille de la feuille"
+    },
+    "pages": "Pages",
+    "page": "Page {n}",
+    "loading": "Chargement de la photo…",
+    "hint": "Faites glisser les cercles sur les quatre coins de la feuille.",
+    "cornersHint": "Faites glisser les coins, ou choisissez-les avec Tab et déplacez-les avec les flèches (Maj pour de grands pas).",
+    "corners": {
+      "topLeft": "Coin supérieur gauche ({x}, {y})",
+      "topRight": "Coin supérieur droit ({x}, {y})",
+      "bottomRight": "Coin inférieur droit ({x}, {y})",
+      "bottomLeft": "Coin inférieur gauche ({x}, {y})"
+    },
+    "done": "PDF de {pages, plural, one {# page} other {# pages}}."
   }
 }

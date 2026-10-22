@@ -742,6 +742,24 @@
         "a5": "Una foto a la vez, de hasta 50 MB (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF o HEIC del iPhone). Si la zona encuadrada tiene poca resolución para imprimirse nítida (menos de 300 ppp), te avisamos."
       }
     },
+    "scan-document": {
+      "title": "Escanear documento",
+      "description": "Convierte fotos de documentos hechas con el celular en un PDF escaneado: endereza la perspectiva y deja el papel blanco y el texto negro.",
+      "action": "Crear PDF",
+      "about": "Sacaste una foto a un contrato, una factura o un formulario con el celular y necesitas enviarlo como escaneo. Sube una o varias fotos (una por página), marca las cuatro esquinas de la hoja en cada una y obtén un PDF con las páginas derechas, vistas de frente y recortadas al borde del papel. El modo blanco y negro limpia sombras y luz despareja para que se vea como una fotocopia; también puedes elegir escala de grises con más contraste o color. Todo pasa en tu dispositivo: las fotos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Cómo saco una buena foto para escanear?",
+        "a1": "Apoya la hoja sobre una superficie oscura y lisa que contraste con el papel, con buena luz y sin flash directo (que deja un reflejo blanco). Encuadra la hoja entera, con algo de margen, y sostén el celular lo más paralelo posible al papel. No hace falta que salga perfectamente derecha: eso se corrige al marcar las esquinas.",
+        "q2": "¿Cómo marco las esquinas?",
+        "a2": "Arrastra cada uno de los cuatro círculos hasta una esquina de la hoja (con el mouse o el dedo), o selecciona uno con Tab y muévelo con las flechas (Mayús + flecha para pasos grandes). Si hay varias páginas, elige cada una con los botones \"Página 1\", \"Página 2\"… El orden del PDF es el de la lista de archivos.",
+        "q3": "¿Qué modo elijo?",
+        "a3": "Blanco y negro para texto (contratos, facturas, apuntes): queda limpio, nítido y el PDF pesa poco. Escala de grises si hay firmas suaves, sellos o fotos que quieres conservar. Color para documentos con colores importantes, como gráficos o carnets.",
+        "q4": "¿El texto se puede buscar o copiar?",
+        "a4": "No: el PDF contiene imágenes de las páginas. Para hacerlo buscable, pásalo luego por \"OCR de PDF escaneado\", que agrega una capa de texto invisible.",
+        "q5": "¿Hay algún límite?",
+        "a5": "Fotos JPG, PNG, WEBP, AVIF o HEIC del iPhone, de hasta 50 MB cada una. Cada página se endereza a un máximo de 2400 píxeles en su lado más largo (unos 200 ppp en A4) y el proceso completo tiene 5 minutos. Las esquinas se ponen a mano: no se detecta la hoja automáticamente."
+      }
+    },
     "watermark-image": {
       "title": "Marca de agua en imágenes",
       "description": "Agrega tu nombre, texto o logo como marca de agua a muchas fotos a la vez, en una esquina o en mosaico.",
@@ -2596,5 +2614,31 @@
     "lowResolution": "La zona elegida tiene poca resolución: puede imprimirse borrosa. Usa una foto más grande o más cercana.",
     "doneSheet": "Hoja de 10 × 15 cm con {copies} copias y líneas de corte.",
     "sheetSuffix": "hoja-10x15"
+  },
+  "ScanDocumentTool": {
+    "mode": "Modo",
+    "modes": {
+      "bw": "Blanco y negro (texto)",
+      "gray": "Escala de grises",
+      "color": "Color"
+    },
+    "paper": "Tamaño de página",
+    "papers": {
+      "a4": "A4",
+      "letter": "Carta",
+      "fit": "Del tamaño de la hoja"
+    },
+    "pages": "Páginas",
+    "page": "Página {n}",
+    "loading": "Cargando la foto…",
+    "hint": "Arrastra los círculos a las cuatro esquinas de la hoja.",
+    "cornersHint": "Arrastra las esquinas, o elígelas con Tab y muévelas con las flechas (Mayús para pasos grandes).",
+    "corners": {
+      "topLeft": "Esquina superior izquierda ({x}, {y})",
+      "topRight": "Esquina superior derecha ({x}, {y})",
+      "bottomRight": "Esquina inferior derecha ({x}, {y})",
+      "bottomLeft": "Esquina inferior izquierda ({x}, {y})"
+    },
+    "done": "PDF con {pages, plural, one {# página} other {# páginas}}."
   }
 }
