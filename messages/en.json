@@ -1337,7 +1337,7 @@
         "q2": "How do I find the right moment?",
         "a2": "Play the video and pause where you want; “Use current position” copies that time into the field. You can also type minutes:seconds, for example 1:23.5.",
         "q3": "Can I remove a part in the middle?",
-        "a3": "For now one clip is kept at a time. To remove something in the middle, trim both parts and join them with “Join videos” once it's available.",
+        "a3": "For now one clip is kept at a time. To remove something in the middle, trim both parts and join them with “Join videos”.",
         "q4": "Is there a limit?",
         "a4": "One video at a time, up to 200 MB on the free plan (500 MB with Pro) and 2 hours long. If your browser can't play the file (for example MKV or H.264 in some), you can still type the times."
       }
@@ -1372,6 +1372,22 @@
         "a3": "The video is re-encoded at high quality, in the same format as the original (MP4, MOV, MKV or WebM). The resolution doesn't change.",
         "q4": "Is there a limit?",
         "a4": "Up to 200 MB per video on the free plan (500 MB with Pro), 2 hours long and 30 minutes of processing per file. Your browser has to be able to decode the video (H.264 isn't decoded in some browsers without proprietary codecs)."
+      }
+    },
+    "join-videos": {
+      "title": "Join videos",
+      "description": "Join several MP4, MOV, MKV or WebM videos into one, in the order you choose, in your browser.",
+      "action": "Join videos",
+      "about": "Put the clips of a trip, the parts of a recorded class or several phone takes together into a single video. Add the files, put them in order with the arrows and download the result as MP4 or WebM. The final video takes the size of the first one: clips with another shape (vertical next to horizontal, for example) are fitted with black bands, never stretched or cropped. The sound of all of them is matched and, if a clip has no sound, that part stays silent. Everything happens on your device: the videos aren't uploaded to any server.",
+      "faq": {
+        "q1": "Can I join videos of different formats or sizes?",
+        "a1": "Yes: you can mix MP4, MOV, MKV and WebM, and horizontal and vertical videos. The result has the size of the first one in the list (1080p at most) and the others are centred with black bands.",
+        "q2": "How do I change the order?",
+        "a2": "The videos are joined in the order of the list. Use each file's arrows to move it up or down before joining.",
+        "q3": "Is quality lost?",
+        "a3": "The whole video is re-encoded at high quality so the parts fit together. Clips larger than the first one are scaled down to its size.",
+        "q4": "Is there a limit?",
+        "a4": "Up to 200 MB per video on the free plan (500 MB with Pro), 2 hours in total and 30 minutes of processing. The result is built in your device's memory, so on phones it's best to join short videos. Your browser has to be able to decode each video (H.264 isn't decoded in some browsers without proprietary codecs)."
       }
     }
   },
@@ -2419,5 +2435,9 @@
     },
     "note": "Below 1× is slow motion; above 1×, sped up. The video is re-encoded at high quality, in the same format. Processed on your device.",
     "done": "Speed {speed}: lasts {length}."
+  },
+  "JoinVideosTool": {
+    "note": "The result takes the size of the first video (1080p at most); the others are fitted with black bands. Re-encoded at high quality, on your device.",
+    "size": "{width} × {height} px."
   }
 }

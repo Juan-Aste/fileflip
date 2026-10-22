@@ -103,6 +103,7 @@ export const toolIds = [
   "trim-video",
   "video-to-gif",
   "video-speed",
+  "join-videos",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -1030,6 +1031,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 30 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
     status: "verified",
     slugs: { es: "cambiar-velocidad-video", en: "change-video-speed", pt: "alterar-velocidade-video", fr: "changer-vitesse-video", zh: "change-video-speed" },
+  },
+  "join-videos": {
+    id: "join-videos",
+    category: "video",
+    inputs: ["mp4", "mov", "mkv", "webm"],
+    outputs: ["mp4", "webm"],
+    engine: "browser",
+    libraries: ["mediabunny", "@mediabunny/aac-encoder (FFmpeg AAC)"],
+    // The whole result is kept in memory: 2 hours in total (MAX_VIDEO_SECONDS).
+    limits: { files: "multiple", timeoutMs: 30 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "unir-videos", en: "join-videos", pt: "juntar-videos", fr: "fusionner-videos", zh: "join-videos" },
   },
 
 

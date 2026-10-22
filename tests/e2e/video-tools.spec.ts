@@ -429,3 +429,81 @@ test.describe("tool: video-speed", () => {
     await expect(main).toContainText("damaged");
   });
 });
+
+test.describe("tool: join-videos", () => {
+  test.skip(!hasFfmpeg, "needs ffmpeg/ffprobe to check the output");
+
+  const isRed = (c: number[]) => c[0]! > 180 && c[2]! < 80;
+  const isBlue = (c: number[]) => c[2]! > 180 && c[0]! < 80;
+  const isBlack = (c: number[]) => c[0]! < 40 && c[1]! < 40 && c[2]! < 40;
+
+  /** Color of pixel (x, y) of the frame at `at` seconds, and the RMS level of the sound between two times. */
+  function pixel(file: string, at: number, x: number, y: number, width: number) {
+    const rgb = execFileSync("ffmpeg", ["-v", "error", "-ss", String(at), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]);
+    const i = (y * width + x) * 3;
+    return [rgb[i]!, rgb[i + 1]!, rgb[i + 2]!];
+  }
+  function level(file: string, from: number, to: number) {
+    const pcm = execFileSync("ffmpeg", ["-v", "error", "-ss", String(from), "-t", String(to - from), "-i", file, "-vn", "-f", "s16le", "-ac", "1", "-ar", "8000", "-"]);
+    const samples = new Int16Array(pcm.buffer, pcm.byteOffset, pcm.length / 2);
+    return Math.sqrt(samples.reduce((sum, v) => sum + v * v, 0) / Math.max(1, samples.length));
+  }
+  const save = (buf: Buffer, name: string) => {
+    const file = join(mkdtempSync(join(tmpdir(), "video-")), name);
+    writeFileSync(file, buf);
+    return file;
+  };
+
+  test("MKV and WebM, reordered, → one MP4 of 4 s: red, blue, red, blue, with sound throughout", async ({ page }) => {
+    await openWithFiles(page, "/en/join-videos", ["video.webm", "video.mkv"]);
+    await page.getByRole("button", { name: "Move video.mkv up" }).click();
+    await expect(page.locator("main ul li").nth(0)).toContainText("video.mkv");
+    const out = fileOf(await runTool(page, "Join videos"));
+    expect(out.name).toBe("video-joined.mp4");
+    await expect(page.locator("main")).toContainText("2 files joined: 0:04.0 in total. 320 × 240 px.");
+    const p = probe(out.buf, out.name, [0.5, 1.5, 2.5, 3.5]);
+    expect(p.format).toContain("mp4");
+    expect(p).toMatchObject({ audio: "aac", display: "320x240" });
+    expect(Math.abs(p.duration - 4), `lasts ${p.duration} s`).toBeLessThan(0.15);
+    expect(p.colors.map((c) => (isRed(c) ? "red" : isBlue(c) ? "blue" : String(c)))).toEqual(["red", "blue", "red", "blue"]);
+    expect(Math.abs(p.tones[0]! - 440), `left ${p.tones[0]} Hz`).toBeLessThan(15);
+    expect(Math.abs(p.tones[1]! - 660), `right ${p.tones[1]} Hz`).toBeLessThan(15);
+    const file = save(out.buf, out.name);
+    for (const [from, to] of [[0.3, 1.7], [2.3, 3.7]] as const) expect(level(file, from, to), `sound at ${from} s`).toBeGreaterThan(1000);
+  });
+
+  test("a vertical video gets black bands and a clip without sound stays silent (WebM)", async ({ page }) => {
+    await openWithFiles(page, "/es/unir-videos", ["video.webm", "video-rotated.mp4", "video-no-audio.webm"]);
+    await page.getByText("WebM", { exact: true }).click();
+    const out = fileOf(await runTool(page, "Unir videos"));
+    expect(out.name).toBe("video-unido.webm");
+    const p = probe(out.buf, out.name);
+    expect(p.format).toContain("webm");
+    expect(p).toMatchObject({ video: "vp9", audio: "opus", display: "320x240" });
+    // 2 s + 2 s (rotated) + 1 s (no sound).
+    expect(Math.abs(p.duration - 5), `lasts ${p.duration} s`).toBeLessThan(0.15);
+    const file = save(out.buf, out.name);
+    // The upright 240×320 clip is fitted into 320×240: 180 px wide in the middle, black bands on both sides.
+    expect(isRed(pixel(file, 2.5, 160, 120, 320)), "red in the middle at 2.5 s").toBe(true);
+    expect(isBlue(pixel(file, 3.5, 160, 120, 320)), "blue in the middle at 3.5 s").toBe(true);
+    for (const x of [10, 310]) expect(isBlack(pixel(file, 2.5, x, 120, 320)), `black band at x=${x}`).toBe(true);
+    expect(isRed(pixel(file, 0.5, 10, 120, 320)), "the first clip fills the frame").toBe(true);
+    expect(isRed(pixel(file, 4.5, 10, 120, 320)), "the last clip fills the frame").toBe(true);
+    expect(level(file, 0.3, 1.7)).toBeGreaterThan(1000);
+    expect(level(file, 2.3, 3.7)).toBeGreaterThan(1000);
+    expect(level(file, 4.2, 4.8), "silence for the clip without sound").toBeLessThan(50);
+  });
+
+  test("one video disables the action; a fake file in the list is named in the error", async ({ page }) => {
+    await openWithFiles(page, "/en/join-videos", ["video.webm"]);
+    const action = page.getByRole("button", { name: "Join videos", exact: true });
+    await expect(action).toBeDisabled();
+    await page.locator('input[type="file"]').first().setInputFiles([join(__dirname, "../fixtures/video.mkv"), join(__dirname, "../fixtures/corrupt/not-video.mp4")]);
+    await expect(action).toBeEnabled();
+    await action.click();
+    const alert = page.locator("main").getByText("not-video.mp4").last();
+    await expect(alert).toBeVisible({ timeout: 60_000 });
+    await expect(page.locator("main")).toContainText("can't be converted this way");
+    await expect(page.getByRole("button", { name: /^Download/ })).toHaveCount(0);
+  });
+});

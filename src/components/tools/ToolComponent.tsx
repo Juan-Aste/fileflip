@@ -77,6 +77,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "trim-video": dynamic(() => import("./video/TrimVideoTool")),
   "video-to-gif": dynamic(() => import("./video/VideoToGifTool")),
   "video-speed": dynamic(() => import("./video/VideoSpeedTool")),
+  "join-videos": dynamic(() => import("./video/JoinVideosTool")),
   "html-to-markdown": dynamic(() => import("./markup/MarkdownTools").then((m) => m.HtmlToMarkdownTool)),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),

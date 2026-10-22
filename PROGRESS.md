@@ -2482,3 +2482,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - El tono cambia con la velocidad (no hay estiramiento de tiempo que conserve el tono: requeriría un algoritmo tipo WSOLA; mejora posible). La cámara lenta repite cada cuadro (sin interpolación). Velocidades fijas (no un valor libre). El navegador tiene que decodificar el video (H.264 no se decodifica en Chromium sin códecs propietarios).
 
 **Siguiente**: 3C.38e ("Unir videos").
+
+## 2026-10-22 08:50 UTC — Fase 3, tarea 3C.38e (unir videos) — 3C.38 TERMINADA
+
+**Qué se hizo**
+- **Unir videos** (`/es/unir-videos`, `/en/join-videos`, `/pt/juntar-videos`, `/fr/fusionner-videos`), categoría Video: 2 o más archivos MP4, MOV, MKV o WebM (mezclados), en el orden de la lista (reordenable con las flechas de `ToolShell`) → un **MP4** (por defecto) o **WebM**. Nombre: `<primero>-joined.<ext>` (sufijo traducido, el de "Unir audio"). Si un archivo falla, el error dice cuál (`InputFileError`).
+- Motor `joinVideos` (`src/lib/video/convert.ts`): tamaño de salida = el del primer video (lado corto ≤ 1080, `MAX_JOIN_SHORT_SIDE`), cada cuadro se decodifica (`VideoSampleSink`, WebCodecs) y se dibuja **centrado con bandas negras** (`drawWithFit` "contain", respeta la rotación) en un canvas que se codifica con un único `VideoSampleSource` (H.264 en MP4 si el navegador lo tiene, si no VP9/AV1; VP9 en WebM) con timestamps desplazados por la duración acumulada. El sonido de cada entrada se decodifica y remuestrea a **48 kHz estéreo** con su propia `Conversion` hacia un `NullTarget` (mismo truco que "Unir audio") y va a un único `AudioSampleSource` (AAC/Opus); el audio más largo que el video se corta y las entradas **sin sonido quedan en silencio**. Video y audio de cada entrada se bombean a la vez para que se intercalen. Límite: 2 horas en total, 30 minutos por trabajo; todo en memoria.
+- FAQ de "Recortar video" (5 idiomas): ya no dice "cuando esté disponible". Textos (introducción + 4 preguntas, interfaz) en los 5 idiomas; ícono `Film`.
+
+**Verificación**
+- `video-tools.spec.ts` (+3, ffprobe/ffmpeg): WebM + MKV **reordenados con las flechas** → MP4 AAC 320×240 de **4 s**, colores rojo/azul/rojo/azul a 0,5/1,5/2,5/3,5 s, tonos 440/660 Hz y sonido en ambos tramos; WebM + MP4 vertical (rotado) + WebM sin sonido → WebM VP9/Opus de **5 s**: el tramo vertical tiene **bandas negras** a los lados (x = 10 y 310 negros, centro rojo/azul), el primero y el último llenan el cuadro, y el último tramo es **silencio** (RMS < 50); con un solo video la acción está deshabilitada y un texto disfrazado en la lista da el error con su nombre y sin descarga.
+- Lint, typecheck, tests (927 + 8 saltados), build, `check:static` (967 páginas) y `npm run test:e2e` completo: 301 pasan, 4 saltados (sin Gotenberg ni EPUBCheck).
+
+**Limitaciones**
+- Siempre recodifica (incluso si todos los clips tienen el mismo formato): más lento que una unión por copia, pero funciona con cualquier mezcla. Sin transiciones. El navegador tiene que decodificar cada video (H.264 no se decodifica en Chromium sin códecs propietarios). El resultado se arma en memoria: en celulares conviene unir videos cortos.
+
+**Siguiente**: 3C.39 (modelos 3D con three.js).

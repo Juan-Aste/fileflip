@@ -118,3 +118,7 @@ export const MAX_SPEED_FPS = 60;
 export function speedFrameRate(sourceFps: number, speed: number): number | undefined {
   return sourceFps * speed > MAX_SPEED_FPS ? MAX_SPEED_FPS / speed : undefined;
 }
+
+/** "Join videos": the result takes the first video's size, its shorter side at most this; the sound is 48 kHz stereo. */
+export const MAX_JOIN_SHORT_SIDE = 1080;
+export const JOIN_AUDIO_RATE = 48_000;

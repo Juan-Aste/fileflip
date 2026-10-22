@@ -1337,7 +1337,7 @@
         "q2": "Comment trouver le bon moment ?",
         "a2": "Lisez la vidéo et mettez en pause à l'endroit voulu ; « Utiliser la position actuelle » copie ce temps dans le champ. Vous pouvez aussi saisir minutes:secondes, par exemple 1:23.5.",
         "q3": "Puis-je supprimer une partie au milieu ?",
-        "a3": "Pour l'instant, un seul extrait est conservé à la fois. Pour retirer un passage au milieu, coupez les deux parties et assemblez-les avec « Assembler des vidéos » dès qu'il sera disponible.",
+        "a3": "Pour l'instant, un seul extrait est conservé à la fois. Pour retirer un passage au milieu, coupez les deux parties et assemblez-les avec « Fusionner des vidéos ».",
         "q4": "Y a-t-il une limite ?",
         "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée. Si votre navigateur ne lit pas le fichier (par exemple MKV ou H.264 dans certains), vous pouvez quand même saisir les temps."
       }
@@ -1372,6 +1372,22 @@
         "a3": "La vidéo est réencodée en haute qualité, dans le même format que l'original (MP4, MOV, MKV ou WebM). La résolution ne change pas.",
         "q4": "Y a-t-il une limite ?",
         "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. Votre navigateur doit pouvoir décoder la vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
+      }
+    },
+    "join-videos": {
+      "title": "Fusionner des vidéos",
+      "description": "Fusionnez plusieurs vidéos MP4, MOV, MKV ou WebM en une seule, dans l'ordre de votre choix, dans votre navigateur.",
+      "action": "Fusionner les vidéos",
+      "about": "Rassemblez les séquences d'un voyage, les parties d'un cours enregistré ou plusieurs prises du téléphone en une seule vidéo. Ajoutez les fichiers, mettez-les dans l'ordre avec les flèches et téléchargez le résultat en MP4 ou WebM. La vidéo finale prend la taille de la première : celles d'une autre forme (verticales à côté d'horizontales, par exemple) sont ajustées avec des bandes noires, sans être déformées ni recadrées. Le son de toutes est harmonisé et, si une séquence n'a pas de son, ce passage reste silencieux. Tout se passe sur votre appareil : les vidéos ne sont envoyées à aucun serveur.",
+      "faq": {
+        "q1": "Puis-je fusionner des vidéos de formats ou de tailles différents ?",
+        "a1": "Oui : vous pouvez mélanger MP4, MOV, MKV et WebM, ainsi que des vidéos horizontales et verticales. Le résultat a la taille de la première de la liste (1080p au maximum) et les autres sont centrées avec des bandes noires.",
+        "q2": "Comment changer l'ordre ?",
+        "a2": "Les vidéos sont fusionnées dans l'ordre de la liste. Utilisez les flèches de chaque fichier pour le monter ou le descendre avant de fusionner.",
+        "q3": "Perd-on en qualité ?",
+        "a3": "Toute la vidéo est réencodée en haute qualité pour que les parties s'enchaînent. Les séquences plus grandes que la première sont réduites à sa taille.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures au total et 30 minutes de traitement. Le résultat est construit dans la mémoire de l'appareil : sur téléphone, mieux vaut fusionner des vidéos courtes. Votre navigateur doit pouvoir décoder chaque vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
       }
     }
   },
@@ -2419,5 +2435,9 @@
     },
     "note": "Moins de 1× : ralenti ; plus de 1× : accéléré. La vidéo est réencodée en haute qualité, dans le même format. Traitement sur votre appareil.",
     "done": "Vitesse {speed} : dure {length}."
+  },
+  "JoinVideosTool": {
+    "note": "Le résultat prend la taille de la première vidéo (1080p au maximum) ; les autres sont ajustées avec des bandes noires. Réencodage en haute qualité, sur votre appareil.",
+    "size": "{width} × {height} px."
   }
 }

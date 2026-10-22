@@ -17,14 +17,19 @@ import {
   Quality,
   WebMOutputFormat,
   AudioSample,
-  type VideoSample,
+  AudioSampleSource,
+  NullTarget,
+  VideoSample,
+  VideoSampleSink,
+  VideoSampleSource,
+  WavOutputFormat,
   canEncodeVideo,
   type VideoCodec,
 } from "mediabunny";
-import { ConversionError } from "@/lib/convert-error";
+import { ConversionError, InputFileError } from "@/lib/convert-error";
 import { assertComplete, ensureEncoder, planarData } from "@/lib/audio/convert";
 import { validRange, type TrimRange } from "@/lib/audio/time";
-import { encodersFor, MAX_VIDEO_SECONDS, scaledSize, SPEED_AUDIO_RATE, speedFrameRate, videoPlan, type VideoQuality, type VideoSpeed, type VideoTarget } from "./options";
+import { encodersFor, JOIN_AUDIO_RATE, MAX_JOIN_SHORT_SIDE, MAX_VIDEO_SECONDS, scaledSize, SPEED_AUDIO_RATE, speedFrameRate, videoPlan, type VideoQuality, type VideoSpeed, type VideoTarget } from "./options";
 
 const outputFormat: Record<VideoTarget, () => Mp4OutputFormat | MovOutputFormat | WebMOutputFormat | MkvOutputFormat> = {
   mp4: () => new Mp4OutputFormat({ fastStart: "in-memory" }),
@@ -196,4 +201,167 @@ export async function convertVideo(
 /** The same frames as `sample` (copied), presented at another sample rate and timestamp. */
 function relabel(sample: AudioSample, sampleRate: number, timestamp: number): AudioSample {
   return new AudioSample({ data: planarData(sample), format: "f32-planar", numberOfChannels: sample.numberOfChannels, sampleRate, timestamp });
+}
+
+export interface JoinedVideo {
+  data: Uint8Array;
+  duration: number;
+  videoCodec: VideoCodec;
+  width: number;
+  height: number;
+}
+
+/**
+ * Several videos, in order, → one MP4 or WebM. Every frame is decoded and drawn,
+ * centred with black bands, on a canvas the size of the first video (its shorter
+ * side at most MAX_JOIN_SHORT_SIDE), then encoded; the sound of each input is
+ * decoded and resampled to 48 kHz stereo by its own Conversion (to a NullTarget,
+ * like joinAudio) and forwarded to one encoder, with silence for inputs that
+ * have none. The two tracks of each input are pumped together so they interleave.
+ */
+export async function joinVideos(
+  files: readonly Blob[],
+  target: "mp4" | "webm",
+  { signal, onProgress }: { signal?: AbortSignal; onProgress?: (progress: number) => void } = {},
+): Promise<JoinedVideo> {
+  const opened: Awaited<ReturnType<typeof openVideo>>[] = [];
+  try {
+    for (let i = 0; i < files.length; i++) {
+      try {
+        const o = await openVideo(files[i]!);
+        opened.push(o);
+        if (!(await o.video.canDecode())) throw new ConversionError("videoCodecUnsupported");
+        if (o.audio && !(await o.audio.canDecode())) throw new ConversionError("audioCodecUnsupported");
+      } catch (error) {
+        // Say which file failed: the batch has a single output.
+        throw new InputFileError(error instanceof ConversionError ? error.code : "fileDamaged", i);
+      }
+    }
+    const total = opened.reduce((sum, o) => sum + o.duration, 0);
+    if (total > MAX_VIDEO_SECONDS) throw new ConversionError("videoTooLong");
+    const first = opened[0]!.video;
+    const { width, height } = scaledSize(first.displayWidth, first.displayHeight, MAX_JOIN_SHORT_SIDE);
+    const codec = encodersFor(target).find(await encodableVideo(target, width, height));
+    if (!codec) throw new ConversionError("videoEncoderUnsupported");
+    const withSound = opened.some((o) => o.audio);
+    const audioCodec = target === "mp4" ? "aac" : "opus";
+    if (withSound) await ensureEncoder(audioCodec);
+
+    const output = new Output({ format: outputFormat[target](), target: new BufferTarget() });
+    const videoSource = new VideoSampleSource({ codec, quality: QUALITY_HIGH, sizeChangeBehavior: "contain" });
+    output.addVideoTrack(videoSource);
+    const audioSource = withSound ? new AudioSampleSource({ codec: audioCodec, quality: QUALITY_HIGH }) : null;
+    if (audioSource) output.addAudioTrack(audioSource);
+    await output.start();
+
+    const canvas = typeof OffscreenCanvas !== "undefined" ? new OffscreenCanvas(width, height) : Object.assign(document.createElement("canvas"), { width, height });
+    const ctx = canvas.getContext("2d") as OffscreenCanvasRenderingContext2D | CanvasRenderingContext2D | null;
+    if (!ctx) throw new ConversionError("browserUnsupported");
+
+    const channels = 2;
+    let written = 0; // audio frames sent to the encoder
+    const addAudio = async (sample: AudioSample) => {
+      try {
+        await audioSource!.add(sample);
+      } finally {
+        sample.close();
+      }
+      written += sample.numberOfFrames;
+    };
+    /** Silence up to `seconds` of output audio. */
+    const padTo = async (seconds: number) => {
+      const frames = Math.round(seconds * JOIN_AUDIO_RATE) - written;
+      if (frames <= 0) return;
+      await addAudio(new AudioSample({ data: new Float32Array(frames * channels), format: "f32-planar", numberOfChannels: channels, sampleRate: JOIN_AUDIO_RATE, timestamp: written / JOIN_AUDIO_RATE }));
+    };
+
+    let offset = 0;
+    for (let i = 0; i < opened.length; i++) {
+      if (signal?.aborted) throw new ConversionError("jobCancelled");
+      const { input, video, audio, duration } = opened[i]!;
+      const start = Math.max(0, await video.getFirstTimestamp());
+      const end = Math.round((offset + duration) * JOIN_AUDIO_RATE);
+      const videoDone = { seconds: 0 };
+      const report = () => onProgress?.(Math.min(1, (offset + videoDone.seconds) / Math.max(total, 0.001)));
+
+      const pumpVideo = async () => {
+        for await (const sample of new VideoSampleSink(video).samples()) {
+          try {
+            if (signal?.aborted) throw new ConversionError("jobCancelled");
+            const t = Math.max(0, sample.timestamp - start);
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, width, height);
+            sample.drawWithFit(ctx, { fit: "contain" });
+            const frame = new VideoSample(canvas, { timestamp: offset + t, duration: sample.duration });
+            try {
+              await videoSource.add(frame);
+            } finally {
+              frame.close();
+            }
+            videoDone.seconds = t;
+            report();
+          } finally {
+            sample.close();
+          }
+        }
+      };
+
+      const pumpAudio = async () => {
+        if (!audioSource) return;
+        await padTo(offset);
+        if (!audio) return;
+        // This Conversion decodes and resamples; its own WAV output goes to a NullTarget.
+        const conversion = await Conversion.init({
+          input,
+          output: new Output({ format: new WavOutputFormat(), target: new NullTarget() }),
+          video: { discard: true },
+          audio: {
+            codec: "pcm-s16",
+            numberOfChannels: channels,
+            sampleRate: JOIN_AUDIO_RATE,
+            forceTranscode: true,
+            process: async (sample: AudioSample) => {
+              // Sound longer than the input's duration is cut so the next input stays in sync.
+              const frames = Math.min(sample.numberOfFrames, end - written);
+              if (frames > 0) {
+                const data = planarData(sample);
+                const kept = new Float32Array(frames * channels);
+                for (let c = 0; c < channels; c++) kept.set(data.subarray(c * sample.numberOfFrames, c * sample.numberOfFrames + frames), c * frames);
+                await addAudio(new AudioSample({ data: kept, format: "f32-planar", numberOfChannels: channels, sampleRate: JOIN_AUDIO_RATE, timestamp: written / JOIN_AUDIO_RATE }));
+              }
+              return sample;
+            },
+          },
+          showWarnings: false,
+        });
+        if (!conversion.isValid) throw new InputFileError("audioCodecUnsupported", i);
+        const abort = () => void conversion.cancel();
+        signal?.addEventListener("abort", abort, { once: true });
+        try {
+          await conversion.execute();
+        } finally {
+          signal?.removeEventListener("abort", abort);
+        }
+      };
+
+      try {
+        await Promise.all([pumpVideo(), pumpAudio()]);
+      } catch (error) {
+        if (signal?.aborted) throw new ConversionError("jobCancelled");
+        throw error instanceof ConversionError ? error : new InputFileError("fileDamaged", i);
+      }
+      offset += duration;
+    }
+    if (audioSource) {
+      await padTo(offset);
+      audioSource.close();
+    }
+    videoSource.close();
+    await output.finalize();
+    const buffer = (output.target as BufferTarget).buffer;
+    if (!buffer || buffer.byteLength === 0) throw new ConversionError("conversionFailed");
+    return { data: new Uint8Array(buffer), duration: offset, videoCodec: codec, width, height };
+  } finally {
+    for (const o of opened) o.input.dispose();
+  }
 }

@@ -1337,7 +1337,7 @@
         "q2": "Como encontro o momento certo?",
         "a2": "Reproduza o vídeo e pause onde quiser; «Usar posição atual» copia esse tempo para o campo. Você também pode digitar minutos:segundos, por exemplo 1:23.5.",
         "q3": "Posso tirar uma parte do meio?",
-        "a3": "Por enquanto se mantém um trecho por vez. Para tirar algo do meio, corte as duas partes e junte-as com «Juntar vídeos» quando estiver disponível.",
+        "a3": "Por enquanto se mantém um trecho por vez. Para tirar algo do meio, corte as duas partes e junte-as com «Juntar vídeos».",
         "q4": "Existe algum limite?",
         "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro) e 2 horas de duração. Se o navegador não reproduzir o arquivo (por exemplo MKV ou H.264 em alguns), você ainda pode digitar os tempos."
       }
@@ -1372,6 +1372,22 @@
         "a3": "O vídeo é codificado de novo em alta qualidade, no mesmo formato do original (MP4, MOV, MKV ou WebM). A resolução não muda.",
         "q4": "Existe algum limite?",
         "a4": "Até 200 MB por vídeo no plano gratuito (500 MB com o Pro), 2 horas de duração e 30 minutos de processamento por arquivo. Seu navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários)."
+      }
+    },
+    "join-videos": {
+      "title": "Juntar vídeos",
+      "description": "Junte vários vídeos MP4, MOV, MKV ou WebM em um só, na ordem que você escolher, no seu navegador.",
+      "action": "Juntar vídeos",
+      "about": "Reúna os clipes de uma viagem, as partes de uma aula gravada ou vários takes do celular em um único vídeo. Adicione os arquivos, ordene-os com as setas e baixe o resultado em MP4 ou WebM. O vídeo final fica com o tamanho do primeiro: os que têm outro formato (por exemplo, verticais junto com horizontais) são encaixados com faixas pretas, sem distorcer nem cortar. O som de todos é igualado e, se um clipe não tiver som, esse trecho fica em silêncio. Tudo acontece no seu dispositivo: os vídeos não são enviados a nenhum servidor.",
+      "faq": {
+        "q1": "Posso juntar vídeos de formatos ou tamanhos diferentes?",
+        "a1": "Sim: você pode misturar MP4, MOV, MKV e WebM, e vídeos horizontais e verticais. O resultado fica com o tamanho do primeiro da lista (no máximo 1080p) e os outros são centralizados com faixas pretas.",
+        "q2": "Como mudo a ordem?",
+        "a2": "Os vídeos são juntados na ordem da lista. Use as setas de cada arquivo para subi-lo ou descê-lo antes de juntar.",
+        "q3": "Perde qualidade?",
+        "a3": "O vídeo inteiro é codificado de novo em alta qualidade para que as partes se encaixem. Clipes maiores que o primeiro são reduzidos ao tamanho dele.",
+        "q4": "Existe algum limite?",
+        "a4": "Até 200 MB por vídeo no plano gratuito (500 MB com o Pro), 2 horas no total e 30 minutos de processamento. O resultado é montado na memória do dispositivo, então no celular é melhor juntar vídeos curtos. Seu navegador precisa conseguir decodificar cada vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários)."
       }
     }
   },
@@ -2419,5 +2435,9 @@
     },
     "note": "Abaixo de 1× é câmera lenta; acima de 1×, acelerado. O vídeo é codificado de novo em alta qualidade, no mesmo formato. Processado no seu dispositivo.",
     "done": "Velocidade {speed}: dura {length}."
+  },
+  "JoinVideosTool": {
+    "note": "O resultado fica com o tamanho do primeiro vídeo (no máximo 1080p); os outros são encaixados com faixas pretas. Codificado de novo em alta qualidade, no seu dispositivo.",
+    "size": "{width} × {height} px."
   }
 }
