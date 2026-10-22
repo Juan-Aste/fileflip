@@ -2215,3 +2215,24 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Necesita Gotenberg. Libros con muchas imágenes pueden superar 15 MB (gratis) una vez armados: la FAQ sugiere quitar las imágenes. Sin las fuentes ni la maquetación del libro.
 
 **Siguiente**: 3C.34 (HTML/Markdown → EPUB).
+
+## 2026-10-22 03:15 UTC — Fase 3, tarea 3C.34 (crear EPUB desde HTML o Markdown)
+
+**Qué se hizo**
+- **Crear EPUB** (`/es/crear-epub`, `/en/create-epub`, `/pt/criar-epub`, `/fr/creer-epub`), categoría Libros electrónicos: archivos `.md`/`.markdown`/`.txt` (como Markdown) y `.html`/`.htm` (hasta 20 MB cada uno, varios = capítulos en el orden de la lista) o Markdown pegado → **un EPUB 3** con título (si queda vacío, el primer título), autor opcional e idioma (es/en/pt/fr/zh; el índice del libro va en ese idioma). Corre en la página con import diferido (marked, DOMPurify, fflate).
+- Generador propio `src/lib/ebook/build.ts`: cada entrada se sanea con DOMPurify (sin scripts, eventos, formularios, iframes, audio/video), se **divide en capítulos en cada `<h1>` de primer nivel**, los títulos reciben `id` al estilo GitHub (`[enlace](#segunda-parte)` funciona aunque el destino quede en otro capítulo: `chapter-2.xhtml#segunda-parte`), y se serializa con `XMLSerializer` como XHTML bien formado. Solo quedan enlaces `http(s)`/`mailto` y anclas internas.
+- **HTML4 → HTML5** (lo pidió EPUBCheck: `align` de las tablas de marked es inválido en EPUB 3): `align` → `text-align`, `center`/`font`/`big`/`strike`/`tt`/`acronym`/`dir`/`marquee` renombrados, `a[name]` → `id`, y se quitan atributos de presentación (`bgcolor`, `border`, `valign`, `width`/`height` fuera de imágenes…).
+- Imágenes: solo las `data:` cuyo contenido es PNG/JPG/GIF/WEBP (verificado por bytes; **SVG no**, puede llevar scripts) pasan a `OEBPS/images/` (sin repetir las iguales); las remotas o relativas se reemplazan por su texto alternativo (un libro no debe pedir nada a internet).
+- Paquete: `mimetype` **primero y sin comprimir, sin campos extra** (OCF), `container.xml`, OPF 3.0 (`urn:uuid` aleatorio, `dcterms:modified`), `nav.xhtml` y además `toc.ncx` para lectores EPUB 2, `style.css` y los capítulos.
+- Textos (introducción + 4 preguntas, opciones) en los 5 idiomas. **EPUBCheck 5.2.1** (W3C, BSD-3) como validador opcional de los tests (`EPUBCHECK_JAR`), anotado en `docs/dependencies.md`.
+- `render.ts`: arreglo menor del texto plano (un espacio después de la tabulación entre celdas).
+
+**Verificación**
+- 5 tests unitarios: orden del ZIP con `mimetype` almacenado y sin extra (leyendo los encabezados locales); lectura de vuelta con `readEpub` (metadatos con caracteres a escapar, 3 capítulos, enlace entre capítulos, PNG byte a byte, `dcterms:modified`, NCX); cada capítulo XHTML parseado como XML sin errores y sin scripts/eventos/imagen remota/SVG; conversión de HTML4; título desde el primer encabezado, idioma inválido → `und`, entrada vacía → error; **EPUBCheck sin errores ni advertencias**.
+- `ebook-tools.spec.ts` (+2): `document.md` + `page.html` con título, autor e idioma portugués → `Libro de prueba.epub` validado con jsdom en modo XML (contenedor, OPF, spine, índice "Sumário", tabla, sin nada inseguro, `pwned` sin definir) y **EPUBCheck** con `EPUBCHECK_JAR`; Markdown pegado con 2 capítulos y enlace interno; texto sin contenido → error.
+- Lint, typecheck, tests (884 + 8 saltados), build, `check:static` (897 páginas) y `npm run test:e2e` completo con Gotenberg y EPUBCheck (268/268) pasan.
+
+**Limitaciones**
+- Sin portada como imagen ni metadatos extra (editorial, ISBN); imágenes enlazadas no se incluyen; MOBI/AZW3 no (Kindle acepta EPUB con "Enviar a Kindle", lo dice la FAQ).
+
+**Siguiente**: medición de Lighthouse después de 3C.34 (indicada en el plan) y luego 3C.35 (audio).

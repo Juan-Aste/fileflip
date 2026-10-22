@@ -1168,6 +1168,22 @@
         "q4": "Is there a size limit?",
         "a4": "The assembled page (with its images) can be up to 15 MB on the free plan and 50 MB with Pro. If your book has many images and goes over the limit, untick \"Include the book's images\"."
       }
+    },
+    "create-epub": {
+      "title": "Create EPUB",
+      "description": "Turn Markdown or HTML into an EPUB book with a table of contents, chapters and images, ready for any reader. In your browser.",
+      "action": "Create EPUB",
+      "about": "Turn your Markdown or HTML texts into an EPUB 3 ebook that opens in Apple Books, Google Play Books, Kobo, Calibre and almost any reader. Each file is a chapter, in the order of the list, and within each one a new chapter starts at every main heading (# in Markdown, h1 in HTML). The table of contents is generated, images embedded in the file are included, and you can set the title, author and language. Everything happens in your browser.",
+      "faq": {
+        "q1": "How are chapters split?",
+        "a1": "Each file starts a chapter, in the order of the list, and within each file a new chapter starts at every main heading (# in Markdown or h1 in HTML). The table of contents is built from those headings.",
+        "q2": "What about images?",
+        "a2": "Images embedded in the file itself (data URLs in PNG, JPG, GIF or WEBP) are included in the book. Images linked to the internet or to other files can't be downloaded and are replaced by their alternative text.",
+        "q3": "Does it work on Kindle?",
+        "a3": "Current Kindles accept EPUB through Amazon's \"Send to Kindle\", which converts it to their format. The file follows the EPUB 3 standard and also includes the EPUB 2 table of contents for older readers.",
+        "q4": "Is it safe?",
+        "a4": "Yes. The content is cleaned: scripts, event handlers, forms and javascript: links are removed. Your files aren't uploaded to any server."
+      }
     }
   },
   "ToolUi": {
@@ -2072,6 +2088,18 @@
     "contents": "Contents",
     "htmlNote": "Images are stored inside the file; scripts, the book's styles and anything on the internet are not used.",
     "textNote": "Paragraphs, headings, lists and tables are kept; images are replaced by their description, when they have one.",
-    "pdfNote": "Images are included in the PDF; each chapter starts on a new page. The book is read in your browser and only the assembled page is sent to our server to print it."
+    "pdfNote": "Images are included in the PDF; each chapter starts on a new page. The book is read in your browser and only the assembled page is sent to our server to print it.",
+    "title": "Book title",
+    "titlePlaceholder": "Leave it empty to use the first heading",
+    "author": "Author (optional)",
+    "language": "Book language",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文"
+    },
+    "createNote": "Each file is a chapter (in the order of the list) and every main heading starts a new one. Images embedded in the file are included; ones linked to the internet are not."
   }
 }

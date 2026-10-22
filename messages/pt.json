@@ -1168,6 +1168,22 @@
         "q4": "Há limite de tamanho?",
         "a4": "A página montada (com as imagens) pode ter até 15 MB no plano gratuito e 50 MB com o Pro. Se o seu livro tiver muitas imagens e passar do limite, desmarque \"Incluir as imagens do livro\"."
       }
+    },
+    "create-epub": {
+      "title": "Criar EPUB",
+      "description": "Transforme Markdown ou HTML em um livro EPUB com sumário, capítulos e imagens, pronto para qualquer leitor. No seu navegador.",
+      "action": "Criar EPUB",
+      "about": "Transforme seus textos em Markdown ou HTML em um livro digital EPUB 3 que abre no Apple Books, Google Play Livros, Kobo, Calibre e quase qualquer leitor. Cada arquivo é um capítulo, na ordem da lista, e dentro de cada um começa um novo capítulo a cada título principal (# no Markdown, h1 no HTML). O sumário é gerado, as imagens inseridas no arquivo são incluídas e você pode definir título, autor e idioma. Tudo acontece no seu navegador.",
+      "faq": {
+        "q1": "Como os capítulos são divididos?",
+        "a1": "Cada arquivo começa um capítulo, na ordem da lista, e dentro de cada arquivo há um novo capítulo a cada título principal (# no Markdown ou h1 no HTML). O sumário é montado com esses títulos.",
+        "q2": "E as imagens?",
+        "a2": "As imagens inseridas no próprio arquivo (data URL em PNG, JPG, GIF ou WEBP) são incluídas no livro. Imagens com link para a internet ou para outros arquivos não podem ser baixadas e são trocadas pelo texto alternativo.",
+        "q3": "Funciona no Kindle?",
+        "a3": "Os Kindle atuais aceitam EPUB pelo \"Enviar para o Kindle\" da Amazon, que o converte para o formato deles. O arquivo segue o padrão EPUB 3 e também inclui o sumário do EPUB 2 para leitores antigos.",
+        "q4": "É seguro?",
+        "a4": "Sim. O conteúdo é limpo: scripts, eventos, formulários e links javascript: são removidos. Seus arquivos não são enviados a nenhum servidor."
+      }
     }
   },
   "ToolUi": {
@@ -2072,6 +2088,18 @@
     "contents": "Sumário",
     "htmlNote": "As imagens ficam dentro do arquivo; scripts, estilos do livro e o que estiver na internet não são usados.",
     "textNote": "Parágrafos, títulos, listas e tabelas são mantidos; as imagens são trocadas pela descrição, se tiverem.",
-    "pdfNote": "As imagens são incluídas no PDF; cada capítulo começa em uma nova página. O livro é lido no seu navegador e só a página já montada é enviada ao nosso servidor para ser impressa."
+    "pdfNote": "As imagens são incluídas no PDF; cada capítulo começa em uma nova página. O livro é lido no seu navegador e só a página já montada é enviada ao nosso servidor para ser impressa.",
+    "title": "Título do livro",
+    "titlePlaceholder": "Se ficar vazio, usa o primeiro título",
+    "author": "Autor (opcional)",
+    "language": "Idioma do livro",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文"
+    },
+    "createNote": "Cada arquivo é um capítulo (na ordem da lista) e cada título principal começa um novo. As imagens inseridas no arquivo são incluídas; as com link para a internet, não."
   }
 }

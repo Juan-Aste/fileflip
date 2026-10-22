@@ -1168,6 +1168,22 @@
         "q4": "¿Hay un límite de tamaño?",
         "a4": "La página armada (con las imágenes) puede pesar hasta 15 MB con el plan gratuito y 50 MB con Pro. Si tu libro tiene muchas imágenes y supera el límite, desmarca \"Incluir las imágenes del libro\"."
       }
+    },
+    "create-epub": {
+      "title": "Crear EPUB",
+      "description": "Convierte Markdown o HTML en un libro EPUB con índice, capítulos e imágenes, listo para cualquier lector. En tu navegador.",
+      "action": "Crear EPUB",
+      "about": "Convierte tus textos en Markdown o HTML en un libro electrónico EPUB 3 que se abre en Apple Books, Google Play Libros, Kobo, Calibre y casi cualquier lector. Cada archivo es un capítulo, en el orden de la lista, y dentro de cada uno empieza un capítulo nuevo en cada título principal (# en Markdown, h1 en HTML). Se genera el índice, se incluyen las imágenes insertadas en el archivo y puedes poner título, autor e idioma. Todo se hace en tu navegador.",
+      "faq": {
+        "q1": "¿Cómo se dividen los capítulos?",
+        "a1": "Cada archivo empieza un capítulo, en el orden en que aparecen en la lista, y dentro de cada archivo hay un capítulo nuevo en cada título principal (# en Markdown o h1 en HTML). El índice se arma con esos títulos.",
+        "q2": "¿Qué pasa con las imágenes?",
+        "a2": "Se incluyen en el libro las imágenes insertadas en el propio archivo (data URL en PNG, JPG, GIF o WEBP). Las imágenes enlazadas a internet o a otros archivos no se pueden descargar y se reemplazan por su texto alternativo.",
+        "q3": "¿Funciona en Kindle?",
+        "a3": "Los Kindle actuales aceptan EPUB con \"Enviar a Kindle\" de Amazon, que lo convierte a su formato. El archivo sigue el estándar EPUB 3 e incluye también el índice de EPUB 2 para lectores antiguos.",
+        "q4": "¿Es seguro?",
+        "a4": "Sí. El contenido se limpia: se quitan scripts, eventos, formularios y enlaces javascript:. Tus archivos no se suben a ningún servidor."
+      }
     }
   },
   "ToolUi": {
@@ -2072,6 +2088,18 @@
     "contents": "Contenido",
     "htmlNote": "Las imágenes se incluyen dentro del archivo; los scripts, los estilos del libro y lo que esté en internet no se usan.",
     "textNote": "Se conservan párrafos, títulos, listas y tablas; las imágenes se reemplazan por su descripción, si la tienen.",
-    "pdfNote": "Las imágenes se incluyen en el PDF; cada capítulo empieza en una página nueva. El libro se lee en tu navegador y solo la página ya armada se envía a nuestro servidor para imprimirla."
+    "pdfNote": "Las imágenes se incluyen en el PDF; cada capítulo empieza en una página nueva. El libro se lee en tu navegador y solo la página ya armada se envía a nuestro servidor para imprimirla.",
+    "title": "Título del libro",
+    "titlePlaceholder": "Si lo dejas vacío, se usa el primer título",
+    "author": "Autor (opcional)",
+    "language": "Idioma del libro",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文"
+    },
+    "createNote": "Cada archivo es un capítulo (en el orden de la lista) y cada título principal empieza uno nuevo. Se incluyen las imágenes insertadas en el archivo; las enlazadas a internet no."
   }
 }

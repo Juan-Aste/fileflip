@@ -169,7 +169,7 @@ export function chapterText(html: string): string {
   return out
     .join("")
     .split("\n")
-    .map((line) => line.replace(/^ +/, "").replace(/[ \t]+$/, ""))
+    .map((line) => line.replace(/^ +/, "").replace(/\t +/g, "\t").replace(/[ \t]+$/, ""))
     .join("\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();

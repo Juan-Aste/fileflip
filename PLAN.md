@@ -268,7 +268,7 @@ Libros electrónicos
 - [x] 3C.33 EPUB → HTML/TXT (navegador, saneado, sin XXE) y EPUB → PDF (Gotenberg) (dividida):
   - [x] 3C.33a EPUB → HTML (una página con índice e imágenes incluidas, saneada, CSP sin red) y → TXT, en el navegador; DRM detectado
   - [x] 3C.33b EPUB → PDF (HTML de 3C.33a saneado de nuevo en el servidor → Gotenberg/Chromium con la CSP de 3C.26a)
-- [ ] 3C.34 HTML/Markdown → EPUB (generador propio; `mimetype` correcto)
+- [x] 3C.34 HTML/Markdown → EPUB (generador propio; `mimetype` correcto)
 
 Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo aprobación del dueño)
 - [ ] 3C.35 Detección de capacidades del navegador (qué códecs puede leer/escribir) y conversión de audio entre los formatos disponibles (WAV, MP3, AAC/M4A, OGG/Opus, FLAC, AIFF); límites de tamaño/duración

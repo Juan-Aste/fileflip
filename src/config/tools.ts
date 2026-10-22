@@ -91,6 +91,7 @@ export const toolIds = [
   "ocr-pdf",
   "epub-converter",
   "epub-to-pdf",
+  "create-epub",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -146,6 +147,8 @@ const OCR_PDF_MAX_BYTES = 100 * 1024 * 1024;
 const EPUB_MAX_BYTES = 100 * 1024 * 1024;
 /** EPUB → PDF uploads the book already assembled into one page (images embedded): the Pro server limit. */
 const EPUB_PDF_MAX_BYTES = 50 * 1024 * 1024;
+/** Chapters are sanitized and serialized on the page; room for images embedded as data: URLs. */
+const CREATE_EPUB_MAX_BYTES = 20 * 1024 * 1024;
 /** Markdown/HTML are converted on the page (they need a DOM): keep it responsive. */
 const MARKUP_MAX_BYTES = 5 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
@@ -878,6 +881,17 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 3 * MINUTE, maxFileBytes: EPUB_PDF_MAX_BYTES },
     status: "verified",
     slugs: { es: "epub-a-pdf", en: "epub-to-pdf", pt: "epub-para-pdf", fr: "epub-en-pdf", zh: "epub-to-pdf" },
+  },
+  "create-epub": {
+    id: "create-epub",
+    category: "ebook",
+    inputs: ["md", "html", "txt"],
+    outputs: ["epub"],
+    engine: "browser",
+    libraries: ["marked", "dompurify", "fflate"],
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: CREATE_EPUB_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "crear-epub", en: "create-epub", pt: "criar-epub", fr: "creer-epub", zh: "create-epub" },
   },
 };
 

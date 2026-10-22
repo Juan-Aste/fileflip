@@ -55,6 +55,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | Servicio | Licencia | Uso |
 |---|---|---|
 | veraPDF (imagen Docker `verapdf/cli`, solo tests) | GPL-3.0+ / MPL-2.0 (doble licencia) | validador de referencia de PDF/A en `src/lib/server/pdfa.test.ts` con `VERAPDF_DOCKER=1`; no se distribuye ni se ejecuta en producción |
+| EPUBCheck 5.2.1 (W3C, jar descargado aparte, solo tests) | BSD-3-Clause | validador de referencia de EPUB en `src/lib/ebook/build.test.ts` y `tests/e2e/ebook-tools.spec.ts` con `EPUBCHECK_JAR=<ruta al jar>` (necesita Java); no se distribuye ni se ejecuta en producción |
 | Gotenberg 8 (imagen Docker) | MIT | API HTTP de conversión de oficina; corre como servicio aparte en la red privada |
 | └ LibreOffice | MPL-2.0 | motor dentro de Gotenberg (oficina → PDF y PDF → PDF/A) |
 | └ Chromium | BSD-3-Clause (y otras) | motor HTML → PDF dentro de Gotenberg (Markdown → PDF y HTML → PDF; sin JavaScript ni red) |

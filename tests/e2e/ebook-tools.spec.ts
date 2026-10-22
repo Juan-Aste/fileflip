@@ -1,7 +1,11 @@
 // EPUB → HTML / TXT: outputs are parsed with jsdom (independent of the app);
 // nothing from the book may run or be fetched, and DRM or damaged books fail clearly.
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { JSDOM } from "jsdom";
-import { expect, fileOf, openWithFiles, readText, runTool, test, toolAlert, waitForResult } from "./support";
+import { expect, fileOf, openWithFiles, readText, runTool, test, toolAlert, unzipEntries, waitForResult } from "./support";
 
 test.afterEach(({ serverCalls }) => {
   expect(serverCalls, "ebook tools must not call the server").toEqual([]);
@@ -59,5 +63,65 @@ test.describe("tool: epub-converter", () => {
     const out = fileOf(await waitForResult(page, links.first(), toolAlert(page)));
     expect(out.name).toBe("book.txt");
     expect(readText(out.buf)).toContain("Al final del camino había una casa con 3 ventanas.");
+  });
+});
+
+/** An XML document parsed by jsdom in XML mode: throws on anything not well-formed. */
+const xml = (text: string) => new JSDOM(text, { contentType: "application/xhtml+xml" }).window.document;
+
+test.describe("tool: create-epub", () => {
+  test("Markdown + HTML files → one EPUB 3: stored mimetype first, metadata, chapters as well-formed XHTML, nothing unsafe", async ({ page }) => {
+    await openWithFiles(page, "/es/crear-epub", ["document.md", "page.html"]);
+    await page.getByLabel("Título del libro").fill("Libro de prueba");
+    await page.getByLabel("Autor (opcional)").fill("Ana Ejemplo");
+    await page.getByLabel("Idioma del libro").selectOption("pt");
+    const out = fileOf(await runTool(page, "Crear EPUB"));
+    expect(out.name).toBe("Libro de prueba.epub");
+    // OCF: the first local header is "mimetype", stored (method 0), with the exact media type.
+    expect(out.buf.readUInt32LE(0)).toBe(0x04034b50);
+    expect(out.buf.readUInt16LE(8)).toBe(0);
+    expect(out.buf.subarray(30, 38).toString()).toBe("mimetype");
+    expect(out.buf.subarray(38, 58).toString()).toBe("application/epub+zip");
+    const files = Object.fromEntries(unzipEntries(out.buf).map((e) => [e.name, e.data.toString("utf8")]));
+    const container = xml(files["META-INF/container.xml"]!);
+    expect(container.querySelector("rootfile")?.getAttribute("full-path")).toBe("OEBPS/content.opf");
+    const opf = xml(files["OEBPS/content.opf"]!);
+    expect(opf.getElementsByTagName("dc:title")[0]?.textContent).toBe("Libro de prueba");
+    expect(opf.getElementsByTagName("dc:creator")[0]?.textContent).toBe("Ana Ejemplo");
+    expect(opf.getElementsByTagName("dc:language")[0]?.textContent).toBe("pt");
+    const spine = [...opf.querySelectorAll("spine itemref")].map((i) => opf.getElementById(i.getAttribute("idref")!)?.getAttribute("href"));
+    expect(spine).toEqual(["chapter-1.xhtml", "chapter-2.xhtml"]);
+    const nav = xml(files["OEBPS/nav.xhtml"]!);
+    expect([...nav.querySelectorAll("nav li a")].map((a) => a.textContent)).toEqual(["Informe ñandú", "Guía 中文"]);
+    expect(nav.querySelector("nav h1")?.textContent).toBe("Sumário");
+    const first = xml(files["OEBPS/chapter-1.xhtml"]!);
+    expect(first.querySelector("h1")?.textContent).toBe("Informe ñandú");
+    expect([...first.querySelectorAll("tbody td")].map((td) => td.textContent)).toEqual(["Té", "2,50", "Café", "3,10"]);
+    for (const name of ["OEBPS/chapter-1.xhtml", "OEBPS/chapter-2.xhtml"]) {
+      expect(files[name]).not.toMatch(/<script|onerror|onclick|javascript:|pwned|<form/);
+      xml(files[name]!);
+    }
+    expect(await page.evaluate(() => (window as unknown as { pwned?: number }).pwned)).toBeUndefined();
+    if (process.env.EPUBCHECK_JAR) {
+      const file = join(mkdtempSync(join(tmpdir(), "epub-")), "book.epub");
+      writeFileSync(file, out.buf);
+      expect(execFileSync("java", ["-jar", process.env.EPUBCHECK_JAR, file], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] })).toContain("No errors or warnings detected");
+    }
+  });
+
+  test("pasted Markdown with two chapters reads back in the EPUB converter; empty text fails", async ({ page }) => {
+    await page.goto("/en/create-epub", { waitUntil: "networkidle" });
+    await page.getByRole("textbox", { name: /paste/i }).fill("# One\n\nFirst chapter.\n\n# Two\n\nSecond [back](#one).");
+    const out = fileOf(await runTool(page, "Create EPUB"));
+    expect(out.name).toBe("ebook.epub");
+    const files = Object.fromEntries(unzipEntries(out.buf).map((e) => [e.name, e.data.toString("utf8")]));
+    expect(xml(files["OEBPS/content.opf"]!).getElementsByTagName("dc:title")[0]?.textContent).toBe("One");
+    expect(xml(files["OEBPS/chapter-2.xhtml"]!).querySelector("a")?.getAttribute("href")).toBe("chapter-1.xhtml#one");
+
+    await page.getByRole("button", { name: "Start over" }).click();
+    await page.getByRole("textbox", { name: /paste/i }).fill("<script>1</script>");
+    await page.getByRole("button", { name: "Create EPUB", exact: true }).click();
+    await expect(toolAlert(page)).toBeVisible({ timeout: 15_000 });
+    await expect(page.locator("main a[download]")).toHaveCount(0);
   });
 });

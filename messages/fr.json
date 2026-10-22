@@ -1168,6 +1168,22 @@
         "q4": "Y a-t-il une limite de taille ?",
         "a4": "La page assemblée (avec ses images) peut peser jusqu'à 15 Mo avec l'offre gratuite et 50 Mo avec Pro. Si votre livre contient beaucoup d'images et dépasse la limite, décochez « Inclure les images du livre »."
       }
+    },
+    "create-epub": {
+      "title": "Créer un EPUB",
+      "description": "Transformez du Markdown ou du HTML en livre EPUB avec table des matières, chapitres et images, prêt pour toutes les liseuses. Dans votre navigateur.",
+      "action": "Créer l'EPUB",
+      "about": "Transformez vos textes Markdown ou HTML en livre numérique EPUB 3 qui s'ouvre dans Apple Books, Google Play Livres, Kobo, Calibre et presque toutes les liseuses. Chaque fichier est un chapitre, dans l'ordre de la liste, et dans chacun un nouveau chapitre commence à chaque titre principal (# en Markdown, h1 en HTML). La table des matières est générée, les images intégrées au fichier sont incluses et vous pouvez indiquer le titre, l'auteur et la langue. Tout se fait dans votre navigateur.",
+      "faq": {
+        "q1": "Comment les chapitres sont-ils découpés ?",
+        "a1": "Chaque fichier commence un chapitre, dans l'ordre de la liste, et dans chaque fichier un nouveau chapitre commence à chaque titre principal (# en Markdown ou h1 en HTML). La table des matières est construite à partir de ces titres.",
+        "q2": "Et les images ?",
+        "a2": "Les images intégrées au fichier lui-même (data URL en PNG, JPG, GIF ou WEBP) sont incluses dans le livre. Les images liées à internet ou à d'autres fichiers ne peuvent pas être téléchargées et sont remplacées par leur texte alternatif.",
+        "q3": "Est-ce que ça marche sur Kindle ?",
+        "a3": "Les Kindle actuels acceptent l'EPUB via « Send to Kindle » d'Amazon, qui le convertit dans leur format. Le fichier suit la norme EPUB 3 et inclut aussi la table des matières EPUB 2 pour les anciennes liseuses.",
+        "q4": "Est-ce sûr ?",
+        "a4": "Oui. Le contenu est nettoyé : scripts, gestionnaires d'événements, formulaires et liens javascript: sont supprimés. Vos fichiers ne sont envoyés à aucun serveur."
+      }
     }
   },
   "ToolUi": {
@@ -2072,6 +2088,18 @@
     "contents": "Sommaire",
     "htmlNote": "Les images sont stockées dans le fichier ; les scripts, les styles du livre et tout ce qui est sur internet ne sont pas utilisés.",
     "textNote": "Paragraphes, titres, listes et tableaux sont conservés ; les images sont remplacées par leur description, si elles en ont une.",
-    "pdfNote": "Les images sont incluses dans le PDF ; chaque chapitre commence sur une nouvelle page. Le livre est lu dans votre navigateur et seule la page assemblée est envoyée à notre serveur pour être imprimée."
+    "pdfNote": "Les images sont incluses dans le PDF ; chaque chapitre commence sur une nouvelle page. Le livre est lu dans votre navigateur et seule la page assemblée est envoyée à notre serveur pour être imprimée.",
+    "title": "Titre du livre",
+    "titlePlaceholder": "Vide : le premier titre est utilisé",
+    "author": "Auteur (facultatif)",
+    "language": "Langue du livre",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文"
+    },
+    "createNote": "Chaque fichier est un chapitre (dans l'ordre de la liste) et chaque titre principal en commence un nouveau. Les images intégrées au fichier sont incluses ; celles liées à internet, non."
   }
 }
