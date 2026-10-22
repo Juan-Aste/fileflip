@@ -33,6 +33,14 @@ PAGES=(
   "tool-epub /es/convertir-epub"
   "tool-create-epub /es/crear-epub"
   "tool-epub-pdf /es/epub-a-pdf"
+  "category-audio /es/herramientas-de-audio"
+  "tool-audio /es/convertir-audio"
+  "tool-video /es/recortar-video"
+  "tool-3d /es/convertir-modelo-3d"
+  "tool-cad /es/convertir-dxf"
+  "tool-id-photo /es/foto-carnet"
+  "tool-scan /es/escanear-documento"
+  "tool-bg /es/quitar-fondo"
 )
 # Warm up the server (first render of each route).
 for p in "${PAGES[@]}"; do curl -s -o /dev/null "$BASE${p#* }"; done
