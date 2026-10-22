@@ -2236,3 +2236,9 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Sin portada como imagen ni metadatos extra (editorial, ISBN); imágenes enlazadas no se incluyen; MOBI/AZW3 no (Kindle acepta EPUB con "Enviar a Kindle", lo dice la FAQ).
 
 **Siguiente**: medición de Lighthouse después de 3C.34 (indicada en el plan) y luego 3C.35 (audio).
+
+## 2026-10-22 03:45 UTC — Fase 3, medición de Lighthouse después de 3C.34
+
+- `docs/perf/2026-10-22-3C34.md`: 21 páginas (6 nuevas en el script: extraer ZIP, imagen a texto, hojas de cálculo y las 3 de libros electrónicos), mediana de 3, móvil. Todas **96–98**, accesibilidad y SEO 100, **CLS 0**; las herramientas nuevas cargan 165–166 KB de JS como las demás (los motores se descargan al ejecutar). Sin correcciones necesarias.
+
+**Siguiente**: 3C.35 (audio: capacidades del navegador y conversión con WebCodecs + mediabunny).
