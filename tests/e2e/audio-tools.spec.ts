@@ -6,7 +6,7 @@ import { execFileSync } from "node:child_process";
 import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { expect, fileOf, openWithFiles, runTool, test, unzipEntries } from "./support";
+import { expect, fileOf, openWithFiles, runTool, test, toolAlert, unzipEntries } from "./support";
 
 const hasFfmpeg = (() => {
   try {
@@ -28,13 +28,18 @@ interface Probe {
   tones: number[];
 }
 
-function probe(buf: Buffer, name: string): Probe {
+/** Interleaved 16-bit stereo samples at 44.1 kHz, decoded by ffmpeg. */
+function decode(file: string): Int16Array {
+  const pcm = execFileSync("ffmpeg", ["-v", "error", "-i", file, "-f", "s16le", "-ac", "2", "-ar", "44100", "-"], { maxBuffer: 64 * 1024 * 1024 });
+  return new Int16Array(pcm.buffer, pcm.byteOffset, pcm.length / 2);
+}
+
+function probe(buf: Buffer, name: string): Probe & { samples: Int16Array } {
   const file = join(mkdtempSync(join(tmpdir(), "audio-")), name);
   writeFileSync(file, buf);
   const info = JSON.parse(execFileSync("ffprobe", ["-v", "error", "-show_streams", "-show_format", "-of", "json", file], { encoding: "utf8" }));
   const stream = info.streams.find((s: { codec_type: string }) => s.codec_type === "audio");
-  const pcm = execFileSync("ffmpeg", ["-v", "error", "-i", file, "-f", "s16le", "-ac", "2", "-ar", "44100", "-"], { maxBuffer: 64 * 1024 * 1024 });
-  const samples = new Int16Array(pcm.buffer, pcm.byteOffset, pcm.length / 2);
+  const samples = decode(file);
   const frames = samples.length / 2;
   // Skip the encoders' start-up and tail; count sign changes in the middle second.
   const from = Math.floor(frames * 0.25);
@@ -52,7 +57,17 @@ function probe(buf: Buffer, name: string): Probe {
     duration: Number(info.format.duration),
     bitrate: Number(info.format.bit_rate),
     tones,
+    samples,
   };
+}
+
+/** Root mean square of the left channel between two times, in seconds. */
+function rms(samples: Int16Array, from: number, to: number) {
+  let sum = 0;
+  const a = Math.floor(from * 44100);
+  const b = Math.floor(to * 44100);
+  for (let i = a; i < b; i++) sum += samples[i * 2]! ** 2;
+  return Math.sqrt(sum / (b - a));
 }
 
 const expectTones = (p: Probe) => {
@@ -155,5 +170,80 @@ test.describe("tool: audio-converter", () => {
     if (!aac) await expect(main).toContainText("can't read the audio in this file");
     const link = page.locator("main li a[download]").last();
     await expect(link).toHaveAttribute("download", "audio.mp3");
+  });
+});
+
+test.describe("tool: trim-audio", () => {
+  test.skip(!hasFfmpeg, "needs ffmpeg/ffprobe to check the output");
+
+  const times = (page: import("@playwright/test").Page) => ({
+    start: page.getByRole("textbox", { name: "Start" }),
+    end: page.getByRole("textbox", { name: "End" }),
+  });
+
+  test("WAV 0:00.5–0:01.5 → a 1-second WAV and MP3 with both tones", async ({ page }) => {
+    await openWithFiles(page, "/en/trim-audio", ["audio.wav"]);
+    const { start, end } = times(page);
+    // The duration is read first: the end field starts at the whole length.
+    await expect(end).toHaveValue("0:02.0", { timeout: 20_000 });
+    await expect(page.getByRole("radio", { name: "WAV (lossless)" })).toBeChecked();
+    await start.fill("0:00.5");
+    await end.fill("1.5");
+    await expect(page.locator("main")).toContainText("Keeps 0:01.0 of 0:02.0");
+    const wav = fileOf(await runTool(page, "Trim audio"));
+    expect(wav.name).toBe("audio.wav");
+    const p = probe(wav.buf, wav.name);
+    expect(p).toMatchObject({ format: "wav", codec: "pcm_s16le", sampleRate: 22050, channels: 2 });
+    // Sample-accurate: 22050 frames ± a couple.
+    expect(Math.abs(p.duration - 1), `lasts ${p.duration} s`).toBeLessThan(0.005);
+    expectTones(p);
+
+    await page.getByRole("button", { name: "Start over" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(join(__dirname, "../fixtures/audio.wav"));
+    await expect(end).toHaveValue("0:02.0", { timeout: 20_000 });
+    await start.fill("0:01");
+    await page.getByText("MP3", { exact: true }).click();
+    const mp3 = fileOf(await runTool(page, "Trim audio"));
+    expect(mp3.name).toBe("audio.mp3");
+    const q = probe(mp3.buf, mp3.name);
+    expect(q).toMatchObject({ format: "mp3", codec: "mp3", channels: 2 });
+    expect(Math.abs(q.duration - 1), `lasts ${q.duration} s`).toBeLessThan(0.1);
+    expectTones(q);
+  });
+
+  test("fades in and out start and end in silence; AIFF in, AIFF out", async ({ page }) => {
+    await openWithFiles(page, "/en/trim-audio", ["audio.aiff"]);
+    await expect(times(page).end).toHaveValue("0:02.0", { timeout: 20_000 });
+    await expect(page.getByRole("radio", { name: "AIFF (lossless)" })).toBeChecked();
+    await page.getByText("Fade in (2 s)").click();
+    await page.getByText("Fade out (2 s)").click();
+    const out = fileOf(await runTool(page, "Trim audio"));
+    expect(out.name).toBe("audio.aiff");
+    const p = probe(out.buf, out.name);
+    expect(p).toMatchObject({ format: "aiff", codec: "pcm_s16be", channels: 2 });
+    expect(Math.abs(p.duration - 2)).toBeLessThan(0.005);
+    // On 2 s each fade is capped at 1 s: ~5 % of the level in the first and last 0.1 s, ~50 % at 0.5 s.
+    const full = rms(decode(join(__dirname, "../fixtures/audio.wav")), 0.4, 0.6);
+    expect(rms(p.samples, 0, 0.1) / full).toBeLessThan(0.1);
+    expect(rms(p.samples, 1.9, 2) / full).toBeLessThan(0.1);
+    expect(rms(p.samples, 0.45, 0.55) / full).toBeGreaterThan(0.4);
+    expect(rms(p.samples, 0.45, 0.55) / full).toBeLessThan(0.6);
+    expect(rms(p.samples, 0.95, 1.05) / full).toBeGreaterThan(0.9);
+  });
+
+  test("times outside the audio disable the action; a fake file shows an error", async ({ page }) => {
+    await openWithFiles(page, "/en/trim-audio", ["audio.wav"]);
+    const { start, end } = times(page);
+    await expect(end).toHaveValue("0:02.0", { timeout: 20_000 });
+    const action = page.getByRole("button", { name: "Trim audio", exact: true });
+    for (const [s, e] of [["0:03", "0:04"], ["1.5", "1"], ["0:00", "1:75"]]) {
+      await start.fill(s!);
+      await end.fill(e!);
+      await expect(action).toBeDisabled();
+      await expect(page.locator("main")).toContainText("Invalid times");
+    }
+    await openWithFiles(page, "/en/trim-audio", ["corrupt/not-audio.mp3"]);
+    await expect(toolAlert(page)).toContainText("can't be converted this way", { timeout: 20_000 });
+    await expect(page.getByRole("button", { name: "Trim audio", exact: true })).toBeDisabled();
   });
 });

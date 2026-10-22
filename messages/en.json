@@ -219,7 +219,8 @@
     "audioCodecUnsupported": "Your browser can't read the audio in this file (for example, AAC in some browsers). Try Chrome, Edge or Safari, or another format.",
     "audioTooLong": "The audio is too long: the maximum is 3 hours per file.",
     "tooManyPages": "This PDF has too many pages to recognize in the browser (100 at most).",
-    "pdfAlreadySearchable": "Every page of this PDF already has text: it's searchable without OCR. Use “PDF to text” to extract it."
+    "pdfAlreadySearchable": "Every page of this PDF already has text: it's searchable without OCR. Use “PDF to text” to extract it.",
+    "audioRangeInvalid": "Check the times: the start must come before the end and both must be within the audio."
   },
   "Tools": {
     "merge-pdf": {
@@ -1205,6 +1206,22 @@
         "q5": "What is AIFF and when should I use it?",
         "a5": "AIFF is Apple's lossless format, the Mac counterpart of WAV used by Logic or GarageBand. Uncompressed AIFF and AIFF-C (8, 16, 24 and 32-bit) are read and AIFF is written in 16 bits; compressed AIFF-C files (μ-law, for example) aren't supported."
       }
+    },
+    "trim-audio": {
+      "title": "Trim audio",
+      "description": "Cut a section of a song or recording (MP3, WAV, FLAC, OGG, M4A, AIFF) in your browser, with optional fades.",
+      "action": "Trim audio",
+      "about": "Keep only the part you need from a song, a voice message, a podcast or a recording: pick the start and end by typing minutes and seconds or with the player (\"Use current position\"), add a fade in or fade out if you like, and download the result as MP3, WAV, FLAC, OGG, M4A or AIFF. The cut is sample-accurate and happens on your device: the file isn't uploaded to any server.",
+      "faq": {
+        "q1": "How do I pick the exact section?",
+        "a1": "Play the audio, pause where you want it to begin and press \"Use current position\" next to Start; do the same for End. You can also type the times as minutes:seconds with tenths, for example 0:12.5 or 1:05.",
+        "q2": "What are the fades for?",
+        "a2": "The fade in raises the volume from silence over the first 2 seconds and the fade out lowers it to silence over the last 2, so the clip doesn't start or stop abruptly (handy for ringtones). On short clips each fade takes at most half of it.",
+        "q3": "Does it lose quality?",
+        "a3": "With WAV, FLAC or AIFF, no: the clip is saved losslessly (in 16 bits). MP3, M4A and OGG are compressed again at the quality you choose; 192 kbps is practically indistinguishable from the original.",
+        "q4": "Is there a limit?",
+        "a4": "One file at a time, up to 200 MB on the free plan (500 MB with Pro) and 3 hours long. It reads the same formats as \"Audio converter\"; M4A/AAC depends on your browser having that decoder."
+      }
     }
   },
   "ToolUi": {
@@ -2144,6 +2161,17 @@
     "lossyNote": "Compressed format: higher quality means a bigger file. Processed on your device.",
     "losslessNote": "Lossless, 16-bit: the sound doesn't change. Processed on your device.",
     "noAac": "This browser can't read AAC (M4A) audio; the other formats work. For M4A use Chrome, Edge or Safari.",
-    "noWebCodecs": "This browser can't process audio (it lacks WebCodecs). Use a recent version of Chrome, Edge, Safari or Firefox."
+    "noWebCodecs": "This browser can't process audio (it lacks WebCodecs). Use a recent version of Chrome, Edge, Safari or Firefox.",
+    "reading": "Reading the audio…",
+    "player": "Audio player",
+    "start": "Start",
+    "end": "End",
+    "startHere": "Use current position",
+    "endHere": "Use current position",
+    "selection": "Keeps {length} of {total}. Format: minutes:seconds (for example 1:23.5).",
+    "rangeInvalid": "Invalid times: type minutes:seconds (for example 1:23.5), with the start before the end and no later than {total}.",
+    "fadeIn": "Fade in ({seconds} s)",
+    "fadeOut": "Fade out ({seconds} s)",
+    "trimmed": "Trimmed from {from} to {to}."
   }
 }

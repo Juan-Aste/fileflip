@@ -5,37 +5,16 @@ import { useTranslations } from "next-intl";
 import { formatFromExtension, type FormatId } from "@/config/formats";
 import { tools } from "@/config/tools";
 import { audioBitrates, audioExtension, audioMime, audioTargets, type AudioBitrate, type AudioTarget } from "@/lib/audio/options";
-import { ConversionError } from "@/lib/convert-error";
 import { runBatch } from "@/lib/jobs";
 import { trackTool } from "@/lib/stats-client";
 import ChoiceGroup from "../ChoiceGroup";
 import ToolShell from "../shell/ToolShell";
 import { renameExtension, type ShellOutput } from "../shell/state";
+import { AUDIO_EXTENSIONS, withTimeLimit } from "./shared";
 
 const tool = tools["audio-converter"];
-const extensions = ["mp3", "wav", "wave", "flac", "ogg", "oga", "opus", "m4a", "aac", "webm", "weba", "aiff", "aif", "aifc"];
 // mediabunny and the WASM encoders load when the tool runs.
 const engine = () => import("@/lib/audio/convert");
-
-/** Runs one file with the tool's time limit; cancelling or the limit stops the conversion. */
-async function withTimeLimit<T>(signal: AbortSignal | undefined, run: (signal: AbortSignal) => Promise<T>): Promise<T> {
-  const controller = new AbortController();
-  let timedOut = false;
-  const timer = setTimeout(() => {
-    timedOut = true;
-    controller.abort();
-  }, tool.limits.timeoutMs);
-  const cancel = () => controller.abort();
-  signal?.addEventListener("abort", cancel, { once: true });
-  try {
-    return await run(controller.signal);
-  } catch (error) {
-    throw timedOut ? new ConversionError("jobTimedOut") : error;
-  } finally {
-    clearTimeout(timer);
-    signal?.removeEventListener("abort", cancel);
-  }
-}
 
 type Support = "checking" | "full" | "noAac" | "none";
 
@@ -60,7 +39,7 @@ export default function AudioConverterTool() {
 
   return (
     <ToolShell
-      input={{ kind: "files", extensions, multiple: true, maxFileBytes: tool.limits.maxFileBytes }}
+      input={{ kind: "files", extensions: AUDIO_EXTENSIONS, multiple: true, maxFileBytes: tool.limits.maxFileBytes }}
       actionLabel={tt("action")}
       zipName="fileflect-audio.zip"
       options={
@@ -90,7 +69,7 @@ export default function AudioConverterTool() {
               "audio-converter",
               { from: (formatFromExtension(file.name) ?? "mp3") as FormatId, to: target, files: [file] },
               () =>
-                withTimeLimit(job.signal, async (limited) =>
+                withTimeLimit(tool.limits.timeoutMs, job.signal, async (limited) =>
                   (await engine()).convertAudio(file, { target, bitrate: target === "ogg" ? (Math.min(bitrate, 256) as AudioBitrate) : bitrate }, { signal: limited, onProgress: job.onProgress }),
                 ),
               (out) => out.data.length,

@@ -219,7 +219,8 @@
     "audioCodecUnsupported": "Tu navegador no puede leer el audio de este archivo (por ejemplo, AAC en algunos navegadores). Prueba con Chrome, Edge o Safari, o con otro formato.",
     "audioTooLong": "El audio es demasiado largo: el máximo es de 3 horas por archivo.",
     "tooManyPages": "Este PDF tiene demasiadas páginas para reconocerlas en el navegador (máximo 100).",
-    "pdfAlreadySearchable": "Todas las páginas de este PDF ya tienen texto: se puede buscar sin OCR. Usa «PDF a texto» para extraerlo."
+    "pdfAlreadySearchable": "Todas las páginas de este PDF ya tienen texto: se puede buscar sin OCR. Usa «PDF a texto» para extraerlo.",
+    "audioRangeInvalid": "Revisa los tiempos: el inicio debe ser anterior al fin y ambos deben estar dentro del audio."
   },
   "Tools": {
     "merge-pdf": {
@@ -1205,6 +1206,22 @@
         "q5": "¿Qué es AIFF y cuándo usarlo?",
         "a5": "AIFF es el formato sin pérdida de Apple, el equivalente de WAV en Mac, Logic o GarageBand. Se leen AIFF y AIFF-C sin comprimir (8, 16, 24 y 32 bits) y se escribe en 16 bits; los AIFF-C comprimidos (por ejemplo μ-law) no se admiten."
       }
+    },
+    "trim-audio": {
+      "title": "Recortar audio",
+      "description": "Corta un fragmento de una canción o grabación (MP3, WAV, FLAC, OGG, M4A, AIFF) en tu navegador, con fundidos opcionales.",
+      "action": "Recortar audio",
+      "about": "Quédate solo con la parte que necesitas de una canción, un audio de WhatsApp, un podcast o una grabación: elige el inicio y el fin escribiendo los minutos y segundos o con el reproductor (\"Usar posición actual\"), agrega si quieres un fundido de entrada o de salida y descarga el resultado en MP3, WAV, FLAC, OGG, M4A o AIFF. El corte es exacto a la muestra y se hace en tu dispositivo: el archivo no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Cómo elijo el fragmento exacto?",
+        "a1": "Reproduce el audio, pausa donde quieres empezar y toca \"Usar posición actual\" junto a Inicio; haz lo mismo con Fin. También puedes escribir los tiempos como minutos:segundos con décimas, por ejemplo 0:12.5 o 1:05.",
+        "q2": "¿Para qué sirven los fundidos?",
+        "a2": "El fundido de entrada sube el volumen desde cero durante los primeros 2 segundos y el de salida lo baja hasta cero en los últimos 2, para que el fragmento no empiece ni termine de golpe (útil para tonos de llamada). En fragmentos cortos cada fundido dura como máximo la mitad.",
+        "q3": "¿Pierde calidad?",
+        "a3": "Si eliges WAV, FLAC o AIFF, no: el fragmento se guarda sin pérdida (en 16 bits). En MP3, M4A u OGG se vuelve a comprimir con la calidad que elijas; 192 kbps es prácticamente indistinguible del original.",
+        "q4": "¿Hay un límite?",
+        "a4": "Un archivo por vez, de hasta 200 MB con el plan gratuito (500 MB con Pro) y 3 horas de duración. Los formatos que lee son los mismos que \"Convertir audio\"; el M4A/AAC depende de que tu navegador tenga ese decodificador."
+      }
     }
   },
   "ToolUi": {
@@ -2144,6 +2161,17 @@
     "lossyNote": "Formato comprimido: a mayor calidad, archivo más grande. Se procesa en tu dispositivo.",
     "losslessNote": "Sin pérdida, en 16 bits: el sonido no cambia. Se procesa en tu dispositivo.",
     "noAac": "Este navegador no puede leer audio AAC (M4A); los demás formatos funcionan. Para M4A usa Chrome, Edge o Safari.",
-    "noWebCodecs": "Este navegador no puede procesar audio (le falta WebCodecs). Usa una versión reciente de Chrome, Edge, Safari o Firefox."
+    "noWebCodecs": "Este navegador no puede procesar audio (le falta WebCodecs). Usa una versión reciente de Chrome, Edge, Safari o Firefox.",
+    "reading": "Leyendo el audio…",
+    "player": "Reproductor del audio",
+    "start": "Inicio",
+    "end": "Fin",
+    "startHere": "Usar posición actual",
+    "endHere": "Usar posición actual",
+    "selection": "Se conservan {length} de {total}. Formato: minutos:segundos (por ejemplo 1:23.5).",
+    "rangeInvalid": "Tiempos no válidos: escribe minutos:segundos (por ejemplo 1:23.5), con el inicio antes del fin y sin pasar de {total}.",
+    "fadeIn": "Fundido de entrada ({seconds} s)",
+    "fadeOut": "Fundido de salida ({seconds} s)",
+    "trimmed": "Recortado de {from} a {to}."
   }
 }

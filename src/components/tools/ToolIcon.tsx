@@ -125,6 +125,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "epub-to-pdf": BookOpenText,
   "create-epub": BookPlus,
   "audio-converter": AudioLines,
+  "trim-audio": Scissors,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

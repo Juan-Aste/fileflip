@@ -219,7 +219,8 @@
     "audioCodecUnsupported": "Votre navigateur ne peut pas lire l'audio de ce fichier (par exemple l'AAC dans certains navigateurs). Essayez Chrome, Edge ou Safari, ou un autre format.",
     "audioTooLong": "L'audio est trop long : le maximum est de 3 heures par fichier.",
     "tooManyPages": "Ce PDF a trop de pages pour être reconnu dans le navigateur (100 au maximum).",
-    "pdfAlreadySearchable": "Toutes les pages de ce PDF contiennent déjà du texte : il est consultable sans OCR. Utilisez « PDF en texte » pour l’extraire."
+    "pdfAlreadySearchable": "Toutes les pages de ce PDF contiennent déjà du texte : il est consultable sans OCR. Utilisez « PDF en texte » pour l’extraire.",
+    "audioRangeInvalid": "Vérifiez les temps : le début doit précéder la fin et les deux doivent être dans l'audio."
   },
   "Tools": {
     "merge-pdf": {
@@ -1205,6 +1206,22 @@
         "q5": "Qu'est-ce que l'AIFF et quand l'utiliser ?",
         "a5": "L'AIFF est le format sans perte d'Apple, l'équivalent du WAV sur Mac, dans Logic ou GarageBand. Les AIFF et AIFF-C non compressés (8, 16, 24 et 32 bits) sont lus et l'AIFF est écrit en 16 bits ; les AIFF-C compressés (μ-law, par exemple) ne sont pas pris en charge."
       }
+    },
+    "trim-audio": {
+      "title": "Couper un audio",
+      "description": "Coupez un extrait d'une chanson ou d'un enregistrement (MP3, WAV, FLAC, OGG, M4A, AIFF) dans votre navigateur, avec fondus en option.",
+      "action": "Couper l'audio",
+      "about": "Gardez seulement la partie utile d'une chanson, d'un message vocal, d'un podcast ou d'un enregistrement : choisissez le début et la fin en saisissant les minutes et les secondes ou avec le lecteur (« Utiliser la position actuelle »), ajoutez si vous voulez un fondu d'entrée ou de sortie et téléchargez le résultat en MP3, WAV, FLAC, OGG, M4A ou AIFF. La coupe est précise à l'échantillon et se fait sur votre appareil : le fichier n'est envoyé à aucun serveur.",
+      "faq": {
+        "q1": "Comment choisir l'extrait exact ?",
+        "a1": "Lancez l'audio, mettez en pause là où il doit commencer et appuyez sur « Utiliser la position actuelle » à côté de Début ; faites de même pour Fin. Vous pouvez aussi saisir les temps en minutes:secondes avec dixièmes, par exemple 0:12.5 ou 1:05.",
+        "q2": "À quoi servent les fondus ?",
+        "a2": "Le fondu d'entrée monte le volume depuis le silence pendant les 2 premières secondes et le fondu de sortie le baisse jusqu'au silence pendant les 2 dernières, pour que l'extrait ne commence ni ne s'arrête brusquement (pratique pour une sonnerie). Sur un extrait court, chaque fondu dure au plus la moitié.",
+        "q3": "Y a-t-il une perte de qualité ?",
+        "a3": "En WAV, FLAC ou AIFF, non : l'extrait est enregistré sans perte (en 16 bits). En MP3, M4A ou OGG il est recompressé à la qualité choisie ; 192 kbps est pratiquement indiscernable de l'original.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Un fichier à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 3 heures de durée. Il lit les mêmes formats que « Convertir un audio » ; le M4A/AAC dépend de la présence de ce décodeur dans votre navigateur."
+      }
     }
   },
   "ToolUi": {
@@ -2144,6 +2161,17 @@
     "lossyNote": "Format compressé : plus de qualité, fichier plus lourd. Traité sur votre appareil.",
     "losslessNote": "Sans perte, en 16 bits : le son ne change pas. Traité sur votre appareil.",
     "noAac": "Ce navigateur ne lit pas l'audio AAC (M4A) ; les autres formats fonctionnent. Pour le M4A, utilisez Chrome, Edge ou Safari.",
-    "noWebCodecs": "Ce navigateur ne peut pas traiter l'audio (WebCodecs manquant). Utilisez une version récente de Chrome, Edge, Safari ou Firefox."
+    "noWebCodecs": "Ce navigateur ne peut pas traiter l'audio (WebCodecs manquant). Utilisez une version récente de Chrome, Edge, Safari ou Firefox.",
+    "reading": "Lecture de l'audio…",
+    "player": "Lecteur audio",
+    "start": "Début",
+    "end": "Fin",
+    "startHere": "Utiliser la position actuelle",
+    "endHere": "Utiliser la position actuelle",
+    "selection": "Conserve {length} sur {total}. Format : minutes:secondes (par exemple 1:23.5).",
+    "rangeInvalid": "Temps non valides : saisissez minutes:secondes (par exemple 1:23.5), avec le début avant la fin et sans dépasser {total}.",
+    "fadeIn": "Fondu d'entrée ({seconds} s)",
+    "fadeOut": "Fondu de sortie ({seconds} s)",
+    "trimmed": "Coupé de {from} à {to}."
   }
 }

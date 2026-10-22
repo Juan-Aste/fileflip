@@ -2294,3 +2294,22 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 **Siguiente**: 3C.36 (audio: recortar, unir, bitrate/frecuencia/canales, normalizar).
 - La tarea 3C.36 se dividió en 3C.36a–d en PLAN.md.
+
+## 2026-10-22 04:45 UTC — Fase 3, tarea 3C.36a (recortar audio)
+
+**Qué se hizo**
+- **Recortar audio** (`/es/recortar-audio`, `/en/trim-audio`, `/pt/cortar-audio`, `/fr/couper-audio`), categoría Audio: un archivo (mismas entradas que "Convertir audio", AIFF incluido; 200 MB gratis / 500 MB Pro, 3 horas) → el tramo entre **Inicio** y **Fin**, con **fundido de entrada y/o de salida** de 2 s (cada uno como máximo la mitad del tramo), en MP3, WAV, FLAC, OGG (Opus), M4A (AAC) o AIFF; por defecto, el formato de entrada si se puede escribir.
+- Al elegir el archivo se lee la duración (`probeAudio`, carga el motor) y se muestra un reproductor `<audio>` con botones "Usar posición actual" para cada campo (con `aria-label` distinto). Tiempos como `s`, `m:ss.d` o `h:mm:ss.d` (punto o coma); el botón queda deshabilitado y la pista explica el formato si el rango no es válido.
+- Motor: `convertAudio` acepta `edit: { trim, fadeIn, fadeOut }` → `Conversion` de mediabunny con `trim` (recodifica siempre, para cortar exacto a la muestra y no en los límites de paquetes) y `process` que aplica la ganancia en float planar (los timestamps que llegan a `process` ya son relativos al inicio del resultado: verificado en el código de mediabunny y en la prueba). `openAudio` reúne las comprobaciones (AIFF → WAV, códec decodificable, duración ≤ 3 h) para el conversor, el recorte y `probeAudio`.
+- `src/lib/audio/time.ts`: `parseTime`, `formatTime`, `validRange`, `fadeLengths`, `fadeGain`. Error nuevo `audioRangeInvalid` (5 idiomas). `components/tools/audio/shared.ts`: extensiones y límite de tiempo comunes a las herramientas de audio.
+- Textos (introducción + 4 preguntas, interfaz) en los 5 idiomas.
+
+**Verificación**
+- 5 tests unitarios de tiempos, rangos y fundidos.
+- `audio-tools.spec.ts` (+3, validado con ffprobe/ffmpeg): WAV 0:00.5–1.5 → WAV de **1,000 s (±5 ms)** con los dos tonos, y 1–2 s → MP3; AIFF con fundidos → AIFF de 2 s con nivel < 10 % en los primeros y últimos 0,1 s, ~50 % a 0,5 s y completo en el centro; tiempos fuera del audio, invertidos o con errores (`1:75`) deshabilitan la acción; un texto disfrazado de MP3 muestra el error.
+- Captura a 360 px oscuro revisada (`scrollWidth` 360). Lint, typecheck, tests (902 + 8 saltados), build, `check:static` (912 páginas) y `npm run test:e2e` completo (272 pasan, 4 saltados sin Gotenberg/EPUBCheck).
+
+**Limitaciones**
+- Un solo tramo por archivo (no se quitan partes del medio). El reproductor depende del navegador (algunos no reproducen FLAC o AIFF), pero los tiempos se pueden escribir igual.
+
+**Siguiente**: 3C.36b ("Ajustar audio": canales, frecuencia y bitrate).

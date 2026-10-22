@@ -219,7 +219,8 @@
     "audioCodecUnsupported": "你的浏览器无法读取此文件中的音频（例如某些浏览器不支持 AAC）。请尝试 Chrome、Edge 或 Safari，或换一种格式。",
     "audioTooLong": "音频太长：每个文件最长 3 小时。",
     "tooManyPages": "此 PDF 页数过多，无法在浏览器中识别（最多 100 页）。",
-    "pdfAlreadySearchable": "此 PDF 的所有页面都已有文字：无需 OCR 即可搜索。请使用“PDF 转文本”提取文字。"
+    "pdfAlreadySearchable": "此 PDF 的所有页面都已有文字：无需 OCR 即可搜索。请使用“PDF 转文本”提取文字。",
+    "audioRangeInvalid": "请检查时间：开始时间必须早于结束时间，并且都在音频范围内。"
   },
   "Tools": {
     "merge-pdf": {
@@ -1205,6 +1206,22 @@
         "q5": "什么是 AIFF，什么时候用？",
         "a5": "AIFF 是苹果的无损格式，相当于 Mac、Logic 或 GarageBand 上的 WAV。可读取未压缩的 AIFF 和 AIFF-C（8、16、24 和 32 位），输出为 16 位 AIFF；不支持压缩的 AIFF-C（例如 μ-law）。"
       }
+    },
+    "trim-audio": {
+      "title": "剪切音频",
+      "description": "在浏览器中剪出歌曲或录音的一段（MP3、WAV、FLAC、OGG、M4A、AIFF），可选淡入淡出。",
+      "action": "剪切音频",
+      "about": "只保留歌曲、语音消息、播客或录音中你需要的部分：输入分和秒，或用播放器（“使用当前位置”）选择开始和结束，可添加淡入或淡出，然后下载 MP3、WAV、FLAC、OGG、M4A 或 AIFF 格式的结果。剪切精确到采样点，并在你的设备上完成：文件不会上传到任何服务器。",
+      "faq": {
+        "q1": "如何选出准确的片段？",
+        "a1": "播放音频，在想开始的位置暂停，点击“开始”旁的“使用当前位置”；“结束”也一样。也可以按 分:秒 输入时间，可带十分之一秒，例如 0:12.5 或 1:05。",
+        "q2": "淡入淡出有什么用？",
+        "a2": "淡入在前 2 秒内把音量从静音升起，淡出在最后 2 秒内降到静音，让片段不会突然开始或结束（做铃声很方便）。片段很短时，每段淡入淡出最多占一半。",
+        "q3": "会损失音质吗？",
+        "a3": "选择 WAV、FLAC 或 AIFF 不会：片段以无损方式保存（16 位）。MP3、M4A 或 OGG 会按你选择的音质重新压缩；192 kbps 与原始音频几乎听不出区别。",
+        "q4": "有限制吗？",
+        "a4": "一次一个文件，免费版最大 200 MB（Pro 为 500 MB），时长最长 3 小时。可读取的格式与“音频转换”相同；M4A/AAC 取决于你的浏览器是否有相应解码器。"
+      }
     }
   },
   "ToolUi": {
@@ -2144,6 +2161,17 @@
     "lossyNote": "压缩格式：音质越高，文件越大。在你的设备上处理。",
     "losslessNote": "无损，16 位：声音不变。在你的设备上处理。",
     "noAac": "此浏览器无法读取 AAC（M4A）音频；其他格式可以正常使用。M4A 请使用 Chrome、Edge 或 Safari。",
-    "noWebCodecs": "此浏览器无法处理音频（缺少 WebCodecs）。请使用较新版本的 Chrome、Edge、Safari 或 Firefox。"
+    "noWebCodecs": "此浏览器无法处理音频（缺少 WebCodecs）。请使用较新版本的 Chrome、Edge、Safari 或 Firefox。",
+    "reading": "正在读取音频…",
+    "player": "音频播放器",
+    "start": "开始",
+    "end": "结束",
+    "startHere": "使用当前位置",
+    "endHere": "使用当前位置",
+    "selection": "保留 {total} 中的 {length}。格式：分:秒（例如 1:23.5）。",
+    "rangeInvalid": "时间无效：请输入 分:秒（例如 1:23.5），开始早于结束，且不超过 {total}。",
+    "fadeIn": "淡入（{seconds} 秒）",
+    "fadeOut": "淡出（{seconds} 秒）",
+    "trimmed": "已剪切 {from} 至 {to}。"
   }
 }

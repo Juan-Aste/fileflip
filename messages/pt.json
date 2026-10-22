@@ -219,7 +219,8 @@
     "audioCodecUnsupported": "Seu navegador não consegue ler o áudio deste arquivo (por exemplo, AAC em alguns navegadores). Tente no Chrome, Edge ou Safari, ou com outro formato.",
     "audioTooLong": "O áudio é longo demais: o máximo é de 3 horas por arquivo.",
     "tooManyPages": "Este PDF tem páginas demais para reconhecer no navegador (no máximo 100).",
-    "pdfAlreadySearchable": "Todas as páginas deste PDF já têm texto: dá para pesquisar sem OCR. Use “PDF para texto” para extraí-lo."
+    "pdfAlreadySearchable": "Todas as páginas deste PDF já têm texto: dá para pesquisar sem OCR. Use “PDF para texto” para extraí-lo.",
+    "audioRangeInvalid": "Confira os tempos: o início deve vir antes do fim e ambos devem estar dentro do áudio."
   },
   "Tools": {
     "merge-pdf": {
@@ -1205,6 +1206,22 @@
         "q5": "O que é AIFF e quando usar?",
         "a5": "AIFF é o formato sem perda da Apple, o equivalente do WAV no Mac, no Logic ou no GarageBand. São lidos AIFF e AIFF-C sem compressão (8, 16, 24 e 32 bits) e o AIFF é gravado em 16 bits; AIFF-C comprimidos (μ-law, por exemplo) não são aceitos."
       }
+    },
+    "trim-audio": {
+      "title": "Cortar áudio",
+      "description": "Corte um trecho de uma música ou gravação (MP3, WAV, FLAC, OGG, M4A, AIFF) no seu navegador, com fade opcional.",
+      "action": "Cortar áudio",
+      "about": "Fique só com a parte que você precisa de uma música, um áudio do WhatsApp, um podcast ou uma gravação: escolha o início e o fim digitando minutos e segundos ou pelo player (\"Usar posição atual\"), adicione se quiser um fade de entrada ou de saída e baixe o resultado em MP3, WAV, FLAC, OGG, M4A ou AIFF. O corte é exato na amostra e acontece no seu dispositivo: o arquivo não é enviado a nenhum servidor.",
+      "faq": {
+        "q1": "Como escolho o trecho exato?",
+        "a1": "Toque o áudio, pause onde quer começar e clique em \"Usar posição atual\" ao lado de Início; faça o mesmo com Fim. Você também pode digitar os tempos como minutos:segundos com décimos, por exemplo 0:12.5 ou 1:05.",
+        "q2": "Para que servem os fades?",
+        "a2": "O fade de entrada sobe o volume a partir do silêncio nos primeiros 2 segundos e o de saída o abaixa até o silêncio nos últimos 2, para que o trecho não comece nem termine de repente (útil para toques de celular). Em trechos curtos cada fade dura no máximo a metade.",
+        "q3": "Perde qualidade?",
+        "a3": "Em WAV, FLAC ou AIFF, não: o trecho é salvo sem perda (em 16 bits). Em MP3, M4A ou OGG é comprimido de novo na qualidade escolhida; 192 kbps é praticamente indistinguível do original.",
+        "q4": "Há um limite?",
+        "a4": "Um arquivo por vez, de até 200 MB no plano gratuito (500 MB com Pro) e 3 horas de duração. Lê os mesmos formatos que \"Converter áudio\"; o M4A/AAC depende de o seu navegador ter esse decodificador."
+      }
     }
   },
   "ToolUi": {
@@ -2144,6 +2161,17 @@
     "lossyNote": "Formato comprimido: mais qualidade, arquivo maior. Processado no seu dispositivo.",
     "losslessNote": "Sem perda, em 16 bits: o som não muda. Processado no seu dispositivo.",
     "noAac": "Este navegador não lê áudio AAC (M4A); os outros formatos funcionam. Para M4A use Chrome, Edge ou Safari.",
-    "noWebCodecs": "Este navegador não consegue processar áudio (falta WebCodecs). Use uma versão recente do Chrome, Edge, Safari ou Firefox."
+    "noWebCodecs": "Este navegador não consegue processar áudio (falta WebCodecs). Use uma versão recente do Chrome, Edge, Safari ou Firefox.",
+    "reading": "Lendo o áudio…",
+    "player": "Player do áudio",
+    "start": "Início",
+    "end": "Fim",
+    "startHere": "Usar posição atual",
+    "endHere": "Usar posição atual",
+    "selection": "Mantém {length} de {total}. Formato: minutos:segundos (por exemplo 1:23.5).",
+    "rangeInvalid": "Tempos inválidos: escreva minutos:segundos (por exemplo 1:23.5), com o início antes do fim e sem passar de {total}.",
+    "fadeIn": "Fade in ({seconds} s)",
+    "fadeOut": "Fade out ({seconds} s)",
+    "trimmed": "Cortado de {from} a {to}."
   }
 }
