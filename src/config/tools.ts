@@ -86,6 +86,7 @@ export const toolIds = [
   "html-to-pdf",
   "spreadsheet-converter",
   "create-archive",
+  "extract-archive",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -806,6 +807,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 10 * MINUTE, maxFileBytes: ARCHIVE_MAX_BYTES },
     status: "verified",
     slugs: { es: "crear-zip", en: "create-zip", pt: "criar-zip", fr: "creer-zip", zh: "create-zip" },
+  },
+  "extract-archive": {
+    id: "extract-archive",
+    category: "archive",
+    inputs: ["zip", "tar", "tgz"],
+    outputs: ["bin"],
+    engine: "browser",
+    libraries: ["fflate"],
+    // The extracted files are also capped: EXTRACT_LIMITS (500 MB, 5000 files).
+    limits: { files: "multiple", timeoutMs: 10 * MINUTE, maxFileBytes: ARCHIVE_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "extraer-zip", en: "extract-zip", pt: "extrair-zip", fr: "extraire-zip", zh: "extract-zip" },
   },
 };
 

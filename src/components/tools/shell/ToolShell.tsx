@@ -182,11 +182,13 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
               <li
                 key={i}
                 className={`flex items-center gap-2 rounded-xl border p-2.5 text-sm ${
-                  output.kind === "error" ? "border-danger/30 bg-danger-soft/60" : "border-border"
+                  output.kind === "error" ? "flex-wrap border-danger/30 bg-danger-soft/60" : "border-border"
                 }`}
               >
                 <FileText aria-hidden="true" className="h-4 w-4 shrink-0 text-muted" />
-                <span className="min-w-0 flex-1 truncate font-medium">{output.name}</span>
+                <span className="min-w-0 flex-1 truncate font-medium" title={output.name}>
+                  {output.name}
+                </span>
                 {output.kind === "file" ? (
                   <>
                     <span className="shrink-0 text-muted tabular-nums">{formatBytes(output.blob.size, locale)}</span>
@@ -201,7 +203,8 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
                     </a>
                   </>
                 ) : (
-                  <span className="shrink-0 text-danger">{errorText(output.code, output.position)}</span>
+                  // Below the name: error messages can be long and must wrap on phones.
+                  <span className="min-w-0 basis-full pl-6 text-danger">{errorText(output.code, output.position)}</span>
                 )}
               </li>
             ))}

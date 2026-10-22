@@ -406,7 +406,9 @@ test.describe("tool: watermark-image", () => {
     await page.getByLabel("Logo (PNG, JPG o WEBP)").setInputFiles(fixturePath("qr.png"));
     await choose(page, "50 %");
     await page.getByRole("slider", { name: /Opacidad/ }).fill("100");
-    await page.getByRole("radio", { name: "Centro", exact: true }).check({ force: true });
+    // Click the visible cell: the radio itself is a 1 px sr-only input.
+    await page.locator('label[title="Centro"]').click();
+    await expect(page.getByRole("radio", { name: "Centro", exact: true })).toBeChecked();
     await choose(page, "PNG");
     const out = fileOf(await runTool(page, "Agregar marca de agua"));
     const { data, info } = await sharp(out.buf).extract({ left: 200, top: 75, width: 600, height: 600 }).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
@@ -433,7 +435,8 @@ test.describe("tool: add-text-to-image", () => {
     await pick(page, [fixturePath("photo.jpg")]);
     await page.getByRole("textbox", { name: "Texto" }).fill("Hola\nSegunda línea ñ");
     await choose(page, "Fondo detrás del texto");
-    await page.getByRole("radio", { name: "Arriba al centro" }).check({ force: true });
+    await page.locator('label[title="Arriba al centro"]').click();
+    await expect(page.getByRole("radio", { name: "Arriba al centro" })).toBeChecked();
     await page.getByRole("combobox", { name: "Tipo de letra" }).selectOption("serif");
     await expect(page.getByRole("img", { name: "Vista previa (primera imagen)" })).toBeVisible();
     await choose(page, "PNG");

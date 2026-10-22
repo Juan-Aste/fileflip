@@ -208,7 +208,11 @@
     "pdfNotProtected": "This PDF has no password: it already opens without one.",
     "pdfWrongPassword": "That password isn’t right for this PDF.",
     "pdfHasNoImages": "This PDF has no images to extract (or only very small ones).",
-    "tooManyCells": "This spreadsheet is too large to process in the browser (more than 2 million cells)."
+    "tooManyCells": "This spreadsheet is too large to process in the browser (more than 2 million cells).",
+    "archiveTooLarge": "Once extracted it would take more than 500 MB or hold more than 5,000 files: too much for the browser (or it's a “zip bomb”).",
+    "archiveEncrypted": "This archive is password-protected: it can't be extracted yet.",
+    "archiveUnsupported": "This archive uses a compression method that can't be opened in the browser.",
+    "archiveEmpty": "This archive has no files to extract (only empty folders or links)."
   },
   "Tools": {
     "merge-pdf": {
@@ -1079,6 +1083,22 @@
         "a3": "Yes. Names are stored in UTF-8, as current programs expect. If two files have the same name, the second becomes “name (1)”. Slashes in names are replaced so nothing can be written outside the folder when extracting.",
         "q4": "Is there a size limit? Can I add a password?",
         "a4": "Everything is built in your browser's memory, so the files can add up to 500 MB in total. Password-protected ZIPs aren't available yet: to protect a document, use “Password protect a PDF”."
+      }
+    },
+    "extract-archive": {
+      "title": "Extract ZIP",
+      "description": "Open ZIP, TAR, TAR.GZ and GZ files in your browser and download what's inside, with its folders.",
+      "action": "Extract files",
+      "about": "Open an archive without installing any program: handy on a phone, a work computer or a tablet. You see the list of files it holds and can download each one separately or all together in a ZIP with the same folders. Works with ZIP (including ones made by older Windows versions, with accented names), TAR, TAR.GZ/TGZ and GZ. The archive is opened on your device: it isn't uploaded to any server.",
+      "faq": {
+        "q1": "Is it safe to open a ZIP someone sent me?",
+        "a1": "It is opened as a potentially hostile file: nothing is run, paths that try to leave the folder (like “../”) are fixed, symbolic links and special files are skipped, and “zip bombs” stop once they pass the limit. Still, scan programs downloaded from unknown sources with an antivirus.",
+        "q2": "Which formats can it open?",
+        "a2": "ZIP, TAR, TAR.GZ (or TGZ) and GZ. Password-protected ZIPs, ones using unusual compression methods, and 7Z and RAR files can't be opened here yet.",
+        "q3": "Is there a limit?",
+        "a3": "The archive can be up to 500 MB, and its contents up to 500 MB and 5,000 files in total, because everything is extracted in your browser's memory.",
+        "q4": "Are folders kept?",
+        "a4": "Yes: each file shows its path, and downloading everything together creates a ZIP with the same folder structure. Empty folders are not included."
       }
     }
   },
@@ -1953,6 +1973,8 @@
       "zip": "Opens on Windows, macOS, Android and iPhone without installing anything. Photos, videos and Office documents are stored without recompressing. Up to {size} in total.",
       "tar": "Bundles the files without compressing them (common on Linux). Up to {size} in total.",
       "tgz": "TAR compressed with gzip, the standard on Linux and servers. Up to {size} in total."
-    }
+    },
+    "extractNote": "Opened on your device as an untrusted file: dangerous paths fixed, links skipped and a limit against “zip bombs” (500 MB and 5,000 files once extracted).",
+    "skipped": "{count, plural, one {# link or special file was skipped for safety.} other {# links or special files were skipped for safety.}}"
   }
 }

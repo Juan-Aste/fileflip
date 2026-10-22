@@ -2079,3 +2079,27 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Sin carpetas (se agregan archivos sueltos) y sin ZIP con contraseña (la FAQ lo dice). ZIP64 no: máximo 65 535 archivos y menos de 4 GB (el tope de 500 MB lo evita).
 
 **Siguiente**: 3C.29 (extraer ZIP, TAR y TAR.GZ con protecciones).
+
+## 2026-10-22 01:20 UTC — Fase 3, tarea 3C.29 (extraer ZIP, TAR y TAR.GZ)
+
+**Qué se hizo**
+- **Extraer ZIP** (`/es/extraer-zip`, `/en/extract-zip`, `/pt/extrair-zip`, `/fr/extraire-zip`), categoría Archivos comprimidos: entradas **ZIP, TAR, TAR.GZ/TGZ y GZ** (lotes); cada archivo de adentro se descarga por separado (con su ruta) o todos en `fileflect-extracted.zip` **con las mismas carpetas**; con varios archivos comprimidos, cada uno va en una carpeta con su nombre.
+- Motor propio `src/lib/archive/extract.ts` en el worker de datos (fflate solo para inflar). El archivo se trata como **hostil**:
+  - **Zip slip**: la ruta se rearma solo con segmentos normales (`\` → `/`, sin `..`, `.`, vacíos, letra de unidad ni `/` inicial; caracteres reservados de Windows → `_`; máx. 32 niveles y 255 caracteres por segmento). Ninguna ruta puede salir de la carpeta.
+  - **Enlaces y especiales**: enlaces simbólicos de ZIP (modo Unix en los atributos externos) y de TAR, enlaces duros, FIFOs y dispositivos se **omiten** (se avisa cuántos); nunca se siguen.
+  - **Bombas**: tope de **500 MB** descomprimidos y **5000 archivos** (`EXTRACT_LIMITS`). En ZIP se rechaza antes de inflar si el directorio central declara más; al inflar (en streaming, de a 64 KB) se cuenta lo producido y se corta si supera lo declarado o el tope; el GZIP también se cuenta en streaming. Error nuevo `archiveTooLarge`.
+  - Integridad: **CRC-32** y tamaño de cada entrada ZIP; TAR con suma de verificación de cada encabezado y corte detectado; ZIP64 leído (registro final y campo extra). Errores nuevos `archiveEncrypted` (ZIP con contraseña), `archiveUnsupported` (métodos que no son store/deflate: bzip2, LZMA, zstd…) y `archiveEmpty` (solo carpetas o enlaces), en 5 idiomas.
+  - Nombres: marca UTF-8, campo extra Info-ZIP Unicode Path y, si no, **página de códigos 437** (ZIP de Windows antiguos: `a\xA4o.txt` → `año.txt`). TAR: ustar con prefijo, PAX (`path=`) y nombres largos GNU (`L`). GZ suelto: nombre guardado en el encabezado (FNAME) o el del archivo sin `.gz`.
+- Fixtures nuevos con **`scripts/fixtures/archives.py`** (zipfile/tarfile/gzip de Python, independientes de fflate): `archive.{zip,tar,tar.gz}`, `text.txt.gz`, `legacy-cp437.zip` y en `corrupt/`: `zip-slip.zip`, `symlink.zip`, `links.tar`, `bomb-declared.zip`, `lying-size.zip`, `encrypted.zip`, `truncated.{zip,tar.gz}`.
+- **Arreglo de `ToolShell`** (afecta a todas las herramientas): un mensaje de error largo en la lista de resultados quedaba en una sola línea y **desbordaba horizontalmente a 360 px**; ahora va debajo del nombre y se ajusta. El nombre truncado muestra la ruta completa en `title`.
+- **Prueba inestable corregida**: `add-text-to-image` y `watermark-image` marcaban con `check({ force: true })` un radio `sr-only` de 1 px y a veces el clic no lo cambiaba; ahora hacen clic en la celda visible (`label[title=…]`) y comprueban que quedó marcado (20/20 en 5 repeticiones).
+
+**Verificación**
+- 13 tests unitarios: los 3 fixtures de Python con todos los archivos byte a byte (carpetas, UTF-8, vacío, PNG y PDF; nombre de > 255 caracteres en TAR); GZ con nombre del encabezado; CP437; ida y vuelta con el escritor de 3C.28; zip slip (6 rutas, ninguna con `..`, `\` ni absoluta); enlace simbólico omitido y TAR con 4 especiales omitidos; bomba declarada → `archiveTooLarge`, tamaño mentido → `fileDamaged`; bombas reales con límites reducidos en ZIP, TAR.GZ y GZ y por cantidad de archivos; contraseña, cortados (ZIP, TAR.GZ, TAR), PNG, vacío, un byte alterado (CRC) y bzip2 → errores claros; `safePath`, detección y CRC-32 de referencia.
+- `archive-tools.spec.ts` (+3 casos, sin llamadas al servidor): ZIP → 5 archivos y ZIP de descarga con las carpetas; TAR.GZ + GZ juntos en carpetas por archivo, byte a byte; 6 archivos hostiles a la vez → 8 archivos seguros, aviso de 4 omitidos y los mensajes de bomba, contraseña y dañado.
+- Lint, typecheck, tests (847 + 7 saltados sin Gotenberg), build, `check:static` (862 páginas) y `npm run test:e2e` completo (249/250 en la primera corrida: falló la prueba inestable de arriba, ya corregida). Capturas revisadas: 360 px claro y oscuro con resultados y errores (sin desborde: `scrollWidth` 360).
+
+**Limitaciones**
+- No se extraen 7Z ni RAR (3C.30), ni ZIP con contraseña. Las carpetas vacías no se incluyen. Un TAR cortado justo en el límite de un bloque, entre dos archivos, no se puede distinguir de uno completo sin marca de fin (como en GNU tar).
+
+**Siguiente**: 3C.30 (extraer 7Z y RAR con libarchive.js).

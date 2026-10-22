@@ -208,7 +208,11 @@
     "pdfNotProtected": "Este PDF não tem senha: ele já abre sem ela.",
     "pdfWrongPassword": "A senha não está correta para este PDF.",
     "pdfHasNoImages": "Este PDF não tem imagens para extrair (ou só tem imagens muito pequenas).",
-    "tooManyCells": "A planilha é grande demais para processar no navegador (mais de 2 milhões de células)."
+    "tooManyCells": "A planilha é grande demais para processar no navegador (mais de 2 milhões de células).",
+    "archiveTooLarge": "Ao ser extraído ocuparia mais de 500 MB ou teria mais de 5.000 arquivos: é demais para o navegador (ou é uma “bomba ZIP”).",
+    "archiveEncrypted": "Este arquivo compactado tem senha: por enquanto não é possível extraí-lo.",
+    "archiveUnsupported": "Este arquivo compactado usa um método de compressão que não pode ser aberto no navegador.",
+    "archiveEmpty": "Este arquivo compactado não tem arquivos para extrair (só pastas vazias ou links)."
   },
   "Tools": {
     "merge-pdf": {
@@ -1079,6 +1083,22 @@
         "a3": "Sim. Os nomes são guardados em UTF-8, como os programas atuais esperam. Se dois arquivos tiverem o mesmo nome, o segundo passa a se chamar “nome (1)”. As barras nos nomes são substituídas para que nada seja gravado fora da pasta ao extrair.",
         "q4": "Existe limite de tamanho? Posso colocar senha?",
         "a4": "Tudo é montado na memória do seu navegador, por isso o total dos arquivos pode chegar a 500 MB. Por enquanto não é possível colocar senha no ZIP: para proteger um documento, use “Proteger PDF com senha”."
+      }
+    },
+    "extract-archive": {
+      "title": "Extrair ZIP",
+      "description": "Abra arquivos ZIP, TAR, TAR.GZ e GZ no seu navegador e baixe o que há dentro, com as pastas.",
+      "action": "Extrair arquivos",
+      "about": "Abra um arquivo compactado sem instalar nenhum programa: ideal no celular, num computador do trabalho ou num tablet. Você vê a lista de arquivos e pode baixar cada um separadamente ou todos juntos em um ZIP com as mesmas pastas. Funciona com ZIP (inclusive os criados em versões antigas do Windows, com nomes acentuados), TAR, TAR.GZ/TGZ e GZ. O arquivo é aberto no seu dispositivo: não é enviado a nenhum servidor.",
+      "faq": {
+        "q1": "É seguro abrir um ZIP que me enviaram?",
+        "a1": "Ele é aberto como um arquivo potencialmente hostil: nada é executado, caminhos que tentam sair da pasta (como “../”) são corrigidos, links simbólicos e arquivos especiais são ignorados e as “bombas ZIP” param ao passar do limite. Mesmo assim, verifique com um antivírus os programas baixados de fontes desconhecidas.",
+        "q2": "Quais formatos ele abre?",
+        "a2": "ZIP, TAR, TAR.GZ (ou TGZ) e GZ. ZIPs com senha, os que usam métodos de compressão incomuns e arquivos 7Z e RAR ainda não podem ser abertos aqui.",
+        "q3": "Existe limite?",
+        "a3": "O arquivo compactado pode ter até 500 MB, e o conteúdo até 500 MB e 5.000 arquivos no total, porque tudo é extraído na memória do seu navegador.",
+        "q4": "As pastas são mantidas?",
+        "a4": "Sim: cada arquivo mostra seu caminho, e ao baixar tudo junto é criado um ZIP com a mesma estrutura de pastas. Pastas vazias não são incluídas."
       }
     }
   },
@@ -1953,6 +1973,8 @@
       "zip": "Abre no Windows, macOS, Android e iPhone sem instalar nada. Fotos, vídeos e documentos do Office são guardados sem recomprimir. Até {size} no total.",
       "tar": "Junta os arquivos sem comprimi-los (comum no Linux). Até {size} no total.",
       "tgz": "TAR comprimido com gzip, o padrão no Linux e em servidores. Até {size} no total."
-    }
+    },
+    "extractNote": "Aberto no seu dispositivo como um arquivo não confiável: caminhos perigosos corrigidos, links ignorados e limite contra “bombas ZIP” (500 MB e 5.000 arquivos ao extrair).",
+    "skipped": "{count, plural, one {# link ou arquivo especial foi ignorado por segurança.} other {# links ou arquivos especiais foram ignorados por segurança.}}"
   }
 }

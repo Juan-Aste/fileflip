@@ -7,6 +7,7 @@ import {
   Printer,
   FileSpreadsheet,
   FolderArchive,
+  FolderOpen,
   Archive,
   CaseSensitive,
   ImageDown,
@@ -112,6 +113,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "html-to-pdf": Printer,
   "spreadsheet-converter": FileSpreadsheet,
   "create-archive": FolderArchive,
+  "extract-archive": FolderOpen,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

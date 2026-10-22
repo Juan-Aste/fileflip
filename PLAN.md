@@ -257,7 +257,7 @@ Fuentes y documentos
 
 Archivos comprimidos
 - [x] 3C.28 Crear ZIP, TAR y TAR.GZ (fflate + escritor TAR propio; test leyendo la salida con `tar` del sistema)
-- [ ] 3C.29 Extraer ZIP, TAR y TAR.GZ con protecciones (zip bomb por tamaño y cantidad de entradas en streaming, zip slip, symlinks); fixtures maliciosos generados por script
+- [x] 3C.29 Extraer ZIP, TAR y TAR.GZ con protecciones (zip bomb por tamaño y cantidad de entradas en streaming, zip slip, symlinks); fixtures maliciosos generados por script
 - [ ] 3C.30 Extraer 7Z y RAR (solo lectura) con libarchive.js y las mismas protecciones
 
 OCR

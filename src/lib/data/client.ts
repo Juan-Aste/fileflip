@@ -7,6 +7,7 @@ import type { SubtitleFormat, SubtitleResult, SyncOptions } from "@/lib/subtitle
 import type { FontContainer, FontFlavor } from "@/lib/font/font";
 import type { SheetFile, SheetOptions } from "@/lib/sheet/sheet";
 import type { ArchiveOptions } from "@/lib/archive/create";
+import type { ExtractResult } from "@/lib/archive/extract";
 import type { FormatResult, JsonFormatOptions, XmlFormatOptions, YamlFormatOptions } from "./format";
 
 // One data worker, started on first use. Text formats are parsed whole, so a
@@ -78,3 +79,7 @@ export const convertSpreadsheetFile = (file: File, options: SheetOptions, job: J
 /** The picked files in one ZIP, TAR or TAR.GZ. */
 export const createArchiveFile = (files: File[], options: ArchiveOptions, job: JobOptions = {}) =>
   call<Uint8Array>("createArchive", { input: files, options }, { timeoutMs: 10 * 60_000, ...job });
+
+/** The files inside a ZIP, TAR, TAR.GZ or GZ (links and special entries are skipped). */
+export const extractArchiveFile = (file: File, job: JobOptions = {}) =>
+  call<ExtractResult>("extractArchive", { input: file }, { timeoutMs: 10 * 60_000, ...job });

@@ -60,6 +60,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "html-to-pdf": dynamic(() => import("./markup/PrintToPdfTools").then((m) => m.HtmlToPdfTool)),
   "spreadsheet-converter": dynamic(() => import("./data/SpreadsheetTool")),
   "create-archive": dynamic(() => import("./archive/CreateArchiveTool")),
+  "extract-archive": dynamic(() => import("./archive/ExtractArchiveTool")),
   "html-to-markdown": dynamic(() => import("./markup/MarkdownTools").then((m) => m.HtmlToMarkdownTool)),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),

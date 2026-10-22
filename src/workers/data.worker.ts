@@ -11,6 +11,7 @@ import { convertSubtitles, syncSubtitles, type SubtitleFormat, type SyncOptions 
 import { convertFont, type FontContainer, type Woff2Codec } from "@/lib/font/font";
 import type { SheetOptions } from "@/lib/sheet/sheet";
 import { createArchive, type ArchiveOptions } from "@/lib/archive/create";
+import { extractArchive } from "@/lib/archive/extract";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
 // Google's WOFF2 encoder (WASM, ~1 MB): only downloaded by the font converter.
@@ -60,6 +61,10 @@ exposeHandlers({
     );
     const result = createArchive(entries, options);
     return { result, transfer: [result.buffer] };
+  },
+  extractArchive: async ({ input }: { input: File }) => {
+    const result = extractArchive(new Uint8Array(await input.arrayBuffer()), input.name);
+    return { result, transfer: result.files.map((f) => f.data.buffer) };
   },
   syncSubtitles: async ({ input, options }: Input<SyncOptions>) => ({ result: syncSubtitles(await textOf(input), options) }),
   // Formatters answer with a result (with the error position) instead of throwing.

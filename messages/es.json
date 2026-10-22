@@ -208,7 +208,11 @@
     "pdfNotProtected": "Este PDF no tiene contraseña: ya se puede abrir sin ella.",
     "pdfWrongPassword": "La contraseña no es correcta para este PDF.",
     "pdfHasNoImages": "Este PDF no tiene imágenes para extraer (o solo tiene imágenes muy pequeñas).",
-    "tooManyCells": "La hoja de cálculo es demasiado grande para procesarla en el navegador (más de 2 millones de celdas)."
+    "tooManyCells": "La hoja de cálculo es demasiado grande para procesarla en el navegador (más de 2 millones de celdas).",
+    "archiveTooLarge": "Al descomprimirse ocuparía más de 500 MB o tendría más de 5000 archivos: es demasiado para el navegador (o es una «bomba ZIP»).",
+    "archiveEncrypted": "Este archivo comprimido tiene contraseña: por ahora no se puede extraer.",
+    "archiveUnsupported": "Este archivo comprimido usa un método de compresión que no se puede abrir en el navegador.",
+    "archiveEmpty": "Este archivo comprimido no tiene archivos para extraer (solo carpetas vacías o enlaces)."
   },
   "Tools": {
     "merge-pdf": {
@@ -1079,6 +1083,22 @@
         "a3": "Sí. Los nombres se guardan en UTF-8, como lo esperan los programas actuales. Si dos archivos se llaman igual, el segundo pasa a llamarse «nombre (1)». Las barras de los nombres se reemplazan para que nadie pueda escribir fuera de la carpeta al extraer.",
         "q4": "¿Hay un límite de tamaño? ¿Puedo poner contraseña?",
         "a4": "Todo se arma en la memoria de tu navegador, por eso el total de los archivos puede ser de hasta 500 MB. Por ahora no se puede poner contraseña al ZIP: si necesitas proteger un documento, usa «Proteger PDF con contraseña»."
+      }
+    },
+    "extract-archive": {
+      "title": "Extraer ZIP",
+      "description": "Abre archivos ZIP, TAR, TAR.GZ y GZ en tu navegador y descarga lo que tienen dentro, con sus carpetas.",
+      "action": "Extraer archivos",
+      "about": "Abre un archivo comprimido sin instalar ningún programa: ideal en el celular, en una computadora del trabajo o en una tableta. Ves la lista de archivos que contiene y puedes descargar cada uno por separado o todos juntos en un ZIP con las mismas carpetas. Funciona con ZIP (también los creados en Windows antiguos, con nombres con ñ y acentos), TAR, TAR.GZ/TGZ y GZ. El archivo se abre en tu dispositivo: no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Es seguro abrir un ZIP que me enviaron?",
+        "a1": "Se abre como un archivo potencialmente hostil: no se ejecuta nada, las rutas que intentan salir de la carpeta (como «../») se corrigen, los enlaces simbólicos y los archivos especiales se omiten, y las «bombas ZIP» se detienen al superar el límite. Aun así, revisa con un antivirus los programas que descargues de fuentes desconocidas.",
+        "q2": "¿Qué formatos puede abrir?",
+        "a2": "ZIP, TAR, TAR.GZ (o TGZ) y GZ. Los ZIP con contraseña, los que usan métodos de compresión poco comunes y los formatos 7Z y RAR todavía no se pueden abrir aquí.",
+        "q3": "¿Hay un límite?",
+        "a3": "El archivo comprimido puede pesar hasta 500 MB, y lo que tiene dentro puede ocupar hasta 500 MB y 5000 archivos en total, porque todo se descomprime en la memoria de tu navegador.",
+        "q4": "¿Se mantienen las carpetas?",
+        "a4": "Sí: cada archivo muestra su ruta, y al descargar todo juntos se crea un ZIP con la misma estructura de carpetas. Las carpetas vacías no se incluyen."
       }
     }
   },
@@ -1953,6 +1973,8 @@
       "zip": "Se abre en Windows, macOS, Android e iPhone sin instalar nada. Fotos, videos y documentos de Office se guardan sin recomprimir. Hasta {size} en total.",
       "tar": "Junta los archivos sin comprimirlos (habitual en Linux). Hasta {size} en total.",
       "tgz": "TAR comprimido con gzip, el estándar en Linux y en servidores. Hasta {size} en total."
-    }
+    },
+    "extractNote": "Se abre en tu dispositivo como un archivo no confiable: rutas peligrosas corregidas, enlaces omitidos y límite contra «bombas ZIP» (500 MB y 5000 archivos al descomprimir).",
+    "skipped": "{count, plural, one {Se omitió # enlace o archivo especial por seguridad.} other {Se omitieron # enlaces o archivos especiales por seguridad.}}"
   }
 }
