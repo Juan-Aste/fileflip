@@ -742,6 +742,24 @@
         "a5": "Uma foto por vez, de até 50 MB (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF ou HEIC do iPhone). Se a área enquadrada tiver pouca resolução para imprimir nítida (menos de 300 dpi), avisamos."
       }
     },
+    "remove-background": {
+      "title": "Remover fundo de imagem",
+      "description": "Remova o fundo de fotos de pessoas, produtos ou animais e baixe em PNG transparente ou sobre uma cor.",
+      "action": "Remover fundo",
+      "about": "Separa o assunto principal da foto (uma pessoa, um produto, um animal, um objeto) e elimina o fundo: baixe um PNG com fundo transparente para apresentações, lojas virtuais ou designs, ou um JPG sobre branco ou a cor que escolher. Usa um pequeno modelo de inteligência artificial (U²-Net) que roda no seu dispositivo: a foto não é enviada a nenhum servidor. Você pode processar várias fotos de uma vez.",
+      "faq": {
+        "q1": "Com quais fotos funciona melhor?",
+        "a1": "Com um assunto principal claro que se destaque do fundo: um retrato, um produto sobre a mesa, um animal, um objeto. Com fundos muito carregados, vários assuntos do mesmo tamanho ou um assunto que ocupa quase toda a foto, o resultado pode ser impreciso. Bordas muito finas (cabelo solto, pelos, galhos) ficam suavizadas.",
+        "q2": "Minhas fotos são enviadas para a internet?",
+        "a2": "Não. O modelo é baixado uma única vez do nosso site (cerca de 19 MB, menos comprimido) e depois tudo acontece no seu navegador. Nem a foto nem o resultado saem do seu dispositivo.",
+        "q3": "Qual formato eu baixo?",
+        "a3": "Com fundo transparente, PNG (o formato comum que mantém a transparência em qualquer lugar). Com fundo branco ou colorido, JPG, mais leve e aceito em qualquer site. A foto mantém o tamanho original.",
+        "q4": "Serve para foto 3x4?",
+        "a4": "Sim: remova o fundo com a opção branco (ou azul-claro, com uma cor) e depois use a ferramenta Foto 3x4 para cortá-la no tamanho do documento. Confira sempre os requisitos: alguns órgãos não aceitam fotos editadas.",
+        "q5": "Há limites?",
+        "a5": "Até 30 MB e 40 megapixels por foto, em JPG, PNG, WEBP, AVIF, GIF (primeiro quadro) ou BMP, e até 3 minutos por foto. O modelo analisa a imagem em 320 × 320 e o recorte é ampliado para o tamanho original, por isso as bordas ficam suaves: não é um recorte manual pixel a pixel."
+      }
+    },
     "scan-document": {
       "title": "Escanear documento",
       "description": "Transforme fotos de documentos tiradas com o celular em um PDF escaneado: endireita a perspectiva e deixa o papel branco e o texto preto.",
@@ -2614,6 +2632,16 @@
     "lowResolution": "A área escolhida tem pouca resolução: pode sair borrada na impressão. Use uma foto maior ou mais próxima.",
     "doneSheet": "Folha 10 × 15 cm com {copies} cópias e linhas de corte.",
     "sheetSuffix": "folha-10x15"
+  },
+  "RemoveBackgroundTool": {
+    "background": "Fundo",
+    "transparent": "Transparente (PNG)",
+    "white": "Branco (JPG)",
+    "color": "Cor (JPG)",
+    "colorLabel": "Cor do fundo",
+    "note": "Na primeira vez o modelo é baixado do nosso site (cerca de {size} MB); depois não precisa dos nossos servidores. Funciona melhor com um assunto principal claro.",
+    "done": "Fundo removido ({pixels} px).",
+    "suffix": "sem-fundo"
   },
   "ScanDocumentTool": {
     "mode": "Modo",

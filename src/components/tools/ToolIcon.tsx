@@ -69,6 +69,7 @@ import {
   Box,
   Lamp,
   SquareUser,
+  Eraser,
   FileScan,
   DraftingCompass,
 } from "lucide-react";
@@ -110,6 +111,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "remove-exif": MapPinOff,
   "crop-image": Crop,
   "id-photo": SquareUser,
+  "remove-background": Eraser,
   "scan-document": FileScan,
   "watermark-image": Stamp,
   "add-text-to-image": Type,

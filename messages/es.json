@@ -742,6 +742,24 @@
         "a5": "Una foto a la vez, de hasta 50 MB (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF o HEIC del iPhone). Si la zona encuadrada tiene poca resolución para imprimirse nítida (menos de 300 ppp), te avisamos."
       }
     },
+    "remove-background": {
+      "title": "Quitar fondo de imagen",
+      "description": "Quita el fondo de fotos de personas, productos o mascotas y descárgalas en PNG transparente o sobre un color.",
+      "action": "Quitar fondo",
+      "about": "Separa el sujeto principal de la foto (una persona, un producto, una mascota, un objeto) y elimina el fondo: descarga un PNG con fondo transparente para usar en presentaciones, tiendas en línea o diseños, o un JPG sobre blanco o el color que elijas. Funciona con un modelo de inteligencia artificial pequeño (U²-Net) que corre en tu dispositivo: la foto no se sube a ningún servidor. Puedes procesar varias fotos a la vez.",
+      "faq": {
+        "q1": "¿Con qué fotos funciona mejor?",
+        "a1": "Con un sujeto principal claro que se distinga del fondo: un retrato, un producto sobre una mesa, una mascota, un objeto. Con fondos muy cargados, varios sujetos del mismo tamaño o sujetos que ocupan casi toda la foto el resultado puede ser impreciso. Los bordes muy finos (pelo suelto, pelaje, ramas) quedan suavizados.",
+        "q2": "¿Mis fotos se suben a internet?",
+        "a2": "No. El modelo se descarga una sola vez desde nuestro sitio (unos 19 MB, menos comprimido) y luego todo el proceso ocurre en tu navegador. Ni la foto ni el resultado salen de tu dispositivo.",
+        "q3": "¿Qué formato descargo?",
+        "a3": "Con fondo transparente, PNG (el único de los habituales que guarda la transparencia de forma universal). Con fondo blanco o de color, JPG, más liviano y aceptado en cualquier sitio. La foto conserva su tamaño original.",
+        "q4": "¿Sirve para la foto carnet?",
+        "a4": "Sí: quita el fondo con la opción blanco (o celeste, con un color) y después usa la herramienta Foto carnet para recortarla al tamaño del documento. Revisa siempre los requisitos del trámite: algunos no aceptan fotos editadas.",
+        "q5": "¿Hay límites?",
+        "a5": "Hasta 30 MB y 40 megapíxeles por foto, en JPG, PNG, WEBP, AVIF, GIF (primer cuadro) o BMP, y hasta 3 minutos por foto. El modelo analiza la imagen a 320 × 320 y el recorte se escala al tamaño original, por eso es suave en los bordes: no es un recorte a mano píxel por píxel."
+      }
+    },
     "scan-document": {
       "title": "Escanear documento",
       "description": "Convierte fotos de documentos hechas con el celular en un PDF escaneado: endereza la perspectiva y deja el papel blanco y el texto negro.",
@@ -2614,6 +2632,16 @@
     "lowResolution": "La zona elegida tiene poca resolución: puede imprimirse borrosa. Usa una foto más grande o más cercana.",
     "doneSheet": "Hoja de 10 × 15 cm con {copies} copias y líneas de corte.",
     "sheetSuffix": "hoja-10x15"
+  },
+  "RemoveBackgroundTool": {
+    "background": "Fondo",
+    "transparent": "Transparente (PNG)",
+    "white": "Blanco (JPG)",
+    "color": "Color (JPG)",
+    "colorLabel": "Color del fondo",
+    "note": "La primera vez se descarga el modelo desde nuestro sitio (unos {size} MB); después funciona sin conexión a nuestros servidores. Funciona mejor con un sujeto principal claro.",
+    "done": "Fondo quitado ({pixels} px).",
+    "suffix": "sin-fondo"
   },
   "ScanDocumentTool": {
     "mode": "Modo",

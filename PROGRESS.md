@@ -2675,3 +2675,25 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - La extracción y el listado de ZIP en los tests usan ahora el módulo `zipfile` de Python (`python3 -I -c …`, salida JSON ASCII), que respeta el bit 11 sin depender del locale: tipo de compresión (0 = guardado, 8 = deflate) y fecha por entrada. Verificado también con `LANG=C LC_ALL=C`. TAR sigue validándose con el `tar` de GNU (`LC_ALL=C.UTF-8` en el listado).
 - `ci.yml`: paso "System tools" que falla temprano si faltan `python3` o `tar`.
 - Revisión de los demás tests de Vitest que llaman herramientas del sistema: LibreOffice (`sheet.test.ts`), EPUBCheck (`build.test.ts`, `EPUBCHECK_JAR`) y veraPDF (`pdfa.test.ts`, `VERAPDF_DOCKER=1`) ya son opcionales y se saltean si no están; ffmpeg, ffprobe, pdftoppm y pdftotext solo se usan en tests de Playwright (`tests/e2e`), que el CI no corre y que comprueban su presencia.
+
+## 2026-10-22 12:55 UTC — Fase 3, tarea 3C.44 (quitar fondo)
+
+**Qué se hizo**
+- **Quitar fondo de imagen** (`/es/quitar-fondo`, `/en/remove-background`, `/pt/remover-fundo`, `/fr/supprimer-arriere-plan`), categoría Imagen: en lotes, JPG, PNG, WEBP, AVIF, GIF (primer cuadro) o BMP de hasta 30 MB y 40 MP → **PNG transparente**, o **JPG sobre blanco o un color** elegido. Ícono `Eraser`.
+- **Motor elegido** tras comparar en esta sesión (Python + onnxruntime, imágenes de dominio público de scikit-image: astronauta de la NASA, gato, taza, cohete): **u2netp** (U²-Net small, Apache-2.0, 4,6 MB) y **ISNet general** (Apache-2.0, 176 MB). ISNet recorta algo mejor el pelaje y las estructuras finas, pero pesa 40 veces más (inviable sin cuantizar y sin alojar 44–176 MB); u2netp da recortes limpios de personas, objetos y mascotas con bordes algo más suaves y tarda ~0,2–2 s por foto. MediaPipe (selfie) se descartó: solo personas. **@imgly/background-removal (AGPL) no se usa.**
+- `src/lib/bg-remove/mask.ts` (puro): entrada NCHW normalizada como U²-Net (dividir por el máximo y media/desvío de ImageNet), estiramiento min–max del mapa, refinado (≤ 10 → 0, ≥ 245 → 255, suave en el medio), escalado bilineal de la máscara de 320 × 320 al tamaño original y aplicación como alfa (respeta la transparencia previa) o mezcla sobre el color (resultado opaco).
+- Worker propio `bg-remove.worker.ts`: comprobación estructural de JPEG/PNG truncados (`isDamagedImage`, el navegador los dibuja con relleno gris), `createImageBitmap` con orientación EXIF, sesión de **onnxruntime-web 1.30.0** (`onnxruntime-web/wasm`, un hilo, sin proxy: no necesita COOP/COEP) creada una vez y reutilizada en el lote (si falla la carga se reintenta en la próxima foto), PNG/JPG con `OffscreenCanvas`. Pool de 1 worker (un modelo en memoria); 3 minutos por foto.
+- **Todo se sirve desde nuestro dominio**: el modelo está versionado en `public/bg/u2netp.onnx` (sha256 en `src/lib/bg-remove/assets.ts`) y el `.wasm` del runtime lo emite el bundler en `.next/static/media` (con hash). Se probó primero un script de copia como el del OCR, pero sobraba: el build `wasm` de onnxruntime ya resuelve su `.wasm` con `new URL(..., import.meta.url)` y webpack lo emite.
+- Textos (introducción + 5 preguntas: qué fotos, privacidad, formato, uso con Foto carnet, límites reales incluida la máscara de 320 × 320) e interfaz en los 5 idiomas; la nota de la herramienta avisa que la primera vez se descargan ~19 MB.
+
+**Verificación**
+- `mask.test.ts` (8): disposición y normalización de la entrada, mapa plano o NaN → se conserva todo, refinado, alfa con transparencia previa, mezcla con color, tamaños inválidos, color hex.
+- `model.test.ts` (2): **el modelo real** (mismo ONNX y mismo onnxruntime-web, en Node) sobre una pelota sombreada en fondo liso dibujada con sharp: centro > 220, esquinas y bordes < 30, el borde sigue al círculo (85 % del radio alto, 120 % bajo); a tamaño completo (800 × 600) el centro queda con alfa 255 y las esquinas con 0.
+- `bg-tools.spec.ts` (2, Chromium): foto sintética 900 × 600 → `ball-no-background.png` de 900 × 600 con alfa, opaco en el centro y a 120 px, transparente en 6 puntos del fondo; **todas las peticiones de la página van a nuestro propio origen**; blanco → JPG con esquina blanca y pelota roja; color `#0000ff` → fondo azul; JPEG truncado → "dañado o incompleto". Sin llamadas a `/api/convert`.
+- Lint, typecheck, tests (979 + 8 saltados), build, `check:static` (1007 páginas) y `search` + `image-tools` de navegador (31/31).
+
+**Limitaciones**
+- La máscara se calcula a 320 × 320: bordes suaves, pelo suelto y pelaje sin detalle fino; fondos muy cargados o varios sujetos pueden fallar. No hay pincel para corregir a mano. Sin HEIC/TIFF de entrada (se pueden convertir antes con el conversor).
+- Mejora posible (no planificada): ISNet cuantizado a uint8 (~44 MB) como opción "alta calidad".
+
+**Siguiente**: 3C.45 (WASM propio de libarchive 3.8.x con emscripten).

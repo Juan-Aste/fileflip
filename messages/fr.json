@@ -742,6 +742,24 @@
         "a5": "Une photo à la fois, jusqu'à 50 Mo (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF ou HEIC de l'iPhone). Si la zone cadrée a une résolution trop faible pour une impression nette (moins de 300 ppp), nous vous prévenons."
       }
     },
+    "remove-background": {
+      "title": "Supprimer l'arrière-plan d'une image",
+      "description": "Supprimez l'arrière-plan de photos de personnes, de produits ou d'animaux et téléchargez un PNG transparent ou une version sur une couleur.",
+      "action": "Supprimer l'arrière-plan",
+      "about": "Isole le sujet principal de la photo (une personne, un produit, un animal, un objet) et supprime l'arrière-plan : téléchargez un PNG à fond transparent pour vos présentations, boutiques en ligne ou créations, ou un JPG sur fond blanc ou de la couleur choisie. Un petit modèle d'intelligence artificielle (U²-Net) s'exécute sur votre appareil : la photo n'est envoyée à aucun serveur. Vous pouvez traiter plusieurs photos à la fois.",
+      "faq": {
+        "q1": "Avec quelles photos cela marche-t-il le mieux ?",
+        "a1": "Avec un sujet principal net qui se détache du fond : un portrait, un produit sur une table, un animal, un objet. Avec un fond très chargé, plusieurs sujets de même taille ou un sujet qui occupe presque toute l'image, le résultat peut être imprécis. Les contours très fins (cheveux, poils, branches) sont adoucis.",
+        "q2": "Mes photos sont-elles envoyées sur Internet ?",
+        "a2": "Non. Le modèle est téléchargé une seule fois depuis notre site (environ 19 Mo, moins une fois compressé), puis tout se passe dans votre navigateur. Ni la photo ni le résultat ne quittent votre appareil.",
+        "q3": "Quel format est téléchargé ?",
+        "a3": "Avec un fond transparent, PNG (le format courant qui conserve la transparence partout). Avec un fond blanc ou coloré, JPG, plus léger et accepté partout. La photo garde sa taille d'origine.",
+        "q4": "Est-ce utile pour une photo d'identité ?",
+        "a4": "Oui : supprimez l'arrière-plan avec l'option blanc (ou bleu clair, avec une couleur), puis utilisez l'outil Photo d'identité pour la recadrer au format du document. Vérifiez toujours les exigences : certaines administrations refusent les photos retouchées.",
+        "q5": "Y a-t-il des limites ?",
+        "a5": "Jusqu'à 30 Mo et 40 mégapixels par photo, en JPG, PNG, WEBP, AVIF, GIF (première image) ou BMP, et jusqu'à 3 minutes par photo. Le modèle analyse l'image en 320 × 320 et le détourage est agrandi à la taille d'origine, d'où des contours doux : ce n'est pas un détourage manuel au pixel près."
+      }
+    },
     "scan-document": {
       "title": "Scanner un document",
       "description": "Transformez des photos de documents prises au téléphone en PDF scanné : la perspective est redressée, le papier devient blanc et le texte noir.",
@@ -2614,6 +2632,16 @@
     "lowResolution": "La zone choisie a une faible résolution : l'impression peut être floue. Utilisez une photo plus grande ou prise de plus près.",
     "doneSheet": "Planche 10 × 15 cm avec {copies} copies et traits de coupe.",
     "sheetSuffix": "planche-10x15"
+  },
+  "RemoveBackgroundTool": {
+    "background": "Arrière-plan",
+    "transparent": "Transparent (PNG)",
+    "white": "Blanc (JPG)",
+    "color": "Couleur (JPG)",
+    "colorLabel": "Couleur de fond",
+    "note": "La première fois, le modèle est téléchargé depuis notre site (environ {size} Mo) ; ensuite, nos serveurs ne sont plus nécessaires. Fonctionne mieux avec un sujet principal net.",
+    "done": "Arrière-plan supprimé ({pixels} px).",
+    "suffix": "sans-fond"
   },
   "ScanDocumentTool": {
     "mode": "Mode",

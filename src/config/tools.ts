@@ -74,6 +74,7 @@ export const toolIds = [
   "remove-exif",
   "crop-image",
   "id-photo",
+  "remove-background",
   "scan-document",
   "watermark-image",
   "add-text-to-image",
@@ -715,6 +716,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "escanear-documento", en: "scan-document", pt: "escanear-documento", fr: "scanner-document", zh: "scan-document" },
+  },
+  "remove-background": {
+    id: "remove-background",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif", "gif", "bmp"],
+    outputs: ["png", "jpg"],
+    engine: "browser",
+    // U²-Net small (u2netp, Apache-2.0) on onnxruntime-web (WASM, one thread); mask applied by our own code.
+    libraries: ["onnxruntime-web", "u2netp", "canvas"],
+    limits: { files: "multiple", timeoutMs: 3 * MINUTE, maxFileBytes: 30 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "quitar-fondo", en: "remove-background", pt: "remover-fundo", fr: "supprimer-arriere-plan", zh: "remove-background" },
   },
 
   "watermark-image": {

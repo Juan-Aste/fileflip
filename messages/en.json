@@ -742,6 +742,24 @@
         "a5": "One photo at a time, up to 50 MB (JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF or iPhone HEIC). If the framed area has too little resolution to print sharp (under 300 dpi), we tell you."
       }
     },
+    "remove-background": {
+      "title": "Remove image background",
+      "description": "Remove the background from photos of people, products or pets and download a transparent PNG or a version over a color.",
+      "action": "Remove background",
+      "about": "Separates the main subject of the photo (a person, a product, a pet, an object) and removes the background: download a PNG with a transparent background for slides, online stores or designs, or a JPG over white or the color you pick. It uses a small AI model (U²-Net) that runs on your device: the photo isn't uploaded to any server. You can process several photos at once.",
+      "faq": {
+        "q1": "Which photos work best?",
+        "a1": "Photos with a clear main subject that stands out from the background: a portrait, a product on a table, a pet, an object. With very busy backgrounds, several subjects of the same size or a subject filling almost the whole photo, the result can be imprecise. Very fine edges (loose hair, fur, branches) come out softened.",
+        "q2": "Are my photos uploaded?",
+        "a2": "No. The model is downloaded once from our site (about 19 MB, less compressed) and then everything happens in your browser. Neither the photo nor the result leaves your device.",
+        "q3": "Which format do I get?",
+        "a3": "With a transparent background, PNG (the common format that keeps transparency everywhere). With a white or colored background, JPG, lighter and accepted anywhere. The photo keeps its original size.",
+        "q4": "Can I use it for an ID photo?",
+        "a4": "Yes: remove the background with the white option (or light blue, with a color) and then use the ID photo maker to crop it to the document size. Always check the requirements: some offices don't accept edited photos.",
+        "q5": "Are there limits?",
+        "a5": "Up to 30 MB and 40 megapixels per photo, in JPG, PNG, WEBP, AVIF, GIF (first frame) or BMP, and up to 3 minutes per photo. The model looks at the image at 320 × 320 and the cutout is scaled to the original size, so the edges are soft: it isn't a pixel-precise manual cutout."
+      }
+    },
     "scan-document": {
       "title": "Scan document",
       "description": "Turn phone photos of documents into a scanned PDF: straightens the perspective and makes the paper white and the text black.",
@@ -2614,6 +2632,16 @@
     "lowResolution": "The framed area has low resolution: it may print blurry. Use a bigger or closer photo.",
     "doneSheet": "4 × 6 in (10 × 15 cm) sheet with {copies} copies and cutting lines.",
     "sheetSuffix": "sheet-4x6"
+  },
+  "RemoveBackgroundTool": {
+    "background": "Background",
+    "transparent": "Transparent (PNG)",
+    "white": "White (JPG)",
+    "color": "Color (JPG)",
+    "colorLabel": "Background color",
+    "note": "The first time, the model is downloaded from our site (about {size} MB); after that it doesn't need our servers. Works best with a clear main subject.",
+    "done": "Background removed ({pixels} px).",
+    "suffix": "no-background"
   },
   "ScanDocumentTool": {
     "mode": "Mode",
