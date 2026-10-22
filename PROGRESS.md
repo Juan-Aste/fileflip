@@ -604,7 +604,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
   - Audio/video en formatos heredados (AVI, WMV, FLV, 3GP): solo con `@ffmpeg/core` publicado, que es **GPL-2.0-or-later**. Sin aprobación se usa WebCodecs + mediabunny (MPL-2.0) para MP4/WebM/MOV/MKV y audio común.
   - Quitar fondo con `@imgly/background-removal` (**AGPL-3.0**, mejor calidad). Sin aprobación se intenta MediaPipe (Apache-2.0, enfocado en personas).
   - MOBI/AZW (solo con Calibre, GPL-3.0) y DWG (LibreDWG GPL-3.0 u ODA comercial): descartados salvo que el dueño decida otra cosa.
-  - "Convertir audio" incluye LAME (MP3) y el codificador AAC de FFmpeg, ambos **LGPL**, compilados a WASM en las extensiones de mediabunny sin modificar: conviene una página de créditos/licencias con enlaces a su código fuente (LAME pide un enlace a lame.sourceforge.io).
+  - ~~Página de créditos/licencias para los componentes LGPL~~ → **hecha en la fase 4** (\`/es/creditos\`, tareas 4.1a–4.1c). Solo queda lo del commit exacto de FFmpeg (abajo).
 
 - **Fase 4 — código fuente exacto de FFmpeg (AAC)**: `@mediabunny/aac-encoder` 1.62.0 trae el codificador AAC de FFmpeg compilado a WASM (LGPL-2.1+), pero su compilación clona FFmpeg sin anotar el commit; el binario dice `Lavc62.23.103` (versión de desarrollo, entre FFmpeg 8.0 y 8.1). La página de créditos enlaza el repositorio de FFmpeg y las instrucciones de compilación de mediabunny y lo aclara. Para cumplir la LGPL al pie de la letra hay dos caminos: pedirle al autor de mediabunny (Vanilagy) el commit exacto, o compilar nosotros el codificador desde una versión publicada de FFmpeg con hash fijado (como con libarchive en 3C.45) y servir ese WASM. Mientras tanto, M4A/AAC solo usa este WASM cuando el navegador no tiene codificador AAC propio.
 - **Foto carnet (3C.42)**: no se encontraron fuentes oficiales fiables de las medidas por país; la herramienta usa medidas habituales y pide confirmar con la oficina. Si se quieren presets por país (AR, BR, MX, CL, CO, PE, UY), validar cada medida con el organismo correspondiente.
@@ -2862,3 +2862,35 @@ Todas las tareas de la fase 3 en PLAN.md están marcadas. Informe en `docs/repor
 - Tests de sitemap y de traducción de rutas ampliados. Lint, typecheck, tests (997 + 8 saltados), build y `check:static` (1012 páginas) pasan.
 
 **Siguiente**: 4.2a (revisión de pendientes del dueño).
+
+## 2026-10-22 19:37 UTC — Fase 4, tarea 4.2a (revisión de pendientes)
+
+Se revisó cada punto de "Pendiente del dueño" y de la sección 10 de `docs/report-phase3.md`, más las limitaciones anotadas en las fases anteriores.
+
+**Resolubles en código (pasan a la fase 4)**
+| Punto | Tarea |
+|---|---|
+| Página de créditos con enlaces al código fuente LGPL (LAME, FFmpeg AAC, libheif, libvips) | 4.1a–4.1c (hecha) |
+| CLS 0,014 en la categoría PDF en 1 de 3 corridas (fase 3, 3D.5) | 4.2b |
+| "Revisar a mano el arrastrar y soltar de miniaturas en Ordenar PDF" (fase 1) | 4.2c |
+
+**Quedan para el dueño (necesitan cuenta, credencial, dominio, dinero o decisión)**
+| Punto | Por qué no es código |
+|---|---|
+| Google OAuth, SMTP/Resend, `AUTH_SECRET` | credenciales y cuentas |
+| Mercado Pago por país, webhooks y secretos | cuentas y credenciales |
+| Proveedor de pagos internacional | elegir proveedor y abrir cuenta (la interfaz ya existe) |
+| AdSense (cliente e IDs de bloque) | cuenta y aprobación de Google |
+| Textos legales (razón social, jurisdicción) y `NEXT_PUBLIC_CONTACT_EMAIL` | datos legales del dueño y revisión de un abogado |
+| Precios por país | decisión comercial |
+| `ADMIN_EMAILS`, `MONGODB_URI`, proyecto en Railway | configuración de Railway |
+| Cloudflare delante de Railway | opcional, cuenta y DNS |
+| Nombre Fileflect: dominio, marca, redes, `NEXT_PUBLIC_SITE_URL`, `EMAIL_FROM` | decisión y compra |
+| Licencias GPL/AGPL (@ffmpeg/core, @imgly/background-removal, Calibre, LibreDWG) | aprobación del dueño; no se agregan |
+| Gotenberg: *Custom Start Command* con las 3 opciones de Chromium | configuración de Railway |
+| Build: acceso a `cdn.sheetjs.com` desde Railway | configuración de red de Railway |
+| Foto carnet: medidas oficiales por país | fuente oficial que no se pudo verificar |
+| Commit exacto de FFmpeg (AAC) para la LGPL | pedirlo al autor de mediabunny o decidir recompilar (ver "Pendiente del dueño") |
+
+**Qué se hizo**
+- "Pendiente del dueño": la página de créditos queda marcada como hecha; se agregó el punto del commit exacto de FFmpeg (4.1b).

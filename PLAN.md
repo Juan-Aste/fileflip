@@ -330,7 +330,7 @@ Cierre antes de publicar: tareas chicas que no requieren decisiones del dueño. 
 - [x] 4.1c Página `/[locale]/credits` (slugs traducidos: `/es/creditos`, `/en/credits`, `/pt/creditos`, `/fr/credits`, `/zh/credits`), enlazada desde el footer, textos en los 5 idiomas, metadatos, sitemap, diseño de `docs/design.md`; capturas Playwright 360/1280 claro/oscuro
 
 ### Hito 4.2 — Pendientes resolubles en código
-- [ ] 4.2a Revisar "Pendiente del dueño" (PROGRESS.md) y la sección 10 de `docs/report-phase3.md`: clasificar cada punto (código / dueño) y dejar la lista del dueño al día
+- [x] 4.2a Revisar "Pendiente del dueño" (PROGRESS.md) y la sección 10 de `docs/report-phase3.md`: clasificar cada punto (código / dueño) y dejar la lista del dueño al día
 - [ ] 4.2b CLS de la página de la categoría PDF (0,014 en 1 de 3 corridas: la fila de pastillas se reacomoda al cargar la fuente): dejarlo en 0
 - [ ] 4.2c Prueba automatizada de arrastrar y soltar miniaturas en "Ordenar PDF" (quedó como revisión manual en la fase 1)
 
