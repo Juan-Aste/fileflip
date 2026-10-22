@@ -1654,7 +1654,13 @@
     "error": "Não conseguimos fazer seu login. Tente de novo.",
     "verifyTitle": "Confira seu e-mail",
     "verifyBody": "Enviamos um link para você entrar. Pode levar um minuto; veja também a pasta de spam.",
-    "privacyNote": "Só usamos seu e-mail para o login e para avisos da sua assinatura."
+    "privacyNote": "Só usamos seu e-mail para o login e para avisos da sua assinatura.",
+    "sending": "Enviando…",
+    "redirecting": "Redirecionando…",
+    "emailInvalid": "Digite um e-mail válido, por exemplo nome@email.com.",
+    "sendError": "Não conseguimos enviar o link. Tente novamente em alguns minutos.",
+    "sendTimeout": "O envio está demorando demais. Verifique sua conexão e tente novamente.",
+    "networkError": "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente."
   },
   "Account": {
     "title": "Minha conta",

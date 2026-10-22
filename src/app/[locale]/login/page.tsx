@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { LogIn, Mail, ShieldCheck } from "lucide-react";
+import { LogIn, ShieldCheck } from "lucide-react";
 import { auth, getAuthProviders, signIn } from "@/auth";
+import EmailSignInForm from "@/components/session/EmailSignInForm";
+import PendingSubmitButton from "@/components/session/PendingSubmitButton";
 import PageHero from "@/components/ui/PageHero";
 import { redirect } from "@/i18n/navigation";
-import { buttonPrimary, buttonSecondary, card, field } from "@/components/ui/styles";
+import { buttonSecondary, card } from "@/components/ui/styles";
 
 // Depends on the visitor's session.
 export const dynamic = "force-dynamic";
@@ -52,11 +54,6 @@ export default async function LoginPage({ params, searchParams }: Props) {
     await signIn("google", { redirectTo });
   }
 
-  async function email(form: FormData) {
-    "use server";
-    await signIn("nodemailer", { email: String(form.get("email") ?? ""), redirectTo });
-  }
-
   return (
     <div className="mx-auto flex max-w-md flex-col gap-8 px-4 py-12 sm:py-16">
       <PageHero icon={<LogIn aria-hidden="true" className="h-7 w-7" />} title={t("title")}>
@@ -71,10 +68,13 @@ export default async function LoginPage({ params, searchParams }: Props) {
         )}
         {providers.google && (
           <form action={google}>
-            <button type="submit" className={`w-full gap-3 py-3 ${buttonSecondary}`}>
-              <GoogleMark />
+            <PendingSubmitButton
+              icon={<GoogleMark />}
+              pendingLabel={t("redirecting")}
+              className={`w-full gap-3 py-3 ${buttonSecondary}`}
+            >
               {t("google")}
-            </button>
+            </PendingSubmitButton>
           </form>
         )}
         {providers.google && providers.email && (
@@ -84,26 +84,7 @@ export default async function LoginPage({ params, searchParams }: Props) {
             <span className="h-px flex-1 bg-border" />
           </p>
         )}
-        {providers.email && (
-          <form action={email} className="flex flex-col gap-3">
-            <label htmlFor="email" className="text-sm font-medium">
-              {t("emailLabel")}
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autoComplete="email"
-              placeholder={t("emailPlaceholder")}
-              className={`h-11 ${field}`}
-            />
-            <button type="submit" className={buttonPrimary}>
-              <Mail aria-hidden="true" className="h-5 w-5" />
-              {t("emailSubmit")}
-            </button>
-          </form>
-        )}
+        {providers.email && <EmailSignInForm redirectTo={redirectTo} />}
         {!providers.google && !providers.email && <p className="text-center text-muted">{t("noMethods")}</p>}
       </div>
       <p className="text-center text-sm text-balance text-muted">

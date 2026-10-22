@@ -1654,7 +1654,13 @@
     "error": "Connexion impossible. Veuillez réessayer.",
     "verifyTitle": "Consultez vos e-mails",
     "verifyBody": "Nous vous avons envoyé un lien de connexion. Cela peut prendre une minute ; pensez à vérifier vos spams.",
-    "privacyNote": "Nous utilisons votre e-mail uniquement pour la connexion et votre abonnement."
+    "privacyNote": "Nous utilisons votre e-mail uniquement pour la connexion et votre abonnement.",
+    "sending": "Envoi…",
+    "redirecting": "Redirection…",
+    "emailInvalid": "Saisissez une adresse e-mail valide, par exemple nom@email.com.",
+    "sendError": "Nous n’avons pas pu vous envoyer le lien. Réessayez dans quelques minutes.",
+    "sendTimeout": "L’envoi prend trop de temps. Vérifiez votre connexion et réessayez.",
+    "networkError": "Impossible de joindre le serveur. Vérifiez votre connexion et réessayez."
   },
   "Account": {
     "title": "Mon compte",

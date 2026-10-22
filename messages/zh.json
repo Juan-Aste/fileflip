@@ -1654,7 +1654,13 @@
     "error": "无法登录，请重试。",
     "verifyTitle": "请查收邮件",
     "verifyBody": "我们已向你发送登录链接。可能需要一分钟，也请检查垃圾邮件文件夹。",
-    "privacyNote": "我们只将你的邮箱用于登录和订阅通知。"
+    "privacyNote": "我们只将你的邮箱用于登录和订阅通知。",
+    "sending": "正在发送…",
+    "redirecting": "正在跳转…",
+    "emailInvalid": "请输入有效的电子邮箱，例如 name@email.com。",
+    "sendError": "无法向你发送链接，请过几分钟再试。",
+    "sendTimeout": "发送时间过长。请检查网络连接后重试。",
+    "networkError": "无法连接到服务器。请检查网络连接后重试。"
   },
   "Account": {
     "title": "我的账户",

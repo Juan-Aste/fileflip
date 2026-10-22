@@ -1654,7 +1654,13 @@
     "error": "No pudimos iniciar sesión. Inténtalo de nuevo.",
     "verifyTitle": "Revisa tu correo",
     "verifyBody": "Te enviamos un enlace para entrar. Puede tardar un minuto; revisa también la carpeta de spam.",
-    "privacyNote": "Solo usamos tu correo para iniciar sesión y avisarte de tu suscripción."
+    "privacyNote": "Solo usamos tu correo para iniciar sesión y avisarte de tu suscripción.",
+    "sending": "Enviando…",
+    "redirecting": "Redirigiendo…",
+    "emailInvalid": "Escribe un correo electrónico válido, por ejemplo nombre@correo.com.",
+    "sendError": "No pudimos enviarte el enlace. Inténtalo de nuevo en unos minutos.",
+    "sendTimeout": "El envío está tardando demasiado. Revisa tu conexión e inténtalo de nuevo.",
+    "networkError": "No hay conexión con el servidor. Revisa tu conexión e inténtalo de nuevo."
   },
   "Account": {
     "title": "Mi cuenta",

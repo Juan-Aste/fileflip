@@ -1654,7 +1654,13 @@
     "error": "We couldn't sign you in. Please try again.",
     "verifyTitle": "Check your email",
     "verifyBody": "We sent you a sign-in link. It may take a minute; check your spam folder too.",
-    "privacyNote": "We only use your email to sign you in and about your subscription."
+    "privacyNote": "We only use your email to sign you in and about your subscription.",
+    "sending": "Sending…",
+    "redirecting": "Redirecting…",
+    "emailInvalid": "Enter a valid email address, for example name@email.com.",
+    "sendError": "We couldn't send you the link. Please try again in a few minutes.",
+    "sendTimeout": "Sending is taking too long. Check your connection and try again.",
+    "networkError": "We can't reach the server. Check your connection and try again."
   },
   "Account": {
     "title": "My account",

@@ -2971,3 +2971,14 @@ Causa: Railway bloquea el SMTP saliente (25/465/587) salvo en el plan Pro, así 
 **Verificación**
 - Lint, typecheck, build y tests unitarios (1009) pasan.
 - `next start` con MongoDB en memoria y una clave falsa: el POST a `/api/auth/signin/nodemailer` llega a la API real de Resend y responde en 0,2 s con `/login?error=Configuration`; el log muestra `HTTP 401 API key is invalid` sin la clave.
+
+## 2026-10-22 23:13 UTC — Fase 5, tarea 5.2 (estados del formulario de login)
+
+**Qué se hizo**
+- `src/components/session/EmailSignInForm.tsx` (cliente): el formulario de email ya no usa una server action; pide el token CSRF y hace POST a `/api/auth/signin/nodemailer` con `X-Auth-Return-Redirect: 1` (Auth.js responde `{ url }`). Mientras tanto el botón muestra "Enviando…" con un indicador que gira (`motion-safe`), queda deshabilitado con `aria-busy` y una ref impide un segundo envío (Enter o clic). Error del servidor (`?error=` en la URL, HTTP no 2xx), timeout de 20 s del lado del cliente (`setTimeout` + `AbortController`) y error de red muestran un mensaje traducido en un `role="alert"` que recibe el foco, y el botón se vuelve a habilitar. El email se valida antes de enviar (`aria-invalid`, foco en el campo). Si sale bien, lleva a `/[locale]/login/verify`.
+- "Continuar con Google" tenía el mismo problema (sin estado mientras corre la server action): `PendingSubmitButton` con `useFormStatus` muestra "Redirigiendo…", indicador y lo deshabilita.
+- Textos nuevos en `Login` (es, en, pt, fr, zh): `sending`, `redirecting`, `emailInvalid`, `sendError`, `sendTimeout`, `networkError`.
+- `tests/e2e/login.spec.ts` (Playwright, endpoints de Auth.js simulados con `page.route`): respuesta lenta (estado "Enviando…", deshabilitado, una sola petición aunque se apriete Enter o se fuerce el clic, llega a "Revisa tu correo"), error de Auth.js con reintento, HTTP 500, error de red, timeout de 20 s con `page.clock`, validación, inglés y estado de Google. `a11y.spec.ts`: axe en el login (claro y oscuro) con el mensaje de error visible. El servidor de las pruebas habilita ambos métodos (`AUTH_EMAIL_LOG_LINKS`, Google ficticio y un `AUTH_SECRET` de prueba en `playwright.config.ts`).
+
+**Verificación**
+- Lint, typecheck, build y tests unitarios pasan; Playwright: `login.spec.ts` (7), `a11y.spec.ts`, `layout-shift.spec.ts` y `search.spec.ts` pasan (32 + 7).

@@ -35,5 +35,7 @@ export default defineConfig({
         url: `${baseURL}/es`,
         reuseExistingServer: !process.env.CI,
         timeout: 60_000,
+        // Show both sign-in methods; login.spec.ts stubs the Auth.js endpoints.
+        env: { AUTH_SECRET: "e2e-only-not-a-real-secret", AUTH_EMAIL_LOG_LINKS: "true", AUTH_GOOGLE_ID: "e2e", AUTH_GOOGLE_SECRET: "e2e" },
       },
 });
