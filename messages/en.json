@@ -221,7 +221,11 @@
     "tooManyPages": "This PDF has too many pages to recognize in the browser (100 at most).",
     "pdfAlreadySearchable": "Every page of this PDF already has text: it's searchable without OCR. Use “PDF to text” to extract it.",
     "audioRangeInvalid": "Check the times: the start must come before the end and both must be within the audio.",
-    "audioSilent": "The audio is silent: there's nothing to normalize."
+    "audioSilent": "The audio is silent: there's nothing to normalize.",
+    "noVideoTrack": "This file has no video.",
+    "videoCodecUnsupported": "Your browser can't read the video in this file (for example, H.264 or HEVC in some browsers). Try Chrome, Edge or Safari, or choose a format that doesn't need to re-encode it.",
+    "videoEncoderUnsupported": "Your browser can't create video in this format (MOV needs H.264). Try Chrome, Edge or Safari, or choose MP4, WebM or MKV.",
+    "videoTooLong": "The video is too long: the maximum is 2 hours per file."
   },
   "Tools": {
     "merge-pdf": {
@@ -1271,6 +1275,22 @@
         "q4": "Is there a limit?",
         "a4": "Up to 200 MB per file on the free plan (500 MB with Pro) and 3 hours in total, because the result is built in your browser's memory. If a file is damaged, you're told which one."
       }
+    },
+    "video-converter": {
+      "title": "Video Converter",
+      "description": "Convert videos between MP4, MOV, MKV and WebM in your browser, without uploading your files.",
+      "action": "Convert video",
+      "about": "Change the format of your videos between MP4 (the one every phone, TV and social network plays), MOV (iPhone and Mac), MKV and WebM (the web's format). If the video already uses a codec the chosen format accepts, it is copied without re-encoding: it takes seconds and loses no quality. Otherwise it is re-encoded at high quality with your browser's codec. The sound goes along with the picture. Everything happens on your device: videos aren't uploaded to any server.",
+      "faq": {
+        "q1": "Does converting lose quality?",
+        "a1": "If only the container changes (for example, an H.264 MP4 to MOV or MKV), no: it is copied as is. If it must be re-encoded (for example, to WebM), a high quality is used that in practice can't be told apart from the original. Each result says whether it was copied or re-encoded.",
+        "q2": "Which format should I pick?",
+        "a2": "MP4 if it must play anywhere; MOV to edit in iMovie or Final Cut; WebM for a web page; MKV to keep everything as it is.",
+        "q3": "Why did my MP4 come out in VP9 or AV1?",
+        "a3": "Some browsers (such as Chromium or Firefox on Linux) have no H.264 encoder. Then the MP4 is made with VP9 or AV1, which play in Chrome, Edge, Firefox and Android but maybe not on iPhone. For H.264 use Chrome, Edge or Safari; you'll see a notice when it's missing.",
+        "q4": "Is there a limit?",
+        "a4": "Up to 200 MB per file on the free plan (500 MB with Pro) and 2 hours long, because the video is built in your browser's memory. The main video and audio tracks are kept; embedded subtitles aren't copied. AVI, WMV and FLV can't be read yet."
+      }
     }
   },
   "ToolUi": {
@@ -2254,5 +2274,19 @@
     "joinNote": "If the files have different sample rates or channels, they're matched to the highest (at most stereo).",
     "joinedSuffix": "joined",
     "joined": "{count} files joined: {length} in total."
+  },
+  "VideoTool": {
+    "target": "Convert to",
+    "targets": {
+      "mp4": "MP4",
+      "webm": "WebM",
+      "mov": "MOV",
+      "mkv": "MKV"
+    },
+    "copyNote": "If the video's codec already fits the chosen format, it is copied without re-encoding (fast and lossless). Processed on your device.",
+    "noH264": "This browser can't create H.264 video: MP4 files will be saved with VP9 or AV1, and MOV only works if the video is already H.264. For H.264 use Chrome, Edge or Safari.",
+    "noWebCodecs": "This browser can't process video (it lacks WebCodecs). Use a recent version of Chrome, Edge, Safari or Firefox.",
+    "copied": "Video copied without re-encoding ({codec}).",
+    "encoded": "Video re-encoded to {codec}."
   }
 }

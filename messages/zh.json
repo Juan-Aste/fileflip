@@ -221,7 +221,11 @@
     "tooManyPages": "此 PDF 页数过多，无法在浏览器中识别（最多 100 页）。",
     "pdfAlreadySearchable": "此 PDF 的所有页面都已有文字：无需 OCR 即可搜索。请使用“PDF 转文本”提取文字。",
     "audioRangeInvalid": "请检查时间：开始时间必须早于结束时间，并且都在音频范围内。",
-    "audioSilent": "音频是静音的：没有可以标准化的内容。"
+    "audioSilent": "音频是静音的：没有可以标准化的内容。",
+    "noVideoTrack": "此文件没有视频。",
+    "videoCodecUnsupported": "你的浏览器无法读取此文件中的视频（例如某些浏览器不支持 H.264 或 HEVC）。请尝试 Chrome、Edge 或 Safari，或选择无需重新编码的格式。",
+    "videoEncoderUnsupported": "你的浏览器无法创建此格式的视频（MOV 需要 H.264）。请尝试 Chrome、Edge 或 Safari，或选择 MP4、WebM 或 MKV。",
+    "videoTooLong": "视频太长：每个文件最长 2 小时。"
   },
   "Tools": {
     "merge-pdf": {
@@ -1271,6 +1275,22 @@
         "q4": "有限制吗？",
         "a4": "免费版每个文件最大 200 MB（Pro 为 500 MB），总时长最长 3 小时，因为结果在浏览器内存中生成。如果某个文件损坏，会提示是哪一个。"
       }
+    },
+    "video-converter": {
+      "title": "视频转换器",
+      "description": "在浏览器中将视频在 MP4、MOV、MKV 和 WebM 之间转换，无需上传文件。",
+      "action": "转换视频",
+      "about": "在 MP4（任何手机、电视和社交网络都能播放）、MOV（iPhone 和 Mac）、MKV 和 WebM（网页格式）之间转换视频。如果视频的编码已被所选格式支持，就直接复制而不重新编码：只需几秒且不损失画质。否则会用浏览器的编码器以高质量重新编码。声音随画面一起保留。一切都在你的设备上完成：视频不会上传到任何服务器。",
+      "faq": {
+        "q1": "转换会损失画质吗？",
+        "a1": "如果只是更换容器（例如 H.264 的 MP4 转为 MOV 或 MKV），不会：视频原样复制。如果需要重新编码（例如转为 WebM），会使用高质量设置，实际上与原片几乎无法区分。每个结果都会说明是复制还是重新编码。",
+        "q2": "应该选哪种格式？",
+        "a2": "需要到处都能播放选 MP4；在 iMovie 或 Final Cut 中剪辑选 MOV；用于网页选 WebM；想保留一切原样选 MKV。",
+        "q3": "为什么我的 MP4 是 VP9 或 AV1 编码？",
+        "a3": "有些浏览器（如 Linux 上的 Chromium 或 Firefox）没有 H.264 编码器。这时 MP4 会使用 VP9 或 AV1，可在 Chrome、Edge、Firefox 和 Android 上播放，但在 iPhone 上可能无法播放。需要 H.264 请使用 Chrome、Edge 或 Safari；缺少时会显示提示。",
+        "q4": "有什么限制吗？",
+        "a4": "免费版每个文件最大 200 MB（Pro 为 500 MB），时长最长 2 小时，因为视频在浏览器内存中生成。保留主要的视频和音频轨道；内嵌字幕不会被复制。暂不支持读取 AVI、WMV 和 FLV。"
+      }
     }
   },
   "ToolUi": {
@@ -2254,5 +2274,19 @@
     "joinNote": "如果文件的采样率或声道不同，会统一为其中最高的（最多立体声）。",
     "joinedSuffix": "joined",
     "joined": "已合并 {count} 个文件：共 {length}。"
+  },
+  "VideoTool": {
+    "target": "转换为",
+    "targets": {
+      "mp4": "MP4",
+      "webm": "WebM",
+      "mov": "MOV",
+      "mkv": "MKV"
+    },
+    "copyNote": "如果视频编码已适用于所选格式，将直接复制而不重新编码（快速且无损）。在你的设备上处理。",
+    "noH264": "此浏览器无法创建 H.264 视频：MP4 将使用 VP9 或 AV1 保存，MOV 仅在视频已是 H.264 时可用。需要 H.264 请使用 Chrome、Edge 或 Safari。",
+    "noWebCodecs": "此浏览器无法处理视频（缺少 WebCodecs）。请使用最新版的 Chrome、Edge、Safari 或 Firefox。",
+    "copied": "视频已直接复制，未重新编码（{codec}）。",
+    "encoded": "视频已重新编码为 {codec}。"
   }
 }

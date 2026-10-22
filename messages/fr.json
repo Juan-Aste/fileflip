@@ -221,7 +221,11 @@
     "tooManyPages": "Ce PDF a trop de pages pour être reconnu dans le navigateur (100 au maximum).",
     "pdfAlreadySearchable": "Toutes les pages de ce PDF contiennent déjà du texte : il est consultable sans OCR. Utilisez « PDF en texte » pour l’extraire.",
     "audioRangeInvalid": "Vérifiez les temps : le début doit précéder la fin et les deux doivent être dans l'audio.",
-    "audioSilent": "L'audio est silencieux : il n'y a rien à normaliser."
+    "audioSilent": "L'audio est silencieux : il n'y a rien à normaliser.",
+    "noVideoTrack": "Ce fichier ne contient pas de vidéo.",
+    "videoCodecUnsupported": "Votre navigateur ne peut pas lire la vidéo de ce fichier (par exemple H.264 ou HEVC dans certains navigateurs). Essayez Chrome, Edge ou Safari, ou choisissez un format qui n'oblige pas à la réencoder.",
+    "videoEncoderUnsupported": "Votre navigateur ne peut pas créer de vidéo dans ce format (MOV exige H.264). Essayez Chrome, Edge ou Safari, ou choisissez MP4, WebM ou MKV.",
+    "videoTooLong": "La vidéo est trop longue : le maximum est de 2 heures par fichier."
   },
   "Tools": {
     "merge-pdf": {
@@ -1271,6 +1275,22 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 3 heures au total, car le résultat est construit dans la mémoire du navigateur. Si un fichier est endommagé, il est indiqué."
       }
+    },
+    "video-converter": {
+      "title": "Convertir une vidéo",
+      "description": "Convertissez des vidéos entre MP4, MOV, MKV et WebM dans votre navigateur, sans envoyer vos fichiers.",
+      "action": "Convertir la vidéo",
+      "about": "Changez le format de vos vidéos entre MP4 (lu par tous les téléphones, téléviseurs et réseaux sociaux), MOV (iPhone et Mac), MKV et WebM (le format du web). Si la vidéo utilise déjà un codec accepté par le format choisi, elle est copiée sans réencodage : cela prend quelques secondes, sans perte de qualité. Sinon, elle est réencodée en haute qualité avec le codec de votre navigateur. Le son suit l'image. Tout se passe sur votre appareil : les vidéos ne sont envoyées à aucun serveur.",
+      "faq": {
+        "q1": "La conversion fait-elle perdre de la qualité ?",
+        "a1": "Si seul le conteneur change (par exemple un MP4 en H.264 vers MOV ou MKV), non : la vidéo est copiée telle quelle. S'il faut la réencoder (par exemple vers WebM), une qualité élevée est utilisée, en pratique impossible à distinguer de l'original. Chaque résultat indique si la vidéo a été copiée ou réencodée.",
+        "q2": "Quel format choisir ?",
+        "a2": "MP4 pour une lecture partout ; MOV pour monter dans iMovie ou Final Cut ; WebM pour une page web ; MKV pour tout garder tel quel.",
+        "q3": "Pourquoi mon MP4 est-il en VP9 ou AV1 ?",
+        "a3": "Certains navigateurs (comme Chromium ou Firefox sous Linux) n'ont pas d'encodeur H.264. Le MP4 est alors créé en VP9 ou AV1, lus par Chrome, Edge, Firefox et Android, mais peut-être pas sur iPhone. Pour du H.264, utilisez Chrome, Edge ou Safari ; un avis s'affiche quand il manque.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée, car la vidéo est assemblée dans la mémoire du navigateur. Les pistes vidéo et audio principales sont conservées ; les sous-titres intégrés ne sont pas copiés. AVI, WMV et FLV ne sont pas encore lus."
+      }
     }
   },
   "ToolUi": {
@@ -2254,5 +2274,19 @@
     "joinNote": "Si les fichiers ont des fréquences ou des canaux différents, ils sont alignés sur le plus élevé (stéréo au maximum).",
     "joinedSuffix": "fusionne",
     "joined": "{count} fichiers assemblés : {length} au total."
+  },
+  "VideoTool": {
+    "target": "Convertir en",
+    "targets": {
+      "mp4": "MP4",
+      "webm": "WebM",
+      "mov": "MOV",
+      "mkv": "MKV"
+    },
+    "copyNote": "Si le codec de la vidéo convient déjà au format choisi, elle est copiée sans réencodage (rapide et sans perte). Traitement sur votre appareil.",
+    "noH264": "Ce navigateur ne peut pas créer de vidéo H.264 : les MP4 seront enregistrés en VP9 ou AV1 et MOV ne fonctionne que si la vidéo est déjà en H.264. Pour du H.264, utilisez Chrome, Edge ou Safari.",
+    "noWebCodecs": "Ce navigateur ne peut pas traiter de vidéo (WebCodecs absent). Utilisez une version récente de Chrome, Edge, Safari ou Firefox.",
+    "copied": "Vidéo copiée sans réencodage ({codec}).",
+    "encoded": "Vidéo réencodée en {codec}."
   }
 }

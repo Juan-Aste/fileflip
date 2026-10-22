@@ -36,7 +36,7 @@ const encoderExtensions: Partial<Record<AudioCodec, () => Promise<void>>> = {
 const registered = new Set<AudioCodec>();
 
 /** Makes `codec` encodable: the browser's own encoder when it has one, else the WASM extension (once). */
-async function ensureEncoder(codec: AudioCodec) {
+export async function ensureEncoder(codec: AudioCodec) {
   if (registered.has(codec) || (await canEncodeAudio(codec))) return;
   const register = encoderExtensions[codec];
   if (!register) throw new ConversionError("browserUnsupported");

@@ -53,6 +53,11 @@ export const apiErrorCodes = [
   "audioRangeInvalid",
   // Client-side only: nothing to normalize.
   "audioSilent",
+  // Client-side only: a file without video, a video codec this browser can't decode or encode, or longer than the limit.
+  "noVideoTrack",
+  "videoCodecUnsupported",
+  "videoEncoderUnsupported",
+  "videoTooLong",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -98,6 +103,10 @@ const status: Record<ApiErrorCode, number> = {
   audioTooLong: 413,
   audioRangeInvalid: 422,
   audioSilent: 422,
+  noVideoTrack: 422,
+  videoCodecUnsupported: 415,
+  videoEncoderUnsupported: 415,
+  videoTooLong: 413,
   tooManyPages: 413,
   pdfAlreadySearchable: 422,
   signInRequired: 401,

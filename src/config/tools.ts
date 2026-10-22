@@ -97,6 +97,7 @@ export const toolIds = [
   "adjust-audio",
   "normalize-audio",
   "join-audio",
+  "video-converter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -155,6 +156,8 @@ const EPUB_PDF_MAX_BYTES = 50 * 1024 * 1024;
 /** Chapters are sanitized and serialized on the page; room for images embedded as data: URLs. */
 const CREATE_EPUB_MAX_BYTES = 20 * 1024 * 1024;
 /** Audio is streamed from the file, but the converted output is kept in memory until it is downloaded. */
+/** Input and output are both held in memory while a video is converted. */
+const VIDEO_MAX_BYTES = 500 * 1024 * 1024;
 const AUDIO_MAX_BYTES = 500 * 1024 * 1024;
 /** Markdown/HTML are converted on the page (they need a DOM): keep it responsive. */
 const MARKUP_MAX_BYTES = 5 * 1024 * 1024;
@@ -958,6 +961,19 @@ export const tools: Record<ToolId, ToolInfo> = {
     status: "verified",
     slugs: { es: "unir-audio", en: "join-audio", pt: "juntar-audio", fr: "fusionner-audio", zh: "join-audio" },
   },
+  "video-converter": {
+    id: "video-converter",
+    category: "video",
+    inputs: ["mp4", "mov", "mkv", "webm"],
+    outputs: ["mp4", "webm", "mov", "mkv"],
+    engine: "browser",
+    libraries: ["mediabunny", "@mediabunny/aac-encoder (FFmpeg AAC)"],
+    // Per file: copying the streams takes seconds; re-encoding runs at about real time on slow devices.
+    limits: { files: "multiple", timeoutMs: 30 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "convertir-video", en: "video-converter", pt: "converter-video", fr: "convertir-video", zh: "video-converter" },
+  },
+
 };
 
 /** Published tools: only verified ones get pages, links and sitemap entries. */

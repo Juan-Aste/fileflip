@@ -13,6 +13,7 @@ import {
   BookOpenText,
   BookPlus,
   AudioLines,
+  Clapperboard,
   Archive,
   CaseSensitive,
   ImageDown,
@@ -131,6 +132,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "adjust-audio": SlidersHorizontal,
   "normalize-audio": Volume2,
   "join-audio": Layers,
+  "video-converter": Clapperboard,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

@@ -221,7 +221,11 @@
     "tooManyPages": "Este PDF tem páginas demais para reconhecer no navegador (no máximo 100).",
     "pdfAlreadySearchable": "Todas as páginas deste PDF já têm texto: dá para pesquisar sem OCR. Use “PDF para texto” para extraí-lo.",
     "audioRangeInvalid": "Confira os tempos: o início deve vir antes do fim e ambos devem estar dentro do áudio.",
-    "audioSilent": "O áudio está em silêncio: não há nada para normalizar."
+    "audioSilent": "O áudio está em silêncio: não há nada para normalizar.",
+    "noVideoTrack": "Este arquivo não tem vídeo.",
+    "videoCodecUnsupported": "Seu navegador não consegue ler o vídeo deste arquivo (por exemplo, H.264 ou HEVC em alguns navegadores). Tente o Chrome, o Edge ou o Safari, ou escolha um formato que não precise recomprimi-lo.",
+    "videoEncoderUnsupported": "Seu navegador não consegue criar vídeo neste formato (MOV precisa de H.264). Tente o Chrome, o Edge ou o Safari, ou escolha MP4, WebM ou MKV.",
+    "videoTooLong": "O vídeo é longo demais: o máximo é de 2 horas por arquivo."
   },
   "Tools": {
     "merge-pdf": {
@@ -1271,6 +1275,22 @@
         "q4": "Há um limite?",
         "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro) e 3 horas no total, porque o resultado é montado na memória do navegador. Se um arquivo estiver danificado, é indicado qual."
       }
+    },
+    "video-converter": {
+      "title": "Converter vídeo",
+      "description": "Converta vídeos entre MP4, MOV, MKV e WebM no seu navegador, sem enviar seus arquivos.",
+      "action": "Converter vídeo",
+      "about": "Mude o formato dos seus vídeos entre MP4 (o que qualquer celular, TV ou rede social reproduz), MOV (o do iPhone e do Mac), MKV e WebM (o da web). Se o vídeo já usa um codec aceito pelo formato escolhido, ele é copiado sem recomprimir: leva segundos e não perde qualidade. Se não, é codificado de novo em alta qualidade com o codec do seu navegador. O som vai junto com a imagem. Tudo acontece no seu dispositivo: os vídeos não são enviados a nenhum servidor.",
+      "faq": {
+        "q1": "Perde qualidade ao converter?",
+        "a1": "Se só muda o contêiner (por exemplo, um MP4 com H.264 para MOV ou MKV), não: ele é copiado como está. Se for preciso recomprimir (por exemplo, para WebM), usa-se uma qualidade alta que, na prática, não se distingue do original. Cada resultado informa se foi copiado ou recomprimido.",
+        "q2": "Qual formato escolho?",
+        "a2": "MP4 se tiver que tocar em qualquer lugar; MOV para editar no iMovie ou no Final Cut; WebM para uma página web; MKV para manter tudo como está.",
+        "q3": "Por que meu MP4 saiu em VP9 ou AV1?",
+        "a3": "Alguns navegadores (como o Chromium ou o Firefox no Linux) não têm codificador H.264. Nesse caso o MP4 é criado com VP9 ou AV1, que tocam no Chrome, Edge, Firefox e Android, mas talvez não no iPhone. Para H.264 use o Chrome, o Edge ou o Safari; você verá um aviso quando faltar.",
+        "q4": "Existe algum limite?",
+        "a4": "Até 200 MB por arquivo no plano grátis (500 MB com Pro) e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. AVI, WMV e FLV ainda não podem ser lidos."
+      }
     }
   },
   "ToolUi": {
@@ -2254,5 +2274,19 @@
     "joinNote": "Se os arquivos têm taxa ou canais diferentes, são igualados ao maior (no máximo estéreo).",
     "joinedSuffix": "unido",
     "joined": "{count} arquivos unidos: {length} no total."
+  },
+  "VideoTool": {
+    "target": "Converter para",
+    "targets": {
+      "mp4": "MP4",
+      "webm": "WebM",
+      "mov": "MOV",
+      "mkv": "MKV"
+    },
+    "copyNote": "Se o codec do vídeo já serve para o formato escolhido, ele é copiado sem recomprimir (rápido e sem perda). Processado no seu dispositivo.",
+    "noH264": "Este navegador não consegue criar vídeo H.264: os MP4 serão salvos com VP9 ou AV1 e o MOV só funciona se o vídeo já for H.264. Para H.264 use o Chrome, o Edge ou o Safari.",
+    "noWebCodecs": "Este navegador não consegue processar vídeo (não tem WebCodecs). Use uma versão recente do Chrome, Edge, Safari ou Firefox.",
+    "copied": "Vídeo copiado sem recomprimir ({codec}).",
+    "encoded": "Vídeo recodificado em {codec}."
   }
 }

@@ -2368,3 +2368,24 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Hechas: 3C.35b (AIFF en "Convertir audio"), 3C.36a (Recortar audio), 3C.36b (Ajustar audio), 3C.36c (Normalizar volumen) y 3C.36d (Unir audio). 4 herramientas nuevas en la categoría Audio (ahora 5). En esta ejecución no hubo Gotenberg ni EPUBCheck (4 pruebas de navegador saltadas); ffmpeg/ffprobe del sistema validaron todas las salidas de audio.
 
 **Siguiente**: 3C.37 (video).
+
+## 2026-10-22 06:50 UTC — Fase 3, tarea 3C.37a (convertir video)
+
+**Qué se hizo**
+- 3C.37 se dividió en 3C.37a (conversor de video) y 3C.37b (extraer audio de un video).
+- **Convertir video** (`/es/convertir-video`, `/en/video-converter`, `/pt/converter-video`, `/fr/convertir-video`), primera herramienta de la categoría **Video** (ahora publicada): entradas **MP4 (.m4v), MOV, MKV y WebM** en lotes (200 MB gratis / 500 MB Pro, máximo 2 horas por archivo, 30 minutos por trabajo) → **MP4, WebM, MOV o MKV**. Formatos nuevos `mp4`, `mov`, `mkv` en `formats.ts`.
+- Motor `src/lib/video/convert.ts` (import diferido, mediabunny 1.62.0 + WebCodecs; AAC con la extensión WASM ya usada por el audio). `src/lib/video/options.ts` (sin mediabunny, con tests) decide por pista: **se copia sin recomprimir** si el contenedor de destino admite el códec (MP4 solo copia H.264/HEVC, para que se vea en todos lados; MOV H.264/HEVC/ProRes; WebM VP8/VP9/AV1 + Opus/Vorbis; MKV casi todo), y si no **se recodifica** en calidad alta con el primer codificador del navegador: MP4 → H.264, o VP9/AV1 si el navegador no tiene H.264 (aviso visible); MOV → solo H.264 (sin respaldo: error claro); WebM → VP9/VP8/AV1 + Opus; MKV → H.264/VP9/AV1 + Opus. Cada resultado dice si se copió o se recodificó y con qué códec.
+- `copy: { shiftTolerance: 0.5 }`: el AAC empieza con "priming" antes de 0 s, que MKV/WebM no admiten; mediabunny desplaza todo el archivo manteniendo la sincronía y así la pista se copia (sin eso se descartaba el audio).
+- **Archivos cortados**: el índice de un MP4 lista todos los cuadros pero el demuxer se detiene en silencio al final de los datos (salía un video a medias sin error). Ahora se pide el último paquete (`getPacket(Infinity)`) y, si falta o la duración es 0, error `fileDamaged`. Si mediabunny descarta la pista de video o la de audio, error en lugar de una salida sin imagen o sin sonido.
+- Errores nuevos (5 idiomas): `noVideoTrack`, `videoCodecUnsupported` (el navegador no decodifica el video, p. ej. H.264 en Chromium sin códecs propietarios), `videoEncoderUnsupported` (p. ej. MOV sin codificador H.264), `videoTooLong`. `ensureEncoder` del audio ahora se exporta.
+- Fixtures con `scripts/fixtures/video.sh` (ffmpeg del sistema, solo para tests): 2 s, 320×240, rojo y luego azul, tonos 440/660 Hz; MP4 y MOV (H.264 + AAC), WebM (VP9 + Opus), MKV (VP8 + Vorbis), MP4 cortado y texto con extensión .mp4 (todos < 25 KB).
+
+**Verificación**
+- 4 tests unitarios de `videoPlan` (copiar, recodificar, respaldo sin H.264, MOV sin plan).
+- `video-tools.spec.ts` (4 casos en Chromium, salida validada con **ffprobe/ffmpeg**: contenedor, códecs, 320×240, 2 s ±0,15, **color promedio del cuadro a 0,5 s (rojo) y 1,5 s (azul)** y **tono de cada canal**): WebM + MKV → 2 MP4 recodificados (VP9 + AAC en este Chromium, H.264 donde haya codificador); MP4 → MOV y → MKV **copiando H.264/AAC** (el Chromium de las pruebas no puede decodificar ni codificar H.264, así que la copia queda demostrada); MKV → WebM copiando VP8/Vorbis; WebM → MOV da "MOV necesita H.264" sin codificador; MP4 cortado, texto disfrazado, un WebM solo de audio y H.264 → WebM sin decodificador dan mensajes claros mientras el MKV del lote se convierte. Sin llamadas al servidor.
+- Captura a 360 px oscuro revisada (`scrollWidth` 360). Lint, typecheck, tests (914 + 8 saltados), build, `check:static` (937 páginas) y `npm run test:e2e` completo: 283 pasan, 4 saltados (sin Gotenberg ni EPUBCheck en esta ejecución).
+
+**Limitaciones**
+- Depende de WebCodecs del navegador: H.264/HEVC de entrada solo se recodifican donde el navegador los decodifica (Chrome, Edge, Safari); copiar entre MP4/MOV/MKV funciona siempre. AVI, WMV, FLV y 3GP no se leen (requieren `@ffmpeg/core` GPL: decisión del dueño). Solo se conservan la pista de video y la de audio principales (sin subtítulos). Entrada y salida en memoria (de ahí el límite de 500 MB).
+
+**Siguiente**: 3C.37b (extraer audio de un video).
