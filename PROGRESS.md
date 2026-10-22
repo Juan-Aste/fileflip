@@ -2907,3 +2907,7 @@ Se revisó cada punto de "Pendiente del dueño" y de la sección 10 de `docs/rep
 - Lint, typecheck y build pasan; `layout-shift` 5/5.
 
 **Siguiente**: 4.2c (prueba de arrastrar y soltar en "Ordenar PDF") y 4.3 (lista para publicar).
+
+## 2026-10-22 19:50 UTC — Fin de la ejecución (tope de 5 tareas)
+- Hechas: 4.1a, 4.1b, 4.1c, 4.2a, 4.2b. CI de GitHub en verde en 10e1b17.
+- Quedan: 4.2c (prueba de arrastrar y soltar en "Ordenar PDF") y 4.3 (`docs/launch-checklist.md`).
