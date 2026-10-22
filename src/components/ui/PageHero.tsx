@@ -13,10 +13,12 @@ export default function PageHero({
 }) {
   return (
     <header className="relative isolate flex flex-col items-center gap-4 text-center">
-      {/* Soft brand glow, as on the home page; purely decorative. */}
+      {/* Soft brand glow, as on the home page; purely decorative. pointer-events-none:
+          it extends below the header and would otherwise swallow clicks on what follows
+          (e.g. the category links on the all-tools page). */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 -top-12 -z-10 h-72 bg-[radial-gradient(ellipse_60%_60%_at_50%_0%,var(--brand-soft),transparent_70%)]"
+        className="pointer-events-none absolute inset-x-0 -top-12 -z-10 h-72 bg-[radial-gradient(ellipse_60%_60%_at_50%_0%,var(--brand-soft),transparent_70%)]"
       />
       {icon && (
         <span className="grid h-14 w-14 place-items-center rounded-2xl bg-brand-solid text-white shadow-lift">
