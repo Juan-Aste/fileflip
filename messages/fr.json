@@ -233,7 +233,9 @@
     "modelExternalFiles": "Ce glTF utilise des fichiers séparés (.bin ou textures) qui n'ont pas été envoyés. Convertissez-le d'abord en GLB (un seul fichier) dans votre logiciel 3D, ou utilisez un .gltf qui contient tout.",
     "modelCompressed": "Ce glTF est compressé avec Draco, meshopt ou KTX2, que nous ne savons pas encore lire. Exportez-le sans compression.",
     "modelXmlTooLarge": "Ce fichier 3MF ou COLLADA est trop grand pour être lu dans le navigateur : le maximum est de 100 Mo de XML (décompressé).",
-    "modelFbxVersion": "Ce FBX date d'avant la version 7.0 (2011), que nous ne savons pas lire. Exportez-le à nouveau en FBX 7.x (binaire ou ASCII)."
+    "modelFbxVersion": "Ce FBX date d'avant la version 7.0 (2011), que nous ne savons pas lire. Exportez-le à nouveau en FBX 7.x (binaire ou ASCII).",
+    "dxfEmpty": "Ce DXF n'a rien de visible à dessiner dans l'espace objet : il est peut-être vide, a tous ses calques désactivés ou n'utilise que des entités que nous ne dessinons pas.",
+    "dxfTooComplex": "Ce DXF est trop complexe pour être dessiné dans le navigateur : il dépasse 5 millions de points, imbrique des blocs sur plus de 16 niveaux (ou un bloc s'insère lui-même) ou répète un bloc plus de 10 000 fois."
   },
   "Tools": {
     "merge-pdf": {
@@ -1429,6 +1431,24 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Une image à la fois, jusqu'à 50 Mo (JPG, PNG, WEBP, GIF, BMP ou AVIF). La surface compte au maximum environ 560 000 points : pour les images très hautes, le détail est réduit automatiquement. La plaque est plate (non incurvée)."
       }
+    },
+    "dxf-converter": {
+      "title": "Convertir un DXF",
+      "description": "Convertissez des plans DXF d'AutoCAD, LibreCAD ou QCAD en SVG dans votre navigateur, sans rien installer.",
+      "action": "Convertir le plan",
+      "about": "Transformez un plan DXF en SVG pour le voir dans le navigateur, l'insérer dans une page web, le modifier dans Inkscape ou Illustrator, ou l'envoyer à une découpeuse laser ou vinyle. Sont dessinés les lignes, les polylignes (y compris les segments courbes), les cercles, les arcs, les ellipses, les splines, les solides, les points, les textes simples et multilignes, les blocs insérés (avec échelle, rotation et réseaux) et les cotes, avec la couleur de chaque entité ou de son calque. Les calques désactivés ou gelés ne sont pas dessinés. Quand le fichier indique ses unités (mm, cm, m ou pouces), le SVG a la taille réelle. Tout se passe sur votre appareil : les plans ne sont envoyés à aucun serveur.",
+      "faq": {
+        "q1": "Quelles entités ne sont pas dessinées ?",
+        "a1": "Les hachures (HATCH), les images incorporées, les régions et solides 3D, les multi-repères, les tableaux et les attributs de bloc. Si le plan en contient, nous indiquons à la fin lesquelles et combien ont été omises. Seul l'espace objet est dessiné, pas les présentations (espace papier).",
+        "q2": "Puis-je convertir des fichiers DWG ?",
+        "a2": "Non. Le DWG est un format fermé d'Autodesk et les moteurs qui le lisent sont sous GPL (LibreDWG) ou commerciaux (ODA) : nous ne pouvons pas les inclure. Depuis AutoCAD, BricsCAD, DraftSight, LibreCAD ou le convertisseur gratuit ODA File Converter, enregistrez le plan en DXF et convertissez-le ici.",
+        "q3": "L'échelle est-elle respectée ?",
+        "a3": "Oui : les coordonnées sont copiées sans changement et, quand le DXF indique ses unités ($INSUNITS en mm, cm, m ou pouces), le SVG est créé à cette taille réelle, prêt à imprimer ou à découper à l'échelle 1:1. Sans unités, le plus grand côté mesure 1000 pixels. Les traits sont fins et uniformes (les épaisseurs de ligne du fichier ne sont pas lues).",
+        "q4": "Pourquoi les textes ont-ils une autre police ?",
+        "a4": "Les polices SHX d'AutoCAD ne peuvent pas être incorporées : les textes sont écrits dans une police sans empattement (Arial ou équivalent) de même hauteur, leur largeur peut donc légèrement varier. Les codes de mise en forme MTEXT courants sont interprétés (paragraphes, Ø, °, ±).",
+        "q5": "Y a-t-il une limite ?",
+        "a5": "Jusqu'à 50 Mo par fichier (DXF texte ; le DXF binaire n'est pas lu), 5 millions de points une fois les courbes dessinées, des blocs imbriqués jusqu'à 16 niveaux et des réseaux jusqu'à 10 000 copies, et 2 minutes de traitement par fichier."
+      }
     }
   },
   "ToolUi": {
@@ -2521,5 +2541,11 @@
     "note": "Le sombre devient plus épais et le clair plus fin. Traitement sur votre appareil.",
     "suffix": "lithophanie",
     "done": "Plaque de {width} × {height} mm, de {min} à {max} mm d'épaisseur, {triangles} triangles."
+  },
+  "DxfConverterTool": {
+    "background": "Fond blanc (sinon transparent)",
+    "note": "Les traits blancs ou de couleur 7 sont dessinés en noir, comme sur papier. Traitement sur votre appareil.",
+    "done": "{shapes} tracés et {texts} textes.",
+    "skipped": "Non dessinés (non pris en charge) : {list}."
   }
 }

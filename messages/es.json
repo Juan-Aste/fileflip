@@ -233,7 +233,9 @@
     "modelExternalFiles": "Este glTF usa archivos aparte (.bin o texturas) que no se subieron. Conviértelo primero a GLB (un solo archivo) en tu programa 3D, o usa un .gltf con todo incluido.",
     "modelCompressed": "Este glTF está comprimido con Draco, meshopt o KTX2, que todavía no podemos leer. Expórtalo sin compresión.",
     "modelXmlTooLarge": "Este archivo 3MF o COLLADA es demasiado grande para leerlo en el navegador: el máximo es de 100 MB de XML (descomprimido).",
-    "modelFbxVersion": "Este FBX es de una versión anterior a la 7.0 (2011), que no podemos leer. Vuelve a exportarlo como FBX 7.x (binario o ASCII)."
+    "modelFbxVersion": "Este FBX es de una versión anterior a la 7.0 (2011), que no podemos leer. Vuelve a exportarlo como FBX 7.x (binario o ASCII).",
+    "dxfEmpty": "Este DXF no tiene nada visible que dibujar en el espacio modelo: puede estar vacío, tener todas las capas apagadas o usar solo entidades que no dibujamos.",
+    "dxfTooComplex": "Este DXF es demasiado complejo para dibujarlo en el navegador: supera los 5 millones de puntos, anida bloques más de 16 niveles (o un bloque se inserta a sí mismo) o repite un bloque más de 10 000 veces."
   },
   "Tools": {
     "merge-pdf": {
@@ -1429,6 +1431,24 @@
         "q4": "¿Hay algún límite?",
         "a4": "Una imagen por vez, de hasta 50 MB (JPG, PNG, WEBP, GIF, BMP o AVIF). La superficie tiene como máximo unos 560 000 puntos: en imágenes muy altas el detalle se reduce automáticamente. La placa es plana (sin curvatura)."
       }
+    },
+    "dxf-converter": {
+      "title": "Convertir DXF",
+      "description": "Convierte planos DXF de AutoCAD, LibreCAD o QCAD a SVG en tu navegador, sin instalar nada.",
+      "action": "Convertir plano",
+      "about": "Pasa un plano DXF a SVG para verlo en el navegador, insertarlo en una página web, editarlo en Inkscape o Illustrator, o enviarlo a una cortadora láser o de vinilo. Se dibujan líneas, polilíneas (también con tramos curvos), círculos, arcos, elipses, splines, sólidos, puntos, textos y textos de varias líneas, bloques insertados (con escala, rotación y arreglos) y cotas, con el color de cada entidad o de su capa. Las capas apagadas o congeladas no se dibujan. Si el archivo indica sus unidades (mm, cm, m o pulgadas), el SVG tiene el tamaño real. Todo pasa en tu dispositivo: los planos no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué entidades no se dibujan?",
+        "a1": "Los sombreados (HATCH), las imágenes incrustadas, las regiones y sólidos 3D, las directrices múltiples, las tablas y los atributos de bloque. Si el plano tiene alguna, al terminar te decimos cuáles y cuántas se omitieron. Solo se dibuja el espacio modelo, no las presentaciones (espacio papel).",
+        "q2": "¿Puedo convertir archivos DWG?",
+        "a2": "No. DWG es un formato cerrado de Autodesk y los motores que lo leen son GPL (LibreDWG) o comerciales (ODA), así que no podemos incluirlos. Desde AutoCAD, BricsCAD, DraftSight, LibreCAD o el conversor gratuito ODA File Converter puedes guardar el plano como DXF y convertirlo aquí.",
+        "q3": "¿Se respeta la escala?",
+        "a3": "Sí: las coordenadas se copian sin cambios y, si el DXF dice sus unidades ($INSUNITS en mm, cm, m o pulgadas), el SVG se crea con ese tamaño real, listo para imprimir o cortar 1:1. Sin unidades, el lado más largo mide 1000 píxeles. El grosor de línea es fino y uniforme (no se leen los grosores de línea del archivo).",
+        "q4": "¿Por qué los textos se ven con otra fuente?",
+        "a4": "Las fuentes SHX de AutoCAD no se pueden incrustar: los textos se escriben con una fuente sin serifa (Arial o similar) de la misma altura, así que su ancho puede variar un poco. Se interpretan los códigos de formato habituales de MTEXT (párrafos, Ø, °, ±).",
+        "q5": "¿Hay algún límite?",
+        "a5": "Hasta 50 MB por archivo (DXF de texto; el DXF binario no se lee), 5 millones de puntos una vez dibujadas las curvas, bloques anidados hasta 16 niveles y arreglos de hasta 10 000 copias, y 2 minutos de proceso por archivo."
+      }
     }
   },
   "ToolUi": {
@@ -2521,5 +2541,11 @@
     "note": "Lo oscuro queda más grueso y lo claro más fino. Se procesa en tu dispositivo.",
     "suffix": "litofania",
     "done": "Placa de {width} × {height} mm, de {min} a {max} mm de grosor, {triangles} triángulos."
+  },
+  "DxfConverterTool": {
+    "background": "Fondo blanco (si no, transparente)",
+    "note": "Las líneas blancas o de color 7 se dibujan en negro, como sobre papel. Se procesa en tu dispositivo.",
+    "done": "{shapes} trazos y {texts} textos.",
+    "skipped": "No se dibujaron (no compatibles): {list}."
   }
 }

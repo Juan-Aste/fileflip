@@ -1,0 +1,223 @@
+  0
+SECTION
+  2
+HEADER
+  9
+$ACADVER
+  1
+AC1015
+  9
+$INSUNITS
+ 70
+4
+  0
+ENDSEC
+  0
+SECTION
+  2
+TABLES
+  0
+TABLE
+  2
+LAYER
+ 70
+4
+  0
+LAYER
+  2
+0
+ 70
+0
+ 62
+7
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+RED
+ 70
+0
+ 62
+1
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+HIDDEN
+ 70
+0
+ 62
+-3
+  6
+CONTINUOUS
+  0
+LAYER
+  2
+FROZEN
+ 70
+1
+ 62
+5
+  6
+CONTINUOUS
+  0
+ENDTAB
+  0
+ENDSEC
+  0
+SECTION
+  2
+BLOCKS
+  0
+BLOCK
+  8
+0
+  2
+BOLT
+ 70
+0
+ 10
+0
+ 20
+0
+ 30
+0
+  3
+BOLT
+  0
+CIRCLE
+  8
+0
+ 10
+0
+ 20
+0
+ 30
+0
+ 40
+2
+  0
+LINE
+  8
+0
+ 62
+0
+ 10
+-3
+ 20
+0
+ 30
+0
+ 11
+3
+ 21
+0
+ 31
+0
+  0
+ENDBLK
+  8
+0
+  0
+ENDSEC
+  0
+SECTION
+  2
+ENTITIES
+  0
+LINE
+  8
+0
+ 10
+0
+ 20
+0
+ 30
+0
+ 11
+100
+ 21
+0
+ 31
+0
+  0
+LWPOLYLINE
+  8
+RED
+ 90
+4
+ 70
+1
+ 10
+0
+ 20
+0
+ 10
+100
+ 20
+0
+ 10
+100
+ 20
+50
+ 10
+0
+ 20
+50
+  0
+LWPOLYLINE
+  8
+0
+ 90
+2
+ 70
+0
+ 10
+10
+ 20
+10
+ 42
+1
+ 10
+30
+ 20
+10
+  0
+CIRCLE
+  8
+0
+ 62
+5
+ 10
+50
+ 20
+25
+ 30
+0
+ 40
+10
+  0
+ARC
+  8
+0
+ 10
+80
+ 20
+25
+ 30
+0
+ 40
+5
+ 50
+0
+ 51
+90
+  0
+ELLIPSE
+  8
+0
+ 10
+20
+ 20

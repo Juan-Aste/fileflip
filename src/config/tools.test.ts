@@ -91,7 +91,7 @@ describe("tool registry", () => {
 
   it("groups published tools by category", () => {
     expect(toolsInCategory("pdf").map((t) => t.id)).toContain("merge-pdf");
-    expect(toolsInCategory("cad")).toEqual([]);
+    expect(toolsInCategory("cad").map((t) => t.id)).toEqual(["dxf-converter"]);
   });
 
   it("classifies conversion pages", () => {

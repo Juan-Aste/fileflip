@@ -80,6 +80,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "join-videos": dynamic(() => import("./video/JoinVideosTool")),
   "model-converter": dynamic(() => import("./model3d/ModelConverterTool")),
   "image-to-lithophane": dynamic(() => import("./model3d/LithophaneTool")),
+  "dxf-converter": dynamic(() => import("./cad/DxfConverterTool")),
   "html-to-markdown": dynamic(() => import("./markup/MarkdownTools").then((m) => m.HtmlToMarkdownTool)),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),

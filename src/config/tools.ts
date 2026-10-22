@@ -106,6 +106,7 @@ export const toolIds = [
   "join-videos",
   "model-converter",
   "image-to-lithophane",
+  "dxf-converter",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -1071,6 +1072,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 2 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "imagen-a-litofania", en: "image-to-lithophane", pt: "imagem-para-litofania", fr: "image-en-lithophanie", zh: "image-to-lithophane" },
+  },
+  "dxf-converter": {
+    id: "dxf-converter",
+    category: "cad",
+    inputs: ["dxf"],
+    outputs: ["svg"],
+    engine: "browser",
+    libraries: ["dxf-parser", "own geometry and SVG writer"],
+    // Up to MAX_DXF_POINTS (5 million) flattened points per drawing, in the CAD worker.
+    limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "convertir-dxf", en: "dxf-converter", pt: "converter-dxf", fr: "convertir-dxf", zh: "dxf-converter" },
   },
 
 

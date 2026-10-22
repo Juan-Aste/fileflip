@@ -64,6 +64,7 @@ export type FormatId =
   | "3mf"
   | "dae"
   | "fbx"
+  | "dxf"
   | "mp4"
   | "mov"
   | "mkv";
@@ -147,6 +148,7 @@ export const formats: Record<FormatId, FormatInfo> = {
   "3mf": { id: "3mf", label: "3MF", mime: "model/3mf", extensions: ["3mf"], category: "data" },
   dae: { id: "dae", label: "DAE", mime: "model/vnd.collada+xml", extensions: ["dae"], category: "data" },
   fbx: { id: "fbx", label: "FBX", mime: "application/octet-stream", extensions: ["fbx"], category: "data" },
+  dxf: { id: "dxf", label: "DXF", mime: "image/vnd.dxf", extensions: ["dxf"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 

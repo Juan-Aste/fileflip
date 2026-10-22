@@ -233,7 +233,9 @@
     "modelExternalFiles": "This glTF uses separate files (.bin or textures) that weren't uploaded. Convert it to GLB (a single file) in your 3D software first, or use a .gltf with everything embedded.",
     "modelCompressed": "This glTF is compressed with Draco, meshopt or KTX2, which we can't read yet. Export it without compression.",
     "modelXmlTooLarge": "This 3MF or COLLADA file is too large to read in the browser: the maximum is 100 MB of XML (uncompressed).",
-    "modelFbxVersion": "This FBX is older than version 7.0 (2011), which we can't read. Export it again as FBX 7.x (binary or ASCII)."
+    "modelFbxVersion": "This FBX is older than version 7.0 (2011), which we can't read. Export it again as FBX 7.x (binary or ASCII).",
+    "dxfEmpty": "This DXF has nothing visible to draw in model space: it may be empty, have every layer turned off or use only entities we don't draw.",
+    "dxfTooComplex": "This DXF is too complex to draw in the browser: it goes over 5 million points, nests blocks more than 16 levels deep (or a block inserts itself) or repeats a block more than 10,000 times."
   },
   "Tools": {
     "merge-pdf": {
@@ -1429,6 +1431,24 @@
         "q4": "Is there a limit?",
         "a4": "One image at a time, up to 50 MB (JPG, PNG, WEBP, GIF, BMP or AVIF). The surface has about 560,000 points at most: for very tall pictures the detail is reduced automatically. The plate is flat (not curved)."
       }
+    },
+    "dxf-converter": {
+      "title": "DXF converter",
+      "description": "Convert DXF drawings from AutoCAD, LibreCAD or QCAD to SVG in your browser, with nothing to install.",
+      "action": "Convert drawing",
+      "about": "Turn a DXF drawing into an SVG to view it in the browser, put it on a web page, edit it in Inkscape or Illustrator, or send it to a laser or vinyl cutter. It draws lines, polylines (curved segments too), circles, arcs, ellipses, splines, solids, points, single-line and multiline texts, inserted blocks (with scale, rotation and arrays) and dimensions, in each entity's or layer's color. Layers that are off or frozen aren't drawn. When the file states its units (mm, cm, m or inches), the SVG has the real size. Everything happens on your device: the drawings aren't uploaded to any server.",
+      "faq": {
+        "q1": "Which entities aren't drawn?",
+        "a1": "Hatches (HATCH), embedded images, regions and 3D solids, multileaders, tables and block attributes. If the drawing has any, we tell you which ones and how many were left out when it's done. Only model space is drawn, not layouts (paper space).",
+        "q2": "Can I convert DWG files?",
+        "a2": "No. DWG is a closed Autodesk format and the engines that read it are GPL (LibreDWG) or commercial (ODA), so we can't include them. From AutoCAD, BricsCAD, DraftSight, LibreCAD or the free ODA File Converter you can save the drawing as DXF and convert it here.",
+        "q3": "Is the scale kept?",
+        "a3": "Yes: coordinates are copied unchanged and, when the DXF states its units ($INSUNITS in mm, cm, m or inches), the SVG is written at that real size, ready to print or cut 1:1. Without units, the longest side is 1000 pixels. Lines are thin and uniform (the file's lineweights aren't read).",
+        "q4": "Why do texts use a different font?",
+        "a4": "AutoCAD SHX fonts can't be embedded: texts are written in a sans-serif font (Arial or similar) at the same height, so their width may differ slightly. The usual MTEXT formatting codes are understood (paragraphs, Ø, °, ±).",
+        "q5": "Is there a limit?",
+        "a5": "Up to 50 MB per file (text DXF; binary DXF isn't read), 5 million points once curves are drawn, blocks nested up to 16 levels and arrays of up to 10,000 copies, and 2 minutes of processing per file."
+      }
     }
   },
   "ToolUi": {
@@ -2521,5 +2541,11 @@
     "note": "Dark areas come out thicker and light areas thinner. Processed on your device.",
     "suffix": "lithophane",
     "done": "{width} × {height} mm plate, {min} to {max} mm thick, {triangles} triangles."
+  },
+  "DxfConverterTool": {
+    "background": "White background (otherwise transparent)",
+    "note": "White lines and color 7 are drawn in black, as on paper. Processed on your device.",
+    "done": "{shapes} shapes and {texts} texts.",
+    "skipped": "Not drawn (not supported): {list}."
   }
 }

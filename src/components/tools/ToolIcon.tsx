@@ -68,6 +68,7 @@ import {
   Film,
   Box,
   Lamp,
+  DraftingCompass,
 } from "lucide-react";
 import type { ToolId } from "@/config/tools";
 
@@ -148,6 +149,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "join-videos": Film,
   "model-converter": Box,
   "image-to-lithophane": Lamp,
+  "dxf-converter": DraftingCompass,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

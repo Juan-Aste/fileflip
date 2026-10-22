@@ -2580,3 +2580,24 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Sin texturas, animaciones ni huesos de 3MF/DAE/FBX (solo geometría, piezas, posiciones y colores por vértice; los colores de material del 3MF solo sobreviven en GLB). FBX 6.x y anteriores no se leen. 3MF y COLLADA hasta 100 MB de XML.
 
 **Siguiente**: 3C.41 (DXF → SVG/PNG/PDF).
+
+## 2026-10-22 10:55 UTC — Fase 3, tarea 3C.41a (convertir DXF a SVG)
+
+**Qué se hizo**
+- 3C.41 se dividió: 3C.41a (motor + SVG + página, hecha) y 3C.41b (salidas PNG y PDF).
+- **Convertir DXF** (`/es/convertir-dxf`, `/en/dxf-converter`, `/pt/converter-dxf`, `/fr/convertir-dxf`), primera herramienta de la categoría **CAD** (ahora publicada): en lotes, DXF de texto (hasta 50 MB) → **SVG**, con fondo blanco (por defecto) o transparente. Formato nuevo `dxf` en `formats.ts`; ícono `DraftingCompass`.
+- Dependencia nueva **dxf-parser 1.1.2 (MIT)** (+ loglevel MIT), solo en el worker nuevo `workers/cad.worker.ts` (pool de trabajos con cancelación y 2 minutos por archivo). Su manejador de CIRCLE descarta la extrusión: se registra uno propio (`CircleWithExtrusion`) con los helpers de la librería.
+- Geometría propia (`src/lib/cad/dxf.ts`) → lista de trazos y textos en unidades del dibujo: LINE, LWPOLYLINE/POLYLINE con **bulges** (arcos), CIRCLE, ARC, ELLIPSE, **SPLINE por de Boor** (o puntos de ajuste), SOLID (orden "Z" corregido, relleno), 3DFACE, POINT, TEXT (alineaciones), MTEXT (punto de anclaje 1–9, varias líneas, códigos `\P`, `\U+XXXX`, `{\f…;}`, `\S`, `%%c/%%d/%%p`), **INSERT anidados** con escala, rotación y arreglos filas × columnas, DIMENSION (su bloque anónimo). Colores ACI / color verdadero / **por capa / por bloque** (color 7 = negro sobre papel); capas apagadas o congeladas y entidades invisibles o de espacio papel fuera; **OCS con extrusión −Z** espejado en X. Las entidades no dibujadas (HATCH, IMAGE, ATTRIB, MLEADER…) se cuentan recorriendo ENTITIES y BLOCKS (sin bloques de espacio papel) y la interfaz dice "No se dibujaron (no compatibles): HATCH × 1".
+- SVG propio (`svg.ts`): Y invertido, margen de 2 %, grosor de línea uniforme (1/1000 del lado mayor), textos con fuente sin serifa a la altura de mayúsculas del DXF, **tamaño real** según `$INSUNITS` (mm, cm, in; m → mm y ft → in); sin unidades, 1000 px de lado mayor. Decimales según el tamaño del dibujo.
+- Seguridad y límites (`options.ts`): DXF binario o sin `SECTION` → formato no admitido; sin `0/EOF` final → dañado (dxf-parser dibujaría la mitad sin avisar); **5 millones de puntos** (`dxfTooComplex`), bloques anidados hasta 16 niveles, **bloque que se inserta a sí mismo** cortado por la pila de bloques, arreglos de hasta 10 000 copias; nada visible → `dxfEmpty`. 2 códigos nuevos en los 5 idiomas.
+- Textos (introducción + 5 preguntas, con **DWG como no viable**: formato cerrado, LibreDWG GPL-3.0 u ODA comercial; se sugiere exportar a DXF) e interfaz en los 5 idiomas.
+
+**Verificación**
+- `src/lib/cad/dxf.test.ts` (9): cantidades por color (14 negros, 1 rojo, 1 azul, 7 verdes por bloque), caja −13..163 × −2..93 (capas ocultas fuera), rectángulo exacto, círculo, SOLID reordenado, perno escalado y girado, las 6 copias del arreglo, elipse, círculo espejado; textos y MTEXT; códigos de los 5 corruptos; bulge en ambos sentidos; spline = Bézier (punto medio 5; 7,5); limpieza de MTEXT; SVG con `183.04mm × 102.04mm` y el `d` exacto del rectángulo leído con fast-xml-parser; escape de texto y fondo transparente.
+- `tests/e2e/cad-tools.spec.ts` (2, Chromium): el SVG descargado se lee con fast-xml-parser y se **rasteriza con sharp (librsvg)**: rojo en el borde del rectángulo, azul en el círculo, relleno oscuro en el SOLID, el círculo espejado en x = −10, blanco en el centro del círculo y en una zona vacía; mensaje con el HATCH omitido; fondo transparente (alfa 0 en la esquina); los 5 corruptos con su mensaje mientras el bueno se convierte. Sin llamadas al servidor.
+- Lint, typecheck, tests (953 + 8 saltados), build sin avisos, `check:static` (992 páginas) y `search`, `model-tools` y `cad-tools` de navegador (14/14).
+
+**Limitaciones**
+- Sin HATCH, imágenes, regiones/sólidos 3D, MLEADER, tablas ni atributos de bloque (se informan). Solo espacio modelo. Grosores y tipos de línea (discontinuas) no se leen: todo continuo y fino. Fuentes SHX reemplazadas por sans-serif. Splines racionales (con pesos) se aproximan sin pesos. DXF binario no.
+
+**Siguiente**: 3C.41b (salidas PNG y PDF).
