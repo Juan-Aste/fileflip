@@ -99,6 +99,7 @@ export const toolIds = [
   "join-audio",
   "video-converter",
   "extract-audio",
+  "compress-video",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -983,7 +984,19 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 15 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
     status: "verified",
     slugs: { es: "extraer-audio-de-video", en: "extract-audio-from-video", pt: "extrair-audio-de-video", fr: "extraire-audio-video", zh: "extract-audio-from-video" },
+  },  "compress-video": {
+    id: "compress-video",
+    category: "video",
+    inputs: ["mp4", "mov", "mkv", "webm"],
+    outputs: ["mp4", "webm"],
+    engine: "browser",
+    libraries: ["mediabunny", "@mediabunny/aac-encoder (FFmpeg AAC)"],
+    // Every frame is decoded and encoded again.
+    limits: { files: "multiple", timeoutMs: 30 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "comprimir-video", en: "compress-video", pt: "comprimir-video", fr: "compresser-video", zh: "compress-video" },
   },
+
 
 
 };

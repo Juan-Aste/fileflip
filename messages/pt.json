@@ -1307,6 +1307,22 @@
         "q4": "Existe algum limite?",
         "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro) e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos."
       }
+    },
+    "compress-video": {
+      "title": "Comprimir vídeo",
+      "description": "Diminua o tamanho dos seus vídeos MP4, MOV, MKV ou WebM baixando a qualidade ou a resolução, no seu navegador.",
+      "action": "Comprimir vídeo",
+      "about": "Reduza vídeos para mandar pelo WhatsApp ou por e-mail, enviar num formulário ou liberar espaço no celular. Escolha a qualidade (alta, média ou baixa) e, se quiser, uma resolução menor: passar um vídeo de 1080p para 720p costuma reduzir muito o tamanho sem que se note na tela do celular. Vídeos verticais também são respeitados. O resultado sai em MP4 (o mais compatível) ou WebM e mostramos quanto diminuiu. Tudo acontece no seu dispositivo: os vídeos não são enviados a nenhum servidor.",
+      "faq": {
+        "q1": "Quais opções escolho?",
+        "a1": "Para mandar por mensagem, qualidade média e 720p é um bom equilíbrio. Se ainda ficar grande, tente qualidade baixa ou 480p. Para manter os detalhes, qualidade alta e resolução original.",
+        "q2": "Por que às vezes quase não diminui?",
+        "a2": "Se o vídeo já estava muito comprimido (por exemplo, baixado de uma rede social), recomprimir economiza pouco. Nesse caso o resultado avisa que não ficou menor: baixe a resolução para ganhar mais.",
+        "q3": "Quanto tempo leva?",
+        "a3": "Cada quadro é decodificado e codificado de novo com o codec do seu navegador: num computador costuma ser mais rápido que a duração do vídeo; em celulares antigos pode demorar mais. Você pode cancelar a qualquer momento.",
+        "q4": "Existe algum limite?",
+        "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro), 2 horas de duração e 30 minutos de processamento por arquivo. A imagem nunca é ampliada. O MP4 é criado em H.264 quando o navegador permite (Chrome, Edge, Safari); se não, em VP9 ou AV1."
+      }
     }
   },
   "ToolUi": {
@@ -2310,5 +2326,18 @@
     "originalNote": "Copia a faixa de áudio como está no vídeo: rápido e sem perda. Processado no seu dispositivo.",
     "copied": "Áudio copiado sem recomprimir ({codec}).",
     "converted": "Áudio convertido para {format}."
+  },
+  "CompressVideoTool": {
+    "quality": "Qualidade",
+    "qualities": {
+      "high": "Alta",
+      "medium": "Média (recomendada)",
+      "low": "Baixa (mais leve)"
+    },
+    "resolution": "Resolução máxima",
+    "original": "Original",
+    "note": "A resolução é medida no lado mais curto, então também serve para vídeos verticais. Nunca é ampliada. Processado no seu dispositivo.",
+    "size": "{width} × {height} px.",
+    "notSmaller": "O resultado não ficou menor que o original: tente uma qualidade ou resolução menor."
   }
 }

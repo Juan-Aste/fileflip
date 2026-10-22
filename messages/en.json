@@ -1307,6 +1307,22 @@
         "q4": "Is there a limit?",
         "a4": "Up to 200 MB per video on the free plan (500 MB with Pro) and 3 hours of audio. The main audio track is extracted. Converting the AAC audio of an MP4 to another format needs a browser that reads AAC (Chrome, Edge or Safari); “Original” works in all of them."
       }
+    },
+    "compress-video": {
+      "title": "Compress Video",
+      "description": "Make your MP4, MOV, MKV or WebM videos smaller by lowering their quality or resolution, in your browser.",
+      "action": "Compress video",
+      "about": "Shrink videos to send them on WhatsApp or by email, upload them to a form or free up space on your phone. Choose the quality (high, medium or low) and, if you want, a lower resolution: taking a 1080p video down to 720p usually cuts the size a lot without showing on a phone screen. Vertical videos are handled too. The result comes out as MP4 (the most compatible) or WebM and we show how much smaller it got. Everything happens on your device: videos aren't uploaded to any server.",
+      "faq": {
+        "q1": "Which options should I choose?",
+        "a1": "For messaging, medium quality and 720p is a good balance. If it's still too big, try low quality or 480p. To keep the details, high quality and the original resolution.",
+        "q2": "Why does the size barely drop sometimes?",
+        "a2": "If the video was already heavily compressed (for example, downloaded from a social network), compressing it again saves little. Then the result says it didn't get smaller: lower the resolution to save more.",
+        "q3": "How long does it take?",
+        "a3": "Every frame is decoded and encoded again with your browser's codec: on a computer it's usually faster than the video's length; on older phones it can take longer. You can cancel at any time.",
+        "q4": "Is there a limit?",
+        "a4": "Up to 200 MB per video on the free plan (500 MB with Pro), 2 hours long and 30 minutes of processing per file. The picture is never enlarged. MP4 is made with H.264 when the browser allows it (Chrome, Edge, Safari); otherwise with VP9 or AV1."
+      }
     }
   },
   "ToolUi": {
@@ -2310,5 +2326,18 @@
     "originalNote": "Copies the audio track as it is in the video: fast and lossless. Processed on your device.",
     "copied": "Audio copied without re-encoding ({codec}).",
     "converted": "Audio converted to {format}."
+  },
+  "CompressVideoTool": {
+    "quality": "Quality",
+    "qualities": {
+      "high": "High",
+      "medium": "Medium (recommended)",
+      "low": "Low (smallest)"
+    },
+    "resolution": "Maximum resolution",
+    "original": "Original",
+    "note": "The resolution is measured on the shorter side, so it works for vertical videos too. It's never enlarged. Processed on your device.",
+    "size": "{width} × {height} px.",
+    "notSmaller": "The result isn't smaller than the original: try a lower quality or resolution."
   }
 }

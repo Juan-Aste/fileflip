@@ -2406,3 +2406,21 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Solo la pista de audio principal (no se elige entre idiomas). AVI/WMV/FLV no se leen (motor GPL, decisión del dueño).
 
 **Siguiente**: 3C.38 (video: comprimir, recortar, cambiar resolución y velocidad, video → GIF y unir).
+
+## 2026-10-22 07:40 UTC — Fase 3, tarea 3C.38a (comprimir video)
+
+**Qué se hizo**
+- 3C.38 se dividió en 3C.38a–e en PLAN.md (comprimir, recortar, video → GIF, velocidad, unir).
+- **Comprimir video** (`/es/comprimir-video`, `/en/compress-video`, `/pt/comprimir-video`, `/fr/compresser-video`), categoría Video, en lotes: MP4, MOV, MKV y WebM → **MP4** (por defecto) o **WebM**, con **calidad** alta / media (por defecto) / baja (presets `Quality` de mediabunny, que ajustan el bitrate a la resolución y al códec) y **resolución máxima** original / 1080p / 720p (por defecto) / 480p / 360p medida en el **lado más corto** (sirve para videos verticales), nunca agranda, dimensiones pares (`scaledSize`, con tests). Cada resultado muestra "antes → después (X % menos)" y el tamaño final, o avisa si no quedó más liviano.
+- Motor: `convertVideo` acepta `edit: { quality, maxShortSide }` → `videoPlan(..., reencode = true)` fuerza la recodificación del video (el audio se sigue copiando si el contenedor lo admite; Opus en MP4 pasa a AAC). Rotación de celulares respetada (se probó con un MP4 con rotación de 90° en los metadatos). `components/tools/video/shared.ts`: extensiones y detección de H.264 comunes a las herramientas de video.
+- Fixtures nuevos: `video-640.webm` (640×480 con grano, 162 KB) y `video-rotated.mp4` (VP9 en MP4 con rotación 90°). Textos (introducción + 4 preguntas, interfaz) en los 5 idiomas.
+
+**Verificación**
+- +2 tests unitarios (`scaledSize`, recodificación forzada).
+- `video-tools.spec.ts` (+2, ffprobe/ffmpeg): 640×480 → 360p calidad baja → MP4 **480×360**, **< 60 % del original**, AAC, 2 s, rojo/azul y tonos; MP4 rotado + WebM → WebM en calidad alta a 1080p: el rotado se ve **240×320** (de pie), el otro sigue en **320×240** (no se agranda), colores, duración y tonos correctos.
+- Lint, typecheck, tests (918 + 8 saltados), build, `check:static` (947 páginas) y `npm run test:e2e` completo: 288 pasan, 4 saltados (sin Gotenberg ni EPUBCheck).
+
+**Limitaciones**
+- No hay un "peso objetivo" exacto (como en "Comprimir imagen"): requeriría varias pasadas de codificación; queda como mejora posible. La velocidad depende del codificador del navegador (por hardware en la mayoría de las computadoras y celulares).
+
+**Siguiente**: 3C.38b ("Recortar video").

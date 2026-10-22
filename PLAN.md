@@ -282,7 +282,12 @@ Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo apr
 - [x] 3C.37 Video: convertir entre MP4, WebM, MOV y MKV según el navegador, y extraer audio (dividida):
   - [x] 3C.37a "Convertir video" con mediabunny + WebCodecs: entradas MP4, MOV, MKV y WebM; salidas MP4, WebM, MOV y MKV; copia sin recomprimir cuando el contenedor admite el códec (H.264 → MOV/MKV), si no recodifica (H.264 si el navegador lo tiene; MP4 con VP9/AV1 como respaldo y aviso; MOV exige H.264); archivos cortados detectados; límites de tamaño (200/500 MB) y duración (2 h); fixtures generados con ffmpeg y salida validada con ffprobe (códecs, tamaño, duración, colores de los cuadros y tonos)
   - [x] 3C.37b "Extraer audio de un video": MP4/MOV/MKV/WebM → MP3, WAV, FLAC, OGG (Opus), M4A (AAC) o AIFF, reutilizando el motor de audio; copia de la pista sin recomprimir cuando el formato lo permite si es viable; test con ffprobe y tonos
-- [ ] 3C.38 Video: comprimir, recortar, cambiar resolución y velocidad, video → GIF (gifenc) y unir
+- [ ] 3C.38 Video: comprimir, recortar, cambiar resolución y velocidad, video → GIF (gifenc) y unir (dividida; mismo motor de 3C.37):
+  - [x] 3C.38a "Comprimir video": calidad (alta/media/baja) y resolución máxima (original, 1080p, 720p, 480p, 360p; sin agrandar, dimensiones pares, rotación respetada), salida MP4 o WebM, audio copiado si cabe; muestra el ahorro; test con ffprobe (dimensiones, duración, colores, tonos, tamaño menor)
+  - [ ] 3C.38b "Recortar video": inicio y fin con reproductor y "usar posición actual", corte exacto (recodifica) o rápido en fotogramas clave (copia); test de duración y colores de cada tramo
+  - [ ] 3C.38c "Video a GIF": tramo, ancho (240–720 px), FPS (5–15) y bucle, con gifenc (MIT) en worker; límites de cuadros; test leyendo el GIF con sharp/ffprobe (cuadros, tamaño, colores)
+  - [ ] 3C.38d "Cambiar velocidad del video": 0,25×–4× (timestamps del video; audio remuestreado o quitado, aviso de que cambia el tono); test de duración
+  - [ ] 3C.38e "Unir videos": varios archivos en orden, misma resolución de salida (encaje con bandas), audio igualado; test de duración total y colores por tramo
 
 3D y CAD
 - [ ] 3C.39 Modelos 3D con three.js (MIT, cargado solo en esas páginas): STL ↔ OBJ ↔ PLY ↔ GLB/glTF con visor y límite de vértices

@@ -14,13 +14,14 @@ import {
   Mp4OutputFormat,
   Output,
   QUALITY_HIGH,
+  Quality,
   WebMOutputFormat,
   canEncodeVideo,
   type VideoCodec,
 } from "mediabunny";
 import { ConversionError } from "@/lib/convert-error";
 import { assertComplete, ensureEncoder } from "@/lib/audio/convert";
-import { encodersFor, MAX_VIDEO_SECONDS, videoPlan, type VideoTarget } from "./options";
+import { encodersFor, MAX_VIDEO_SECONDS, scaledSize, videoPlan, type VideoQuality, type VideoTarget } from "./options";
 
 const outputFormat: Record<VideoTarget, () => Mp4OutputFormat | MovOutputFormat | WebMOutputFormat | MkvOutputFormat> = {
   mp4: () => new Mp4OutputFormat({ fastStart: "in-memory" }),
@@ -29,6 +30,13 @@ const outputFormat: Record<VideoTarget, () => Mp4OutputFormat | MovOutputFormat 
   mkv: () => new MkvOutputFormat(),
 };
 
+/** "Compress video": the picture is always re-encoded, at this quality and at most this size. */
+export interface VideoEdit {
+  quality: VideoQuality;
+  /** Shorter side in pixels (720 for 720p); never enlarged. */
+  maxShortSide?: number;
+}
+
 export interface VideoResult {
   data: Uint8Array;
   /** Seconds of the input. */
@@ -36,6 +44,9 @@ export interface VideoResult {
   /** Output video codec, and whether the video was copied without re-encoding. */
   videoCodec: VideoCodec;
   copied: boolean;
+  /** Output display size. */
+  width: number;
+  height: number;
 }
 
 /** Opens a file for mediabunny, checking it holds video this browser can read; the caller disposes it. */
@@ -75,13 +86,12 @@ async function encodableVideo(target: VideoTarget, width: number, height: number
 export async function convertVideo(
   file: Blob,
   target: VideoTarget,
-  { signal, onProgress }: { signal?: AbortSignal; onProgress?: (progress: number) => void } = {},
+  { signal, onProgress, edit }: { signal?: AbortSignal; onProgress?: (progress: number) => void; edit?: VideoEdit } = {},
 ): Promise<VideoResult> {
   const { input, video, audio, duration } = await openVideo(file);
   try {
-    const width = video.displayWidth;
-    const height = video.displayHeight;
-    const plan = videoPlan(target, { video: video.codec, audio: audio?.codec ?? null }, await encodableVideo(target, width, height));
+    const { width, height } = scaledSize(video.displayWidth, video.displayHeight, edit?.maxShortSide);
+    const plan = videoPlan(target, { video: video.codec, audio: audio?.codec ?? null }, await encodableVideo(target, width, height), !!edit);
     if (!plan) throw new ConversionError("videoEncoderUnsupported");
     // Re-encoding needs the browser to decode the source first (H.264 and HEVC aren't
     // decodable in every browser; AAC neither).
@@ -100,8 +110,12 @@ export async function convertVideo(
       input,
       output,
       tracks: "primary",
-      // The same codec as the source copies the packets; any other is encoded at high quality.
-      video: { codec: plan.video, ...(plan.copyVideo ? {} : { quality: QUALITY_HIGH }) },
+      // The same codec as the source copies the packets; any other is encoded (high quality unless chosen).
+      video: {
+        codec: plan.video,
+        ...(plan.copyVideo ? {} : { quality: new Quality(edit?.quality ?? "high") }),
+        ...(edit && (width !== video.displayWidth || height !== video.displayHeight) ? { width, height, fit: "fill" as const } : {}),
+      },
       audio: plan.audio ? { codec: plan.audio, ...(plan.copyAudio ? {} : { quality: QUALITY_HIGH }) } : { discard: true },
       // AAC starts with encoder priming before 0 s, which MKV/WebM can't hold: shifting the whole
       // file by that much (mediabunny keeps the tracks in sync) lets the packets be copied.
@@ -128,7 +142,7 @@ export async function convertVideo(
     }
     const buffer = (output.target as BufferTarget).buffer;
     if (!buffer || buffer.byteLength === 0) throw new ConversionError("conversionFailed");
-    return { data: new Uint8Array(buffer), duration, videoCodec: plan.video, copied: plan.copyVideo };
+    return { data: new Uint8Array(buffer), duration, videoCodec: plan.video, copied: plan.copyVideo, width, height };
   } finally {
     input.dispose();
   }

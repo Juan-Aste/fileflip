@@ -46,9 +46,11 @@ export function videoPlan(
   target: VideoTarget,
   source: { video: VideoCodec | null; audio: AudioCodec | null },
   encodable: (codec: VideoCodec) => boolean,
+  /** The picture changes (compression, size...): the video is always encoded. */
+  reencode = false,
 ): VideoPlan | null {
   const c = targetCodecs[target];
-  const copyVideo = source.video !== null && c.copyVideo.includes(source.video);
+  const copyVideo = !reencode && source.video !== null && c.copyVideo.includes(source.video);
   const video = copyVideo ? source.video : c.encodeVideo.find(encodable);
   if (!video) return null;
   const copyAudio = source.audio !== null && c.copyAudio.includes(source.audio);
@@ -60,3 +62,21 @@ export const encodersFor = (target: VideoTarget): readonly VideoCodec[] => targe
 
 export const videoExtension: Record<VideoTarget, string> = { mp4: "mp4", webm: "webm", mov: "mov", mkv: "mkv" };
 export const videoMime: Record<VideoTarget, string> = { mp4: "video/mp4", webm: "video/webm", mov: "video/quicktime", mkv: "video/x-matroska" };
+
+/** "Compress video" levels, mapped to mediabunny's quality presets (bitrate by resolution and codec). */
+export const videoQualities = ["high", "medium", "low"] as const;
+export type VideoQuality = (typeof videoQualities)[number];
+
+/** Resolutions offered by "Compress video": the shorter side, so vertical phone videos count too. */
+export const videoResolutions = [1080, 720, 480, 360] as const;
+
+/**
+ * Output size so the shorter side is at most `maxShortSide` (never enlarged),
+ * keeping the aspect ratio with even dimensions (what H.264/VP9 encoders need).
+ */
+export function scaledSize(width: number, height: number, maxShortSide?: number): { width: number; height: number } {
+  const even = (n: number) => Math.max(2, Math.round(n / 2) * 2);
+  const scale = maxShortSide ? Math.min(1, maxShortSide / Math.min(width, height)) : 1;
+  return { width: even(width * scale), height: even(height * scale) };
+}
+

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { VideoCodec } from "mediabunny";
 import { tools } from "@/config/tools";
-import { videoExtension, videoPlan, videoTargets } from "./options";
+import { scaledSize, videoExtension, videoPlan, videoTargets } from "./options";
 
 const all = () => true;
 const noH264 = (codec: VideoCodec) => codec !== "avc";
@@ -31,4 +31,19 @@ describe("videoPlan", () => {
   it("every target is an output of the registered tool", () => {
     for (const target of videoTargets) expect(tools["video-converter"].outputs).toContain(videoExtension[target]);
   });
+
+  it("re-encodes even a copyable video when the picture changes", () => {
+    expect(videoPlan("mkv", { video: "avc", audio: "aac" }, all, true)).toEqual({ video: "avc", copyVideo: false, audio: "aac", copyAudio: true });
+  });
 });
+
+describe("scaledSize", () => {
+  it("limits the shorter side, keeps the ratio and even sizes, never enlarges", () => {
+    expect(scaledSize(1920, 1080, 720)).toEqual({ width: 1280, height: 720 });
+    expect(scaledSize(1080, 1920, 480)).toEqual({ width: 480, height: 854 });
+    expect(scaledSize(640, 480, 360)).toEqual({ width: 480, height: 360 });
+    expect(scaledSize(320, 240, 720)).toEqual({ width: 320, height: 240 });
+    expect(scaledSize(321, 241)).toEqual({ width: 322, height: 242 });
+  });
+});
+

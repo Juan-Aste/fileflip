@@ -11,31 +11,20 @@ import ChoiceGroup from "../ChoiceGroup";
 import ToolShell from "../shell/ToolShell";
 import { renameExtension, type ShellOutput } from "../shell/state";
 import { withTimeLimit } from "../audio/shared";
+import { VIDEO_EXTENSIONS, videoSupport, type VideoSupport } from "./shared";
 
 const tool = tools["video-converter"];
 // mediabunny (and the AAC encoder, when needed) load when the tool runs.
 const engine = () => import("@/lib/video/convert");
 
-/** Extensions the video converter accepts; the engine still checks the content. */
-const VIDEO_EXTENSIONS = ["mp4", "m4v", "mov", "qt", "mkv", "webm"];
-
 const codecNames: Record<string, string> = { avc: "H.264", hevc: "HEVC (H.265)", vp8: "VP8", vp9: "VP9", av1: "AV1", prores: "ProRes" };
-
-type Support = "checking" | "full" | "noH264" | "none";
-
-/** What this browser can do: WebCodecs at all, and H.264 (missing where proprietary codecs aren't built in). */
-async function videoSupport(): Promise<Support> {
-  if (typeof VideoEncoder === "undefined" || typeof VideoDecoder === "undefined") return "none";
-  const avc = await VideoEncoder.isConfigSupported({ codec: "avc1.42001f", width: 1280, height: 720, bitrate: 2_000_000 }).catch(() => ({ supported: false }));
-  return avc.supported ? "full" : "noH264";
-}
 
 /** MP4, MOV, MKV and WebM video → MP4, WebM, MOV or MKV, in the browser; streams are copied when the target takes them. */
 export default function VideoConverterTool() {
   const t = useTranslations("VideoTool");
   const tt = useTranslations("Tools.video-converter");
   const [target, setTarget] = useState<VideoTarget>("mp4");
-  const [support, setSupport] = useState<Support>("checking");
+  const [support, setSupport] = useState<VideoSupport>("checking");
   useEffect(() => {
     void videoSupport().then(setSupport);
   }, []);

@@ -73,6 +73,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "join-audio": dynamic(() => import("./audio/JoinAudioTool")),
   "video-converter": dynamic(() => import("./video/VideoConverterTool")),
   "extract-audio": dynamic(() => import("./video/ExtractAudioTool")),
+  "compress-video": dynamic(() => import("./video/CompressVideoTool")),
   "html-to-markdown": dynamic(() => import("./markup/MarkdownTools").then((m) => m.HtmlToMarkdownTool)),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),

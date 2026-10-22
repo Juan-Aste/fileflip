@@ -11,12 +11,12 @@ import ChoiceGroup from "../ChoiceGroup";
 import ToolShell from "../shell/ToolShell";
 import { renameExtension, type ShellOutput } from "../shell/state";
 import { withTimeLimit } from "../audio/shared";
+import { VIDEO_EXTENSIONS } from "./shared";
 
 const tool = tools["extract-audio"];
 // mediabunny and the WASM encoders load when the tool runs.
 const engine = () => import("@/lib/audio/convert");
 
-const VIDEO_EXTENSIONS = ["mp4", "m4v", "mov", "qt", "mkv", "webm"];
 const codecNames: Record<string, string> = { aac: "AAC", mp3: "MP3", opus: "Opus", vorbis: "Vorbis", flac: "FLAC", "pcm-s16": "PCM", "pcm-s24": "PCM", "pcm-f32": "PCM" };
 
 type Target = "original" | AudioTarget;

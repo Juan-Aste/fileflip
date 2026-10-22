@@ -23,6 +23,9 @@ interface VideoProbe {
   audio?: string;
   width: number;
   height: number;
+  /** Size as shown, after the rotation metadata. */
+  display: string;
+  size: number;
   duration: number;
   /** Average color at 0.5 s and at 1.5 s. */
   colors: [number, number, number][];
@@ -53,12 +56,14 @@ function probe(buf: Buffer, name: string): VideoProbe {
       return Math.round(crossings / 2 / ((to - from) / 44100));
     });
   }
-  return { format: info.format.format_name, video: v?.codec_name, audio: a?.codec_name, width: v?.width, height: v?.height, duration: Number(info.format.duration), colors, tones };
+  const rotation = Math.abs(Number(v?.side_data_list?.find((d: { rotation?: number }) => d.rotation !== undefined)?.rotation ?? 0)) % 180;
+  const display = v ? (rotation === 90 ? `${v.height}x${v.width}` : `${v.width}x${v.height}`) : "";
+  return { format: info.format.format_name, video: v?.codec_name, audio: a?.codec_name, width: v?.width, height: v?.height, display, size: buf.length, duration: Number(info.format.duration), colors, tones };
 }
 
-/** 2 s, 320×240, red then blue, both tones. */
-function expectSameContent(p: VideoProbe, label: string) {
-  expect(p, label).toMatchObject({ width: 320, height: 240 });
+/** 2 s, `size` as shown, red then blue, both tones. */
+function expectSameContent(p: VideoProbe, label: string, size = "320x240") {
+  expect(p.display, label).toBe(size);
   expect(Math.abs(p.duration - 2), `${label} lasts ${p.duration} s`).toBeLessThan(0.15);
   const [first, second] = p.colors;
   expect(first![0] > 180 && first![2] < 80, `${label} red at 0.5 s: ${first}`).toBe(true);
@@ -206,6 +211,45 @@ test.describe("tool: extract-audio", () => {
     await expect(main).toContainText("damaged or incomplete");
     await expect(main).toContainText("can't be converted this way");
     await expect(page.locator("main li a[download]")).toHaveAttribute("download", "video.ogg");
+  });
+});
+
+test.describe("tool: compress-video", () => {
+  test.skip(!hasFfmpeg, "needs ffmpeg/ffprobe to check the output");
+
+  test("640×480 → 360p at low quality: smaller, picture and sound intact", async ({ page }) => {
+    await openWithFiles(page, "/es/comprimir-video", ["video-640.webm"]);
+    await page.getByText("Baja (más liviano)", { exact: true }).click();
+    await page.getByText("360p", { exact: true }).click();
+    const out = fileOf(await runTool(page, "Comprimir video"));
+    expect(out.name).toBe("video-640.mp4");
+    await expect(page.locator("main")).toContainText("480 × 360 px.");
+    await expect(page.locator("main")).toContainText("menos");
+    const p = probe(out.buf, out.name);
+    expect(p.format).toContain("mp4");
+    expect(["h264", "vp9", "av1"]).toContain(p.video);
+    // Opus isn't copied into MP4 (Apple doesn't play it there): it becomes AAC.
+    expect(p.audio).toBe("aac");
+    expect(p.size, `${p.size} bytes`).toBeLessThan(readFileSync(join(__dirname, "../fixtures/video-640.webm")).length * 0.6);
+    expectSameContent(p, "360p", "480x360");
+  });
+
+  test("a rotated phone video stays upright; WebM output; a small video is never enlarged", async ({ page }) => {
+    await openWithFiles(page, "/en/compress-video", ["video-rotated.mp4", "video.webm"]);
+    await page.getByText("High", { exact: true }).click();
+    await page.getByText("1080p", { exact: true }).click();
+    await page.getByText("WebM", { exact: true }).click();
+    await page.getByRole("button", { name: "Compress video", exact: true }).click();
+    await expect(page.locator("main li a[download]")).toHaveCount(2, { timeout: 60_000 });
+    await expect(page.locator("main")).toContainText("240 × 320 px.");
+    const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: /^Download all/ }).click()]);
+    const entries = unzipEntries(readFileSync((await download.path())!));
+    expect(entries.map((e) => e.name).sort()).toEqual(["video-rotated.webm", "video.webm"]);
+    for (const entry of entries) {
+      const p = probe(entry.data, entry.name);
+      expect(p.format, entry.name).toContain("webm");
+      expectSameContent(p, entry.name, entry.name === "video-rotated.webm" ? "240x320" : "320x240");
+    }
   });
 });
 

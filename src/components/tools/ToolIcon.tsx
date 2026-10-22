@@ -15,6 +15,7 @@ import {
   AudioLines,
   Clapperboard,
   FileAudio,
+  FileVideo,
   Archive,
   CaseSensitive,
   ImageDown,
@@ -135,6 +136,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "join-audio": Layers,
   "video-converter": Clapperboard,
   "extract-audio": FileAudio,
+  "compress-video": FileVideo,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };
