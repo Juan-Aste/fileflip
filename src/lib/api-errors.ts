@@ -38,6 +38,8 @@ export const apiErrorCodes = [
   "archiveEncrypted",
   "archiveUnsupported",
   "archiveEmpty",
+  // Client-side only: OCR found no text in the image.
+  "ocrNoText",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -76,6 +78,7 @@ const status: Record<ApiErrorCode, number> = {
   archiveEncrypted: 422,
   archiveUnsupported: 415,
   archiveEmpty: 422,
+  ocrNoText: 422,
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,

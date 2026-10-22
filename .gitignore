@@ -28,3 +28,6 @@ yarn-error.log*
 # Playwright
 /test-results/
 /playwright-report/
+
+# OCR engine copied from node_modules at build time (scripts/copy-ocr-assets.mjs)
+/public/ocr/

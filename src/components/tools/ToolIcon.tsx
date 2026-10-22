@@ -8,6 +8,7 @@ import {
   FileSpreadsheet,
   FolderArchive,
   FolderOpen,
+  ScanText,
   Archive,
   CaseSensitive,
   ImageDown,
@@ -114,6 +115,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "spreadsheet-converter": FileSpreadsheet,
   "create-archive": FolderArchive,
   "extract-archive": FolderOpen,
+  "image-to-text": ScanText,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

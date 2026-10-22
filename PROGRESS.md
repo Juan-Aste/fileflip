@@ -2129,3 +2129,23 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lint, typecheck, tests (853 + 7 saltados sin Gotenberg), build, `check:static` (862 páginas) y `npm run test:e2e` completo (251 + 3 saltados sin Gotenberg) pasan.
 
 **Siguiente**: 3C.31 (imagen → texto con tesseract.js).
+
+## 2026-10-22 02:35 UTC — Fase 3, tarea 3C.31 (imagen a texto con OCR)
+
+**Qué se hizo**
+- **Imagen a texto (OCR)** (`/es/imagen-a-texto`, `/en/image-to-text`, `/pt/imagem-para-texto`, `/fr/image-en-texte`), primera herramienta de la categoría **OCR** (ahora publicada): JPG, PNG, WEBP, BMP, GIF, TIFF, HEIC y AVIF (hasta 50 MB, lotes) → un `.txt` por imagen con vista previa para copiar; idioma español, inglés, portugués, francés o chino simplificado (por defecto, el de la interfaz). Aviso si la confianza media es < 60 %. Error nuevo `ocrNoText` (5 idiomas).
+- Motor: **tesseract.js 7.0.0** + **tesseract.js-core 7.0.0** (Apache-2.0) con los modelos **tessdata_best int** de `@tesseract.js-data/*` (MIT/Apache-2.0), modo LSTM. Todo se sirve **desde nuestro dominio**: `scripts/copy-ocr-assets.mjs` (en `prebuild` y `predev`) copia a `public/ocr/` (no se commitea, `.gitignore`) el worker, las 3 variantes LSTM del core (el worker elige según SIMD) y los 5 modelos, en rutas con versión (`src/lib/ocr/assets.ts`; el script falla si no coinciden con lo instalado) y `Cache-Control: immutable` (`next.config.ts`). Sin `workerBlobURL`, sin CDN. Solo se descarga el modelo del idioma elegido (luego tesseract.js lo guarda en IndexedDB).
+- `src/lib/ocr/client.ts`: la imagen se decodifica en la página (`createImageBitmap`, orientación EXIF aplicada; TIFF y HEIC pasan antes por el worker de imágenes existente), se pone sobre fondo blanco y se reduce si supera 4000 px. **No se agranda**: al probar, un renglón chino de 48 px ampliado 2× se leía mal (天 → 大), así que se quitó la ampliación. `user_defined_dpi=300`. Una sesión de tesseract por lote; **cancelar** o el **límite de 3 minutos por imagen** terminan el worker (`jobCancelled`/`jobTimedOut`) y la imagen siguiente arranca otro.
+- `src/lib/ocr/text.ts`: limpieza del resultado (sin los espacios que tesseract pone entre caracteres chinos, sin espacios finales, máximo una línea en blanco seguida). Nombres repetidos (`scan.png` y `scan.tiff`) → `scan.txt` y `scan-2.txt`.
+- ESLint ignora `public/ocr/`.
+
+**Verificación**
+- 7 tests unitarios: tamaños, limpieza, versiones de los assets = paquetes instalados, y **OCR real en Node** con los mismos modelos que se sirven: español exacto en las frases con acentos/¿?/números (confianza > 80), foto inglesa torcida y con ruido (≥ 90 % de las palabras y "4821"), chino exacto sin espacios, imagen en blanco → vacío.
+- `ocr-tools.spec.ts` (4 casos en Chromium): PNG + TIFF de 1 bit en español → 2 `.txt` con el texto (`ocr-es.txt`, `ocr-es-2.txt`), **solo se pidió `spa.traineddata.gz` desde `/ocr/` y ninguna petición salió de localhost**; foto inglesa → texto exacto y vista previa; chino + imagen sin texto + PNG cortado en un lote → texto exacto, "未找到文字" y "损坏"; cancelar y volver a ejecutar.
+- Lint, typecheck, tests (861 + 7 saltados sin Gotenberg), build, `check:static` (872 páginas) y `npm run test:e2e` completo (255 + 3 saltados sin Gotenberg) pasan. Captura revisada: `/pt/imagem-para-texto` 360 px oscuro con el resultado (sin desborde).
+
+**Limitaciones**
+- Solo imágenes (PDF escaneado: 3C.32). La primera vez descarga el core (~3,9 MB, ~2,9 MB con compresión) y el modelo (2–4 MB). Letra manuscrita y fotos muy torcidas dan malos resultados (FAQ). La ü puede salir como u en algunos casos.
+- El build copia ~20 MB a `public/ocr` (imagen Docker un poco más grande).
+
+**Siguiente**: 3C.32 (PDF escaneado → PDF con texto buscable y → texto).

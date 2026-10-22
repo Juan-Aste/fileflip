@@ -212,7 +212,8 @@
     "archiveTooLarge": "Once extracted it would take more than 500 MB or hold more than 5,000 files: too much for the browser (or it's a “zip bomb”).",
     "archiveEncrypted": "This archive is password-protected: it can't be extracted yet.",
     "archiveUnsupported": "This archive uses a compression method that can't be opened in the browser.",
-    "archiveEmpty": "This archive has no files to extract (only empty folders or links)."
+    "archiveEmpty": "This archive has no files to extract (only empty folders or links).",
+    "ocrNoText": "No text was found in the image. Try a sharper photo or choose another language."
   },
   "Tools": {
     "merge-pdf": {
@@ -1100,6 +1101,22 @@
         "q4": "Are folders kept?",
         "a4": "Yes: each file shows its path, and downloading everything together creates a ZIP with the same folder structure. Empty folders are not included."
       }
+    },
+    "image-to-text": {
+      "title": "Image to text (OCR)",
+      "description": "Extract text from photos, screenshots and scanned documents with OCR, in your browser, without uploading the images.",
+      "action": "Extract text",
+      "about": "Turn the text in an image into editable text: a photo of a document, a screenshot, a receipt or a scanned page. Choose the language of the text (Spanish, English, Portuguese, French or Chinese) for more accurate recognition. Everything happens on your device: the OCR engine and the language are downloaded once from our site and your images are not uploaded to any server. You get one .txt file per image, which you can also copy directly.",
+      "faq": {
+        "q1": "How accurate is it?",
+        "a1": "With sharp, straight printed text it usually gets almost everything right. Blurry, tilted or dark photos and handwriting give worse results; when confidence is low we warn you to check the text.",
+        "q2": "Are my images uploaded to a server?",
+        "a2": "No. Recognition runs in your browser. Only the OCR engine and the chosen language model (about 2 to 4 MB) are downloaded the first time, from our own site.",
+        "q3": "Which formats and languages are supported?",
+        "a3": "JPG, PNG, WEBP, BMP, GIF, TIFF, HEIC and AVIF, up to 50 MB per image. Languages: Spanish, English, Portuguese, French and Simplified Chinese. Choose the language the text is written in.",
+        "q4": "Does it work with scanned PDFs?",
+        "a4": "This tool works with images. If your PDF is a scan, first convert it to images with “PDF to JPG” and then extract the text from each page."
+      }
     }
   },
   "ToolUi": {
@@ -1976,5 +1993,17 @@
     },
     "extractNote": "Opened on your device as an untrusted file: dangerous paths fixed, links skipped and a limit against “zip bombs” (500 MB and 5,000 files once extracted).",
     "skipped": "{count, plural, one {# link or special file was skipped for safety.} other {# links or special files were skipped for safety.}}"
+  },
+  "OcrTool": {
+    "language": "Language of the text",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文（简体）"
+    },
+    "note": "Processed on your device. The first time, the language model is downloaded (2–4 MB); after that it stays saved in your browser.",
+    "lowConfidence": "Low confidence ({confidence} %): check the text, the image may be blurry or tilted."
   }
 }

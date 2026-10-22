@@ -212,7 +212,8 @@
     "archiveTooLarge": "Une fois extraite, elle occuperait plus de 500 Mo ou contiendrait plus de 5 000 fichiers : c’est trop pour le navigateur (ou c’est une « bombe ZIP »).",
     "archiveEncrypted": "Cette archive est protégée par un mot de passe : elle ne peut pas encore être extraite.",
     "archiveUnsupported": "Cette archive utilise une méthode de compression qui ne peut pas être ouverte dans le navigateur.",
-    "archiveEmpty": "Cette archive ne contient aucun fichier à extraire (seulement des dossiers vides ou des liens)."
+    "archiveEmpty": "Cette archive ne contient aucun fichier à extraire (seulement des dossiers vides ou des liens).",
+    "ocrNoText": "Aucun texte n’a été trouvé dans l’image. Essayez une photo plus nette ou choisissez une autre langue."
   },
   "Tools": {
     "merge-pdf": {
@@ -1100,6 +1101,22 @@
         "q4": "Les dossiers sont-ils conservés ?",
         "a4": "Oui : chaque fichier affiche son chemin, et en téléchargeant tout ensemble on obtient un ZIP avec la même arborescence. Les dossiers vides ne sont pas inclus."
       }
+    },
+    "image-to-text": {
+      "title": "Image en texte (OCR)",
+      "description": "Extrayez le texte de photos, captures d’écran et documents numérisés grâce à l’OCR, dans votre navigateur et sans envoyer les images.",
+      "action": "Extraire le texte",
+      "about": "Transformez en texte modifiable ce qui est écrit sur une image : photo d’un document, capture d’écran, ticket de caisse ou page numérisée. Choisissez la langue du texte (espagnol, anglais, portugais, français ou chinois) pour une reconnaissance plus précise. Tout se passe sur votre appareil : le moteur OCR et la langue sont téléchargés une seule fois depuis notre site et les images ne sont envoyées à aucun serveur. Vous obtenez un fichier .txt par image, que vous pouvez aussi copier directement.",
+      "faq": {
+        "q1": "Quelle est la précision ?",
+        "a1": "Avec un texte imprimé, net et droit, presque tout est reconnu. Les photos floues, inclinées, sombres ou l’écriture manuscrite donnent de moins bons résultats ; si la confiance est faible, nous vous prévenons pour que vous vérifiiez le texte.",
+        "q2": "Mes images sont-elles envoyées sur un serveur ?",
+        "a2": "Non. La reconnaissance se fait dans votre navigateur. Seuls le moteur OCR et le modèle de la langue choisie (environ 2 à 4 Mo) sont téléchargés la première fois, depuis notre propre site.",
+        "q3": "Quels formats et quelles langues sont pris en charge ?",
+        "a3": "JPG, PNG, WEBP, BMP, GIF, TIFF, HEIC et AVIF, jusqu’à 50 Mo par image. Langues : espagnol, anglais, portugais, français et chinois simplifié. Choisissez la langue dans laquelle le texte est écrit.",
+        "q4": "Fonctionne-t-il avec des PDF numérisés ?",
+        "a4": "Cet outil fonctionne avec des images. Si votre PDF est un scan, convertissez-le d’abord en images avec « PDF en JPG », puis extrayez le texte de chaque page."
+      }
     }
   },
   "ToolUi": {
@@ -1976,5 +1993,17 @@
     },
     "extractNote": "Ouverte sur votre appareil comme un fichier non fiable : chemins dangereux corrigés, liens ignorés et limite contre les « bombes ZIP » (500 Mo et 5 000 fichiers une fois extraite).",
     "skipped": "{count, plural, one {# lien ou fichier spécial a été ignoré par sécurité.} other {# liens ou fichiers spéciaux ont été ignorés par sécurité.}}"
+  },
+  "OcrTool": {
+    "language": "Langue du texte",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文（简体）"
+    },
+    "note": "Traitement sur votre appareil. La première fois, le modèle de la langue est téléchargé (2 à 4 Mo) ; il reste ensuite enregistré dans votre navigateur.",
+    "lowConfidence": "Confiance faible ({confidence} %) : vérifiez le texte, l’image est peut-être floue ou inclinée."
   }
 }

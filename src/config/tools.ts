@@ -87,6 +87,7 @@ export const toolIds = [
   "spreadsheet-converter",
   "create-archive",
   "extract-archive",
+  "image-to-text",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -134,6 +135,8 @@ const FONT_MAX_BYTES = 40 * 1024 * 1024;
 const SHEET_MAX_BYTES = 50 * 1024 * 1024;
 /** Archives are built in memory (input + output): the same cap as the engine (MAX_ARCHIVE_INPUT_BYTES). */
 const ARCHIVE_MAX_BYTES = 500 * 1024 * 1024;
+/** Photos and scans; they are resized to at most 4000 px before OCR (ocrSize). */
+const OCR_MAX_BYTES = 50 * 1024 * 1024;
 /** Markdown/HTML are converted on the page (they need a DOM): keep it responsive. */
 const MARKUP_MAX_BYTES = 5 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
@@ -819,6 +822,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 10 * MINUTE, maxFileBytes: ARCHIVE_MAX_BYTES },
     status: "verified",
     slugs: { es: "extraer-zip", en: "extract-zip", pt: "extrair-zip", fr: "extraire-zip", zh: "extract-zip" },
+  },
+  "image-to-text": {
+    id: "image-to-text",
+    category: "ocr",
+    inputs: ["jpg", "png", "webp", "bmp", "gif", "tiff", "heic", "avif"],
+    outputs: ["txt"],
+    engine: "browser",
+    libraries: ["tesseract.js", "tessdata_best (int)"],
+    // Per image: loading the model the first time plus recognizing a dense page on a slow phone.
+    limits: { files: "multiple", timeoutMs: 3 * MINUTE, maxFileBytes: OCR_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "imagen-a-texto", en: "image-to-text", pt: "imagem-para-texto", fr: "image-en-texte", zh: "image-to-text" },
   },
 };
 

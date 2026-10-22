@@ -22,7 +22,7 @@ describe("catalog categories", () => {
   });
 
   it("publish only categories with content", () => {
-    expect(publishedCategories).toEqual(["image", "pdf", "document", "data", "developer", "utility", "subtitle", "font", "archive"]);
+    expect(publishedCategories).toEqual(["image", "pdf", "document", "data", "developer", "utility", "subtitle", "font", "archive", "ocr"]);
     for (const c of publishedCategories) {
       const e = categoryEntries(c);
       expect(e.tools.length + e.conversions.length).toBeGreaterThan(0);

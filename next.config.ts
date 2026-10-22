@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
   // Always put <title>/<meta> in the <head>, also on dynamic pages (pricing):
   // streamed metadata ends up in <body>, which some crawlers and tools miss.
   htmlLimitedBots: /.*/,
+  async headers() {
+    // The OCR engine and models are served under versioned paths (src/lib/ocr/assets.ts).
+    return [{ source: "/ocr/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] }];
+  },
   webpack(config, { webpack }) {
     // The multithreaded AVIF encoder only runs on cross-origin-isolated pages
     // (we are not) and its self-spawning pthread worker creates a circular

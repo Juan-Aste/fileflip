@@ -261,7 +261,7 @@ Archivos comprimidos
 - [x] 3C.30 Extraer 7Z y RAR (solo lectura) con libarchive.js y las mismas protecciones
 
 OCR
-- [ ] 3C.31 Imagen → texto con tesseract.js (datos de idioma servidos desde nuestro dominio, solo el idioma pedido: es, en, pt, fr, zh)
+- [x] 3C.31 Imagen → texto con tesseract.js (datos de idioma servidos desde nuestro dominio, solo el idioma pedido: es, en, pt, fr, zh)
 - [ ] 3C.32 PDF escaneado → PDF con texto buscable y → texto (límite de páginas)
 
 Libros electrónicos
