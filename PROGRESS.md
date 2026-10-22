@@ -2058,3 +2058,24 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - `npm run test:e2e` 247/247 al cierre.
 
 **Siguiente**: 3C.28 (crear ZIP, TAR y TAR.GZ).
+
+## 2026-10-22 00:40 UTC — Fase 3, tarea 3C.28 (crear ZIP, TAR y TAR.GZ)
+
+**Qué se hizo**
+- **Crear ZIP** (`/es/crear-zip`, `/en/create-zip`, `/pt/criar-zip`, `/fr/creer-zip`), primera herramienta de la categoría **Archivos comprimidos** (`/es/archivos-comprimidos`…, ahora publicada). Cualquier archivo de entrada (lote del plan: 50 gratis / 500 Pro); salida **ZIP**, **TAR** o **TAR.GZ**; compresión sin comprimir / normal (6) / máxima (9) para ZIP y TAR.GZ; nombre del archivo opcional (se limpian separadores y la extensión repetida; por defecto `archive.<ext>`).
+- Motor `src/lib/archive/create.ts` en el worker de datos (sin dependencias nuevas: fflate ya estaba):
+  - ZIP con `zipSync`: los formatos ya comprimidos (JPG, PNG, WEBP, MP4, DOCX, ZIP…) se guardan sin recomprimir; fecha de modificación de cada archivo (acotada al rango DOS 1980–2107); nombres UTF-8.
+  - **Escritor TAR propio** (POSIX ustar): bloques de 512, suma de verificación, modo 0644, fecha del archivo; los nombres no ASCII o de más de 100 caracteres van en un encabezado **PAX** (`path=` en UTF-8) con un nombre ASCII de respaldo; dos bloques vacíos al final. TAR.GZ = `gzipSync` del TAR.
+  - Nombres seguros: un solo segmento (las barras `/` `\` pasan a `_`, sin caracteres de control, `.`/`..` → `file`), duplicados como `nombre (1).ext` (`uniqueNames`).
+  - Límites: **500 MB en total** (todo se arma en memoria: entrada + salida) → `fileTooLarge`; 65 535 entradas (ZIP sin ZIP64) → `tooManyFiles`; lista vacía → `invalidRequest`; 10 minutos por trabajo.
+- Formatos nuevos `zip`, `tar`, `tgz` en `formats.ts` (categoría `data`, no entran en el conversor). Textos (introducción + 4 preguntas, notas por formato) en los 5 idiomas.
+
+**Verificación**
+- 8 tests unitarios: los 3 formatos se extraen con **`unzip` y `tar` del sistema** con los 7 archivos idénticos byte a byte (foto, PDF, nombre con ñ/—/中文, nombre de 138 caracteres, archivo vacío, duplicado y `../../etc/passwd` → `.._.._etc_passwd`); `tar -tvf` muestra nombres UTF-8 y largos, tamaño y fecha (sin `PaxHeaders` visibles) y el tamaño es múltiplo de 512; `unzip -v`: JPG «Stored», texto y PDF «Defl:», fecha; nivel 0 más grande; TAR.GZ = gzip del TAR; errores de lista vacía, tamaño y cantidad.
+- `archive-tools.spec.ts` (3 casos, sin llamadas al servidor): ZIP con nombre propio y un PDF dañado incluido tal cual (leído con fflate); TAR.GZ máximo extraído con `tar`; TAR sin opciones de compresión y el mismo archivo dos veces (`photo (1).jpg`).
+- Lint, typecheck, tests (833 + 7 saltados sin Gotenberg), build, `check:static` (857 páginas) y `npm run test:e2e` completo (247 + 3 saltados sin Gotenberg) pasan. Captura revisada: 360 px oscuro con TAR.GZ elegido.
+
+**Limitaciones**
+- Sin carpetas (se agregan archivos sueltos) y sin ZIP con contraseña (la FAQ lo dice). ZIP64 no: máximo 65 535 archivos y menos de 4 GB (el tope de 500 MB lo evita).
+
+**Siguiente**: 3C.29 (extraer ZIP, TAR y TAR.GZ con protecciones).

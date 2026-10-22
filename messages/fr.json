@@ -1064,6 +1064,22 @@
         "q4": "Y a-t-il une limite de taille ?",
         "a4": "Jusqu'à 50 Mo par fichier et 2 millions de cellules remplies, car tout est traité dans la mémoire de votre navigateur. Vos fichiers ne sont envoyés sur aucun serveur."
       }
+    },
+    "create-archive": {
+      "title": "Créer un ZIP",
+      "description": "Regroupez plusieurs fichiers dans un ZIP, TAR ou TAR.GZ dans votre navigateur, sans les envoyer sur un serveur.",
+      "action": "Créer l’archive",
+      "about": "Rassemblez plusieurs fichiers en un seul pour les envoyer par e-mail, les joindre à un formulaire ou les garder ensemble. Choisissez ZIP, le format que Windows, macOS, Android et iPhone ouvrent sans rien installer, ou TAR et TAR.GZ, courants sous Linux et sur les serveurs. Vous pouvez choisir le niveau de compression : les photos, vidéos et documents Office sont déjà compressés et sont enregistrés tels quels, sans perte de temps ; les textes, PDF et autres fichiers sont réduits.",
+      "faq": {
+        "q1": "Quel format choisir : ZIP, TAR ou TAR.GZ ?",
+        "a1": "ZIP pour l’envoyer à d’autres personnes : n’importe quel ordinateur ou téléphone l’ouvre. TAR.GZ est la norme sous Linux et pour envoyer des fichiers sur un serveur. TAR regroupe seulement les fichiers sans les compresser.",
+        "q2": "Pourquoi le ZIP est-il presque aussi lourd que mes fichiers ?",
+        "a2": "Les photos (JPG, PNG, WEBP), vidéos, fichiers audio et documents Office sont déjà compressés à l’intérieur : les compresser à nouveau ne les réduit pas. Pour alléger les photos, utilisez « Compresser une image » avant de créer le ZIP.",
+        "q3": "Les noms avec accents ou caractères chinois sont-ils conservés ?",
+        "a3": "Oui. Les noms sont enregistrés en UTF-8, comme l’attendent les logiciels actuels. Si deux fichiers portent le même nom, le second devient « nom (1) ». Les barres obliques des noms sont remplacées pour que rien ne puisse être écrit hors du dossier lors de l’extraction.",
+        "q4": "Y a-t-il une limite de taille ? Puis-je ajouter un mot de passe ?",
+        "a4": "Tout est assemblé dans la mémoire de votre navigateur : le total des fichiers peut atteindre 500 Mo. Les ZIP protégés par mot de passe ne sont pas encore disponibles : pour protéger un document, utilisez « Protéger un PDF par mot de passe »."
+      }
     }
   },
   "ToolUi": {
@@ -1918,5 +1934,25 @@
     "allSheets": "Un CSV par feuille (sinon, seulement la première)",
     "bom": "UTF-8 avec BOM (Excel affiche bien les accents)",
     "note": "Les feuilles, valeurs et formules sont conservées ; la mise en forme (couleurs, bordures, largeurs) ne l'est pas."
+  },
+  "ArchiveTool": {
+    "format": "Format",
+    "formats": {
+      "zip": "ZIP",
+      "tar": "TAR",
+      "tgz": "TAR.GZ"
+    },
+    "level": "Compression",
+    "levels": {
+      "0": "Aucune (plus rapide)",
+      "6": "Normale",
+      "9": "Maximale (plus lent)"
+    },
+    "name": "Nom du fichier (facultatif)",
+    "notes": {
+      "zip": "S’ouvre sous Windows, macOS, Android et iPhone sans rien installer. Les photos, vidéos et documents Office sont enregistrés sans recompression. Jusqu’à {size} au total.",
+      "tar": "Regroupe les fichiers sans les compresser (courant sous Linux). Jusqu’à {size} au total.",
+      "tgz": "TAR compressé avec gzip, la norme sous Linux et sur les serveurs. Jusqu’à {size} au total."
+    }
   }
 }

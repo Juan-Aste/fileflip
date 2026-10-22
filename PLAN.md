@@ -256,7 +256,7 @@ Fuentes y documentos
 - [x] 3C.27 Hojas de cálculo XLSX ↔ CSV ↔ ODS en el navegador (SheetJS CE desde el tarball oficial o exceljs; límite de celdas; elegir hoja)
 
 Archivos comprimidos
-- [ ] 3C.28 Crear ZIP, TAR y TAR.GZ (fflate + escritor TAR propio; test leyendo la salida con `tar` del sistema)
+- [x] 3C.28 Crear ZIP, TAR y TAR.GZ (fflate + escritor TAR propio; test leyendo la salida con `tar` del sistema)
 - [ ] 3C.29 Extraer ZIP, TAR y TAR.GZ con protecciones (zip bomb por tamaño y cantidad de entradas en streaming, zip slip, symlinks); fixtures maliciosos generados por script
 - [ ] 3C.30 Extraer 7Z y RAR (solo lectura) con libarchive.js y las mismas protecciones
 

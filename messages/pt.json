@@ -1064,6 +1064,22 @@
         "q4": "Existe limite de tamanho?",
         "a4": "Até 50 MB por arquivo e 2 milhões de células preenchidas, porque tudo é processado na memória do seu navegador. Seus arquivos não são enviados a nenhum servidor."
       }
+    },
+    "create-archive": {
+      "title": "Criar ZIP",
+      "description": "Junte vários arquivos em um ZIP, TAR ou TAR.GZ no seu navegador, sem enviá-los a nenhum servidor.",
+      "action": "Criar arquivo",
+      "about": "Reúna vários arquivos em um só para enviá-los por e-mail, anexá-los a um formulário ou guardá-los juntos. Escolha ZIP, o formato que Windows, macOS, Android e iPhone abrem sem instalar nada, ou TAR e TAR.GZ, os usuais no Linux e em servidores. Você pode escolher quanto comprimir: fotos, vídeos e documentos do Office já vêm comprimidos e são guardados como estão, sem perder tempo; textos, PDF e outros arquivos ficam menores.",
+      "faq": {
+        "q1": "Qual formato escolher: ZIP, TAR ou TAR.GZ?",
+        "a1": "ZIP se for enviar para outras pessoas: qualquer computador ou celular abre. TAR.GZ é o padrão no Linux e para enviar arquivos a um servidor. TAR apenas junta os arquivos sem comprimi-los.",
+        "q2": "Por que o ZIP fica quase do mesmo tamanho dos meus arquivos?",
+        "a2": "Fotos (JPG, PNG, WEBP), vídeos, áudio e documentos do Office já são comprimidos por dentro, então comprimi-los de novo não os reduz. Para deixar as fotos mais leves, use “Comprimir imagem” antes de criar o ZIP.",
+        "q3": "Os nomes com acentos, ç ou em chinês são mantidos?",
+        "a3": "Sim. Os nomes são guardados em UTF-8, como os programas atuais esperam. Se dois arquivos tiverem o mesmo nome, o segundo passa a se chamar “nome (1)”. As barras nos nomes são substituídas para que nada seja gravado fora da pasta ao extrair.",
+        "q4": "Existe limite de tamanho? Posso colocar senha?",
+        "a4": "Tudo é montado na memória do seu navegador, por isso o total dos arquivos pode chegar a 500 MB. Por enquanto não é possível colocar senha no ZIP: para proteger um documento, use “Proteger PDF com senha”."
+      }
     }
   },
   "ToolUi": {
@@ -1918,5 +1934,25 @@
     "allSheets": "Um CSV por aba (senão, só a primeira)",
     "bom": "UTF-8 com BOM (o Excel mostra os acentos certos)",
     "note": "Abas, valores e fórmulas são mantidos; a formatação visual (cores, bordas, larguras) não."
+  },
+  "ArchiveTool": {
+    "format": "Formato",
+    "formats": {
+      "zip": "ZIP",
+      "tar": "TAR",
+      "tgz": "TAR.GZ"
+    },
+    "level": "Compressão",
+    "levels": {
+      "0": "Sem compressão (mais rápido)",
+      "6": "Normal",
+      "9": "Máxima (mais lento)"
+    },
+    "name": "Nome do arquivo (opcional)",
+    "notes": {
+      "zip": "Abre no Windows, macOS, Android e iPhone sem instalar nada. Fotos, vídeos e documentos do Office são guardados sem recomprimir. Até {size} no total.",
+      "tar": "Junta os arquivos sem comprimi-los (comum no Linux). Até {size} no total.",
+      "tgz": "TAR comprimido com gzip, o padrão no Linux e em servidores. Até {size} no total."
+    }
   }
 }

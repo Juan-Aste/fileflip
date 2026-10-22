@@ -6,6 +6,7 @@ import type { CsvToJsonOptions, JsonToCsvOptions } from "./csv";
 import type { SubtitleFormat, SubtitleResult, SyncOptions } from "@/lib/subtitle/subtitle";
 import type { FontContainer, FontFlavor } from "@/lib/font/font";
 import type { SheetFile, SheetOptions } from "@/lib/sheet/sheet";
+import type { ArchiveOptions } from "@/lib/archive/create";
 import type { FormatResult, JsonFormatOptions, XmlFormatOptions, YamlFormatOptions } from "./format";
 
 // One data worker, started on first use. Text formats are parsed whole, so a
@@ -73,3 +74,7 @@ export const convertFontFile = (file: Blob, to: FontContainer, job: JobOptions =
 /** A spreadsheet as XLSX, ODS or CSV (one CSV per sheet when asked). */
 export const convertSpreadsheetFile = (file: File, options: SheetOptions, job: JobOptions = {}) =>
   call<SheetFile[]>("convertSpreadsheet", { input: file, options }, job);
+
+/** The picked files in one ZIP, TAR or TAR.GZ. */
+export const createArchiveFile = (files: File[], options: ArchiveOptions, job: JobOptions = {}) =>
+  call<Uint8Array>("createArchive", { input: files, options }, { timeoutMs: 10 * 60_000, ...job });

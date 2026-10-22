@@ -1064,6 +1064,22 @@
         "q4": "Is there a size limit?",
         "a4": "Up to 50 MB per file and 2 million filled cells, because everything is processed in your browser's memory. Your files are not uploaded to any server."
       }
+    },
+    "create-archive": {
+      "title": "Create ZIP",
+      "description": "Put several files in one ZIP, TAR or TAR.GZ in your browser, without uploading them to any server.",
+      "action": "Create archive",
+      "about": "Bundle several files into one to email them, upload them to a form or keep them together. Choose ZIP, the format Windows, macOS, Android and iPhone open without installing anything, or TAR and TAR.GZ, the usual ones on Linux and servers. You can choose how much to compress: photos, videos and Office documents are already compressed and are stored as they are, so no time is wasted; text, PDF and other files do get smaller.",
+      "faq": {
+        "q1": "Which format should I pick: ZIP, TAR or TAR.GZ?",
+        "a1": "ZIP if you're sending it to other people: any computer or phone opens it. TAR.GZ is the standard on Linux and for uploading files to a server. TAR only bundles the files without compressing them.",
+        "q2": "Why is the ZIP almost as big as my files?",
+        "a2": "Photos (JPG, PNG, WEBP), videos, audio and Office documents are already compressed inside, so compressing them again doesn't make them smaller. To make photos lighter, use “Compress image” before creating the ZIP.",
+        "q3": "Are names with accents or Chinese characters kept?",
+        "a3": "Yes. Names are stored in UTF-8, as current programs expect. If two files have the same name, the second becomes “name (1)”. Slashes in names are replaced so nothing can be written outside the folder when extracting.",
+        "q4": "Is there a size limit? Can I add a password?",
+        "a4": "Everything is built in your browser's memory, so the files can add up to 500 MB in total. Password-protected ZIPs aren't available yet: to protect a document, use “Password protect a PDF”."
+      }
     }
   },
   "ToolUi": {
@@ -1918,5 +1934,25 @@
     "allSheets": "One CSV per sheet (otherwise only the first)",
     "bom": "UTF-8 with BOM (Excel shows accents correctly)",
     "note": "Sheets, values and formulas are kept; visual formatting (colors, borders, widths) is not."
+  },
+  "ArchiveTool": {
+    "format": "Format",
+    "formats": {
+      "zip": "ZIP",
+      "tar": "TAR",
+      "tgz": "TAR.GZ"
+    },
+    "level": "Compression",
+    "levels": {
+      "0": "None (fastest)",
+      "6": "Normal",
+      "9": "Maximum (slower)"
+    },
+    "name": "File name (optional)",
+    "notes": {
+      "zip": "Opens on Windows, macOS, Android and iPhone without installing anything. Photos, videos and Office documents are stored without recompressing. Up to {size} in total.",
+      "tar": "Bundles the files without compressing them (common on Linux). Up to {size} in total.",
+      "tgz": "TAR compressed with gzip, the standard on Linux and servers. Up to {size} in total."
+    }
   }
 }

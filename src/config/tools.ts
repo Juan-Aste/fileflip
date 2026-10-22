@@ -85,6 +85,7 @@ export const toolIds = [
   "markdown-to-pdf",
   "html-to-pdf",
   "spreadsheet-converter",
+  "create-archive",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -130,6 +131,8 @@ const PDF_PASSWORD_MAX_BYTES = 200 * 1024 * 1024;
 const FONT_MAX_BYTES = 40 * 1024 * 1024;
 /** Spreadsheets are read whole by SheetJS in the worker (cells are also capped: MAX_CELLS). */
 const SHEET_MAX_BYTES = 50 * 1024 * 1024;
+/** Archives are built in memory (input + output): the same cap as the engine (MAX_ARCHIVE_INPUT_BYTES). */
+const ARCHIVE_MAX_BYTES = 500 * 1024 * 1024;
 /** Markdown/HTML are converted on the page (they need a DOM): keep it responsive. */
 const MARKUP_MAX_BYTES = 5 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
@@ -792,6 +795,17 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: SHEET_MAX_BYTES },
     status: "verified",
     slugs: { es: "convertir-hoja-de-calculo", en: "spreadsheet-converter", pt: "converter-planilha", fr: "convertir-tableur", zh: "spreadsheet-converter" },
+  },
+  "create-archive": {
+    id: "create-archive",
+    category: "archive",
+    inputs: ["bin"],
+    outputs: ["zip", "tar", "tgz"],
+    engine: "browser",
+    libraries: ["fflate"],
+    limits: { files: "multiple", timeoutMs: 10 * MINUTE, maxFileBytes: ARCHIVE_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "crear-zip", en: "create-zip", pt: "criar-zip", fr: "creer-zip", zh: "create-zip" },
   },
 };
 

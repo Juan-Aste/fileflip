@@ -41,7 +41,10 @@ export type FormatId =
   | "woff"
   | "woff2"
   | "md"
-  | "html";
+  | "html"
+  | "zip"
+  | "tar"
+  | "tgz";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -97,6 +100,9 @@ export const formats: Record<FormatId, FormatInfo> = {
   woff2: { id: "woff2", label: "WOFF2", mime: "font/woff2", extensions: ["woff2"], category: "data" },
   md: { id: "md", label: "Markdown", mime: "text/markdown", extensions: ["md", "markdown"], category: "data" },
   html: { id: "html", label: "HTML", mime: "text/html", extensions: ["html", "htm"], category: "data" },
+  zip: { id: "zip", label: "ZIP", mime: "application/zip", extensions: ["zip"], category: "data" },
+  tar: { id: "tar", label: "TAR", mime: "application/x-tar", extensions: ["tar"], category: "data" },
+  tgz: { id: "tgz", label: "TAR.GZ", mime: "application/gzip", extensions: ["tgz", "gz"], category: "data" },
   bin: { id: "bin", label: "BIN", mime: "application/octet-stream", extensions: ["bin"], category: "data" },
 };
 
