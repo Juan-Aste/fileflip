@@ -40,7 +40,7 @@ La matriz completa (cada herramienta con sus entradas, salidas, motor, dónde co
 | Suite | Resultado (2026-10-22) | Qué valida |
 |---|---|---|
 | Unitarias (Vitest) | 988 pasan, 8 saltadas | motores con archivos válidos, dañados y maliciosos; salida leída con lectores independientes (sharp, pdf-lib, pdf.js, fflate, Python `zipfile`, `tar`, LibreOffice si está); APIs; agregaciones de estadísticas con MongoDB en memoria |
-| Navegador (Playwright, Chromium) | __E2E__ | cada herramienta: sube un fixture, ejecuta, descarga y valida la salida (dimensiones/tipo de imagen, páginas de PDF, duración/códec con ffprobe, texto con pdftotext, contenido de JSON/CSV/ZIP, geometría 3D); errores con archivos dañados; sin llamadas al servidor en herramientas del navegador |
+| Navegador (Playwright, Chromium) | 343 pasan, 4 saltadas (sin Gotenberg ni EPUBCheck), 10,9 min | cada herramienta: sube un fixture, ejecuta, descarga y valida la salida (dimensiones/tipo de imagen, páginas de PDF, duración/códec con ffprobe, texto con pdftotext, contenido de JSON/CSV/ZIP, geometría 3D); errores con archivos dañados; sin llamadas al servidor en herramientas del navegador |
 | Accesibilidad (axe-core, en la suite de navegador) | 0 violaciones WCAG 2.1 A/AA | las 82 herramientas, portada, catálogo y 15 categorías en claro; muestra en oscuro y en en/pt/fr/zh; estados con resultado y error; recorrido con teclado |
 | CI de GitHub | verde | lint, tests unitarios, build y `check:static` en `ubuntu-latest` |
 | Lighthouse móvil | ver sección 6 | rendimiento, accesibilidad, SEO, CLS |

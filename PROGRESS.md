@@ -2793,3 +2793,17 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Lighthouse se instala aparte (no es dependencia del proyecto); fuera del script hay que exportar `CHROME_PATH`.
 
 **Siguiente**: 3E.1 (informe final de la fase 3).
+
+## 2026-10-22 16:10 UTC — Fase 3, tarea 3E.1 (informe final)
+
+**Qué se hizo**
+- `docs/report-phase3.md`: resumen, catálogo por categoría, pruebas y resultados, limitaciones, descartes con motivo (técnico, licencia, costo), rendimiento, dependencias y licencias, seguridad, diseño/accesibilidad/SEO y lo que debe decidir o configurar el dueño.
+- `docs/report-phase3-matrix.md`: matriz **generada** con `npx vite-node scripts/report/matrix.ts` desde el registro y las pruebas de navegador (no se edita a mano): 82 herramientas verificadas + conversor, 97 páginas de conversión, 66 formatos de entrada, 50 de salida, 328 pares; cada herramienta con la prueba de navegador que la cubre (82/82).
+- Corrección al redactar: RAW (CR2/NEF/ARW/DNG) figura como pendiente (no planificado; candidato libraw-wasm evaluado en la auditoría), no como descartado.
+
+**Verificación**
+- `npm run test:e2e` completo: **343 pasan, 4 saltadas** (Gotenberg y EPUBCheck no disponibles en esta sesión), 10,9 min. Unitarias 988 + 8 saltadas; lint, typecheck, build y `check:static` (1007 páginas) pasan.
+
+## FASE 3 TERMINADA
+
+Todas las tareas de la fase 3 en PLAN.md están marcadas. Informe en `docs/report-phase3.md`. Quedan decisiones del dueño (licencias GPL/AGPL, nombre y dominio, Gotenberg en Railway, página de créditos LGPL) en la sección 10 del informe y en "Pendiente del dueño".
