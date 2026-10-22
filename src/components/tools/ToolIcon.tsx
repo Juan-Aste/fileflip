@@ -120,6 +120,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "image-to-text": ScanText,
   "ocr-pdf": FileSearch,
   "epub-converter": BookOpenText,
+  "epub-to-pdf": BookOpenText,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };

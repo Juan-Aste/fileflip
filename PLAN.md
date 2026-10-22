@@ -265,9 +265,9 @@ OCR
 - [x] 3C.32 PDF escaneado → PDF con texto buscable y → texto (límite de páginas)
 
 Libros electrónicos
-- [ ] 3C.33 EPUB → HTML/TXT (navegador, saneado, sin XXE) y EPUB → PDF (Gotenberg) (dividida):
+- [x] 3C.33 EPUB → HTML/TXT (navegador, saneado, sin XXE) y EPUB → PDF (Gotenberg) (dividida):
   - [x] 3C.33a EPUB → HTML (una página con índice e imágenes incluidas, saneada, CSP sin red) y → TXT, en el navegador; DRM detectado
-  - [ ] 3C.33b EPUB → PDF (HTML de 3C.33a saneado de nuevo en el servidor → Gotenberg/Chromium con la CSP de 3C.26a)
+  - [x] 3C.33b EPUB → PDF (HTML de 3C.33a saneado de nuevo en el servidor → Gotenberg/Chromium con la CSP de 3C.26a)
 - [ ] 3C.34 HTML/Markdown → EPUB (generador propio; `mimetype` correcto)
 
 Audio y video (WebCodecs + mediabunny, MPL-2.0; sin `@ffmpeg/core` GPL salvo aprobación del dueño)

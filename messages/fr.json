@@ -1152,6 +1152,22 @@
         "q4": "Y a-t-il une limite de taille ?",
         "a4": "Jusqu'à 100 Mo par livre et 300 Mo une fois décompressé, car tout est traité dans la mémoire de votre navigateur. Vous pouvez convertir plusieurs livres à la fois et les télécharger dans un ZIP."
       }
+    },
+    "epub-to-pdf": {
+      "title": "EPUB en PDF",
+      "description": "Convertissez des livres EPUB en PDF prêts à imprimer ou à lire sur n'importe quel appareil, avec sommaire et images.",
+      "action": "Convertir en PDF",
+      "about": "Transformez un livre numérique EPUB en PDF avec la couverture, une table des matières, chaque chapitre sur une nouvelle page et les images incluses, au format A4 ou Lettre. Pratique pour imprimer un livre, le lire sur un appareil qui n'ouvre pas les EPUB ou le partager avec quelqu'un qui n'a pas de liseuse. Fonctionne avec les EPUB 2 et EPUB 3 sans DRM. Le livre est ouvert dans votre navigateur et seule la page assemblée (sans scripts) est envoyée à notre serveur pour être imprimée ; elle est supprimée à la fin.",
+      "faq": {
+        "q1": "Fonctionne-t-il avec des livres achetés avec DRM ?",
+        "a1": "Non. Les EPUB protégés par DRM (Adobe, Readium LCP, Apple) sont chiffrés et ne se lisent pas en dehors de l'application de la librairie ; l'outil vous le signale avant d'envoyer quoi que ce soit.",
+        "q2": "La mise en page du livre est-elle conservée ?",
+        "a2": "Le texte, les titres, les listes, les tableaux, les images et les liens entre chapitres sont conservés, avec une mise en page de lecture propre : chaque chapitre commence sur une nouvelle page. Les polices, couleurs et marges du livre ne sont pas utilisées.",
+        "q3": "Qu'est-ce qui est envoyé au serveur ?",
+        "a3": "Le livre est lu dans votre navigateur et transformé en une seule page HTML sans scripts ; seule cette page est envoyée pour être imprimée en PDF. Sur le serveur, elle est nettoyée à nouveau, ne peut rien charger depuis internet et n'est pas conservée : elle est supprimée à la fin.",
+        "q4": "Y a-t-il une limite de taille ?",
+        "a4": "La page assemblée (avec ses images) peut peser jusqu'à 15 Mo avec l'offre gratuite et 50 Mo avec Pro. Si votre livre contient beaucoup d'images et dépasse la limite, décochez « Inclure les images du livre »."
+      }
     }
   },
   "ToolUi": {
@@ -2055,6 +2071,7 @@
     "images": "Inclure les images du livre",
     "contents": "Sommaire",
     "htmlNote": "Les images sont stockées dans le fichier ; les scripts, les styles du livre et tout ce qui est sur internet ne sont pas utilisés.",
-    "textNote": "Paragraphes, titres, listes et tableaux sont conservés ; les images sont remplacées par leur description, si elles en ont une."
+    "textNote": "Paragraphes, titres, listes et tableaux sont conservés ; les images sont remplacées par leur description, si elles en ont une.",
+    "pdfNote": "Les images sont incluses dans le PDF ; chaque chapitre commence sur une nouvelle page. Le livre est lu dans votre navigateur et seule la page assemblée est envoyée à notre serveur pour être imprimée."
   }
 }

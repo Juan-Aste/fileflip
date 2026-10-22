@@ -1152,6 +1152,22 @@
         "q4": "Is there a size limit?",
         "a4": "Up to 100 MB per book and 300 MB unpacked, because everything is processed in your browser's memory. You can convert several books at once and download them in a ZIP."
       }
+    },
+    "epub-to-pdf": {
+      "title": "EPUB to PDF",
+      "description": "Convert EPUB books into PDFs ready to print or read on any device, with a table of contents and images.",
+      "action": "Convert to PDF",
+      "about": "Turn an EPUB ebook into a PDF with the cover, a table of contents, each chapter starting on a new page and the images included, in A4 or Letter size. Handy to print a book, read it on a device that can't open EPUB or share it with someone without an ebook reader. Works with DRM-free EPUB 2 and EPUB 3 books. The book is opened in your browser and only the assembled page (without scripts) is sent to our server to print it; it's deleted when done.",
+      "faq": {
+        "q1": "Does it work with books bought with DRM?",
+        "a1": "No. EPUBs protected with DRM (Adobe, Readium LCP, Apple) are encrypted and can't be read outside the store's app; the tool tells you before sending anything.",
+        "q2": "Is the book's layout kept?",
+        "a2": "Text, headings, lists, tables, images and links between chapters are kept, with a reading layout of our own: each chapter starts on a new page. The book's fonts, colors and margins are not used.",
+        "q3": "What is sent to the server?",
+        "a3": "The book is read in your browser and turned into a single HTML page without scripts; only that page is sent to be printed as a PDF. On the server it is cleaned again, it can't load anything from the internet and it isn't stored: it's deleted when done.",
+        "q4": "Is there a size limit?",
+        "a4": "The assembled page (with its images) can be up to 15 MB on the free plan and 50 MB with Pro. If your book has many images and goes over the limit, untick \"Include the book's images\"."
+      }
     }
   },
   "ToolUi": {
@@ -2055,6 +2071,7 @@
     "images": "Include the book's images",
     "contents": "Contents",
     "htmlNote": "Images are stored inside the file; scripts, the book's styles and anything on the internet are not used.",
-    "textNote": "Paragraphs, headings, lists and tables are kept; images are replaced by their description, when they have one."
+    "textNote": "Paragraphs, headings, lists and tables are kept; images are replaced by their description, when they have one.",
+    "pdfNote": "Images are included in the PDF; each chapter starts on a new page. The book is read in your browser and only the assembled page is sent to our server to print it."
   }
 }

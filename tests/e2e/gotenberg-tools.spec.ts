@@ -129,3 +129,47 @@ test.describe("tool: pdf-to-pdfa", () => {
     expect(await runTool(page, "Convert to PDF/A")).toEqual({ error: expect.stringContaining("damaged") });
   });
 });
+
+test.describe("tool: epub-to-pdf", () => {
+  test("an EPUB is read in the browser and printed: contents, one chapter per page, images", async ({ page }) => {
+    test.skip(!process.env.GOTENBERG_URL, "needs Gotenberg (GOTENBERG_URL)");
+    const uploads: string[] = [];
+    await page.route("**/api/convert/epub", (route) => {
+      uploads.push(route.request().postData() ?? "");
+      return route.continue();
+    });
+    await openWithFiles(page, "/es/epub-a-pdf", ["book.epub"]);
+    await page.getByLabel("Tamaño de página").selectOption("letter");
+    const out = fileOf(await runTool(page, "Convertir a PDF"));
+    expect(out.name).toBe("book.pdf");
+    // Only the assembled page travels: no EPUB, no scripts.
+    expect(uploads).toHaveLength(1);
+    expect(uploads[0]).toContain('filename="book.html"');
+    expect(uploads[0]).not.toMatch(/<script|PK\u0003\u0004/);
+    const doc = await PDFDocument.load(out.buf);
+    expect(doc.getTitle()).toBe("El viaje de prueba");
+    expect(Math.round(doc.getPage(0).getSize().width)).toBe(612);
+    // Contents page + cover + 2 chapters, each starting on its own page.
+    expect(doc.getPageCount()).toBe(4);
+    const text = await pdfText(out.buf);
+    for (const expected of ["Contenido", "Capítulo 1: La partida", "Era una mañana de otoño", "La llegada", "Kilómetros"]) expect(text).toContain(expected);
+    expect(text).not.toContain("pwned");
+    // The two PNGs of the book are in the PDF.
+    expect(out.buf.toString("latin1").match(/\/Subtype\s*\/Image/g)?.length).toBeGreaterThanOrEqual(2);
+  });
+
+  test("DRM and damaged books fail in the browser, before anything is uploaded", async ({ page }) => {
+    let calls = 0;
+    await page.route("**/api/convert/epub", (route) => {
+      calls++;
+      return route.continue();
+    });
+    await openWithFiles(page, "/en/epub-to-pdf", ["corrupt/ebook-drm.epub", "corrupt/ebook-truncated.epub"]);
+    await page.getByRole("button", { name: "Convert to PDF", exact: true }).click();
+    const main = page.locator("main");
+    await expect(main).toContainText("DRM", { timeout: 30_000 });
+    await expect(main).toContainText("damaged");
+    await expect(page.locator("main a[download]")).toHaveCount(0);
+    expect(calls).toBe(0);
+  });
+});

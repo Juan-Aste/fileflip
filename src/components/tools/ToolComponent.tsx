@@ -64,6 +64,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "image-to-text": dynamic(() => import("./ocr/ImageToTextTool")),
   "ocr-pdf": dynamic(() => import("./ocr/OcrPdfTool")),
   "epub-converter": dynamic(() => import("./ebook/EpubConverterTool")),
+  "epub-to-pdf": dynamic(() => import("./ebook/EpubToPdfTool")),
   "html-to-markdown": dynamic(() => import("./markup/MarkdownTools").then((m) => m.HtmlToMarkdownTool)),
   "subtitle-converter": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleConverterTool)),
   "subtitle-sync": dynamic(() => import("./subtitle/SubtitleTools").then((m) => m.SubtitleSyncTool)),

@@ -40,7 +40,8 @@ header.book{text-align:center;margin-bottom:2.5rem}header.book p{color:#59636e}n
 section.chapter{margin-top:3rem;padding-top:2rem;border-top:1px solid #d0d7de}section.chapter:first-of-type{border-top:0}
 img,svg{max-width:100%;height:auto}table{border-collapse:collapse}th,td{border:1px solid #d0d7de;padding:.3rem .6rem}
 pre,code{font-family:ui-monospace,monospace;font-size:.85em}pre{overflow:auto}blockquote{margin-left:0;padding-left:1rem;border-left:4px solid #d0d7de}
-@media (prefers-color-scheme:dark){body{color:#e6edf3;background:#0d1117}header.book p{color:#9198a1}section.chapter,th,td{border-color:#30363d}}`;
+@media (prefers-color-scheme:dark){body{color:#e6edf3;background:#0d1117}header.book p{color:#9198a1}section.chapter,th,td{border-color:#30363d}}
+@media print{body{max-width:none;margin:0;padding:0;font-size:12pt;color:#000;background:#fff}section.chapter{break-before:page;border-top:0;margin-top:0;padding-top:0}img{break-inside:avoid}h1,h2,h3{break-after:avoid}}`;
 
 // Nothing in the page may make a request: images are data: URLs and styles are inline.
 const CSP = "default-src 'none'; img-src data:; style-src 'unsafe-inline'";

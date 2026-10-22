@@ -2197,3 +2197,21 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - Sin estilos del libro (fuentes, colores), audio ni video; MOBI/AZW no (sin motor con licencia aceptable). Todo el libro se arma en la memoria de la pestaña.
 
 **Siguiente**: 3C.33b (EPUB → PDF con Gotenberg).
+
+## 2026-10-22 02:55 UTC — Fase 3, tarea 3C.33b (EPUB a PDF) — 3C.33 TERMINADA
+
+**Qué se hizo**
+- **EPUB a PDF** (`/es/epub-a-pdf`, `/en/epub-to-pdf`, `/pt/epub-para-pdf`, `/fr/epub-en-pdf`), categoría Libros electrónicos, `engine: "server"`: EPUB sin DRM (lotes) → PDF **A4 o Carta**, con portada, índice, **cada capítulo en una página nueva** e imágenes (opción para quitarlas si la página supera el límite).
+- Cómo funciona: el libro se lee y se arma en el navegador con el mismo código de 3C.33a (DRM y libros dañados se rechazan **antes de subir nada**); solo se sube la página HTML armada a la ruta nueva `POST /api/convert/epub`, que usa `printUpload` + **`htmlToPrintHtml` (parse5)**: el servidor **no confía** en el saneado del navegador y vuelve a quitar scripts, URLs remotas, etc., con la misma CSP y `@page` de 3C.26a. Se conservan los `id`, los enlaces `#c2-…` y las imágenes `data:image/png|jpeg|gif|webp`. Gotenberg/Chromium imprime.
+- `render.ts`: reglas `@media print` (12 pt, sin márgenes extra, `break-before: page` por capítulo, imágenes sin cortar, títulos sin quedar solos al pie).
+- Límite: la página armada hasta **50 MB** (tope de la herramienta; el plan gratuito la limita a 15 MB). La estadística del servidor registra el tamaño de la página subida, no el del EPUB. Textos (introducción + 4 preguntas) en los 5 idiomas.
+
+**Verificación**
+- `route.test.ts` (2): la página de `book.epub` **con un `<img>` remoto y un `<script>` agregados a mano** (subida manipulada) → CSP antes de los estilos, A4, anclas e `id` conservados, 2 imágenes `data:`, `break-before`, sin script ni URL remota; registro con `tool: "epub-to-pdf"`, `from: "epub"`; contenido binario rechazado sin llamar a Gotenberg.
+- `gotenberg-tools.spec.ts` (+2) con **Gotenberg 8 real** (Docker en esta ejecución): `book.epub` en Carta → `book.pdf` de 612 pt de ancho, **4 páginas** (índice, portada y un capítulo por página), título del PDF, texto (pdf.js) e imágenes; solo se sube `book.html` sin scripts ni el ZIP. Sin Gotenberg: EPUB con DRM y cortado → mensajes claros y **ninguna llamada a la ruta**.
+- Lint, typecheck, tests (879 + 7 saltados sin Gotenberg), build, `check:static` (892 páginas) y `npm run test:e2e` completo con Gotenberg (266/266) pasan; con `GOTENBERG_URL` también los unitarios (885 + 1 saltado: veraPDF).
+
+**Limitaciones**
+- Necesita Gotenberg. Libros con muchas imágenes pueden superar 15 MB (gratis) una vez armados: la FAQ sugiere quitar las imágenes. Sin las fuentes ni la maquetación del libro.
+
+**Siguiente**: 3C.34 (HTML/Markdown → EPUB).

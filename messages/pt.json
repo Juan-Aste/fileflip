@@ -1152,6 +1152,22 @@
         "q4": "Há limite de tamanho?",
         "a4": "Até 100 MB por livro e 300 MB descompactado, porque tudo é processado na memória do seu navegador. Você pode converter vários livros de uma vez e baixá-los em um ZIP."
       }
+    },
+    "epub-to-pdf": {
+      "title": "EPUB para PDF",
+      "description": "Converta livros EPUB em PDF prontos para imprimir ou ler em qualquer dispositivo, com sumário e imagens.",
+      "action": "Converter para PDF",
+      "about": "Converta um livro digital EPUB em um PDF com capa, sumário, cada capítulo começando em uma nova página e imagens incluídas, em tamanho A4 ou Carta. Útil para imprimir um livro, lê-lo em um dispositivo que não abre EPUB ou compartilhá-lo com quem não tem um leitor de e-books. Funciona com EPUB 2 e EPUB 3 sem DRM. O livro é aberto no seu navegador e só a página já montada (sem scripts) é enviada ao nosso servidor para ser impressa; ela é apagada ao terminar.",
+      "faq": {
+        "q1": "Funciona com livros comprados com DRM?",
+        "a1": "Não. EPUBs protegidos com DRM (Adobe, Readium LCP, Apple) são criptografados e não podem ser lidos fora do aplicativo da loja; a ferramenta avisa antes de enviar qualquer coisa.",
+        "q2": "O layout do livro é mantido?",
+        "a2": "São mantidos o texto, os títulos, as listas, as tabelas, as imagens e os links entre capítulos, com um layout de leitura próprio: cada capítulo começa em uma nova página. As fontes, cores e margens do livro não são usadas.",
+        "q3": "O que é enviado ao servidor?",
+        "a3": "O livro é lido no seu navegador e transformado em uma única página HTML sem scripts; só essa página é enviada para ser impressa em PDF. No servidor ela é limpa de novo, não pode carregar nada da internet e não é guardada: é apagada ao terminar.",
+        "q4": "Há limite de tamanho?",
+        "a4": "A página montada (com as imagens) pode ter até 15 MB no plano gratuito e 50 MB com o Pro. Se o seu livro tiver muitas imagens e passar do limite, desmarque \"Incluir as imagens do livro\"."
+      }
     }
   },
   "ToolUi": {
@@ -2055,6 +2071,7 @@
     "images": "Incluir as imagens do livro",
     "contents": "Sumário",
     "htmlNote": "As imagens ficam dentro do arquivo; scripts, estilos do livro e o que estiver na internet não são usados.",
-    "textNote": "Parágrafos, títulos, listas e tabelas são mantidos; as imagens são trocadas pela descrição, se tiverem."
+    "textNote": "Parágrafos, títulos, listas e tabelas são mantidos; as imagens são trocadas pela descrição, se tiverem.",
+    "pdfNote": "As imagens são incluídas no PDF; cada capítulo começa em uma nova página. O livro é lido no seu navegador e só a página já montada é enviada ao nosso servidor para ser impressa."
   }
 }

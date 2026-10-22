@@ -90,6 +90,7 @@ export const toolIds = [
   "image-to-text",
   "ocr-pdf",
   "epub-converter",
+  "epub-to-pdf",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -143,6 +144,8 @@ const OCR_MAX_BYTES = 50 * 1024 * 1024;
 const OCR_PDF_MAX_BYTES = 100 * 1024 * 1024;
 /** Books are unpacked in the worker (EPUB_LIMITS) and assembled into one page in the tab. */
 const EPUB_MAX_BYTES = 100 * 1024 * 1024;
+/** EPUB → PDF uploads the book already assembled into one page (images embedded): the Pro server limit. */
+const EPUB_PDF_MAX_BYTES = 50 * 1024 * 1024;
 /** Markdown/HTML are converted on the page (they need a DOM): keep it responsive. */
 const MARKUP_MAX_BYTES = 5 * 1024 * 1024;
 const subtitleFormats: readonly FormatId[] = ["srt", "vtt", "ass", "ssa"];
@@ -863,6 +866,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE, maxFileBytes: EPUB_MAX_BYTES },
     status: "verified",
     slugs: { es: "convertir-epub", en: "epub-converter", pt: "converter-epub", fr: "convertir-epub", zh: "epub-converter" },
+  },
+  "epub-to-pdf": {
+    id: "epub-to-pdf",
+    category: "ebook",
+    inputs: ["epub"],
+    outputs: ["pdf"],
+    engine: "server",
+    libraries: ["fflate", "fast-xml-parser", "dompurify", "parse5", "Gotenberg (Chromium)"],
+    // The book is read in the browser, then one request per book; Gotenberg's own limit is 90 s per job.
+    limits: { files: "multiple", timeoutMs: 3 * MINUTE, maxFileBytes: EPUB_PDF_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "epub-a-pdf", en: "epub-to-pdf", pt: "epub-para-pdf", fr: "epub-en-pdf", zh: "epub-to-pdf" },
   },
 };
 
