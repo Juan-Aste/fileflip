@@ -58,6 +58,7 @@ export const apiErrorCodes = [
   "videoCodecUnsupported",
   "videoEncoderUnsupported",
   "videoTooLong",
+  "videoRangeInvalid",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -107,6 +108,7 @@ const status: Record<ApiErrorCode, number> = {
   videoCodecUnsupported: 415,
   videoEncoderUnsupported: 415,
   videoTooLong: 413,
+  videoRangeInvalid: 422,
   tooManyPages: 413,
   pdfAlreadySearchable: 422,
   signInRequired: 401,

@@ -100,6 +100,7 @@ export const toolIds = [
   "video-converter",
   "extract-audio",
   "compress-video",
+  "trim-video",
 ] as const;
 
 export type ToolId = (typeof toolIds)[number];
@@ -995,7 +996,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 30 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
     status: "verified",
     slugs: { es: "comprimir-video", en: "compress-video", pt: "comprimir-video", fr: "compresser-video", zh: "compress-video" },
+  },  "trim-video": {
+    id: "trim-video",
+    category: "video",
+    inputs: ["mp4", "mov", "mkv", "webm"],
+    outputs: ["mp4", "mov", "mkv", "webm"],
+    engine: "browser",
+    libraries: ["mediabunny", "@mediabunny/aac-encoder (FFmpeg AAC)"],
+    limits: { files: "single", timeoutMs: 30 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "recortar-video", en: "trim-video", pt: "cortar-video", fr: "couper-video", zh: "trim-video" },
   },
+
 
 
 

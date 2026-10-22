@@ -225,7 +225,8 @@
     "noVideoTrack": "This file has no video.",
     "videoCodecUnsupported": "Your browser can't read the video in this file (for example, H.264 or HEVC in some browsers). Try Chrome, Edge or Safari, or choose a format that doesn't need to re-encode it.",
     "videoEncoderUnsupported": "Your browser can't create video in this format (MOV needs H.264). Try Chrome, Edge or Safari, or choose MP4, WebM or MKV.",
-    "videoTooLong": "The video is too long: the maximum is 2 hours per file."
+    "videoTooLong": "The video is too long: the maximum is 2 hours per file.",
+    "videoRangeInvalid": "Check the times: the start must come before the end and both must be inside the video."
   },
   "Tools": {
     "merge-pdf": {
@@ -1323,6 +1324,22 @@
         "q4": "Is there a limit?",
         "a4": "Up to 200 MB per video on the free plan (500 MB with Pro), 2 hours long and 30 minutes of processing per file. The picture is never enlarged. MP4 is made with H.264 when the browser allows it (Chrome, Edge, Safari); otherwise with VP9 or AV1."
       }
+    },
+    "trim-video": {
+      "title": "Trim Video",
+      "description": "Cut an MP4, MOV, MKV or WebM video and keep the part you want, in your browser.",
+      "action": "Trim video",
+      "about": "Keep only the moment that matters: the goal, the greeting or a part of a recorded meeting. Play the video, mark the start and end with “Use current position” (or type the times) and download the clip in the same format. Exact mode cuts at the precise frame by re-encoding the video; fast mode copies without re-encoding, in seconds and losslessly, starting at the key frame before the start. Everything happens on your device: the video isn't uploaded to any server.",
+      "faq": {
+        "q1": "What's the difference between exact and fast?",
+        "a1": "Exact starts right where you marked, but it has to re-encode the video (it takes longer and compresses again at high quality). Fast copies the video as it is, so it takes seconds and loses nothing, but it can only start at a key frame: the result may begin up to a few seconds earlier.",
+        "q2": "How do I find the right moment?",
+        "a2": "Play the video and pause where you want; “Use current position” copies that time into the field. You can also type minutes:seconds, for example 1:23.5.",
+        "q3": "Can I remove a part in the middle?",
+        "a3": "For now one clip is kept at a time. To remove something in the middle, trim both parts and join them with “Join videos” once it's available.",
+        "q4": "Is there a limit?",
+        "a4": "One video at a time, up to 200 MB on the free plan (500 MB with Pro) and 2 hours long. If your browser can't play the file (for example MKV or H.264 in some), you can still type the times."
+      }
     }
   },
   "ToolUi": {
@@ -2339,5 +2356,16 @@
     "note": "The resolution is measured on the shorter side, so it works for vertical videos too. It's never enlarged. Processed on your device.",
     "size": "{width} × {height} px.",
     "notSmaller": "The result isn't smaller than the original: try a lower quality or resolution."
+  },
+  "TrimVideoTool": {
+    "reading": "Reading the video…",
+    "player": "Video player",
+    "mode": "Cut mode",
+    "modes": {
+      "exact": "Exact",
+      "fast": "Fast (no re-encoding)"
+    },
+    "exactNote": "Cuts at the exact frame: the video is re-encoded at high quality. Processed on your device.",
+    "fastNote": "Copies without re-encoding, in seconds and losslessly; it starts at the key frame before the start, so it may begin a little earlier."
   }
 }

@@ -2424,3 +2424,19 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - No hay un "peso objetivo" exacto (como en "Comprimir imagen"): requeriría varias pasadas de codificación; queda como mejora posible. La velocidad depende del codificador del navegador (por hardware en la mayoría de las computadoras y celulares).
 
 **Siguiente**: 3C.38b ("Recortar video").
+
+## 2026-10-22 08:00 UTC — Fase 3, tarea 3C.38b (recortar video)
+
+**Qué se hizo**
+- **Recortar video** (`/es/recortar-video`, `/en/trim-video`, `/pt/cortar-video`, `/fr/couper-video`), categoría Video: un archivo MP4, MOV, MKV o WebM (200 MB gratis / 500 MB Pro, 2 h) → el tramo entre **Inicio** y **Fin**, en el **mismo contenedor**. Al elegir el archivo se lee la duración (`probeVideo`) y se muestra un `<video>` con "Usar posición actual" para cada campo (mismos campos, validación y textos de tiempo que "Recortar audio"; `aria-label` distintos).
+- Dos modos: **Exacto** (por defecto; recodifica el video en calidad alta y corta en el cuadro preciso) y **Rápido** (copia los paquetes sin recomprimir: segundos y sin pérdida, desde el fotograma clave anterior al inicio; funciona aunque el navegador no decodifique H.264).
+- Motor: `VideoEdit` suma `trim` y `exact`; la `Conversion` de mediabunny recibe `trim` y solo fuerza la recodificación si hay calidad, tamaño o corte exacto. Error nuevo `videoRangeInvalid` (5 idiomas). Textos (introducción + 4 preguntas, interfaz) en los 5 idiomas.
+
+**Verificación**
+- `video-tools.spec.ts` (+3, ffprobe/ffmpeg): WebM 0:00.5–0:01.5 exacto → WebM de **1,0 s (±0,1)**, rojo a 0,25 s y azul a 0,75 s, tonos correctos; MP4 H.264 desde 0:01.0 en modo rápido → MP4 **H.264/AAC copiado** (este Chromium no decodifica H.264), 1 s, todo azul; tiempos invertidos, fuera del video o mal escritos deshabilitan la acción; un texto disfrazado muestra el error.
+- Lint, typecheck, tests (919 + 8 saltados), build, `check:static` (952 páginas) y `npm run test:e2e` completo: 291 pasan, 4 saltados (sin Gotenberg ni EPUBCheck).
+
+**Limitaciones**
+- Un solo tramo por archivo. En modo rápido el resultado puede empezar antes del inicio marcado (hasta el fotograma clave anterior; en videos de celular suele ser ≤ 1–2 s). El reproductor depende del navegador (MKV o H.264 pueden no reproducirse), pero los tiempos se pueden escribir.
+
+**Siguiente**: 3C.38c ("Video a GIF").

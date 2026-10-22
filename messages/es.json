@@ -225,7 +225,8 @@
     "noVideoTrack": "Este archivo no tiene video.",
     "videoCodecUnsupported": "Tu navegador no puede leer el video de este archivo (por ejemplo, H.264 o HEVC en algunos navegadores). Prueba con Chrome, Edge o Safari, o elige un formato que no necesite recomprimirlo.",
     "videoEncoderUnsupported": "Tu navegador no puede crear video en este formato (MOV necesita H.264). Prueba con Chrome, Edge o Safari, o elige MP4, WebM o MKV.",
-    "videoTooLong": "El video es demasiado largo: el máximo es de 2 horas por archivo."
+    "videoTooLong": "El video es demasiado largo: el máximo es de 2 horas por archivo.",
+    "videoRangeInvalid": "Revisa los tiempos: el inicio debe ser anterior al fin y ambos deben estar dentro del video."
   },
   "Tools": {
     "merge-pdf": {
@@ -1323,6 +1324,22 @@
         "q4": "¿Hay algún límite?",
         "a4": "Hasta 200 MB por video en el plan gratis (500 MB con Pro), 2 horas de duración y 30 minutos de proceso por archivo. Nunca se agranda la imagen. El MP4 se crea en H.264 cuando el navegador lo permite (Chrome, Edge, Safari); si no, en VP9 o AV1."
       }
+    },
+    "trim-video": {
+      "title": "Recortar video",
+      "description": "Corta un video MP4, MOV, MKV o WebM y quédate con la parte que quieres, en tu navegador.",
+      "action": "Recortar video",
+      "about": "Quédate solo con el momento que importa: el gol, el saludo o la parte de una reunión grabada. Reproduce el video, marca el inicio y el fin con «Usar posición actual» (o escribe los tiempos) y descarga el tramo en el mismo formato. El modo exacto corta en el cuadro preciso volviendo a codificar el video; el modo rápido copia sin recomprimir, en segundos y sin pérdida, empezando en el fotograma clave anterior al inicio. Todo pasa en tu dispositivo: el video no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué diferencia hay entre exacto y rápido?",
+        "a1": "El exacto empieza justo donde marcaste, pero tiene que volver a codificar el video (tarda más y recomprime con calidad alta). El rápido copia el video tal cual, así que tarda segundos y no pierde nada, pero solo puede empezar en un fotograma clave: el resultado puede comenzar hasta unos segundos antes.",
+        "q2": "¿Cómo encuentro el momento justo?",
+        "a2": "Reproduce el video y pausa donde quieras; «Usar posición actual» copia ese tiempo en el campo. También puedes escribir minutos:segundos, por ejemplo 1:23.5.",
+        "q3": "¿Puedo quitar una parte del medio?",
+        "a3": "Por ahora se conserva un solo tramo por vez. Para quitar algo del medio, recorta las dos partes y únelas con «Unir videos» cuando esté disponible.",
+        "q4": "¿Hay algún límite?",
+        "a4": "Un video por vez, hasta 200 MB en el plan gratis (500 MB con Pro) y 2 horas de duración. Si tu navegador no puede reproducir el archivo (por ejemplo MKV o H.264 en algunos), igual puedes escribir los tiempos."
+      }
     }
   },
   "ToolUi": {
@@ -2339,5 +2356,16 @@
     "note": "La resolución se mide en el lado más corto, así que también sirve para videos verticales. Nunca se agranda. Se procesa en tu dispositivo.",
     "size": "{width} × {height} px.",
     "notSmaller": "El resultado no quedó más liviano que el original: prueba una calidad o resolución menor."
+  },
+  "TrimVideoTool": {
+    "reading": "Leyendo el video…",
+    "player": "Reproductor del video",
+    "mode": "Modo de corte",
+    "modes": {
+      "exact": "Exacto",
+      "fast": "Rápido (sin recomprimir)"
+    },
+    "exactNote": "Corta en el cuadro exacto: el video se vuelve a codificar en calidad alta. Se procesa en tu dispositivo.",
+    "fastNote": "Copia sin recomprimir, en segundos y sin pérdida; empieza en el fotograma clave anterior al inicio, así que puede comenzar un poco antes."
   }
 }

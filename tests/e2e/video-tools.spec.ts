@@ -27,19 +27,19 @@ interface VideoProbe {
   display: string;
   size: number;
   duration: number;
-  /** Average color at 0.5 s and at 1.5 s. */
+  /** Average color at the probed times (0.5 s and 1.5 s by default). */
   colors: [number, number, number][];
   /** Tone of each channel in Hz. */
   tones: number[];
 }
 
-function probe(buf: Buffer, name: string): VideoProbe {
+function probe(buf: Buffer, name: string, at = [0.5, 1.5]): VideoProbe {
   const file = join(mkdtempSync(join(tmpdir(), "video-")), name);
   writeFileSync(file, buf);
   const info = JSON.parse(execFileSync("ffprobe", ["-v", "error", "-show_streams", "-show_format", "-of", "json", file], { encoding: "utf8" }));
   const v = info.streams.find((s: { codec_type: string }) => s.codec_type === "video");
   const a = info.streams.find((s: { codec_type: string }) => s.codec_type === "audio");
-  const colors = (v ? [0.5, 1.5] : []).map((at) => {
+  const colors = (v ? at : []).map((at) => {
     const rgb = execFileSync("ffmpeg", ["-v", "error", "-ss", String(at), "-i", file, "-frames:v", "1", "-vf", "scale=1:1:flags=area", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]);
     return [rgb[0]!, rgb[1]!, rgb[2]!] as [number, number, number];
   });
@@ -250,6 +250,63 @@ test.describe("tool: compress-video", () => {
       expect(p.format, entry.name).toContain("webm");
       expectSameContent(p, entry.name, entry.name === "video-rotated.webm" ? "240x320" : "320x240");
     }
+  });
+});
+
+test.describe("tool: trim-video", () => {
+  test.skip(!hasFfmpeg, "needs ffmpeg/ffprobe to check the output");
+
+  const times = (page: import("@playwright/test").Page) => ({
+    start: page.getByRole("textbox", { name: "Start" }),
+    end: page.getByRole("textbox", { name: "End" }),
+  });
+  const isRed = (c: number[]) => c[0]! > 180 && c[2]! < 80;
+  const isBlue = (c: number[]) => c[2]! > 180 && c[0]! < 80;
+
+  test("exact: WebM 0:00.5–0:01.5 → 1 s of WebM, half red and half blue, with sound", async ({ page }) => {
+    await openWithFiles(page, "/en/trim-video", ["video.webm"]);
+    const { start, end } = times(page);
+    await expect(end).toHaveValue("0:02.0");
+    await start.fill("0:00.5");
+    await end.fill("0:01.5");
+    const out = fileOf(await runTool(page, "Trim video"));
+    expect(out.name).toBe("video.webm");
+    await expect(page.locator("main")).toContainText("0:00.5");
+    const p = probe(out.buf, out.name, [0.25, 0.75]);
+    expect(p.format).toContain("webm");
+    expect(Math.abs(p.duration - 1), `lasts ${p.duration} s`).toBeLessThan(0.1);
+    expect(isRed(p.colors[0]!), `red at 0.25 s: ${p.colors[0]}`).toBe(true);
+    expect(isBlue(p.colors[1]!), `blue at 0.75 s: ${p.colors[1]}`).toBe(true);
+    expect(Math.abs(p.tones[0]! - 440)).toBeLessThan(15);
+    expect(Math.abs(p.tones[1]! - 660)).toBeLessThan(15);
+  });
+
+  test("fast: MP4 (H.264, not decodable here) 0:01.0–0:02.0 is copied from its key frame", async ({ page }) => {
+    await openWithFiles(page, "/es/recortar-video", ["video.mp4"]);
+    await page.getByRole("textbox", { name: "Inicio" }).fill("0:01.0");
+    await page.getByText("Rápido (sin recomprimir)", { exact: true }).click();
+    const out = fileOf(await runTool(page, "Recortar video"));
+    expect(out.name).toBe("video.mp4");
+    const p = probe(out.buf, out.name, [0.2, 0.8]);
+    expect(p).toMatchObject({ video: "h264", audio: "aac", display: "320x240" });
+    // The fixture has a key frame every second, so the copy starts exactly at 1 s.
+    expect(Math.abs(p.duration - 1), `lasts ${p.duration} s`).toBeLessThan(0.15);
+    for (const c of p.colors) expect(isBlue(c), `blue: ${c}`).toBe(true);
+  });
+
+  test("invalid times disable the action; a fake file shows the error", async ({ page }) => {
+    await openWithFiles(page, "/en/trim-video", ["video.webm"]);
+    const { start, end } = times(page);
+    await expect(end).toHaveValue("0:02.0");
+    const action = page.getByRole("button", { name: "Trim video", exact: true });
+    for (const [s, e] of [["0:01.5", "0:01.0"], ["0:00.0", "0:05.0"], ["1:75", "0:01.0"]]) {
+      await start.fill(s!);
+      await end.fill(e!);
+      await expect(action).toBeDisabled();
+    }
+    await page.getByRole("button", { name: "Remove video.webm" }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(join(__dirname, "../fixtures/corrupt/not-video.mp4"));
+    await expect(page.locator("main")).toContainText("can't be converted this way");
   });
 });
 

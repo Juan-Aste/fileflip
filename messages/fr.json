@@ -225,7 +225,8 @@
     "noVideoTrack": "Ce fichier ne contient pas de vidéo.",
     "videoCodecUnsupported": "Votre navigateur ne peut pas lire la vidéo de ce fichier (par exemple H.264 ou HEVC dans certains navigateurs). Essayez Chrome, Edge ou Safari, ou choisissez un format qui n'oblige pas à la réencoder.",
     "videoEncoderUnsupported": "Votre navigateur ne peut pas créer de vidéo dans ce format (MOV exige H.264). Essayez Chrome, Edge ou Safari, ou choisissez MP4, WebM ou MKV.",
-    "videoTooLong": "La vidéo est trop longue : le maximum est de 2 heures par fichier."
+    "videoTooLong": "La vidéo est trop longue : le maximum est de 2 heures par fichier.",
+    "videoRangeInvalid": "Vérifiez les temps : le début doit précéder la fin et les deux doivent être dans la vidéo."
   },
   "Tools": {
     "merge-pdf": {
@@ -1323,6 +1324,22 @@
         "q4": "Y a-t-il une limite ?",
         "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. L'image n'est jamais agrandie. Le MP4 est créé en H.264 quand le navigateur le permet (Chrome, Edge, Safari) ; sinon en VP9 ou AV1."
       }
+    },
+    "trim-video": {
+      "title": "Couper une vidéo",
+      "description": "Coupez une vidéo MP4, MOV, MKV ou WebM et gardez la partie voulue, dans votre navigateur.",
+      "action": "Couper la vidéo",
+      "about": "Gardez seulement le moment qui compte : le but, le message ou une partie d'une réunion enregistrée. Lisez la vidéo, marquez le début et la fin avec « Utiliser la position actuelle » (ou saisissez les temps) et téléchargez l'extrait dans le même format. Le mode précis coupe à l'image exacte en réencodant la vidéo ; le mode rapide copie sans réencodage, en quelques secondes et sans perte, à partir de l'image clé précédant le début. Tout se passe sur votre appareil : la vidéo n'est envoyée à aucun serveur.",
+      "faq": {
+        "q1": "Quelle différence entre précis et rapide ?",
+        "a1": "Le mode précis commence exactement là où vous l'avez indiqué, mais il doit réencoder la vidéo (c'est plus long et la vidéo est recompressée en haute qualité). Le mode rapide copie la vidéo telle quelle : quelques secondes, sans perte, mais il ne peut commencer que sur une image clé, donc l'extrait peut démarrer quelques secondes plus tôt.",
+        "q2": "Comment trouver le bon moment ?",
+        "a2": "Lisez la vidéo et mettez en pause à l'endroit voulu ; « Utiliser la position actuelle » copie ce temps dans le champ. Vous pouvez aussi saisir minutes:secondes, par exemple 1:23.5.",
+        "q3": "Puis-je supprimer une partie au milieu ?",
+        "a3": "Pour l'instant, un seul extrait est conservé à la fois. Pour retirer un passage au milieu, coupez les deux parties et assemblez-les avec « Assembler des vidéos » dès qu'il sera disponible.",
+        "q4": "Y a-t-il une limite ?",
+        "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée. Si votre navigateur ne lit pas le fichier (par exemple MKV ou H.264 dans certains), vous pouvez quand même saisir les temps."
+      }
     }
   },
   "ToolUi": {
@@ -2339,5 +2356,16 @@
     "note": "La résolution se mesure sur le côté le plus court : cela fonctionne aussi pour les vidéos verticales. Jamais d'agrandissement. Traitement sur votre appareil.",
     "size": "{width} × {height} px.",
     "notSmaller": "Le résultat n'est pas plus léger que l'original : essayez une qualité ou une résolution plus basse."
+  },
+  "TrimVideoTool": {
+    "reading": "Lecture de la vidéo…",
+    "player": "Lecteur vidéo",
+    "mode": "Mode de coupe",
+    "modes": {
+      "exact": "Précis",
+      "fast": "Rapide (sans réencodage)"
+    },
+    "exactNote": "Coupe à l'image exacte : la vidéo est réencodée en haute qualité. Traitement sur votre appareil.",
+    "fastNote": "Copie sans réencodage, en quelques secondes et sans perte ; commence à l'image clé précédant le début, donc un peu plus tôt."
   }
 }

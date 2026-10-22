@@ -21,6 +21,7 @@ import {
 } from "mediabunny";
 import { ConversionError } from "@/lib/convert-error";
 import { assertComplete, ensureEncoder } from "@/lib/audio/convert";
+import { validRange, type TrimRange } from "@/lib/audio/time";
 import { encodersFor, MAX_VIDEO_SECONDS, scaledSize, videoPlan, type VideoQuality, type VideoTarget } from "./options";
 
 const outputFormat: Record<VideoTarget, () => Mp4OutputFormat | MovOutputFormat | WebMOutputFormat | MkvOutputFormat> = {
@@ -30,16 +31,28 @@ const outputFormat: Record<VideoTarget, () => Mp4OutputFormat | MovOutputFormat 
   mkv: () => new MkvOutputFormat(),
 };
 
-/** "Compress video": the picture is always re-encoded, at this quality and at most this size. */
+/** Edits made while converting; any of them but a fast trim re-encodes the picture. */
 export interface VideoEdit {
-  quality: VideoQuality;
+  /** "Compress video": encoding quality ("high" when re-encoding for another reason). */
+  quality?: VideoQuality;
   /** Shorter side in pixels (720 for 720p); never enlarged. */
   maxShortSide?: number;
+  /** Seconds of the input to keep. */
+  trim?: TrimRange;
+  /** Cut at the exact frame (re-encodes) instead of at the key frame before the start (copies). */
+  exact?: boolean;
+}
+
+/** Duration in seconds of a video, with the same checks as a conversion. */
+export async function probeVideo(file: Blob): Promise<{ duration: number }> {
+  const { input, duration } = await openVideo(file);
+  input.dispose();
+  return { duration };
 }
 
 export interface VideoResult {
   data: Uint8Array;
-  /** Seconds of the input. */
+  /** Seconds of the input (of the selection, when trimmed). */
   duration: number;
   /** Output video codec, and whether the video was copied without re-encoding. */
   videoCodec: VideoCodec;
@@ -91,7 +104,10 @@ export async function convertVideo(
   const { input, video, audio, duration } = await openVideo(file);
   try {
     const { width, height } = scaledSize(video.displayWidth, video.displayHeight, edit?.maxShortSide);
-    const plan = videoPlan(target, { video: video.codec, audio: audio?.codec ?? null }, await encodableVideo(target, width, height), !!edit);
+    const reencode = edit !== undefined && (edit.quality !== undefined || edit.maxShortSide !== undefined || (edit.trim !== undefined && !!edit.exact));
+    if (edit?.trim && !validRange(edit.trim, duration)) throw new ConversionError("videoRangeInvalid");
+    const trim = edit?.trim && { start: edit.trim.start, end: Math.min(edit.trim.end, duration) };
+    const plan = videoPlan(target, { video: video.codec, audio: audio?.codec ?? null }, await encodableVideo(target, width, height), reencode);
     if (!plan) throw new ConversionError("videoEncoderUnsupported");
     // Re-encoding needs the browser to decode the source first (H.264 and HEVC aren't
     // decodable in every browser; AAC neither).
@@ -114,12 +130,14 @@ export async function convertVideo(
       video: {
         codec: plan.video,
         ...(plan.copyVideo ? {} : { quality: new Quality(edit?.quality ?? "high") }),
-        ...(edit && (width !== video.displayWidth || height !== video.displayHeight) ? { width, height, fit: "fill" as const } : {}),
+        ...(width !== video.displayWidth || height !== video.displayHeight ? { width, height, fit: "fill" as const } : {}),
       },
       audio: plan.audio ? { codec: plan.audio, ...(plan.copyAudio ? {} : { quality: QUALITY_HIGH }) } : { discard: true },
       // AAC starts with encoder priming before 0 s, which MKV/WebM can't hold: shifting the whole
       // file by that much (mediabunny keeps the tracks in sync) lets the packets be copied.
+      // A fast trim copies from the key frame before the start (it may begin a little earlier).
       copy: { shiftTolerance: 0.5 },
+      ...(trim ? { trim } : {}),
       showWarnings: false,
     });
     // A conversion that would silently drop the picture or the sound is an error instead.
@@ -142,7 +160,7 @@ export async function convertVideo(
     }
     const buffer = (output.target as BufferTarget).buffer;
     if (!buffer || buffer.byteLength === 0) throw new ConversionError("conversionFailed");
-    return { data: new Uint8Array(buffer), duration, videoCodec: plan.video, copied: plan.copyVideo, width, height };
+    return { data: new Uint8Array(buffer), duration: trim ? trim.end - trim.start : duration, videoCodec: plan.video, copied: plan.copyVideo, width, height };
   } finally {
     input.dispose();
   }

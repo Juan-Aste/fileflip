@@ -225,7 +225,8 @@
     "noVideoTrack": "Este arquivo não tem vídeo.",
     "videoCodecUnsupported": "Seu navegador não consegue ler o vídeo deste arquivo (por exemplo, H.264 ou HEVC em alguns navegadores). Tente o Chrome, o Edge ou o Safari, ou escolha um formato que não precise recomprimi-lo.",
     "videoEncoderUnsupported": "Seu navegador não consegue criar vídeo neste formato (MOV precisa de H.264). Tente o Chrome, o Edge ou o Safari, ou escolha MP4, WebM ou MKV.",
-    "videoTooLong": "O vídeo é longo demais: o máximo é de 2 horas por arquivo."
+    "videoTooLong": "O vídeo é longo demais: o máximo é de 2 horas por arquivo.",
+    "videoRangeInvalid": "Confira os tempos: o início deve vir antes do fim e ambos devem estar dentro do vídeo."
   },
   "Tools": {
     "merge-pdf": {
@@ -1323,6 +1324,22 @@
         "q4": "Existe algum limite?",
         "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro), 2 horas de duração e 30 minutos de processamento por arquivo. A imagem nunca é ampliada. O MP4 é criado em H.264 quando o navegador permite (Chrome, Edge, Safari); se não, em VP9 ou AV1."
       }
+    },
+    "trim-video": {
+      "title": "Cortar vídeo",
+      "description": "Corte um vídeo MP4, MOV, MKV ou WebM e fique com a parte que quiser, no seu navegador.",
+      "action": "Cortar vídeo",
+      "about": "Fique só com o momento que importa: o gol, o recado ou a parte de uma reunião gravada. Reproduza o vídeo, marque o início e o fim com «Usar posição atual» (ou digite os tempos) e baixe o trecho no mesmo formato. O modo exato corta no quadro preciso recodificando o vídeo; o modo rápido copia sem recomprimir, em segundos e sem perda, começando no quadro-chave anterior ao início. Tudo acontece no seu dispositivo: o vídeo não é enviado a nenhum servidor.",
+      "faq": {
+        "q1": "Qual a diferença entre exato e rápido?",
+        "a1": "O exato começa exatamente onde você marcou, mas precisa recodificar o vídeo (demora mais e recomprime em alta qualidade). O rápido copia o vídeo como está, então leva segundos e não perde nada, mas só pode começar num quadro-chave: o resultado pode começar até alguns segundos antes.",
+        "q2": "Como encontro o momento certo?",
+        "a2": "Reproduza o vídeo e pause onde quiser; «Usar posição atual» copia esse tempo para o campo. Você também pode digitar minutos:segundos, por exemplo 1:23.5.",
+        "q3": "Posso tirar uma parte do meio?",
+        "a3": "Por enquanto se mantém um trecho por vez. Para tirar algo do meio, corte as duas partes e junte-as com «Juntar vídeos» quando estiver disponível.",
+        "q4": "Existe algum limite?",
+        "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro) e 2 horas de duração. Se o navegador não reproduzir o arquivo (por exemplo MKV ou H.264 em alguns), você ainda pode digitar os tempos."
+      }
     }
   },
   "ToolUi": {
@@ -2339,5 +2356,16 @@
     "note": "A resolução é medida no lado mais curto, então também serve para vídeos verticais. Nunca é ampliada. Processado no seu dispositivo.",
     "size": "{width} × {height} px.",
     "notSmaller": "O resultado não ficou menor que o original: tente uma qualidade ou resolução menor."
+  },
+  "TrimVideoTool": {
+    "reading": "Lendo o vídeo…",
+    "player": "Player do vídeo",
+    "mode": "Modo de corte",
+    "modes": {
+      "exact": "Exato",
+      "fast": "Rápido (sem recomprimir)"
+    },
+    "exactNote": "Corta no quadro exato: o vídeo é recodificado em alta qualidade. Processado no seu dispositivo.",
+    "fastNote": "Copia sem recomprimir, em segundos e sem perda; começa no quadro-chave anterior ao início, então pode começar um pouco antes."
   }
 }

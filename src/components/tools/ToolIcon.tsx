@@ -137,6 +137,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "video-converter": Clapperboard,
   "extract-audio": FileAudio,
   "compress-video": FileVideo,
+  "trim-video": Scissors,
   "subtitle-converter": Captions,
   "subtitle-sync": TimerReset,
 };
