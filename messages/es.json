@@ -117,6 +117,13 @@
           "a": "Tú decides: puedes ajustar la calidad en los formatos con compresión (JPG, WEBP, AVIF). Los formatos sin pérdida, como PNG, mantienen la imagen tal cual."
         }
       }
+    },
+    "catalog": {
+      "searchPlaceholder": "Buscar entre {count} herramientas",
+      "popularHeading": "Herramientas populares",
+      "categoriesHeading": "Explora por categoría",
+      "categoriesSubtitle": "PDF, imágenes, video, audio, documentos, datos y más.",
+      "allTools": "Ver todas las herramientas"
     }
   },
   "Errors": {

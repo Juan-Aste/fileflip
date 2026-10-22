@@ -1134,6 +1134,25 @@ export const tools: Record<ToolId, ToolInfo> = {
 /** Published tools: only verified ones get pages, links and sitemap entries. */
 export const availableTools: readonly ToolId[] = toolIds.filter((id) => tools[id].status === "verified");
 
+/**
+ * Tools featured on the home page: the most searched tasks first (PDF and
+ * images), then one per area so the variety shows at a glance.
+ */
+export const popularTools: readonly ToolId[] = [
+  "compress-pdf",
+  "merge-pdf",
+  "compress-image",
+  "remove-background",
+  "sign-pdf",
+  "id-photo",
+  "image-to-text",
+  "video-converter",
+  "extract-archive",
+  "qr-generator",
+  "audio-converter",
+  "split-pdf",
+].filter((id) => tools[id as ToolId].status === "verified") as ToolId[];
+
 /** A published tool by its slug in a language (draft tools have no page). */
 export function toolFromSlug(locale: Locale, slug: string): ToolInfo | undefined {
   return availableTools.map((id) => tools[id]).find((t) => t.slugs[locale] === slug);

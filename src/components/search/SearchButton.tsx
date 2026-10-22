@@ -9,6 +9,9 @@ import { prefetchSearchIndex } from "./search-index";
 // The dialog (and the index it fetches) loads on first use only.
 const SearchDialog = dynamic(() => import("./SearchDialog"), { ssr: false });
 
+/** Other search fields (the home page's) open this button's dialog with this event. */
+export const OPEN_SEARCH_EVENT = "fileflect:open-search";
+
 /** Header search button; Ctrl/⌘+K or "/" opens it from anywhere. */
 export default function SearchButton({ className = "" }: { className?: string }) {
   const t = useTranslations("Search");
@@ -26,8 +29,16 @@ export default function SearchButton({ className = "" }: { className?: string })
         setOpen(true);
       }
     };
+    const onOpen = () => {
+      setUsed(true);
+      setOpen(true);
+    };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    window.addEventListener(OPEN_SEARCH_EVENT, onOpen);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener(OPEN_SEARCH_EVENT, onOpen);
+    };
   }, []);
 
   return (

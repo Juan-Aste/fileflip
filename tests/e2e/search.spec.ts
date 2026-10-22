@@ -37,3 +37,31 @@ for (const [width, colorScheme] of [
     });
   });
 }
+
+test.describe("home catalog", () => {
+  for (const width of [360, 1280]) {
+    test(`at ${width}px: search field, popular tools and every category, without horizontal scroll`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto("/es", { waitUntil: "networkidle" });
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+
+      const popular = page.getByRole("region", { name: "Herramientas populares" }).getByRole("link");
+      expect(await popular.count()).toBeGreaterThanOrEqual(8);
+      await expect(popular.filter({ hasText: "Quitar fondo de imagen" })).toHaveAttribute("href", "/es/quitar-fondo");
+      const categories = page.getByRole("region", { name: "Explora por categoría" });
+      await expect(categories.getByRole("link", { name: /^Audio\s*\d+ herramientas$/ })).toHaveAttribute("href", "/es/herramientas-de-audio");
+      // One card per published category, as on "all tools", plus the link to it.
+      await page.goto("/es/herramientas", { waitUntil: "networkidle" });
+      const published = await page.getByRole("navigation", { name: "Categorías" }).getByRole("link").count();
+      await page.goto("/es", { waitUntil: "networkidle" });
+      expect(await categories.getByRole("link").count()).toBe(published);
+
+      // The hero field opens the same dialog as the header button.
+      await page.getByRole("button", { name: /^Buscar entre \d+ herramientas$/ }).click();
+      const box = page.getByRole("combobox", { name: "Buscar herramientas" });
+      await box.fill("quitar fondo");
+      await page.keyboard.press("Enter");
+      await page.waitForURL("**/es/quitar-fondo");
+    });
+  }
+});

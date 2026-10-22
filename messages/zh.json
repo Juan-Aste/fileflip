@@ -117,6 +117,13 @@
           "a": "由你决定：有损格式（JPG、WEBP、AVIF）可以调整质量。PNG 等无损格式会完整保留图像。"
         }
       }
+    },
+    "catalog": {
+      "searchPlaceholder": "搜索 {count} 个工具",
+      "popularHeading": "热门工具",
+      "categoriesHeading": "按类别浏览",
+      "categoriesSubtitle": "PDF、图片、视频、音频、文档、数据等。",
+      "allTools": "查看全部工具"
     }
   },
   "Errors": {

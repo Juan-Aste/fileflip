@@ -2716,3 +2716,20 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - El build tarda ~20 minutos y baja ~1 GB (emsdk); no corre en el CI: el WASM se versiona. Para actualizar libarchive: cambiar versión y sha256 en el script, correrlo y revisar los tests.
 
 **Siguiente**: hito 3D (3D.1 portada que escale a 100+ herramientas).
+
+## 2026-10-22 13:50 UTC — Fase 3, tarea 3D.1 (portada que escala a 100+ herramientas)
+
+**Qué se hizo**
+- La portada no mostraba el catálogo (solo el conversor y conversiones populares). Ahora:
+  - **Buscador visible** en el hero (`HeroSearch`): campo ancho "Buscar entre N herramientas" (N sale del registro: `availableTools.length`, hoy 82) que abre el **mismo diálogo** del header mediante el evento `fileflect:open-search` (un solo diálogo y un solo índice; se precarga al pasar el mouse o enfocar). `aria-haspopup="dialog"` y `aria-keyshortcuts`; el `Ctrl K` visible está oculto para lectores de pantalla.
+  - **Herramientas populares** (`popularTools` en `src/config/tools.ts`, 12, solo las verificadas): tarjetas compactas con ícono y nombre, 2 columnas en móvil y 3 en escritorio.
+  - **Explora por categoría**: una tarjeta por categoría publicada con su ícono y la cantidad de herramientas (o de conversiones si no tiene herramientas), enlace a la página de la categoría, y "Ver todas las herramientas".
+  - Las secciones van dentro de la columna con el anuncio lateral, entre las conversiones populares y "Cómo funciona"; sin texto largo (las descripciones viven en las páginas de categoría), así no abruma en móvil.
+- Textos en los 5 idiomas (`HomePage.catalog`). Componente de servidor (`HomeCatalog`): no suma JS a la portada salvo el botón del buscador (ruta `/[locale]`: 1,49 kB).
+- Capturas en `docs/screenshots/home-catalog-360-light.png` y `home-catalog-1280-dark.png`, revisadas.
+
+**Verificación**
+- `search.spec.ts` (+2, a 360 y 1280 px): sin scroll horizontal; ≥ 8 populares con "Quitar fondo de imagen" → `/es/quitar-fondo`; la tarjeta "Audio N herramientas" → `/es/herramientas-de-audio`; tantas tarjetas de categoría como categorías publicadas en "Todas las herramientas"; el campo del hero abre el diálogo, "quitar fondo" + Enter navega. `search` + `converter` de navegador: 99/99.
+- Lint, typecheck, tests (980 + 8 saltados), build y `check:static` (1007 páginas).
+
+**Siguiente**: 3D.2 (enlaces internos entre herramientas relacionadas).

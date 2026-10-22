@@ -117,6 +117,13 @@
           "a": "You decide: you can adjust the quality of compressed formats (JPG, WEBP, AVIF). Lossless formats such as PNG keep the image exactly as it is."
         }
       }
+    },
+    "catalog": {
+      "searchPlaceholder": "Search {count} tools",
+      "popularHeading": "Popular tools",
+      "categoriesHeading": "Browse by category",
+      "categoriesSubtitle": "PDF, images, video, audio, documents, data and more.",
+      "allTools": "See all tools"
     }
   },
   "Errors": {
