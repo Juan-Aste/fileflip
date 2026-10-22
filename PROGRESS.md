@@ -2940,3 +2940,16 @@ Al preparar la lista para publicar se vio que faltaba `ads.txt`, que AdSense exi
 
 **Verificación**
 - Lint y tests unitarios (999) pasan; solo documentación.
+
+## 2026-10-22 20:45 UTC — FASE 4 TERMINADA
+
+Todas las tareas de la fase 4 están marcadas y el CI de GitHub está en verde en `2b282a3`.
+
+**Resumen**
+- 4.1 Créditos y licencias: `npm run licenses` genera los datos desde `node_modules` y `docs/dependencies.md`; página `/[locale]/credits` (`/es/creditos`, `/en/credits`…) en 5 idiomas, enlazada en el footer y en el sitemap, con avisos LGPL (LAME, FFmpeg AAC, libFLAC, libheif, libvips, libarchive), enlaces al código fuente y avisos de terceros descargables; test que falla ante dependencias sin crédito o GPL/AGPL no aprobadas.
+- 4.2 Pendientes resolubles en código: lista del dueño clasificada, CLS 0 con fuentes tardías, prueba automática de arrastrar y soltar en "Ordenar PDF", `/ads.txt` para AdSense.
+- 4.3 `docs/launch-checklist.md`: pasos en orden para publicar.
+
+**Para publicar**: seguir `docs/launch-checklist.md`. Lo que queda depende solo del dueño (ver "Pendiente del dueño"), incluido el commit exacto de FFmpeg (AAC) para la LGPL.
+
+**La tarea programada de desarrollo autónomo ya no tiene trabajo: conviene pausarla.**
