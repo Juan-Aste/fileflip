@@ -9,6 +9,7 @@
     "build": "next build",
     "analyze": "ANALYZE=true next build",
     "check:static": "node scripts/check-static.mjs",
+    "licenses": "node scripts/licenses/generate.mjs",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",

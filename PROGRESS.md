@@ -2815,3 +2815,17 @@ Todas las tareas de la fase 3 en PLAN.md están marcadas. Informe en `docs/repor
 - PLAN.md: nueva sección "Fase 4" (cierre antes de publicar) con los hitos 4.1 (créditos y licencias), 4.2 (pendientes resolubles en código) y 4.3 (lista para publicar).
 - Revisión rápida de los pendientes para armar el plan: de "Pendiente del dueño" y de la sección 10 del informe de la fase 3, solo la página de créditos (4.1), el CLS de la categoría PDF (4.2b) y la prueba manual de "Ordenar PDF" (4.2c) se resuelven en código; el resto necesita cuentas, credenciales, dominio o decisiones del dueño (se detalla en 4.2a).
 - CI de `dev` en verde al empezar (264bf57).
+
+## 2026-10-22 19:19 UTC — Fase 4, tarea 4.1a (`npm run licenses`)
+
+**Qué se hizo**
+- `scripts/licenses/production.mjs` (compartido por el script y el test): recorre el `package-lock.json` desde las `dependencies` de `package.json` con la resolución de Node, solo los paquetes que se instalan en el destino del deploy (Linux x64 glibc: imagen `node:22-bookworm-slim`), y hereda de cada dependencia directa dónde corre (navegador/servidor) según la columna "Dónde" de `docs/dependencies.md`. Elige la licencia de las expresiones SPDX (en "A OR B" la primera sin GPL/AGPL; dompurify se usa bajo Apache-2.0, como dice la documentación) y rechaza GPL/AGPL no aprobadas y licencias desconocidas.
+- `scripts/licenses/generate.mjs` (`npm run licenses`): genera `src/content/credits.json` (249 paquetes: nombre, versión, licencia, autor, enlace al proyecto, dónde corre, si es directa) y `public/third-party-notices.txt` (~800 KB) con los archivos LICENSE/COPYING/NOTICE/AUTHORS reales de cada paquete instalado (incluidos los NOTICE de Apache-2.0). Los 23 paquetes que no traen archivo de licencia (p. ej. `server-only`, `onnxruntime-web`, `@img/sharp-libvips-linux-x64`) llevan el texto estándar SPDX de su licencia (`scripts/licenses/texts/`, con el titular del copyright cuando se conoce; LGPL-3.0 va con el texto de la GPL-3.0 que completa).
+- `docs/dependencies.md`: `parse5` figuraba como "N (solo servidor)" → "S"; `marked` también corre en el servidor (Markdown → PDF) → "N + S".
+
+**Verificación**
+- `tests/licenses.test.ts` (6): elección de licencia (OR/AND, GPL, AGPL, SSPL, sin licencia), lectura de nombres de `docs/dependencies.md`, toda dependencia directa documentada, **cada paquete de producción con su entrada en los créditos y viceversa** (falla con "run `npm run licenses`"), ninguna GPL/AGPL no aprobada, y cada entrada con enlace https, lugar y su bloque en los avisos.
+- El test usa el cierre de producción del lockfile, que incluye todo lo que el build puede distribuir (y algo más, p. ej. opcionales de next-intl y pdfjs-dist): es más estricto que mirar `.next` y no necesita build.
+- Lint, typecheck, tests (994 + 8 saltados) y build pasan.
+
+**Siguiente**: 4.1b (componentes embebidos y LGPL con su código fuente).

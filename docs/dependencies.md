@@ -41,8 +41,8 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 | Modelo u2netp (U²-Net small) | `u2netp.onnx`, sha256 `309c8469…4ddd8` | Apache-2.0 (pesos de xuebinqin/U-2-Net; ONNX publicado por rembg, MIT) | segmentación del sujeto principal a 320 × 320 en "Quitar fondo" (4,6 MB, versionado en `public/bg/`) | N (`/bg/u2netp.onnx`, descargado al primer uso) |
 | @tesseract.js-data/{eng,spa,por,fra,chi_sim} | 1.0.0 | MIT (paquete); modelos tessdata_best de Tesseract: Apache-2.0 | modelos de idioma `4.0.0_best_int` (2–4 MB c/u en gzip); se descarga solo el elegido | N (`/ocr/`) |
 | xlsx (SheetJS CE) | 0.20.3 | Apache-2.0 | Lectura de XLSX/XLS/ODS y escritura de XLSX/ODS en "Convertir hoja de cálculo". Instalada desde el **tarball oficial** `https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz` (la versión de npm, 0.18.5, está abandonada y tiene CVE-2023-30533 y CVE-2024-22363, corregidas desde 0.20.2) | N (worker de datos, import diferido) |
-| parse5 | 8.0.1 | MIT | Parser HTML5 en el servidor: sanea el HTML de "HTML a PDF" antes de imprimirlo | N (solo servidor) |
-| marked | 18.1.1 | MIT | Markdown (CommonMark + GFM) → HTML (en el navegador para Markdown → HTML; en el servidor para Markdown → PDF) | N (chunk de la herramienta, import diferido) |
+| parse5 | 8.0.1 | MIT | Parser HTML5 en el servidor: sanea el HTML de "HTML a PDF" antes de imprimirlo | S |
+| marked | 18.1.1 | MIT | Markdown (CommonMark + GFM) → HTML (en el navegador para Markdown → HTML; en el servidor para Markdown → PDF) | N + S (en el navegador, chunk de la herramienta con import diferido) |
 | dompurify | 3.4.17 | MPL-2.0 OR Apache-2.0 (se usa bajo Apache-2.0) | sanea el HTML generado (sin scripts, eventos, formularios ni `javascript:`) | N (ídem) |
 | turndown, turndown-plugin-gfm | 7.2.4 / 1.0.2 | MIT (dep. @mixmark-io/domino BSD-2-Clause, solo en Node: el build del navegador la excluye) | HTML → Markdown con tablas, tachado y listas de tareas | N (ídem) |
 | pdf-lib | 1.17.1 | MIT | crear y editar PDF | N (worker) |

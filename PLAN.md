@@ -325,7 +325,7 @@ Mediciones: Lighthouse móvil (≥ 90, CLS 0) después de 3C.10, 3C.23, 3C.34 y 
 Cierre antes de publicar: tareas chicas que no requieren decisiones del dueño. No se agregan dependencias GPL ni AGPL.
 
 ### Hito 4.1 — Créditos y licencias
-- [ ] 4.1a `npm run licenses`: genera los datos de créditos desde `node_modules` (dependencias de producción del `package-lock.json`, licencia, autor y enlace reales) y `docs/dependencies.md`, más un archivo descargable de avisos de terceros (textos de licencia, copyright y NOTICE de Apache-2.0); test que falla si una dependencia de producción no tiene entrada en los créditos o si aparece una GPL/AGPL no aprobada
+- [x] 4.1a `npm run licenses`: genera los datos de créditos desde `node_modules` (dependencias de producción del `package-lock.json`, licencia, autor y enlace reales) y `docs/dependencies.md`, más un archivo descargable de avisos de terceros (textos de licencia, copyright y NOTICE de Apache-2.0); test que falla si una dependencia de producción no tiene entrada en los créditos o si aparece una GPL/AGPL no aprobada
 - [ ] 4.1b Componentes embebidos y LGPL: LAME (con enlace a https://lame.sourceforge.io), codificador AAC de FFmpeg, libFLAC, libheif, libvips, libarchive (build propio) y modelos de datos (u2netp, tessdata): aviso LGPL, texto de la licencia y enlace al código fuente exacto de la versión usada y a sus scripts de compilación; lo que no se pueda ubicar va a "Pendiente del dueño"
 - [ ] 4.1c Página `/[locale]/credits` (slugs traducidos: `/es/creditos`, `/en/credits`, `/pt/creditos`, `/fr/credits`, `/zh/credits`), enlazada desde el footer, textos en los 5 idiomas, metadatos, sitemap, diseño de `docs/design.md`; capturas Playwright 360/1280 claro/oscuro
 
