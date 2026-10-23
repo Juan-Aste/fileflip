@@ -3050,7 +3050,7 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Qué se hizo**
 - `playwright.config.ts`: proyectos `firefox` y `webkit` (solo tests `@xb`); la ruta de Chromium del entorno queda solo en el proyecto `chromium`.
 - 14 tests marcados `@xb`, uno por familia de herramientas.
-- CI: job `e2e-browsers` (build, `npx playwright install --with-deps chromium firefox webkit`, muestra en Firefox y WebKit, chequeos de clics en Chromium).
+- CI: job `e2e-browsers` (en la imagen `mcr.microsoft.com/playwright:v1.56.0-noble`, que trae los navegadores y sus librerías; build, muestra en Firefox y WebKit, chequeos de clics en Chromium).
 - Test de EPUB: ignora las URLs `blob:`/`data:` propias que WebKit informa como peticiones.
 
 **Hallazgos**: **B-03** (media): en WebKit (Linux) MP3 → WAV falla con "archivo dañado" aunque el archivo está bien. **B-04** (baja, entorno): la prueba de H.264 de `VideoEncoder` cuelga el renderizador de esa build de WebKit y todas las páginas de video se caen al cargar. Ambos quedan para 6B.3 con tests `fixme`.

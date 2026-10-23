@@ -33,9 +33,14 @@ jobs:
   # Browser tests in other engines: one representative test per tool family
   # (tagged @xb) in Firefox and WebKit, plus the quick Chromium checks that
   # every control on open menus, dialogs and results can be clicked.
+  # Runs in Playwright's image (same version as package.json): browsers and
+  # their system libraries come preinstalled, no slow apt step.
   e2e-browsers:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.0-noble
+      options: --user 1001
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -46,8 +51,6 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Browsers
-        run: npx playwright install --with-deps chromium firefox webkit
       - name: Firefox and WebKit sample
         run: npx playwright test --project firefox --project webkit
       - name: Chromium click checks
