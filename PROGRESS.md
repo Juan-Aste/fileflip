@@ -3174,3 +3174,9 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - `playwright.config.ts`: `LANG=C.UTF-8` si no hay locale (Chromium ignoraba nombres no ASCII en el contenedor). `support.ts`: `/api/visit` simulado (retrasaba `networkidle` con MongoDB inaccesible).
 
 **Verificación**: lint, typecheck, tests unitarios (1031) y build pasan; Chromium `edge-files`, `pdf-tools`, `pdf-password`, `sign-pdf`, `ocr-tools`, `unsupported`, `failure-states`, `early-pick` (124) y el resto del grupo del CI pasan.
+
+## 2026-10-23 05:10 UTC — Cierre de la ejecución (6D.1–6E.2)
+
+- 5 tareas: 6D.1, 6D.2, 6D.3, 6E.1 y 6E.2. Bugs nuevos: B-14 (media), B-15 (alta), B-16 (alta), B-17 (media, abierto para 6F.1), B-18 (alta), B-19 (baja); arreglados también B-01 y B-12.
+- CI: verde en cf3351f, 5709b3e, 223acbc y 0f53a32 (último commit de código; el job de navegadores tarda 8 min con `environments` y `edge-files`). El job de 0b54228 llegó al límite de 25 min (ver 6E.2, "Ruido en el CI"); ya no se repitió.
+- Siguiente tarea: 6E.3.
