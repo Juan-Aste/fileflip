@@ -2,20 +2,12 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 import Nodemailer from "next-auth/providers/nodemailer";
-import { emailTransport, sendMagicLink } from "@/lib/email/send";
+import { sendMagicLink } from "@/lib/email/send";
+import { getAuthProviders } from "@/lib/auth-providers";
 import { planForUser } from "@/lib/billing";
 import { getMongoClient } from "@/lib/mongo-client";
 
-/** Which sign-in methods are configured (the login page only shows those). */
-export function getAuthProviders() {
-  // Without Resend or SMTP, magic links are printed to the server log: always in
-  // development, and in production only if explicitly allowed (staging).
-  const logLinks = process.env.NODE_ENV !== "production" || process.env.AUTH_EMAIL_LOG_LINKS === "true";
-  return {
-    google: Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET),
-    email: emailTransport() !== "log" || logLinks,
-  };
-}
+export { getAuthProviders };
 
 function config(): NextAuthConfig {
   const enabled = getAuthProviders();

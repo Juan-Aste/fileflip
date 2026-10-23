@@ -5,6 +5,7 @@ import { routing } from "@/i18n/routing";
 import { apiError } from "@/lib/api-errors";
 import { startSubscription } from "@/lib/billing";
 import { PaymentProviderError } from "@/lib/payments/types";
+import { configuredSiteUrl } from "@/lib/seo";
 import { currentRegion } from "@/lib/server/region";
 
 export const runtime = "nodejs";
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
   if (!period) return apiError("invalidRequest");
 
   const t = await getTranslations({ locale, namespace: "Billing" });
-  const origin = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(request.url).origin;
+  const origin = configuredSiteUrl() ?? new URL(request.url).origin;
   try {
     const url = await startSubscription({
       userId: session.user.id,

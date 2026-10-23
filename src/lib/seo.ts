@@ -6,8 +6,27 @@ import { availableTools, tools } from "@/config/tools";
 import { longtailPages, longtailTranslation } from "@/content/longtail";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 
+/**
+ * NEXT_PUBLIC_SITE_URL as an origin, or undefined when it is missing, empty or
+ * not a URL. A bare host ("example.com") gets https://. A bad value must never
+ * throw: `new URL()` on it would turn every page into a 500.
+ */
+export function configuredSiteUrl(raw = process.env.NEXT_PUBLIC_SITE_URL): string | undefined {
+  const value = raw?.trim();
+  if (!value) return undefined;
+  for (const candidate of value.includes("://") ? [value] : [`https://${value}`]) {
+    try {
+      const url = new URL(candidate);
+      if (url.protocol === "http:" || url.protocol === "https:") return `${url.origin}${url.pathname}`.replace(/\/+$/, "");
+    } catch {
+      // try the next form
+    }
+  }
+  return undefined;
+}
+
 export function siteUrl() {
-  return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
+  return configuredSiteUrl() ?? "http://localhost:3000";
 }
 
 /** A page's path in each language, e.g. l => `/${slugs[l]}` ("" for home). */

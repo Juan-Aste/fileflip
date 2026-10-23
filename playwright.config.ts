@@ -47,7 +47,9 @@ export default defineConfig({
           reuseExistingServer: !process.env.CI,
           timeout: 60_000,
           // Show both sign-in methods; login.spec.ts stubs the Auth.js endpoints.
-          env: { AUTH_SECRET: "e2e-only-not-a-real-secret", AUTH_EMAIL_LOG_LINKS: "true", AUTH_GOOGLE_ID: "e2e", AUTH_GOOGLE_SECRET: "e2e" },
+          // Magic links need a database (B-01): an unreachable one is enough, since
+          // signed-out requests never query it.
+          env: { AUTH_SECRET: "e2e-only-not-a-real-secret", AUTH_EMAIL_LOG_LINKS: "true", MONGODB_URI: "mongodb://127.0.0.1:9/e2e", AUTH_GOOGLE_ID: "e2e", AUTH_GOOGLE_SECRET: "e2e" },
         },
         {
           // Signed-in pages (clickable.spec.ts signs in as this admin with a JWT
