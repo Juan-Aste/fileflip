@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormatId } from "@/config/formats";
-import { isApiErrorCode } from "./api-errors";
+import { isApiErrorCode, type ApiErrorCode } from "./api-errors";
 import { ConversionError, isLoggedByServerCode } from "./convert-error";
 import type { ImageOptions } from "./image/options";
 
@@ -28,7 +28,7 @@ export function convertOnServer(
     xhr.responseType = "blob";
     xhr.upload.onprogress = (e) => e.lengthComputable && onProgress?.((e.loaded / e.total) * 0.7);
     xhr.onprogress = (e) => e.lengthComputable && onProgress?.(0.7 + (e.loaded / e.total) * 0.3);
-    xhr.onerror = () => reject(new ConversionError("serviceUnavailable"));
+    xhr.onerror = () => reject(new ConversionError(navigator.onLine === false ? "connectionLost" : "serviceUnavailable"));
     xhr.onabort = () => reject(new ConversionError("jobCancelled"));
     if (signal?.aborted) return reject(new ConversionError("jobCancelled"));
     signal?.addEventListener("abort", () => xhr.abort(), { once: true });
@@ -37,15 +37,27 @@ export function convertOnServer(
         resolve(xhr.response as Blob);
         return;
       }
-      let code: unknown = xhr.status === 429 ? "rateLimited" : "conversionFailed";
+      let code: unknown = statusCode(xhr.status);
       try {
         code = JSON.parse(await (xhr.response as Blob).text()).error ?? code;
       } catch {
-        // Non-JSON error page (proxy, crash): keep the generic code.
+        // Non-JSON error page (proxy, crash): the code the status implies.
       }
       const known = isApiErrorCode(code) ? code : "conversionFailed";
       reject(new ConversionError(known, isLoggedByServerCode(known)));
     };
     xhr.send(form);
   });
+}
+
+/**
+ * The code for an error answer without our JSON body: the hosting proxy's own
+ * pages for a body over its limit (413) or an app that is down or restarting
+ * (502–504) say so instead of blaming the file (bug B-09).
+ */
+export function statusCode(status: number): ApiErrorCode {
+  if (status === 429) return "rateLimited";
+  if (status === 413) return "fileTooLarge";
+  if (status >= 502 && status <= 504) return "serviceUnavailable";
+  return "conversionFailed";
 }

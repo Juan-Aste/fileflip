@@ -362,7 +362,7 @@ Auditoría de bugs: encontrar y arreglar, antes que los usuarios, bugs del tipo 
 - [x] 6B.3 Detección previa de lo que el navegador no soporta (WebCodecs, OffscreenCanvas, códecs): mensaje claro y traducido o respaldo del servidor, nunca fallar en silencio ni colgarse; tests
 
 ### Hito 6C — Estados y errores en toda la interfaz
-- [ ] 6C.1 Herramientas (navegador y servidor): respuestas lentas, 4xx/5xx, timeouts, sin conexión y doble clic; indicador de trabajo, sin doble envío, error traducido con aria-live, reintento, cancelar que cancela de verdad
+- [x] 6C.1 Herramientas (navegador y servidor): respuestas lentas, 4xx/5xx, timeouts, sin conexión y doble clic; indicador de trabajo, sin doble envío, error traducido con aria-live, reintento, cancelar que cancela de verdad
 - [ ] 6C.2 Login, checkout y cancelación de suscripción, panel de admin y exportar CSV con los mismos casos
 - [ ] 6C.3 Buscador y selector de idioma con los mismos casos; arreglos pendientes de 6C
 

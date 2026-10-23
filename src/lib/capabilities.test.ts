@@ -36,3 +36,13 @@ describe("browserLacksToolFeatures", () => {
     }
   });
 });
+
+describe("errorCode of an unexpected failure", () => {
+  it("says the connection dropped when the tool's code or data couldn't load", () => {
+    const chunk = Object.assign(new Error("Loading chunk 9171 failed."), { name: "ChunkLoadError" });
+    expect(errorCode(chunk)).toBe("connectionLost");
+    expect(errorCode(new TypeError("Failed to fetch dynamically imported module: /_next/static/chunks/x.js"))).toBe("connectionLost");
+    expect(errorCode(new TypeError("Load failed"))).toBe("connectionLost");
+    expect(errorCode(new Error("boom"))).toBe("conversionFailed");
+  });
+});

@@ -3090,3 +3090,12 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - **B-08** (baja, arreglado): sin WebCodecs, audio y video culpaban al archivo (AAC) o al formato (MOV); ahora dicen que es el navegador.
 
 **Verificación**: lint, typecheck, tests unitarios (1013) y build pasan; Chromium `unsupported`, `audio-tools`, `video-tools`, `pdf-tools`, `sign-pdf`, `image-tools`, `scan-tools`, `early-pick` (129) pasan; Firefox, WebKit, iPhone y Android 58 pasan, 2 omitidos (B-04).
+
+## 2026-10-23 02:48 UTC — Fase 6, tarea 6C.1 (estados y errores de las herramientas)
+
+**Qué se hizo**
+- `tests/e2e/failure-states.spec.ts` (32 tests, en el CI): herramientas de servidor con 503, 429, páginas 502/413 del proxy, sin conexión, lentitud + doble clic y petición colgada + cancelar; herramientas del navegador sin conexión después de cargar, doble clic y cancelar un OCR.
+- **B-09** (media, arreglado): las páginas de error del proxy (413, 502–504) se informaban como "No se pudo convertir este archivo"; ahora "archivo demasiado grande" o "servicio no disponible".
+- **B-10** (alta, arreglado): sin conexión o con una pestaña abierta durante un despliegue nuevo, todas las herramientas culpaban al archivo. Código nuevo `connectionLost` traducido a los 5 idiomas; al volver la conexión se puede reintentar sin recargar.
+
+**Verificación**: lint, typecheck, tests unitarios y build pasan; Chromium `failure-states` (32, dos corridas), `unsupported`, `gotenberg-tools`, `ebook-tools`, `pdf-password`, `converter` (109) pasan.

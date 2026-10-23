@@ -72,6 +72,9 @@ export const apiErrorCodes = [
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
   "browserUnsupported",
+  // Client-side only: the tool's code or data couldn't load, or the upload couldn't
+  // leave (offline, or a new deploy replaced the page's files).
+  "connectionLost",
   // Client-side only: the job engine stopped the work (user or time limit).
   "jobCancelled",
   "jobTimedOut",
@@ -132,6 +135,7 @@ const status: Record<ApiErrorCode, number> = {
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,
+  connectionLost: 503,
   jobCancelled: 400,
   jobTimedOut: 408,
 };

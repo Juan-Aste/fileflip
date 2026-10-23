@@ -36,13 +36,22 @@ export class TextPositionError extends ConversionError {
   }
 }
 
-/** The code of an unexpected failure: "this browser can't" where it lacks the features tools need (B-07). */
-export function unexpectedErrorCode(): ApiErrorCode {
+// A lazy chunk, worker script or WASM file that failed to load (Chromium, Firefox, Safari wordings).
+const loadFailure = /ChunkLoadError|Loading (CSS )?chunk|dynamically imported module|Importing a module script failed|Failed to fetch|NetworkError|Load failed/i;
+
+/**
+ * The code of an unexpected failure. Tools load their engine when they run, so
+ * offline (or after a deploy replaced the files) that load fails: say so (B-10).
+ * Where the browser lacks the features tools need: "this browser can't" (B-07).
+ */
+export function unexpectedErrorCode(error?: unknown): ApiErrorCode {
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return "connectionLost";
+  if (error instanceof Error && loadFailure.test(`${error.name} ${error.message}`)) return "connectionLost";
   return browserLacksToolFeatures() ? "browserUnsupported" : "conversionFailed";
 }
 
 export function errorCode(error: unknown): ApiErrorCode {
-  return error instanceof ConversionError && isApiErrorCode(error.code) ? error.code : unexpectedErrorCode();
+  return error instanceof ConversionError && isApiErrorCode(error.code) ? error.code : unexpectedErrorCode(error);
 }
 
 // Failures the conversion APIs log themselves (after trying to convert);

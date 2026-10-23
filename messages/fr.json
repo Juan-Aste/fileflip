@@ -198,6 +198,7 @@
     "conversionFailed": "Impossible de convertir ce fichier.",
     "serviceUnavailable": "Le service est indisponible. Réessayez plus tard.",
     "browserUnsupported": "Votre navigateur ne peut pas convertir ce fichier. Essayez une version récente de Chrome, Edge, Firefox ou Safari.",
+    "connectionLost": "La connexion a été perdue ou la page a été mise à jour : cet outil n’a pas pu charger ce dont il a besoin. Vérifiez votre connexion ou rechargez la page, puis réessayez.",
     "pdfHasNoText": "Ce PDF est une image numérisée : il ne contient pas de texte à mettre dans Word.",
     "fileDamaged": "Ce fichier est endommagé ou incomplet. Essayez avec une autre copie.",
     "invalidData": "Impossible de lire le contenu. Vérifiez que le format est valide (guillemets, virgules et accolades).",
