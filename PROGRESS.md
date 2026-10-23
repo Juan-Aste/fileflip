@@ -613,6 +613,8 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
   - ~~Página de créditos/licencias para los componentes LGPL~~ → **hecha en la fase 4** (\`/es/creditos\`, tareas 4.1a–4.1c). Solo queda lo del commit exacto de FFmpeg (abajo).
 
 - **Fase 4 — código fuente exacto de FFmpeg (AAC)**: `@mediabunny/aac-encoder` 1.62.0 trae el codificador AAC de FFmpeg compilado a WASM (LGPL-2.1+), pero su compilación clona FFmpeg sin anotar el commit; el binario dice `Lavc62.23.103` (versión de desarrollo, entre FFmpeg 8.0 y 8.1). La página de créditos enlaza el repositorio de FFmpeg y las instrucciones de compilación de mediabunny y lo aclara. Para cumplir la LGPL al pie de la letra hay dos caminos: pedirle al autor de mediabunny (Vanilagy) el commit exacto, o compilar nosotros el codificador desde una versión publicada de FFmpeg con hash fijado (como con libarchive en 3C.45) y servir ese WASM. Mientras tanto, M4A/AAC solo usa este WASM cuando el navegador no tiene codificador AAC propio.
+- **(Fase 6) Mergear `dev` en `main`**: producción va 33 commits atrás (solo hasta la fase 4); los arreglos de las fases 5 y 6 (capa que tapaba botones, estados del login, Resend, B-01 a B-16) no están publicados.
+- **(Fase 6) Variables en Railway**: confirmar que `AUTH_SECRET` y `NEXT_PUBLIC_SITE_URL` (con `https://`) estén definidas en el servicio `app`; sin ellas el login queda desactivado (B-14) y las canónicas apuntan a `localhost` (B-15 ya no rompe las páginas).
 - **Foto carnet (3C.42)**: no se encontraron fuentes oficiales fiables de las medidas por país; la herramienta usa medidas habituales y pide confirmar con la oficina. Si se quieren presets por país (AR, BR, MX, CL, CO, PE, UY), validar cada medida con el organismo correspondiente.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
@@ -3144,3 +3146,13 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Cabeceras de país e idioma raras: sin problemas. Cuerpos sin `Content-Length`: anotado para 6F.3.
 
 **Verificación**: lint, typecheck, tests unitarios (1028) y build pasan; Chromium `environments` + `login` (13) pasan; el test de B-16 falla sin el arreglo (comprobado).
+
+## 2026-10-23 04:20 UTC — Fase 6, tarea 6D.3 (prueba de humo en producción)
+
+**Qué se hizo**
+- `scripts/smoke-production.mjs`: prueba de solo lectura (12 peticiones espaciadas + comprimir imagen y unir PDF en Chromium con la API de conversión bloqueada). Ejecutada una vez; resultado en `docs/bug-audit.md`.
+- Todo responde 200, canónicas/robots/sitemap con el dominio correcto, las dos conversiones del navegador descargan bien, sin errores de consola ni recursos 404.
+- **B-17** (media, abierto para 6F.1): ninguna respuesta tiene cabeceras de seguridad (CSP, nosniff, Referrer-Policy, frame-ancestors, Permissions-Policy, HSTS).
+- Producción (`main`) llega solo hasta la fase 4: faltan los 33 commits de las fases 5 y 6. Anotado en "Pendiente del dueño".
+
+**Verificación**: lint pasa (solo se agregó un script y documentación).

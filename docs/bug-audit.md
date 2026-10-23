@@ -20,6 +20,7 @@ Registro de hallazgos. Gravedad: **crítica** (rompe una herramienta, el login o
 | B-14 | Todas las páginas (consulta de sesión del header), `/api/auth/*`, login | Servidor (cualquier navegador) | Arrancar en producción sin `AUTH_SECRET` (variable olvidada o vacía en Railway): cada visita a cualquier página pedía `/api/auth/session` y recibía 500 (`MissingSecret`), con un error en la consola del navegador; el login ofrecía Google y email, que también daban 500. Arreglo: sin `AUTH_SECRET` en producción `/api/auth/session` responde `null` (nadie con sesión), el resto de `/api/auth/*` 503 con código, y el login muestra "El inicio de sesión todavía no está configurado". Test de regresión: `src/lib/auth-providers.test.ts` | media | arreglado | 697c531 |
 | B-15 | Todas las páginas (`metadataBase` del layout) y checkout | Servidor | Construir con `NEXT_PUBLIC_SITE_URL` vacía (`NEXT_PUBLIC_SITE_URL=`) o sin protocolo (`app.up.railway.app`): `new URL()` lanzaba "Invalid URL" en el layout y todas las páginas daban 500; con la variable vacía el checkout armaba las URLs de regreso de Mercado Pago sin dominio. Arreglo: `configuredSiteUrl()` en `seo.ts` valida el valor (agrega `https://` a un dominio sin protocolo; si no es válido se ignora) y el checkout usa el origen de la petición. Test de regresión: `src/lib/seo.test.ts` | alta | arreglado | 697c531 |
 | B-16 | Login, sesión y todo lo que usa el adaptador de Auth.js (cuenta, precios con sesión, admin) | Servidor | Arrancar la app mientras MongoDB no responde (por ejemplo, los dos servicios reiniciando a la vez en Railway) y después levantar MongoDB: el cliente nativo de MongoDB cuyo primer intento de conexión falló queda cerrado para siempre ("Topology is closed"), así que nadie puede iniciar sesión y las sesiones abiertas aparecen como cerradas hasta reiniciar la app. Además, con MongoDB caído cada página con sesión esperaba hasta 30 s. Arreglo: `getMongoClient()` conecta de forma explícita y, si falla, descarta el cliente para reintentar en la siguiente petición; la espera de selección de servidor baja a 5 s (también en Mongoose). Test de regresión: `src/lib/mongo-client.test.ts` y `tests/e2e/environments.spec.ts` (falla sin el arreglo: comprobado) | alta | arreglado | e07b326 |
+| B-17 | Todas las respuestas (páginas, APIs, archivos) | Todos (producción y `dev`) | Pedir cualquier URL de producción y mirar las cabeceras: no hay `Content-Security-Policy`, `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`/`frame-ancestors`, `Permissions-Policy` ni `Strict-Transport-Security` (`next.config.ts` solo define `Cache-Control` para `/ocr`). Sin `frame-ancestors` el sitio se puede embeber en otro (clickjacking). Encontrado por la prueba de humo 6D.3 | media | abierto (6F.1) | |
 
 ## 6A.1 — Clicabilidad de todas las páginas (2026-10-23)
 
@@ -129,3 +130,24 @@ Otras comprobaciones a mano con `next start`: cabeceras de país (`cf-ipcountry`
 **Límite de tamaño del cuerpo**: las APIs de conversión rechazan un `Content-Length` mayor al límite del plan antes de leer el cuerpo, pero un envío sin `Content-Length` (chunked) se lee entero en memoria antes de comprobar el tamaño. Queda para 6F.3 (límites de tamaño y frecuencia en todas las APIs).
 
 **Resultado**: B-16 (alta) y B-12 (baja), arreglados en e07b326.
+
+
+## 6D.3 — Prueba de humo en producción (2026-10-23 04:16 UTC)
+
+Script nuevo y reutilizable: `scripts/smoke-production.mjs` (solo lectura: 12 peticiones separadas 3 s y dos páginas de herramientas en Chromium con la API de conversión bloqueada; no inicia sesión, no pide emails, no inicia pagos ni convierte en el servidor). Ejecutado una vez contra https://app-production-4266.up.railway.app.
+
+| Ruta | Resultado |
+|------|-----------|
+| `/api/health` | 200 `{"status":"ok","gotenberg":true}` |
+| `/es`, `/en` | 200, canónica con el dominio de producción |
+| `/es/herramientas`, `/pt/ferramentas` | 200 |
+| `/en/merge-pdf`, `/es/comprimir-imagen`, `/en/word-to-pdf`, `/en/json-to-csv` | 200 |
+| `/en/credits` | 200 |
+| `/robots.txt` | 200, `Sitemap:` con el dominio de producción |
+| `/sitemap.xml` | 200, URLs con el dominio de producción |
+| Comprimir imagen (`photo.jpg`) en el navegador | descarga `photo.jpg` (13,8 KB); sin errores de consola, sin recursos 4xx/5xx, sin llamadas a `/api/convert` |
+| Unir PDF (2 archivos) en el navegador | descarga `fileflect-merged.pdf`; sin errores de consola ni recursos 4xx/5xx |
+
+**Cabeceras**: ninguna respuesta trae cabeceras de seguridad (B-17, media, se arregla en 6F.1). `NEXT_PUBLIC_SITE_URL` está bien configurada (canónicas, robots y sitemap con el dominio de Railway).
+
+**Producción va atrás de `dev`**: `main` (desplegado) llega hasta el cierre de la fase 4 (be9ba40, PR #3); `dev` tiene 33 commits más, con todo lo de las fases 5 y 6 (capa del hero que tapaba botones, estados del login por email, Resend, y los arreglos B-01 a B-16). Los bugs que el dueño vio en producción siguen ahí hasta que mergee `dev` en `main`.
