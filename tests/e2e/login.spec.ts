@@ -24,7 +24,7 @@ test.describe("email login", () => {
     const released = new Promise<void>((r) => (release = r));
     const posts = await stubSignIn(page, async (route) => {
       await released;
-      await route.fulfill({ json: { url: `${new URL(page.url()).origin}/login/verify?provider=nodemailer&type=email` } });
+      await route.fulfill({ json: { url: `${new URL(page.url()).origin}/api/auth/verify-request?provider=nodemailer&type=email` } });
     });
     await page.goto("/es/login");
     await page.getByLabel("Tu correo electrónico").fill("ana@example.com");

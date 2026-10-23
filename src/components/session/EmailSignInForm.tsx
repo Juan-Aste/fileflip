@@ -64,9 +64,11 @@ export default function EmailSignInForm({ redirectTo }: { redirectTo: string }) 
       if (res.status === 429) return fail("rateLimited");
       const { url } = (await res.json().catch(() => ({}))) as { url?: string };
       const target = url ? new URL(url, location.href) : null;
-      if (!res.ok || !target || target.searchParams.has("error") || !target.pathname.endsWith("/login/verify")) {
-        return fail("sendError");
-      }
+      // After sending, Auth.js answers with its own /api/auth/verify-request
+      // (pages.verifyRequest only applies when that URL is opened), so
+      // accept both; any failure comes back with ?error= (B-26).
+      const sent = target && /\/(verify-request|login\/verify)$/.test(target.pathname) && !target.searchParams.has("error");
+      if (!res.ok || !sent) return fail("sendError");
       // Stays "sending" until the "check your email" page replaces this one.
       router.push("/login/verify");
     } catch (error) {

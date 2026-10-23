@@ -3244,3 +3244,12 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 
 ## 2026-10-23 14:15 UTC — Inicio de la fase 7
 - Fase 7 agregada a PLAN.md (pedida por el dueño): 7.1 bug del login en producción, 7.2 ocultar el plan Pro con `PRO_ENABLED`, 7.3a/7.3b textos legales y aceptación expresa, 7.4 verificación final.
+
+## 2026-10-23 14:35 UTC — Fase 7, tarea 7.1 (bug del login por email en producción)
+
+**Qué se hizo**
+- Reproducido con el Auth.js real: `next start` con MongoDB en memoria, Resend interceptado dentro del servidor (`tests/e2e/server/resend-stub.mjs`, precargado con `NODE_OPTIONS=--import`) y un proxy delante como el de Railway (`x-forwarded-host`/`x-forwarded-proto`, `AUTH_URL` público distinto del host interno). El correo se "enviaba" y el formulario mostraba `sendError`, igual que en producción.
+- **B-26** (crítica): después de enviar, Auth.js responde `{ url }` con su propia ruta `/api/auth/verify-request?...` (la opción `pages.verifyRequest` solo actúa cuando se abre esa ruta). El formulario exigía `/login/verify` y marcaba error aunque el envío había salido bien. La reconstrucción de la petición en `route.ts`, el proxy, `AUTH_URL` y el middleware no influían (respuesta 200, host público, sin `error`). Arreglo en `EmailSignInForm.tsx`: acepta `/verify-request` (y `/login/verify`) sin `?error=`.
+- Test de integración nuevo `tests/e2e/login-real.spec.ts` (en el CI): sin simular Auth.js; comprueba la respuesta real, que llega a `/es/login/verify`, que se envía un solo correo a la dirección y que el enlace del correo apunta al host público. Falla sin el arreglo (comprobado). `login.spec.ts` ahora simula la respuesta con la forma real.
+
+**Verificación**: lint, typecheck, tests unitarios (1035 + 10 omitidos) y build pasan; Chromium `login`, `login-real`, `rate-limits`, `environments` (17) pasan.
