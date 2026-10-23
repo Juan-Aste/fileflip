@@ -1,5 +1,6 @@
-import { describe, expect, it } from "vitest";
-import { browserSupportsImaging, deviceFileBudget } from "./capabilities";
+import { describe, expect, it, vi } from "vitest";
+import { browserLacksToolFeatures, browserSupportsImaging, deviceFileBudget } from "./capabilities";
+import { ConversionError, errorCode } from "./convert-error";
 
 describe("deviceFileBudget", () => {
   it("shrinks the local budget on low-memory devices", () => {
@@ -16,5 +17,22 @@ describe("deviceFileBudget", () => {
 describe("browserSupportsImaging", () => {
   it("is false without workers or canvas (e.g. Node)", () => {
     expect(browserSupportsImaging()).toBe(false);
+  });
+});
+
+describe("browserLacksToolFeatures", () => {
+  it("is false outside a browser", () => {
+    expect(browserLacksToolFeatures()).toBe(false);
+  });
+
+  it("is true in a browser without workers", () => {
+    vi.stubGlobal("window", {});
+    try {
+      expect(browserLacksToolFeatures()).toBe(true);
+      expect(errorCode(new Error("Worker is not defined"))).toBe("browserUnsupported");
+      expect(errorCode(new ConversionError("fileDamaged"))).toBe("fileDamaged");
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 });

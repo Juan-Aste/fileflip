@@ -33,7 +33,8 @@ jobs:
   # Browser tests in other engines: one representative test per tool family
   # (tagged @xb) in Firefox and WebKit, on desktop and in iPhone (WebKit)
   # and Android (Chromium) emulation, plus the quick Chromium checks that
-  # every control on open menus, dialogs and results can be clicked.
+  # every control on open menus, dialogs and results can be clicked and
+  # that tools explain when the browser lacks an API they need.
   # Runs in Playwright's image (same version as package.json): browsers and
   # their system libraries come preinstalled, no slow apt step.
   e2e-browsers:
@@ -54,8 +55,8 @@ jobs:
         run: npm run build
       - name: Firefox, WebKit and phone emulation sample
         run: npx playwright test --project firefox --project webkit --project iphone --project android
-      - name: Chromium click checks
-        run: npx playwright test open-states login clickable --project chromium --grep-invert "pages \d+/"
+      - name: Chromium click and missing-API checks
+        run: npx playwright test open-states login clickable unsupported --project chromium --grep-invert "pages \d+/"
       - name: Test results
         if: failure()
         uses: actions/upload-artifact@v4

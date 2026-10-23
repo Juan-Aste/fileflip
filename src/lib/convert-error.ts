@@ -1,4 +1,5 @@
 import { isApiErrorCode, type ApiErrorCode } from "./api-errors";
+import { browserLacksToolFeatures } from "./capabilities";
 
 /** A failed conversion with a code the UI can translate. */
 export class ConversionError extends Error {
@@ -35,8 +36,13 @@ export class TextPositionError extends ConversionError {
   }
 }
 
+/** The code of an unexpected failure: "this browser can't" where it lacks the features tools need (B-07). */
+export function unexpectedErrorCode(): ApiErrorCode {
+  return browserLacksToolFeatures() ? "browserUnsupported" : "conversionFailed";
+}
+
 export function errorCode(error: unknown): ApiErrorCode {
-  return error instanceof ConversionError && isApiErrorCode(error.code) ? error.code : "conversionFailed";
+  return error instanceof ConversionError && isApiErrorCode(error.code) ? error.code : unexpectedErrorCode();
 }
 
 // Failures the conversion APIs log themselves (after trying to convert);

@@ -108,7 +108,8 @@ async function openAudio(file: Blob) {
     });
     if (!track) throw new ConversionError("noAudioTrack");
     // AAC, for one, can't be decoded by browsers built without proprietary codecs.
-    if (!(await track.canDecode())) throw new ConversionError("audioCodecUnsupported");
+    // Without WebCodecs only PCM (WAV, AIFF) decodes: the browser is the problem, not the file.
+    if (!(await track.canDecode())) throw new ConversionError(typeof AudioDecoder === "undefined" ? "browserUnsupported" : "audioCodecUnsupported");
     const duration = await input.computeDuration([track]).catch(() => {
       throw new ConversionError("fileDamaged");
     });

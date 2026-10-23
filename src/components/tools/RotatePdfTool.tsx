@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { rotatePdfFile } from "@/lib/pdf/client";
 import type { Rotation } from "@/lib/pdf/ops";
 import { parsePageRanges } from "@/lib/pdf/ranges";
+import { unexpectedErrorCode } from "@/lib/convert-error";
 import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
@@ -98,7 +99,7 @@ export default function RotatePdfTool() {
           )}
           {failed && (
             <ToolAlert>
-              {te("conversionFailed")}
+              {te(unexpectedErrorCode())}
             </ToolAlert>
           )}
           <PrimaryButton onClick={run} disabled={!ready || working}>

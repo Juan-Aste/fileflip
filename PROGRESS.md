@@ -3079,3 +3079,14 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Hallazgos**: ninguno nuevo. Android 15/15; iPhone 13/15 + 2 `fixme` (B-03 y B-04, ya registrados para WebKit).
 
 **Verificación**: lint, typecheck, tests unitarios (1011) y build pasan; `--project iphone --project android` 28 pasan, 2 omitidos.
+
+## 2026-10-23 02:34 UTC — Fase 6, tarea 6B.3 (lo que el navegador no soporta)
+
+**Qué se hizo**
+- **B-03** (media, arreglado en 52dbd3b): en WebKit, convertir a FLAC fallaba con "archivo dañado". El codificador FLAC propio de WebKit genera paquetes que mediabunny no puede empaquetar; ahora FLAC usa siempre el codificador WASM. El test `@xb` de audio corre en WebKit e iPhone sin `fixme`.
+- **B-04** (baja): descartado como fallo del motor (WebKitGTK); queda `fixme`.
+- `tests/e2e/unsupported.spec.ts`: detector que borra Worker, WebAssembly, OffscreenCanvas y WebCodecs y prueba una herramienta por familia; en el CI (Chromium).
+- **B-07** (media, arreglado): sin esas APIs, las herramientas mostraban "No se pudo convertir este archivo."; ahora "Tu navegador no puede convertir este archivo…" (`unexpectedErrorCode()` en `errorCode()` y en las herramientas PDF).
+- **B-08** (baja, arreglado): sin WebCodecs, audio y video culpaban al archivo (AAC) o al formato (MOV); ahora dicen que es el navegador.
+
+**Verificación**: lint, typecheck, tests unitarios (1013) y build pasan; Chromium `unsupported`, `audio-tools`, `video-tools`, `pdf-tools`, `sign-pdf`, `image-tools`, `scan-tools`, `early-pick` (129) pasan; Firefox, WebKit, iPhone y Android 58 pasan, 2 omitidos (B-04).

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { organizePdfFile } from "@/lib/pdf/client";
 import type { PageSpec } from "@/lib/pdf/ops";
+import { unexpectedErrorCode } from "@/lib/convert-error";
 import ToolAlert from "./ToolAlert";
 import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
@@ -187,7 +188,7 @@ export default function OrganizePdfTool() {
           </ol>
           {failed && (
             <ToolAlert>
-              {te("conversionFailed")}
+              {te(unexpectedErrorCode())}
             </ToolAlert>
           )}
           <div className="flex flex-wrap gap-3">

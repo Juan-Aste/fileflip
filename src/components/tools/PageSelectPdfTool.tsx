@@ -12,6 +12,7 @@ import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
 import RangesInput from "./RangesInput";
 import SinglePdfInput from "./SinglePdfInput";
+import { unexpectedErrorCode } from "@/lib/convert-error";
 import ToolAlert from "./ToolAlert";
 import ToolResult from "./ToolResult";
 import { usePdfThumbnails } from "./usePdfThumbnails";
@@ -196,7 +197,7 @@ function PageSelectPdfTool({ variant }: { variant: Variant }) {
               ]}
             />
           )}
-          {failed && <ToolAlert>{te("conversionFailed")}</ToolAlert>}
+          {failed && <ToolAlert>{te(unexpectedErrorCode())}</ToolAlert>}
           <PrimaryButton onClick={run} disabled={!canRun}>
             {working ? t("working") : tt("action")}
           </PrimaryButton>

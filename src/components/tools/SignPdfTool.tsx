@@ -14,6 +14,7 @@ import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
 import SignaturePad from "./SignaturePad";
 import SinglePdfInput from "./SinglePdfInput";
+import { unexpectedErrorCode } from "@/lib/convert-error";
 import ToolAlert from "./ToolAlert";
 import ToolResult from "./ToolResult";
 import { useSinglePdf } from "./useSinglePdf";
@@ -138,7 +139,7 @@ export default function SignPdfTool() {
       );
     } catch (e) {
       console.error(e);
-      setError("conversionFailed");
+      setError(unexpectedErrorCode());
     } finally {
       setWorking(false);
     }

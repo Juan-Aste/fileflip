@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import Dropzone from "@/components/converter/Dropzone";
 import { mergePdfFiles } from "@/lib/pdf/client";
+import { unexpectedErrorCode } from "@/lib/convert-error";
 import ToolAlert from "./ToolAlert";
 import FileList from "./FileList";
 import ProgressBar from "./ProgressBar";
@@ -62,7 +63,7 @@ export default function MergePdfTool() {
             {progress !== null && <ProgressBar value={progress} label={t("working")} />}
             {failed && (
               <ToolAlert>
-                {te("conversionFailed")}
+                {te(unexpectedErrorCode())}
               </ToolAlert>
             )}
             {ready.length < 2 && !detecting && <p className="text-sm text-muted">{t("needMore", { count: 2 })}</p>}

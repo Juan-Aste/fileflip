@@ -38,6 +38,9 @@ const outputFormat: Record<VideoTarget, () => Mp4OutputFormat | MovOutputFormat 
   mkv: () => new MkvOutputFormat(),
 };
 
+/** Without WebCodecs no format can be encoded: say the browser can't, not that this format needs H.264. */
+const noEncoderCode = () => (typeof VideoEncoder === "undefined" ? "browserUnsupported" : "videoEncoderUnsupported");
+
 /** Edits made while converting; any of them but a fast trim re-encodes the picture. */
 export interface VideoEdit {
   /** "Compress video": encoding quality ("high" when re-encoding for another reason). */
@@ -121,7 +124,7 @@ export async function convertVideo(
     if (edit?.trim && !validRange(edit.trim, duration)) throw new ConversionError("videoRangeInvalid");
     const trim = edit?.trim && { start: edit.trim.start, end: Math.min(edit.trim.end, duration) };
     const plan = videoPlan(target, { video: video.codec, audio: keepAudio?.codec ?? null }, await encodableVideo(target, width, height), reencode, speed !== undefined);
-    if (!plan) throw new ConversionError("videoEncoderUnsupported");
+    if (!plan) throw new ConversionError(noEncoderCode());
     // Re-encoding needs the browser to decode the source first (H.264 and HEVC aren't
     // decodable in every browser; AAC neither).
     if (!plan.copyVideo && !(await video.canDecode())) throw new ConversionError("videoCodecUnsupported");
@@ -242,7 +245,7 @@ export async function joinVideos(
     const first = opened[0]!.video;
     const { width, height } = scaledSize(first.displayWidth, first.displayHeight, MAX_JOIN_SHORT_SIDE);
     const codec = encodersFor(target).find(await encodableVideo(target, width, height));
-    if (!codec) throw new ConversionError("videoEncoderUnsupported");
+    if (!codec) throw new ConversionError(noEncoderCode());
     const withSound = opened.some((o) => o.audio);
     const audioCodec = target === "mp4" ? "aac" : "opus";
     if (withSound) await ensureEncoder(audioCodec);
