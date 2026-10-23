@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { splitPdfFile } from "@/lib/pdf/client";
 import { parsePageRanges, rangeLabel } from "@/lib/pdf/ranges";
+import { errorCode } from "@/lib/convert-error";
+import type { ApiErrorCode } from "@/lib/api-errors";
 import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
@@ -27,7 +29,7 @@ export default function SplitPdfTool() {
   const [ranges, setRanges] = useState("");
   const [progress, setProgress] = useState<number | null>(null);
   const [result, setResult] = useState<{ blob: Blob; name: string } | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<ApiErrorCode | null>(null);
 
   const parsed = pdf.pages && mode !== "each" ? parsePageRanges(ranges, pdf.pages) : null;
   const groups: number[][] | null =
@@ -41,7 +43,7 @@ export default function SplitPdfTool() {
 
   async function run() {
     if (!pdf.file || !groups) return;
-    setFailed(false);
+    setFailed(null);
     setProgress(0);
     try {
       const base = baseName(pdf.file.name);
@@ -61,7 +63,7 @@ export default function SplitPdfTool() {
       }
     } catch (error) {
       console.error(error);
-      setFailed(true);
+      setFailed(errorCode(error));
     } finally {
       setProgress(null);
     }
@@ -106,7 +108,7 @@ export default function SplitPdfTool() {
           {progress !== null && <ProgressBar value={progress} label={t("working")} />}
           {failed && (
             <ToolAlert>
-              {te("conversionFailed")}
+              {te(failed)}
             </ToolAlert>
           )}
           <PrimaryButton onClick={run} disabled={!groups || progress !== null}>

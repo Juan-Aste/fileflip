@@ -36,10 +36,13 @@ const encoderExtensions: Partial<Record<AudioCodec, () => Promise<void>>> = {
   aac: () => import("@mediabunny/aac-encoder").then((m) => m.registerAacEncoder()),
 };
 const registered = new Set<AudioCodec>();
+// Always the WASM encoder, even when the browser has one: WebKit's own FLAC
+// encoder (GStreamer) yields packets mediabunny can't mux (bug B-03).
+const extensionFirst = new Set<AudioCodec>(["flac"]);
 
 /** Makes `codec` encodable: the browser's own encoder when it has one, else the WASM extension (once). */
 export async function ensureEncoder(codec: AudioCodec) {
-  if (registered.has(codec) || (await canEncodeAudio(codec))) return;
+  if (registered.has(codec) || (!extensionFirst.has(codec) && (await canEncodeAudio(codec)))) return;
   const register = encoderExtensions[codec];
   if (!register) throw new ConversionError("browserUnsupported");
   await register();
@@ -105,7 +108,8 @@ async function openAudio(file: Blob) {
     });
     if (!track) throw new ConversionError("noAudioTrack");
     // AAC, for one, can't be decoded by browsers built without proprietary codecs.
-    if (!(await track.canDecode())) throw new ConversionError("audioCodecUnsupported");
+    // Without WebCodecs only PCM (WAV, AIFF) decodes: the browser is the problem, not the file.
+    if (!(await track.canDecode())) throw new ConversionError(typeof AudioDecoder === "undefined" ? "browserUnsupported" : "audioCodecUnsupported");
     const duration = await input.computeDuration([track]).catch(() => {
       throw new ConversionError("fileDamaged");
     });

@@ -29,6 +29,8 @@ export const apiErrorCodes = [
   "pdfAlreadyProtected",
   "pdfNotProtected",
   "pdfWrongPassword",
+  // Client-side only: a page tool (merge, split, rotate…) given a PDF with an open password.
+  "pdfPasswordRequired",
   // Client-side only: extracting images from a PDF that has none.
   "pdfHasNoImages",
   // Client-side only: a spreadsheet over the cell limit (or a ZIP declaring too much data).
@@ -72,9 +74,14 @@ export const apiErrorCodes = [
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
   "browserUnsupported",
+  // Client-side only: the tool's code or data couldn't load, or the upload couldn't
+  // leave (offline, or a new deploy replaced the page's files).
+  "connectionLost",
   // Client-side only: the job engine stopped the work (user or time limit).
   "jobCancelled",
   "jobTimedOut",
+  // Client-side only: a 0-byte file picked in a tool that needs content.
+  "emptyFile",
 ] as const;
 
 export type ApiErrorCode = (typeof apiErrorCodes)[number];
@@ -100,6 +107,7 @@ const status: Record<ApiErrorCode, number> = {
   pdfAlreadyProtected: 422,
   pdfNotProtected: 422,
   pdfWrongPassword: 422,
+  pdfPasswordRequired: 422,
   pdfHasNoImages: 422,
   tooManyCells: 413,
   archiveTooLarge: 413,
@@ -132,8 +140,10 @@ const status: Record<ApiErrorCode, number> = {
   signInRequired: 401,
   paymentsUnavailable: 503,
   browserUnsupported: 400,
+  connectionLost: 503,
   jobCancelled: 400,
   jobTimedOut: 408,
+  emptyFile: 422,
 };
 
 export function apiError(code: ApiErrorCode, headers?: HeadersInit) {

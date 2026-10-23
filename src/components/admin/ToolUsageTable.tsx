@@ -1,4 +1,4 @@
-import { Download } from "lucide-react";
+import CsvLink from "@/components/admin/CsvLink";
 import { card } from "@/components/ui/styles";
 import { formatNumber, formatPercent } from "@/lib/format";
 import { categoryLabel, toolLabel } from "@/lib/admin/labels";
@@ -14,10 +14,7 @@ export default function ToolUsageTable({ rows, csvHref }: { rows: ToolUsage[]; c
       <figcaption className="flex flex-col gap-1">
         <span className="flex flex-wrap items-baseline justify-between gap-x-3">
           <span className="font-bold">{t("charts.byToolTitle")}</span>
-          <a href={csvHref} download className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:underline">
-            <Download aria-hidden="true" className="size-4" />
-            CSV<span className="sr-only">: {t("charts.byToolTitle")}</span>
-          </a>
+          <CsvLink href={csvHref} title={t("charts.byToolTitle")} busyLabel={t("charts.csvBusy")} errorLabel={t("charts.csvError")} />
         </span>
         <span className="text-sm text-muted">{t("charts.byToolCaption")}</span>
       </figcaption>

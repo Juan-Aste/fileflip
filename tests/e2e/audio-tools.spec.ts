@@ -115,7 +115,8 @@ test.describe("tool: audio-converter", () => {
     }
   });
 
-  test("MP3 → WAV, FLAC, OGG (Opus) and M4A (AAC)", async ({ page }) => {
+  test("MP3 → WAV, FLAC, OGG (Opus) and M4A (AAC)", { tag: "@xb" }, async ({ page }) => {
+    // FLAC in WebKit is the regression test of bug B-03 (docs/bug-audit.md).
     await openWithFiles(page, "/en/audio-converter", ["audio.mp3"]);
     const expected = [
       { label: "WAV (lossless)", ext: "wav", format: "wav", codec: "pcm_s16le", sampleRate: 22050 },

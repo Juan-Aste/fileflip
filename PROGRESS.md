@@ -589,7 +589,13 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 
 ## Pendiente del dueño
 - Crear credenciales de Google OAuth (`AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`).
-- Configurar un proveedor SMTP para magic links (`EMAIL_SERVER`, `EMAIL_FROM`).
+- **(Fase 5, urgente) Email de inicio de sesión por Resend** — Railway bloquea el SMTP saliente salvo en el plan Pro, así que `EMAIL_SERVER` nunca va a funcionar allí:
+  1. En https://resend.com → *API Keys → Create API key* (permiso *Sending access*).
+  2. En Railway, servicio `app` → *Variables*: agregar `RESEND_API_KEY=re_…` con esa clave.
+  3. En Resend → *Domains → Add domain*: agregar el dominio del sitio y crear en el DNS los registros SPF/DKIM que indica, hasta que diga *Verified*. Sin dominio verificado, el remitente `onboarding@resend.dev` solo entrega al email de la propia cuenta de Resend.
+  4. En Railway: `EMAIL_FROM="Fileflect <no-reply@tu-dominio.com>"` (una dirección de ese dominio verificado).
+  5. En Railway: borrar la variable `EMAIL_SERVER`.
+  6. Redesplegar el servicio `app` y probar el login por email; si falla, el log de Railway muestra `[email] Resend rejected the email: HTTP <código> <mensaje>`.
 - Crear cuenta de Mercado Pago y obtener credenciales de prueba (`MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`). Ojo: cada cuenta de Mercado Pago cobra solo en la moneda de su país; para vender en varios países hace falta una cuenta (y un token `MP_ACCESS_TOKEN_XX`) por país.
 - En cada cuenta de Mercado Pago, configurar el webhook (Tus integraciones → Webhooks) apuntando a `https://<dominio>/api/webhooks/mercadopago` con el evento "Planes y suscripciones", y copiar la clave secreta en `MP_WEBHOOK_SECRET` (o `MP_WEBHOOK_SECRET_XX` por país).
 - Elegir proveedor de pagos internacional (por ejemplo Lemon Squeezy o Paddle) para usuarios fuera de los países de Mercado Pago.
@@ -607,6 +613,11 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
   - ~~Página de créditos/licencias para los componentes LGPL~~ → **hecha en la fase 4** (\`/es/creditos\`, tareas 4.1a–4.1c). Solo queda lo del commit exacto de FFmpeg (abajo).
 
 - **Fase 4 — código fuente exacto de FFmpeg (AAC)**: `@mediabunny/aac-encoder` 1.62.0 trae el codificador AAC de FFmpeg compilado a WASM (LGPL-2.1+), pero su compilación clona FFmpeg sin anotar el commit; el binario dice `Lavc62.23.103` (versión de desarrollo, entre FFmpeg 8.0 y 8.1). La página de créditos enlaza el repositorio de FFmpeg y las instrucciones de compilación de mediabunny y lo aclara. Para cumplir la LGPL al pie de la letra hay dos caminos: pedirle al autor de mediabunny (Vanilagy) el commit exacto, o compilar nosotros el codificador desde una versión publicada de FFmpeg con hash fijado (como con libarchive en 3C.45) y servir ese WASM. Mientras tanto, M4A/AAC solo usa este WASM cuando el navegador no tiene codificador AAC propio.
+- **(Fase 6) Mergear `dev` en `main`**: producción va 51 commits atrás (solo hasta la fase 4); los arreglos de las fases 5 y 6 (capa que tapaba botones, estados del login, Resend, B-01 a B-25) no están publicados. Resumen en `docs/bug-audit-report.md`.
+- **(Fase 6) Variables en Railway**: confirmar que `AUTH_SECRET` y `NEXT_PUBLIC_SITE_URL` (con `https://`) estén definidas en el servicio `app`; sin ellas el login queda desactivado (B-14) y las canónicas apuntan a `localhost` (B-15 ya no rompe las páginas).
+- **(Fase 6) `PAYMENTS_MOCK` (B-22)**: confirmar que **no** esté definida en el servicio `app` de Railway; si lo está, cualquier usuario fuera de los países con Mercado Pago configurado pasa a Pro sin pagar.
+- **(Fase 6) Cloudflare y límites por IP (B-24)**: si se pone Cloudflare (u otro proxy) delante de Railway, avisar para que `clientIp()` lea `CF-Connecting-IP`; si no, todos los visitantes compartirían el límite de conversiones.
+- **(Fase 6) Límite de conversiones con sesión**: ahora es 5 veces el anónimo (100 por minuto por cuenta con `RATE_LIMIT_PER_MINUTE=20`). Cambiarlo si se prefiere otro valor.
 - **Foto carnet (3C.42)**: no se encontraron fuentes oficiales fiables de las medidas por país; la herramienta usa medidas habituales y pide confirmar con la oficina. Si se quieren presets por país (AR, BR, MX, CL, CO, PE, UY), validar cada medida con el organismo correspondiente.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
@@ -2953,3 +2964,280 @@ Todas las tareas de la fase 4 están marcadas y el CI de GitHub está en verde e
 **Para publicar**: seguir `docs/launch-checklist.md`. Lo que queda depende solo del dueño (ver "Pendiente del dueño"), incluido el commit exacto de FFmpeg (AAC) para la LGPL.
 
 **La tarea programada de desarrollo autónomo ya no tiene trabajo: conviene pausarla.**
+
+## 2026-10-22 22:57 UTC — Inicio de la fase 5
+
+Correcciones de bugs reportados por el dueño en producción (ver "Fase 5" en PLAN.md): login por email que no envía en Railway (SMTP bloqueado), estados del formulario de login y pasos del dueño para Resend.
+
+## 2026-10-22 23:05 UTC — Fase 5, tarea 5.1 (login por email en Railway)
+
+Causa: Railway bloquea el SMTP saliente (25/465/587) salvo en el plan Pro, así que nodemailer terminaba en `Connection timeout` tras minutos.
+
+**Qué se hizo**
+- `src/lib/email/send.ts`: con `RESEND_API_KEY` el magic link se envía por la API HTTP de Resend (`fetch` a `https://api.resend.com/emails`, sin dependencias nuevas), con `AbortSignal.timeout(10 s)`; si la respuesta no es 2xx se registra `[email] Resend rejected the email: HTTP <código> <mensaje>` (nunca la clave) y se lanza el error, que Auth.js convierte en `/login?error=…`. Sin `RESEND_API_KEY`, SMTP (`EMAIL_SERVER`) con `connectionTimeout`, `greetingTimeout` y `socketTimeout` de 10 s (nodemailer ignora opciones extra si recibe la URL, por eso se parsea). Resend tiene prioridad. Sin ninguno, el enlace va al log (desarrollo / `AUTH_EMAIL_LOG_LINKS`).
+- `src/auth.ts`: el proveedor conserva el id `nodemailer` (no cambia el formulario) y se habilita con `RESEND_API_KEY` o `EMAIL_SERVER`.
+- `.env.example`, `DEPLOY.md` y `docs/launch-checklist.md` (sección Resend y tabla de variables): `RESEND_API_KEY` en lugar de `EMAIL_SERVER`. La página de créditos no cambia (Resend es un servicio, no una dependencia).
+- Tests `src/lib/email/send.test.ts`: cuerpo, cabeceras, from/to e idioma del envío a Resend; errores 422/500 y timeout se propagan y se registran sin la clave; error de red; prioridad Resend sobre SMTP; SMTP con los tres timeouts.
+
+**Verificación**
+- Lint, typecheck, build y tests unitarios (1009) pasan.
+- `next start` con MongoDB en memoria y una clave falsa: el POST a `/api/auth/signin/nodemailer` llega a la API real de Resend y responde en 0,2 s con `/login?error=Configuration`; el log muestra `HTTP 401 API key is invalid` sin la clave.
+
+## 2026-10-22 23:13 UTC — Fase 5, tarea 5.2 (estados del formulario de login)
+
+**Qué se hizo**
+- `src/components/session/EmailSignInForm.tsx` (cliente): el formulario de email ya no usa una server action; pide el token CSRF y hace POST a `/api/auth/signin/nodemailer` con `X-Auth-Return-Redirect: 1` (Auth.js responde `{ url }`). Mientras tanto el botón muestra "Enviando…" con un indicador que gira (`motion-safe`), queda deshabilitado con `aria-busy` y una ref impide un segundo envío (Enter o clic). Error del servidor (`?error=` en la URL, HTTP no 2xx), timeout de 20 s del lado del cliente (`setTimeout` + `AbortController`) y error de red muestran un mensaje traducido en un `role="alert"` que recibe el foco, y el botón se vuelve a habilitar. El email se valida antes de enviar (`aria-invalid`, foco en el campo). Si sale bien, lleva a `/[locale]/login/verify`.
+- "Continuar con Google" tenía el mismo problema (sin estado mientras corre la server action): `PendingSubmitButton` con `useFormStatus` muestra "Redirigiendo…", indicador y lo deshabilita.
+- Textos nuevos en `Login` (es, en, pt, fr, zh): `sending`, `redirecting`, `emailInvalid`, `sendError`, `sendTimeout`, `networkError`.
+- `tests/e2e/login.spec.ts` (Playwright, endpoints de Auth.js simulados con `page.route`): respuesta lenta (estado "Enviando…", deshabilitado, una sola petición aunque se apriete Enter o se fuerce el clic, llega a "Revisa tu correo"), error de Auth.js con reintento, HTTP 500, error de red, timeout de 20 s con `page.clock`, validación, inglés y estado de Google. `a11y.spec.ts`: axe en el login (claro y oscuro) con el mensaje de error visible. El servidor de las pruebas habilita ambos métodos (`AUTH_EMAIL_LOG_LINKS`, Google ficticio y un `AUTH_SECRET` de prueba en `playwright.config.ts`).
+
+**Verificación**
+- Lint, typecheck, build y tests unitarios pasan; Playwright: `login.spec.ts` (7), `a11y.spec.ts`, `layout-shift.spec.ts` y `search.spec.ts` pasan (32 + 7).
+
+## 2026-10-22 23:13 UTC — Fase 5, tarea 5.3 (pendiente del dueño: Resend)
+
+**Qué se hizo**
+- "Pendiente del dueño": la entrada de SMTP se reemplazó por los pasos para Resend (API key, `RESEND_API_KEY` en Railway, dominio verificado —sin él `onboarding@resend.dev` solo entrega al email de la cuenta de Resend—, `EMAIL_FROM` con ese dominio, quitar `EMAIL_SERVER`, redesplegar).
+
+**Verificación**
+- Solo documentación.
+
+## 2026-10-22 23:17 UTC — FASE 5 TERMINADA
+
+Todas las tareas de la fase 5 están marcadas y el CI de GitHub está en verde en `6e97659`.
+
+**Resumen**
+- 5.1 El email de inicio de sesión se envía por la API HTTP de Resend cuando hay `RESEND_API_KEY` (Railway bloquea el SMTP salvo en Pro), con timeout de 10 s y errores claros en el log; SMTP queda como alternativa con timeouts de 10 s.
+- 5.2 El formulario de login muestra "Enviando…", no permite envíos dobles, corta a los 20 s y muestra errores traducidos y accesibles; "Continuar con Google" muestra "Redirigiendo…".
+- 5.3 Pasos del dueño para Resend en "Pendiente del dueño".
+
+**Para publicar**: seguir los pasos de Resend en "Pendiente del dueño" (`RESEND_API_KEY`, dominio verificado, `EMAIL_FROM`, quitar `EMAIL_SERVER`, redesplegar) y mergear `dev` en `main`.
+
+**La tarea programada ya no tiene trabajo de la fase 5: conviene pausarla.**
+
+## Inicio de la fase 6
+
+Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-audit.md`.
+
+## 2026-10-23 00:45 UTC — Fase 6, tarea 6A.1 (clicabilidad de todas las páginas)
+
+**Qué se hizo**
+- `tests/e2e/hit-test.ts`: detector reutilizable. Para cada enlace, botón, campo, label y rol interactivo visible lo lleva al centro de la pantalla y comprueba con `document.elementFromPoint` (centro y esquinas internas) que el clic le llega a él; reporta tapados, fuera de pantalla, scroll horizontal y objetivos táctiles < 24×24 px (excepción de espaciado de WCAG 2.5.8). `signInAsAdmin` crea una sesión JWT de prueba.
+- `tests/e2e/clickable.spec.ts`: 216 páginas + cuenta y admin con sesión, en 1280×800, 768×1024 y 390×844, claro y oscuro; deja reportes JSON en `test-results/hit-test/`. Test de control con una capa invisible inyectada.
+- `playwright.config.ts`: segundo servidor de pruebas (puerto 3101) con `ADMIN_EMAILS` y sin método de email, para las páginas con sesión.
+
+**Hallazgos**: ninguna capa tapa controles en ninguna página ni combinación. Colateral: **B-01** (media) — sin `MONGODB_URI` y con email habilitado, Auth.js responde 500 en todas sus llamadas (`MissingAdapter`); se arregla en 6D.1. Detalle en `docs/bug-audit.md`.
+
+**Verificación**: lint, tests unitarios (1009) y build pasan; Playwright `clickable.spec.ts` (91), `login.spec.ts` y `search.spec.ts` pasan.
+
+## 2026-10-23 00:48 UTC — Fase 6, tarea 6A.2 (estados abiertos)
+
+**Qué se hizo**
+- `hitTestPage` acepta `root` para revisar solo un menú o diálogo abierto.
+- `tests/e2e/open-states.spec.ts`: buscador con resultados, acordeones y paneles abiertos, resultados de herramientas (portada, unir PDF, comprimir imágenes, extraer ZIP), menú móvil y selector de idioma, en móvil y escritorio, claro y oscuro.
+
+**Hallazgos**: ninguno.
+
+**Verificación**: `open-states.spec.ts` (19) y el test de control de `clickable.spec.ts` pasan; lint pasa.
+
+## 2026-10-23 00:50 UTC — Fase 6, tareas 6A.3 y 6A.4 (capas decorativas en el código; arreglos de 6A)
+
+**Qué se hizo**
+- Revisión de todos los elementos `absolute`/`fixed` del código (detalle en `docs/bug-audit.md`).
+- **B-02** (baja, arreglado): la barra decorativa de `BarList` en el panel de admin no tenía `pointer-events-none`.
+- `tests/decorative-layers.test.ts`: guarda en el CI (Vitest + compilador de TypeScript) que falla si un elemento `aria-hidden` con `absolute`/`fixed` no ignora el puntero; falla sin el arreglo de B-02 y pasa con él.
+- 6A.4: no quedan hallazgos de 6A por arreglar (B-01 se trata en 6D.1).
+
+**Verificación**: lint, typecheck, tests unitarios y build pasan; `clickable.spec.ts` (admin) pasa.
+
+## 2026-10-23 01:00 UTC — Fase 6, tarea 6B.1 (Firefox y WebKit)
+
+**Qué se hizo**
+- `playwright.config.ts`: proyectos `firefox` y `webkit` (solo tests `@xb`); la ruta de Chromium del entorno queda solo en el proyecto `chromium`.
+- 14 tests marcados `@xb`, uno por familia de herramientas.
+- CI: job `e2e-browsers` (en la imagen `mcr.microsoft.com/playwright:v1.56.0-noble`, que trae los navegadores y sus librerías; build, muestra en Firefox y WebKit, chequeos de clics en Chromium).
+- Test de EPUB: ignora las URLs `blob:`/`data:` propias que WebKit informa como peticiones.
+
+**Hallazgos**: **B-03** (media): en WebKit (Linux) MP3 → WAV falla con "archivo dañado" aunque el archivo está bien. **B-04** (baja, entorno): la prueba de H.264 de `VideoEncoder` cuelga el renderizador de esa build de WebKit y todas las páginas de video se caen al cargar. Ambos quedan para 6B.3 con tests `fixme`.
+
+**Verificación**: Firefox 14/14, WebKit 12/14 + 2 `fixme`; Chromium `open-states`, `login` y control de `clickable` (27) pasan con `CI=1`; lint, typecheck y tests unitarios pasan.
+
+## 2026-10-23 01:49 UTC — Fase 6, arreglo del CI de 6B.1 (B-05)
+
+**Qué se hizo**
+- CI: el job `e2e-browsers` corre en la imagen `mcr.microsoft.com/playwright:v1.56.0-noble` (instalar las librerías con apt superaba los 25 min) y sube `test-results/` si falla.
+- **B-05** (media, arreglado): un archivo elegido antes de que cargue el JavaScript se perdía en silencio. `Dropzone` ahora toma al montar los archivos que ya tenga el input. Test de regresión `tests/e2e/early-pick.spec.ts` (Chromium, Firefox y WebKit), que falla sin el arreglo.
+
+**Verificación**: lint, typecheck, tests unitarios y build pasan; Firefox + WebKit 28 pasan (2 `fixme`); Chromium `pdf-tools`, `converter`, `archive-tools`, `open-states` (163) pasan.
+
+## 2026-10-23 01:57 UTC — Fase 6, CI de Firefox (B-06)
+
+- El job `e2e-browsers` falló en Firefox (modelos 3D): "Descargar todo" no produjo la descarga, el mismo síntoma que antes en extraer ZIP. **B-06** (media, abierto): sin causa encontrada; se investiga en 6C.1.
+- `playwright.config.ts`: 1 reintento en el CI solo para Firefox y WebKit, para que ese caso se informe como "flaky" y no ponga el job en rojo.
+
+## 2026-10-23 02:14 UTC — Fase 6, tarea 6B.2 (emulación de iPhone y Android)
+
+**Qué se hizo**
+- `playwright.config.ts`: proyectos `iphone` (WebKit, iPhone 13) y `android` (Chromium, Pixel 7) con la muestra `@xb`.
+- CI: el job `e2e-browsers` corre también esos dos proyectos.
+
+**Hallazgos**: ninguno nuevo. Android 15/15; iPhone 13/15 + 2 `fixme` (B-03 y B-04, ya registrados para WebKit).
+
+**Verificación**: lint, typecheck, tests unitarios (1011) y build pasan; `--project iphone --project android` 28 pasan, 2 omitidos.
+
+## 2026-10-23 02:34 UTC — Fase 6, tarea 6B.3 (lo que el navegador no soporta)
+
+**Qué se hizo**
+- **B-03** (media, arreglado en 52dbd3b): en WebKit, convertir a FLAC fallaba con "archivo dañado". El codificador FLAC propio de WebKit genera paquetes que mediabunny no puede empaquetar; ahora FLAC usa siempre el codificador WASM. El test `@xb` de audio corre en WebKit e iPhone sin `fixme`.
+- **B-04** (baja): descartado como fallo del motor (WebKitGTK); queda `fixme`.
+- `tests/e2e/unsupported.spec.ts`: detector que borra Worker, WebAssembly, OffscreenCanvas y WebCodecs y prueba una herramienta por familia; en el CI (Chromium).
+- **B-07** (media, arreglado): sin esas APIs, las herramientas mostraban "No se pudo convertir este archivo."; ahora "Tu navegador no puede convertir este archivo…" (`unexpectedErrorCode()` en `errorCode()` y en las herramientas PDF).
+- **B-08** (baja, arreglado): sin WebCodecs, audio y video culpaban al archivo (AAC) o al formato (MOV); ahora dicen que es el navegador.
+
+**Verificación**: lint, typecheck, tests unitarios (1013) y build pasan; Chromium `unsupported`, `audio-tools`, `video-tools`, `pdf-tools`, `sign-pdf`, `image-tools`, `scan-tools`, `early-pick` (129) pasan; Firefox, WebKit, iPhone y Android 58 pasan, 2 omitidos (B-04).
+
+## 2026-10-23 02:48 UTC — Fase 6, tarea 6C.1 (estados y errores de las herramientas)
+
+**Qué se hizo**
+- `tests/e2e/failure-states.spec.ts` (32 tests, en el CI): herramientas de servidor con 503, 429, páginas 502/413 del proxy, sin conexión, lentitud + doble clic y petición colgada + cancelar; herramientas del navegador sin conexión después de cargar, doble clic y cancelar un OCR.
+- **B-09** (media, arreglado): las páginas de error del proxy (413, 502–504) se informaban como "No se pudo convertir este archivo"; ahora "archivo demasiado grande" o "servicio no disponible".
+- **B-10** (alta, arreglado): sin conexión o con una pestaña abierta durante un despliegue nuevo, todas las herramientas culpaban al archivo. Código nuevo `connectionLost` traducido a los 5 idiomas; al volver la conexión se puede reintentar sin recargar.
+
+**Verificación**: lint, typecheck, tests unitarios y build pasan; Chromium `failure-states` (32, dos corridas), `unsupported`, `gotenberg-tools`, `ebook-tools`, `pdf-password`, `converter` (109) pasan.
+
+## 2026-10-23 02:54 UTC — Fase 6, tarea 6C.2 (login, checkout, cancelación, admin y CSV)
+
+**Qué se hizo**
+- `tests/e2e/billing-states.spec.ts` (6 tests, en el CI): checkout con sesión ante lentitud, doble clic, 503, 502, error de red, sin conexión y respuesta que nunca llega. `playwright.config.ts`: `PAYMENTS_MOCK=true` en el segundo servidor de pruebas.
+- **B-11** (media, arreglado): checkout y cancelación de suscripción sin indicador de trabajo, sin tiempo límite (botón muerto para siempre) y con mensaje equivocado sin conexión. `src/lib/post-action.ts` (+ tests) y los dos botones con "Redirigiendo…"/"Procesando…", `aria-busy` y bloqueo del doble envío.
+- **B-12** (baja, abierto): exportar CSV del admin con error muestra JSON crudo; queda para 6C.3.
+- Login: ya cubierto por `login.spec.ts` (fase 5).
+
+**Verificación**: lint, typecheck, tests unitarios (1019) y build pasan; Chromium `billing-states` (6, dos corridas), `login`, control de `clickable` y páginas con sesión pasan.
+
+## 2026-10-23 02:59 UTC — Fase 6, tarea 6C.3 (buscador y selector de idioma)
+
+**Qué se hizo**
+- `tests/e2e/search-locale-states.spec.ts` (5 tests, en el CI): índice del buscador con 500, error de red y lentitud; selector de idioma sin conexión y tras un despliegue simulado.
+- **B-13** (media, arreglado): el selector de idioma dejaba un `ChunkLoadError` sin capturar y no hacía nada sin conexión o tras un despliegue; ahora queda usable sin conexión y, con conexión, carga la portada del idioma elegido.
+- El buscador ya manejaba todos los casos. B-12 (baja) pasa a 6D.2.
+
+**Verificación**: lint, typecheck, tests unitarios (1019) y build pasan; Chromium `search-locale-states` + `search` (10, dos corridas) y `open-states` (19) pasan.
+
+## 2026-10-23 03:07 UTC — Cierre de la ejecución (6B.2–6C.3)
+
+- CI: verde en 0c70dc1 y 9c62399 (último commit). Falló una vez en ed97622: en emulación de iPhone, "Descargar todo" de convertir hoja de cálculo no produjo la descarga (falló también el reintento). Es el mismo síntoma que B-06 (abierto); se anotó ahí y queda para investigar.
+- Siguiente tarea: 6D.1.
+
+## 2026-10-23 03:30 UTC — Fase 6, tarea 6D.1 (variables de entorno)
+
+**Qué se hizo**
+- Revisión de cada variable de `.env.example` y prueba con `next start` en producción con el entorno vacío y combinaciones de variables faltantes (tabla en `docs/bug-audit.md`).
+- **B-01** (media, arreglado en 697c531): sin `MONGODB_URI` el email ya no se ofrece (Auth.js lo necesita y daba 500 en todo, Google incluido). `src/lib/auth-providers.ts` (+ tests).
+- **B-14** (media, arreglado): sin `AUTH_SECRET` en producción, `/api/auth/session` daba 500 en cada visita; ahora responde `null` y el login dice que no está configurado.
+- **B-15** (alta, arreglado): `NEXT_PUBLIC_SITE_URL` vacía o sin protocolo hacía fallar `new URL()` en el layout (500 en todas las páginas). `configuredSiteUrl()` (+ tests).
+- `playwright.config.ts`: el servidor de `login.spec.ts` usa un `MONGODB_URI` inaccesible para seguir mostrando el formulario de email.
+
+**Verificación**: lint, typecheck, tests unitarios (1026) y build pasan; Chromium `login`, `billing-states`, `search-locale-states` (18) pasan, y el resto del grupo del CI (`open-states`, `clickable`) también; sondeo con `next start` sin 500 en ninguna combinación.
+
+## 2026-10-23 04:05 UTC — Fase 6, tarea 6D.2 (app levantada con servicios caídos)
+
+**Qué se hizo**
+- `tests/e2e/environments.spec.ts` (6 tests, en el CI): build de producción con MongoDB en memoria caído al arrancar y de vuelta, Gotenberg colgado y sin ninguna variable de entorno.
+- **B-16** (alta, arreglado en e07b326): si la app arrancaba con MongoDB caído, el cliente de Auth.js quedaba cerrado para siempre y nadie podía iniciar sesión hasta reiniciar. `getMongoClient()` reintenta tras un fallo; la espera de MongoDB baja de 30 s a 5 s.
+- **B-12** (baja, arreglado): los enlaces "CSV" del admin descargan con `fetch` y muestran el error en el panel (`CsvLink`).
+- Cabeceras de país e idioma raras: sin problemas. Cuerpos sin `Content-Length`: anotado para 6F.3.
+
+**Verificación**: lint, typecheck, tests unitarios (1028) y build pasan; Chromium `environments` + `login` (13) pasan; el test de B-16 falla sin el arreglo (comprobado).
+
+## 2026-10-23 04:20 UTC — Fase 6, tarea 6D.3 (prueba de humo en producción)
+
+**Qué se hizo**
+- `scripts/smoke-production.mjs`: prueba de solo lectura (12 peticiones espaciadas + comprimir imagen y unir PDF en Chromium con la API de conversión bloqueada). Ejecutada una vez; resultado en `docs/bug-audit.md`.
+- Todo responde 200, canónicas/robots/sitemap con el dominio correcto, las dos conversiones del navegador descargan bien, sin errores de consola ni recursos 404.
+- **B-17** (media, abierto para 6F.1): ninguna respuesta tiene cabeceras de seguridad (CSP, nosniff, Referrer-Policy, frame-ancestors, Permissions-Policy, HSTS).
+- Producción (`main`) llega solo hasta la fase 4: faltan los 33 commits de las fases 5 y 6. Anotado en "Pendiente del dueño".
+
+**Verificación**: lint pasa (solo se agregó un script y documentación).
+
+## 2026-10-23 04:30 UTC — Fase 6, tarea 6E.1 (fixtures de casos límite)
+
+**Qué se hizo**
+- `scripts/fixtures/edge.mjs`: genera en `tests/fixtures/edge/` (ignorada por git) 46 archivos sintéticos: fotos de 12–48 MP con orientación EXIF, PDF de 500 páginas, escaneado y con contraseña, nombres con acentos/emojis/muy largos, archivos vacíos, extensiones que no coinciden y Markdown justo por debajo y por encima del límite del servidor. Documentado en `tests/fixtures/README.md`.
+- HEIC: sharp no codifica HEVC; se sigue usando `photo.heic`. Los límites del navegador se probarán con `File` creados en la página.
+
+**Verificación**: lint pasa; el script corre en 24 s y se comprobaron orientación, tamaño, páginas y cifrado de los archivos generados.
+
+## 2026-10-23 05:15 UTC — Fase 6, tarea 6E.2 (imagen y PDF con archivos difíciles)
+
+**Qué se hizo**
+- `tests/e2e/edge-files.spec.ts` (19 tests, en el CI con su paso que genera los fixtures): fotos de 24–48 MP con orientación EXIF, PNG de 33 MB, nombres difíciles, archivos vacíos, extensiones que mienten, límite de tamaño, PDF de 500 páginas, escaneado, con contraseña y solo con permisos.
+- **B-18** (alta, arreglado): unir/dividir/rotar/etc. un PDF cifrado (con contraseña o solo con permisos) descargaba páginas en blanco sin aviso. El worker de PDF descifra con qpdf los que solo tienen permisos y rechaza los que tienen contraseña con un mensaje traducido que lleva a "Quitar contraseña de PDF"; las 7 herramientas de PDF muestran el código real del error.
+- **B-19** (baja, arreglado): un PDF de 0 bytes decía "Solo PDF"; ahora "El archivo está vacío".
+- `playwright.config.ts`: `LANG=C.UTF-8` si no hay locale (Chromium ignoraba nombres no ASCII en el contenedor). `support.ts`: `/api/visit` simulado (retrasaba `networkidle` con MongoDB inaccesible).
+
+**Verificación**: lint, typecheck, tests unitarios (1031) y build pasan; Chromium `edge-files`, `pdf-tools`, `pdf-password`, `sign-pdf`, `ocr-tools`, `unsupported`, `failure-states`, `early-pick` (124) y el resto del grupo del CI pasan.
+
+## 2026-10-23 05:10 UTC — Cierre de la ejecución (6D.1–6E.2)
+
+- 5 tareas: 6D.1, 6D.2, 6D.3, 6E.1 y 6E.2. Bugs nuevos: B-14 (media), B-15 (alta), B-16 (alta), B-17 (media, abierto para 6F.1), B-18 (alta), B-19 (baja); arreglados también B-01 y B-12.
+- CI: verde en cf3351f, 5709b3e, 223acbc y 0f53a32 (último commit de código; el job de navegadores tarda 8 min con `environments` y `edge-files`). El job de 0b54228 llegó al límite de 25 min (ver 6E.2, "Ruido en el CI"); ya no se repitió.
+- Siguiente tarea: 6E.3.
+
+## 2026-10-23 05:25 UTC — Fase 6, tarea 6E.3 (resto de familias con archivos difíciles)
+
+**Qué se hizo**
+- Sondeo de 25 casos y `tests/e2e/edge-files-families.spec.ts` (24 tests, en el CI con `edge-files`): archivos vacíos, nombres con acentos y emojis, extensiones que mienten, límite de tamaño y PDF con contraseña en datos, documentos, OCR, comprimidos, EPUB, audio, video, 3D, CAD y utilidades.
+- **B-20** (baja, arreglado en 3edd510): un archivo de 0 bytes se aceptaba y al convertir daba un error engañoso ("formato no compatible", "dañado", "revisa el formato"). Ahora se rechaza al elegirlo con "El archivo está vacío." (5 idiomas), salvo en hash, Base64 y crear ZIP.
+- **B-21** (baja, arreglado en 3edd510): PDF → JPG de un PDF guardado como `.docx` descargaba `x.docx-jpg.zip`.
+
+**Verificación**: lint, typecheck, tests unitarios (1033) y build pasan; Chromium `edge-files-families` (24), `edge-files`, `converter`, `archive-tools`, `data-tools`, `text-tools` (189 con `CI=1`) pasan.
+
+## 2026-10-23 05:45 UTC — Fase 6, tarea 6F.1 (cabeceras HTTP y cookies)
+
+**Qué se hizo**
+- **B-17** (media, arreglado en a738689): `next.config.ts` agrega a todas las respuestas CSP (`frame-ancestors`, `object-src`, `base-uri`, `form-action`; compatible con AdSense), `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy` y HSTS. Detalle y motivos en `docs/bug-audit.md`.
+- Cookies de Auth.js comprobadas: `HttpOnly`, `SameSite=Lax` y `Secure` (prefijos `__Host-`/`__Secure-`) detrás del proxy HTTPS. La cookie de región lleva `secure` en HTTPS.
+- `tests/e2e/security-headers.spec.ts` (4 tests, en el CI).
+
+**Verificación**: lint, typecheck, tests unitarios (1033) y build pasan; Chromium `security-headers` + OCR, PDF, imagen, audio, video, 3D, quitar fondo, login, `open-states` y `unsupported` (172) pasan.
+
+## 2026-10-23 06:00 UTC — Fase 6, tarea 6F.2 (control de acceso)
+
+**Qué se hizo**
+- `tests/e2e/access-control.spec.ts` (5 tests, en el CI, commit 3312394): admin (páginas y APIs) da 404 sin sesión, con usuario normal, con correo parecido y con sesión firmada con otro secreto; facturación da 401 sin sesión; el checkout simulado no existe en producción sin `PAYMENTS_MOCK`; el webhook rechaza notificaciones sin firma, falsificadas o viejas.
+- Sin bugs de código. **B-22** (dueño): `PAYMENTS_MOCK=true` en producción regala Pro fuera de los países con Mercado Pago; anotado en "Pendiente del dueño".
+
+**Verificación**: lint, typecheck y Chromium `access-control` (5) pasan.
+
+## 2026-10-23 06:20 UTC — Fase 6, tarea 6F.3a (tamaño de los cuerpos y errores)
+
+**Qué se hizo**
+- 6F.3 se dividió en 6F.3a (tamaño y errores) y 6F.3b (frecuencia).
+- **B-23** (alta, arreglado en e95727c): las APIs con cuerpo lo guardaban entero en memoria antes de validarlo cuando el cliente no manda `Content-Length`; un cuerpo enorme o infinito podía tumbar el servicio en Railway. `readBody()` corta en el límite de cada API y responde 413 (subidas, stats, visit, facturación, webhook y login).
+- `tests/e2e/api-limits.spec.ts` (7 tests, en el CI): cuerpos infinitos en partes reciben 413 enseguida; los errores de pedidos rotos no muestran trazas, rutas ni secretos (no se encontraron fugas).
+
+**Verificación**: lint, typecheck, tests unitarios (1037) y build pasan; Chromium `api-limits`, `access-control`, `security-headers`, `login`, `billing-states`, `failure-states`, `environments`, `converter`, `search-locale-states` (171 + 4 omitidos que necesitan Gotenberg) pasan.
+
+## 2026-10-23 06:45 UTC — Fase 6, tarea 6F.3b (límites de frecuencia)
+
+**Qué se hizo**
+- **B-24** (media, arreglado en c81fe2b): la IP del cliente salía de la primera entrada de `X-Forwarded-For`, que el cliente puede inventar; con un valor distinto por pedido no había límite. Ahora se usa la última (la del proxy).
+- **B-25** (media, arreglado en c81fe2b): los enlaces de inicio de sesión no tenían límite (inundar casillas, gastar Resend). Ahora 5 por IP cada 10 min y 5 por dirección cada hora; el formulario lo explica en 5 idiomas. Las cuentas pasan a tener límite en las conversiones del servidor (5× el anónimo).
+- `tests/e2e/rate-limits.spec.ts` (3 tests, en el CI) y tests unitarios.
+
+**Verificación**: lint, typecheck, tests unitarios (1037) y build pasan; Chromium `rate-limits`, `api-limits`, `access-control`, `security-headers`, `login`, `billing-states`, `failure-states`, `environments`, `converter` (169 + 4 omitidos que necesitan Gotenberg) pasan.
+
+## 2026-10-23 07:10 UTC — Cierre de la ejecución (6E.3–6F.3b)
+
+- 5 tareas: 6E.3, 6F.1, 6F.2, 6F.3a y 6F.3b (6F.3 se dividió en dos). Bugs nuevos: B-20 y B-21 (baja), B-23 (alta), B-24 y B-25 (media), todos arreglados; B-17 (media) arreglado; B-22 (alta solo si `PAYMENTS_MOCK=true` está en producción) queda para el dueño.
+- CI: verde en 0d11904, f4df2dc, d4ad183 y 0bdce28 (último commit). En d8c7c7b falló una vez `search-locale-states` (timeout de 60 s al escribir en el buscador con el índice caído); pasó en los commits siguientes y localmente. Si se repite, investigar como B-06.
+- Siguiente tarea: 6G.1 (informe final).
+
+## 2026-10-23 06:13 UTC — Fase 6, tarea 6G.1 (informe)
+- `docs/bug-audit-report.md`: resumen de lo revisado por hito y los detectores que quedaron, los 25 hallazgos por gravedad (0 críticos, 6 altos, 12 medios, 7 bajos) y por categoría, 22 arreglados con su commit, lo que queda (B-06 abierto e intermitente, B-04 descartado por ser del motor WebKit de Linux, B-22 depende de la configuración), lo que tiene que decidir o configurar el dueño y recomendaciones para que no vuelvan.
+- Producción (`main`) sigue en la fase 4: `dev` va 51 commits adelante. Actualizado en "Pendiente del dueño".
+- Verificado: `npm run lint`, `npm test` (134 archivos, 1037 tests) y `npm run build` pasan. Solo cambian documentos.
+
+## 2026-10-23 06:13 UTC — FASE 6 TERMINADA
+- Todas las tareas de la fase 6 están marcadas. Falta que el dueño mergee `dev` en `main` y resuelva lo de "Pendiente del dueño" (Resend, `AUTH_SECRET`/`NEXT_PUBLIC_SITE_URL`, `PAYMENTS_MOCK`). La rutina programada se puede pausar.

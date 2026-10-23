@@ -17,7 +17,7 @@ test.afterEach(({ serverCalls }) => {
 });
 
 test.describe("tool: qr-generator", () => {
-  test("text → PNG of the chosen size that decodes to the same text", async ({ page }) => {
+  test("text → PNG of the chosen size that decodes to the same text", { tag: "@xb" }, async ({ page }) => {
     await page.goto("/es/generador-codigo-qr", { waitUntil: "networkidle" });
     await expect(page.getByRole("button", { name: "Crear código QR", exact: true })).toBeDisabled();
     await page.getByRole("textbox", { name: "Texto o enlace" }).fill("https://fileflect.example/es?q=café&n=1");

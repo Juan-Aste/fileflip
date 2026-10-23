@@ -57,8 +57,8 @@ export default function ExtractPdfImagesTool() {
                 let doc;
                 try {
                   doc = await openPdf(file);
-                } catch {
-                  throw new ConversionError("fileDamaged");
+                } catch (error) {
+                  throw error instanceof ConversionError ? error : new ConversionError("fileDamaged");
                 }
                 try {
                   return await extractPdfImages(doc, {

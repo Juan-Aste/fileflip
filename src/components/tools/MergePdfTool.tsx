@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import Dropzone from "@/components/converter/Dropzone";
 import { mergePdfFiles } from "@/lib/pdf/client";
+import { errorCode } from "@/lib/convert-error";
+import type { ApiErrorCode } from "@/lib/api-errors";
 import ToolAlert from "./ToolAlert";
 import FileList from "./FileList";
 import ProgressBar from "./ProgressBar";
@@ -21,10 +23,10 @@ export default function MergePdfTool() {
   const { files, ready, detecting, add, remove, move, clear } = useToolFiles(ACCEPTED);
   const [progress, setProgress] = useState<number | null>(null);
   const [result, setResult] = useState<Blob | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<ApiErrorCode | null>(null);
 
   async function run() {
-    setFailed(false);
+    setFailed(null);
     setProgress(0);
     try {
       const inputs = ready.map((f) => f.file);
@@ -33,7 +35,7 @@ export default function MergePdfTool() {
       );
     } catch (error) {
       console.error(error);
-      setFailed(true);
+      setFailed(errorCode(error));
     } finally {
       setProgress(null);
     }
@@ -62,7 +64,7 @@ export default function MergePdfTool() {
             {progress !== null && <ProgressBar value={progress} label={t("working")} />}
             {failed && (
               <ToolAlert>
-                {te("conversionFailed")}
+                {te(failed)}
               </ToolAlert>
             )}
             {ready.length < 2 && !detecting && <p className="text-sm text-muted">{t("needMore", { count: 2 })}</p>}

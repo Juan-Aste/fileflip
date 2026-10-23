@@ -13,7 +13,7 @@ vi.mock("@/lib/server/stats", async (importOriginal) => ({
 }));
 
 let currentPlan: "free" | "pro" = "free";
-vi.mock("@/lib/server/plan", () => ({ requestPlan: async () => ({ plan: currentPlan, signedIn: currentPlan === "pro" }) }));
+vi.mock("@/lib/server/plan", () => ({ requestPlan: async () => ({ plan: currentPlan, signedIn: currentPlan === "pro", userId: currentPlan === "pro" ? "test-user" : undefined }) }));
 
 const { POST } = await import("./route");
 const { GotenbergError } = await import("@/lib/server/gotenberg");

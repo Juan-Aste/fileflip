@@ -190,6 +190,7 @@
     "server": "Processado no nosso servidor e apagado em até 1 hora"
   },
   "ApiErrors": {
+    "emptyFile": "O arquivo está vazio.",
     "fileTooLarge": "O arquivo é grande demais.",
     "tooManyFiles": "Arquivos demais no mesmo lote.",
     "unsupportedFormat": "Este formato não pode ser convertido assim.",
@@ -198,6 +199,7 @@
     "conversionFailed": "Não foi possível converter este arquivo.",
     "serviceUnavailable": "O serviço está indisponível. Tente mais tarde.",
     "browserUnsupported": "Seu navegador não consegue converter este arquivo. Tente uma versão recente do Chrome, Edge, Firefox ou Safari.",
+    "connectionLost": "A conexão caiu ou a página foi atualizada, e esta ferramenta não conseguiu carregar o que precisa. Verifique sua conexão ou recarregue a página e tente de novo.",
     "pdfHasNoText": "Este PDF é uma imagem digitalizada: não tem texto para passar para o Word.",
     "fileDamaged": "O arquivo está danificado ou incompleto. Tente com outra cópia.",
     "invalidData": "Não conseguimos ler o conteúdo. Verifique se o formato é válido (aspas, vírgulas e chaves).",
@@ -215,6 +217,7 @@
     "pdfAlreadyProtected": "Este PDF já está protegido ou tem restrições. Remova primeiro a senha com “Desbloquear PDF”.",
     "pdfNotProtected": "Este PDF não tem senha: ele já abre sem ela.",
     "pdfWrongPassword": "A senha não está correta para este PDF.",
+    "pdfPasswordRequired": "Este PDF tem senha de abertura. Remova-a primeiro com “Desbloquear PDF” e tente de novo.",
     "pdfHasNoImages": "Este PDF não tem imagens para extrair (ou só tem imagens muito pequenas).",
     "tooManyCells": "A planilha é grande demais para processar no navegador (mais de 2 milhões de células).",
     "archiveTooLarge": "Ao ser extraído ocuparia mais de 500 MB ou teria mais de 5.000 arquivos: é demais para o navegador (ou é uma “bomba ZIP”).",
@@ -1519,6 +1522,7 @@
     "moveUp": "Mover {name} para cima",
     "moveDown": "Mover {name} para baixo",
     "onlyPdf": "Só PDF",
+    "emptyFile": "O arquivo está vazio",
     "needMore": "Adicione pelo menos {count} arquivos.",
     "pages": "{count, plural, one {# página} other {# páginas}}",
     "working": "Processando…",
@@ -1654,7 +1658,14 @@
     "error": "Não conseguimos fazer seu login. Tente de novo.",
     "verifyTitle": "Confira seu e-mail",
     "verifyBody": "Enviamos um link para você entrar. Pode levar um minuto; veja também a pasta de spam.",
-    "privacyNote": "Só usamos seu e-mail para o login e para avisos da sua assinatura."
+    "privacyNote": "Só usamos seu e-mail para o login e para avisos da sua assinatura.",
+    "sending": "Enviando…",
+    "redirecting": "Redirecionando…",
+    "emailInvalid": "Digite um e-mail válido, por exemplo nome@email.com.",
+    "sendError": "Não conseguimos enviar o link. Tente novamente em alguns minutos.",
+    "sendTimeout": "O envio está demorando demais. Verifique sua conexão e tente novamente.",
+    "networkError": "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.",
+    "rateLimited": "Você pediu links demais seguidos. Confira seu e-mail (também o spam) ou espere alguns minutos antes de pedir outro."
   },
   "Account": {
     "title": "Minha conta",

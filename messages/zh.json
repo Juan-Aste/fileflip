@@ -190,6 +190,7 @@
     "server": "在我们的服务器上处理，1 小时内删除"
   },
   "ApiErrors": {
+    "emptyFile": "文件为空。",
     "fileTooLarge": "文件太大。",
     "tooManyFiles": "一次批量的文件太多。",
     "unsupportedFormat": "此格式无法这样转换。",
@@ -198,6 +199,7 @@
     "conversionFailed": "无法转换此文件。",
     "serviceUnavailable": "服务暂时不可用，请稍后再试。",
     "browserUnsupported": "你的浏览器无法转换此文件。请使用最新版的 Chrome、Edge、Firefox 或 Safari。",
+    "connectionLost": "连接已断开或页面已更新，此工具无法加载所需内容。请检查网络连接或刷新页面后重试。",
     "pdfHasNoText": "此 PDF 是扫描图像，没有可转换为 Word 的文字。",
     "fileDamaged": "文件已损坏或不完整，请换一个副本再试。",
     "invalidData": "无法读取内容。请检查格式是否有效（引号、逗号和括号）。",
@@ -215,6 +217,7 @@
     "pdfAlreadyProtected": "此 PDF 已受保护或有限制。请先用“PDF 解密”移除其密码。",
     "pdfNotProtected": "此 PDF 没有密码：无需密码即可打开。",
     "pdfWrongPassword": "此 PDF 的密码不正确。",
+    "pdfPasswordRequired": "此 PDF 需要密码才能打开。请先用“PDF 解密”移除密码，然后重试。",
     "pdfHasNoImages": "此 PDF 中没有可提取的图片（或只有非常小的图片）。",
     "tooManyCells": "该电子表格太大，无法在浏览器中处理（超过 200 万个单元格）。",
     "archiveTooLarge": "解压后将超过 500 MB 或超过 5000 个文件：超出浏览器的处理能力（也可能是“ZIP 炸弹”）。",
@@ -1519,6 +1522,7 @@
     "moveUp": "上移 {name}",
     "moveDown": "下移 {name}",
     "onlyPdf": "仅限 PDF",
+    "emptyFile": "文件为空",
     "needMore": "请至少添加 {count} 个文件。",
     "pages": "{count, plural, other {# 页}}",
     "working": "处理中…",
@@ -1654,7 +1658,14 @@
     "error": "无法登录，请重试。",
     "verifyTitle": "请查收邮件",
     "verifyBody": "我们已向你发送登录链接。可能需要一分钟，也请检查垃圾邮件文件夹。",
-    "privacyNote": "我们只将你的邮箱用于登录和订阅通知。"
+    "privacyNote": "我们只将你的邮箱用于登录和订阅通知。",
+    "sending": "正在发送…",
+    "redirecting": "正在跳转…",
+    "emailInvalid": "请输入有效的电子邮箱，例如 name@email.com。",
+    "sendError": "无法向你发送链接，请过几分钟再试。",
+    "sendTimeout": "发送时间过长。请检查网络连接后重试。",
+    "networkError": "无法连接到服务器。请检查网络连接后重试。",
+    "rateLimited": "你连续请求的链接太多了。请查看你的邮箱（包括垃圾邮件），或等几分钟后再请求新的链接。"
   },
   "Account": {
     "title": "我的账户",

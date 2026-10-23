@@ -12,6 +12,6 @@ if (process.env.MONGODB_URI) {
       import("./lib/mongo-client"),
       import("./lib/server/indexes"),
     ]);
-    await ensureIndexes(getMongoClient().db());
+    await ensureIndexes((await getMongoClient()).db());
   })().catch((error) => console.warn("Index setup failed", error));
 }

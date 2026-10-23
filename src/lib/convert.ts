@@ -150,6 +150,6 @@ async function pdfPagesToImages(
   return {
     blob: zip,
     engine: "browser",
-    filename: name.replace(/\.pdf$/i, "") + `-${to}.zip`,
+    filename: (name.replace(/\.[^.]+$/, "") || "document") + `-${to}.zip`,
   };
 }

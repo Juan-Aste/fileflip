@@ -2,21 +2,12 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import NextAuth, { type NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 import Nodemailer from "next-auth/providers/nodemailer";
-import { createTransport } from "nodemailer";
-import { localeFromSignInUrl, magicLinkEmail } from "@/lib/email/magic-link";
+import { sendMagicLink } from "@/lib/email/send";
+import { getAuthProviders } from "@/lib/auth-providers";
 import { planForUser } from "@/lib/billing";
 import { getMongoClient } from "@/lib/mongo-client";
 
-/** Which sign-in methods are configured (the login page only shows those). */
-export function getAuthProviders() {
-  // Without SMTP, magic links are printed to the server log: always in
-  // development, and in production only if explicitly allowed (staging).
-  const logLinks = process.env.NODE_ENV !== "production" || process.env.AUTH_EMAIL_LOG_LINKS === "true";
-  return {
-    google: Boolean(process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET),
-    email: Boolean(process.env.EMAIL_SERVER) || logLinks,
-  };
-}
+export { getAuthProviders };
 
 function config(): NextAuthConfig {
   const enabled = getAuthProviders();
@@ -27,13 +18,10 @@ function config(): NextAuthConfig {
       Nodemailer({
         server: process.env.EMAIL_SERVER || "smtp://localhost:25",
         from: process.env.EMAIL_FROM || "Fileflect <no-reply@example.com>",
+        // The provider keeps its "nodemailer" id, but sends through Resend's
+        // HTTP API when RESEND_API_KEY is set (see lib/email/send.ts).
         async sendVerificationRequest({ identifier, url, provider }) {
-          const mail = magicLinkEmail(url, localeFromSignInUrl(url));
-          if (!process.env.EMAIL_SERVER) {
-            console.info(`[dev] Magic link for ${identifier}: ${url}`);
-            return;
-          }
-          await createTransport(provider.server).sendMail({ to: identifier, from: provider.from, ...mail });
+          await sendMagicLink({ to: identifier, url, from: provider.from! });
         },
       }),
     );

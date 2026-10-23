@@ -32,7 +32,8 @@ async function openOrFail(file: Blob) {
   try {
     return await openPdf(file);
   } catch (error) {
-    throw new ConversionError((error as Error)?.name === "PasswordException" ? "pdfAlreadyProtected" : "fileDamaged");
+    // openPdf reports an open password as pdfPasswordRequired.
+    throw error instanceof ConversionError ? error : new ConversionError("fileDamaged");
   }
 }
 

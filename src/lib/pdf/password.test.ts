@@ -3,7 +3,8 @@ import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 import { PDFDocument } from "pdf-lib";
 import { describe, expect, it } from "vitest";
-import { protectPdf, unlockPdf, type Qpdf, type QpdfFactory } from "./password";
+import { mergePdfs } from "./ops";
+import { mentionsEncrypt, protectPdf, unlockPdf, withoutEncryption, type Qpdf, type QpdfFactory } from "./password";
 
 const fixture = (name: string) => new Uint8Array(readFileSync(join(__dirname, "../../../tests/fixtures", name)));
 const nodeRequire = createRequire(import.meta.url);
@@ -85,5 +86,35 @@ describe("unlockPdf", () => {
     await expect(unlockPdf(encrypted, "wrong", load)).rejects.toMatchObject({ code: "pdfWrongPassword" });
     await expect(unlockPdf(fixture("document.pdf"), "pw", load)).rejects.toMatchObject({ code: "pdfNotProtected" });
     await expect(unlockPdf(fixture("corrupt/garbage.pdf"), "pw", load)).rejects.toMatchObject({ code: "fileDamaged" });
+  });
+});
+
+/** document.pdf encrypted by qpdf with the given open password ("" = permissions only). */
+async function encrypted(user: string) {
+  const qpdf = await load();
+  qpdf.FS.writeFile("/in.pdf", fixture("document.pdf"));
+  qpdf.callMain(["--encrypt", `--user-password=${user}`, "--owner-password=owner", "--bits=256", "--print=none", "--", "/in.pdf", "/out.pdf"]);
+  return qpdf.FS.readFile("/out.pdf");
+}
+
+describe("withoutEncryption (B-18)", () => {
+  it("returns an unencrypted PDF as it is, without loading qpdf", async () => {
+    const input = fixture("document.pdf");
+    expect(mentionsEncrypt(input)).toBe(false);
+    const never: QpdfFactory = () => Promise.reject(new Error("qpdf loaded"));
+    expect(await withoutEncryption(input, never)).toBe(input);
+  });
+
+  it("decrypts a permissions-only PDF, so merged pages keep their text", async () => {
+    const locked = await encrypted("");
+    expect(mentionsEncrypt(locked)).toBe(true);
+    // Without decrypting, pdf-lib copies the encrypted streams: blank pages.
+    expect(await text(await mergePdfs([locked.slice()]))).toBe("");
+    const merged = await mergePdfs([await withoutEncryption(locked, load)]);
+    expect(await text(merged)).toBe(await text(fixture("document.pdf")));
+  });
+
+  it("refuses a PDF with an open password with pdfPasswordRequired", async () => {
+    await expect(withoutEncryption(await encrypted("abre123"), load)).rejects.toMatchObject({ code: "pdfPasswordRequired" });
   });
 });

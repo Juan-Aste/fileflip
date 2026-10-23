@@ -16,7 +16,7 @@ vi.mock("@/lib/server/stats", async (importOriginal) => ({
   logConversion: (...args: unknown[]) => logConversion(...args),
 }));
 
-vi.mock("@/lib/server/plan", () => ({ requestPlan: async () => ({ plan: "free", signedIn: true }) }));
+vi.mock("@/lib/server/plan", () => ({ requestPlan: async () => ({ plan: "free", signedIn: true, userId: "test-user" }) }));
 
 const { POST } = await import("./route");
 const { GotenbergError } = await import("@/lib/server/gotenberg");

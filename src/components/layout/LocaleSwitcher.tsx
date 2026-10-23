@@ -16,9 +16,18 @@ export default function LocaleSwitcher() {
   // The slug tables (tools, conversions, long-tail content) are only needed
   // when switching, so they stay out of every page's initial bundle.
   const loadRoutes = () => import("@/config/routes");
+  const prefetchRoutes = () => void loadRoutes().catch(() => {});
 
   async function onChange(next: Locale) {
-    const { translatePathname } = await loadRoutes();
+    let translatePathname;
+    try {
+      ({ translatePathname } = await loadRoutes());
+    } catch {
+      // Offline the selector just stays as it was; online, a deploy replaced this
+      // page's files, so load the new language's home page (bug B-13).
+      if (navigator.onLine !== false) window.location.assign(`/${next}`);
+      return;
+    }
     startTransition(() => {
       // Same page in the new locale, with its translated slug.
       router.replace(translatePathname(pathname, locale, next), { locale: next });
@@ -32,8 +41,8 @@ export default function LocaleSwitcher() {
         value={locale}
         disabled={pending}
         onChange={(e) => onChange(e.target.value as Locale)}
-        onPointerEnter={loadRoutes}
-        onFocus={loadRoutes}
+        onPointerEnter={prefetchRoutes}
+        onFocus={prefetchRoutes}
         className={`h-9 cursor-pointer text-sm disabled:opacity-60 ${field}`}
       >
         {routing.locales.map((l) => (

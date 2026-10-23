@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { alternatesFor, sitemapEntries, softwareApplicationJsonLd } from "./seo";
+import { alternatesFor, configuredSiteUrl, sitemapEntries, softwareApplicationJsonLd } from "./seo";
 
 describe("alternatesFor", () => {
   it("lists every language plus x-default", () => {
@@ -58,5 +58,22 @@ describe("softwareApplicationJsonLd", () => {
       isAccessibleForFree: true,
       offers: { price: "0" },
     });
+  });
+});
+
+describe("configuredSiteUrl", () => {
+  it("normalizes a valid origin", () => {
+    expect(configuredSiteUrl("https://fileflect.app/")).toBe("https://fileflect.app");
+    expect(configuredSiteUrl(" http://localhost:3000 ")).toBe("http://localhost:3000");
+  });
+
+  it("adds https:// to a bare host", () => {
+    expect(configuredSiteUrl("app-production.up.railway.app")).toBe("https://app-production.up.railway.app");
+  });
+
+  it("ignores missing, empty or invalid values instead of throwing (every page would be a 500)", () => {
+    for (const raw of [undefined, "", "   ", "http://", "ftp://example.com", "not a url"]) {
+      expect(configuredSiteUrl(raw)).toBeUndefined();
+    }
   });
 });

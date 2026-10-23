@@ -1,7 +1,8 @@
-import { Download } from "lucide-react";
+import CsvLink from "@/components/admin/CsvLink";
 import { card } from "@/components/ui/styles";
 import { barShares } from "@/lib/admin/charts";
 import { formatNumber, formatPercent } from "@/lib/format";
+import { adminTranslator } from "@/lib/admin/messages";
 
 type Props = {
   title: string;
@@ -19,6 +20,7 @@ type Props = {
  * the listed total), so the values never depend on the bar alone.
  */
 export default function BarList({ title, rows, empty, labelHeader, countHeader, csvHref }: Props) {
+  const t = adminTranslator();
   const shares = barShares(rows);
   const total = rows.reduce((sum, r) => sum + r.count, 0);
   return (
@@ -26,10 +28,7 @@ export default function BarList({ title, rows, empty, labelHeader, countHeader, 
       <figcaption className="flex flex-wrap items-baseline justify-between gap-x-3">
         <span className="font-bold">{title}</span>
         {csvHref && (
-          <a href={csvHref} download className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:underline">
-            <Download aria-hidden="true" className="size-4" />
-            CSV<span className="sr-only">: {title}</span>
-          </a>
+          <CsvLink href={csvHref} title={title} busyLabel={t("charts.csvBusy")} errorLabel={t("charts.csvError")} />
         )}
       </figcaption>
       {rows.length === 0 ? (
@@ -49,7 +48,7 @@ export default function BarList({ title, rows, empty, labelHeader, countHeader, 
                   <span className="relative block overflow-hidden rounded-md px-2 py-1">
                     <span
                       aria-hidden="true"
-                      className="absolute inset-y-0 left-0 rounded-md bg-brand/15"
+                      className="pointer-events-none absolute inset-y-0 left-0 rounded-md bg-brand/15"
                       style={{ width: `${Math.max(shares[i] * 100, 1)}%` }}
                     />
                     <span className="relative block truncate">{row.label}</span>

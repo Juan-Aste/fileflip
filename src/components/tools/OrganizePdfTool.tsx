@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { organizePdfFile } from "@/lib/pdf/client";
 import type { PageSpec } from "@/lib/pdf/ops";
+import { errorCode } from "@/lib/convert-error";
+import type { ApiErrorCode } from "@/lib/api-errors";
 import ToolAlert from "./ToolAlert";
 import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
@@ -26,7 +28,7 @@ export default function OrganizePdfTool() {
   const [dragged, setDragged] = useState<number | null>(null);
   const [working, setWorking] = useState(false);
   const [result, setResult] = useState<Blob | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<ApiErrorCode | null>(null);
 
   const reset = () =>
     setPages(
@@ -50,7 +52,7 @@ export default function OrganizePdfTool() {
 
   async function run() {
     if (!pdf.file) return;
-    setFailed(false);
+    setFailed(null);
     setWorking(true);
     try {
       const file = pdf.file;
@@ -59,7 +61,7 @@ export default function OrganizePdfTool() {
       );
     } catch (error) {
       console.error(error);
-      setFailed(true);
+      setFailed(errorCode(error));
     } finally {
       setWorking(false);
     }
@@ -187,7 +189,7 @@ export default function OrganizePdfTool() {
           </ol>
           {failed && (
             <ToolAlert>
-              {te("conversionFailed")}
+              {te(failed)}
             </ToolAlert>
           )}
           <div className="flex flex-wrap gap-3">

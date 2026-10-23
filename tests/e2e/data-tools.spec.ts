@@ -22,7 +22,7 @@ test.afterEach(({ serverCalls }) => {
 });
 
 test.describe("tool: json-to-csv", () => {
-  test("nested JSON file → CSV with dotted columns and a BOM", async ({ page }) => {
+  test("nested JSON file → CSV with dotted columns and a BOM", { tag: "@xb" }, async ({ page }) => {
     await open(page, "/es/json-a-csv", ["data.json"]);
     const out = fileOf(await runTool(page, "Convertir a CSV"));
     expect(out.name).toBe("data.csv");

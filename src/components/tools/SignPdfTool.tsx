@@ -14,6 +14,7 @@ import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
 import SignaturePad from "./SignaturePad";
 import SinglePdfInput from "./SinglePdfInput";
+import { ConversionError, errorCode } from "@/lib/convert-error";
 import ToolAlert from "./ToolAlert";
 import ToolResult from "./ToolResult";
 import { useSinglePdf } from "./useSinglePdf";
@@ -81,7 +82,7 @@ export default function SignPdfTool() {
       url = URL.createObjectURL(await canvasToBlob(canvas, "image/jpeg", 0.8));
       if (cancelled) URL.revokeObjectURL(url);
       else setPreview({ url, ratio: canvas.width / canvas.height });
-    })().catch(() => !cancelled && setError("fileDamaged"));
+    })().catch((e) => !cancelled && setError(e instanceof ConversionError ? e.code : "fileDamaged"));
     return () => {
       cancelled = true;
       if (url) URL.revokeObjectURL(url);
@@ -138,7 +139,7 @@ export default function SignPdfTool() {
       );
     } catch (e) {
       console.error(e);
-      setError("conversionFailed");
+      setError(errorCode(e));
     } finally {
       setWorking(false);
     }

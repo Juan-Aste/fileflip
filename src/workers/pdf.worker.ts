@@ -17,7 +17,7 @@ import { addPageNumbers, addWatermark, type PageNumberOptions, type RenderText, 
 import { cropPdf, type Margins } from "@/lib/pdf/crop";
 import { signPdf, type SignaturePlacement } from "@/lib/pdf/sign";
 import { originalJpegs } from "@/lib/pdf/jpegs";
-import { protectPdf, unlockPdf, type Permissions, type Qpdf, type QpdfFactory } from "@/lib/pdf/password";
+import { protectPdf, unlockPdf, withoutEncryption, type Permissions, type Qpdf, type QpdfFactory } from "@/lib/pdf/password";
 import { addTextLayers } from "@/lib/pdf/ocr-layer";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
@@ -39,7 +39,8 @@ const renderText: RenderText = async (text, size, [r, g, b]) => {
   return { png, width: width / scale, height: height / scale };
 };
 
-// qpdf (1.3 MB of WASM) is only downloaded by the password tools.
+// qpdf (1.3 MB of WASM) is only downloaded by the password tools and for
+// encrypted inputs of the others.
 const qpdfWasm = new URL("../../node_modules/@neslinesli93/qpdf-wasm/dist/qpdf.wasm", import.meta.url).href;
 const loadQpdf: QpdfFactory = async () => {
   const { default: create } = (await import("@neslinesli93/qpdf-wasm")) as unknown as {
@@ -48,18 +49,21 @@ const loadQpdf: QpdfFactory = async () => {
   return create({ locateFile: () => qpdfWasm, print: () => {}, printErr: () => {} });
 };
 
+/** Encrypted inputs decrypted first: pdf-lib would copy unreadable pages (B-18). */
+const plain = (bytes: Uint8Array) => withoutEncryption(bytes, loadQpdf);
+
 exposeHandlers({
   count: async (bytes: Uint8Array) => ({ result: await pageCount(bytes) }),
   merge: async (files: Uint8Array[], onProgress) => {
-    const result = await mergePdfs(files, onProgress);
+    const result = await mergePdfs(await Promise.all(files.map(plain)), onProgress);
     return { result, transfer: [result.buffer] };
   },
   split: async ({ bytes, groups }: { bytes: Uint8Array; groups: number[][] }, onProgress) => {
-    const result = await splitPdf(bytes, groups, onProgress);
+    const result = await splitPdf(await plain(bytes), groups, onProgress);
     return { result, transfer: result.map((r) => r.buffer) };
   },
   rotate: async ({ bytes, rotation, pages }: { bytes: Uint8Array; rotation: Rotation; pages?: number[] }) => {
-    const result = await rotatePdf(bytes, rotation, pages);
+    const result = await rotatePdf(await plain(bytes), rotation, pages);
     return { result, transfer: [result.buffer] };
   },
   images: async (
@@ -70,23 +74,23 @@ exposeHandlers({
     return { result, transfer: [result.buffer] };
   },
   compress: async ({ bytes, level }: { bytes: Uint8Array; level: CompressionLevel }, onProgress) => {
-    const result = await compressPdf(bytes, level, browserRecompress, onProgress);
+    const result = await compressPdf(await plain(bytes), level, browserRecompress, onProgress);
     return { result, transfer: [result.bytes.buffer] };
   },
   pageNumbers: async ({ bytes, options }: { bytes: Uint8Array; options: PageNumberOptions }, onProgress) => {
-    const result = await addPageNumbers(bytes, options, renderText, onProgress);
+    const result = await addPageNumbers(await plain(bytes), options, renderText, onProgress);
     return { result, transfer: [result.buffer] };
   },
   watermark: async ({ bytes, options }: { bytes: Uint8Array; options: WatermarkOptions }, onProgress) => {
-    const result = await addWatermark(bytes, options, renderText, onProgress);
+    const result = await addWatermark(await plain(bytes), options, renderText, onProgress);
     return { result, transfer: [result.buffer] };
   },
   crop: async ({ bytes, margins }: { bytes: Uint8Array; margins: (Margins | null)[] }) => {
-    const result = await cropPdf(bytes, margins);
+    const result = await cropPdf(await plain(bytes), margins);
     return { result, transfer: [result.buffer] };
   },
   sign: async ({ bytes, png, placements }: { bytes: Uint8Array; png: Uint8Array; placements: SignaturePlacement[] }) => {
-    const result = await signPdf(bytes, png, placements);
+    const result = await signPdf(await plain(bytes), png, placements);
     return { result, transfer: [result.buffer] };
   },
   protect: async ({ bytes, password, permissions }: { bytes: Uint8Array; password: string; permissions: Permissions }) => {
@@ -94,7 +98,7 @@ exposeHandlers({
     return { result, transfer: [result.buffer] };
   },
   ocrLayers: async ({ bytes, layers }: { bytes: Uint8Array; layers: (Uint8Array | null)[] }) => {
-    const result = await addTextLayers(bytes, layers);
+    const result = await addTextLayers(await plain(bytes), layers);
     return { result, transfer: [result.buffer] };
   },
   unlock: async ({ bytes, password }: { bytes: Uint8Array; password: string }) => {
@@ -102,11 +106,11 @@ exposeHandlers({
     return { result, transfer: [result.buffer] };
   },
   jpegs: async (bytes: Uint8Array) => {
-    const result = await originalJpegs(bytes);
+    const result = await originalJpegs(await plain(bytes));
     return { result, transfer: Object.values(result).map((b) => b.buffer as ArrayBuffer) };
   },
   organize: async ({ bytes, specs }: { bytes: Uint8Array; specs: PageSpec[] }) => {
-    const result = await organizePdf(bytes, specs);
+    const result = await organizePdf(await plain(bytes), specs);
     return { result, transfer: [result.buffer] };
   },
 });

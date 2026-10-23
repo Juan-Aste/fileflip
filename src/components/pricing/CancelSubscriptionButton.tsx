@@ -1,25 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { LoaderCircle } from "lucide-react";
 import { buttonDanger } from "@/components/ui/styles";
+import type { ApiErrorCode } from "@/lib/api-errors";
+import { postAction } from "@/lib/post-action";
 
 export default function CancelSubscriptionButton() {
   const t = useTranslations("Account");
   const te = useTranslations("ApiErrors");
+  const tu = useTranslations("ToolUi");
   const router = useRouter();
   const [busy, setBusy] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const [error, setError] = useState<ApiErrorCode | null>(null);
+  const inFlight = useRef(false);
 
   async function cancel() {
-    if (!window.confirm(t("cancelConfirm"))) return;
+    if (inFlight.current || !window.confirm(t("cancelConfirm"))) return;
+    inFlight.current = true;
     setBusy(true);
-    setFailed(false);
-    const res = await fetch("/api/billing/cancel", { method: "POST" }).catch(() => null);
+    setError(null);
+    const result = await postAction("/api/billing/cancel");
+    inFlight.current = false;
     setBusy(false);
-    if (res?.ok) router.refresh();
-    else setFailed(true);
+    if (result.ok) router.refresh();
+    else setError(result.code);
   }
 
   return (
@@ -28,13 +35,15 @@ export default function CancelSubscriptionButton() {
         type="button"
         onClick={cancel}
         disabled={busy}
+        aria-busy={busy}
         className={`self-start ${buttonDanger}`}
       >
-        {t("cancel")}
+        {busy && <LoaderCircle aria-hidden="true" className="h-5 w-5 motion-safe:animate-spin" />}
+        {busy ? tu("working") : t("cancel")}
       </button>
-      {failed && (
+      {error && (
         <p role="alert" className="text-sm text-danger">
-          {te("serviceUnavailable")}
+          {te(error)}
         </p>
       )}
     </div>

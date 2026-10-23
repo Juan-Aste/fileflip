@@ -21,7 +21,9 @@ describe("readUpload rate limiting", () => {
     expect(Number((blocked as Response).headers.get("retry-after"))).toBeGreaterThan(0);
   });
 
-  it("does not limit signed-in users", async () => {
-    expect(await readUpload(rtf(), "pro", allowAll, { signedIn: true })).not.toBeInstanceOf(Response);
+  it("limits signed-in users per account, more loosely (5×) and apart from their IP", async () => {
+    for (let i = 0; i < 10; i++) expect(await readUpload(rtf(), "pro", allowAll, { userId: "u1" })).not.toBeInstanceOf(Response);
+    expect(((await readUpload(rtf(), "pro", allowAll, { userId: "u1" })) as Response).status).toBe(429);
+    expect(await readUpload(rtf(), "pro", allowAll, { userId: "u2" })).not.toBeInstanceOf(Response);
   });
 });

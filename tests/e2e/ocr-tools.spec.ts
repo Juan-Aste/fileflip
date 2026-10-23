@@ -52,7 +52,7 @@ test.describe("tool: image-to-text", () => {
     expect(external(urls)).toEqual([]);
   });
 
-  test("English phone photo (tilted, noisy JPEG)", async ({ page }) => {
+  test("English phone photo (tilted, noisy JPEG)", { tag: "@xb" }, async ({ page }) => {
     test.setTimeout(120_000);
     await openWithFiles(page, "/en/image-to-text", ["ocr-en.jpg"]);
     await page.getByRole("button", { name: "Extract text", exact: true }).click();

@@ -47,7 +47,7 @@ const hasPoppler = (() => {
 })();
 
 test.describe("tool: dxf-converter", () => {
-  test("plan.dxf → SVG at real size: shapes, colors, texts and the left-out hatch", async ({ page }) => {
+  test("plan.dxf → SVG at real size: shapes, colors, texts and the left-out hatch", { tag: "@xb" }, async ({ page }) => {
     await openWithFiles(page, "/en/dxf-converter", ["plan.dxf"]);
     const out = fileOf(await runTool(page, "Convert drawing"));
     expect(out.name).toBe("plan.svg");

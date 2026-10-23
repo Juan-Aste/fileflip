@@ -2,12 +2,22 @@ import "server-only";
 import { MongoClient } from "mongodb";
 
 // Native driver client for the Auth.js adapter (Mongoose keeps its own pool).
-// Created lazily and not connected up front, as the MongoDB team recommends.
-const globalForMongo = globalThis as typeof globalThis & { _mongoClient?: MongoClient };
+// Created lazily, on the first request that needs it.
+const globalForMongo = globalThis as typeof globalThis & { _mongoClient?: Promise<MongoClient> };
 
-export function getMongoClient(): MongoClient {
-  const uri = process.env.MONGODB_URI;
-  if (!uri) throw new Error("MONGODB_URI is not set");
-  globalForMongo._mongoClient ??= new MongoClient(uri);
+/**
+ * A connected client. If connecting fails the client is dropped, so the next
+ * call tries again: a MongoClient whose first connection failed stays closed
+ * for good ("Topology is closed"), which kept sign-in broken after MongoDB
+ * came back until the app was restarted (B-16).
+ */
+export function getMongoClient(uri = process.env.MONGODB_URI, serverSelectionTimeoutMS = 5_000): Promise<MongoClient> {
+  if (!uri) return Promise.reject(new Error("MONGODB_URI is not set"));
+  globalForMongo._mongoClient ??= new MongoClient(uri, { serverSelectionTimeoutMS })
+    .connect()
+    .catch((error: unknown) => {
+      globalForMongo._mongoClient = undefined;
+      throw error;
+    });
   return globalForMongo._mongoClient;
 }

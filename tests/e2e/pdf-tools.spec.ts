@@ -29,7 +29,7 @@ test.afterEach(({ serverCalls }) => {
 });
 
 test.describe("tool: merge-pdf", () => {
-  test("merges in list order", async ({ page }) => {
+  test("merges in list order", { tag: "@xb" }, async ({ page }) => {
     await openWithFiles(page, "/es/unir-pdf", ["document.pdf", "document-1page.pdf"]);
     const pdf = await pdfOf(page, "Unir PDF");
     expect(pdf.pages).toBe(4);

@@ -30,7 +30,7 @@ Las `NEXT_PUBLIC_*` se fijan al construir: si se cambian, redesplegar.
 | `ADMIN_EMAILS` | `tu-correo@gmail.com` |
 | `AUTH_GOOGLE_ID` | `1234567890-abc.apps.googleusercontent.com` |
 | `AUTH_GOOGLE_SECRET` | `GOCSPX-…` |
-| `EMAIL_SERVER` | `smtp://resend:re_XXXXXXXX@smtp.resend.com:587` |
+| `RESEND_API_KEY` | `re_XXXXXXXX` (no usar `EMAIL_SERVER`: Railway bloquea el SMTP salvo en Pro) |
 | `EMAIL_FROM` | `Fileflect <no-reply@fileflect.com>` |
 | `MP_ACCESS_TOKEN_AR` (y `_BR`, `_MX`, `_CL`, `_CO`, `_UY`, `_PE` según dónde se cobre) | `APP_USR-…` (primero `TEST-…`) |
 | `MP_WEBHOOK_SECRET_AR` (uno por cada token) | clave secreta del webhook de esa cuenta |
@@ -59,8 +59,9 @@ Las de Google, email, Mercado Pago y AdSense se pueden dejar vacías el primer d
 
 ## 5. Resend (email de inicio de sesión)
 - [ ] Cuenta en Resend → *Domains → Add domain* `fileflect.com` → crear en el DNS los registros SPF, DKIM (y MX de retorno) que muestra, hasta que diga *Verified*.
-- [ ] *API Keys → Create* (permiso de envío) y armar `EMAIL_SERVER=smtp://resend:<API_KEY>@smtp.resend.com:587`.
-- [ ] `EMAIL_FROM` con una dirección de ese dominio.
+- [ ] *API Keys → Create* (permiso *Sending access*) y cargarla en Railway como `RESEND_API_KEY`. Se envía por la API HTTP de Resend porque Railway bloquea el SMTP saliente (puertos 25/465/587) salvo en el plan Pro.
+- [ ] `EMAIL_FROM` con una dirección de ese dominio (p. ej. `Fileflect <no-reply@fileflect.com>`). Sin dominio verificado, `onboarding@resend.dev` solo entrega al email de la cuenta de Resend.
+- [ ] Si existe `EMAIL_SERVER` en Railway, borrarla y redesplegar.
 
 ## 6. Mercado Pago ([DEPLOY.md §5](../DEPLOY.md#5-servicios-externos))
 Por cada país donde se cobre (una cuenta por país):

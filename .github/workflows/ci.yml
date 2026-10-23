@@ -29,3 +29,45 @@ jobs:
         run: npm run build
       - name: Static pages
         run: npm run check:static
+
+  # Browser tests in other engines: one representative test per tool family
+  # (tagged @xb) in Firefox and WebKit, on desktop and in iPhone (WebKit)
+  # and Android (Chromium) emulation, plus the quick Chromium checks that
+  # every control on open menus, dialogs and results can be clicked and
+  # that tools explain when the browser lacks an API they need or a request
+  # fails, hangs or goes offline, and the app started with missing variables
+  # and MongoDB or Gotenberg down (environments.spec.ts), and hard real-world
+  # files in every tool family (edge-files*.spec.ts), and the security
+  # headers, session cookies, access control, API body and rate limits
+  # (security-headers, access-control, api-limits and rate-limits specs).
+  # Runs in Playwright's image (same version as package.json): browsers and
+  # their system libraries come preinstalled, no slow apt step.
+  e2e-browsers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.0-noble
+      options: --user 1001
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Firefox, WebKit and phone emulation sample
+        run: npx playwright test --project firefox --project webkit --project iphone --project android
+      - name: Edge-case fixtures (big photos, 500-page PDF, passwords, odd names)
+        run: node scripts/fixtures/edge.mjs > /dev/null
+      - name: Chromium click, missing-API, failure-state and edge-file checks
+        run: npx playwright test open-states login clickable unsupported failure-states billing-states search-locale-states environments edge-files security-headers access-control api-limits rate-limits --project chromium --grep-invert "pages \d+/"
+      - name: Test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results
+          path: test-results/
+          retention-days: 7

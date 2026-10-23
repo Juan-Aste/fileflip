@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { siteUrl } from "@/lib/seo";
 import VisitBeacon from "@/components/analytics/VisitBeacon";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
@@ -26,7 +27,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+    metadataBase: new URL(siteUrl()),
     title: t("title"),
     description: t("description"),
     twitter: { card: "summary_large_image" },

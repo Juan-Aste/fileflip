@@ -59,7 +59,7 @@ export default function HomePage({
         {/* Soft brand glow behind the hero; purely decorative. */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 -z-10 h-[520px] bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,var(--brand-soft),transparent_70%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[520px] bg-[radial-gradient(ellipse_70%_60%_at_50%_0%,var(--brand-soft),transparent_70%)]"
         />
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-5 px-4 pt-12 pb-8 text-center sm:pt-16">
           <p className={badge}>

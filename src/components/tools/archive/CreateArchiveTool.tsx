@@ -41,7 +41,7 @@ export default function CreateArchiveTool() {
 
   return (
     <ToolShell
-      input={{ kind: "files", extensions: [], multiple: true, maxFileBytes: limit }}
+      input={{ kind: "files", extensions: [], multiple: true, allowEmpty: true, maxFileBytes: limit }}
       actionLabel={tt("action")}
       options={
         <div className="flex flex-col gap-4">

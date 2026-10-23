@@ -58,15 +58,16 @@ Todas están documentadas en `.env.example`. Las `NEXT_PUBLIC_*` se incrustan en
 | `GOTENBERG_URL` | sí | `http://gotenberg.railway.internal:3000` |
 | `GOTENBERG_TIMEOUT_MS` | no | tiempo máximo de espera a Gotenberg (por defecto 95000 ms, apenas más que su `--api-timeout=90s`) |
 | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | no | login con Google (ver §5) |
-| `EMAIL_SERVER`, `EMAIL_FROM` | no* | SMTP para magic links (`smtp://usuario:clave@host:587`). *Sin esto no hay login por email. |
+| `RESEND_API_KEY`, `EMAIL_FROM` | no* | magic links por la API HTTP de Resend (`re_…`); `EMAIL_FROM` con una dirección de un dominio verificado en Resend. *Sin `RESEND_API_KEY` ni `EMAIL_SERVER` no hay login por email. |
+| `EMAIL_SERVER` | no | alternativa SMTP (`smtp://usuario:clave@host:587`). **No funciona en Railway salvo en el plan Pro** (bloquea el SMTP saliente); si está `RESEND_API_KEY`, se usa Resend. |
 | `MP_ACCESS_TOKEN` / `MP_ACCESS_TOKEN_AR`… | no | Mercado Pago (un token por país donde se cobra) |
 | `MP_WEBHOOK_SECRET` / `MP_WEBHOOK_SECRET_AR`… | con MP | secreto del webhook de cada cuenta |
 | `INTL_PAYMENT_PROVIDER` | no | `none` hasta elegir proveedor internacional |
 | `PAYMENTS_MOCK` | no | `true` solo en entornos de prueba (pagos simulados) |
-| `AUTH_EMAIL_LOG_LINKS` | no | `true` solo en pruebas sin SMTP (los enlaces quedan en el log) |
+| `AUTH_EMAIL_LOG_LINKS` | no | `true` solo en pruebas sin Resend ni SMTP (los enlaces quedan en el log) |
 | `NEXT_PUBLIC_ADSENSE_CLIENT`, `NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR`, `NEXT_PUBLIC_ADSENSE_SLOT_RESULT` | no | sin ellas se muestran espacios reservados |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | recomendada | correo de la página de contacto |
-| `RATE_LIMIT_PER_MINUTE` | no | conversiones de servidor por IP anónima (20) |
+| `RATE_LIMIT_PER_MINUTE` | no | conversiones de servidor por minuto por IP anónima (20); con sesión, 5 veces eso por cuenta |
 | `TEMP_FILE_TTL_MINUTES` | no | vida máxima de temporales (60) |
 
 `PORT` lo define Railway; el servidor `standalone` lo respeta.
@@ -80,7 +81,7 @@ Todas están documentadas en `.env.example`. Las `NEXT_PUBLIC_*` se incrustan en
 ## 5. Servicios externos
 
 - **Google OAuth** (Google Cloud Console → Credenciales → ID de cliente OAuth "Aplicación web"): URI de redirección autorizada `https://tu-dominio.com/api/auth/callback/google`.
-- **SMTP** para magic links: cualquier proveedor (Resend, Brevo, Amazon SES, Mailgun…). Configurar SPF/DKIM del dominio de `EMAIL_FROM`.
+- **Resend** para magic links (API HTTP, `RESEND_API_KEY`): Railway bloquea el SMTP saliente (puertos 25/465/587) en los planes Trial, Free y Hobby, así que en esos planes `EMAIL_SERVER` termina en `Connection timeout`. Verificar el dominio de `EMAIL_FROM` en Resend (SPF/DKIM); sin dominio verificado, `onboarding@resend.dev` solo entrega al email de la propia cuenta de Resend. Fuera de Railway (o en Pro) sirve cualquier SMTP con `EMAIL_SERVER`. Cada envío se corta a los 10 s y el error queda en el log como `[email] …`.
 - **Mercado Pago** (por cada país donde se cobre): en *Tus integraciones* crear la aplicación, copiar el Access Token (primero el de prueba) y configurar el webhook `https://tu-dominio.com/api/webhooks/mercadopago` con el evento **Planes y suscripciones**; copiar la clave secreta en `MP_WEBHOOK_SECRET` (o `MP_WEBHOOK_SECRET_XX`).
 - **Google AdSense**: dar de alta el dominio, crear dos bloques de anuncios (lateral vertical y horizontal) y cargar sus IDs.
 

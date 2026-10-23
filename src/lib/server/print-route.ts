@@ -25,9 +25,9 @@ export async function printUpload(
   rejects: (error: unknown) => "fileDamaged" | null = () => null,
 ): Promise<Response> {
   const tool = tools[toolId];
-  const { plan, signedIn } = await requestPlan();
+  const { plan, userId } = await requestPlan();
   // The content check only tells text from binary: these inputs are plain text.
-  const upload = await readUpload(request, plan, (from, to) => from === "txt" && to === "pdf", { signedIn });
+  const upload = await readUpload(request, plan, (from, to) => from === "txt" && to === "pdf", { userId });
   if (upload instanceof Response) return upload;
   const { file, bytes, form } = upload;
   const start = performance.now();

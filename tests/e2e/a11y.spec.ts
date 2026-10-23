@@ -112,6 +112,20 @@ test.describe("axe, dark and other languages", () => {
   });
 });
 
+// Login page with both methods, idle and with a send error.
+for (const colorScheme of ["light", "dark"] as const) {
+  test(`axe on the login page and its error message (${colorScheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme });
+    await page.route("**/api/auth/csrf", (route) => route.fulfill({ json: { csrfToken: "e2e" } }));
+    await page.route("**/api/auth/signin/nodemailer", (route) => route.fulfill({ status: 500, body: "" }));
+    await expectNoViolations(page, "/es/login");
+    await page.getByLabel("Tu correo electrónico").fill("ana@example.com");
+    await page.getByRole("button", { name: "Enviarme un enlace" }).click();
+    await expect(page.locator("#email-error")).toBeVisible();
+    expect(await axeViolations(page)).toEqual([]);
+  });
+}
+
 // After a run: results, download links, previews and error messages.
 for (const colorScheme of ["light", "dark"] as const) {
   test(`axe on finished jobs with a result and an error (${colorScheme})`, async ({ page }) => {

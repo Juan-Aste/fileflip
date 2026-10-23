@@ -62,6 +62,8 @@
       "browser": "Navegador",
       "server": "Servidor",
       "empty": "Sin datos en este período.",
+      "csvBusy": "Exportando…",
+      "csvError": "No se pudo exportar. Revisa la conexión con MongoDB y vuelve a intentarlo.",
       "label": "Elemento",
       "count": "Cantidad",
       "unknownCountry": "Desconocido",

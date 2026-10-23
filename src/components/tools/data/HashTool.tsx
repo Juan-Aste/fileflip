@@ -74,6 +74,7 @@ export default function HashTool() {
         kind: "files",
         extensions: [],
         multiple: true,
+        allowEmpty: true,
         paste: { label: t("pasteText"), placeholder: "Hola, mundo" },
       }}
       actionLabel={tt("action")}

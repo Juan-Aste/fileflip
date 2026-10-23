@@ -31,6 +31,7 @@ export const test = base.extend<Fixtures>({
     });
     // Stats beacons are fire-and-forget; keep them out of the server logs.
     await context.route("**/api/stats", (route) => route.fulfill({ status: 204 }));
+    await context.route("**/api/visit", (route) => route.fulfill({ status: 204 }));
     await provide(calls);
   },
   page: async ({ page, serverCalls }, provide) => {

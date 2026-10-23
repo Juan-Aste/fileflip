@@ -190,6 +190,7 @@
     "server": "Se procesa en nuestro servidor y se borra en 1 hora"
   },
   "ApiErrors": {
+    "emptyFile": "El archivo está vacío.",
     "fileTooLarge": "El archivo es demasiado grande.",
     "tooManyFiles": "Demasiados archivos en un mismo lote.",
     "unsupportedFormat": "Este formato no se puede convertir así.",
@@ -198,6 +199,7 @@
     "conversionFailed": "No se pudo convertir este archivo.",
     "serviceUnavailable": "El servicio no está disponible. Inténtalo más tarde.",
     "browserUnsupported": "Tu navegador no puede convertir este archivo. Prueba con una versión reciente de Chrome, Edge, Firefox o Safari.",
+    "connectionLost": "Se perdió la conexión o la página se actualizó: no se pudo cargar lo que necesita esta herramienta. Revisa tu conexión o recarga la página e inténtalo de nuevo.",
     "pdfHasNoText": "Este PDF es una imagen escaneada: no tiene texto que pasar a Word.",
     "fileDamaged": "El archivo está dañado o incompleto. Prueba con otra copia.",
     "invalidData": "No pudimos leer el contenido. Revisa que el formato sea válido (comillas, comas y llaves).",
@@ -215,6 +217,7 @@
     "pdfAlreadyProtected": "Este PDF ya está protegido o tiene restricciones. Quita primero su contraseña con «Quitar contraseña de PDF».",
     "pdfNotProtected": "Este PDF no tiene contraseña: ya se puede abrir sin ella.",
     "pdfWrongPassword": "La contraseña no es correcta para este PDF.",
+    "pdfPasswordRequired": "Este PDF tiene contraseña de apertura. Quítala primero con «Quitar contraseña de PDF» y vuelve a intentarlo.",
     "pdfHasNoImages": "Este PDF no tiene imágenes para extraer (o solo tiene imágenes muy pequeñas).",
     "tooManyCells": "La hoja de cálculo es demasiado grande para procesarla en el navegador (más de 2 millones de celdas).",
     "archiveTooLarge": "Al descomprimirse ocuparía más de 500 MB o tendría más de 5000 archivos: es demasiado para el navegador (o es una «bomba ZIP»).",
@@ -1519,6 +1522,7 @@
     "moveUp": "Subir {name}",
     "moveDown": "Bajar {name}",
     "onlyPdf": "Solo PDF",
+    "emptyFile": "El archivo está vacío",
     "needMore": "Agrega al menos {count} archivos.",
     "pages": "{count, plural, one {# página} other {# páginas}}",
     "working": "Procesando…",
@@ -1654,7 +1658,14 @@
     "error": "No pudimos iniciar sesión. Inténtalo de nuevo.",
     "verifyTitle": "Revisa tu correo",
     "verifyBody": "Te enviamos un enlace para entrar. Puede tardar un minuto; revisa también la carpeta de spam.",
-    "privacyNote": "Solo usamos tu correo para iniciar sesión y avisarte de tu suscripción."
+    "privacyNote": "Solo usamos tu correo para iniciar sesión y avisarte de tu suscripción.",
+    "sending": "Enviando…",
+    "redirecting": "Redirigiendo…",
+    "emailInvalid": "Escribe un correo electrónico válido, por ejemplo nombre@correo.com.",
+    "sendError": "No pudimos enviarte el enlace. Inténtalo de nuevo en unos minutos.",
+    "sendTimeout": "El envío está tardando demasiado. Revisa tu conexión e inténtalo de nuevo.",
+    "networkError": "No hay conexión con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+    "rateLimited": "Pediste demasiados enlaces seguidos. Revisa tu correo (también el spam) o espera unos minutos antes de pedir otro."
   },
   "Account": {
     "title": "Mi cuenta",
