@@ -3227,3 +3227,9 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - `tests/e2e/rate-limits.spec.ts` (3 tests, en el CI) y tests unitarios.
 
 **Verificación**: lint, typecheck, tests unitarios (1037) y build pasan; Chromium `rate-limits`, `api-limits`, `access-control`, `security-headers`, `login`, `billing-states`, `failure-states`, `environments`, `converter` (169 + 4 omitidos que necesitan Gotenberg) pasan.
+
+## 2026-10-23 07:10 UTC — Cierre de la ejecución (6E.3–6F.3b)
+
+- 5 tareas: 6E.3, 6F.1, 6F.2, 6F.3a y 6F.3b (6F.3 se dividió en dos). Bugs nuevos: B-20 y B-21 (baja), B-23 (alta), B-24 y B-25 (media), todos arreglados; B-17 (media) arreglado; B-22 (alta solo si `PAYMENTS_MOCK=true` está en producción) queda para el dueño.
+- CI: verde en 0d11904, f4df2dc, d4ad183 y 0bdce28 (último commit). En d8c7c7b falló una vez `search-locale-states` (timeout de 60 s al escribir en el buscador con el índice caído); pasó en los commits siguientes y localmente. Si se repite, investigar como B-06.
+- Siguiente tarea: 6G.1 (informe final).
