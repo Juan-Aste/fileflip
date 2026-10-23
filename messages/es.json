@@ -1682,6 +1682,10 @@
     "networkError": "No hay conexión con el servidor. Revisa tu conexión e inténtalo de nuevo.",
     "rateLimited": "Pediste demasiados enlaces seguidos. Revisa tu correo (también el spam) o espera unos minutos antes de pedir otro."
   },
+  "Consent": {
+    "signIn": "Al continuar, aceptas los <terms>Términos y condiciones</terms> y la <privacy>Política de privacidad</privacy>, incluida la transferencia de datos a proveedores fuera de Argentina.",
+    "subscribe": "Al suscribirte, aceptas los <terms>Términos y condiciones</terms> y la <privacy>Política de privacidad</privacy>, incluida la transferencia de datos a proveedores fuera de Argentina."
+  },
   "Account": {
     "title": "Mi cuenta",
     "signedInAs": "Sesión iniciada como {email}",
@@ -1771,61 +1775,307 @@
     "updated": "Última actualización: {date}",
     "privacy": {
       "title": "Política de privacidad",
-      "intro": "En Fileflect la privacidad es el centro del producto. Esta página explica qué datos tratamos, por qué y por cuánto tiempo.",
+      "intro": "Esta política explica qué datos tratamos en Fileflect, para qué, con quién los compartimos y por cuánto tiempo los guardamos.",
+      "columns": {
+        "data": "Dato",
+        "purpose": "Para qué",
+        "basis": "Base",
+        "retention": "Cuánto tiempo"
+      },
       "sections": [
         {
-          "heading": "Archivos procesados en tu dispositivo",
-          "body": "Las imágenes y los PDF que conviertes, comprimes, unes, divides o reordenas se procesan dentro de tu navegador. Esos archivos no se envían a nuestros servidores y no tenemos acceso a ellos."
+          "heading": "Responsable",
+          "body": [
+            "El responsable del tratamiento de tus datos es Juan Pablo Aste, con domicilio en Vicente López, provincia de Buenos Aires, Argentina. Contacto: contact@fileflect.com."
+          ]
         },
         {
-          "heading": "Archivos procesados en nuestro servidor",
-          "body": "Los documentos de oficina (Word, Excel, PowerPoint, OpenDocument, RTF, TXT), PDF a Word y, solo si tu navegador no puede hacerlo, algunas imágenes se procesan en nuestro servidor por una conexión cifrada. Se procesan en memoria o en almacenamiento temporal y se eliminan en un máximo de 1 hora. No los miramos, no los compartimos y no los usamos para nada más."
+          "heading": "Lo más importante, en corto",
+          "body": [],
+          "items": [
+            "La mayoría de tus archivos no salen de tu dispositivo: se procesan en tu navegador.",
+            "Los archivos que sí se procesan en nuestro servidor se eliminan en un máximo de 1 hora. No los miramos ni los guardamos.",
+            "No vendemos tus datos.",
+            "Nunca guardamos el nombre ni el contenido de tus archivos."
+          ]
         },
         {
-          "heading": "Datos que guardamos",
-          "body": "Para cada conversión guardamos solo metadatos: formato de entrada y salida, tamaño, fecha, si se hizo en el navegador o en el servidor y, si iniciaste sesión, tu usuario. Nunca el nombre ni el contenido del archivo. Si creas una cuenta guardamos tu correo electrónico (y tu nombre e imagen si entras con Google), y el estado de tu suscripción."
+          "heading": "Qué datos tratamos, para qué y por cuánto tiempo",
+          "body": [],
+          "rows": [
+            {
+              "data": "Archivos que procesas en el navegador",
+              "purpose": "Hacer la conversión",
+              "basis": "—",
+              "retention": "No los recibimos"
+            },
+            {
+              "data": "Archivos que procesas en nuestro servidor (documentos de oficina, PDF a Word, HTML a PDF, PDF/A y, solo si tu navegador no puede, algunas imágenes)",
+              "purpose": "Hacer la conversión",
+              "basis": "Tu pedido",
+              "retention": "Máximo 1 hora"
+            },
+            {
+              "data": "Datos de uso: herramienta usada, formato de entrada y salida, tamaño, duración, si hubo error, si fue en el navegador o en el servidor, idioma, tipo de página visitada y país aproximado (si lo informa nuestro proveedor). Si iniciaste sesión, la conversión queda asociada a tu usuario; si no, es anónima",
+              "purpose": "Estadísticas para mejorar el servicio y aplicar los límites de uso",
+              "basis": "Interés legítimo",
+              "retention": "12 meses; después se borran automáticamente"
+            },
+            {
+              "data": "Cuenta: correo electrónico; si entras con Google, también tu nombre y foto de perfil",
+              "purpose": "Darte acceso y comunicarnos contigo sobre tu cuenta",
+              "basis": "Ejecución del contrato",
+              "retention": "Mientras tengas cuenta"
+            },
+            {
+              "data": "Dirección IP",
+              "purpose": "Evitar abusos (límite de conversiones por minuto)",
+              "basis": "Interés legítimo",
+              "retention": "Solo en memoria, unos minutos; no la guardamos en la base de datos"
+            }
+          ],
+          "proRows": [
+            {
+              "data": "Suscripción: identificador y estado de la suscripción en Mercado Pago, plan, país y moneda, fechas del período",
+              "purpose": "Gestionar el plan Pro",
+              "basis": "Ejecución del contrato y obligaciones legales",
+              "retention": "Mientras dure, y después el plazo que exija la ley fiscal"
+            }
+          ],
+          "after": [
+            "Si nos escribes por correo, usamos tu dirección y tu mensaje solo para responderte.",
+            "No usamos tus datos para tomar decisiones automatizadas que te afecten, ni para entrenar modelos de inteligencia artificial."
+          ]
         },
         {
-          "heading": "Pagos",
-          "body": "Los pagos del plan Pro los procesa Mercado Pago (u otro proveedor de pagos en algunos países). No recibimos ni guardamos los datos de tu tarjeta; solo el identificador y el estado de la suscripción."
+          "heading": "Con quién compartimos datos (proveedores)",
+          "body": [
+            "Solo con proveedores que necesitamos para dar el servicio, y solo lo necesario:"
+          ],
+          "items": [
+            "Railway (EE. UU.): servidores y base de datos donde corre el sitio.",
+            "Resend (EE. UU.): envía el correo con tu enlace para iniciar sesión.",
+            "Google (EE. UU.): inicio de sesión con Google, si lo eliges; y Google AdSense, que muestra anuncios (ver la sección 6)."
+          ],
+          "proItems": [
+            "Mercado Pago (Argentina y la región): procesa los pagos del plan Pro. Recibe tus datos de pago directamente; nosotros no."
+          ],
+          "after": [
+            "Podemos revelar datos si una ley o una autoridad competente nos lo exige."
+          ],
+          "free": [
+            "Hoy Fileflect no cobra ni procesa pagos. Si más adelante agregamos pagos, te avisaremos antes y sumaremos aquí al proveedor de pagos."
+          ]
+        },
+        {
+          "heading": "Transferencias internacionales",
+          "body": [
+            "Algunos proveedores procesan datos fuera de Argentina, principalmente en Estados Unidos. Elegimos proveedores con medidas de seguridad adecuadas.",
+            "Al crear una cuenta, aceptas expresamente estas transferencias."
+          ]
         },
         {
           "heading": "Cookies y almacenamiento local",
-          "body": "Usamos cookies necesarias para recordar tu idioma, tu país para los precios y tu sesión, y almacenamiento local para el tema claro u oscuro. Para usuarios del plan gratuito mostramos anuncios de Google AdSense, que puede usar cookies propias; puedes gestionarlas en la configuración de anuncios de Google."
+          "body": [
+            "Necesarias (no requieren tu permiso):"
+          ],
+          "items": [
+            "NEXT_LOCALE: recuerda tu idioma (1 año).",
+            "Cookies de sesión de Auth.js: mantienen tu sesión iniciada.",
+            "Almacenamiento local del navegador: recuerda el tema claro u oscuro."
+          ],
+          "proItems": [
+            "Cookie de país: recuerda el país elegido para los precios (1 año)."
+          ],
+          "after": [
+            "Publicidad: Google AdSense puede usar cookies propias para mostrar y medir anuncios, y personalizarlos. Si estás en el Espacio Económico Europeo, Reino Unido, Suiza o en algunas regiones de EE. UU. o Brasil, te pediremos tu consentimiento antes. Puedes gestionar la personalización en https://adssettings.google.com.",
+            "No usamos Google Analytics ni píxeles de redes sociales."
+          ],
+          "pro": [
+            "Los anuncios y sus cookies solo se usan en el plan gratuito; no se muestran en el plan Pro."
+          ]
+        },
+        {
+          "heading": "Seguridad",
+          "body": [
+            "Usamos conexiones cifradas (HTTPS), procesamos la mayoría de los archivos en tu dispositivo, eliminamos los archivos del servidor en un máximo de 1 hora y limitamos el acceso a los datos. Ningún sistema es 100% seguro; si ocurriera un incidente que afecte tus datos, te avisaremos."
+          ]
         },
         {
           "heading": "Tus derechos",
-          "body": "Puedes pedir acceso, corrección o eliminación de tus datos y de tu cuenta escribiéndonos desde la página de contacto. Cancelar la suscripción no borra la cuenta; si quieres eliminarla, pídelo y lo haremos."
+          "body": [
+            "Puedes pedir acceso, rectificación, actualización y supresión de tus datos, y la eliminación de tu cuenta, escribiendo a contact@fileflect.com desde el correo de tu cuenta. Respondemos el acceso dentro de los 10 días corridos y la rectificación o supresión dentro de los 5 días hábiles (arts. 14 y 16 de la Ley 25.326).",
+            "Si usas Fileflect desde la Unión Europea o Brasil, también tienes los derechos que te dan el RGPD o la LGPD (por ejemplo, oposición y portabilidad), y puedes reclamar ante tu autoridad local."
+          ],
+          "legend": {
+            "label": "Texto obligatorio (Argentina)",
+            "text": "El titular de los datos personales tiene la facultad de ejercer el derecho de acceso a los mismos en forma gratuita a intervalos no inferiores a seis meses, salvo que se acredite un interés legítimo al efecto conforme lo establecido en el artículo 14, inciso 3 de la Ley Nº 25.326. La AGENCIA DE ACCESO A LA INFORMACIÓN PÚBLICA, en su carácter de Órgano de Control de la Ley Nº 25.326, tiene la atribución de atender las denuncias y reclamos que interpongan quienes resulten afectados en sus derechos por incumplimiento de las normas vigentes en materia de protección de datos personales.",
+            "originalLabel": "Texto original en español:"
+          }
+        },
+        {
+          "heading": "Menores",
+          "body": [
+            "Fileflect no está dirigido a menores de 13 años y no recopilamos a sabiendas sus datos. Los requisitos de edad para crear una cuenta están en los Términos y condiciones."
+          ]
+        },
+        {
+          "heading": "Cambios",
+          "body": [
+            "Si cambiamos esta política de forma importante, lo avisaremos en el sitio y, si tienes cuenta, por correo."
+          ]
         }
       ]
     },
     "terms": {
-      "title": "Términos de uso",
-      "intro": "Al usar Fileflect aceptas estos términos. Están escritos para ser claros; si algo no se entiende, escríbenos.",
+      "title": "Términos y condiciones",
+      "intro": "Estos términos regulan el uso de Fileflect. Están escritos para ser claros; si algo no se entiende, escríbenos a contact@fileflect.com.",
       "sections": [
         {
-          "heading": "El servicio",
-          "body": "Fileflect convierte, comprime y organiza archivos. Las funciones básicas son gratuitas y no requieren cuenta. El plan Pro amplía los límites y quita la publicidad."
+          "heading": "Quiénes somos",
+          "body": [
+            "Fileflect (https://fileflect.com) es un servicio ofrecido por Juan Pablo Aste, persona humana con domicilio en Vicente López, provincia de Buenos Aires, República Argentina (en adelante, “Fileflect” o “nosotros”).",
+            "Contacto para consultas, reclamos y pedidos sobre tus datos: contact@fileflect.com.",
+            "Respondemos de lunes a viernes, en horario hábil."
+          ]
         },
         {
-          "heading": "Tus archivos",
-          "body": "Tus archivos siguen siendo tuyos. Solo debes subir o procesar archivos que tengas derecho a usar. No reclamamos ningún derecho sobre ellos."
+          "heading": "Aceptación",
+          "body": [
+            "Al usar Fileflect aceptas estos términos y la Política de privacidad. Si no estás de acuerdo, no uses el servicio.",
+            "Al crear una cuenta (con Google o con tu correo) te pedimos que aceptes estos términos y la Política de privacidad de forma expresa, y guardamos la fecha y la versión que aceptaste."
+          ]
+        },
+        {
+          "heading": "El servicio",
+          "body": [
+            "Fileflect permite convertir, comprimir, editar y organizar archivos (imágenes, PDF, documentos, audio, video, datos y otros formatos). Las herramientas son gratuitas, no requieren cuenta y muestran publicidad.",
+            "La mayoría de las herramientas funcionan dentro de tu navegador: el archivo no sale de tu dispositivo. Algunas (por ejemplo, documentos de oficina) se procesan en nuestro servidor y el archivo se elimina en un máximo de 1 hora. Cada herramienta indica dónde se procesa.",
+            "Podemos agregar, cambiar o quitar herramientas y formatos."
+          ],
+          "pro": [
+            "El plan Pro amplía los límites y quita la publicidad. Si una función paga deja de estar disponible de forma significativa, te avisaremos y podrás cancelar con reembolso proporcional del período no usado."
+          ]
+        },
+        {
+          "heading": "Edad",
+          "body": [
+            "Para crear una cuenta tienes que ser mayor de 18 años o contar con la autorización de tus padres o tutores."
+          ],
+          "pro": [
+            "Lo mismo se aplica para contratar el plan Pro."
+          ]
+        },
+        {
+          "heading": "Tus archivos y tu contenido",
+          "body": [],
+          "items": [
+            "Tus archivos son tuyos. No reclamamos ningún derecho sobre ellos ni los usamos para otro fin que procesarlos cuando tú lo pides.",
+            "Solo puedes procesar archivos que tengas derecho a usar. Eres responsable del contenido que procesas.",
+            "Conserva siempre tus originales: no guardamos copias de tus archivos."
+          ]
         },
         {
           "heading": "Uso aceptable",
-          "body": "No uses Fileflect para actividades ilegales, para enviar malware ni para sobrecargar el servicio (por ejemplo, con envíos automatizados masivos). Podemos limitar el uso para proteger el servicio."
+          "body": [
+            "No puedes usar Fileflect para:"
+          ],
+          "items": [
+            "actividades ilegales o que infrinjan derechos de terceros (propiedad intelectual, privacidad, etc.);",
+            "procesar contenido de abuso sexual infantil u otro contenido ilegal;",
+            "enviar malware o intentar vulnerar el servicio;",
+            "automatizar envíos masivos, extraer datos del sitio o sobrecargarlo."
+          ],
+          "after": [
+            "Podemos limitar, suspender o cerrar el acceso de quien incumpla estas reglas, y colaborar con las autoridades cuando la ley lo exija."
+          ]
         },
         {
-          "heading": "Suscripción Pro",
-          "body": "El plan Pro se cobra por adelantado, mensual o anualmente, en moneda local donde esté disponible. Puedes cancelarlo cuando quieras desde Mi cuenta: no se renovará y mantendrás Pro hasta el final del período pagado."
+          "heading": "Cuenta",
+          "body": [
+            "Puedes entrar con Google o con un enlace por correo. Eres responsable del acceso a tu correo y a tu cuenta de Google. Puedes pedir la eliminación de tu cuenta en cualquier momento escribiendo a contact@fileflect.com."
+          ]
         },
         {
-          "heading": "Sin garantías",
-          "body": "Hacemos lo posible para que las conversiones sean exactas, pero el servicio se ofrece “tal cual”. Algunos formatos complejos pueden no convertirse perfectamente; conserva siempre tus archivos originales."
+          "heading": "Publicidad",
+          "body": [
+            "Fileflect muestra anuncios de Google AdSense. Los anuncios son de terceros; no somos responsables de su contenido ni de los sitios a los que llevan."
+          ],
+          "pro": [
+            "No mostramos anuncios a usuarios Pro."
+          ]
         },
         {
-          "heading": "Cambios",
-          "body": "Podemos actualizar estos términos. Si el cambio es importante, lo avisaremos en el sitio."
+          "heading": "Propiedad intelectual de Fileflect",
+          "body": [
+            "El nombre Fileflect, el logo, el diseño y el código del sitio pertenecen a Juan Pablo Aste o se usan con licencia. Algunos componentes son software de terceros con licencias abiertas; el detalle está en la página de Créditos."
+          ]
+        },
+        {
+          "heading": "Disponibilidad y garantías",
+          "body": [
+            "Trabajamos para que el servicio funcione bien y las conversiones sean fieles, pero algunos formatos complejos pueden no convertirse perfectamente y el servicio puede tener interrupciones por mantenimiento o por fallas de proveedores. Nada en estos términos limita los derechos que te da la ley de defensa del consumidor."
+          ]
+        },
+        {
+          "heading": "Responsabilidad",
+          "body": [
+            "En la medida que la ley lo permita, no somos responsables por pérdidas de datos o archivos si no conservaste tus originales, ni por daños indirectos derivados del uso del servicio gratuito. Esta cláusula no se aplica a los daños que la ley no permite excluir frente a consumidores."
+          ]
+        },
+        {
+          "heading": "Cambios en estos términos",
+          "body": [
+            "Podemos actualizar estos términos. Si el cambio es importante, lo avisaremos en el sitio y, si tienes cuenta, por correo, con al menos 15 días de anticipación."
+          ],
+          "pro": [
+            "Si no estás de acuerdo, puedes cancelar el plan Pro antes de que el cambio entre en vigencia."
+          ]
+        },
+        {
+          "heading": "Ley aplicable y reclamos",
+          "body": [
+            "Estos términos se rigen por las leyes de la República Argentina. Si eres consumidor, puedes iniciar reclamos ante la autoridad de defensa del consumidor o los tribunales de tu domicilio. En los demás casos, son competentes los tribunales ordinarios del Departamento Judicial de San Isidro, provincia de Buenos Aires.",
+            "También puedes hacer reclamos por Ventanilla Federal / Defensa del Consumidor (https://www.argentina.gob.ar/produccion/defensadelconsumidor/formulario)."
+          ]
+        }
+      ],
+      "freeService": {
+        "heading": "Servicio gratuito",
+        "body": [
+          "Por ahora Fileflect es gratuito: puedes usar todas las herramientas sin pagar, y el servicio se financia con publicidad.",
+          "Si más adelante agregamos planes pagos, lo anunciaremos con anticipación y actualizaremos estos términos antes de cobrar cualquier cosa."
+        ]
+      },
+      "proSections": [
+        {
+          "heading": "Plan Pro: precio, pago y renovación",
+          "body": [],
+          "items": [
+            "El plan Pro se paga por adelantado, mensual o anual, en la moneda que se muestra antes de pagar. El precio final (con impuestos, si corresponden) se informa antes de confirmar.",
+            "El pago lo procesa Mercado Pago (u otro proveedor en algunos países). No recibimos ni guardamos datos de tu tarjeta.",
+            "La suscripción se renueva automáticamente al final de cada período hasta que la canceles.",
+            "Si cambiamos el precio, te avisaremos por correo con al menos 30 días de anticipación y el nuevo precio se aplicará desde la siguiente renovación. Podrás cancelar antes."
+          ]
+        },
+        {
+          "heading": "Derecho de arrepentimiento (10 días)",
+          "body": [
+            "Como compraste a distancia, tienes derecho a revocar la contratación dentro de los 10 días corridos desde que contrataste, sin dar motivos y sin costo (art. 34 de la Ley 24.240 y art. 1110 del Código Civil y Comercial). Te devolvemos el 100% de lo pagado por el mismo medio de pago.",
+            "Para hacerlo, usa el Botón de arrepentimiento que está en el pie de cada página del sitio. No necesitas cuenta ni registrarte. Te enviaremos un código de identificación de tu pedido dentro de las 24 horas."
+          ]
+        },
+        {
+          "heading": "Cancelación (botón de baja)",
+          "body": [
+            "Puedes cancelar el plan Pro cuando quieras con el Botón de baja, en el pie de cada página o en Mi cuenta, sin trámites previos. Te enviaremos un código de identificación dentro de las 24 horas. La cancelación evita la próxima renovación y mantienes Pro hasta el final del período ya pagado."
+          ]
+        },
+        {
+          "heading": "Reembolsos",
+          "body": [
+            "Los reembolsos se hacen por el mismo medio de pago. El plazo de acreditación depende de Mercado Pago y de tu banco. Para pedir un reembolso, escribe a contact@fileflect.com."
+          ]
         }
       ]
     },
@@ -1833,10 +2083,10 @@
       "title": "Contacto",
       "intro": "¿Tienes una pregunta, encontraste un error o quieres pedir un formato nuevo? Escríbenos.",
       "emailLabel": "Correo",
-      "missing": "La dirección de contacto todavía no está configurada.",
       "topics": "Cuéntanos qué navegador y qué tipo de archivo usabas si nos escribes por un problema. Nunca nos envíes documentos privados por correo.",
       "privacy": "Para pedir la eliminación de tus datos o de tu cuenta, escríbenos desde el correo con el que te registraste.",
-      "write": "Escribir un correo"
+      "write": "Escribir un correo",
+      "hours": "Respondemos de lunes a viernes, en horario hábil."
     },
     "contents": "Contenido"
   },

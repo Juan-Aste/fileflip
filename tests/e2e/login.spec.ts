@@ -83,10 +83,13 @@ test.describe("email login", () => {
   });
 
   test("gives up after 20 seconds", async ({ page }) => {
-    await page.clock.install();
+    const start = Date.now();
+    await page.clock.install({ time: start });
     const posts = await stubSignIn(page, () => new Promise(() => {}));
     await page.goto("/es/login");
     await page.getByLabel("Tu correo electrónico").fill("ana@example.com");
+    // Paused: real time spent by a busy machine must not count towards the 20 s.
+    await page.clock.pauseAt(start + 60_000);
     await button(page).click();
     await expect.poll(() => posts.length).toBe(1);
     await expect(button(page)).toBeDisabled();

@@ -41,7 +41,7 @@ jobs:
   # headers, session cookies, access control, API body and rate limits
   # (security-headers, access-control, api-limits and rate-limits specs),
   # email sign-in with the real Auth.js behind a proxy (login-real) and the
-  # site with the Pro plan switched off (pro-switch).
+  # site with the Pro plan switched off (pro-switch) and the legal texts (legal).
   # Runs in Playwright's image (same version as package.json): browsers and
   # their system libraries come preinstalled, no slow apt step.
   e2e-browsers:
@@ -65,7 +65,7 @@ jobs:
       - name: Edge-case fixtures (big photos, 500-page PDF, passwords, odd names)
         run: node scripts/fixtures/edge.mjs > /dev/null
       - name: Chromium click, missing-API, failure-state and edge-file checks
-        run: npx playwright test open-states login clickable unsupported failure-states billing-states search-locale-states environments edge-files security-headers access-control api-limits rate-limits login-real pro-switch --project chromium --grep-invert "pages \d+/"
+        run: npx playwright test open-states login clickable unsupported failure-states billing-states search-locale-states environments edge-files security-headers access-control api-limits rate-limits login-real pro-switch legal --project chromium --grep-invert "pages \d+/"
       - name: Test results
         if: failure()
         uses: actions/upload-artifact@v4

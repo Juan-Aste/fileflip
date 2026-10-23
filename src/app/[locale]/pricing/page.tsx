@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BadgeCheck } from "lucide-react";
 import { auth } from "@/auth";
+import TermsConsent from "@/components/legal/TermsConsent";
 import PricingCards from "@/components/pricing/PricingCards";
 import RegionSelector from "@/components/pricing/RegionSelector";
 import FaqList from "@/components/ui/FaqList";
@@ -59,6 +60,7 @@ export default async function PricingPage({ params }: Props) {
         region={region}
         signedIn={Boolean(session?.user)}
         isPro={isPro}
+        consent={<TermsConsent action="subscribe" />}
         paymentsAvailable={paymentsAvailable(region)}
       />
       <section aria-labelledby="faq" className="flex flex-col gap-4">

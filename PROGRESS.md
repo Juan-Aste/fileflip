@@ -3264,3 +3264,23 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Documentado en `.env.example`, DEPLOY.md y `docs/launch-checklist.md` (`PRO_ENABLED=false`; Mercado Pago solo al activar Pro). Los textos legales todavía mencionan Pro: se reemplazan en 7.3.
 
 **Verificación**: lint, typecheck, tests unitarios y build pasan; Chromium `pro-switch`, `billing-states`, `access-control`, `api-limits`, `login`, `login-real`, `security-headers`, `environments` (40) y `clickable` + `open-states` pasan.
+
+## 2026-10-23 15:45 UTC — Fase 7, tareas 7.3a y 7.3b (textos legales y aceptación expresa)
+
+**Qué se hizo (7.3a)**
+- Términos y condiciones y Política de privacidad reemplazados por el contenido de `docs/legal/*-borrador.md` en los 5 idiomas (es con "tú"), sin notas `[revisar]`/`[decidir]` ni aviso de borrador. Responsable Juan Pablo Aste (Vicente López, Buenos Aires), contacto contact@fileflect.com, horario "lunes a viernes, en horario hábil".
+- Estructura nueva de `Legal.*.sections` (párrafos, listas, tabla de datos de la privacidad, leyenda de la AAIP); `LegalPage.legalSections()` arma lo que se publica según `PRO_ENABLED`: con Pro apagado los términos tienen "Servicio gratuito" (gratis con publicidad, planes pagos con aviso previo) y la privacidad no menciona Mercado Pago ni la cookie de país; con Pro encendido aparecen las secciones de precio/pago/renovación, arrepentimiento, baja y reembolsos y las partes de pagos de la privacidad. La leyenda de la AAIP se muestra con el texto oficial en español también en los otros idiomas.
+- Se dejaron fuera las frases que dependen de decisiones pendientes (reembolso por falla prolongada, plan anual después de 10 días, inscripción fiscal, plazo de los correos). Detalle en `docs/legal/pendientes-legales.md`.
+- "Última actualización": 23/10/2026 (`src/config/legal.ts`).
+- Contacto: muestra contact@fileflect.com (valor por defecto en el código, `.env.example` y la checklist) y el horario.
+
+**Qué se hizo (7.3b)**
+- Texto de aceptación expresa con enlaces junto a los botones del login (Google y email) y junto al de suscribirse (solo con Pro encendido): "Al continuar, aceptas los Términos y condiciones y la Política de privacidad, incluida la transferencia de datos a proveedores fuera de Argentina" (5 idiomas).
+- Al iniciar sesión (evento `signIn` de Auth.js) se guardan `termsVersion` y `termsAcceptedAt` en el usuario; las cuentas existentes los reciben en su próximo inicio de sesión y la fecha solo cambia con una versión nueva.
+- `docs/legal/pendientes-legales.md` actualizado (hecho: aceptación, leyenda AAIP, horario, publicación; pendiente antes de encender Pro: botones de arrepentimiento y de baja).
+
+**Tests**: `src/components/legal/legal-sections.test.ts` (5 idiomas: responsable y contacto, sin notas internas, secciones Pro según el interruptor, leyenda AAIP), `src/lib/terms-acceptance.test.ts`, `tests/e2e/legal.spec.ts` (páginas legales y contacto en 5 idiomas, sin notas internas en el sitio, aceptación en login y checkout, en el CI) y `login-real.spec.ts` ahora abre el enlace del correo y comprueba la versión aceptada guardada.
+- Durante la verificación: el texto de aceptación con `Link` de next-intl hacía fallar a veces la hidratación del login (3 de 180 cargas con carga alta; 0 antes del cambio): ahora se dibuja solo en el servidor con enlaces simples (0 de 180) y la página de precios lo recibe como prop. El test "gives up after 20 seconds" de `login.spec.ts` fallaba a veces con carga alta (también antes de la fase 7) porque el reloj simulado seguía corriendo: ahora se pausa.
+- **B-27** (baja, abierto, anterior a la fase 7, comprobado en 26a938a): con Pro encendido, varias visitas a la vez a `/pricing` hacen que ~1 de cada 20 cargas falle la hidratación (React #418) y la página se redibuje en el navegador. No afecta producción mientras Pro esté apagado; puede hacer fallar alguna vez `billing-states.spec.ts`. Investigar antes de encender Pro.
+
+**Verificación**: lint, typecheck, tests unitarios (1062 + 10 omitidos) y build pasan; Chromium `legal`, `login`, `login-real`, `pro-switch`, `billing-states` (una corrida de tres con un fallo de B-27), `clickable`, `open-states`, `a11y`, `layout-shift`, `security-headers`, `access-control`, `api-limits`, `environments` pasan.

@@ -6,6 +6,7 @@ import { sendMagicLink } from "@/lib/email/send";
 import { getAuthProviders } from "@/lib/auth-providers";
 import { planForUser } from "@/lib/billing";
 import { getMongoClient } from "@/lib/mongo-client";
+import { recordTermsAcceptance } from "@/lib/terms-acceptance";
 
 export { getAuthProviders };
 
@@ -35,6 +36,14 @@ function config(): NextAuthConfig {
     trustHost: true,
     // Our pages live under a locale; the middleware adds it.
     pages: { signIn: "/login", verifyRequest: "/login/verify", error: "/login" },
+    events: {
+      // Signing in (Google or email) is accepting the current terms, as the
+      // login page says next to the buttons: keep the version and the date.
+      async signIn({ user }) {
+        if (!process.env.MONGODB_URI || !user.id) return;
+        await recordTermsAcceptance(user.id).catch((error) => console.warn("Could not record terms acceptance", error));
+      },
+    },
     callbacks: {
       // Only expose what the UI needs (never the session token).
       async session({ session, user, token }) {

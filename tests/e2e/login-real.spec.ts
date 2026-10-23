@@ -9,7 +9,9 @@ import { createServer, request as httpRequest, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { MongoClient } from "mongodb";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import { TERMS_VERSION } from "../../src/config/legal";
 import { startApp } from "./server/app";
 import { expect, test } from "./support";
 
@@ -52,6 +54,7 @@ test.describe("email sign-in with the real Auth.js behind a proxy", () => {
   let proxy: Server;
   let publicBase: string;
   let mails: string;
+  let dbUri: string;
 
   test.beforeAll(async () => {
     test.setTimeout(180_000);
@@ -63,7 +66,7 @@ test.describe("email sign-in with the real Auth.js behind a proxy", () => {
     app = await startApp(appPort, {
       AUTH_SECRET: "e2e-only-not-a-real-secret",
       AUTH_URL: `https://${new URL(publicBase).host}`,
-      MONGODB_URI: `${mongo.getUri()}fileflect-login`,
+      MONGODB_URI: (dbUri = `${mongo.getUri()}fileflect-login`),
       RESEND_API_KEY: "re_e2e_not_a_real_key",
       EMAIL_FROM: "Fileflect <login@e2e.test>",
       NODE_OPTIONS: `--import ${join(__dirname, "server", "resend-stub.mjs")}`,
@@ -96,5 +99,17 @@ test.describe("email sign-in with the real Auth.js behind a proxy", () => {
     expect(sent[0].to).toBe("ana@example.com");
     const link = new URL(sent[0].html.match(/href="([^"]+\/api\/auth\/callback\/nodemailer[^"]*)"/)[1].replaceAll("&amp;", "&"));
     expect(link.host).toBe(new URL(publicBase).host);
+
+    // Opening the link signs in and records the accepted terms (7.3).
+    // (the test proxy has no TLS: open it over HTTP and stop at the redirect to the account).
+    link.protocol = "http:";
+    const signedIn = await page.request.get(link.href, { maxRedirects: 0 });
+    expect(signedIn.status()).toBe(302);
+    expect(new URL(signedIn.headers().location).pathname).toBe("/es/account");
+    const db = new MongoClient(dbUri);
+    const user = await db.db().collection("users").findOne({ email: "ana@example.com" });
+    await db.close();
+    expect(user).toMatchObject({ termsVersion: TERMS_VERSION });
+    expect(Date.now() - user!.termsAcceptedAt.getTime()).toBeLessThan(60_000);
   });
 });
