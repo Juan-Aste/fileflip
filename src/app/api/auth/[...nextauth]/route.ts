@@ -1,7 +1,8 @@
-import type { NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import { handlers } from "@/auth";
 import { apiError } from "@/lib/api-errors";
 import { authSecretMissing } from "@/lib/auth-providers";
+import { readBody, SMALL_BODY_BYTES } from "@/lib/server/body";
 
 export const runtime = "nodejs";
 
@@ -13,6 +14,10 @@ export function GET(request: NextRequest) {
   return request.nextUrl.pathname.endsWith("/session") ? Response.json(null) : apiError("serviceUnavailable");
 }
 
-export function POST(request: NextRequest) {
-  return authSecretMissing() ? apiError("serviceUnavailable") : handlers.POST(request);
+export async function POST(request: NextRequest) {
+  if (authSecretMissing()) return apiError("serviceUnavailable");
+  // Sign-in and sign-out forms are tiny: don't let Auth.js buffer a huge body (B-23).
+  const body = await readBody(request, SMALL_BODY_BYTES);
+  if (!body) return apiError("fileTooLarge");
+  return handlers.POST(new NextRequest(request.url, { method: "POST", headers: request.headers, body: body as Uint8Array<ArrayBuffer> }));
 }

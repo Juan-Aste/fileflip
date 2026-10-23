@@ -1,5 +1,6 @@
 import { mercadoPagoCountries } from "@/config/pricing";
 import { syncSubscription } from "@/lib/billing";
+import { readJson, TOO_LARGE } from "@/lib/server/body";
 import { mercadoPagoToken, preapprovalOfAuthorizedPayment } from "@/lib/payments/mercadopago";
 import { mercadoPagoWebhookSecrets, verifyMercadoPagoSignature } from "@/lib/payments/mp-signature";
 
@@ -12,12 +13,10 @@ export const runtime = "nodejs";
  */
 export async function POST(request: Request) {
   const url = new URL(request.url);
-  let body: { type?: string; data?: { id?: string | number } } = {};
-  try {
-    body = await request.json();
-  } catch {
-    // Some notifications only carry query parameters.
-  }
+  const json = await readJson(request);
+  if (json === TOO_LARGE) return new Response("Payload too large", { status: 413 });
+  // Some notifications only carry query parameters.
+  const body = (json && typeof json === "object" ? json : {}) as { type?: string; data?: { id?: string | number } };
   const dataId = url.searchParams.get("data.id") ?? (body.data?.id != null ? String(body.data.id) : null);
   const type = url.searchParams.get("type") ?? body.type ?? "";
 

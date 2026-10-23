@@ -3,6 +3,7 @@ import { formats, type FormatId } from "@/config/formats";
 import { limits, type Plan } from "@/config/limits";
 import { apiError } from "@/lib/api-errors";
 import { detectFormat } from "@/lib/detect";
+import { readBody } from "./body";
 import { clientIp, conversionLimiter } from "./rate-limit";
 
 export interface Upload {
@@ -32,13 +33,14 @@ export async function readUpload(
   }
 
   const maxBytes = limits[plan].serverMaxFileBytes;
-  // Reject obviously oversized bodies before buffering them.
-  const declared = Number(request.headers.get("content-length") ?? 0);
-  if (declared > maxBytes + 64 * 1024) return apiError("fileTooLarge");
+  // Stop reading oversized bodies, declared or not (chunked uploads, B-23);
+  // the margin is for the multipart headers and the other fields.
+  const body = await readBody(request, maxBytes + 64 * 1024);
+  if (!body) return apiError("fileTooLarge");
 
   let form: FormData;
   try {
-    form = await request.formData();
+    form = await new Response(body as Uint8Array<ArrayBuffer>, { headers: { "content-type": request.headers.get("content-type") ?? "" } }).formData();
   } catch {
     return apiError("invalidRequest");
   }
