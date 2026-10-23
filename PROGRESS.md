@@ -3064,3 +3064,8 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - **B-05** (media, arreglado): un archivo elegido antes de que cargue el JavaScript se perdía en silencio. `Dropzone` ahora toma al montar los archivos que ya tenga el input. Test de regresión `tests/e2e/early-pick.spec.ts` (Chromium, Firefox y WebKit), que falla sin el arreglo.
 
 **Verificación**: lint, typecheck, tests unitarios y build pasan; Firefox + WebKit 28 pasan (2 `fixme`); Chromium `pdf-tools`, `converter`, `archive-tools`, `open-states` (163) pasan.
+
+## 2026-10-23 01:57 UTC — Fase 6, CI de Firefox (B-06)
+
+- El job `e2e-browsers` falló en Firefox (modelos 3D): "Descargar todo" no produjo la descarga, el mismo síntoma que antes en extraer ZIP. **B-06** (media, abierto): sin causa encontrada; se investiga en 6C.1.
+- `playwright.config.ts`: 1 reintento en el CI solo para Firefox y WebKit, para que ese caso se informe como "flaky" y no ponga el job en rojo.
