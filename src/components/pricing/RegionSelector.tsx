@@ -17,7 +17,7 @@ export default function RegionSelector({ value }: { value: PricingRegion }) {
   const names = new Intl.DisplayNames([intlLocale[locale]], { type: "region" });
 
   function onChange(region: PricingRegion) {
-    document.cookie = `${COUNTRY_COOKIE}=${region}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
+    document.cookie = `${COUNTRY_COOKIE}=${region}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax${location.protocol === "https:" ? "; secure" : ""}`;
     startTransition(() => router.refresh());
   }
 
