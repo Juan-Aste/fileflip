@@ -345,3 +345,41 @@ Correcciones de bugs reportados por el dueño en producción. Sin dependencias n
 - [x] 5.1 Login por email no envía nada en producción (URGENTE): Railway bloquea el SMTP saliente salvo en Pro (`Connection timeout` de nodemailer). Enviar por la API HTTP de Resend si existe `RESEND_API_KEY` (fetch con timeout de 10 s, error claro sin registrar la clave); SMTP (`EMAIL_SERVER`) como alternativa con timeouts cortos; Resend tiene prioridad. Actualizar `.env.example`, `DEPLOY.md`, `docs/launch-checklist.md` y créditos si corresponde. Tests de Resend (cuerpo, cabeceras, idioma, errores 4xx/5xx, timeout), prioridad y timeouts SMTP
 - [x] 5.2 Formulario de login por email con estados: "Enviando…" con indicador, botón deshabilitado sin envíos dobles, error traducido (5 idiomas, aria-live, foco) ante error del servidor, timeout de ~20 s o red; éxito → página de verificación; validación del email; mismo estado de carga para "Continuar con Google"; test Playwright con `page.route` (lento, error, éxito, sin doble envío)
 - [x] 5.3 "Pendiente del dueño" en PROGRESS.md: API key de Resend, `RESEND_API_KEY` en Railway, dominio verificado en Resend, `EMAIL_FROM` con ese dominio, quitar `EMAIL_SERVER`, redesplegar
+
+## Fase 6
+
+Auditoría de bugs: encontrar y arreglar, antes que los usuarios, bugs del tipo de los que aparecieron en producción (una capa decorativa invisible tapaba botones; el login por email fallaba sin mostrar estados). Método: primero se construye la verificación automática que detecta la clase de bug, se corre, cada hallazgo se registra en `docs/bug-audit.md` (id, página/herramienta, navegador y viewport, pasos, gravedad, estado, commit) y cada arreglo lleva un test de regresión. Lo que necesite una decisión del dueño va a `docs/bug-audit.md` y a "Pendiente del dueño". Sin refactors grandes, sin features nuevas, sin dependencias GPL/AGPL.
+
+### Hito 6A — Todo lo visible se puede tocar
+- [ ] 6A.1 Test Playwright de "clicabilidad": recorre todas las páginas publicadas (portada, catálogo, categorías, las 82 herramientas, conversiones, cola larga, precios, login, cuenta, legales, créditos, admin con sesión de prueba) en 1280×800, 768×1024 y 390×844, claro y oscuro; para cada enlace, botón, input, select y label visible comprueba con `document.elementFromPoint` en el centro y las esquinas internas que recibe el clic él mismo o un descendiente; reporta tapados, fuera de pantalla y objetivos táctiles < 24×24 px en móvil. Correrlo y registrar hallazgos
+- [ ] 6A.2 Estados abiertos: menú móvil, buscador Ctrl+K, selector de idioma, desplegables y resultados de una herramienta después de convertir
+- [ ] 6A.3 Revisión del código: capas decorativas `absolute`/`fixed` sin `pointer-events-none` que puedan tapar contenido
+- [ ] 6A.4 Arreglar los hallazgos de 6A por gravedad, con tests de regresión
+
+### Hito 6B — Otros navegadores
+- [ ] 6B.1 Proyectos Firefox y WebKit en Playwright con una muestra representativa por categoría (imagen, PDF, documentos, datos, OCR, comprimidos, ebooks, audio, video, 3D, CAD, utilidades) en escritorio; instalación en el CI sin volverlo lento
+- [ ] 6B.2 Emulación de iPhone (WebKit) y Android (Chromium) con la misma muestra
+- [ ] 6B.3 Detección previa de lo que el navegador no soporta (WebCodecs, OffscreenCanvas, códecs): mensaje claro y traducido o respaldo del servidor, nunca fallar en silencio ni colgarse; tests
+
+### Hito 6C — Estados y errores en toda la interfaz
+- [ ] 6C.1 Herramientas (navegador y servidor): respuestas lentas, 4xx/5xx, timeouts, sin conexión y doble clic; indicador de trabajo, sin doble envío, error traducido con aria-live, reintento, cancelar que cancela de verdad
+- [ ] 6C.2 Login, checkout y cancelación de suscripción, panel de admin y exportar CSV con los mismos casos
+- [ ] 6C.3 Buscador y selector de idioma con los mismos casos; arreglos pendientes de 6C
+
+### Hito 6D — Diferencias entre local y producción
+- [ ] 6D.1 Revisión de variables de entorno: cada variable de `.env.example` ausente o vacía no rompe la página ni da 500 (degrada con aviso u oculta la función)
+- [ ] 6D.2 Tests que levantan la app (`next build && next start`) con variables faltantes y servicios caídos (Gotenberg caído o lento, MongoDB caído, Resend con error): sin 500 ni páginas en blanco; límites de memoria y tamaño de cuerpo; rutas que dependen del país o del idioma
+- [ ] 6D.3 Prueba de humo en producción, solo lectura y poco tráfico (health, portada en 2 idiomas, catálogo, 5 herramientas, robots, sitemap, créditos, una conversión de imagen y una de PDF en el navegador): consola, 404 y cabeceras; anotar si producción va atrás de `dev`
+
+### Hito 6E — Archivos reales y casos límite
+- [ ] 6E.1 Script que genera fixtures difíciles sin datos personales: foto grande de celular (12–50 MP, orientación EXIF, HEIC si se puede), PDF de muchas páginas, PDF escaneado, PDF con contraseña, nombres con acentos, espacios, emojis y muy largos, archivos de 0 bytes, extensión que no coincide, cerca y justo por encima del límite
+- [ ] 6E.2 Familias imagen y PDF con esos fixtures: resultado correcto o mensaje claro, sin colgarse ni agotar memoria, nombre de descarga correcto
+- [ ] 6E.3 Resto de familias (documentos, datos, OCR, comprimidos, ebooks, audio, video, 3D, CAD, utilidades) con los fixtures que apliquen
+
+### Hito 6F — Seguridad básica
+- [ ] 6F.1 Cabeceras HTTP (CSP compatible con AdSense, X-Content-Type-Options, Referrer-Policy, frame-ancestors/X-Frame-Options, Permissions-Policy) y cookies de sesión (Secure, HttpOnly, SameSite); tests
+- [ ] 6F.2 `/admin` y sus APIs, APIs de facturación y webhook de Mercado Pago rechazan accesos sin permiso o sin firma; tests
+- [ ] 6F.3 Límite de tamaño y de frecuencia en las APIs que reciben archivos o datos; los errores no filtran trazas ni variables de entorno; tests
+
+### Hito 6G — Informe
+- [ ] 6G.1 `docs/bug-audit-report.md`: resumen, bugs por gravedad y categoría, arreglados (con commit), pendientes y por qué, lo que decide el dueño, recomendaciones y tests nuevos en el CI; "FASE 6 TERMINADA" en PROGRESS.md

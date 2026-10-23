@@ -3009,3 +3009,7 @@ Todas las tareas de la fase 5 están marcadas y el CI de GitHub está en verde e
 **Para publicar**: seguir los pasos de Resend en "Pendiente del dueño" (`RESEND_API_KEY`, dominio verificado, `EMAIL_FROM`, quitar `EMAIL_SERVER`, redesplegar) y mergear `dev` en `main`.
 
 **La tarea programada ya no tiene trabajo de la fase 5: conviene pausarla.**
+
+## Inicio de la fase 6
+
+Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-audit.md`.
