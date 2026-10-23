@@ -377,7 +377,7 @@ Auditoría de bugs: encontrar y arreglar, antes que los usuarios, bugs del tipo 
 - [x] 6E.3 Resto de familias (documentos, datos, OCR, comprimidos, ebooks, audio, video, 3D, CAD, utilidades) con los fixtures que apliquen
 
 ### Hito 6F — Seguridad básica
-- [ ] 6F.1 Cabeceras HTTP (CSP compatible con AdSense, X-Content-Type-Options, Referrer-Policy, frame-ancestors/X-Frame-Options, Permissions-Policy) y cookies de sesión (Secure, HttpOnly, SameSite); tests
+- [x] 6F.1 Cabeceras HTTP (CSP compatible con AdSense, X-Content-Type-Options, Referrer-Policy, frame-ancestors/X-Frame-Options, Permissions-Policy) y cookies de sesión (Secure, HttpOnly, SameSite); tests
 - [ ] 6F.2 `/admin` y sus APIs, APIs de facturación y webhook de Mercado Pago rechazan accesos sin permiso o sin firma; tests
 - [ ] 6F.3 Límite de tamaño y de frecuencia en las APIs que reciben archivos o datos; los errores no filtran trazas ni variables de entorno; tests
 

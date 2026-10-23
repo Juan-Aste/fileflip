@@ -3189,3 +3189,12 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - **B-21** (baja, arreglado en 3edd510): PDF → JPG de un PDF guardado como `.docx` descargaba `x.docx-jpg.zip`.
 
 **Verificación**: lint, typecheck, tests unitarios (1033) y build pasan; Chromium `edge-files-families` (24), `edge-files`, `converter`, `archive-tools`, `data-tools`, `text-tools` (189 con `CI=1`) pasan.
+
+## 2026-10-23 05:45 UTC — Fase 6, tarea 6F.1 (cabeceras HTTP y cookies)
+
+**Qué se hizo**
+- **B-17** (media, arreglado en a738689): `next.config.ts` agrega a todas las respuestas CSP (`frame-ancestors`, `object-src`, `base-uri`, `form-action`; compatible con AdSense), `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy` y HSTS. Detalle y motivos en `docs/bug-audit.md`.
+- Cookies de Auth.js comprobadas: `HttpOnly`, `SameSite=Lax` y `Secure` (prefijos `__Host-`/`__Secure-`) detrás del proxy HTTPS. La cookie de región lleva `secure` en HTTPS.
+- `tests/e2e/security-headers.spec.ts` (4 tests, en el CI).
+
+**Verificación**: lint, typecheck, tests unitarios (1033) y build pasan; Chromium `security-headers` + OCR, PDF, imagen, audio, video, 3D, quitar fondo, login, `open-states` y `unsupported` (172) pasan.
