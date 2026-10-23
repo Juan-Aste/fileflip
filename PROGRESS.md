@@ -3134,3 +3134,13 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - `playwright.config.ts`: el servidor de `login.spec.ts` usa un `MONGODB_URI` inaccesible para seguir mostrando el formulario de email.
 
 **Verificación**: lint, typecheck, tests unitarios (1026) y build pasan; Chromium `login`, `billing-states`, `search-locale-states` (18) pasan, y el resto del grupo del CI (`open-states`, `clickable`) también; sondeo con `next start` sin 500 en ninguna combinación.
+
+## 2026-10-23 04:05 UTC — Fase 6, tarea 6D.2 (app levantada con servicios caídos)
+
+**Qué se hizo**
+- `tests/e2e/environments.spec.ts` (6 tests, en el CI): build de producción con MongoDB en memoria caído al arrancar y de vuelta, Gotenberg colgado y sin ninguna variable de entorno.
+- **B-16** (alta, arreglado en e07b326): si la app arrancaba con MongoDB caído, el cliente de Auth.js quedaba cerrado para siempre y nadie podía iniciar sesión hasta reiniciar. `getMongoClient()` reintenta tras un fallo; la espera de MongoDB baja de 30 s a 5 s.
+- **B-12** (baja, arreglado): los enlaces "CSV" del admin descargan con `fetch` y muestran el error en el panel (`CsvLink`).
+- Cabeceras de país e idioma raras: sin problemas. Cuerpos sin `Content-Length`: anotado para 6F.3.
+
+**Verificación**: lint, typecheck, tests unitarios (1028) y build pasan; Chromium `environments` + `login` (13) pasan; el test de B-16 falla sin el arreglo (comprobado).
