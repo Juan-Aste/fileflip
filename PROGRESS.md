@@ -613,7 +613,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
   - ~~Página de créditos/licencias para los componentes LGPL~~ → **hecha en la fase 4** (\`/es/creditos\`, tareas 4.1a–4.1c). Solo queda lo del commit exacto de FFmpeg (abajo).
 
 - **Fase 4 — código fuente exacto de FFmpeg (AAC)**: `@mediabunny/aac-encoder` 1.62.0 trae el codificador AAC de FFmpeg compilado a WASM (LGPL-2.1+), pero su compilación clona FFmpeg sin anotar el commit; el binario dice `Lavc62.23.103` (versión de desarrollo, entre FFmpeg 8.0 y 8.1). La página de créditos enlaza el repositorio de FFmpeg y las instrucciones de compilación de mediabunny y lo aclara. Para cumplir la LGPL al pie de la letra hay dos caminos: pedirle al autor de mediabunny (Vanilagy) el commit exacto, o compilar nosotros el codificador desde una versión publicada de FFmpeg con hash fijado (como con libarchive en 3C.45) y servir ese WASM. Mientras tanto, M4A/AAC solo usa este WASM cuando el navegador no tiene codificador AAC propio.
-- **(Fase 6) Mergear `dev` en `main`**: producción va 33 commits atrás (solo hasta la fase 4); los arreglos de las fases 5 y 6 (capa que tapaba botones, estados del login, Resend, B-01 a B-16) no están publicados.
+- **(Fase 6) Mergear `dev` en `main`**: producción va 51 commits atrás (solo hasta la fase 4); los arreglos de las fases 5 y 6 (capa que tapaba botones, estados del login, Resend, B-01 a B-25) no están publicados. Resumen en `docs/bug-audit-report.md`.
 - **(Fase 6) Variables en Railway**: confirmar que `AUTH_SECRET` y `NEXT_PUBLIC_SITE_URL` (con `https://`) estén definidas en el servicio `app`; sin ellas el login queda desactivado (B-14) y las canónicas apuntan a `localhost` (B-15 ya no rompe las páginas).
 - **(Fase 6) `PAYMENTS_MOCK` (B-22)**: confirmar que **no** esté definida en el servicio `app` de Railway; si lo está, cualquier usuario fuera de los países con Mercado Pago configurado pasa a Pro sin pagar.
 - **(Fase 6) Cloudflare y límites por IP (B-24)**: si se pone Cloudflare (u otro proxy) delante de Railway, avisar para que `clientIp()` lea `CF-Connecting-IP`; si no, todos los visitantes compartirían el límite de conversiones.
@@ -3233,3 +3233,11 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - 5 tareas: 6E.3, 6F.1, 6F.2, 6F.3a y 6F.3b (6F.3 se dividió en dos). Bugs nuevos: B-20 y B-21 (baja), B-23 (alta), B-24 y B-25 (media), todos arreglados; B-17 (media) arreglado; B-22 (alta solo si `PAYMENTS_MOCK=true` está en producción) queda para el dueño.
 - CI: verde en 0d11904, f4df2dc, d4ad183 y 0bdce28 (último commit). En d8c7c7b falló una vez `search-locale-states` (timeout de 60 s al escribir en el buscador con el índice caído); pasó en los commits siguientes y localmente. Si se repite, investigar como B-06.
 - Siguiente tarea: 6G.1 (informe final).
+
+## 2026-10-23 06:13 UTC — Fase 6, tarea 6G.1 (informe)
+- `docs/bug-audit-report.md`: resumen de lo revisado por hito y los detectores que quedaron, los 25 hallazgos por gravedad (0 críticos, 6 altos, 12 medios, 7 bajos) y por categoría, 22 arreglados con su commit, lo que queda (B-06 abierto e intermitente, B-04 descartado por ser del motor WebKit de Linux, B-22 depende de la configuración), lo que tiene que decidir o configurar el dueño y recomendaciones para que no vuelvan.
+- Producción (`main`) sigue en la fase 4: `dev` va 51 commits adelante. Actualizado en "Pendiente del dueño".
+- Verificado: `npm run lint`, `npm test` (134 archivos, 1037 tests) y `npm run build` pasan. Solo cambian documentos.
+
+## 2026-10-23 06:13 UTC — FASE 6 TERMINADA
+- Todas las tareas de la fase 6 están marcadas. Falta que el dueño mergee `dev` en `main` y resuelva lo de "Pendiente del dueño" (Resend, `AUTH_SECRET`/`NEXT_PUBLIC_SITE_URL`, `PAYMENTS_MOCK`). La rutina programada se puede pausar.

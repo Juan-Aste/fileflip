@@ -383,4 +383,4 @@ Auditoría de bugs: encontrar y arreglar, antes que los usuarios, bugs del tipo 
 - [x] 6F.3b Límite de frecuencia en las APIs que reciben archivos o datos (IP del cliente detrás del proxy, envío de enlaces de inicio de sesión); tests
 
 ### Hito 6G — Informe
-- [ ] 6G.1 `docs/bug-audit-report.md`: resumen, bugs por gravedad y categoría, arreglados (con commit), pendientes y por qué, lo que decide el dueño, recomendaciones y tests nuevos en el CI; "FASE 6 TERMINADA" en PROGRESS.md
+- [x] 6G.1 `docs/bug-audit-report.md`: resumen, bugs por gravedad y categoría, arreglados (con commit), pendientes y por qué, lo que decide el dueño, recomendaciones y tests nuevos en el CI; "FASE 6 TERMINADA" en PROGRESS.md
