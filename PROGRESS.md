@@ -3013,3 +3013,14 @@ Todas las tareas de la fase 5 están marcadas y el CI de GitHub está en verde e
 ## Inicio de la fase 6
 
 Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-audit.md`.
+
+## 2026-10-23 00:45 UTC — Fase 6, tarea 6A.1 (clicabilidad de todas las páginas)
+
+**Qué se hizo**
+- `tests/e2e/hit-test.ts`: detector reutilizable. Para cada enlace, botón, campo, label y rol interactivo visible lo lleva al centro de la pantalla y comprueba con `document.elementFromPoint` (centro y esquinas internas) que el clic le llega a él; reporta tapados, fuera de pantalla, scroll horizontal y objetivos táctiles < 24×24 px (excepción de espaciado de WCAG 2.5.8). `signInAsAdmin` crea una sesión JWT de prueba.
+- `tests/e2e/clickable.spec.ts`: 216 páginas + cuenta y admin con sesión, en 1280×800, 768×1024 y 390×844, claro y oscuro; deja reportes JSON en `test-results/hit-test/`. Test de control con una capa invisible inyectada.
+- `playwright.config.ts`: segundo servidor de pruebas (puerto 3101) con `ADMIN_EMAILS` y sin método de email, para las páginas con sesión.
+
+**Hallazgos**: ninguna capa tapa controles en ninguna página ni combinación. Colateral: **B-01** (media) — sin `MONGODB_URI` y con email habilitado, Auth.js responde 500 en todas sus llamadas (`MissingAdapter`); se arregla en 6D.1. Detalle en `docs/bug-audit.md`.
+
+**Verificación**: lint, tests unitarios (1009) y build pasan; Playwright `clickable.spec.ts` (91), `login.spec.ts` y `search.spec.ts` pasan.

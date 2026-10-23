@@ -30,12 +30,24 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 900 } } }],
   webServer: process.env.BASE_URL
     ? undefined
-    : {
-        command: `npx next start -p ${port}`,
-        url: `${baseURL}/es`,
-        reuseExistingServer: !process.env.CI,
-        timeout: 60_000,
-        // Show both sign-in methods; login.spec.ts stubs the Auth.js endpoints.
-        env: { AUTH_SECRET: "e2e-only-not-a-real-secret", AUTH_EMAIL_LOG_LINKS: "true", AUTH_GOOGLE_ID: "e2e", AUTH_GOOGLE_SECRET: "e2e" },
-      },
+    : [
+        {
+          command: `npx next start -p ${port}`,
+          url: `${baseURL}/es`,
+          reuseExistingServer: !process.env.CI,
+          timeout: 60_000,
+          // Show both sign-in methods; login.spec.ts stubs the Auth.js endpoints.
+          env: { AUTH_SECRET: "e2e-only-not-a-real-secret", AUTH_EMAIL_LOG_LINKS: "true", AUTH_GOOGLE_ID: "e2e", AUTH_GOOGLE_SECRET: "e2e" },
+        },
+        {
+          // Signed-in pages (clickable.spec.ts signs in as this admin with a JWT
+          // session, see hit-test.ts). No email provider here: without MongoDB
+          // it makes every Auth.js call fail (bug B-01 in docs/bug-audit.md).
+          command: `npx next start -p ${port + 1}`,
+          url: `http://localhost:${port + 1}/es`,
+          reuseExistingServer: !process.env.CI,
+          timeout: 60_000,
+          env: { AUTH_SECRET: "e2e-only-not-a-real-secret", AUTH_GOOGLE_ID: "e2e", AUTH_GOOGLE_SECRET: "e2e", ADMIN_EMAILS: "admin@e2e.test" },
+        },
+      ],
 });
