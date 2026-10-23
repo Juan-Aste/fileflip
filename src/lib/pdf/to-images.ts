@@ -34,6 +34,7 @@ export async function pdfToImages(
 
 /** "report.pdf", page 3 of 12 → "report-03.jpg". */
 export function pageImageName(pdfName: string, page: number, total: number, ext: string) {
-  const base = pdfName.replace(/\.pdf$/i, "") || "page";
+  // Drop whatever extension the name has: a PDF saved as "report.docx" too.
+  const base = pdfName.replace(/\.[^.]+$/, "") || "page";
   return `${base}-${String(page).padStart(String(total).length, "0")}.${ext}`;
 }

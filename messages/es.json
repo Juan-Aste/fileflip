@@ -190,6 +190,7 @@
     "server": "Se procesa en nuestro servidor y se borra en 1 hora"
   },
   "ApiErrors": {
+    "emptyFile": "El archivo está vacío.",
     "fileTooLarge": "El archivo es demasiado grande.",
     "tooManyFiles": "Demasiados archivos en un mismo lote.",
     "unsupportedFormat": "Este formato no se puede convertir así.",

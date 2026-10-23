@@ -80,6 +80,8 @@ export const apiErrorCodes = [
   // Client-side only: the job engine stopped the work (user or time limit).
   "jobCancelled",
   "jobTimedOut",
+  // Client-side only: a 0-byte file picked in a tool that needs content.
+  "emptyFile",
 ] as const;
 
 export type ApiErrorCode = (typeof apiErrorCodes)[number];
@@ -141,6 +143,7 @@ const status: Record<ApiErrorCode, number> = {
   connectionLost: 503,
   jobCancelled: 400,
   jobTimedOut: 408,
+  emptyFile: 422,
 };
 
 export function apiError(code: ApiErrorCode, headers?: HeadersInit) {

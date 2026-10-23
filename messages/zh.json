@@ -190,6 +190,7 @@
     "server": "在我们的服务器上处理，1 小时内删除"
   },
   "ApiErrors": {
+    "emptyFile": "文件为空。",
     "fileTooLarge": "文件太大。",
     "tooManyFiles": "一次批量的文件太多。",
     "unsupportedFormat": "此格式无法这样转换。",

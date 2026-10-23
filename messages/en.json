@@ -190,6 +190,7 @@
     "server": "Processed on our server and deleted within 1 hour"
   },
   "ApiErrors": {
+    "emptyFile": "The file is empty.",
     "fileTooLarge": "The file is too large.",
     "tooManyFiles": "Too many files in one batch.",
     "unsupportedFormat": "This format can't be converted this way.",

@@ -88,7 +88,7 @@ export default function FileRow({ item, onRemove }: Props) {
     status = (
       <span className="inline-flex items-center gap-1 text-danger">
         <AlertCircle aria-hidden="true" className="h-4 w-4 shrink-0" />
-        {t("unsupported")}
+        {file.size === 0 ? te("emptyFile") : t("unsupported")}
       </span>
     );
   } else if (format === undefined) {

@@ -190,6 +190,7 @@
     "server": "Processado no nosso servidor e apagado em até 1 hora"
   },
   "ApiErrors": {
+    "emptyFile": "O arquivo está vazio.",
     "fileTooLarge": "O arquivo é grande demais.",
     "tooManyFiles": "Arquivos demais no mesmo lote.",
     "unsupportedFormat": "Este formato não pode ser convertido assim.",

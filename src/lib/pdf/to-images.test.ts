@@ -7,4 +7,8 @@ describe("pageImageName", () => {
     expect(pageImageName("Informe.PDF", 7, 9, "png")).toBe("Informe-7.png");
     expect(pageImageName(".pdf", 1, 100, "jpg")).toBe("page-001.jpg");
   });
+
+  it("drops any extension, also a wrong one (B-21)", () => {
+    expect(pageImageName("informe.docx", 1, 2, "jpg")).toBe("informe-1.jpg");
+  });
 });

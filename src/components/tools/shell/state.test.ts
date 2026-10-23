@@ -31,6 +31,11 @@ describe("checkInputs", () => {
     ]);
   });
 
+  it("rejects empty files unless the tool allows them (B-20)", () => {
+    expect(checkInputs([file("a.json", 0)], limits).rejected).toEqual([{ file: file("a.json", 0), reason: "emptyFile" }]);
+    expect(checkInputs([file("a.json", 0)], { ...limits, allowEmpty: true }).accepted).toHaveLength(1);
+  });
+
   it("counts the files already chosen", () => {
     expect(checkInputs([file("a.json")], limits, 2).rejected[0].reason).toBe("tooManyFiles");
   });

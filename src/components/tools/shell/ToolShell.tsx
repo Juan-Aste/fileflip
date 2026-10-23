@@ -40,6 +40,8 @@ export type ShellInput =
       maxFileBytes?: number;
       /** Also lets the user paste the content instead of picking a file. */
       paste?: { label: string; placeholder?: string };
+      /** Accepts 0-byte files (hashes, Base64, archives); other tools reject them as empty. */
+      allowEmpty?: boolean;
       /** Shows the files numbered with buttons to reorder them (the order is the one `process` receives). */
       reorderable?: boolean;
       /** False while the tool is still preparing the picked files (e.g. a preview) or its options are invalid. */
@@ -137,7 +139,7 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
   function pick(picked: File[]) {
     if (input.kind !== "files") return;
     const already = input.multiple ? files.length : 0;
-    const check = checkInputs(picked, { extensions: input.extensions, maxFiles, maxFileBytes }, already);
+    const check = checkInputs(picked, { extensions: input.extensions, maxFiles, maxFileBytes, allowEmpty: input.allowEmpty }, already);
     const added = check.accepted.map((file) => ({ id: nextId++, file }));
     setFiles((prev) => (input.multiple ? [...prev, ...added] : added.length ? added : prev));
     setRejected(check.rejected.map((r) => ({ name: r.file.name, reason: r.reason })));

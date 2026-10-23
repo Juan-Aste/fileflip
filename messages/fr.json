@@ -190,6 +190,7 @@
     "server": "Traité sur notre serveur et supprimé sous 1 heure"
   },
   "ApiErrors": {
+    "emptyFile": "Le fichier est vide.",
     "fileTooLarge": "Le fichier est trop volumineux.",
     "tooManyFiles": "Trop de fichiers dans un même lot.",
     "unsupportedFormat": "Ce format ne peut pas être converti ainsi.",

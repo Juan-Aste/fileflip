@@ -8,9 +8,11 @@ export interface ShellInputLimits {
   extensions: readonly string[];
   maxFiles: number;
   maxFileBytes: number;
+  /** Tools where an empty file is a valid input (hashes, archives). */
+  allowEmpty?: boolean;
 }
 
-export type RejectReason = "unsupportedFormat" | "fileTooLarge" | "tooManyFiles";
+export type RejectReason = "unsupportedFormat" | "emptyFile" | "fileTooLarge" | "tooManyFiles";
 
 export interface InputCheck<F extends { name: string; size: number }> {
   accepted: F[];
@@ -23,8 +25,8 @@ export function extensionOf(name: string): string {
 }
 
 /**
- * Splits picked files into accepted and rejected (wrong extension, too
- * large, or beyond the batch size counting the ones already chosen). The
+ * Splits picked files into accepted and rejected (wrong extension, empty,
+ * too large, or beyond the batch size counting the ones already chosen). The
  * extension is only a first filter: processors still check the content.
  */
 export function checkInputs<F extends { name: string; size: number }>(
@@ -36,6 +38,8 @@ export function checkInputs<F extends { name: string; size: number }>(
   for (const file of files) {
     if (limits.extensions.length > 0 && !limits.extensions.includes(extensionOf(file.name))) {
       result.rejected.push({ file, reason: "unsupportedFormat" });
+    } else if (file.size === 0 && !limits.allowEmpty) {
+      result.rejected.push({ file, reason: "emptyFile" });
     } else if (file.size > limits.maxFileBytes) {
       result.rejected.push({ file, reason: "fileTooLarge" });
     } else if (alreadyChosen + result.accepted.length >= limits.maxFiles) {

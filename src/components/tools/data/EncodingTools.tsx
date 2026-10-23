@@ -27,6 +27,7 @@ export function Base64EncodeTool() {
         kind: "files",
         extensions: [],
         multiple: true,
+        allowEmpty: true,
         maxFileBytes: tools["base64-encode"].limits.maxFileBytes,
         paste: { label: t("pasteText"), placeholder: "Hola, mundo" },
       }}
