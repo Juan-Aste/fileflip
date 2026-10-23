@@ -19,7 +19,7 @@ export async function connectToDatabase(uri = process.env.MONGODB_URI): Promise<
     throw new Error("MONGODB_URI is not set");
   }
   if (!cache.promise) {
-    cache.promise = mongoose.connect(uri, { bufferCommands: false });
+    cache.promise = mongoose.connect(uri, { bufferCommands: false, serverSelectionTimeoutMS: 5_000 });
   }
   try {
     cache.conn = await cache.promise;

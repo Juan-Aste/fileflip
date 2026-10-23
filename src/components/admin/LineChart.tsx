@@ -1,8 +1,9 @@
-import { Download } from "lucide-react";
+import CsvLink from "@/components/admin/CsvLink";
 import { card } from "@/components/ui/styles";
 import { labelIndexes, lineGeometry } from "@/lib/admin/charts";
 import { formatBucket } from "@/lib/admin/format";
 import { formatNumber } from "@/lib/format";
+import { adminTranslator } from "@/lib/admin/messages";
 
 type Props = {
   title: string;
@@ -22,6 +23,7 @@ const H = 160;
  * size. Each bucket has a hover column with a native tooltip and a guide line.
  */
 export default function LineChart({ title, series, summary, csvHref }: Props) {
+  const t = adminTranslator();
   const g = lineGeometry(series, W, H);
   const num = (n: number) => formatNumber(n, "es");
   const labels = labelIndexes(g.points.length);
@@ -33,10 +35,7 @@ export default function LineChart({ title, series, summary, csvHref }: Props) {
         <span className="font-bold">{title}</span>
         <span className="ml-auto text-sm text-muted">{summary}</span>
         {csvHref && (
-          <a href={csvHref} download className="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:underline">
-            <Download aria-hidden="true" className="size-4" />
-            CSV<span className="sr-only">: {title}</span>
-          </a>
+          <CsvLink href={csvHref} title={title} busyLabel={t("charts.csvBusy")} errorLabel={t("charts.csvError")} />
         )}
       </figcaption>
       <div className="flex gap-2">
