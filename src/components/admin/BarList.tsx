@@ -49,7 +49,7 @@ export default function BarList({ title, rows, empty, labelHeader, countHeader, 
                   <span className="relative block overflow-hidden rounded-md px-2 py-1">
                     <span
                       aria-hidden="true"
-                      className="absolute inset-y-0 left-0 rounded-md bg-brand/15"
+                      className="pointer-events-none absolute inset-y-0 left-0 rounded-md bg-brand/15"
                       style={{ width: `${Math.max(shares[i] * 100, 1)}%` }}
                     />
                     <span className="relative block truncate">{row.label}</span>

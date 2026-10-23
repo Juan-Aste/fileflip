@@ -3034,3 +3034,13 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Hallazgos**: ninguno.
 
 **Verificación**: `open-states.spec.ts` (19) y el test de control de `clickable.spec.ts` pasan; lint pasa.
+
+## 2026-10-23 00:50 UTC — Fase 6, tareas 6A.3 y 6A.4 (capas decorativas en el código; arreglos de 6A)
+
+**Qué se hizo**
+- Revisión de todos los elementos `absolute`/`fixed` del código (detalle en `docs/bug-audit.md`).
+- **B-02** (baja, arreglado): la barra decorativa de `BarList` en el panel de admin no tenía `pointer-events-none`.
+- `tests/decorative-layers.test.ts`: guarda en el CI (Vitest + compilador de TypeScript) que falla si un elemento `aria-hidden` con `absolute`/`fixed` no ignora el puntero; falla sin el arreglo de B-02 y pasa con él.
+- 6A.4: no quedan hallazgos de 6A por arreglar (B-01 se trata en 6D.1).
+
+**Verificación**: lint, typecheck, tests unitarios y build pasan; `clickable.spec.ts` (admin) pasa.

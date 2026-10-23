@@ -353,8 +353,8 @@ Auditoría de bugs: encontrar y arreglar, antes que los usuarios, bugs del tipo 
 ### Hito 6A — Todo lo visible se puede tocar
 - [x] 6A.1 Test Playwright de "clicabilidad": recorre todas las páginas publicadas (portada, catálogo, categorías, las 82 herramientas, conversiones, cola larga, precios, login, cuenta, legales, créditos, admin con sesión de prueba) en 1280×800, 768×1024 y 390×844, claro y oscuro; para cada enlace, botón, input, select y label visible comprueba con `document.elementFromPoint` en el centro y las esquinas internas que recibe el clic él mismo o un descendiente; reporta tapados, fuera de pantalla y objetivos táctiles < 24×24 px en móvil. Correrlo y registrar hallazgos
 - [x] 6A.2 Estados abiertos: menú móvil, buscador Ctrl+K, selector de idioma, desplegables y resultados de una herramienta después de convertir
-- [ ] 6A.3 Revisión del código: capas decorativas `absolute`/`fixed` sin `pointer-events-none` que puedan tapar contenido
-- [ ] 6A.4 Arreglar los hallazgos de 6A por gravedad, con tests de regresión
+- [x] 6A.3 Revisión del código: capas decorativas `absolute`/`fixed` sin `pointer-events-none` que puedan tapar contenido
+- [x] 6A.4 Arreglar los hallazgos de 6A por gravedad, con tests de regresión
 
 ### Hito 6B — Otros navegadores
 - [ ] 6B.1 Proyectos Firefox y WebKit en Playwright con una muestra representativa por categoría (imagen, PDF, documentos, datos, OCR, comprimidos, ebooks, audio, video, 3D, CAD, utilidades) en escritorio; instalación en el CI sin volverlo lento
