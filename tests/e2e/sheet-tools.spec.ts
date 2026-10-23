@@ -12,7 +12,7 @@ test.afterEach(({ serverCalls }) => {
 const choose = (page: import("@playwright/test").Page, label: string) => page.locator("label").filter({ hasText: label }).first().click();
 
 test.describe("tool: spreadsheet-converter", () => {
-  test("a two-sheet workbook becomes one CSV per sheet for Excel in Spanish", async ({ page }) => {
+  test("a two-sheet workbook becomes one CSV per sheet for Excel in Spanish", { tag: "@xb" }, async ({ page }) => {
     await openWithFiles(page, "/es/convertir-hoja-de-calculo", ["workbook.xlsx"]);
     await choose(page, "CSV");
     await choose(page, "Punto y coma");

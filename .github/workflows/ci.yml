@@ -29,3 +29,26 @@ jobs:
         run: npm run build
       - name: Static pages
         run: npm run check:static
+
+  # Browser tests in other engines: one representative test per tool family
+  # (tagged @xb) in Firefox and WebKit, plus the quick Chromium checks that
+  # every control on open menus, dialogs and results can be clicked.
+  e2e-browsers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Firefox and WebKit sample
+        run: npx playwright test --project firefox --project webkit
+      - name: Chromium click checks
+        run: npx playwright test open-states login clickable --project chromium --grep-invert "pages \d+/"

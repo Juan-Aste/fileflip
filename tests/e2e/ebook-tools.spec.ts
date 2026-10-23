@@ -12,10 +12,11 @@ test.afterEach(({ serverCalls }) => {
 });
 
 test.describe("tool: epub-converter", () => {
-  test("EPUB 3 → one safe HTML page: contents, chapter links that land, embedded images, no requests", async ({ page }) => {
+  test("EPUB 3 → one safe HTML page: contents, chapter links that land, embedded images, no requests", { tag: "@xb" }, async ({ page }) => {
     const external: string[] = [];
     page.on("request", (r) => {
-      if (!r.url().startsWith("http://localhost")) external.push(r.url());
+      // WebKit also reports the page's own blob: downloads as requests.
+      if (!/^(http:\/\/localhost|blob:|data:)/.test(r.url())) external.push(r.url());
     });
     await openWithFiles(page, "/es/convertir-epub", ["book.epub"]);
     const out = fileOf(await runTool(page, "Convertir libro"));

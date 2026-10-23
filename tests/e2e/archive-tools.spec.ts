@@ -66,7 +66,7 @@ test.describe("tool: create-archive", () => {
 const tree = ["docs/readme.txt", "docs/año 2024/notas — 中文.txt", "images/image.png", "document-1page.pdf", "empty.txt"];
 
 test.describe("tool: extract-archive", () => {
-  test("ZIP → each file with its folder path; “download all” rebuilds the folders", async ({ page }) => {
+  test("ZIP → each file with its folder path; “download all” rebuilds the folders", { tag: "@xb" }, async ({ page }) => {
     await openWithFiles(page, "/es/extraer-zip", ["archive.zip"]);
     await page.getByRole("button", { name: "Extraer archivos", exact: true }).click();
     const links = page.locator("main li a[download]");

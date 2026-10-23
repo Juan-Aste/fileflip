@@ -146,7 +146,7 @@ test.afterEach(({ serverCalls }) => {
 });
 
 test.describe("tool: model-converter", () => {
-  test("STL (binary and ASCII), OBJ, PLY, GLB and embedded glTF → GLB: shapes, sizes and colors intact", async ({ page }) => {
+  test("STL (binary and ASCII), OBJ, PLY, GLB and embedded glTF → GLB: shapes, sizes and colors intact", { tag: "@xb" }, async ({ page }) => {
     await openWithFiles(page, "/en/3d-model-converter", ["cube.stl", "cube-ascii.stl", "pyramid.obj", "tetra.ply", "tetra.glb", "tetra.gltf"]);
     await page.getByText("GLB (binary glTF)", { exact: true }).click();
     await page.getByRole("button", { name: "Convert model", exact: true }).click();

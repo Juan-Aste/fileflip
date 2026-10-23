@@ -115,7 +115,10 @@ test.describe("tool: audio-converter", () => {
     }
   });
 
-  test("MP3 → WAV, FLAC, OGG (Opus) and M4A (AAC)", async ({ page }) => {
+  test("MP3 → WAV, FLAC, OGG (Opus) and M4A (AAC)", { tag: "@xb" }, async ({ page, browserName }) => {
+    // Playwright's Linux WebKit decodes the MP3 header but the conversion
+    // fails and the tool calls the file damaged: bug B-03 (docs/bug-audit.md, 6B.3).
+    test.fixme(browserName === "webkit", "B-03: MP3 conversion fails in Linux WebKit with a 'damaged file' message");
     await openWithFiles(page, "/en/audio-converter", ["audio.mp3"]);
     const expected = [
       { label: "WAV (lossless)", ext: "wav", format: "wav", codec: "pcm_s16le", sampleRate: 22050 },

@@ -3044,3 +3044,15 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - 6A.4: no quedan hallazgos de 6A por arreglar (B-01 se trata en 6D.1).
 
 **Verificación**: lint, typecheck, tests unitarios y build pasan; `clickable.spec.ts` (admin) pasa.
+
+## 2026-10-23 01:00 UTC — Fase 6, tarea 6B.1 (Firefox y WebKit)
+
+**Qué se hizo**
+- `playwright.config.ts`: proyectos `firefox` y `webkit` (solo tests `@xb`); la ruta de Chromium del entorno queda solo en el proyecto `chromium`.
+- 14 tests marcados `@xb`, uno por familia de herramientas.
+- CI: job `e2e-browsers` (build, `npx playwright install --with-deps chromium firefox webkit`, muestra en Firefox y WebKit, chequeos de clics en Chromium).
+- Test de EPUB: ignora las URLs `blob:`/`data:` propias que WebKit informa como peticiones.
+
+**Hallazgos**: **B-03** (media): en WebKit (Linux) MP3 → WAV falla con "archivo dañado" aunque el archivo está bien. **B-04** (baja, entorno): la prueba de H.264 de `VideoEncoder` cuelga el renderizador de esa build de WebKit y todas las páginas de video se caen al cargar. Ambos quedan para 6B.3 con tests `fixme`.
+
+**Verificación**: Firefox 14/14, WebKit 12/14 + 2 `fixme`; Chromium `open-states`, `login` y control de `clickable` (27) pasan con `CI=1`; lint, typecheck y tests unitarios pasan.

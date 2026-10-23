@@ -24,10 +24,15 @@ export default defineConfig({
     locale: "es-ES",
     acceptDownloads: true,
     viewport: { width: 1280, height: 900 },
-    launchOptions: { executablePath },
     trace: "retain-on-failure",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 900 } } }],
+  projects: [
+    { name: "chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 900 }, launchOptions: { executablePath } } },
+    // Other engines run a representative sample, one test per tool family,
+    // tagged @xb (`npx playwright install --with-deps firefox webkit`).
+    { name: "firefox", grep: /@xb/, use: { ...devices["Desktop Firefox"], viewport: { width: 1280, height: 900 } } },
+    { name: "webkit", grep: /@xb/, use: { ...devices["Desktop Safari"], viewport: { width: 1280, height: 900 } } },
+  ],
   webServer: process.env.BASE_URL
     ? undefined
     : [

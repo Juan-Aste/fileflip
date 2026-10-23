@@ -7,7 +7,7 @@ test.afterEach(({ serverCalls }) => {
 });
 
 test.describe("tool: color-converter", () => {
-  test("converts between notations and checks WCAG contrast", async ({ page }) => {
+  test("converts between notations and checks WCAG contrast", { tag: "@xb" }, async ({ page }) => {
     await page.goto("/es/conversor-de-colores", { waitUntil: "networkidle" });
     const input = page.getByRole("textbox", { name: /^Color \(HEX/ });
     await input.fill("rgb(255 0 0)");

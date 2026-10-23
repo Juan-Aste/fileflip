@@ -25,7 +25,7 @@ test.afterEach(({ serverCalls }) => {
 });
 
 test.describe("tool: compress-image", () => {
-  test("JPG at the recommended level: much smaller, same size in pixels", async ({ page }) => {
+  test("JPG at the recommended level: much smaller, same size in pixels", { tag: "@xb" }, async ({ page }) => {
     await page.goto("/es/comprimir-imagen", { waitUntil: "networkidle" });
     await pick(page, [fixturePath("photo.jpg")]);
     const out = fileOf(await runTool(page, "Comprimir imágenes"));

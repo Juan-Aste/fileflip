@@ -138,7 +138,10 @@ test.describe("tool: video-converter", () => {
     await expect(page.locator("main li a[download]").last()).toHaveAttribute("download", /video.*\.webm/);
   });
 
-  test("WebM → MOV re-encodes to H.264, or says MOV needs it where the browser has no H.264 encoder", async ({ page }) => {
+  test("WebM → MOV re-encodes to H.264, or says MOV needs it where the browser has no H.264 encoder", { tag: "@xb" }, async ({ page, browserName }) => {
+    // VideoEncoder.isConfigSupported(H.264) crashes the renderer of Playwright's
+    // Linux WebKit (GStreamer), so every video page crashes there on load: B-04.
+    test.fixme(browserName === "webkit", "B-04: the H.264 encoder probe crashes Linux WebKit (GStreamer build)");
     await openWithFiles(page, "/en/video-converter", ["video.webm"]);
     const h264 = await page.evaluate(async () => (await VideoEncoder.isConfigSupported({ codec: "avc1.42001f", width: 1280, height: 720, bitrate: 2_000_000 })).supported);
     await page.getByText("MOV", { exact: true }).click();
