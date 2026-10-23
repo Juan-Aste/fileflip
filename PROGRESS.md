@@ -3024,3 +3024,13 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Hallazgos**: ninguna capa tapa controles en ninguna página ni combinación. Colateral: **B-01** (media) — sin `MONGODB_URI` y con email habilitado, Auth.js responde 500 en todas sus llamadas (`MissingAdapter`); se arregla en 6D.1. Detalle en `docs/bug-audit.md`.
 
 **Verificación**: lint, tests unitarios (1009) y build pasan; Playwright `clickable.spec.ts` (91), `login.spec.ts` y `search.spec.ts` pasan.
+
+## 2026-10-23 00:48 UTC — Fase 6, tarea 6A.2 (estados abiertos)
+
+**Qué se hizo**
+- `hitTestPage` acepta `root` para revisar solo un menú o diálogo abierto.
+- `tests/e2e/open-states.spec.ts`: buscador con resultados, acordeones y paneles abiertos, resultados de herramientas (portada, unir PDF, comprimir imágenes, extraer ZIP), menú móvil y selector de idioma, en móvil y escritorio, claro y oscuro.
+
+**Hallazgos**: ninguno.
+
+**Verificación**: `open-states.spec.ts` (19) y el test de control de `clickable.spec.ts` pasan; lint pasa.

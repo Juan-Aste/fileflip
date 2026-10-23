@@ -17,9 +17,9 @@ export interface HitIssue {
   detail: string;
 }
 
-/** Runs the check on the current page; restores the scroll position. */
-export async function hitTestPage(page: Page, opts: { touch: boolean }): Promise<HitIssue[]> {
-  return page.evaluate(({ touch }) => {
+/** Runs the check on the current page (or inside `root`); restores the scroll position. */
+export async function hitTestPage(page: Page, opts: { touch: boolean; root?: string }): Promise<HitIssue[]> {
+  return page.evaluate(({ touch, root }) => {
     const issues: { kind: "covered" | "offscreen" | "small" | "overflow"; target: string; detail: string }[] = [];
     const describe = (el: Element | null): string => {
       if (!el) return "(nothing)";
@@ -45,7 +45,10 @@ export async function hitTestPage(page: Page, opts: { touch: boolean }): Promise
       issues.push({ kind: "overflow", target: describe(widest), detail: `page scrolls sideways: ${document.documentElement.scrollWidth}px > ${vw}px` });
     }
     const selector = "a[href], button, input:not([type=hidden]), select, textarea, label, summary, [role=button], [role=tab], [role=menuitem], [role=option]";
-    const els = Array.from(document.querySelectorAll<HTMLElement>(selector)).filter((el) => {
+    // `root` limits the check to an open menu or dialog (what it covers is fine).
+    const scope = root ? document.querySelector(root) : document;
+    if (!scope) throw new Error(`hit test: no element matches ${root}`);
+    const els = Array.from(scope.querySelectorAll<HTMLElement>(selector)).filter((el) => {
       if (el.closest("ins.adsbygoogle, [data-ad-slot], [data-hit-test-skip]")) return false;
       if (!el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })) return false;
       const r = el.getBoundingClientRect();
