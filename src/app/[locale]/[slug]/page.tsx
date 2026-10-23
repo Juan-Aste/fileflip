@@ -45,6 +45,7 @@ import {
 import { routing, type Locale } from "@/i18n/routing";
 import { limits } from "@/config/limits";
 import { jsonLdString } from "@/lib/faq";
+import { proEnabled } from "@/lib/pro";
 import { formatBytes } from "@/lib/format";
 import { alternatesFor, siteUrl, softwareApplicationJsonLd } from "@/lib/seo";
 
@@ -210,9 +211,12 @@ async function ToolView({ tool }: { tool: ToolInfo }) {
   const locale = (await getLocale()) as Locale;
   const tt = await getTranslations("Tools");
   // Questions are numbered q1/a1, q2/a2... in the messages (at least 3 per tool).
+  // An answer that mentions Pro has an aNNoPro version for while Pro is off.
+  const pro = proEnabled();
+  const answer = (n: number) => (!pro && t.has(`faq.a${n}NoPro`) ? t(`faq.a${n}NoPro`) : t(`faq.a${n}`));
   const faq = Array.from({ length: 12 }, (_, i) => i + 1)
     .filter((n) => t.has(`faq.q${n}`))
-    .map((n) => ({ q: t(`faq.q${n}`), a: t(`faq.a${n}`) }));
+    .map((n) => ({ q: t(`faq.q${n}`), a: answer(n) }));
   const related = relatedTools(tool.id);
   const size = (bytes: number) => formatBytes(bytes, locale);
   // The same caps ToolShell enforces: the plan's, or the tool's own when lower.
@@ -227,9 +231,11 @@ async function ToolView({ tool }: { tool: ToolInfo }) {
           tool.limits.files === "single"
             ? tp("limitSingle", { size: size(fileCap("free")) })
             : tp("limitMultiple", { count: batch("free"), size: size(fileCap("free")) }),
-          fileCap("pro") > fileCap("free")
-            ? tp("limitPro", { size: size(fileCap("pro")), count: batch("pro") })
-            : tp("limitProBatch", { count: batch("pro") }),
+          ...(!pro
+            ? []
+            : fileCap("pro") > fileCap("free")
+              ? [tp("limitPro", { size: size(fileCap("pro")), count: batch("pro") })]
+              : [tp("limitProBatch", { count: batch("pro") })]),
         ];
   const limitItems = [
     ...fileLimits,

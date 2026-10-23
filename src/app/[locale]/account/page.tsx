@@ -7,6 +7,7 @@ import { Link, redirect } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { currentSubscription, planFromSubscription } from "@/lib/billing";
 import { formatCurrency, formatDate } from "@/lib/format";
+import { proEnabled } from "@/lib/pro";
 import { badge, buttonPrimary, buttonSecondary, card } from "@/components/ui/styles";
 
 // Depends on the visitor's session.
@@ -30,7 +31,9 @@ export default async function AccountPage({ params, searchParams }: Props) {
     return null;
   }
   const t = await getTranslations("Account");
-  const sub = process.env.MONGODB_URI ? await currentSubscription(session.user.id ?? "").catch(() => null) : null;
+  // No subscription section while the Pro plan is off.
+  const pro = proEnabled();
+  const sub = pro && process.env.MONGODB_URI ? await currentSubscription(session.user.id ?? "").catch(() => null) : null;
   const plan = planFromSubscription(sub);
   const loc = locale as Locale;
 
@@ -56,66 +59,68 @@ export default async function AccountPage({ params, searchParams }: Props) {
         </div>
       </header>
 
-      {checkout === "done" && plan !== "pro" && (
+      {pro && checkout === "done" && plan !== "pro" && (
         <p role="status" className="flex items-start gap-2 rounded-xl bg-brand-soft px-4 py-3 text-sm text-brand">
           <CircleCheck aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
           {t("checkoutDone")}
         </p>
       )}
 
-      <section aria-labelledby="plan" className={`flex flex-col gap-3 p-6 sm:p-8 ${plan === "pro" ? "rounded-2xl border-2 border-brand bg-surface shadow-lift" : card}`}>
-        <h2 id="plan" className="text-sm font-medium text-muted">
-          {t("plan")}
-        </h2>
-        <p className="flex items-center gap-3">
-          <span className="font-display text-3xl font-extrabold">{plan === "pro" ? t("planPro") : t("planFree")}</span>
-          {plan === "pro" && (
-            <span className={badge}>
-              <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
-              Fileflect Pro
-            </span>
-          )}
-        </p>
-        {plan === "pro" && sub ? (
-          <>
-            <p className="text-muted">{t("planProBody")}</p>
-            <ul className="flex flex-col gap-2 rounded-xl bg-surface-2 px-4 py-3 text-sm">
-              <li>{t("billing", { amount: formatCurrency(sub.amount, sub.currency, loc), period: sub.period })}</li>
-              {sub.status === "active" && sub.currentPeriodEnd && (
-                <li className="flex items-center gap-2">
-                  <CalendarClock aria-hidden="true" className="h-4 w-4 text-muted" />
-                  {t("nextPayment", { date: formatDate(sub.currentPeriodEnd, loc) })}
-                </li>
-              )}
-              {sub.status === "paused" && (
-                <li className="flex items-center gap-2 text-warning">
-                  <PauseCircle aria-hidden="true" className="h-4 w-4" />
-                  {t("paused")}
-                </li>
-              )}
-              {sub.status === "cancelled" && sub.currentPeriodEnd && (
-                <li className="flex items-center gap-2">
-                  <CalendarClock aria-hidden="true" className="h-4 w-4 text-muted" />
-                  {t("paidUntil", { date: formatDate(sub.currentPeriodEnd, loc) })}
-                </li>
-              )}
-            </ul>
-            {sub.status === "active" && (
-              <div className="mt-2">
-                <CancelSubscriptionButton />
-              </div>
+      {pro && (
+        <section aria-labelledby="plan" className={`flex flex-col gap-3 p-6 sm:p-8 ${plan === "pro" ? "rounded-2xl border-2 border-brand bg-surface shadow-lift" : card}`}>
+          <h2 id="plan" className="text-sm font-medium text-muted">
+            {t("plan")}
+          </h2>
+          <p className="flex items-center gap-3">
+            <span className="font-display text-3xl font-extrabold">{plan === "pro" ? t("planPro") : t("planFree")}</span>
+            {plan === "pro" && (
+              <span className={badge}>
+                <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
+                Fileflect Pro
+              </span>
             )}
-          </>
-        ) : (
-          <>
-            <p className="text-muted">{t("freeBody")}</p>
-            <Link href="/pricing" className={`mt-2 self-start ${buttonPrimary}`}>
-              <Sparkles aria-hidden="true" className="h-5 w-5" />
-              {t("upgrade")}
-            </Link>
-          </>
-        )}
-      </section>
+          </p>
+          {plan === "pro" && sub ? (
+            <>
+              <p className="text-muted">{t("planProBody")}</p>
+              <ul className="flex flex-col gap-2 rounded-xl bg-surface-2 px-4 py-3 text-sm">
+                <li>{t("billing", { amount: formatCurrency(sub.amount, sub.currency, loc), period: sub.period })}</li>
+                {sub.status === "active" && sub.currentPeriodEnd && (
+                  <li className="flex items-center gap-2">
+                    <CalendarClock aria-hidden="true" className="h-4 w-4 text-muted" />
+                    {t("nextPayment", { date: formatDate(sub.currentPeriodEnd, loc) })}
+                  </li>
+                )}
+                {sub.status === "paused" && (
+                  <li className="flex items-center gap-2 text-warning">
+                    <PauseCircle aria-hidden="true" className="h-4 w-4" />
+                    {t("paused")}
+                  </li>
+                )}
+                {sub.status === "cancelled" && sub.currentPeriodEnd && (
+                  <li className="flex items-center gap-2">
+                    <CalendarClock aria-hidden="true" className="h-4 w-4 text-muted" />
+                    {t("paidUntil", { date: formatDate(sub.currentPeriodEnd, loc) })}
+                  </li>
+                )}
+              </ul>
+              {sub.status === "active" && (
+                <div className="mt-2">
+                  <CancelSubscriptionButton />
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <p className="text-muted">{t("freeBody")}</p>
+              <Link href="/pricing" className={`mt-2 self-start ${buttonPrimary}`}>
+                <Sparkles aria-hidden="true" className="h-5 w-5" />
+                {t("upgrade")}
+              </Link>
+            </>
+          )}
+        </section>
+      )}
 
       <form action={logout}>
         <button type="submit" className={buttonSecondary}>

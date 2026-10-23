@@ -3241,3 +3241,60 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 
 ## 2026-10-23 06:13 UTC — FASE 6 TERMINADA
 - Todas las tareas de la fase 6 están marcadas. Falta que el dueño mergee `dev` en `main` y resuelva lo de "Pendiente del dueño" (Resend, `AUTH_SECRET`/`NEXT_PUBLIC_SITE_URL`, `PAYMENTS_MOCK`). La rutina programada se puede pausar.
+
+## 2026-10-23 14:15 UTC — Inicio de la fase 7
+- Fase 7 agregada a PLAN.md (pedida por el dueño): 7.1 bug del login en producción, 7.2 ocultar el plan Pro con `PRO_ENABLED`, 7.3a/7.3b textos legales y aceptación expresa, 7.4 verificación final.
+
+## 2026-10-23 14:35 UTC — Fase 7, tarea 7.1 (bug del login por email en producción)
+
+**Qué se hizo**
+- Reproducido con el Auth.js real: `next start` con MongoDB en memoria, Resend interceptado dentro del servidor (`tests/e2e/server/resend-stub.mjs`, precargado con `NODE_OPTIONS=--import`) y un proxy delante como el de Railway (`x-forwarded-host`/`x-forwarded-proto`, `AUTH_URL` público distinto del host interno). El correo se "enviaba" y el formulario mostraba `sendError`, igual que en producción.
+- **B-26** (crítica): después de enviar, Auth.js responde `{ url }` con su propia ruta `/api/auth/verify-request?...` (la opción `pages.verifyRequest` solo actúa cuando se abre esa ruta). El formulario exigía `/login/verify` y marcaba error aunque el envío había salido bien. La reconstrucción de la petición en `route.ts`, el proxy, `AUTH_URL` y el middleware no influían (respuesta 200, host público, sin `error`). Arreglo en `EmailSignInForm.tsx`: acepta `/verify-request` (y `/login/verify`) sin `?error=`.
+- Test de integración nuevo `tests/e2e/login-real.spec.ts` (en el CI): sin simular Auth.js; comprueba la respuesta real, que llega a `/es/login/verify`, que se envía un solo correo a la dirección y que el enlace del correo apunta al host público. Falla sin el arreglo (comprobado). `login.spec.ts` ahora simula la respuesta con la forma real.
+
+**Verificación**: lint, typecheck, tests unitarios (1035 + 10 omitidos) y build pasan; Chromium `login`, `login-real`, `rate-limits`, `environments` (17) pasan.
+
+## 2026-10-23 15:00 UTC — Fase 7, tarea 7.2 (ocultar el plan Pro)
+
+**Qué se hizo**
+- Interruptor `PRO_ENABLED` (`src/lib/pro.ts`, apagado salvo `"true"`), leído en el servidor. Las páginas estáticas (header, footer, herramientas, portada, sitemap) lo toman al construir: el `Dockerfile` lo declara como `ARG` y Railway redespliega al cambiar la variable.
+- Apagado: sin enlace "Precios" en header, menú móvil y footer; `/[locale]/pricing` da 404 y sale del sitemap; `/api/billing/subscribe`, `/cancel` y `/mock-checkout` dan 404; el webhook de Mercado Pago sigue verificando la firma pero no cambia nada (responde 200); `planForUser` devuelve siempre "free" (todos ven anuncios y tienen los límites gratuitos, aunque tengan una suscripción guardada); Mi cuenta sin la sección del plan; sin las líneas "Con Pro…" de los límites de las herramientas; respuestas de FAQ y subtítulo del login sin Pro (claves nuevas `…NoPro` en los 5 idiomas, para la portada y 13 herramientas de audio, video y EPUB).
+- Encendido: todo como antes. El código de pagos y sus tests siguen; los tests unitarios de pagos y webhook corren con `PRO_ENABLED=true` y el segundo servidor de Playwright (el de `billing-states`) también.
+- Tests nuevos: `tests/e2e/pro-switch.spec.ts` (portada en 5 idiomas, herramientas y login sin enlaces a precios ni "Pro"; menú móvil; `/pricing` 404 en 5 idiomas; APIs de facturación 404; sitemap; Mi cuenta de un usuario con suscripción activa en MongoDB: sin sección de plan y plan "free"), unitarios en `pro.test.ts`, `seo.test.ts`, `billing.test.ts` y el del webhook. `access-control.spec.ts` prueba las APIs de facturación con Pro encendido.
+- Documentado en `.env.example`, DEPLOY.md y `docs/launch-checklist.md` (`PRO_ENABLED=false`; Mercado Pago solo al activar Pro). Los textos legales todavía mencionan Pro: se reemplazan en 7.3.
+
+**Verificación**: lint, typecheck, tests unitarios y build pasan; Chromium `pro-switch`, `billing-states`, `access-control`, `api-limits`, `login`, `login-real`, `security-headers`, `environments` (40) y `clickable` + `open-states` pasan.
+
+## 2026-10-23 15:45 UTC — Fase 7, tareas 7.3a y 7.3b (textos legales y aceptación expresa)
+
+**Qué se hizo (7.3a)**
+- Términos y condiciones y Política de privacidad reemplazados por el contenido de `docs/legal/*-borrador.md` en los 5 idiomas (es con "tú"), sin notas `[revisar]`/`[decidir]` ni aviso de borrador. Responsable Juan Pablo Aste (Vicente López, Buenos Aires), contacto contact@fileflect.com, horario "lunes a viernes, en horario hábil".
+- Estructura nueva de `Legal.*.sections` (párrafos, listas, tabla de datos de la privacidad, leyenda de la AAIP); `LegalPage.legalSections()` arma lo que se publica según `PRO_ENABLED`: con Pro apagado los términos tienen "Servicio gratuito" (gratis con publicidad, planes pagos con aviso previo) y la privacidad no menciona Mercado Pago ni la cookie de país; con Pro encendido aparecen las secciones de precio/pago/renovación, arrepentimiento, baja y reembolsos y las partes de pagos de la privacidad. La leyenda de la AAIP se muestra con el texto oficial en español también en los otros idiomas.
+- Se dejaron fuera las frases que dependen de decisiones pendientes (reembolso por falla prolongada, plan anual después de 10 días, inscripción fiscal, plazo de los correos). Detalle en `docs/legal/pendientes-legales.md`.
+- "Última actualización": 23/10/2026 (`src/config/legal.ts`).
+- Contacto: muestra contact@fileflect.com (valor por defecto en el código, `.env.example` y la checklist) y el horario.
+
+**Qué se hizo (7.3b)**
+- Texto de aceptación expresa con enlaces junto a los botones del login (Google y email) y junto al de suscribirse (solo con Pro encendido): "Al continuar, aceptas los Términos y condiciones y la Política de privacidad, incluida la transferencia de datos a proveedores fuera de Argentina" (5 idiomas).
+- Al iniciar sesión (evento `signIn` de Auth.js) se guardan `termsVersion` y `termsAcceptedAt` en el usuario; las cuentas existentes los reciben en su próximo inicio de sesión y la fecha solo cambia con una versión nueva.
+- `docs/legal/pendientes-legales.md` actualizado (hecho: aceptación, leyenda AAIP, horario, publicación; pendiente antes de encender Pro: botones de arrepentimiento y de baja).
+
+**Tests**: `src/components/legal/legal-sections.test.ts` (5 idiomas: responsable y contacto, sin notas internas, secciones Pro según el interruptor, leyenda AAIP), `src/lib/terms-acceptance.test.ts`, `tests/e2e/legal.spec.ts` (páginas legales y contacto en 5 idiomas, sin notas internas en el sitio, aceptación en login y checkout, en el CI) y `login-real.spec.ts` ahora abre el enlace del correo y comprueba la versión aceptada guardada.
+- Durante la verificación: el texto de aceptación con `Link` de next-intl hacía fallar a veces la hidratación del login (3 de 180 cargas con carga alta; 0 antes del cambio): ahora se dibuja solo en el servidor con enlaces simples (0 de 180) y la página de precios lo recibe como prop. El test "gives up after 20 seconds" de `login.spec.ts` fallaba a veces con carga alta (también antes de la fase 7) porque el reloj simulado seguía corriendo: ahora se pausa.
+- **B-27** (baja, abierto, anterior a la fase 7, comprobado en 26a938a): con Pro encendido, varias visitas a la vez a `/pricing` hacen que ~1 de cada 20 cargas falle la hidratación (React #418) y la página se redibuje en el navegador. No afecta producción mientras Pro esté apagado; puede hacer fallar alguna vez `billing-states.spec.ts`. Investigar antes de encender Pro.
+
+**Verificación**: lint, typecheck, tests unitarios (1062 + 10 omitidos) y build pasan; Chromium `legal`, `login`, `login-real`, `pro-switch`, `billing-states` (una corrida de tres con un fallo de B-27), `clickable`, `open-states`, `a11y`, `layout-shift`, `security-headers`, `access-control`, `api-limits`, `environments` pasan.
+
+## 2026-10-23 17:30 UTC — Fase 7, tarea 7.4 (verificación final)
+
+**Qué se hizo**
+- Lighthouse 12.8.2 móvil, 3 corridas: portada 94–95, unir PDF 90–95, términos 92–94 (es y en), privacidad 94, contacto 93–96, login 90–94; **CLS 0 y accesibilidad 100 en todas**. Detalle en `docs/perf/2026-10-23-phase7.md` (SEO 92 solo por el `canonical` del entorno local).
+- Detector de clics (`clickable`, 216 páginas × 6 combinaciones) y estados abiertos: 110 pasan.
+- `docs/launch-checklist.md`: variables imprescindibles (`PRO_ENABLED=false`, `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com`) y cuándo ponerlas, Pro apagado en las decisiones previas (precios, botones de arrepentimiento/baja y B-27 antes de encenderlo), textos legales hechos, y verificaciones después de publicar (sin "Precios", `/es/pricing` 404, legales, aceptación en el login y el flujo de email que llega a "Revisa tu correo").
+
+**Pendiente del dueño (fase 7)**
+- En Railway (servicio `app`): `PRO_ENABLED=false` y `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com`; mergear `dev` en `main`.
+- Revisión de un abogado de lo marcado en `docs/legal/pendientes-legales.md`. Antes de encender Pro: inscripción fiscal, botones de arrepentimiento y de baja, y B-27.
+
+## 2026-10-23 — FASE 7 TERMINADA
+- Todas las tareas de la fase 7 están marcadas y el CI está en verde (be7c881). Falta que el dueño ponga `PRO_ENABLED=false` y `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com` en Railway y mergee `dev` en `main`. La rutina programada se puede pausar.

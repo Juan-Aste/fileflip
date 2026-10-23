@@ -3,6 +3,7 @@ import { syncSubscription } from "@/lib/billing";
 import { readJson, TOO_LARGE } from "@/lib/server/body";
 import { mercadoPagoToken, preapprovalOfAuthorizedPayment } from "@/lib/payments/mercadopago";
 import { mercadoPagoWebhookSecrets, verifyMercadoPagoSignature } from "@/lib/payments/mp-signature";
+import { proEnabled } from "@/lib/pro";
 
 export const runtime = "nodejs";
 
@@ -27,7 +28,8 @@ export async function POST(request: Request) {
     secrets: mercadoPagoWebhookSecrets(),
   });
   if (!valid) return new Response("Invalid signature", { status: 401 });
-  if (!dataId) return new Response(null, { status: 200 });
+  // With Pro off nothing changes plans; still answer 200 so Mercado Pago stops retrying.
+  if (!dataId || !proEnabled()) return new Response(null, { status: 200 });
 
   try {
     if (type === "subscription_preapproval") {

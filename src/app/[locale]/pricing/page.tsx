@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BadgeCheck } from "lucide-react";
 import { auth } from "@/auth";
+import TermsConsent from "@/components/legal/TermsConsent";
 import PricingCards from "@/components/pricing/PricingCards";
 import RegionSelector from "@/components/pricing/RegionSelector";
 import FaqList from "@/components/ui/FaqList";
@@ -9,6 +11,7 @@ import PageHero from "@/components/ui/PageHero";
 import type { Locale } from "@/i18n/routing";
 import { alternatesFor } from "@/lib/seo";
 import { planForUser } from "@/lib/billing";
+import { proEnabled } from "@/lib/pro";
 import { providerForRegion } from "@/lib/payments/providers";
 import { currentRegion } from "@/lib/server/region";
 
@@ -19,6 +22,7 @@ type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+  if (!proEnabled()) return {};
   const t = await getTranslations({ locale, namespace: "Pricing" });
   return {
     title: `${t("title")} — Fileflect Pro`,
@@ -40,6 +44,8 @@ const faq = ["1", "2", "3"] as const;
 
 export default async function PricingPage({ params }: Props) {
   const { locale } = await params;
+  // Hidden until the owner can bill (PRO_ENABLED).
+  if (!proEnabled()) notFound();
   setRequestLocale(locale);
   const [t, region, session] = await Promise.all([getTranslations("Pricing"), currentRegion(), auth()]);
   const isPro = (await planForUser(session?.user?.id)) === "pro";
@@ -54,6 +60,7 @@ export default async function PricingPage({ params }: Props) {
         region={region}
         signedIn={Boolean(session?.user)}
         isPro={isPro}
+        consent={<TermsConsent action="subscribe" />}
         paymentsAvailable={paymentsAvailable(region)}
       />
       <section aria-labelledby="faq" className="flex flex-col gap-4">

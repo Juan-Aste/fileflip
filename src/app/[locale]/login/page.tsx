@@ -4,8 +4,10 @@ import { LogIn, ShieldCheck } from "lucide-react";
 import { auth, getAuthProviders, signIn } from "@/auth";
 import EmailSignInForm from "@/components/session/EmailSignInForm";
 import PendingSubmitButton from "@/components/session/PendingSubmitButton";
+import TermsConsent from "@/components/legal/TermsConsent";
 import PageHero from "@/components/ui/PageHero";
 import { redirect } from "@/i18n/navigation";
+import { proEnabled } from "@/lib/pro";
 import { buttonSecondary, card } from "@/components/ui/styles";
 
 // Depends on the visitor's session.
@@ -57,7 +59,7 @@ export default async function LoginPage({ params, searchParams }: Props) {
   return (
     <div className="mx-auto flex max-w-md flex-col gap-8 px-4 py-12 sm:py-16">
       <PageHero icon={<LogIn aria-hidden="true" className="h-7 w-7" />} title={t("title")}>
-        <p className="text-muted">{t("subtitle")}</p>
+        <p className="text-muted">{t(proEnabled() ? "subtitle" : "subtitleNoPro")}</p>
       </PageHero>
 
       <div className={`flex flex-col gap-5 p-6 sm:p-8 ${card}`}>
@@ -85,6 +87,7 @@ export default async function LoginPage({ params, searchParams }: Props) {
           </p>
         )}
         {providers.email && <EmailSignInForm redirectTo={redirectTo} />}
+        {(providers.google || providers.email) && <TermsConsent action="signIn" />}
         {!providers.google && !providers.email && <p className="text-center text-muted">{t("noMethods")}</p>}
       </div>
       <p className="text-center text-sm text-balance text-muted">

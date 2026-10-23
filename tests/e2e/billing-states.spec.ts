@@ -34,6 +34,9 @@ test.describe("checkout button", () => {
       await new Promise((r) => setTimeout(r, 1_500));
       await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ url: `${base}/es/account` }) });
     });
+    // Express acceptance of the terms next to the button (7.3).
+    const consent = page.getByText(/Al suscribirte, aceptas los Términos y condiciones/).first();
+    await expect(consent.getByRole("link", { name: "Términos y condiciones" })).toHaveAttribute("href", "/es/terms");
     await button.dblclick();
     await expect(page.locator("main [aria-busy=true]").first()).toBeVisible();
     await expect(page.getByRole("button", { name: /Redirigiendo|Procesando/ }).first()).toBeVisible();

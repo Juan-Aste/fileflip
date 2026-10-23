@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const syncSubscription = vi.fn();
 vi.mock("@/lib/billing", () => ({ syncSubscription: (id: string) => syncSubscription(id) }));
 vi.stubEnv("MP_WEBHOOK_SECRET", "whsec");
+vi.stubEnv("PRO_ENABLED", "true");
 
 const { POST } = await import("./route");
 
@@ -35,6 +36,18 @@ describe("POST /api/webhooks/mercadopago", () => {
     const res = await POST(notification("123", "payment"));
     expect(res.status).toBe(200);
     expect(syncSubscription).not.toHaveBeenCalled();
+  });
+
+  it("acknowledges but changes nothing while Pro is off", async () => {
+    vi.stubEnv("PRO_ENABLED", "false");
+    const res = await POST(notification("2c938084abc", "subscription_preapproval"));
+    vi.stubEnv("PRO_ENABLED", "true");
+    expect(res.status).toBe(200);
+    expect(syncSubscription).not.toHaveBeenCalled();
+    // Forged ones are still refused.
+    vi.stubEnv("PRO_ENABLED", "false");
+    expect((await POST(notification("2c938084abc", "subscription_preapproval", { secret: "attacker" }))).status).toBe(401);
+    vi.stubEnv("PRO_ENABLED", "true");
   });
 
   it("asks Mercado Pago to retry when syncing fails", async () => {

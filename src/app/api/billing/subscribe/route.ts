@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
 import { apiError } from "@/lib/api-errors";
+import { proDisabledResponse, proEnabled } from "@/lib/pro";
 import { startSubscription } from "@/lib/billing";
 import { readJson, TOO_LARGE } from "@/lib/server/body";
 import { PaymentProviderError } from "@/lib/payments/types";
@@ -13,6 +14,7 @@ export const runtime = "nodejs";
 
 /** Starts a Pro subscription and returns the provider's checkout URL. */
 export async function POST(request: Request) {
+  if (!proEnabled()) return proDisabledResponse();
   const session = await auth();
   if (!session?.user?.id || !session.user.email) return apiError("signInRequired");
 

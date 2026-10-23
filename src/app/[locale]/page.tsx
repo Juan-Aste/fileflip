@@ -24,6 +24,7 @@ import { formats } from "@/config/formats";
 import { availableTools } from "@/config/tools";
 import type { Locale } from "@/i18n/routing";
 import { alternatesFor } from "@/lib/seo";
+import { proEnabled } from "@/lib/pro";
 
 export function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   return params.then(({ locale }) => ({ alternates: alternatesFor(locale as Locale, () => "") }));
@@ -52,6 +53,9 @@ export default function HomePage({
   const t = useTranslations("HomePage");
   const tf = useTranslations("Footer");
   const tc = useTranslations("ConversionPage");
+  // Answers that mention Pro have an aNoPro version for while Pro is off.
+  const pro = proEnabled();
+  const answerKey = (k: string) => (!pro && t.has(`faq.items.${k}.aNoPro`) ? "aNoPro" : "a");
 
   return (
     <div>
@@ -152,7 +156,7 @@ export default function HomePage({
           </h2>
           <FaqList
             locale={locale}
-            items={faqKeys.map((k) => ({ q: t(`faq.items.${k}.q`), a: t(`faq.items.${k}.a`) }))}
+            items={faqKeys.map((k) => ({ q: t(`faq.items.${k}.q`), a: t(`faq.items.${k}.${answerKey(k)}`) }))}
           />
         </section>
       </div>

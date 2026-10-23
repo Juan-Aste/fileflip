@@ -40,14 +40,13 @@ test("admin pages and APIs are a 404 for signed-in users who aren't admins, and 
 });
 
 test("billing APIs need a session", async ({ request }) => {
-  for (const base of ["", admin]) {
-    const subscribe = await request.post(`${base}/api/billing/subscribe`, { data: { period: "monthly", locale: "es" } });
-    expect(subscribe.status()).toBe(401);
-    expect(await subscribe.json()).toEqual({ error: "signInRequired" });
-    const cancel = await request.post(`${base}/api/billing/cancel`);
-    expect(cancel.status()).toBe(401);
-    expect(await cancel.json()).toEqual({ error: "signInRequired" });
-  }
+  // Pro is on in the second server; with Pro off they don't exist (pro-switch.spec.ts).
+  const subscribe = await request.post(`${admin}/api/billing/subscribe`, { data: { period: "monthly", locale: "es" } });
+  expect(subscribe.status()).toBe(401);
+  expect(await subscribe.json()).toEqual({ error: "signInRequired" });
+  const cancel = await request.post(`${admin}/api/billing/cancel`);
+  expect(cancel.status()).toBe(401);
+  expect(await cancel.json()).toEqual({ error: "signInRequired" });
 });
 
 test("the simulated checkout doesn't exist in production without PAYMENTS_MOCK", async ({ request }) => {

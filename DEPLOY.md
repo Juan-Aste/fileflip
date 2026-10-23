@@ -60,6 +60,7 @@ Todas están documentadas en `.env.example`. Las `NEXT_PUBLIC_*` se incrustan en
 | `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | no | login con Google (ver §5) |
 | `RESEND_API_KEY`, `EMAIL_FROM` | no* | magic links por la API HTTP de Resend (`re_…`); `EMAIL_FROM` con una dirección de un dominio verificado en Resend. *Sin `RESEND_API_KEY` ni `EMAIL_SERVER` no hay login por email. |
 | `EMAIL_SERVER` | no | alternativa SMTP (`smtp://usuario:clave@host:587`). **No funciona en Railway salvo en el plan Pro** (bloquea el SMTP saliente); si está `RESEND_API_KEY`, se usa Resend. |
+| `PRO_ENABLED` | no | `false` (por defecto): el plan Pro no existe para los visitantes (sin precios, sin botones de suscripción, `/api/billing/*` da 404, el webhook de Mercado Pago no cambia nada) y todos ven anuncios. `true` lo activa tal como estaba. Se lee también al construir: al cambiarla, redesplegar (Railway lo hace solo) |
 | `MP_ACCESS_TOKEN` / `MP_ACCESS_TOKEN_AR`… | no | Mercado Pago (un token por país donde se cobra) |
 | `MP_WEBHOOK_SECRET` / `MP_WEBHOOK_SECRET_AR`… | con MP | secreto del webhook de cada cuenta |
 | `INTL_PAYMENT_PROVIDER` | no | `none` hasta elegir proveedor internacional |

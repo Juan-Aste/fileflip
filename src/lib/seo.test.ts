@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { alternatesFor, configuredSiteUrl, sitemapEntries, softwareApplicationJsonLd } from "./seo";
 
 describe("alternatesFor", () => {
@@ -39,6 +39,21 @@ describe("sitemapEntries", () => {
 
   it("leaves out private pages", () => {
     expect(entries.some((e) => /\/(account|login)/.test(e.url))).toBe(false);
+  });
+
+  describe("pricing page", () => {
+    afterEach(() => vi.unstubAllEnvs());
+    const hasPricing = () => sitemapEntries("https://fileflip.app").some((e) => e.url.endsWith("/pricing"));
+
+    it("is left out while Pro is off", () => {
+      vi.stubEnv("PRO_ENABLED", "");
+      expect(hasPricing()).toBe(false);
+    });
+
+    it("is listed with PRO_ENABLED=true", () => {
+      vi.stubEnv("PRO_ENABLED", "true");
+      expect(hasPricing()).toBe(true);
+    });
   });
 });
 

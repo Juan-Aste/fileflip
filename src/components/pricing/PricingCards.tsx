@@ -17,6 +17,8 @@ interface Props {
   signedIn: boolean;
   isPro: boolean;
   paymentsAvailable: boolean;
+  /** Express acceptance of the terms, rendered on the server (<TermsConsent action="subscribe" />). */
+  consent: React.ReactNode;
 }
 
 function Feature({ children }: { children: React.ReactNode }) {
@@ -30,7 +32,7 @@ function Feature({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function PricingCards({ region, signedIn, isPro, paymentsAvailable }: Props) {
+export default function PricingCards({ region, signedIn, isPro, paymentsAvailable, consent }: Props) {
   const t = useTranslations("Pricing");
   const locale = useLocale() as Locale;
   const [period, setPeriod] = useState<BillingPeriod>("yearly");
@@ -95,6 +97,7 @@ export default function PricingCards({ region, signedIn, isPro, paymentsAvailabl
           ) : paymentsAvailable ? (
             <>
               <SubscribeButton period={period} signedIn={signedIn} />
+              {consent}
               {price.provider === "mercadopago" && (
                 <p className="text-center text-xs text-muted">{t("billedVia", { provider: "Mercado Pago" })}</p>
               )}

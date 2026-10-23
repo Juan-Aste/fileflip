@@ -95,7 +95,8 @@
       "items": {
         "free": {
           "q": "Fileflect est-il gratuit ?",
-          "a": "Oui. Vous pouvez convertir sans payer, sans compte et sans filigrane. L'offre Pro est facultative : elle supprime les publicités et augmente les limites."
+          "a": "Oui. Vous pouvez convertir sans payer, sans compte et sans filigrane. L'offre Pro est facultative : elle supprime les publicités et augmente les limites.",
+          "aNoPro": "Oui. Vous pouvez convertir sans payer, sans compte et sans filigrane."
         },
         "upload": {
           "q": "Mes fichiers sont-ils envoyés sur un serveur ?",
@@ -1250,7 +1251,8 @@
         "q3": "Qu'est-ce qui est envoyé au serveur ?",
         "a3": "Le livre est lu dans votre navigateur et transformé en une seule page HTML sans scripts ; seule cette page est envoyée pour être imprimée en PDF. Sur le serveur, elle est nettoyée à nouveau, ne peut rien charger depuis internet et n'est pas conservée : elle est supprimée à la fin.",
         "q4": "Y a-t-il une limite de taille ?",
-        "a4": "La page assemblée (avec ses images) peut peser jusqu'à 15 Mo avec l'offre gratuite et 50 Mo avec Pro. Si votre livre contient beaucoup d'images et dépasse la limite, décochez « Inclure les images du livre »."
+        "a4": "La page assemblée (avec ses images) peut peser jusqu'à 15 Mo avec l'offre gratuite et 50 Mo avec Pro. Si votre livre contient beaucoup d'images et dépasse la limite, décochez « Inclure les images du livre ».",
+        "a4NoPro": "La page assemblée (avec ses images) peut peser jusqu'à 15 Mo. Si votre livre contient beaucoup d'images et dépasse la limite, décochez « Inclure les images du livre »."
       }
     },
     "create-epub": {
@@ -1283,6 +1285,7 @@
         "a3": "L'audio AAC (M4A) est décodé par le codec du navigateur. Chrome, Edge et Safari le lisent ; certains navigateurs sans codecs propriétaires non. Dans ce cas, un avertissement s'affiche : essayez un autre navigateur.",
         "q4": "Y a-t-il une limite ?",
         "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 3 heures de durée, car le résultat est construit dans la mémoire de votre navigateur. Seule la piste audio principale est conservée ; si le fichier est une vidéo, l'image est ignorée.",
+        "a4NoPro": "Jusqu'à 200 Mo par fichier et 3 heures de durée, car le résultat est construit dans la mémoire de votre navigateur. Seule la piste audio principale est conservée ; si le fichier est une vidéo, l'image est ignorée.",
         "q5": "Qu'est-ce que l'AIFF et quand l'utiliser ?",
         "a5": "L'AIFF est le format sans perte d'Apple, l'équivalent du WAV sur Mac, dans Logic ou GarageBand. Les AIFF et AIFF-C non compressés (8, 16, 24 et 32 bits) sont lus et l'AIFF est écrit en 16 bits ; les AIFF-C compressés (μ-law, par exemple) ne sont pas pris en charge."
       }
@@ -1300,7 +1303,8 @@
         "q3": "Y a-t-il une perte de qualité ?",
         "a3": "En WAV, FLAC ou AIFF, non : l'extrait est enregistré sans perte (en 16 bits). En MP3, M4A ou OGG il est recompressé à la qualité choisie ; 192 kbps est pratiquement indiscernable de l'original.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Un fichier à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 3 heures de durée. Il lit les mêmes formats que « Convertir un audio » ; le M4A/AAC dépend de la présence de ce décodeur dans votre navigateur."
+        "a4": "Un fichier à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 3 heures de durée. Il lit les mêmes formats que « Convertir un audio » ; le M4A/AAC dépend de la présence de ce décodeur dans votre navigateur.",
+        "a4NoPro": "Un fichier à la fois, jusqu'à 200 Mo et 3 heures de durée. Il lit les mêmes formats que « Convertir un audio » ; le M4A/AAC dépend de la présence de ce décodeur dans votre navigateur."
       }
     },
     "adjust-audio": {
@@ -1316,7 +1320,8 @@
         "q3": "Quel débit me faut-il ?",
         "a3": "Pour la voix, 64 à 96 kbps en mono ; pour la musique, 192 kbps ou plus. Un débit plus élevé sonne mieux et donne un fichier plus lourd. WAV, FLAC et AIFF n'ont pas de débit car ils sont sans perte.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Il lit les mêmes formats que « Convertir un audio »."
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Il lit les mêmes formats que « Convertir un audio ».",
+        "a4NoPro": "Jusqu'à 200 Mo par fichier, 3 heures par fichier et plusieurs fichiers par lot. Il lit les mêmes formats que « Convertir un audio »."
       }
     },
     "normalize-audio": {
@@ -1332,7 +1337,8 @@
         "q3": "Pourquoi mon audio a-t-il à peine changé ?",
         "a3": "Si sa crête est déjà proche de −1 dB ou son niveau moyen proche de −16 dB, le gain nécessaire est faible. Le gain appliqué s'affiche à côté de chaque résultat. Pour ne pas amplifier le bruit, la hausse maximale est de +30 dB.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Chaque fichier est lu deux fois (mesure, puis application) : c'est un peu plus long qu'une conversion."
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Chaque fichier est lu deux fois (mesure, puis application) : c'est un peu plus long qu'une conversion.",
+        "a4NoPro": "Jusqu'à 200 Mo par fichier, 3 heures par fichier et plusieurs fichiers par lot. Chaque fichier est lu deux fois (mesure, puis application) : c'est un peu plus long qu'une conversion."
       }
     },
     "join-audio": {
@@ -1348,7 +1354,8 @@
         "q3": "Y a-t-il une coupure entre les pistes ?",
         "a3": "Aucune pause n'est ajoutée, sauf si vous choisissez un silence entre les pistes (0,5, 1 ou 2 secondes). Les pistes s'enchaînent échantillon par échantillon ; si une chanson se termine brusquement, le changement s'entendra comme dans l'original.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 3 heures au total, car le résultat est construit dans la mémoire du navigateur. Si un fichier est endommagé, il est indiqué."
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 3 heures au total, car le résultat est construit dans la mémoire du navigateur. Si un fichier est endommagé, il est indiqué.",
+        "a4NoPro": "Jusqu'à 200 Mo par fichier et 3 heures au total, car le résultat est construit dans la mémoire du navigateur. Si un fichier est endommagé, il est indiqué."
       }
     },
     "video-converter": {
@@ -1364,7 +1371,8 @@
         "q3": "Pourquoi mon MP4 est-il en VP9 ou AV1 ?",
         "a3": "Certains navigateurs (comme Chromium ou Firefox sous Linux) n'ont pas d'encodeur H.264. Le MP4 est alors créé en VP9 ou AV1, lus par Chrome, Edge, Firefox et Android, mais peut-être pas sur iPhone. Pour du H.264, utilisez Chrome, Edge ou Safari ; un avis s'affiche quand il manque.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée, car la vidéo est assemblée dans la mémoire du navigateur. Les pistes vidéo et audio principales sont conservées ; les sous-titres intégrés ne sont pas copiés. AVI, WMV et FLV ne sont pas encore lus."
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée, car la vidéo est assemblée dans la mémoire du navigateur. Les pistes vidéo et audio principales sont conservées ; les sous-titres intégrés ne sont pas copiés. AVI, WMV et FLV ne sont pas encore lus.",
+        "a4NoPro": "Jusqu'à 200 Mo par fichier et 2 heures de durée, car la vidéo est assemblée dans la mémoire du navigateur. Les pistes vidéo et audio principales sont conservées ; les sous-titres intégrés ne sont pas copiés. AVI, WMV et FLV ne sont pas encore lus."
       }
     },
     "extract-audio": {
@@ -1380,7 +1388,8 @@
         "q3": "Puis-je extraire l'audio d'une vidéo YouTube ?",
         "a3": "Uniquement à partir de fichiers déjà présents sur votre appareil et que vous avez le droit d'utiliser. Cet outil ne télécharge pas de vidéos depuis internet.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro) et 3 heures d'audio. La piste audio principale est extraite. Convertir l'audio AAC d'un MP4 vers un autre format exige un navigateur qui lit l'AAC (Chrome, Edge ou Safari) ; « Original » fonctionne partout."
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro) et 3 heures d'audio. La piste audio principale est extraite. Convertir l'audio AAC d'un MP4 vers un autre format exige un navigateur qui lit l'AAC (Chrome, Edge ou Safari) ; « Original » fonctionne partout.",
+        "a4NoPro": "Jusqu'à 200 Mo par vidéo et 3 heures d'audio. La piste audio principale est extraite. Convertir l'audio AAC d'un MP4 vers un autre format exige un navigateur qui lit l'AAC (Chrome, Edge ou Safari) ; « Original » fonctionne partout."
       }
     },
     "compress-video": {
@@ -1396,7 +1405,8 @@
         "q3": "Combien de temps cela prend-il ?",
         "a3": "Chaque image est décodée puis réencodée avec le codec de votre navigateur : sur un ordinateur, c'est souvent plus rapide que la durée de la vidéo ; sur un ancien téléphone, cela peut être plus long. Vous pouvez annuler à tout moment.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. L'image n'est jamais agrandie. Le MP4 est créé en H.264 quand le navigateur le permet (Chrome, Edge, Safari) ; sinon en VP9 ou AV1."
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. L'image n'est jamais agrandie. Le MP4 est créé en H.264 quand le navigateur le permet (Chrome, Edge, Safari) ; sinon en VP9 ou AV1.",
+        "a4NoPro": "Jusqu'à 200 Mo par vidéo, 2 heures de durée et 30 minutes de traitement par fichier. L'image n'est jamais agrandie. Le MP4 est créé en H.264 quand le navigateur le permet (Chrome, Edge, Safari) ; sinon en VP9 ou AV1."
       }
     },
     "trim-video": {
@@ -1412,7 +1422,8 @@
         "q3": "Puis-je supprimer une partie au milieu ?",
         "a3": "Pour l'instant, un seul extrait est conservé à la fois. Pour retirer un passage au milieu, coupez les deux parties et assemblez-les avec « Fusionner des vidéos ».",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée. Si votre navigateur ne lit pas le fichier (par exemple MKV ou H.264 dans certains), vous pouvez quand même saisir les temps."
+        "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée. Si votre navigateur ne lit pas le fichier (par exemple MKV ou H.264 dans certains), vous pouvez quand même saisir les temps.",
+        "a4NoPro": "Une vidéo à la fois, jusqu'à 200 Mo et 2 heures de durée. Si votre navigateur ne lit pas le fichier (par exemple MKV ou H.264 dans certains), vous pouvez quand même saisir les temps."
       }
     },
     "video-to-gif": {
@@ -1428,7 +1439,8 @@
         "q3": "Y a-t-il du son ?",
         "a3": "Non : le format GIF ne gère pas le son. Si vous avez besoin de l'audio, utilisez « Couper une vidéo » et partagez la vidéo.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro). Le navigateur doit pouvoir décoder la vidéo (certains navigateurs sans codecs propriétaires ne décodent pas le H.264). L'image n'est jamais agrandie."
+        "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro). Le navigateur doit pouvoir décoder la vidéo (certains navigateurs sans codecs propriétaires ne décodent pas le H.264). L'image n'est jamais agrandie.",
+        "a4NoPro": "Une vidéo à la fois, jusqu'à 200 Mo. Le navigateur doit pouvoir décoder la vidéo (certains navigateurs sans codecs propriétaires ne décodent pas le H.264). L'image n'est jamais agrandie."
       }
     },
     "video-speed": {
@@ -1444,7 +1456,8 @@
         "q3": "Perd-on en qualité ?",
         "a3": "La vidéo est réencodée en haute qualité, dans le même format que l'original (MP4, MOV, MKV ou WebM). La résolution ne change pas.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. Votre navigateur doit pouvoir décoder la vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. Votre navigateur doit pouvoir décoder la vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires).",
+        "a4NoPro": "Jusqu'à 200 Mo par vidéo, 2 heures de durée et 30 minutes de traitement par fichier. Votre navigateur doit pouvoir décoder la vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
       }
     },
     "join-videos": {
@@ -1460,7 +1473,8 @@
         "q3": "Perd-on en qualité ?",
         "a3": "Toute la vidéo est réencodée en haute qualité pour que les parties s'enchaînent. Les séquences plus grandes que la première sont réduites à sa taille.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures au total et 30 minutes de traitement. Le résultat est construit dans la mémoire de l'appareil : sur téléphone, mieux vaut fusionner des vidéos courtes. Votre navigateur doit pouvoir décoder chaque vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures au total et 30 minutes de traitement. Le résultat est construit dans la mémoire de l'appareil : sur téléphone, mieux vaut fusionner des vidéos courtes. Votre navigateur doit pouvoir décoder chaque vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires).",
+        "a4NoPro": "Jusqu'à 200 Mo par vidéo, 2 heures au total et 30 minutes de traitement. Le résultat est construit dans la mémoire de l'appareil : sur téléphone, mieux vaut fusionner des vidéos courtes. Votre navigateur doit pouvoir décoder chaque vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
       }
     },
     "model-converter": {
@@ -1649,6 +1663,7 @@
   "Login": {
     "title": "Connexion",
     "subtitle": "Pas besoin de compte pour convertir. Connectez-vous pour gérer votre offre Pro.",
+    "subtitleNoPro": "Pas besoin de compte pour convertir.",
     "google": "Continuer avec Google",
     "or": "ou",
     "emailLabel": "Votre e-mail",
@@ -1666,6 +1681,10 @@
     "sendTimeout": "L’envoi prend trop de temps. Vérifiez votre connexion et réessayez.",
     "networkError": "Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.",
     "rateLimited": "Vous avez demandé trop de liens d’affilée. Vérifiez votre boîte mail (et les spams) ou patientez quelques minutes avant d’en demander un autre."
+  },
+  "Consent": {
+    "signIn": "En continuant, vous acceptez les <terms>Conditions générales</terms> et la <privacy>Politique de confidentialité</privacy>, y compris le transfert de données vers des prestataires situés hors d'Argentine.",
+    "subscribe": "En vous abonnant, vous acceptez les <terms>Conditions générales</terms> et la <privacy>Politique de confidentialité</privacy>, y compris le transfert de données vers des prestataires situés hors d'Argentine."
   },
   "Account": {
     "title": "Mon compte",
@@ -1756,61 +1775,307 @@
     "updated": "Dernière mise à jour : {date}",
     "privacy": {
       "title": "Politique de confidentialité",
-      "intro": "Chez Fileflect, la confidentialité est au cœur du produit. Cette page explique quelles données nous traitons, pourquoi et combien de temps.",
+      "intro": "Cette politique explique quelles données Fileflect traite, dans quel but, avec qui nous les partageons et combien de temps nous les conservons.",
+      "columns": {
+        "data": "Donnée",
+        "purpose": "Finalité",
+        "basis": "Base légale",
+        "retention": "Durée"
+      },
       "sections": [
         {
-          "heading": "Fichiers traités sur votre appareil",
-          "body": "Les images et PDF que vous convertissez, compressez, fusionnez, divisez ou réorganisez sont traités dans votre navigateur. Ces fichiers ne sont jamais envoyés à nos serveurs et nous n'y avons pas accès."
+          "heading": "Responsable du traitement",
+          "body": [
+            "Le responsable du traitement de vos données est Juan Pablo Aste, domicilié à Vicente López, province de Buenos Aires, Argentine. Contact : contact@fileflect.com."
+          ]
         },
         {
-          "heading": "Fichiers traités sur notre serveur",
-          "body": "Les documents bureautiques (Word, Excel, PowerPoint, OpenDocument, RTF, TXT), le PDF vers Word et, seulement si votre navigateur ne peut pas le faire, certaines images sont traités sur notre serveur via une connexion chiffrée. Ils sont traités en mémoire ou en stockage temporaire et supprimés en 1 heure au maximum. Nous ne les regardons pas, ne les partageons pas et ne les utilisons pour rien d'autre."
+          "heading": "L'essentiel en bref",
+          "body": [],
+          "items": [
+            "La plupart de vos fichiers ne quittent jamais votre appareil : ils sont traités dans votre navigateur.",
+            "Les fichiers traités sur notre serveur sont supprimés en 1 heure au maximum. Nous ne les regardons pas et ne les conservons pas.",
+            "Nous ne vendons pas vos données.",
+            "Nous ne conservons jamais le nom ni le contenu de vos fichiers."
+          ]
         },
         {
-          "heading": "Données conservées",
-          "body": "Pour chaque conversion, nous ne conservons que des métadonnées : format d'entrée et de sortie, taille, date, traitement dans le navigateur ou sur le serveur et, si vous êtes connecté, votre utilisateur. Jamais le nom ni le contenu du fichier. Si vous créez un compte, nous conservons votre e-mail (et votre nom et photo si vous vous connectez avec Google) ainsi que l'état de votre abonnement."
+          "heading": "Quelles données nous traitons, pourquoi et combien de temps",
+          "body": [],
+          "rows": [
+            {
+              "data": "Fichiers traités dans le navigateur",
+              "purpose": "Effectuer la conversion",
+              "basis": "—",
+              "retention": "Nous ne les recevons pas"
+            },
+            {
+              "data": "Fichiers traités sur notre serveur (documents bureautiques, PDF vers Word, HTML vers PDF, PDF/A et, seulement si votre navigateur ne peut pas le faire, certaines images)",
+              "purpose": "Effectuer la conversion",
+              "basis": "Votre demande",
+              "retention": "1 heure au maximum"
+            },
+            {
+              "data": "Données d'utilisation : outil utilisé, format d'entrée et de sortie, taille, durée, erreur éventuelle, traitement dans le navigateur ou sur le serveur, langue, type de page visitée et pays approximatif (si notre prestataire l'indique). Si vous êtes connecté, la conversion est associée à votre compte ; sinon, elle est anonyme",
+              "purpose": "Statistiques pour améliorer le service et appliquer les limites d'utilisation",
+              "basis": "Intérêt légitime",
+              "retention": "12 mois ; elles sont ensuite supprimées automatiquement"
+            },
+            {
+              "data": "Compte : adresse e-mail ; si vous vous connectez avec Google, également votre nom et votre photo de profil",
+              "purpose": "Vous donner accès et communiquer avec vous au sujet de votre compte",
+              "basis": "Exécution du contrat",
+              "retention": "Tant que vous avez un compte"
+            },
+            {
+              "data": "Adresse IP",
+              "purpose": "Prévenir les abus (limite de conversions par minute)",
+              "basis": "Intérêt légitime",
+              "retention": "Uniquement en mémoire, quelques minutes ; nous ne l'enregistrons pas dans la base de données"
+            }
+          ],
+          "proRows": [
+            {
+              "data": "Abonnement : identifiant et état de l'abonnement Mercado Pago, offre, pays et devise, dates de la période",
+              "purpose": "Gérer l'offre Pro",
+              "basis": "Exécution du contrat et obligations légales",
+              "retention": "Pendant toute sa durée, puis pendant le délai imposé par la législation fiscale"
+            }
+          ],
+          "after": [
+            "Si vous nous écrivez par e-mail, nous utilisons votre adresse et votre message uniquement pour vous répondre.",
+            "Nous n'utilisons pas vos données pour prendre des décisions automatisées qui vous concernent, ni pour entraîner des modèles d'intelligence artificielle."
+          ]
         },
         {
-          "heading": "Paiements",
-          "body": "Les paiements Pro sont traités par Mercado Pago (ou un autre prestataire dans certains pays). Nous ne recevons ni ne conservons vos données de carte ; seulement l'identifiant et l'état de l'abonnement."
+          "heading": "Avec qui nous partageons des données (prestataires)",
+          "body": [
+            "Uniquement avec les prestataires dont nous avons besoin pour fournir le service, et uniquement ce qui est nécessaire :"
+          ],
+          "items": [
+            "Railway (États-Unis) : serveurs et base de données qui font fonctionner le site.",
+            "Resend (États-Unis) : envoie l'e-mail contenant votre lien de connexion.",
+            "Google (États-Unis) : connexion avec Google, si vous la choisissez ; et Google AdSense, qui affiche des annonces (voir la section 6)."
+          ],
+          "proItems": [
+            "Mercado Pago (Argentine et région) : traite les paiements de l'offre Pro. Il reçoit directement vos données de paiement, pas nous."
+          ],
+          "after": [
+            "Nous pouvons communiquer des données si une loi ou une autorité compétente l'exige."
+          ],
+          "free": [
+            "Actuellement, Fileflect ne facture rien et ne traite aucun paiement. Si nous ajoutons des paiements à l'avenir, nous vous en informerons à l'avance et ajouterons le prestataire de paiement à cette liste."
+          ]
+        },
+        {
+          "heading": "Transferts internationaux",
+          "body": [
+            "Certains prestataires traitent des données hors d'Argentine, principalement aux États-Unis. Nous choisissons des prestataires offrant des mesures de sécurité appropriées.",
+            "En créant un compte, vous acceptez expressément ces transferts."
+          ]
         },
         {
           "heading": "Cookies et stockage local",
-          "body": "Nous utilisons des cookies nécessaires pour mémoriser votre langue, votre pays pour les prix et votre session, et le stockage local pour le thème clair ou sombre. Les utilisateurs de l'offre gratuite voient des annonces Google AdSense, qui peut utiliser ses propres cookies ; vous pouvez les gérer dans les paramètres d'annonces de Google."
+          "body": [
+            "Nécessaires (ils ne requièrent pas votre autorisation) :"
+          ],
+          "items": [
+            "NEXT_LOCALE : mémorise votre langue (1 an).",
+            "Cookies de session Auth.js : vous maintiennent connecté.",
+            "Stockage local du navigateur : mémorise le thème clair ou sombre."
+          ],
+          "proItems": [
+            "Cookie de pays : mémorise le pays choisi pour les prix (1 an)."
+          ],
+          "after": [
+            "Publicité : Google AdSense peut utiliser ses propres cookies pour afficher, mesurer et personnaliser les annonces. Si vous vous trouvez dans l'Espace économique européen, au Royaume-Uni, en Suisse ou dans certaines régions des États-Unis ou du Brésil, nous vous demanderons d'abord votre consentement. Vous pouvez gérer la personnalisation sur https://adssettings.google.com.",
+            "Nous n'utilisons ni Google Analytics ni pixels de réseaux sociaux."
+          ],
+          "pro": [
+            "Les annonces et leurs cookies ne sont utilisés que dans l'offre gratuite ; ils ne sont pas affichés dans l'offre Pro."
+          ]
+        },
+        {
+          "heading": "Sécurité",
+          "body": [
+            "Nous utilisons des connexions chiffrées (HTTPS), traitons la plupart des fichiers sur votre appareil, supprimons les fichiers du serveur en 1 heure au maximum et limitons l'accès aux données. Aucun système n'est sûr à 100 % ; si un incident touchant vos données se produisait, nous vous en informerions."
+          ]
         },
         {
           "heading": "Vos droits",
-          "body": "Vous pouvez demander l'accès, la rectification ou la suppression de vos données et de votre compte via la page de contact, conformément au RGPD. Résilier l'abonnement ne supprime pas le compte ; si vous souhaitez le supprimer, demandez-le-nous."
+          "body": [
+            "Vous pouvez demander l'accès, la rectification, la mise à jour et la suppression de vos données, ainsi que la suppression de votre compte, en écrivant à contact@fileflect.com depuis l'adresse e-mail de votre compte. Nous répondons aux demandes d'accès sous 10 jours calendaires et aux demandes de rectification ou de suppression sous 5 jours ouvrables (art. 14 et 16 de la loi argentine 25.326).",
+            "Si vous utilisez Fileflect depuis l'Union européenne ou le Brésil, vous disposez également des droits que vous confèrent le RGPD ou la LGPD (par exemple, opposition et portabilité), et vous pouvez introduire une réclamation auprès de votre autorité locale."
+          ],
+          "legend": {
+            "label": "Mention obligatoire (Argentine)",
+            "text": "Le titulaire des données personnelles a la faculté d'exercer gratuitement son droit d'accès à celles-ci à des intervalles d'au moins six mois, sauf s'il justifie d'un intérêt légitime à cet effet, conformément à l'article 14, alinéa 3, de la loi nº 25.326. L'AGENCE D'ACCÈS À L'INFORMATION PUBLIQUE (Agencia de Acceso a la Información Pública), en sa qualité d'organe de contrôle de la loi nº 25.326, est chargée de traiter les plaintes et réclamations déposées par les personnes dont les droits sont affectés par le non-respect des règles en vigueur en matière de protection des données personnelles.",
+            "originalLabel": "Texte original en espagnol :"
+          }
+        },
+        {
+          "heading": "Mineurs",
+          "body": [
+            "Fileflect ne s'adresse pas aux enfants de moins de 13 ans et nous ne collectons pas sciemment leurs données. Les conditions d'âge pour créer un compte figurent dans les Conditions générales."
+          ]
+        },
+        {
+          "heading": "Modifications",
+          "body": [
+            "Si nous modifions cette politique de manière importante, nous l'annoncerons sur le site et, si vous avez un compte, par e-mail."
+          ]
         }
       ]
     },
     "terms": {
-      "title": "Conditions d'utilisation",
-      "intro": "En utilisant Fileflect, vous acceptez ces conditions. Elles se veulent claires ; si quelque chose ne l'est pas, écrivez-nous.",
+      "title": "Conditions générales",
+      "intro": "Ces conditions régissent l'utilisation de Fileflect. Elles se veulent claires ; si quelque chose ne l'est pas, écrivez-nous à contact@fileflect.com.",
       "sections": [
         {
-          "heading": "Le service",
-          "body": "Fileflect convertit, compresse et organise des fichiers. Les fonctions de base sont gratuites et sans compte. L'offre Pro augmente les limites et retire la publicité."
+          "heading": "Qui sommes-nous",
+          "body": [
+            "Fileflect (https://fileflect.com) est un service proposé par Juan Pablo Aste, personne physique domiciliée à Vicente López, province de Buenos Aires, République argentine (ci-après « Fileflect » ou « nous »).",
+            "Contact pour les questions, réclamations et demandes concernant vos données : contact@fileflect.com.",
+            "Nous répondons du lundi au vendredi, aux heures ouvrables."
+          ]
         },
         {
-          "heading": "Vos fichiers",
-          "body": "Vos fichiers restent les vôtres. Ne traitez que des fichiers que vous avez le droit d'utiliser. Nous ne revendiquons aucun droit sur eux."
+          "heading": "Acceptation",
+          "body": [
+            "En utilisant Fileflect, vous acceptez ces conditions et la Politique de confidentialité. Si vous n'êtes pas d'accord, n'utilisez pas le service.",
+            "Lorsque vous créez un compte (avec Google ou votre e-mail), nous vous demandons d'accepter expressément ces conditions et la Politique de confidentialité, et nous conservons la date et la version acceptées."
+          ]
+        },
+        {
+          "heading": "Le service",
+          "body": [
+            "Fileflect permet de convertir, compresser, modifier et organiser des fichiers (images, PDF, documents, audio, vidéo, données et autres formats). Les outils sont gratuits, ne nécessitent pas de compte et affichent de la publicité.",
+            "La plupart des outils fonctionnent dans votre navigateur : le fichier ne quitte pas votre appareil. Certains (par exemple, les documents bureautiques) sont traités sur notre serveur, et le fichier est supprimé en 1 heure au maximum. Chaque outil indique où le traitement a lieu.",
+            "Nous pouvons ajouter, modifier ou retirer des outils et des formats."
+          ],
+          "pro": [
+            "L'offre Pro augmente les limites et retire la publicité. Si une fonction payante cesse d'être disponible de manière significative, nous vous en informerons et vous pourrez résilier avec un remboursement proportionnel de la période non utilisée."
+          ]
+        },
+        {
+          "heading": "Âge",
+          "body": [
+            "Pour créer un compte, vous devez avoir plus de 18 ans ou disposer de l'autorisation de vos parents ou tuteurs."
+          ],
+          "pro": [
+            "Il en va de même pour souscrire à l'offre Pro."
+          ]
+        },
+        {
+          "heading": "Vos fichiers et votre contenu",
+          "body": [],
+          "items": [
+            "Vos fichiers vous appartiennent. Nous ne revendiquons aucun droit sur eux et ne les utilisons à aucune autre fin que leur traitement à votre demande.",
+            "Vous ne pouvez traiter que des fichiers que vous avez le droit d'utiliser. Vous êtes responsable du contenu que vous traitez.",
+            "Conservez toujours vos originaux : nous ne gardons aucune copie de vos fichiers."
+          ]
         },
         {
           "heading": "Utilisation acceptable",
-          "body": "N'utilisez pas Fileflect pour des activités illégales, pour diffuser des logiciels malveillants ni pour surcharger le service (par exemple par des envois automatisés massifs). Nous pouvons limiter l'usage pour protéger le service."
+          "body": [
+            "Vous ne pouvez pas utiliser Fileflect pour :"
+          ],
+          "items": [
+            "des activités illégales ou qui portent atteinte aux droits de tiers (propriété intellectuelle, vie privée, etc.) ;",
+            "traiter des contenus d'abus sexuels sur mineurs ou tout autre contenu illégal ;",
+            "diffuser des logiciels malveillants ou tenter de compromettre le service ;",
+            "automatiser des envois massifs, extraire des données du site ou le surcharger."
+          ],
+          "after": [
+            "Nous pouvons limiter, suspendre ou fermer l'accès de quiconque enfreint ces règles, et coopérer avec les autorités lorsque la loi l'exige."
+          ]
         },
         {
-          "heading": "Abonnement Pro",
-          "body": "Pro est facturé d'avance, au mois ou à l'année, en devise locale lorsque c'est possible. Vous pouvez résilier à tout moment depuis Mon compte : il ne sera pas renouvelé et vous gardez Pro jusqu'à la fin de la période payée."
+          "heading": "Compte",
+          "body": [
+            "Vous pouvez vous connecter avec Google ou avec un lien envoyé par e-mail. Vous êtes responsable de l'accès à votre messagerie et à votre compte Google. Vous pouvez demander la suppression de votre compte à tout moment en écrivant à contact@fileflect.com."
+          ]
         },
         {
-          "heading": "Absence de garantie",
-          "body": "Nous faisons de notre mieux pour que les conversions soient exactes, mais le service est fourni « en l'état ». Certains formats complexes peuvent ne pas être convertis parfaitement ; conservez toujours vos fichiers d'origine."
+          "heading": "Publicité",
+          "body": [
+            "Fileflect affiche des annonces Google AdSense. Les annonces proviennent de tiers ; nous ne sommes pas responsables de leur contenu ni des sites vers lesquels elles mènent."
+          ],
+          "pro": [
+            "Nous n'affichons pas d'annonces aux utilisateurs Pro."
+          ]
         },
         {
-          "heading": "Modifications",
-          "body": "Nous pouvons mettre à jour ces conditions. Si un changement est important, nous l'annoncerons sur le site."
+          "heading": "Propriété intellectuelle de Fileflect",
+          "body": [
+            "Le nom Fileflect, le logo, le design et le code du site appartiennent à Juan Pablo Aste ou sont utilisés sous licence. Certains composants sont des logiciels tiers sous licences libres ; le détail figure sur la page Crédits."
+          ]
+        },
+        {
+          "heading": "Disponibilité et garanties",
+          "body": [
+            "Nous faisons en sorte que le service fonctionne bien et que les conversions soient fidèles, mais certains formats complexes peuvent ne pas être convertis parfaitement et le service peut connaître des interruptions pour maintenance ou en raison de pannes de prestataires. Rien dans ces conditions ne limite les droits que vous confère la loi sur la protection des consommateurs."
+          ]
+        },
+        {
+          "heading": "Responsabilité",
+          "body": [
+            "Dans la mesure permise par la loi, nous ne sommes pas responsables des pertes de données ou de fichiers si vous n'avez pas conservé vos originaux, ni des dommages indirects découlant de l'utilisation du service gratuit. Cette clause ne s'applique pas aux dommages que la loi ne permet pas d'exclure à l'égard des consommateurs."
+          ]
+        },
+        {
+          "heading": "Modifications de ces conditions",
+          "body": [
+            "Nous pouvons mettre à jour ces conditions. Si une modification est importante, nous l'annoncerons sur le site et, si vous avez un compte, par e-mail, au moins 15 jours à l'avance."
+          ],
+          "pro": [
+            "Si vous n'êtes pas d'accord, vous pouvez résilier l'offre Pro avant l'entrée en vigueur de la modification."
+          ]
+        },
+        {
+          "heading": "Droit applicable et réclamations",
+          "body": [
+            "Ces conditions sont régies par les lois de la République argentine. Si vous êtes consommateur, vous pouvez déposer une réclamation auprès de l'autorité de protection des consommateurs ou des tribunaux de votre domicile. Dans les autres cas, les tribunaux ordinaires du district judiciaire de San Isidro, province de Buenos Aires, sont compétents.",
+            "Vous pouvez également déposer une réclamation via la Ventanilla Federal / Protection des consommateurs argentine (https://www.argentina.gob.ar/produccion/defensadelconsumidor/formulario)."
+          ]
+        }
+      ],
+      "freeService": {
+        "heading": "Service gratuit",
+        "body": [
+          "Pour l'instant, Fileflect est gratuit : vous pouvez utiliser tous les outils sans payer, et le service est financé par la publicité.",
+          "Si nous ajoutons des offres payantes à l'avenir, nous l'annoncerons à l'avance et mettrons à jour ces conditions avant de facturer quoi que ce soit."
+        ]
+      },
+      "proSections": [
+        {
+          "heading": "Offre Pro : prix, paiement et renouvellement",
+          "body": [],
+          "items": [
+            "L'offre Pro se paie d'avance, au mois ou à l'année, dans la devise affichée avant le paiement. Le prix final (taxes comprises, le cas échéant) est indiqué avant la confirmation.",
+            "Le paiement est traité par Mercado Pago (ou un autre prestataire dans certains pays). Nous ne recevons ni ne conservons les données de votre carte.",
+            "L'abonnement est renouvelé automatiquement à la fin de chaque période jusqu'à ce que vous le résiliiez.",
+            "Si nous modifions le prix, nous vous préviendrons par e-mail au moins 30 jours à l'avance et le nouveau prix s'appliquera à partir du renouvellement suivant. Vous pourrez résilier avant."
+          ]
+        },
+        {
+          "heading": "Droit de rétractation (10 jours)",
+          "body": [
+            "Comme vous avez acheté à distance, vous avez le droit de révoquer votre souscription dans un délai de 10 jours calendaires à compter de celle-ci, sans motif et sans frais (art. 34 de la loi argentine 24.240 et art. 1110 du Code civil et commercial argentin). Nous vous remboursons 100 % du montant payé par le même moyen de paiement.",
+            "Pour cela, utilisez le bouton de rétractation présent en bas de chaque page du site. Vous n'avez besoin ni de compte ni d'inscription. Nous vous enverrons un code d'identification de votre demande sous 24 heures."
+          ]
+        },
+        {
+          "heading": "Résiliation (bouton de résiliation)",
+          "body": [
+            "Vous pouvez résilier l'offre Pro quand vous le souhaitez avec le bouton de résiliation, en bas de chaque page ou dans Mon compte, sans démarche préalable. Nous vous enverrons un code d'identification sous 24 heures. La résiliation empêche le prochain renouvellement et vous gardez Pro jusqu'à la fin de la période déjà payée."
+          ]
+        },
+        {
+          "heading": "Remboursements",
+          "body": [
+            "Les remboursements sont effectués par le même moyen de paiement. Le délai de crédit dépend de Mercado Pago et de votre banque. Pour demander un remboursement, écrivez à contact@fileflect.com."
+          ]
         }
       ]
     },
@@ -1818,10 +2083,10 @@
       "title": "Contact",
       "intro": "Une question, un bug ou un nouveau format à demander ? Écrivez-nous.",
       "emailLabel": "E-mail",
-      "missing": "L'adresse de contact n'est pas encore configurée.",
       "topics": "Pour signaler un problème, indiquez le navigateur et le type de fichier utilisés. Ne nous envoyez jamais de documents privés par e-mail.",
       "privacy": "Pour demander la suppression de vos données ou de votre compte, écrivez-nous depuis l'adresse e-mail utilisée lors de l'inscription.",
-      "write": "Envoyer un e-mail"
+      "write": "Envoyer un e-mail",
+      "hours": "Nous répondons du lundi au vendredi, aux heures ouvrables."
     },
     "contents": "Sommaire"
   },
