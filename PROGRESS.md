@@ -616,6 +616,8 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - **(Fase 6) Mergear `dev` en `main`**: producción va 33 commits atrás (solo hasta la fase 4); los arreglos de las fases 5 y 6 (capa que tapaba botones, estados del login, Resend, B-01 a B-16) no están publicados.
 - **(Fase 6) Variables en Railway**: confirmar que `AUTH_SECRET` y `NEXT_PUBLIC_SITE_URL` (con `https://`) estén definidas en el servicio `app`; sin ellas el login queda desactivado (B-14) y las canónicas apuntan a `localhost` (B-15 ya no rompe las páginas).
 - **(Fase 6) `PAYMENTS_MOCK` (B-22)**: confirmar que **no** esté definida en el servicio `app` de Railway; si lo está, cualquier usuario fuera de los países con Mercado Pago configurado pasa a Pro sin pagar.
+- **(Fase 6) Cloudflare y límites por IP (B-24)**: si se pone Cloudflare (u otro proxy) delante de Railway, avisar para que `clientIp()` lea `CF-Connecting-IP`; si no, todos los visitantes compartirían el límite de conversiones.
+- **(Fase 6) Límite de conversiones con sesión**: ahora es 5 veces el anónimo (100 por minuto por cuenta con `RATE_LIMIT_PER_MINUTE=20`). Cambiarlo si se prefiere otro valor.
 - **Foto carnet (3C.42)**: no se encontraron fuentes oficiales fiables de las medidas por país; la herramienta usa medidas habituales y pide confirmar con la oficina. Si se quieren presets por país (AR, BR, MX, CL, CO, PE, UY), validar cada medida con el organismo correspondiente.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
@@ -3216,3 +3218,12 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - `tests/e2e/api-limits.spec.ts` (7 tests, en el CI): cuerpos infinitos en partes reciben 413 enseguida; los errores de pedidos rotos no muestran trazas, rutas ni secretos (no se encontraron fugas).
 
 **Verificación**: lint, typecheck, tests unitarios (1037) y build pasan; Chromium `api-limits`, `access-control`, `security-headers`, `login`, `billing-states`, `failure-states`, `environments`, `converter`, `search-locale-states` (171 + 4 omitidos que necesitan Gotenberg) pasan.
+
+## 2026-10-23 06:45 UTC — Fase 6, tarea 6F.3b (límites de frecuencia)
+
+**Qué se hizo**
+- **B-24** (media, arreglado en c81fe2b): la IP del cliente salía de la primera entrada de `X-Forwarded-For`, que el cliente puede inventar; con un valor distinto por pedido no había límite. Ahora se usa la última (la del proxy).
+- **B-25** (media, arreglado en c81fe2b): los enlaces de inicio de sesión no tenían límite (inundar casillas, gastar Resend). Ahora 5 por IP cada 10 min y 5 por dirección cada hora; el formulario lo explica en 5 idiomas. Las cuentas pasan a tener límite en las conversiones del servidor (5× el anónimo).
+- `tests/e2e/rate-limits.spec.ts` (3 tests, en el CI) y tests unitarios.
+
+**Verificación**: lint, typecheck, tests unitarios (1037) y build pasan; Chromium `rate-limits`, `api-limits`, `access-control`, `security-headers`, `login`, `billing-states`, `failure-states`, `environments`, `converter` (169 + 4 omitidos que necesitan Gotenberg) pasan.

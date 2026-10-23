@@ -27,6 +27,8 @@ Registro de hallazgos. Gravedad: **crítica** (rompe una herramienta, el login o
 | B-21 | Portada, PDF → JPG/PNG de varias páginas | Todos | Convertir a JPG un PDF guardado con otra extensión (`informe.docx`, detectado como PDF por el contenido): la descarga se llamaba `informe.docx-jpg.zip` y las páginas `informe.docx-1.jpg`. Arreglo: se quita la última extensión, sea cual sea. Test de regresión: `tests/e2e/edge-files-families.spec.ts` y `to-images.test.ts` | baja | arreglado | 3edd510 |
 | B-22 | Pagos: `PAYMENTS_MOCK` en producción | Servidor | Si `PAYMENTS_MOCK=true` queda definida en Railway (se usa para demos), cualquier visitante con sesión de un país sin Mercado Pago configurado (región internacional, o un país cuyo token falta) pasa a Pro sin pagar: "Pasar a Pro" usa el proveedor simulado y `/api/billing/mock-checkout` activa la suscripción. Además, las suscripciones simuladas siguen "activas" para siempre aunque después se quite la variable. Es el comportamiento documentado del modo demo, no un fallo del código; depende de la configuración | alta (solo si la variable está definida) | dueño (confirmar que `PAYMENTS_MOCK` no esté definida en el servicio `app` de Railway) | |
 | B-23 | APIs que reciben cuerpo: conversión en el servidor (`/api/convert/*`), `/api/stats`, `/api/visit`, `/api/billing/subscribe`, webhook de Mercado Pago y `POST /api/auth/*` | Servidor | Mandar un `POST` con `Transfer-Encoding: chunked` (sin `Content-Length`) y un cuerpo enorme o que nunca termina: la API lo guardaba entero en memoria antes de mirarlo (solo se rechazaba un `Content-Length` declarado grande, y solo en las subidas). Unos pocos pedidos así llenan la memoria del servicio en Railway y lo reinician (caída para todos). Encontrado por el detector de 6F.3 (las rutas de stats, visit e imagen seguían leyendo 40–120 MB sin responder). Arreglo: `readBody()` lee hasta el límite de cada API (16 KB stats, 4 KB visit y facturación, 64 KB webhook y login, límite del plan + 64 KB en las subidas) y responde 413. Test de regresión: `tests/e2e/api-limits.spec.ts` y `src/lib/server/body.test.ts` | alta | arreglado | e95727c |
+| B-24 | Límites por IP: conversiones en el servidor sin sesión, `/api/stats`, `/api/visit` | Servidor | La IP del cliente se tomaba de la **primera** entrada de `X-Forwarded-For`, que escribe el propio cliente (el proxy de Railway agrega la real al final). Mandando un valor inventado distinto en cada pedido se esquivaba todo límite por IP: conversiones ilimitadas con LibreOffice/Gotenberg sin cuenta. Arreglo: `clientIp()` usa la última entrada, la que agrega el proxy. Test de regresión: `tests/e2e/rate-limits.spec.ts` y `rate-limit.test.ts` | media | arreglado | c81fe2b |
+| B-25 | Inicio de sesión por email (`POST /api/auth/signin/nodemailer`) | Servidor | Pedir enlaces de inicio de sesión sin parar, para cualquier dirección: no había ningún límite, así que se podía llenar la casilla de alguien y gastar la cuota de Resend (y dañar la reputación del dominio remitente). Arreglo: 5 enlaces por IP cada 10 minutos y 5 por dirección cada hora (sin importar la IP); el formulario explica el límite (5 idiomas) en vez del error genérico. Además, las cuentas no tenían ningún límite en las conversiones del servidor (y crear cuentas es gratis): ahora tienen 5 veces el límite anónimo, contado por cuenta. Test de regresión: `tests/e2e/rate-limits.spec.ts` y `upload.test.ts` | media | arreglado | c81fe2b |
 
 ## 6A.1 — Clicabilidad de todas las páginas (2026-10-23)
 
@@ -264,3 +266,20 @@ Detector nuevo: `tests/e2e/api-limits.spec.ts` (7 tests, Chromium, en el CI). Ma
 La frecuencia (límites por IP y en los enlaces de inicio de sesión) se revisa en 6F.3b.
 
 **Resultado**: B-23 (alta) arreglado.
+
+## 6F.3b — Límites de frecuencia (2026-10-23)
+
+Revisión de cada API que recibe archivos o datos y de cómo identifica al cliente. Detector nuevo: `tests/e2e/rate-limits.spec.ts` (3 tests, Chromium, en el CI).
+
+| API | Límite | Estado |
+|-----|--------|--------|
+| `/api/convert/*` sin sesión | `RATE_LIMIT_PER_MINUTE` (20) por IP | B-24: se esquivaba con `X-Forwarded-For` inventado; arreglado |
+| `/api/convert/*` con sesión | ninguno | ahora 5 × 20 = 100 por minuto por cuenta (invisible para una persona) |
+| `/api/stats`, `/api/visit` | 120 y 60 por minuto por IP | bien (con la IP corregida) |
+| `POST /api/auth/signin/nodemailer` | ninguno | B-25: 5 por IP / 10 min y 5 por dirección / hora |
+| `/api/billing/subscribe`, `/cancel` | requiere sesión | sin límite propio: cada pedido crea una suscripción pendiente en Mercado Pago; aceptable por ahora (necesita sesión) |
+| Webhook de Mercado Pago | firma HMAC | sin límite (lo llama Mercado Pago; sin firma válida responde 401 sin trabajo) |
+
+**Nota**: los límites viven en la memoria de la instancia (una sola réplica en Railway). Si se pone Cloudflare delante, la última entrada de `X-Forwarded-For` será la IP de Cloudflare y todos los visitantes compartirían el límite: en ese caso hay que leer `CF-Connecting-IP` (anotado en "Pendiente del dueño").
+
+**Resultado**: B-24 y B-25 (media) arreglados.

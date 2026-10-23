@@ -380,7 +380,7 @@ Auditoría de bugs: encontrar y arreglar, antes que los usuarios, bugs del tipo 
 - [x] 6F.1 Cabeceras HTTP (CSP compatible con AdSense, X-Content-Type-Options, Referrer-Policy, frame-ancestors/X-Frame-Options, Permissions-Policy) y cookies de sesión (Secure, HttpOnly, SameSite); tests
 - [x] 6F.2 `/admin` y sus APIs, APIs de facturación y webhook de Mercado Pago rechazan accesos sin permiso o sin firma; tests
 - [x] 6F.3a Límite de tamaño en las APIs que reciben archivos o datos (también sin `Content-Length`); los errores no filtran trazas ni variables de entorno; tests
-- [ ] 6F.3b Límite de frecuencia en las APIs que reciben archivos o datos (IP del cliente detrás del proxy, envío de enlaces de inicio de sesión); tests
+- [x] 6F.3b Límite de frecuencia en las APIs que reciben archivos o datos (IP del cliente detrás del proxy, envío de enlaces de inicio de sesión); tests
 
 ### Hito 6G — Informe
 - [ ] 6G.1 `docs/bug-audit-report.md`: resumen, bugs por gravedad y categoría, arreglados (con commit), pendientes y por qué, lo que decide el dueño, recomendaciones y tests nuevos en el CI; "FASE 6 TERMINADA" en PROGRESS.md
