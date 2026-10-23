@@ -55,3 +55,10 @@ jobs:
         run: npx playwright test --project firefox --project webkit
       - name: Chromium click checks
         run: npx playwright test open-states login clickable --project chromium --grep-invert "pages \d+/"
+      - name: Test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-results
+          path: test-results/
+          retention-days: 7
