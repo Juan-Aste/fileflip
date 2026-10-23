@@ -615,6 +615,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - **Fase 4 — código fuente exacto de FFmpeg (AAC)**: `@mediabunny/aac-encoder` 1.62.0 trae el codificador AAC de FFmpeg compilado a WASM (LGPL-2.1+), pero su compilación clona FFmpeg sin anotar el commit; el binario dice `Lavc62.23.103` (versión de desarrollo, entre FFmpeg 8.0 y 8.1). La página de créditos enlaza el repositorio de FFmpeg y las instrucciones de compilación de mediabunny y lo aclara. Para cumplir la LGPL al pie de la letra hay dos caminos: pedirle al autor de mediabunny (Vanilagy) el commit exacto, o compilar nosotros el codificador desde una versión publicada de FFmpeg con hash fijado (como con libarchive en 3C.45) y servir ese WASM. Mientras tanto, M4A/AAC solo usa este WASM cuando el navegador no tiene codificador AAC propio.
 - **(Fase 6) Mergear `dev` en `main`**: producción va 33 commits atrás (solo hasta la fase 4); los arreglos de las fases 5 y 6 (capa que tapaba botones, estados del login, Resend, B-01 a B-16) no están publicados.
 - **(Fase 6) Variables en Railway**: confirmar que `AUTH_SECRET` y `NEXT_PUBLIC_SITE_URL` (con `https://`) estén definidas en el servicio `app`; sin ellas el login queda desactivado (B-14) y las canónicas apuntan a `localhost` (B-15 ya no rompe las páginas).
+- **(Fase 6) `PAYMENTS_MOCK` (B-22)**: confirmar que **no** esté definida en el servicio `app` de Railway; si lo está, cualquier usuario fuera de los países con Mercado Pago configurado pasa a Pro sin pagar.
 - **Foto carnet (3C.42)**: no se encontraron fuentes oficiales fiables de las medidas por país; la herramienta usa medidas habituales y pide confirmar con la oficina. Si se quieren presets por país (AR, BR, MX, CL, CO, PE, UY), validar cada medida con el organismo correspondiente.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
@@ -3198,3 +3199,11 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - `tests/e2e/security-headers.spec.ts` (4 tests, en el CI).
 
 **Verificación**: lint, typecheck, tests unitarios (1033) y build pasan; Chromium `security-headers` + OCR, PDF, imagen, audio, video, 3D, quitar fondo, login, `open-states` y `unsupported` (172) pasan.
+
+## 2026-10-23 06:00 UTC — Fase 6, tarea 6F.2 (control de acceso)
+
+**Qué se hizo**
+- `tests/e2e/access-control.spec.ts` (5 tests, en el CI, commit 3312394): admin (páginas y APIs) da 404 sin sesión, con usuario normal, con correo parecido y con sesión firmada con otro secreto; facturación da 401 sin sesión; el checkout simulado no existe en producción sin `PAYMENTS_MOCK`; el webhook rechaza notificaciones sin firma, falsificadas o viejas.
+- Sin bugs de código. **B-22** (dueño): `PAYMENTS_MOCK=true` en producción regala Pro fuera de los países con Mercado Pago; anotado en "Pendiente del dueño".
+
+**Verificación**: lint, typecheck y Chromium `access-control` (5) pasan.

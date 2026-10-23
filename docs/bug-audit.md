@@ -25,6 +25,7 @@ Registro de hallazgos. Gravedad: **crítica** (rompe una herramienta, el login o
 | B-19 | Lista de archivos de las herramientas PDF (unir, etc.) | Todos | Subir un `.pdf` de 0 bytes: la fila decía "Solo PDF", confuso para un archivo que sí se llama `.pdf`. Arreglo: "El archivo está vacío" (5 idiomas) cuando el archivo pesa 0 bytes. Test de regresión: `tests/e2e/edge-files.spec.ts` | baja | arreglado | 5ab4537 |
 | B-20 | Herramientas de datos, documentos, OCR, comprimidos, EPUB, audio, video, 3D, CAD y la portada | Todos | Elegir un archivo de 0 bytes (`empty.csv`, `.zip`, `.epub`, `.mp3`, `.mp4`, `.stl`, `.dxf`, `.png`…): la herramienta lo aceptaba, mostraba el botón y al convertir decía "Este formato no se puede convertir así." (comprimidos, EPUB, audio, video, 3D, CAD), "El archivo está dañado o incompleto" (OCR) o "No pudimos leer el contenido. Revisa que el formato sea válido…" (datos); la portada decía "Formato no compatible". Arreglo: `checkInputs()` rechaza al elegirlo con "nombre: El archivo está vacío." (código `emptyFile`, 5 idiomas), salvo en hash, Base64 y crear ZIP, donde un archivo vacío es válido; la portada dice lo mismo. Test de regresión: `tests/e2e/edge-files-families.spec.ts` y `state.test.ts` (antes del arreglo el sondeo mostraba los mensajes de arriba) | baja | arreglado | 3edd510 |
 | B-21 | Portada, PDF → JPG/PNG de varias páginas | Todos | Convertir a JPG un PDF guardado con otra extensión (`informe.docx`, detectado como PDF por el contenido): la descarga se llamaba `informe.docx-jpg.zip` y las páginas `informe.docx-1.jpg`. Arreglo: se quita la última extensión, sea cual sea. Test de regresión: `tests/e2e/edge-files-families.spec.ts` y `to-images.test.ts` | baja | arreglado | 3edd510 |
+| B-22 | Pagos: `PAYMENTS_MOCK` en producción | Servidor | Si `PAYMENTS_MOCK=true` queda definida en Railway (se usa para demos), cualquier visitante con sesión de un país sin Mercado Pago configurado (región internacional, o un país cuyo token falta) pasa a Pro sin pagar: "Pasar a Pro" usa el proveedor simulado y `/api/billing/mock-checkout` activa la suscripción. Además, las suscripciones simuladas siguen "activas" para siempre aunque después se quite la variable. Es el comportamiento documentado del modo demo, no un fallo del código; depende de la configuración | alta (solo si la variable está definida) | dueño (confirmar que `PAYMENTS_MOCK` no esté definida en el servicio `app` de Railway) | |
 
 ## 6A.1 — Clicabilidad de todas las páginas (2026-10-23)
 
@@ -228,3 +229,22 @@ Detector nuevo: `tests/e2e/security-headers.spec.ts` (4 tests, Chromium, en el C
 **Comprobaciones**: las cabeceras están en páginas, APIs, `robots.txt`, `sitemap.xml`, archivos estáticos y el 404; un `<iframe>` de otro origen no muestra la app; sin violaciones de CSP en portada, herramientas, login y precios; las suites de OCR, PDF, imagen, audio, video, 3D, quitar fondo, login y navegador sin APIs (172 tests) pasan con las cabeceras.
 
 **Resultado**: B-17 (media) arreglado. Se verá en producción cuando el dueño mergee `dev` en `main`.
+
+## 6F.2 — Admin, facturación y webhook de Mercado Pago sin permiso o firma (2026-10-23)
+
+Ya había tests unitarios de las rutas (`src/app/api/admin/*/route.test.ts`, `webhooks/mercadopago/route.test.ts`, `mp-signature.test.ts`). Detector nuevo contra el build de producción: `tests/e2e/access-control.spec.ts` (5 tests, Chromium, en el CI).
+
+| Caso | Resultado |
+|------|-----------|
+| `/es/admin`, `/en/admin`, `/api/admin/stats`, `/api/admin/export` sin sesión | 404 (no revela que existen) |
+| Lo mismo con sesión de un usuario normal, con un correo parecido al del admin y con una sesión del admin firmada con otro secreto | 404 |
+| Control: sesión real del admin | 200 |
+| `POST /api/billing/subscribe` y `/api/billing/cancel` sin sesión | 401 `signInRequired` |
+| `/api/billing/mock-checkout` en producción sin `PAYMENTS_MOCK` | 404 |
+| Webhook de Mercado Pago sin firma, con firma basura, con HMAC inventado, sin secreto configurado y con una notificación de hace una hora | 401 |
+
+Revisión del código: la firma usa HMAC-SHA256 con comparación en tiempo constante, rechaza notificaciones de más de 10 minutos y nunca confía en el estado que trae el cuerpo (lo vuelve a leer de Mercado Pago). `mock-checkout` solo redirige dentro del sitio.
+
+**Hallazgo de configuración**: B-22 (dueño): con `PAYMENTS_MOCK=true` en producción, cualquiera fuera de los países con Mercado Pago configurado obtiene Pro gratis. No se cambió el código (es el modo demo documentado); queda en "Pendiente del dueño".
+
+**Resultado**: sin bugs de código; B-22 para el dueño. Commit del test: 3312394.
