@@ -29,6 +29,8 @@ export const apiErrorCodes = [
   "pdfAlreadyProtected",
   "pdfNotProtected",
   "pdfWrongPassword",
+  // Client-side only: a page tool (merge, split, rotate…) given a PDF with an open password.
+  "pdfPasswordRequired",
   // Client-side only: extracting images from a PDF that has none.
   "pdfHasNoImages",
   // Client-side only: a spreadsheet over the cell limit (or a ZIP declaring too much data).
@@ -103,6 +105,7 @@ const status: Record<ApiErrorCode, number> = {
   pdfAlreadyProtected: 422,
   pdfNotProtected: 422,
   pdfWrongPassword: 422,
+  pdfPasswordRequired: 422,
   pdfHasNoImages: 422,
   tooManyCells: 413,
   archiveTooLarge: 413,

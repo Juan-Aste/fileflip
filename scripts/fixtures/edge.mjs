@@ -101,9 +101,14 @@ put(
   const create = require(qpdfJs);
   const qpdf = await create({ locateFile: () => join(dirname(qpdfJs), "qpdf.wasm"), print: () => {}, printErr: () => {} });
   qpdf.FS.writeFile("/in.pdf", new Uint8Array(await (await import("node:fs/promises")).readFile(join(fixtures, "document.pdf"))));
-  const code = qpdf.callMain(["--encrypt", "--user-password=abre123", "--owner-password=dueño456", "--bits=256", "--", "/in.pdf", "/out.pdf"]);
-  if (code !== 0) throw new Error(`qpdf exited with ${code}`);
-  put("password-abre123.pdf", qpdf.FS.readFile("/out.pdf"), "document.pdf with AES-256 and open password abre123");
+  for (const [name, user, note] of [
+    ["password-abre123.pdf", "abre123", "document.pdf with AES-256 and open password abre123"],
+    ["permissions-only.pdf", "", "document.pdf with AES-256, no open password, printing and copying restricted"],
+  ]) {
+    const code = qpdf.callMain(["--encrypt", `--user-password=${user}`, "--owner-password=dueño456", "--bits=256", "--print=none", "--extract=n", "--", "/in.pdf", `/${name}`]);
+    if (code !== 0) throw new Error(`qpdf exited with ${code}`);
+    put(name, qpdf.FS.readFile(`/${name}`), note);
+  }
 }
 
 // File names: accents, spaces, emoji, very long (and every kind together).

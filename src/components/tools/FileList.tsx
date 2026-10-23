@@ -74,7 +74,7 @@ export default function FileList({
                 {item.format === null ? (
                   <span className="inline-flex items-center gap-1 text-danger">
                     <AlertCircle aria-hidden="true" className="h-4 w-4" />
-                    {rejectLabel}
+                    {item.file.size === 0 ? t("emptyFile") : rejectLabel}
                   </span>
                 ) : (
                   <span className="tabular-nums">

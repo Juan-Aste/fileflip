@@ -92,3 +92,34 @@ export async function unlockPdf(bytes: Uint8Array, password: string, load: QpdfF
   if (!ok(code)) throw new ConversionError("pdfWrongPassword");
   return qpdf.FS.readFile(OUT);
 }
+
+const ENCRYPT = new TextEncoder().encode("/Encrypt");
+
+/** Whether the bytes contain the trailer's /Encrypt key (a cheap check before loading qpdf). */
+export function mentionsEncrypt(bytes: Uint8Array): boolean {
+  const first = ENCRYPT[0];
+  for (let i = bytes.indexOf(first); i !== -1 && i <= bytes.length - ENCRYPT.length; i = bytes.indexOf(first, i + 1)) {
+    let j = 1;
+    while (j < ENCRYPT.length && bytes[i + j] === ENCRYPT[j]) j++;
+    if (j === ENCRYPT.length) return true;
+  }
+  return false;
+}
+
+/**
+ * The PDF ready for the page tools (merge, split, rotate…). pdf-lib copies
+ * encrypted streams as they are, so an encrypted input came out as blank
+ * pages without any error (B-18). A PDF with only permissions (an empty open
+ * password, common in bank statements and forms) is decrypted with qpdf; one
+ * with an open password is refused with a message that points to Unlock PDF.
+ */
+export async function withoutEncryption(bytes: Uint8Array, load: QpdfFactory): Promise<Uint8Array> {
+  if (!mentionsEncrypt(bytes)) return bytes;
+  const qpdf = await load();
+  qpdf.FS.writeFile(IN, bytes);
+  if (ok(qpdf.callMain(["--decrypt", IN, OUT]))) return qpdf.FS.readFile(OUT);
+  // qpdf exits 2 both for a wrong (here: empty) password and for a file it
+  // can't read; only the first one is about a password.
+  if (await isEncrypted(bytes)) throw new ConversionError("pdfPasswordRequired");
+  throw new ConversionError("fileDamaged");
+}

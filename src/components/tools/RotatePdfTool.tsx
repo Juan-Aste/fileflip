@@ -5,7 +5,8 @@ import { useTranslations } from "next-intl";
 import { rotatePdfFile } from "@/lib/pdf/client";
 import type { Rotation } from "@/lib/pdf/ops";
 import { parsePageRanges } from "@/lib/pdf/ranges";
-import { unexpectedErrorCode } from "@/lib/convert-error";
+import { errorCode } from "@/lib/convert-error";
+import type { ApiErrorCode } from "@/lib/api-errors";
 import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
@@ -25,14 +26,14 @@ export default function RotatePdfTool() {
   const [ranges, setRanges] = useState("");
   const [working, setWorking] = useState(false);
   const [result, setResult] = useState<Blob | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<ApiErrorCode | null>(null);
 
   const pages = scope === "some" && pdf.pages ? parsePageRanges(ranges, pdf.pages)?.flat() : undefined;
   const ready = pdf.file && pdf.pages !== null && (scope === "all" || pages);
 
   async function run() {
     if (!pdf.file) return;
-    setFailed(false);
+    setFailed(null);
     setWorking(true);
     try {
       const file = pdf.file;
@@ -46,7 +47,7 @@ export default function RotatePdfTool() {
       );
     } catch (error) {
       console.error(error);
-      setFailed(true);
+      setFailed(errorCode(error));
     } finally {
       setWorking(false);
     }
@@ -99,7 +100,7 @@ export default function RotatePdfTool() {
           )}
           {failed && (
             <ToolAlert>
-              {te(unexpectedErrorCode())}
+              {te(failed)}
             </ToolAlert>
           )}
           <PrimaryButton onClick={run} disabled={!ready || working}>

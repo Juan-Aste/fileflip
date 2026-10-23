@@ -3,6 +3,7 @@
 // Page rendering with pdf.js. Parsing runs in pdf.js's own Web Worker; the
 // legacy build supports older browsers (common on budget Android phones).
 import type { PDFDocumentProxy } from "pdfjs-dist";
+import { ConversionError } from "@/lib/convert-error";
 
 type Pdfjs = typeof import("pdfjs-dist");
 let pdfjs: Promise<{ lib: Pdfjs; worker: InstanceType<Pdfjs["PDFWorker"]> }> | null = null;
@@ -21,9 +22,15 @@ function loadPdfjs() {
   return pdfjs;
 }
 
+/** Opens a PDF; one with an open password fails with `pdfPasswordRequired` (B-18). */
 export async function openPdf(file: Blob): Promise<PDFDocumentProxy> {
   const { lib, worker } = await loadPdfjs();
-  return lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), worker }).promise;
+  try {
+    return await lib.getDocument({ data: new Uint8Array(await file.arrayBuffer()), worker }).promise;
+  } catch (error) {
+    if (error instanceof Error && error.name === "PasswordException") throw new ConversionError("pdfPasswordRequired");
+    throw error;
+  }
 }
 
 /**

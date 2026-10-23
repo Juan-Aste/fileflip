@@ -12,7 +12,8 @@ import PrimaryButton from "./PrimaryButton";
 import ProgressBar from "./ProgressBar";
 import RangesInput from "./RangesInput";
 import SinglePdfInput from "./SinglePdfInput";
-import { unexpectedErrorCode } from "@/lib/convert-error";
+import { errorCode } from "@/lib/convert-error";
+import type { ApiErrorCode } from "@/lib/api-errors";
 import ToolAlert from "./ToolAlert";
 import ToolResult from "./ToolResult";
 import { usePdfThumbnails } from "./usePdfThumbnails";
@@ -39,7 +40,7 @@ function PageSelectPdfTool({ variant }: { variant: Variant }) {
   const [output, setOutput] = useState<Output>("single");
   const [working, setWorking] = useState(false);
   const [result, setResult] = useState<{ blob: Blob; name: string } | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<ApiErrorCode | null>(null);
 
   const total = pdf.pages ?? 0;
   useEffect(() => {
@@ -73,7 +74,7 @@ function PageSelectPdfTool({ variant }: { variant: Variant }) {
     if (!pdf.file || !canRun) return;
     const file = pdf.file;
     const base = baseName(file.name);
-    setFailed(false);
+    setFailed(null);
     setWorking(true);
     try {
       if (variant === "delete") {
@@ -103,7 +104,7 @@ function PageSelectPdfTool({ variant }: { variant: Variant }) {
       }
     } catch (error) {
       console.error(error);
-      setFailed(true);
+      setFailed(errorCode(error));
     } finally {
       setWorking(false);
     }
@@ -197,7 +198,7 @@ function PageSelectPdfTool({ variant }: { variant: Variant }) {
               ]}
             />
           )}
-          {failed && <ToolAlert>{te(unexpectedErrorCode())}</ToolAlert>}
+          {failed && <ToolAlert>{te(failed)}</ToolAlert>}
           <PrimaryButton onClick={run} disabled={!canRun}>
             {working ? t("working") : tt("action")}
           </PrimaryButton>

@@ -17,12 +17,12 @@ import type { ShellOutput } from "./shell/state";
 
 const baseName = (name: string) => name.replace(/\.pdf$/i, "") || "document";
 
-/** Opens a PDF with pdf.js; anything it can't parse is a damaged file. */
+/** Opens a PDF with pdf.js; anything it can't parse (except a password) is a damaged file. */
 async function openOrFail(file: Blob) {
   try {
     return await openPdf(file);
-  } catch {
-    throw new ConversionError("fileDamaged");
+  } catch (error) {
+    throw error instanceof ConversionError ? error : new ConversionError("fileDamaged");
   }
 }
 

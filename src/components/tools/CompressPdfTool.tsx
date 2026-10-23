@@ -6,7 +6,8 @@ import type { Locale } from "@/i18n/routing";
 import { formatBytes, formatPercent } from "@/lib/format";
 import { compressPdfFile } from "@/lib/pdf/client";
 import type { CompressionLevel } from "@/lib/pdf/compress";
-import { unexpectedErrorCode } from "@/lib/convert-error";
+import { errorCode } from "@/lib/convert-error";
+import type { ApiErrorCode } from "@/lib/api-errors";
 import ToolAlert from "./ToolAlert";
 import ChoiceGroup from "./ChoiceGroup";
 import PrimaryButton from "./PrimaryButton";
@@ -25,11 +26,11 @@ export default function CompressPdfTool() {
   const [level, setLevel] = useState<CompressionLevel>("recommended");
   const [progress, setProgress] = useState<number | null>(null);
   const [result, setResult] = useState<Blob | null>(null);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<ApiErrorCode | null>(null);
 
   async function run() {
     if (!pdf.file) return;
-    setFailed(false);
+    setFailed(null);
     setProgress(0);
     try {
       const file = pdf.file;
@@ -42,7 +43,7 @@ export default function CompressPdfTool() {
       setResult(blob);
     } catch (error) {
       console.error(error);
-      setFailed(true);
+      setFailed(errorCode(error));
     } finally {
       setProgress(null);
     }
@@ -94,7 +95,7 @@ export default function CompressPdfTool() {
           {progress !== null && <ProgressBar value={progress} label={t("working")} />}
           {failed && (
             <ToolAlert>
-              {te(unexpectedErrorCode())}
+              {te(failed)}
             </ToolAlert>
           )}
           <PrimaryButton onClick={run} disabled={progress !== null}>

@@ -10,6 +10,10 @@ const systemChromium = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
 const executablePath = process.env.CHROME_PATH ?? (existsSync(systemChromium) ? systemChromium : undefined);
 const port = Number(process.env.E2E_PORT ?? 3100);
 const baseURL = process.env.BASE_URL ?? `http://localhost:${port}`;
+// Browsers inherit the locale. Under the bare C locale of CI containers,
+// Chromium ignores picked paths with non-ASCII characters and saves
+// downloads named "ñandú.png" as "download"; users' systems are UTF-8.
+if (!process.env.LC_ALL && !process.env.LANG) process.env.LANG = "C.UTF-8";
 
 export default defineConfig({
   testDir: "tests/e2e",

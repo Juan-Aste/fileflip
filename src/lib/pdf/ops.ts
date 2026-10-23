@@ -5,8 +5,8 @@ import { degrees, PDFDocument } from "pdf-lib";
 export type Progress = (progress: number) => void;
 
 async function load(bytes: Uint8Array) {
-  // Many real-world PDFs are "encrypted" with an empty user password (only
-  // permissions set); pdf-lib can still copy their pages.
+  // pdf-lib can read the structure of an encrypted PDF but not its streams:
+  // the PDF worker decrypts inputs first (withoutEncryption, B-18).
   return PDFDocument.load(bytes, { ignoreEncryption: true, updateMetadata: false });
 }
 
