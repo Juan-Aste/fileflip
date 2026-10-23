@@ -3180,3 +3180,12 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - 5 tareas: 6D.1, 6D.2, 6D.3, 6E.1 y 6E.2. Bugs nuevos: B-14 (media), B-15 (alta), B-16 (alta), B-17 (media, abierto para 6F.1), B-18 (alta), B-19 (baja); arreglados también B-01 y B-12.
 - CI: verde en cf3351f, 5709b3e, 223acbc y 0f53a32 (último commit de código; el job de navegadores tarda 8 min con `environments` y `edge-files`). El job de 0b54228 llegó al límite de 25 min (ver 6E.2, "Ruido en el CI"); ya no se repitió.
 - Siguiente tarea: 6E.3.
+
+## 2026-10-23 05:25 UTC — Fase 6, tarea 6E.3 (resto de familias con archivos difíciles)
+
+**Qué se hizo**
+- Sondeo de 25 casos y `tests/e2e/edge-files-families.spec.ts` (24 tests, en el CI con `edge-files`): archivos vacíos, nombres con acentos y emojis, extensiones que mienten, límite de tamaño y PDF con contraseña en datos, documentos, OCR, comprimidos, EPUB, audio, video, 3D, CAD y utilidades.
+- **B-20** (baja, arreglado en 3edd510): un archivo de 0 bytes se aceptaba y al convertir daba un error engañoso ("formato no compatible", "dañado", "revisa el formato"). Ahora se rechaza al elegirlo con "El archivo está vacío." (5 idiomas), salvo en hash, Base64 y crear ZIP.
+- **B-21** (baja, arreglado en 3edd510): PDF → JPG de un PDF guardado como `.docx` descargaba `x.docx-jpg.zip`.
+
+**Verificación**: lint, typecheck, tests unitarios (1033) y build pasan; Chromium `edge-files-families` (24), `edge-files`, `converter`, `archive-tools`, `data-tools`, `text-tools` (189 con `CI=1`) pasan.

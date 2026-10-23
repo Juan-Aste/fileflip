@@ -23,6 +23,8 @@ Registro de hallazgos. Gravedad: **crítica** (rompe una herramienta, el login o
 | B-17 | Todas las respuestas (páginas, APIs, archivos) | Todos (producción y `dev`) | Pedir cualquier URL de producción y mirar las cabeceras: no hay `Content-Security-Policy`, `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`/`frame-ancestors`, `Permissions-Policy` ni `Strict-Transport-Security` (`next.config.ts` solo define `Cache-Control` para `/ocr`). Sin `frame-ancestors` el sitio se puede embeber en otro (clickjacking). Encontrado por la prueba de humo 6D.3 | media | abierto (6F.1) | |
 | B-18 | Herramientas de páginas PDF (unir, dividir, rotar, ordenar, eliminar/extraer páginas, comprimir, numerar, marca de agua, recortar, firmar, OCR, extraer imágenes) | Todos | Subir un PDF cifrado: con contraseña de apertura (`password-abre123.pdf`) o solo con permisos, sin contraseña para abrir (`permissions-only.pdf`, común en extractos bancarios y formularios) y unir/dividir/etc.: la herramienta descargaba un PDF con las páginas **en blanco** sin ningún aviso, porque pdf-lib copia los contenidos cifrados tal cual. Además, las herramientas de PDF mostraban siempre un error genérico e ignoraban el código del error. Arreglo: el worker de PDF descifra con qpdf los PDF que solo tienen permisos y rechaza los que tienen contraseña de apertura con "Este PDF tiene contraseña de apertura. Quítala primero con «Quitar contraseña de PDF»…" (5 idiomas); pdf.js informa lo mismo en las herramientas que lo usan; las 7 herramientas muestran el código del error. Test de regresión: `src/lib/pdf/password.test.ts` (sin descifrar, el texto de las páginas unidas queda vacío) y `tests/e2e/edge-files.spec.ts` | alta | arreglado | 5ab4537 |
 | B-19 | Lista de archivos de las herramientas PDF (unir, etc.) | Todos | Subir un `.pdf` de 0 bytes: la fila decía "Solo PDF", confuso para un archivo que sí se llama `.pdf`. Arreglo: "El archivo está vacío" (5 idiomas) cuando el archivo pesa 0 bytes. Test de regresión: `tests/e2e/edge-files.spec.ts` | baja | arreglado | 5ab4537 |
+| B-20 | Herramientas de datos, documentos, OCR, comprimidos, EPUB, audio, video, 3D, CAD y la portada | Todos | Elegir un archivo de 0 bytes (`empty.csv`, `.zip`, `.epub`, `.mp3`, `.mp4`, `.stl`, `.dxf`, `.png`…): la herramienta lo aceptaba, mostraba el botón y al convertir decía "Este formato no se puede convertir así." (comprimidos, EPUB, audio, video, 3D, CAD), "El archivo está dañado o incompleto" (OCR) o "No pudimos leer el contenido. Revisa que el formato sea válido…" (datos); la portada decía "Formato no compatible". Arreglo: `checkInputs()` rechaza al elegirlo con "nombre: El archivo está vacío." (código `emptyFile`, 5 idiomas), salvo en hash, Base64 y crear ZIP, donde un archivo vacío es válido; la portada dice lo mismo. Test de regresión: `tests/e2e/edge-files-families.spec.ts` y `state.test.ts` (antes del arreglo el sondeo mostraba los mensajes de arriba) | baja | arreglado | 3edd510 |
+| B-21 | Portada, PDF → JPG/PNG de varias páginas | Todos | Convertir a JPG un PDF guardado con otra extensión (`informe.docx`, detectado como PDF por el contenido): la descarga se llamaba `informe.docx-jpg.zip` y las páginas `informe.docx-1.jpg`. Arreglo: se quita la última extensión, sea cual sea. Test de regresión: `tests/e2e/edge-files-families.spec.ts` y `to-images.test.ts` | baja | arreglado | 3edd510 |
 
 ## 6A.1 — Clicabilidad de todas las páginas (2026-10-23)
 
@@ -186,3 +188,24 @@ Detector nuevo: `tests/e2e/edge-files.spec.ts` (19 tests, Chromium, en el CI; ge
 **Ruido en el CI**: el servidor de pruebas con MongoDB inaccesible (6D.1) hacía que cada `/api/visit` esperara la selección de servidor, lo que retrasaba `networkidle`; probablemente por eso el job de navegadores de 0b54228 llegó al límite de 25 min (los siguientes, con 5 s de espera, tardaron 11 min). Ahora `tests/e2e/support.ts` responde `/api/visit` con 204 como ya hacía con `/api/stats`.
 
 **Resultado**: B-18 (alta) y B-19 (baja), arreglados.
+
+## 6E.3 — Resto de familias con los fixtures de casos límite (2026-10-23)
+
+Primero un sondeo (25 casos, cada herramienta con el fixture que aplica, sin aserciones) y después el detector `tests/e2e/edge-files-families.spec.ts` (24 tests, Chromium, ~40 s, en el CI junto con `edge-files`).
+
+| Caso | Resultado |
+|------|-----------|
+| Archivo de 0 bytes en CSV a JSON, formatear JSON, extraer ZIP, convertir EPUB, audio, video, modelo 3D, DXF, imagen a texto, hoja de cálculo y portada | B-20 (antes: botón activo y error engañoso después del clic); ahora "El archivo está vacío." al elegirlo |
+| Archivo de 0 bytes en generador de hash / crear ZIP | hash correcto del contenido vacío (`e3b0c442…`) / el ZIP lo incluye con 0 bytes |
+| Nombres con acentos, raya y emojis en crear ZIP, CSV a JSON, audio, DXF y EPUB | se conservan en las entradas del ZIP y en las descargas |
+| MP3 llamado `.wav`, WebM llamado `.mp4` | se convierten según el contenido (WAV y MP4 válidos) |
+| ZIP llamado `.epub` | "El archivo está dañado o incompleto. Prueba con otra copia." |
+| PDF llamado `.docx` en la portada | se detecta como PDF y se convierte; B-21 en el nombre de la descarga |
+| JSON llamado `.csv` en CSV a JSON | se lee como CSV de una columna (es texto válido); sin error ni cuelgue. No se considera bug |
+| Markdown 1 KB por encima del límite del servidor en Markdown a PDF / portada | rechazado al elegirlo / "El archivo es demasiado grande." al convertir; en los dos casos sin subir nada |
+| Markdown de 15 MB en Markdown a HTML (límite propio de 5 MB) | rechazado al elegirlo |
+| PDF con contraseña en OCR de PDF | pide quitar la contraseña (B-18) |
+
+Los PDF grandes y escaneados ya se probaron en 6E.2 (OCR de PDF escaneado: `ocr-tools.spec.ts`). No se encontraron cuelgues ni errores sin capturar.
+
+**Resultado**: B-20 y B-21 (baja), arreglados.
