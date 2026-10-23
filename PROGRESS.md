@@ -3099,3 +3099,13 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - **B-10** (alta, arreglado): sin conexión o con una pestaña abierta durante un despliegue nuevo, todas las herramientas culpaban al archivo. Código nuevo `connectionLost` traducido a los 5 idiomas; al volver la conexión se puede reintentar sin recargar.
 
 **Verificación**: lint, typecheck, tests unitarios y build pasan; Chromium `failure-states` (32, dos corridas), `unsupported`, `gotenberg-tools`, `ebook-tools`, `pdf-password`, `converter` (109) pasan.
+
+## 2026-10-23 02:54 UTC — Fase 6, tarea 6C.2 (login, checkout, cancelación, admin y CSV)
+
+**Qué se hizo**
+- `tests/e2e/billing-states.spec.ts` (6 tests, en el CI): checkout con sesión ante lentitud, doble clic, 503, 502, error de red, sin conexión y respuesta que nunca llega. `playwright.config.ts`: `PAYMENTS_MOCK=true` en el segundo servidor de pruebas.
+- **B-11** (media, arreglado): checkout y cancelación de suscripción sin indicador de trabajo, sin tiempo límite (botón muerto para siempre) y con mensaje equivocado sin conexión. `src/lib/post-action.ts` (+ tests) y los dos botones con "Redirigiendo…"/"Procesando…", `aria-busy` y bloqueo del doble envío.
+- **B-12** (baja, abierto): exportar CSV del admin con error muestra JSON crudo; queda para 6C.3.
+- Login: ya cubierto por `login.spec.ts` (fase 5).
+
+**Verificación**: lint, typecheck, tests unitarios (1019) y build pasan; Chromium `billing-states` (6, dos corridas), `login`, control de `clickable` y páginas con sesión pasan.

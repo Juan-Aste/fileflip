@@ -57,7 +57,8 @@ export default defineConfig({
           url: `http://localhost:${port + 1}/es`,
           reuseExistingServer: !process.env.CI,
           timeout: 60_000,
-          env: { AUTH_SECRET: "e2e-only-not-a-real-secret", AUTH_GOOGLE_ID: "e2e", AUTH_GOOGLE_SECRET: "e2e", ADMIN_EMAILS: "admin@e2e.test" },
+          // PAYMENTS_MOCK shows the checkout button (billing-states.spec.ts stubs its API).
+          env: { AUTH_SECRET: "e2e-only-not-a-real-secret", AUTH_GOOGLE_ID: "e2e", AUTH_GOOGLE_SECRET: "e2e", ADMIN_EMAILS: "admin@e2e.test", PAYMENTS_MOCK: "true" },
         },
       ],
 });

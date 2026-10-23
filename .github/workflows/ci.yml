@@ -57,7 +57,7 @@ jobs:
       - name: Firefox, WebKit and phone emulation sample
         run: npx playwright test --project firefox --project webkit --project iphone --project android
       - name: Chromium click, missing-API and failure-state checks
-        run: npx playwright test open-states login clickable unsupported failure-states --project chromium --grep-invert "pages \d+/"
+        run: npx playwright test open-states login clickable unsupported failure-states billing-states --project chromium --grep-invert "pages \d+/"
       - name: Test results
         if: failure()
         uses: actions/upload-artifact@v4
