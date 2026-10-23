@@ -372,7 +372,7 @@ Auditoría de bugs: encontrar y arreglar, antes que los usuarios, bugs del tipo 
 - [x] 6D.3 Prueba de humo en producción, solo lectura y poco tráfico (health, portada en 2 idiomas, catálogo, 5 herramientas, robots, sitemap, créditos, una conversión de imagen y una de PDF en el navegador): consola, 404 y cabeceras; anotar si producción va atrás de `dev`
 
 ### Hito 6E — Archivos reales y casos límite
-- [ ] 6E.1 Script que genera fixtures difíciles sin datos personales: foto grande de celular (12–50 MP, orientación EXIF, HEIC si se puede), PDF de muchas páginas, PDF escaneado, PDF con contraseña, nombres con acentos, espacios, emojis y muy largos, archivos de 0 bytes, extensión que no coincide, cerca y justo por encima del límite
+- [x] 6E.1 Script que genera fixtures difíciles sin datos personales: foto grande de celular (12–50 MP, orientación EXIF, HEIC si se puede), PDF de muchas páginas, PDF escaneado, PDF con contraseña, nombres con acentos, espacios, emojis y muy largos, archivos de 0 bytes, extensión que no coincide, cerca y justo por encima del límite
 - [ ] 6E.2 Familias imagen y PDF con esos fixtures: resultado correcto o mensaje claro, sin colgarse ni agotar memoria, nombre de descarga correcto
 - [ ] 6E.3 Resto de familias (documentos, datos, OCR, comprimidos, ebooks, audio, video, 3D, CAD, utilidades) con los fixtures que apliquen
 

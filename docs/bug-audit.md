@@ -151,3 +151,8 @@ Script nuevo y reutilizable: `scripts/smoke-production.mjs` (solo lectura: 12 pe
 **Cabeceras**: ninguna respuesta trae cabeceras de seguridad (B-17, media, se arregla en 6F.1). `NEXT_PUBLIC_SITE_URL` está bien configurada (canónicas, robots y sitemap con el dominio de Railway).
 
 **Producción va atrás de `dev`**: `main` (desplegado) llega hasta el cierre de la fase 4 (be9ba40, PR #3); `dev` tiene 33 commits más, con todo lo de las fases 5 y 6 (capa del hero que tapaba botones, estados del login por email, Resend, y los arreglos B-01 a B-16). Los bugs que el dueño vio en producción siguen ahí hasta que mergee `dev` en `main`.
+
+
+## 6E.1 — Fixtures de casos límite (2026-10-23)
+
+`scripts/fixtures/edge.mjs` genera 46 archivos en `tests/fixtures/edge/` (ignorada por git; ~90 MB, 24 s): fotos de 12/24/48 MP con orientación EXIF 6 (comprobado con sharp: 4000×3000 y 8000×6000, `orientation: 6`), PNG de 12 MP (33 MB), PDF de 500 páginas, PDF escaneado sin capa de texto, PDF con contraseña (pdf-lib no lo puede abrir sin ella: comprobado), 8 nombres difíciles, 13 archivos de 0 bytes, 8 extensiones mentirosas y Markdown de 15 MB − 1 KB y 15 MB + 1 KB. Detalle en `tests/fixtures/README.md`. HEIC: sharp no codifica HEVC; se usa el `photo.heic` existente. Los límites del navegador (200 MB gratis, 1 GB Pro) se prueban en 6E.2 con objetos `File` creados en la página, sin escribirlos a disco. Sin hallazgos todavía: los usan 6E.2 y 6E.3.

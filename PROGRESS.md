@@ -3156,3 +3156,11 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Producción (`main`) llega solo hasta la fase 4: faltan los 33 commits de las fases 5 y 6. Anotado en "Pendiente del dueño".
 
 **Verificación**: lint pasa (solo se agregó un script y documentación).
+
+## 2026-10-23 04:30 UTC — Fase 6, tarea 6E.1 (fixtures de casos límite)
+
+**Qué se hizo**
+- `scripts/fixtures/edge.mjs`: genera en `tests/fixtures/edge/` (ignorada por git) 46 archivos sintéticos: fotos de 12–48 MP con orientación EXIF, PDF de 500 páginas, escaneado y con contraseña, nombres con acentos/emojis/muy largos, archivos vacíos, extensiones que no coinciden y Markdown justo por debajo y por encima del límite del servidor. Documentado en `tests/fixtures/README.md`.
+- HEIC: sharp no codifica HEVC; se sigue usando `photo.heic`. Los límites del navegador se probarán con `File` creados en la página.
+
+**Verificación**: lint pasa; el script corre en 24 s y se comprobaron orientación, tamaño, páginas y cifrado de los archivos generados.
