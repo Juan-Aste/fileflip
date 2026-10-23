@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useRef, useState, type DragEvent } from "react";
+import { useEffect, useId, useRef, useState, type DragEvent } from "react";
 import { useTranslations } from "next-intl";
 import { FilePlus2, Upload } from "lucide-react";
 
@@ -17,6 +17,18 @@ export default function Dropzone({ onFiles, compact = false, accept, multiple = 
   const inputId = useId();
   const input = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
+
+  // A file picked before the page finished loading (slow phones) sits in the
+  // server-rendered input without a change event React could see: take it now.
+  useEffect(() => {
+    const el = input.current;
+    if (el?.files?.length) {
+      onFiles([...el.files]);
+      el.value = "";
+    }
+    // Only once, on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function onDrop(e: DragEvent) {
     e.preventDefault();

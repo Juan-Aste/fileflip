@@ -3056,3 +3056,11 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Hallazgos**: **B-03** (media): en WebKit (Linux) MP3 → WAV falla con "archivo dañado" aunque el archivo está bien. **B-04** (baja, entorno): la prueba de H.264 de `VideoEncoder` cuelga el renderizador de esa build de WebKit y todas las páginas de video se caen al cargar. Ambos quedan para 6B.3 con tests `fixme`.
 
 **Verificación**: Firefox 14/14, WebKit 12/14 + 2 `fixme`; Chromium `open-states`, `login` y control de `clickable` (27) pasan con `CI=1`; lint, typecheck y tests unitarios pasan.
+
+## 2026-10-23 01:49 UTC — Fase 6, arreglo del CI de 6B.1 (B-05)
+
+**Qué se hizo**
+- CI: el job `e2e-browsers` corre en la imagen `mcr.microsoft.com/playwright:v1.56.0-noble` (instalar las librerías con apt superaba los 25 min) y sube `test-results/` si falla.
+- **B-05** (media, arreglado): un archivo elegido antes de que cargue el JavaScript se perdía en silencio. `Dropzone` ahora toma al montar los archivos que ya tenga el input. Test de regresión `tests/e2e/early-pick.spec.ts` (Chromium, Firefox y WebKit), que falla sin el arreglo.
+
+**Verificación**: lint, typecheck, tests unitarios y build pasan; Firefox + WebKit 28 pasan (2 `fixme`); Chromium `pdf-tools`, `converter`, `archive-tools`, `open-states` (163) pasan.
