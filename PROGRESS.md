@@ -3164,3 +3164,13 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - HEIC: sharp no codifica HEVC; se sigue usando `photo.heic`. Los límites del navegador se probarán con `File` creados en la página.
 
 **Verificación**: lint pasa; el script corre en 24 s y se comprobaron orientación, tamaño, páginas y cifrado de los archivos generados.
+
+## 2026-10-23 05:15 UTC — Fase 6, tarea 6E.2 (imagen y PDF con archivos difíciles)
+
+**Qué se hizo**
+- `tests/e2e/edge-files.spec.ts` (19 tests, en el CI con su paso que genera los fixtures): fotos de 24–48 MP con orientación EXIF, PNG de 33 MB, nombres difíciles, archivos vacíos, extensiones que mienten, límite de tamaño, PDF de 500 páginas, escaneado, con contraseña y solo con permisos.
+- **B-18** (alta, arreglado): unir/dividir/rotar/etc. un PDF cifrado (con contraseña o solo con permisos) descargaba páginas en blanco sin aviso. El worker de PDF descifra con qpdf los que solo tienen permisos y rechaza los que tienen contraseña con un mensaje traducido que lleva a "Quitar contraseña de PDF"; las 7 herramientas de PDF muestran el código real del error.
+- **B-19** (baja, arreglado): un PDF de 0 bytes decía "Solo PDF"; ahora "El archivo está vacío".
+- `playwright.config.ts`: `LANG=C.UTF-8` si no hay locale (Chromium ignoraba nombres no ASCII en el contenedor). `support.ts`: `/api/visit` simulado (retrasaba `networkidle` con MongoDB inaccesible).
+
+**Verificación**: lint, typecheck, tests unitarios (1031) y build pasan; Chromium `edge-files`, `pdf-tools`, `pdf-password`, `sign-pdf`, `ocr-tools`, `unsupported`, `failure-states`, `early-pick` (124) y el resto del grupo del CI pasan.

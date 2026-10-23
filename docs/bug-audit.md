@@ -21,6 +21,8 @@ Registro de hallazgos. Gravedad: **crítica** (rompe una herramienta, el login o
 | B-15 | Todas las páginas (`metadataBase` del layout) y checkout | Servidor | Construir con `NEXT_PUBLIC_SITE_URL` vacía (`NEXT_PUBLIC_SITE_URL=`) o sin protocolo (`app.up.railway.app`): `new URL()` lanzaba "Invalid URL" en el layout y todas las páginas daban 500; con la variable vacía el checkout armaba las URLs de regreso de Mercado Pago sin dominio. Arreglo: `configuredSiteUrl()` en `seo.ts` valida el valor (agrega `https://` a un dominio sin protocolo; si no es válido se ignora) y el checkout usa el origen de la petición. Test de regresión: `src/lib/seo.test.ts` | alta | arreglado | 697c531 |
 | B-16 | Login, sesión y todo lo que usa el adaptador de Auth.js (cuenta, precios con sesión, admin) | Servidor | Arrancar la app mientras MongoDB no responde (por ejemplo, los dos servicios reiniciando a la vez en Railway) y después levantar MongoDB: el cliente nativo de MongoDB cuyo primer intento de conexión falló queda cerrado para siempre ("Topology is closed"), así que nadie puede iniciar sesión y las sesiones abiertas aparecen como cerradas hasta reiniciar la app. Además, con MongoDB caído cada página con sesión esperaba hasta 30 s. Arreglo: `getMongoClient()` conecta de forma explícita y, si falla, descarta el cliente para reintentar en la siguiente petición; la espera de selección de servidor baja a 5 s (también en Mongoose). Test de regresión: `src/lib/mongo-client.test.ts` y `tests/e2e/environments.spec.ts` (falla sin el arreglo: comprobado) | alta | arreglado | e07b326 |
 | B-17 | Todas las respuestas (páginas, APIs, archivos) | Todos (producción y `dev`) | Pedir cualquier URL de producción y mirar las cabeceras: no hay `Content-Security-Policy`, `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`/`frame-ancestors`, `Permissions-Policy` ni `Strict-Transport-Security` (`next.config.ts` solo define `Cache-Control` para `/ocr`). Sin `frame-ancestors` el sitio se puede embeber en otro (clickjacking). Encontrado por la prueba de humo 6D.3 | media | abierto (6F.1) | |
+| B-18 | Herramientas de páginas PDF (unir, dividir, rotar, ordenar, eliminar/extraer páginas, comprimir, numerar, marca de agua, recortar, firmar, OCR, extraer imágenes) | Todos | Subir un PDF cifrado: con contraseña de apertura (`password-abre123.pdf`) o solo con permisos, sin contraseña para abrir (`permissions-only.pdf`, común en extractos bancarios y formularios) y unir/dividir/etc.: la herramienta descargaba un PDF con las páginas **en blanco** sin ningún aviso, porque pdf-lib copia los contenidos cifrados tal cual. Además, las herramientas de PDF mostraban siempre un error genérico e ignoraban el código del error. Arreglo: el worker de PDF descifra con qpdf los PDF que solo tienen permisos y rechaza los que tienen contraseña de apertura con "Este PDF tiene contraseña de apertura. Quítala primero con «Quitar contraseña de PDF»…" (5 idiomas); pdf.js informa lo mismo en las herramientas que lo usan; las 7 herramientas muestran el código del error. Test de regresión: `src/lib/pdf/password.test.ts` (sin descifrar, el texto de las páginas unidas queda vacío) y `tests/e2e/edge-files.spec.ts` | alta | arreglado | 5ab4537 |
+| B-19 | Lista de archivos de las herramientas PDF (unir, etc.) | Todos | Subir un `.pdf` de 0 bytes: la fila decía "Solo PDF", confuso para un archivo que sí se llama `.pdf`. Arreglo: "El archivo está vacío" (5 idiomas) cuando el archivo pesa 0 bytes. Test de regresión: `tests/e2e/edge-files.spec.ts` | baja | arreglado | 5ab4537 |
 
 ## 6A.1 — Clicabilidad de todas las páginas (2026-10-23)
 
@@ -156,3 +158,31 @@ Script nuevo y reutilizable: `scripts/smoke-production.mjs` (solo lectura: 12 pe
 ## 6E.1 — Fixtures de casos límite (2026-10-23)
 
 `scripts/fixtures/edge.mjs` genera 46 archivos en `tests/fixtures/edge/` (ignorada por git; ~90 MB, 24 s): fotos de 12/24/48 MP con orientación EXIF 6 (comprobado con sharp: 4000×3000 y 8000×6000, `orientation: 6`), PNG de 12 MP (33 MB), PDF de 500 páginas, PDF escaneado sin capa de texto, PDF con contraseña (pdf-lib no lo puede abrir sin ella: comprobado), 8 nombres difíciles, 13 archivos de 0 bytes, 8 extensiones mentirosas y Markdown de 15 MB − 1 KB y 15 MB + 1 KB. Detalle en `tests/fixtures/README.md`. HEIC: sharp no codifica HEVC; se usa el `photo.heic` existente. Los límites del navegador (200 MB gratis, 1 GB Pro) se prueban en 6E.2 con objetos `File` creados en la página, sin escribirlos a disco. Sin hallazgos todavía: los usan 6E.2 y 6E.3.
+
+
+## 6E.2 — Familias imagen y PDF con los fixtures de casos límite (2026-10-23)
+
+Detector nuevo: `tests/e2e/edge-files.spec.ts` (19 tests, Chromium, en el CI; genera los fixtures si faltan).
+
+| Caso | Resultado |
+|------|-----------|
+| Foto de 48 MP con orientación EXIF 6 → comprimir | `phone-48mp-orientation6.jpg`, 6000×8000 (derecha) |
+| Foto de 24 MP → PNG (convertidor) | `phone-24mp-orientation6.png`, 4000×6000 |
+| PNG de 12 MP (33 MB) → WebP | `phone-12mp.webp`, 4000×3000 |
+| Nombres con acentos y raya, emojis, muchos puntos, sin extensión, PNG llamado `.jpg` | se conserva el nombre con la extensión nueva (`SIN EXTENSION.jpg`, `png-named.png`) |
+| Imagen de 0 bytes | mensaje claro |
+| 50 MB + 1 byte en comprimir imagen | "enorme.jpg: El archivo es demasiado grande." y sin botón de comprimir |
+| PDF de 500 páginas + 1 → unir | 501 páginas |
+| PDF de 500 páginas → dividir | ZIP con 500 PDF |
+| PDF escaneado de 5 páginas → comprimir | 5 páginas |
+| PDF con contraseña → unir / PDF a texto | B-18 (antes: páginas en blanco sin aviso); ahora pide quitar la contraseña |
+| PDF solo con permisos → unir | B-18 (antes: páginas en blanco); ahora conserva el texto ("1 of 3"…) |
+| Nombre de 235 caracteres y nombre en chino → dividir | nombre de descarga ≤ 255 caracteres, empieza igual |
+| PDF de 0 bytes | B-19 ("Solo PDF" → "El archivo está vacío"); no se puede unir |
+| Word llamado `.pdf` | "Solo PDF"; no se puede unir |
+
+**Falsos positivos del entorno**: en el contenedor (locale C, sin UTF-8) Chromium ignora un archivo elegido por ruta con caracteres no ASCII y guarda las descargas con nombre no ASCII como "download". No pasa con el locale UTF-8 de cualquier sistema de usuario: `playwright.config.ts` ahora pone `LANG=C.UTF-8` cuando no hay locale, y así todos los nombres funcionan.
+
+**Ruido en el CI**: el servidor de pruebas con MongoDB inaccesible (6D.1) hacía que cada `/api/visit` esperara la selección de servidor, lo que retrasaba `networkidle`; probablemente por eso el job de navegadores de 0b54228 llegó al límite de 25 min (los siguientes, con 5 s de espera, tardaron 11 min). Ahora `tests/e2e/support.ts` responde `/api/visit` con 204 como ya hacía con `/api/stats`.
+
+**Resultado**: B-18 (alta) y B-19 (baja), arreglados.
