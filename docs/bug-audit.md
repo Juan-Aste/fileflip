@@ -26,6 +26,7 @@ Registro de hallazgos. Gravedad: **crítica** (rompe una herramienta, el login o
 | B-20 | Herramientas de datos, documentos, OCR, comprimidos, EPUB, audio, video, 3D, CAD y la portada | Todos | Elegir un archivo de 0 bytes (`empty.csv`, `.zip`, `.epub`, `.mp3`, `.mp4`, `.stl`, `.dxf`, `.png`…): la herramienta lo aceptaba, mostraba el botón y al convertir decía "Este formato no se puede convertir así." (comprimidos, EPUB, audio, video, 3D, CAD), "El archivo está dañado o incompleto" (OCR) o "No pudimos leer el contenido. Revisa que el formato sea válido…" (datos); la portada decía "Formato no compatible". Arreglo: `checkInputs()` rechaza al elegirlo con "nombre: El archivo está vacío." (código `emptyFile`, 5 idiomas), salvo en hash, Base64 y crear ZIP, donde un archivo vacío es válido; la portada dice lo mismo. Test de regresión: `tests/e2e/edge-files-families.spec.ts` y `state.test.ts` (antes del arreglo el sondeo mostraba los mensajes de arriba) | baja | arreglado | 3edd510 |
 | B-21 | Portada, PDF → JPG/PNG de varias páginas | Todos | Convertir a JPG un PDF guardado con otra extensión (`informe.docx`, detectado como PDF por el contenido): la descarga se llamaba `informe.docx-jpg.zip` y las páginas `informe.docx-1.jpg`. Arreglo: se quita la última extensión, sea cual sea. Test de regresión: `tests/e2e/edge-files-families.spec.ts` y `to-images.test.ts` | baja | arreglado | 3edd510 |
 | B-22 | Pagos: `PAYMENTS_MOCK` en producción | Servidor | Si `PAYMENTS_MOCK=true` queda definida en Railway (se usa para demos), cualquier visitante con sesión de un país sin Mercado Pago configurado (región internacional, o un país cuyo token falta) pasa a Pro sin pagar: "Pasar a Pro" usa el proveedor simulado y `/api/billing/mock-checkout` activa la suscripción. Además, las suscripciones simuladas siguen "activas" para siempre aunque después se quite la variable. Es el comportamiento documentado del modo demo, no un fallo del código; depende de la configuración | alta (solo si la variable está definida) | dueño (confirmar que `PAYMENTS_MOCK` no esté definida en el servicio `app` de Railway) | |
+| B-23 | APIs que reciben cuerpo: conversión en el servidor (`/api/convert/*`), `/api/stats`, `/api/visit`, `/api/billing/subscribe`, webhook de Mercado Pago y `POST /api/auth/*` | Servidor | Mandar un `POST` con `Transfer-Encoding: chunked` (sin `Content-Length`) y un cuerpo enorme o que nunca termina: la API lo guardaba entero en memoria antes de mirarlo (solo se rechazaba un `Content-Length` declarado grande, y solo en las subidas). Unos pocos pedidos así llenan la memoria del servicio en Railway y lo reinician (caída para todos). Encontrado por el detector de 6F.3 (las rutas de stats, visit e imagen seguían leyendo 40–120 MB sin responder). Arreglo: `readBody()` lee hasta el límite de cada API (16 KB stats, 4 KB visit y facturación, 64 KB webhook y login, límite del plan + 64 KB en las subidas) y responde 413. Test de regresión: `tests/e2e/api-limits.spec.ts` y `src/lib/server/body.test.ts` | alta | arreglado | e95727c |
 
 ## 6A.1 — Clicabilidad de todas las páginas (2026-10-23)
 
@@ -248,3 +249,18 @@ Revisión del código: la firma usa HMAC-SHA256 con comparación en tiempo const
 **Hallazgo de configuración**: B-22 (dueño): con `PAYMENTS_MOCK=true` en producción, cualquiera fuera de los países con Mercado Pago configurado obtiene Pro gratis. No se cambió el código (es el modo demo documentado); queda en "Pendiente del dueño".
 
 **Resultado**: sin bugs de código; B-22 para el dueño. Commit del test: 3312394.
+
+## 6F.3a — Límite de tamaño en las APIs y errores sin datos internos (2026-10-23)
+
+Detector nuevo: `tests/e2e/api-limits.spec.ts` (7 tests, Chromium, en el CI). Manda a cada API que recibe cuerpo un `POST` en partes (sin `Content-Length`) que no termina nunca y mide cuánto alcanzó a enviar antes de la respuesta; y manda pedidos rotos a todas las APIs buscando trazas, rutas del servidor o valores de variables de entorno en la respuesta.
+
+| Caso | Antes | Ahora |
+|------|-------|-------|
+| Subida de 120 MB en partes a `/api/convert/markdown` e `/image` | leía todo y respondía 400 (o seguía leyendo) | 413 tras ~15 MB |
+| 40 MB en partes a `/api/stats` y `/api/visit` | seguía leyendo sin responder | 413 tras 16 KB / 4 KB |
+| 40 MB en partes al webhook y a `/api/auth/signin/nodemailer` | se leía entero | 413 tras 64 KB |
+| Pedidos rotos a conversión, stats, visit, webhook, facturación, índice de búsqueda, login, callback, checkout simulado sin MongoDB y exportar CSV con una tabla inventada | sin trazas ni secretos | igual |
+
+La frecuencia (límites por IP y en los enlaces de inicio de sesión) se revisa en 6F.3b.
+
+**Resultado**: B-23 (alta) arreglado.

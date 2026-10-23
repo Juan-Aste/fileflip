@@ -3207,3 +3207,12 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Sin bugs de código. **B-22** (dueño): `PAYMENTS_MOCK=true` en producción regala Pro fuera de los países con Mercado Pago; anotado en "Pendiente del dueño".
 
 **Verificación**: lint, typecheck y Chromium `access-control` (5) pasan.
+
+## 2026-10-23 06:20 UTC — Fase 6, tarea 6F.3a (tamaño de los cuerpos y errores)
+
+**Qué se hizo**
+- 6F.3 se dividió en 6F.3a (tamaño y errores) y 6F.3b (frecuencia).
+- **B-23** (alta, arreglado en e95727c): las APIs con cuerpo lo guardaban entero en memoria antes de validarlo cuando el cliente no manda `Content-Length`; un cuerpo enorme o infinito podía tumbar el servicio en Railway. `readBody()` corta en el límite de cada API y responde 413 (subidas, stats, visit, facturación, webhook y login).
+- `tests/e2e/api-limits.spec.ts` (7 tests, en el CI): cuerpos infinitos en partes reciben 413 enseguida; los errores de pedidos rotos no muestran trazas, rutas ni secretos (no se encontraron fugas).
+
+**Verificación**: lint, typecheck, tests unitarios (1037) y build pasan; Chromium `api-limits`, `access-control`, `security-headers`, `login`, `billing-states`, `failure-states`, `environments`, `converter`, `search-locale-states` (171 + 4 omitidos que necesitan Gotenberg) pasan.
