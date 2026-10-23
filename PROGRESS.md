@@ -3295,3 +3295,6 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Pendiente del dueño (fase 7)**
 - En Railway (servicio `app`): `PRO_ENABLED=false` y `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com`; mergear `dev` en `main`.
 - Revisión de un abogado de lo marcado en `docs/legal/pendientes-legales.md`. Antes de encender Pro: inscripción fiscal, botones de arrepentimiento y de baja, y B-27.
+
+## 2026-10-23 — FASE 7 TERMINADA
+- Todas las tareas de la fase 7 están marcadas y el CI está en verde (be7c881). Falta que el dueño ponga `PRO_ENABLED=false` y `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com` en Railway y mergee `dev` en `main`. La rutina programada se puede pausar.
