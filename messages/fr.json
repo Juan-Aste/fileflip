@@ -95,7 +95,8 @@
       "items": {
         "free": {
           "q": "Fileflect est-il gratuit ?",
-          "a": "Oui. Vous pouvez convertir sans payer, sans compte et sans filigrane. L'offre Pro est facultative : elle supprime les publicités et augmente les limites."
+          "a": "Oui. Vous pouvez convertir sans payer, sans compte et sans filigrane. L'offre Pro est facultative : elle supprime les publicités et augmente les limites.",
+          "aNoPro": "Oui. Vous pouvez convertir sans payer, sans compte et sans filigrane."
         },
         "upload": {
           "q": "Mes fichiers sont-ils envoyés sur un serveur ?",
@@ -1250,7 +1251,8 @@
         "q3": "Qu'est-ce qui est envoyé au serveur ?",
         "a3": "Le livre est lu dans votre navigateur et transformé en une seule page HTML sans scripts ; seule cette page est envoyée pour être imprimée en PDF. Sur le serveur, elle est nettoyée à nouveau, ne peut rien charger depuis internet et n'est pas conservée : elle est supprimée à la fin.",
         "q4": "Y a-t-il une limite de taille ?",
-        "a4": "La page assemblée (avec ses images) peut peser jusqu'à 15 Mo avec l'offre gratuite et 50 Mo avec Pro. Si votre livre contient beaucoup d'images et dépasse la limite, décochez « Inclure les images du livre »."
+        "a4": "La page assemblée (avec ses images) peut peser jusqu'à 15 Mo avec l'offre gratuite et 50 Mo avec Pro. Si votre livre contient beaucoup d'images et dépasse la limite, décochez « Inclure les images du livre ».",
+        "a4NoPro": "La page assemblée (avec ses images) peut peser jusqu'à 15 Mo. Si votre livre contient beaucoup d'images et dépasse la limite, décochez « Inclure les images du livre »."
       }
     },
     "create-epub": {
@@ -1283,6 +1285,7 @@
         "a3": "L'audio AAC (M4A) est décodé par le codec du navigateur. Chrome, Edge et Safari le lisent ; certains navigateurs sans codecs propriétaires non. Dans ce cas, un avertissement s'affiche : essayez un autre navigateur.",
         "q4": "Y a-t-il une limite ?",
         "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 3 heures de durée, car le résultat est construit dans la mémoire de votre navigateur. Seule la piste audio principale est conservée ; si le fichier est une vidéo, l'image est ignorée.",
+        "a4NoPro": "Jusqu'à 200 Mo par fichier et 3 heures de durée, car le résultat est construit dans la mémoire de votre navigateur. Seule la piste audio principale est conservée ; si le fichier est une vidéo, l'image est ignorée.",
         "q5": "Qu'est-ce que l'AIFF et quand l'utiliser ?",
         "a5": "L'AIFF est le format sans perte d'Apple, l'équivalent du WAV sur Mac, dans Logic ou GarageBand. Les AIFF et AIFF-C non compressés (8, 16, 24 et 32 bits) sont lus et l'AIFF est écrit en 16 bits ; les AIFF-C compressés (μ-law, par exemple) ne sont pas pris en charge."
       }
@@ -1300,7 +1303,8 @@
         "q3": "Y a-t-il une perte de qualité ?",
         "a3": "En WAV, FLAC ou AIFF, non : l'extrait est enregistré sans perte (en 16 bits). En MP3, M4A ou OGG il est recompressé à la qualité choisie ; 192 kbps est pratiquement indiscernable de l'original.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Un fichier à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 3 heures de durée. Il lit les mêmes formats que « Convertir un audio » ; le M4A/AAC dépend de la présence de ce décodeur dans votre navigateur."
+        "a4": "Un fichier à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 3 heures de durée. Il lit les mêmes formats que « Convertir un audio » ; le M4A/AAC dépend de la présence de ce décodeur dans votre navigateur.",
+        "a4NoPro": "Un fichier à la fois, jusqu'à 200 Mo et 3 heures de durée. Il lit les mêmes formats que « Convertir un audio » ; le M4A/AAC dépend de la présence de ce décodeur dans votre navigateur."
       }
     },
     "adjust-audio": {
@@ -1316,7 +1320,8 @@
         "q3": "Quel débit me faut-il ?",
         "a3": "Pour la voix, 64 à 96 kbps en mono ; pour la musique, 192 kbps ou plus. Un débit plus élevé sonne mieux et donne un fichier plus lourd. WAV, FLAC et AIFF n'ont pas de débit car ils sont sans perte.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Il lit les mêmes formats que « Convertir un audio »."
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Il lit les mêmes formats que « Convertir un audio ».",
+        "a4NoPro": "Jusqu'à 200 Mo par fichier, 3 heures par fichier et plusieurs fichiers par lot. Il lit les mêmes formats que « Convertir un audio »."
       }
     },
     "normalize-audio": {
@@ -1332,7 +1337,8 @@
         "q3": "Pourquoi mon audio a-t-il à peine changé ?",
         "a3": "Si sa crête est déjà proche de −1 dB ou son niveau moyen proche de −16 dB, le gain nécessaire est faible. Le gain appliqué s'affiche à côté de chaque résultat. Pour ne pas amplifier le bruit, la hausse maximale est de +30 dB.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Chaque fichier est lu deux fois (mesure, puis application) : c'est un peu plus long qu'une conversion."
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro), 3 heures par fichier et plusieurs fichiers par lot. Chaque fichier est lu deux fois (mesure, puis application) : c'est un peu plus long qu'une conversion.",
+        "a4NoPro": "Jusqu'à 200 Mo par fichier, 3 heures par fichier et plusieurs fichiers par lot. Chaque fichier est lu deux fois (mesure, puis application) : c'est un peu plus long qu'une conversion."
       }
     },
     "join-audio": {
@@ -1348,7 +1354,8 @@
         "q3": "Y a-t-il une coupure entre les pistes ?",
         "a3": "Aucune pause n'est ajoutée, sauf si vous choisissez un silence entre les pistes (0,5, 1 ou 2 secondes). Les pistes s'enchaînent échantillon par échantillon ; si une chanson se termine brusquement, le changement s'entendra comme dans l'original.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 3 heures au total, car le résultat est construit dans la mémoire du navigateur. Si un fichier est endommagé, il est indiqué."
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 3 heures au total, car le résultat est construit dans la mémoire du navigateur. Si un fichier est endommagé, il est indiqué.",
+        "a4NoPro": "Jusqu'à 200 Mo par fichier et 3 heures au total, car le résultat est construit dans la mémoire du navigateur. Si un fichier est endommagé, il est indiqué."
       }
     },
     "video-converter": {
@@ -1364,7 +1371,8 @@
         "q3": "Pourquoi mon MP4 est-il en VP9 ou AV1 ?",
         "a3": "Certains navigateurs (comme Chromium ou Firefox sous Linux) n'ont pas d'encodeur H.264. Le MP4 est alors créé en VP9 ou AV1, lus par Chrome, Edge, Firefox et Android, mais peut-être pas sur iPhone. Pour du H.264, utilisez Chrome, Edge ou Safari ; un avis s'affiche quand il manque.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée, car la vidéo est assemblée dans la mémoire du navigateur. Les pistes vidéo et audio principales sont conservées ; les sous-titres intégrés ne sont pas copiés. AVI, WMV et FLV ne sont pas encore lus."
+        "a4": "Jusqu'à 200 Mo par fichier avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée, car la vidéo est assemblée dans la mémoire du navigateur. Les pistes vidéo et audio principales sont conservées ; les sous-titres intégrés ne sont pas copiés. AVI, WMV et FLV ne sont pas encore lus.",
+        "a4NoPro": "Jusqu'à 200 Mo par fichier et 2 heures de durée, car la vidéo est assemblée dans la mémoire du navigateur. Les pistes vidéo et audio principales sont conservées ; les sous-titres intégrés ne sont pas copiés. AVI, WMV et FLV ne sont pas encore lus."
       }
     },
     "extract-audio": {
@@ -1380,7 +1388,8 @@
         "q3": "Puis-je extraire l'audio d'une vidéo YouTube ?",
         "a3": "Uniquement à partir de fichiers déjà présents sur votre appareil et que vous avez le droit d'utiliser. Cet outil ne télécharge pas de vidéos depuis internet.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro) et 3 heures d'audio. La piste audio principale est extraite. Convertir l'audio AAC d'un MP4 vers un autre format exige un navigateur qui lit l'AAC (Chrome, Edge ou Safari) ; « Original » fonctionne partout."
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro) et 3 heures d'audio. La piste audio principale est extraite. Convertir l'audio AAC d'un MP4 vers un autre format exige un navigateur qui lit l'AAC (Chrome, Edge ou Safari) ; « Original » fonctionne partout.",
+        "a4NoPro": "Jusqu'à 200 Mo par vidéo et 3 heures d'audio. La piste audio principale est extraite. Convertir l'audio AAC d'un MP4 vers un autre format exige un navigateur qui lit l'AAC (Chrome, Edge ou Safari) ; « Original » fonctionne partout."
       }
     },
     "compress-video": {
@@ -1396,7 +1405,8 @@
         "q3": "Combien de temps cela prend-il ?",
         "a3": "Chaque image est décodée puis réencodée avec le codec de votre navigateur : sur un ordinateur, c'est souvent plus rapide que la durée de la vidéo ; sur un ancien téléphone, cela peut être plus long. Vous pouvez annuler à tout moment.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. L'image n'est jamais agrandie. Le MP4 est créé en H.264 quand le navigateur le permet (Chrome, Edge, Safari) ; sinon en VP9 ou AV1."
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. L'image n'est jamais agrandie. Le MP4 est créé en H.264 quand le navigateur le permet (Chrome, Edge, Safari) ; sinon en VP9 ou AV1.",
+        "a4NoPro": "Jusqu'à 200 Mo par vidéo, 2 heures de durée et 30 minutes de traitement par fichier. L'image n'est jamais agrandie. Le MP4 est créé en H.264 quand le navigateur le permet (Chrome, Edge, Safari) ; sinon en VP9 ou AV1."
       }
     },
     "trim-video": {
@@ -1412,7 +1422,8 @@
         "q3": "Puis-je supprimer une partie au milieu ?",
         "a3": "Pour l'instant, un seul extrait est conservé à la fois. Pour retirer un passage au milieu, coupez les deux parties et assemblez-les avec « Fusionner des vidéos ».",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée. Si votre navigateur ne lit pas le fichier (par exemple MKV ou H.264 dans certains), vous pouvez quand même saisir les temps."
+        "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro) et 2 heures de durée. Si votre navigateur ne lit pas le fichier (par exemple MKV ou H.264 dans certains), vous pouvez quand même saisir les temps.",
+        "a4NoPro": "Une vidéo à la fois, jusqu'à 200 Mo et 2 heures de durée. Si votre navigateur ne lit pas le fichier (par exemple MKV ou H.264 dans certains), vous pouvez quand même saisir les temps."
       }
     },
     "video-to-gif": {
@@ -1428,7 +1439,8 @@
         "q3": "Y a-t-il du son ?",
         "a3": "Non : le format GIF ne gère pas le son. Si vous avez besoin de l'audio, utilisez « Couper une vidéo » et partagez la vidéo.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro). Le navigateur doit pouvoir décoder la vidéo (certains navigateurs sans codecs propriétaires ne décodent pas le H.264). L'image n'est jamais agrandie."
+        "a4": "Une vidéo à la fois, jusqu'à 200 Mo avec l'offre gratuite (500 Mo avec Pro). Le navigateur doit pouvoir décoder la vidéo (certains navigateurs sans codecs propriétaires ne décodent pas le H.264). L'image n'est jamais agrandie.",
+        "a4NoPro": "Une vidéo à la fois, jusqu'à 200 Mo. Le navigateur doit pouvoir décoder la vidéo (certains navigateurs sans codecs propriétaires ne décodent pas le H.264). L'image n'est jamais agrandie."
       }
     },
     "video-speed": {
@@ -1444,7 +1456,8 @@
         "q3": "Perd-on en qualité ?",
         "a3": "La vidéo est réencodée en haute qualité, dans le même format que l'original (MP4, MOV, MKV ou WebM). La résolution ne change pas.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. Votre navigateur doit pouvoir décoder la vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures de durée et 30 minutes de traitement par fichier. Votre navigateur doit pouvoir décoder la vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires).",
+        "a4NoPro": "Jusqu'à 200 Mo par vidéo, 2 heures de durée et 30 minutes de traitement par fichier. Votre navigateur doit pouvoir décoder la vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
       }
     },
     "join-videos": {
@@ -1460,7 +1473,8 @@
         "q3": "Perd-on en qualité ?",
         "a3": "Toute la vidéo est réencodée en haute qualité pour que les parties s'enchaînent. Les séquences plus grandes que la première sont réduites à sa taille.",
         "q4": "Y a-t-il une limite ?",
-        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures au total et 30 minutes de traitement. Le résultat est construit dans la mémoire de l'appareil : sur téléphone, mieux vaut fusionner des vidéos courtes. Votre navigateur doit pouvoir décoder chaque vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
+        "a4": "Jusqu'à 200 Mo par vidéo avec l'offre gratuite (500 Mo avec Pro), 2 heures au total et 30 minutes de traitement. Le résultat est construit dans la mémoire de l'appareil : sur téléphone, mieux vaut fusionner des vidéos courtes. Votre navigateur doit pouvoir décoder chaque vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires).",
+        "a4NoPro": "Jusqu'à 200 Mo par vidéo, 2 heures au total et 30 minutes de traitement. Le résultat est construit dans la mémoire de l'appareil : sur téléphone, mieux vaut fusionner des vidéos courtes. Votre navigateur doit pouvoir décoder chaque vidéo (le H.264 n'est pas décodé par certains navigateurs sans codecs propriétaires)."
       }
     },
     "model-converter": {
@@ -1649,6 +1663,7 @@
   "Login": {
     "title": "Connexion",
     "subtitle": "Pas besoin de compte pour convertir. Connectez-vous pour gérer votre offre Pro.",
+    "subtitleNoPro": "Pas besoin de compte pour convertir.",
     "google": "Continuer avec Google",
     "or": "ou",
     "emailLabel": "Votre e-mail",

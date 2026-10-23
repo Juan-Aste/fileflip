@@ -3253,3 +3253,14 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Test de integración nuevo `tests/e2e/login-real.spec.ts` (en el CI): sin simular Auth.js; comprueba la respuesta real, que llega a `/es/login/verify`, que se envía un solo correo a la dirección y que el enlace del correo apunta al host público. Falla sin el arreglo (comprobado). `login.spec.ts` ahora simula la respuesta con la forma real.
 
 **Verificación**: lint, typecheck, tests unitarios (1035 + 10 omitidos) y build pasan; Chromium `login`, `login-real`, `rate-limits`, `environments` (17) pasan.
+
+## 2026-10-23 15:00 UTC — Fase 7, tarea 7.2 (ocultar el plan Pro)
+
+**Qué se hizo**
+- Interruptor `PRO_ENABLED` (`src/lib/pro.ts`, apagado salvo `"true"`), leído en el servidor. Las páginas estáticas (header, footer, herramientas, portada, sitemap) lo toman al construir: el `Dockerfile` lo declara como `ARG` y Railway redespliega al cambiar la variable.
+- Apagado: sin enlace "Precios" en header, menú móvil y footer; `/[locale]/pricing` da 404 y sale del sitemap; `/api/billing/subscribe`, `/cancel` y `/mock-checkout` dan 404; el webhook de Mercado Pago sigue verificando la firma pero no cambia nada (responde 200); `planForUser` devuelve siempre "free" (todos ven anuncios y tienen los límites gratuitos, aunque tengan una suscripción guardada); Mi cuenta sin la sección del plan; sin las líneas "Con Pro…" de los límites de las herramientas; respuestas de FAQ y subtítulo del login sin Pro (claves nuevas `…NoPro` en los 5 idiomas, para la portada y 13 herramientas de audio, video y EPUB).
+- Encendido: todo como antes. El código de pagos y sus tests siguen; los tests unitarios de pagos y webhook corren con `PRO_ENABLED=true` y el segundo servidor de Playwright (el de `billing-states`) también.
+- Tests nuevos: `tests/e2e/pro-switch.spec.ts` (portada en 5 idiomas, herramientas y login sin enlaces a precios ni "Pro"; menú móvil; `/pricing` 404 en 5 idiomas; APIs de facturación 404; sitemap; Mi cuenta de un usuario con suscripción activa en MongoDB: sin sección de plan y plan "free"), unitarios en `pro.test.ts`, `seo.test.ts`, `billing.test.ts` y el del webhook. `access-control.spec.ts` prueba las APIs de facturación con Pro encendido.
+- Documentado en `.env.example`, DEPLOY.md y `docs/launch-checklist.md` (`PRO_ENABLED=false`; Mercado Pago solo al activar Pro). Los textos legales todavía mencionan Pro: se reemplazan en 7.3.
+
+**Verificación**: lint, typecheck, tests unitarios y build pasan; Chromium `pro-switch`, `billing-states`, `access-control`, `api-limits`, `login`, `login-real`, `security-headers`, `environments` (40) y `clickable` + `open-states` pasan.

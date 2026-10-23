@@ -3,35 +3,17 @@
 // server/resend-stub.mjs, no email leaves the machine) and the app behind a
 // proxy like Railway's, which forwards the public host and protocol while
 // the app listens on an internal port. Nothing of Auth.js is stubbed.
-import { spawn, type ChildProcess } from "node:child_process";
+import type { ChildProcess } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync } from "node:fs";
 import { createServer, request as httpRequest, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import { startApp } from "./server/app";
 import { expect, test } from "./support";
 
 const appPort = Number(process.env.E2E_PORT ?? 3100) + 20;
-
-/** `next start` on the internal port, resolved once it answers. */
-async function startApp(env: Record<string, string>) {
-  const base = `http://127.0.0.1:${appPort}`;
-  if (await fetch(`${base}/api/health`).then(() => true, () => false)) throw new Error(`Port ${appPort} is already in use`);
-  const child = spawn(process.execPath, [require.resolve("next/dist/bin/next"), "start", "-p", String(appPort)], {
-    env: { PATH: process.env.PATH!, HOME: process.env.HOME!, NODE_ENV: "production", ...env },
-    stdio: ["ignore", "ignore", "pipe"],
-  });
-  let stderr = "";
-  child.stderr!.on("data", (chunk) => (stderr += chunk));
-  for (let i = 0; i < 120; i++) {
-    if (await fetch(`${base}/api/health`).then((r) => r.ok, () => false)) return child;
-    if (child.exitCode !== null) break;
-    await new Promise((r) => setTimeout(r, 500));
-  }
-  child.kill();
-  throw new Error(`next start did not come up: ${stderr.slice(-2000)}`);
-}
 
 /** A reverse proxy that, like Railway's edge, forwards its own (public) host and HTTPS. */
 async function startProxy() {
@@ -78,7 +60,7 @@ test.describe("email sign-in with the real Auth.js behind a proxy", () => {
     // The browser talks to the proxy: that is the public origin, and AUTH_URL.
     publicBase = `http://localhost:${(proxy.address() as AddressInfo).port}`;
     mails = join(mkdtempSync(join(tmpdir(), "fileflect-mail-")), "resend.jsonl");
-    app = await startApp({
+    app = await startApp(appPort, {
       AUTH_SECRET: "e2e-only-not-a-real-secret",
       AUTH_URL: `https://${new URL(publicBase).host}`,
       MONGODB_URI: `${mongo.getUri()}fileflect-login`,

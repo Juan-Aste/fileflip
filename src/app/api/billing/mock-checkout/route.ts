@@ -1,11 +1,12 @@
 import { applyProviderStatus } from "@/lib/billing";
 import { mockPaymentsAllowed } from "@/lib/payments/mock";
+import { proEnabled } from "@/lib/pro";
 
 export const runtime = "nodejs";
 
 /** Simulated checkout (development/demo only): activates the subscription and goes back. */
 export async function GET(request: Request) {
-  if (!mockPaymentsAllowed()) return new Response("Not found", { status: 404 });
+  if (!proEnabled() || !mockPaymentsAllowed()) return new Response("Not found", { status: 404 });
   const url = new URL(request.url);
   const id = url.searchParams.get("id") ?? "";
   if (!id.startsWith("mock-")) return new Response("Bad request", { status: 400 });

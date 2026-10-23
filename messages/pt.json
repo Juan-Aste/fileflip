@@ -95,7 +95,8 @@
       "items": {
         "free": {
           "q": "O Fileflect é grátis?",
-          "a": "Sim. Você pode converter sem pagar, sem criar conta e sem marca d'água. O plano Pro é opcional: remove os anúncios e amplia os limites."
+          "a": "Sim. Você pode converter sem pagar, sem criar conta e sem marca d'água. O plano Pro é opcional: remove os anúncios e amplia os limites.",
+          "aNoPro": "Sim. Você pode converter sem pagar, sem criar conta e sem marca d'água."
         },
         "upload": {
           "q": "Meus arquivos são enviados para algum servidor?",
@@ -1250,7 +1251,8 @@
         "q3": "O que é enviado ao servidor?",
         "a3": "O livro é lido no seu navegador e transformado em uma única página HTML sem scripts; só essa página é enviada para ser impressa em PDF. No servidor ela é limpa de novo, não pode carregar nada da internet e não é guardada: é apagada ao terminar.",
         "q4": "Há limite de tamanho?",
-        "a4": "A página montada (com as imagens) pode ter até 15 MB no plano gratuito e 50 MB com o Pro. Se o seu livro tiver muitas imagens e passar do limite, desmarque \"Incluir as imagens do livro\"."
+        "a4": "A página montada (com as imagens) pode ter até 15 MB no plano gratuito e 50 MB com o Pro. Se o seu livro tiver muitas imagens e passar do limite, desmarque \"Incluir as imagens do livro\".",
+        "a4NoPro": "A página montada (com as imagens) pode ter até 15 MB. Se o seu livro tiver muitas imagens e passar do limite, desmarque \"Incluir as imagens do livro\"."
       }
     },
     "create-epub": {
@@ -1283,6 +1285,7 @@
         "a3": "O áudio AAC (M4A) é decodificado pelo codec do navegador. Chrome, Edge e Safari leem; alguns navegadores sem codecs proprietários não. Nesse caso aparece um aviso: tente outro navegador.",
         "q4": "Há limite?",
         "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com o Pro) e 3 horas de duração, porque o resultado é montado na memória do seu navegador. Só a faixa de áudio principal é mantida; se o arquivo for um vídeo, a imagem é ignorada.",
+        "a4NoPro": "Até 200 MB por arquivo e 3 horas de duração, porque o resultado é montado na memória do seu navegador. Só a faixa de áudio principal é mantida; se o arquivo for um vídeo, a imagem é ignorada.",
         "q5": "O que é AIFF e quando usar?",
         "a5": "AIFF é o formato sem perda da Apple, o equivalente do WAV no Mac, no Logic ou no GarageBand. São lidos AIFF e AIFF-C sem compressão (8, 16, 24 e 32 bits) e o AIFF é gravado em 16 bits; AIFF-C comprimidos (μ-law, por exemplo) não são aceitos."
       }
@@ -1300,7 +1303,8 @@
         "q3": "Perde qualidade?",
         "a3": "Em WAV, FLAC ou AIFF, não: o trecho é salvo sem perda (em 16 bits). Em MP3, M4A ou OGG é comprimido de novo na qualidade escolhida; 192 kbps é praticamente indistinguível do original.",
         "q4": "Há um limite?",
-        "a4": "Um arquivo por vez, de até 200 MB no plano gratuito (500 MB com Pro) e 3 horas de duração. Lê os mesmos formatos que \"Converter áudio\"; o M4A/AAC depende de o seu navegador ter esse decodificador."
+        "a4": "Um arquivo por vez, de até 200 MB no plano gratuito (500 MB com Pro) e 3 horas de duração. Lê os mesmos formatos que \"Converter áudio\"; o M4A/AAC depende de o seu navegador ter esse decodificador.",
+        "a4NoPro": "Um arquivo por vez, de até 200 MB e 3 horas de duração. Lê os mesmos formatos que \"Converter áudio\"; o M4A/AAC depende de o seu navegador ter esse decodificador."
       }
     },
     "adjust-audio": {
@@ -1316,7 +1320,8 @@
         "q3": "Qual bitrate eu preciso?",
         "a3": "Para voz, 64–96 kbps em mono; para música, 192 kbps ou mais. Bitrate maior soa melhor e gera arquivo maior. WAV, FLAC e AIFF não usam bitrate porque não têm perda.",
         "q4": "Há um limite?",
-        "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro), 3 horas por arquivo e vários arquivos por lote. Lê os mesmos formatos que \"Converter áudio\"."
+        "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro), 3 horas por arquivo e vários arquivos por lote. Lê os mesmos formatos que \"Converter áudio\".",
+        "a4NoPro": "Até 200 MB por arquivo, 3 horas por arquivo e vários arquivos por lote. Lê os mesmos formatos que \"Converter áudio\"."
       }
     },
     "normalize-audio": {
@@ -1332,7 +1337,8 @@
         "q3": "Por que meu áudio quase não mudou?",
         "a3": "Se o pico já está perto de −1 dB ou o volume médio perto de −16 dB, o ganho necessário é pequeno. O ganho aplicado aparece ao lado de cada resultado. Para não amplificar ruído, o aumento máximo é de +30 dB.",
         "q4": "Há um limite?",
-        "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro), 3 horas por arquivo e vários arquivos por lote. Cada arquivo é lido duas vezes (medir e aplicar), por isso demora um pouco mais que uma conversão."
+        "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro), 3 horas por arquivo e vários arquivos por lote. Cada arquivo é lido duas vezes (medir e aplicar), por isso demora um pouco mais que uma conversão.",
+        "a4NoPro": "Até 200 MB por arquivo, 3 horas por arquivo e vários arquivos por lote. Cada arquivo é lido duas vezes (medir e aplicar), por isso demora um pouco mais que uma conversão."
       }
     },
     "join-audio": {
@@ -1348,7 +1354,8 @@
         "q3": "Fica um corte entre as faixas?",
         "a3": "Nenhuma pausa é adicionada, a menos que você escolha um silêncio entre faixas (0,5, 1 ou 2 segundos). As faixas são encadeadas amostra por amostra; se uma música termina de repente, a mudança vai ser tão perceptível quanto no original.",
         "q4": "Há um limite?",
-        "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro) e 3 horas no total, porque o resultado é montado na memória do navegador. Se um arquivo estiver danificado, é indicado qual."
+        "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com Pro) e 3 horas no total, porque o resultado é montado na memória do navegador. Se um arquivo estiver danificado, é indicado qual.",
+        "a4NoPro": "Até 200 MB por arquivo e 3 horas no total, porque o resultado é montado na memória do navegador. Se um arquivo estiver danificado, é indicado qual."
       }
     },
     "video-converter": {
@@ -1364,7 +1371,8 @@
         "q3": "Por que meu MP4 saiu em VP9 ou AV1?",
         "a3": "Alguns navegadores (como o Chromium ou o Firefox no Linux) não têm codificador H.264. Nesse caso o MP4 é criado com VP9 ou AV1, que tocam no Chrome, Edge, Firefox e Android, mas talvez não no iPhone. Para H.264 use o Chrome, o Edge ou o Safari; você verá um aviso quando faltar.",
         "q4": "Existe algum limite?",
-        "a4": "Até 200 MB por arquivo no plano grátis (500 MB com Pro) e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. AVI, WMV e FLV ainda não podem ser lidos."
+        "a4": "Até 200 MB por arquivo no plano grátis (500 MB com Pro) e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. AVI, WMV e FLV ainda não podem ser lidos.",
+        "a4NoPro": "Até 200 MB por arquivo e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. AVI, WMV e FLV ainda não podem ser lidos."
       }
     },
     "extract-audio": {
@@ -1380,7 +1388,8 @@
         "q3": "Posso extrair o áudio de um vídeo do YouTube?",
         "a3": "Só de arquivos que você já tem no seu dispositivo e tem direito de usar. Esta ferramenta não baixa vídeos da internet.",
         "q4": "Existe algum limite?",
-        "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro) e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos."
+        "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro) e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos.",
+        "a4NoPro": "Até 200 MB por vídeo e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos."
       }
     },
     "compress-video": {
@@ -1396,7 +1405,8 @@
         "q3": "Quanto tempo leva?",
         "a3": "Cada quadro é decodificado e codificado de novo com o codec do seu navegador: num computador costuma ser mais rápido que a duração do vídeo; em celulares antigos pode demorar mais. Você pode cancelar a qualquer momento.",
         "q4": "Existe algum limite?",
-        "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro), 2 horas de duração e 30 minutos de processamento por arquivo. A imagem nunca é ampliada. O MP4 é criado em H.264 quando o navegador permite (Chrome, Edge, Safari); se não, em VP9 ou AV1."
+        "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro), 2 horas de duração e 30 minutos de processamento por arquivo. A imagem nunca é ampliada. O MP4 é criado em H.264 quando o navegador permite (Chrome, Edge, Safari); se não, em VP9 ou AV1.",
+        "a4NoPro": "Até 200 MB por vídeo, 2 horas de duração e 30 minutos de processamento por arquivo. A imagem nunca é ampliada. O MP4 é criado em H.264 quando o navegador permite (Chrome, Edge, Safari); se não, em VP9 ou AV1."
       }
     },
     "trim-video": {
@@ -1412,7 +1422,8 @@
         "q3": "Posso tirar uma parte do meio?",
         "a3": "Por enquanto se mantém um trecho por vez. Para tirar algo do meio, corte as duas partes e junte-as com «Juntar vídeos».",
         "q4": "Existe algum limite?",
-        "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro) e 2 horas de duração. Se o navegador não reproduzir o arquivo (por exemplo MKV ou H.264 em alguns), você ainda pode digitar os tempos."
+        "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro) e 2 horas de duração. Se o navegador não reproduzir o arquivo (por exemplo MKV ou H.264 em alguns), você ainda pode digitar os tempos.",
+        "a4NoPro": "Um vídeo por vez, até 200 MB e 2 horas de duração. Se o navegador não reproduzir o arquivo (por exemplo MKV ou H.264 em alguns), você ainda pode digitar os tempos."
       }
     },
     "video-to-gif": {
@@ -1428,7 +1439,8 @@
         "q3": "Tem som?",
         "a3": "Não: o formato GIF não tem som. Se precisar do áudio, use «Cortar vídeo» e compartilhe o vídeo.",
         "q4": "Existe algum limite?",
-        "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro). O navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários). A imagem nunca é ampliada."
+        "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro). O navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários). A imagem nunca é ampliada.",
+        "a4NoPro": "Um vídeo por vez, até 200 MB. O navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários). A imagem nunca é ampliada."
       }
     },
     "video-speed": {
@@ -1444,7 +1456,8 @@
         "q3": "Perde qualidade?",
         "a3": "O vídeo é codificado de novo em alta qualidade, no mesmo formato do original (MP4, MOV, MKV ou WebM). A resolução não muda.",
         "q4": "Existe algum limite?",
-        "a4": "Até 200 MB por vídeo no plano gratuito (500 MB com o Pro), 2 horas de duração e 30 minutos de processamento por arquivo. Seu navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários)."
+        "a4": "Até 200 MB por vídeo no plano gratuito (500 MB com o Pro), 2 horas de duração e 30 minutos de processamento por arquivo. Seu navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários).",
+        "a4NoPro": "Até 200 MB por vídeo, 2 horas de duração e 30 minutos de processamento por arquivo. Seu navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários)."
       }
     },
     "join-videos": {
@@ -1460,7 +1473,8 @@
         "q3": "Perde qualidade?",
         "a3": "O vídeo inteiro é codificado de novo em alta qualidade para que as partes se encaixem. Clipes maiores que o primeiro são reduzidos ao tamanho dele.",
         "q4": "Existe algum limite?",
-        "a4": "Até 200 MB por vídeo no plano gratuito (500 MB com o Pro), 2 horas no total e 30 minutos de processamento. O resultado é montado na memória do dispositivo, então no celular é melhor juntar vídeos curtos. Seu navegador precisa conseguir decodificar cada vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários)."
+        "a4": "Até 200 MB por vídeo no plano gratuito (500 MB com o Pro), 2 horas no total e 30 minutos de processamento. O resultado é montado na memória do dispositivo, então no celular é melhor juntar vídeos curtos. Seu navegador precisa conseguir decodificar cada vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários).",
+        "a4NoPro": "Até 200 MB por vídeo, 2 horas no total e 30 minutos de processamento. O resultado é montado na memória do dispositivo, então no celular é melhor juntar vídeos curtos. Seu navegador precisa conseguir decodificar cada vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários)."
       }
     },
     "model-converter": {
@@ -1649,6 +1663,7 @@
   "Login": {
     "title": "Entrar",
     "subtitle": "Você não precisa de conta para converter. Entre para gerenciar seu plano Pro.",
+    "subtitleNoPro": "Você não precisa de conta para converter.",
     "google": "Continuar com o Google",
     "or": "ou",
     "emailLabel": "Seu e-mail",

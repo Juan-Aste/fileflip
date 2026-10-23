@@ -5,6 +5,7 @@ import { creditsSlugs } from "@/config/credits";
 import { availableTools, tools } from "@/config/tools";
 import { longtailPages, longtailTranslation } from "@/content/longtail";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
+import { proEnabled } from "@/lib/pro";
 
 /**
  * NEXT_PUBLIC_SITE_URL as an origin, or undefined when it is missing, empty or
@@ -47,7 +48,7 @@ export function alternatesFor(locale: Locale, path: LocalizedPath) {
 export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
   const pages: { path: LocalizedPath; priority: number }[] = [
     { path: () => "", priority: 1 },
-    { path: () => "/pricing", priority: 0.6 },
+    ...(proEnabled() ? [{ path: () => "/pricing", priority: 0.6 }] : []),
     { path: () => "/privacy", priority: 0.3 },
     { path: () => "/terms", priority: 0.3 },
     { path: () => "/contact", priority: 0.3 },

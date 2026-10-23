@@ -3,6 +3,7 @@ import { allToolsSlugs } from "@/config/categories";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import LogoMark from "@/components/brand/LogoMark";
+import { proEnabled } from "@/lib/pro";
 import SearchButton from "@/components/search/SearchButton";
 import AccountLink from "./AccountLink";
 import LocaleSwitcher from "./LocaleSwitcher";
@@ -15,6 +16,7 @@ const navLink =
 export default function Header() {
   const t = useTranslations("Header");
   const toolsHref = `/${allToolsSlugs[useLocale() as Locale]}`;
+  const pro = proEnabled();
 
   return (
     <header className="sticky top-0 z-30 border-b border-border bg-surface/90 backdrop-blur">
@@ -34,9 +36,11 @@ export default function Header() {
           <Link href={toolsHref} className={navLink}>
             {t("nav.tools")}
           </Link>
-          <Link href="/pricing" className={navLink}>
-            {t("nav.pricing")}
-          </Link>
+          {pro && (
+            <Link href="/pricing" className={navLink}>
+              {t("nav.pricing")}
+            </Link>
+          )}
           <AccountLink />
           <span aria-hidden="true" className="mx-1 h-6 w-px bg-border" />
           <LocaleSwitcher />
@@ -50,9 +54,11 @@ export default function Header() {
               <Link href={toolsHref} className={`${navLink} !py-3 !text-base`}>
                 {t("nav.tools")}
               </Link>
-              <Link href="/pricing" className={`${navLink} !py-3 !text-base`}>
-                {t("nav.pricing")}
-              </Link>
+              {pro && (
+                <Link href="/pricing" className={`${navLink} !py-3 !text-base`}>
+                  {t("nav.pricing")}
+                </Link>
+              )}
               <AccountLink className="px-3 py-3 text-base" />
             </nav>
             <div className="border-t border-border pt-3 pb-1">

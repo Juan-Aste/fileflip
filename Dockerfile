@@ -25,6 +25,8 @@ ARG NEXT_PUBLIC_ADSENSE_CLIENT
 ARG NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR
 ARG NEXT_PUBLIC_ADSENSE_SLOT_RESULT
 ARG NEXT_PUBLIC_MP_PUBLIC_KEY
+# The Pro switch hides or shows Pro on pages rendered at build time too.
+ARG PRO_ENABLED
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build

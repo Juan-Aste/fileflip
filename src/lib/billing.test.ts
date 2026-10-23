@@ -7,6 +7,8 @@ beforeAll(async () => {
   mongo = await MongoMemoryServer.create();
   vi.stubEnv("MONGODB_URI", mongo.getUri("billing-test"));
   vi.stubEnv("MP_ACCESS_TOKEN", "");
+  // Payments only work with the Pro switch on.
+  vi.stubEnv("PRO_ENABLED", "true");
 }, 120_000);
 afterAll(async () => {
   await mongoose.disconnect();
@@ -62,6 +64,14 @@ describe("subscription lifecycle (mock provider)", () => {
     expect(cancelled?.status).toBe("cancelled");
     expect(cancelled?.cancelledAt).toBeInstanceOf(Date);
     expect(await planForUser(userId)).toBe("pro");
+  });
+
+  it("treats everyone as free while Pro is off, whatever was paid", async () => {
+    const { planForUser } = await billing();
+    expect(await planForUser(userId)).toBe("pro");
+    vi.stubEnv("PRO_ENABLED", "false");
+    expect(await planForUser(userId)).toBe("free");
+    vi.stubEnv("PRO_ENABLED", "true");
   });
 
   it("ignores statuses for unknown subscriptions", async () => {

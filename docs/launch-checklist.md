@@ -26,7 +26,8 @@ Las `NEXT_PUBLIC_*` se fijan al construir: si se cambian, redesplegar.
 | `AUTH_SECRET` | salida de `npx auth secret` |
 | `MONGODB_URI` | `${{MongoDB.MONGO_URL}}` |
 | `GOTENBERG_URL` | `http://gotenberg.railway.internal:3000` |
-| `NEXT_PUBLIC_CONTACT_EMAIL` | `hola@fileflect.com` |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | `contact@fileflect.com` |
+| `PRO_ENABLED` | `false` (plan Pro oculto hasta poder cobrar; `true` lo activa y requiere redesplegar) |
 | `ADMIN_EMAILS` | `tu-correo@gmail.com` |
 | `AUTH_GOOGLE_ID` | `1234567890-abc.apps.googleusercontent.com` |
 | `AUTH_GOOGLE_SECRET` | `GOCSPX-…` |
@@ -64,6 +65,7 @@ Las de Google, email, Mercado Pago y AdSense se pueden dejar vacías el primer d
 - [ ] Si existe `EMAIL_SERVER` en Railway, borrarla y redesplegar.
 
 ## 6. Mercado Pago ([DEPLOY.md §5](../DEPLOY.md#5-servicios-externos))
+Solo cuando se active el plan Pro (`PRO_ENABLED=true`); mientras esté apagado, este paso se omite.
 Por cada país donde se cobre (una cuenta por país):
 - [ ] *Tus integraciones → Crear aplicación* (suscripciones).
 - [ ] Copiar el Access Token **de prueba** en `MP_ACCESS_TOKEN_XX`.

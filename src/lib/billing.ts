@@ -2,6 +2,7 @@ import "server-only";
 import { priceFor, type BillingPeriod, type PricingRegion } from "@/config/pricing";
 import type { Plan } from "@/config/limits";
 import { connectToDatabase } from "@/lib/db";
+import { proEnabled } from "@/lib/pro";
 import { providerById, providerForRegion } from "@/lib/payments/providers";
 import type { SubscriptionStatus } from "@/lib/payments/types";
 import { Subscription } from "@/models/Subscription";
@@ -78,7 +79,8 @@ export function planFromSubscription(
 }
 
 export async function planForUser(userId: string | undefined): Promise<Plan> {
-  if (!userId || !process.env.MONGODB_URI) return "free";
+  // With Pro off everyone is on the free plan (and sees ads), whatever was paid.
+  if (!userId || !process.env.MONGODB_URI || !proEnabled()) return "free";
   try {
     return planFromSubscription(await currentSubscription(userId));
   } catch (error) {

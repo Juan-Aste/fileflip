@@ -7,8 +7,15 @@ import { creditsSlugs } from "@/config/credits";
 import { formats } from "@/config/formats";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import { proEnabled } from "@/lib/pro";
 
 const linkClass = "text-muted transition hover:text-brand";
+
+// No pricing link while the Pro plan is off.
+const companyPages = () => [
+  ...(proEnabled() ? (["pricing"] as const) : []),
+  ...(["privacy", "terms", "credits", "contact"] as const),
+];
 
 export default function Footer() {
   const t = useTranslations("Footer");
@@ -75,7 +82,7 @@ export default function Footer() {
             {t("headings.company")}
           </h2>
           <ul className="flex flex-col gap-2">
-            {(["pricing", "privacy", "terms", "credits", "contact"] as const).map((page) => (
+            {companyPages().map((page) => (
               <li key={page}>
                 <Link href={`/${page === "credits" ? creditsSlugs[locale] : page}`} className={linkClass}>
                   {t(page)}
