@@ -3069,3 +3069,13 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 
 - El job `e2e-browsers` falló en Firefox (modelos 3D): "Descargar todo" no produjo la descarga, el mismo síntoma que antes en extraer ZIP. **B-06** (media, abierto): sin causa encontrada; se investiga en 6C.1.
 - `playwright.config.ts`: 1 reintento en el CI solo para Firefox y WebKit, para que ese caso se informe como "flaky" y no ponga el job en rojo.
+
+## 2026-10-23 02:14 UTC — Fase 6, tarea 6B.2 (emulación de iPhone y Android)
+
+**Qué se hizo**
+- `playwright.config.ts`: proyectos `iphone` (WebKit, iPhone 13) y `android` (Chromium, Pixel 7) con la muestra `@xb`.
+- CI: el job `e2e-browsers` corre también esos dos proyectos.
+
+**Hallazgos**: ninguno nuevo. Android 15/15; iPhone 13/15 + 2 `fixme` (B-03 y B-04, ya registrados para WebKit).
+
+**Verificación**: lint, typecheck, tests unitarios (1011) y build pasan; `--project iphone --project android` 28 pasan, 2 omitidos.

@@ -34,6 +34,9 @@ export default defineConfig({
     // under load (B-06, docs/bug-audit.md); a retry shows it as flaky.
     { name: "firefox", grep: /@xb/, retries: process.env.CI ? 1 : 0, use: { ...devices["Desktop Firefox"], viewport: { width: 1280, height: 900 } } },
     { name: "webkit", grep: /@xb/, retries: process.env.CI ? 1 : 0, use: { ...devices["Desktop Safari"], viewport: { width: 1280, height: 900 } } },
+    // Phone emulation (touch, mobile viewport and user agent) with the same sample.
+    { name: "iphone", grep: /@xb/, retries: process.env.CI ? 1 : 0, use: { ...devices["iPhone 13"] } },
+    { name: "android", grep: /@xb/, retries: process.env.CI ? 1 : 0, use: { ...devices["Pixel 7"], launchOptions: { executablePath } } },
   ],
   webServer: process.env.BASE_URL
     ? undefined

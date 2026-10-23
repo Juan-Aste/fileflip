@@ -31,7 +31,8 @@ jobs:
         run: npm run check:static
 
   # Browser tests in other engines: one representative test per tool family
-  # (tagged @xb) in Firefox and WebKit, plus the quick Chromium checks that
+  # (tagged @xb) in Firefox and WebKit, on desktop and in iPhone (WebKit)
+  # and Android (Chromium) emulation, plus the quick Chromium checks that
   # every control on open menus, dialogs and results can be clicked.
   # Runs in Playwright's image (same version as package.json): browsers and
   # their system libraries come preinstalled, no slow apt step.
@@ -51,8 +52,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Firefox and WebKit sample
-        run: npx playwright test --project firefox --project webkit
+      - name: Firefox, WebKit and phone emulation sample
+        run: npx playwright test --project firefox --project webkit --project iphone --project android
       - name: Chromium click checks
         run: npx playwright test open-states login clickable --project chromium --grep-invert "pages \d+/"
       - name: Test results

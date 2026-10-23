@@ -42,3 +42,9 @@ Proyectos `firefox` y `webkit` en `playwright.config.ts` que corren solo los tes
 **Seguimiento en el CI**: la primera corrida del job tardó más de 20 min en instalar las librerías con apt (espejo de Ubuntu lento) y se pasó a la imagen oficial de Playwright. La siguiente falló en WebKit (extraer ZIP): la página no había tomado el archivo. Causa: B-05 (archivo elegido antes de la hidratación). Arreglo en `Dropzone` (al montar toma los archivos que ya tenga el input) y test de regresión `tests/e2e/early-pick.spec.ts` (retiene los chunks de JavaScript, elige el archivo, los libera y espera el resultado; corre en los 3 navegadores; falla sin el arreglo). El job sube `test-results/` como artefacto cuando falla.
 
 Luego, en el CI, el test de modelos 3D falló dos veces en Firefox con el mismo síntoma que el de extraer ZIP: "Descargar todo" no produjo descarga (B-06). Los proyectos Firefox y WebKit tienen 1 reintento solo en el CI, así que esos casos se informan como "flaky" sin poner el job en rojo; B-06 queda abierto.
+
+## 6B.2 — Emulación de iPhone y Android (2026-10-23)
+
+Proyectos `iphone` (WebKit con `devices["iPhone 13"]`: 390×664, táctil, agente de usuario de iOS, escala 3) y `android` (Chromium con `devices["Pixel 7"]`: 412×839, táctil, escala 2,625) en `playwright.config.ts`, con la misma muestra `@xb` de 15 tests (una por familia más la carga temprana de archivos). Se agregaron al paso de la muestra del job `e2e-browsers` del CI.
+
+**Resultado**: Android 15/15. iPhone 13/15 y 2 `fixme` (B-03 y B-04, los mismos de WebKit de escritorio: la emulación usa el mismo motor). Sin hallazgos nuevos: con viewport de celular, táctil y agente de usuario móvil las herramientas cargan el archivo, convierten y descargan igual que en escritorio. Limitación: la emulación no reproduce la memoria ni la CPU de un celular real ni el Safari de iOS (WebKit de Playwright en Linux usa GStreamer, no los códecs de Apple).

@@ -358,7 +358,7 @@ Auditoría de bugs: encontrar y arreglar, antes que los usuarios, bugs del tipo 
 
 ### Hito 6B — Otros navegadores
 - [x] 6B.1 Proyectos Firefox y WebKit en Playwright con una muestra representativa por categoría (imagen, PDF, documentos, datos, OCR, comprimidos, ebooks, audio, video, 3D, CAD, utilidades) en escritorio; instalación en el CI sin volverlo lento
-- [ ] 6B.2 Emulación de iPhone (WebKit) y Android (Chromium) con la misma muestra
+- [x] 6B.2 Emulación de iPhone (WebKit) y Android (Chromium) con la misma muestra
 - [ ] 6B.3 Detección previa de lo que el navegador no soporta (WebCodecs, OffscreenCanvas, códecs): mensaje claro y traducido o respaldo del servidor, nunca fallar en silencio ni colgarse; tests
 
 ### Hito 6C — Estados y errores en toda la interfaz
