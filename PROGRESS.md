@@ -3284,3 +3284,14 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - **B-27** (baja, abierto, anterior a la fase 7, comprobado en 26a938a): con Pro encendido, varias visitas a la vez a `/pricing` hacen que ~1 de cada 20 cargas falle la hidratación (React #418) y la página se redibuje en el navegador. No afecta producción mientras Pro esté apagado; puede hacer fallar alguna vez `billing-states.spec.ts`. Investigar antes de encender Pro.
 
 **Verificación**: lint, typecheck, tests unitarios (1062 + 10 omitidos) y build pasan; Chromium `legal`, `login`, `login-real`, `pro-switch`, `billing-states` (una corrida de tres con un fallo de B-27), `clickable`, `open-states`, `a11y`, `layout-shift`, `security-headers`, `access-control`, `api-limits`, `environments` pasan.
+
+## 2026-10-23 17:30 UTC — Fase 7, tarea 7.4 (verificación final)
+
+**Qué se hizo**
+- Lighthouse 12.8.2 móvil, 3 corridas: portada 94–95, unir PDF 90–95, términos 92–94 (es y en), privacidad 94, contacto 93–96, login 90–94; **CLS 0 y accesibilidad 100 en todas**. Detalle en `docs/perf/2026-10-23-phase7.md` (SEO 92 solo por el `canonical` del entorno local).
+- Detector de clics (`clickable`, 216 páginas × 6 combinaciones) y estados abiertos: 110 pasan.
+- `docs/launch-checklist.md`: variables imprescindibles (`PRO_ENABLED=false`, `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com`) y cuándo ponerlas, Pro apagado en las decisiones previas (precios, botones de arrepentimiento/baja y B-27 antes de encenderlo), textos legales hechos, y verificaciones después de publicar (sin "Precios", `/es/pricing` 404, legales, aceptación en el login y el flujo de email que llega a "Revisa tu correo").
+
+**Pendiente del dueño (fase 7)**
+- En Railway (servicio `app`): `PRO_ENABLED=false` y `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com`; mergear `dev` en `main`.
+- Revisión de un abogado de lo marcado en `docs/legal/pendientes-legales.md`. Antes de encender Pro: inscripción fiscal, botones de arrepentimiento y de baja, y B-27.

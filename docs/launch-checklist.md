@@ -4,8 +4,8 @@ Pasos concretos y en orden. Las explicaciones largas están en [DEPLOY.md](../DE
 
 ## 0. Antes de empezar (decisiones)
 - [ ] Confirmar el nombre y comprar el dominio (ver "Pendiente del dueño" en `PROGRESS.md`).
-- [ ] Completar los textos legales (razón social, jurisdicción, contacto) en `messages/*.json`, namespace `Legal`, y hacerlos revisar.
-- [ ] Revisar los precios por país en `src/config/pricing.ts`.
+- [x] Textos legales publicados (fase 7): responsable, domicilio y contacto en `messages/*.json`, namespace `Legal`. Falta la revisión de un abogado de lo marcado en [`docs/legal/pendientes-legales.md`](legal/pendientes-legales.md).
+- [ ] Plan Pro: queda **apagado** (`PRO_ENABLED=false`) hasta la inscripción fiscal. Antes de encenderlo: revisar los precios por país en `src/config/pricing.ts`, construir los botones de arrepentimiento y de baja, y resolver B-27 (`docs/bug-audit.md`).
 
 ## 1. Railway: servicios ([DEPLOY.md §1](../DEPLOY.md#1-crear-el-proyecto))
 - [ ] Proyecto nuevo desde el repo `Juan-Aste/fileflip`, rama **`main`**; servicio `app` (usa el `Dockerfile`).
@@ -45,6 +45,8 @@ Las `NEXT_PUBLIC_*` se fijan al construir: si se cambian, redesplegar.
 | `RATE_LIMIT_PER_MINUTE` | `20` |
 | `TEMP_FILE_TTL_MINUTES` | `60` |
 
+**Imprescindibles en esta etapa**: `PRO_ENABLED=false` (o sin definir: el plan Pro queda oculto, `/pricing` da 404 y todos ven anuncios) y `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com` (la página de contacto la muestra con el horario "lunes a viernes, en horario hábil"). Las dos se leen al construir: después de cambiarlas, redesplegar.
+
 Las de Google, email, Mercado Pago y AdSense se pueden dejar vacías el primer día: el sitio funciona sin login, sin pagos y con espacios de anuncio reservados.
 
 ## 3. Healthcheck, dominio y DNS ([DEPLOY.md §4](../DEPLOY.md#4-healthcheck-y-dominio))
@@ -73,6 +75,7 @@ Por cada país donde se cobre (una cuenta por país):
 - [ ] Probar una suscripción con un usuario de prueba; después cambiar al token de producción y redesplegar.
 
 ## 7. Mergear y desplegar
+- [ ] En Railway, servicio `app`: `PRO_ENABLED=false` y `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com` (antes de mergear, para que el build las tome).
 - [ ] Confirmar que el CI de `dev` está en verde (pestaña *Actions* de GitHub).
 - [ ] Abrir un pull request de `dev` a `main` y mergearlo. Railway despliega solo.
 - [ ] Orden del primer deploy: `gotenberg` y `MongoDB`, después `app` ([DEPLOY.md §6](../DEPLOY.md#6-primer-deploy-y-verificación)).
@@ -93,6 +96,8 @@ Por cada país donde se cobre (una cuenta por país):
 - [ ] Convertir una imagen (JPG → PNG) y unir dos PDF: todo en el navegador.
 - [ ] DOCX → PDF y Markdown → PDF (usan Gotenberg).
 - [ ] Iniciar sesión con Google y con enlace por email; entrar a `/es/admin` con el correo de `ADMIN_EMAILS`.
-- [ ] `/es/pricing` muestra los precios del país; una suscripción de prueba llega como activa (webhook).
+- [ ] Con Pro apagado: no hay enlace "Precios" en el header ni en el footer, `/es/pricing` da 404 y `sitemap.xml` no lo incluye. (Cuando se encienda Pro: `/es/pricing` muestra los precios del país y una suscripción de prueba llega como activa por el webhook.)
+- [ ] `/es/terms` y `/es/privacy` muestran "Juan Pablo Aste" y contact@fileflect.com; `/es/contact` muestra contact@fileflect.com y el horario.
+- [ ] En `/es/login`, debajo de los botones, el texto "Al continuar, aceptas los Términos y condiciones y la Política de privacidad…" con los dos enlaces. Pedir un enlace por email: la página pasa a "Revisa tu correo" (B-26) y el correo llega.
 - [ ] `robots.txt`, `sitemap.xml` y `/es/creditos` cargan.
-- [ ] Lighthouse móvil de la portada ≥ 90 y CLS 0.
+- [ ] Lighthouse móvil de la portada, una herramienta y las páginas legales ≥ 90 y CLS 0 (fase 7: 92–96, CLS 0; ver `docs/perf/2026-10-23-phase7.md`).
