@@ -367,7 +367,7 @@ Auditoría de bugs: encontrar y arreglar, antes que los usuarios, bugs del tipo 
 - [x] 6C.3 Buscador y selector de idioma con los mismos casos; arreglos pendientes de 6C
 
 ### Hito 6D — Diferencias entre local y producción
-- [ ] 6D.1 Revisión de variables de entorno: cada variable de `.env.example` ausente o vacía no rompe la página ni da 500 (degrada con aviso u oculta la función)
+- [x] 6D.1 Revisión de variables de entorno: cada variable de `.env.example` ausente o vacía no rompe la página ni da 500 (degrada con aviso u oculta la función)
 - [ ] 6D.2 Tests que levantan la app (`next build && next start`) con variables faltantes y servicios caídos (Gotenberg caído o lento, MongoDB caído, Resend con error): sin 500 ni páginas en blanco; límites de memoria y tamaño de cuerpo; rutas que dependen del país o del idioma; B-12 (exportar CSV del admin con MongoDB caído)
 - [ ] 6D.3 Prueba de humo en producción, solo lectura y poco tráfico (health, portada en 2 idiomas, catálogo, 5 herramientas, robots, sitemap, créditos, una conversión de imagen y una de PDF en el navegador): consola, 404 y cabeceras; anotar si producción va atrás de `dev`
 

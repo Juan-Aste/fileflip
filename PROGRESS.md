@@ -3123,3 +3123,14 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 
 - CI: verde en 0c70dc1 y 9c62399 (último commit). Falló una vez en ed97622: en emulación de iPhone, "Descargar todo" de convertir hoja de cálculo no produjo la descarga (falló también el reintento). Es el mismo síntoma que B-06 (abierto); se anotó ahí y queda para investigar.
 - Siguiente tarea: 6D.1.
+
+## 2026-10-23 03:30 UTC — Fase 6, tarea 6D.1 (variables de entorno)
+
+**Qué se hizo**
+- Revisión de cada variable de `.env.example` y prueba con `next start` en producción con el entorno vacío y combinaciones de variables faltantes (tabla en `docs/bug-audit.md`).
+- **B-01** (media, arreglado en 697c531): sin `MONGODB_URI` el email ya no se ofrece (Auth.js lo necesita y daba 500 en todo, Google incluido). `src/lib/auth-providers.ts` (+ tests).
+- **B-14** (media, arreglado): sin `AUTH_SECRET` en producción, `/api/auth/session` daba 500 en cada visita; ahora responde `null` y el login dice que no está configurado.
+- **B-15** (alta, arreglado): `NEXT_PUBLIC_SITE_URL` vacía o sin protocolo hacía fallar `new URL()` en el layout (500 en todas las páginas). `configuredSiteUrl()` (+ tests).
+- `playwright.config.ts`: el servidor de `login.spec.ts` usa un `MONGODB_URI` inaccesible para seguir mostrando el formulario de email.
+
+**Verificación**: lint, typecheck, tests unitarios (1026) y build pasan; Chromium `login`, `billing-states`, `search-locale-states` (18) pasan, y el resto del grupo del CI (`open-states`, `clickable`) también; sondeo con `next start` sin 500 en ninguna combinación.
