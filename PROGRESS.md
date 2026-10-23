@@ -3241,3 +3241,6 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 
 ## 2026-10-23 06:13 UTC — FASE 6 TERMINADA
 - Todas las tareas de la fase 6 están marcadas. Falta que el dueño mergee `dev` en `main` y resuelva lo de "Pendiente del dueño" (Resend, `AUTH_SECRET`/`NEXT_PUBLIC_SITE_URL`, `PAYMENTS_MOCK`). La rutina programada se puede pausar.
+
+## 2026-10-23 14:15 UTC — Inicio de la fase 7
+- Fase 7 agregada a PLAN.md (pedida por el dueño): 7.1 bug del login en producción, 7.2 ocultar el plan Pro con `PRO_ENABLED`, 7.3a/7.3b textos legales y aceptación expresa, 7.4 verificación final.
