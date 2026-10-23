@@ -36,10 +36,13 @@ const encoderExtensions: Partial<Record<AudioCodec, () => Promise<void>>> = {
   aac: () => import("@mediabunny/aac-encoder").then((m) => m.registerAacEncoder()),
 };
 const registered = new Set<AudioCodec>();
+// Always the WASM encoder, even when the browser has one: WebKit's own FLAC
+// encoder (GStreamer) yields packets mediabunny can't mux (bug B-03).
+const extensionFirst = new Set<AudioCodec>(["flac"]);
 
 /** Makes `codec` encodable: the browser's own encoder when it has one, else the WASM extension (once). */
 export async function ensureEncoder(codec: AudioCodec) {
-  if (registered.has(codec) || (await canEncodeAudio(codec))) return;
+  if (registered.has(codec) || (!extensionFirst.has(codec) && (await canEncodeAudio(codec)))) return;
   const register = encoderExtensions[codec];
   if (!register) throw new ConversionError("browserUnsupported");
   await register();
