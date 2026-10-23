@@ -3118,3 +3118,8 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - El buscador ya manejaba todos los casos. B-12 (baja) pasa a 6D.2.
 
 **Verificación**: lint, typecheck, tests unitarios (1019) y build pasan; Chromium `search-locale-states` + `search` (10, dos corridas) y `open-states` (19) pasan.
+
+## 2026-10-23 03:07 UTC — Cierre de la ejecución (6B.2–6C.3)
+
+- CI: verde en 0c70dc1 y 9c62399 (último commit). Falló una vez en ed97622: en emulación de iPhone, "Descargar todo" de convertir hoja de cálculo no produjo la descarga (falló también el reintento). Es el mismo síntoma que B-06 (abierto); se anotó ahí y queda para investigar.
+- Siguiente tarea: 6D.1.
