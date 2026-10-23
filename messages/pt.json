@@ -1664,7 +1664,8 @@
     "emailInvalid": "Digite um e-mail válido, por exemplo nome@email.com.",
     "sendError": "Não conseguimos enviar o link. Tente novamente em alguns minutos.",
     "sendTimeout": "O envio está demorando demais. Verifique sua conexão e tente novamente.",
-    "networkError": "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente."
+    "networkError": "Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.",
+    "rateLimited": "Você pediu links demais seguidos. Confira seu e-mail (também o spam) ou espere alguns minutos antes de pedir outro."
   },
   "Account": {
     "title": "Minha conta",

@@ -15,8 +15,8 @@ export const runtime = "nodejs";
  * file too large for the device). Processed in memory only: nothing is stored.
  */
 export async function POST(request: Request) {
-  const { plan, signedIn } = await requestPlan();
-  const upload = await readUpload(request, plan, canConvertImageOnServer, { signedIn });
+  const { plan, userId } = await requestPlan();
+  const upload = await readUpload(request, plan, canConvertImageOnServer, { userId });
   if (upload instanceof Response) return upload;
   const { file, bytes, from, to, form } = upload;
 

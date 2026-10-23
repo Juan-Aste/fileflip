@@ -1664,7 +1664,8 @@
     "emailInvalid": "Escribe un correo electrónico válido, por ejemplo nombre@correo.com.",
     "sendError": "No pudimos enviarte el enlace. Inténtalo de nuevo en unos minutos.",
     "sendTimeout": "El envío está tardando demasiado. Revisa tu conexión e inténtalo de nuevo.",
-    "networkError": "No hay conexión con el servidor. Revisa tu conexión e inténtalo de nuevo."
+    "networkError": "No hay conexión con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+    "rateLimited": "Pediste demasiados enlaces seguidos. Revisa tu correo (también el spam) o espera unos minutos antes de pedir otro."
   },
   "Account": {
     "title": "Mi cuenta",

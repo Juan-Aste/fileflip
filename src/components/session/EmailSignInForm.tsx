@@ -9,7 +9,7 @@ import { buttonPrimary, field } from "@/components/ui/styles";
 /** The whole request (CSRF token + sign-in) gives up after this long. */
 export const CLIENT_TIMEOUT_MS = 20_000;
 
-type Failure = "emailInvalid" | "sendError" | "sendTimeout" | "networkError";
+type Failure = "emailInvalid" | "sendError" | "sendTimeout" | "networkError" | "rateLimited";
 
 // Same rule as <input type="email">, kept here so the form can show its own message.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -60,6 +60,8 @@ export default function EmailSignInForm({ redirectTo }: { redirectTo: string }) 
         body: new URLSearchParams({ email, csrfToken, callbackUrl: redirectTo }),
         signal,
       });
+      // Too many links asked from this connection or for this address (B-25).
+      if (res.status === 429) return fail("rateLimited");
       const { url } = (await res.json().catch(() => ({}))) as { url?: string };
       const target = url ? new URL(url, location.href) : null;
       if (!res.ok || !target || target.searchParams.has("error") || !target.pathname.endsWith("/login/verify")) {

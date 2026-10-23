@@ -27,8 +27,10 @@ describe("RateLimiter", () => {
 describe("clientIp", () => {
   const req = (headers: Record<string, string>) => new Request("http://x", { headers });
 
-  it("uses the first forwarded address", () => {
-    expect(clientIp(req({ "x-forwarded-for": "203.0.113.7, 10.0.0.1" }))).toBe("203.0.113.7");
+  it("uses the address the proxy added, not the ones the client sent (B-24)", () => {
+    expect(clientIp(req({ "x-forwarded-for": "203.0.113.7" }))).toBe("203.0.113.7");
+    expect(clientIp(req({ "x-forwarded-for": "1.2.3.4, 203.0.113.7" }))).toBe("203.0.113.7");
+    expect(clientIp(req({ "x-forwarded-for": "5.6.7.8, 203.0.113.7" }))).toBe("203.0.113.7");
     expect(clientIp(req({ "x-real-ip": "198.51.100.2" }))).toBe("198.51.100.2");
     expect(clientIp(req({}))).toBe("unknown");
   });

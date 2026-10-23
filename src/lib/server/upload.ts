@@ -4,7 +4,7 @@ import { limits, type Plan } from "@/config/limits";
 import { apiError } from "@/lib/api-errors";
 import { detectFormat } from "@/lib/detect";
 import { readBody } from "./body";
-import { clientIp, conversionLimiter } from "./rate-limit";
+import { accountConversionLimiter, clientIp, conversionLimiter } from "./rate-limit";
 
 export interface Upload {
   file: File;
@@ -24,13 +24,12 @@ export async function readUpload(
   request: Request,
   plan: Plan,
   allowed: (from: FormatId, to: FormatId) => boolean,
-  { signedIn = false }: { signedIn?: boolean } = {},
+  { userId }: { userId?: string } = {},
 ): Promise<Upload | Response> {
-  // Anonymous users are rate limited per IP; accounts are trusted more.
-  if (!signedIn) {
-    const waitMs = conversionLimiter.hit(clientIp(request));
-    if (waitMs > 0) return apiError("rateLimited", { "Retry-After": String(Math.ceil(waitMs / 1000)) });
-  }
+  // Anonymous users are rate limited per IP; accounts get a looser limit of
+  // their own (accounts are free to create, so they still need one).
+  const waitMs = userId ? accountConversionLimiter.hit(userId) : conversionLimiter.hit(clientIp(request));
+  if (waitMs > 0) return apiError("rateLimited", { "Retry-After": String(Math.ceil(waitMs / 1000)) });
 
   const maxBytes = limits[plan].serverMaxFileBytes;
   // Stop reading oversized bodies, declared or not (chunked uploads, B-23);

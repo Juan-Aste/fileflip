@@ -17,8 +17,8 @@ export const maxDuration = 120;
  * PDF via Gotenberg, and PDF → Word (text extraction). In memory only.
  */
 export async function POST(request: Request) {
-  const { plan, signedIn } = await requestPlan();
-  const upload = await readUpload(request, plan, canConvertDocumentOnServer, { signedIn });
+  const { plan, userId } = await requestPlan();
+  const upload = await readUpload(request, plan, canConvertDocumentOnServer, { userId });
   if (upload instanceof Response) return upload;
   const { file, bytes, from, to } = upload;
   const start = performance.now();

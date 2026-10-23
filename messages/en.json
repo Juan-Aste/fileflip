@@ -1664,7 +1664,8 @@
     "emailInvalid": "Enter a valid email address, for example name@email.com.",
     "sendError": "We couldn't send you the link. Please try again in a few minutes.",
     "sendTimeout": "Sending is taking too long. Check your connection and try again.",
-    "networkError": "We can't reach the server. Check your connection and try again."
+    "networkError": "We can't reach the server. Check your connection and try again.",
+    "rateLimited": "You asked for too many links in a row. Check your inbox (and spam folder) or wait a few minutes before asking for another one."
   },
   "Account": {
     "title": "My account",

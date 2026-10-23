@@ -1664,7 +1664,8 @@
     "emailInvalid": "Saisissez une adresse e-mail valide, par exemple nom@email.com.",
     "sendError": "Nous n’avons pas pu vous envoyer le lien. Réessayez dans quelques minutes.",
     "sendTimeout": "L’envoi prend trop de temps. Vérifiez votre connexion et réessayez.",
-    "networkError": "Impossible de joindre le serveur. Vérifiez votre connexion et réessayez."
+    "networkError": "Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.",
+    "rateLimited": "Vous avez demandé trop de liens d’affilée. Vérifiez votre boîte mail (et les spams) ou patientez quelques minutes avant d’en demander un autre."
   },
   "Account": {
     "title": "Mon compte",

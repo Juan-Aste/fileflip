@@ -45,7 +45,7 @@ vi.mock("@/lib/server/stats", async (importOriginal) => ({
   logConversion: async () => {},
 }));
 // Signed in: skips the per-IP rate limit, which this many requests would hit.
-vi.mock("@/lib/server/plan", () => ({ requestPlan: async () => ({ plan: "free", signedIn: true }) }));
+vi.mock("@/lib/server/plan", () => ({ requestPlan: async () => ({ plan: "free", signedIn: true, userId: "test-user" }) }));
 
 const { POST: convertImage } = await import("@/app/api/convert/image/route");
 const { POST: convertDocument } = await import("@/app/api/convert/document/route");

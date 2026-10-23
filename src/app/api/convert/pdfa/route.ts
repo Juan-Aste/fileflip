@@ -19,8 +19,8 @@ export const maxDuration = 120;
  * Gotenberg 500. In memory only.
  */
 export async function POST(request: Request) {
-  const { plan, signedIn } = await requestPlan();
-  const upload = await readUpload(request, plan, (from, to) => from === "pdf" && to === "pdf", { signedIn });
+  const { plan, userId } = await requestPlan();
+  const upload = await readUpload(request, plan, (from, to) => from === "pdf" && to === "pdf", { userId });
   if (upload instanceof Response) return upload;
   const { file, bytes, form } = upload;
   const start = performance.now();
