@@ -3109,3 +3109,12 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Login: ya cubierto por `login.spec.ts` (fase 5).
 
 **Verificación**: lint, typecheck, tests unitarios (1019) y build pasan; Chromium `billing-states` (6, dos corridas), `login`, control de `clickable` y páginas con sesión pasan.
+
+## 2026-10-23 02:59 UTC — Fase 6, tarea 6C.3 (buscador y selector de idioma)
+
+**Qué se hizo**
+- `tests/e2e/search-locale-states.spec.ts` (5 tests, en el CI): índice del buscador con 500, error de red y lentitud; selector de idioma sin conexión y tras un despliegue simulado.
+- **B-13** (media, arreglado): el selector de idioma dejaba un `ChunkLoadError` sin capturar y no hacía nada sin conexión o tras un despliegue; ahora queda usable sin conexión y, con conexión, carga la portada del idioma elegido.
+- El buscador ya manejaba todos los casos. B-12 (baja) pasa a 6D.2.
+
+**Verificación**: lint, typecheck, tests unitarios (1019) y build pasan; Chromium `search-locale-states` + `search` (10, dos corridas) y `open-states` (19) pasan.
