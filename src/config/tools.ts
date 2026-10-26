@@ -100,6 +100,7 @@ export const toolIds = [
   "adjust-audio",
   "normalize-audio",
   "join-audio",
+  "text-to-speech",
   "video-converter",
   "extract-audio",
   "compress-video",
@@ -1010,6 +1011,19 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 30 * MINUTE, maxFileBytes: AUDIO_MAX_BYTES },
     status: "verified",
     slugs: { es: "unir-audio", en: "join-audio", pt: "juntar-audio", fr: "fusionner-audio", zh: "join-audio" },
+  },
+  "text-to-speech": {
+    id: "text-to-speech",
+    category: "audio",
+    inputs: ["txt", "md", "html", "pdf", "docx", "epub", "jpg", "png", "webp", "gif", "bmp", "tiff", "heic", "avif"],
+    outputs: ["mp3"],
+    engine: "browser",
+    // Text extracted on the page (pdf.js, tesseract for images, own DOCX/EPUB readers); read by the device's voices.
+    libraries: ["Web Speech API", "pdfjs-dist", "tesseract.js", "fflate", "marked"],
+    // TTS_MAX_CHARS (50,000 characters) per reading; files are read whole to extract their text.
+    limits: { files: "single", timeoutMs: 10 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "leer-texto-en-voz-alta", en: "text-to-speech", pt: "ler-texto-em-voz-alta", fr: "lire-texte-a-voix-haute", zh: "text-to-speech" },
   },
   "video-converter": {
     id: "video-converter",

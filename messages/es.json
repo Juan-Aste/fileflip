@@ -1530,6 +1530,20 @@
         "q6": "¿Cómo quedan el PNG y el PDF?",
         "a6": "El PNG tiene el ancho que elijas (1000, 2000 o 4000 píxeles en el lado más largo), con fondo blanco o transparente. El PDF es vectorial, de una página A4 o A3 que se gira según la forma del plano, con el dibujo ajustado dentro de un margen de 10 mm (no a escala 1:1). En el PDF, los textos con caracteres que la fuente estándar no tiene (chino, cirílico…) se insertan como imagen."
       }
+    },
+    "text-to-speech": {
+      "title": "Leer texto en voz alta",
+      "description": "Pega un texto o abre un archivo y escúchalo con pausa y la velocidad que elijas, en tu navegador.",
+      "action": "Leer en voz alta",
+      "about": "Escribe o pega un texto, o abre un archivo TXT, Markdown, HTML, PDF con texto, Word (DOCX), EPUB o la foto de un documento, y escúchalo en voz alta. Puedes pausar, volver a la frase anterior, saltar a la siguiente y elegir la velocidad, de 0,5× a 2×. La frase que se está leyendo se resalta para que sigas la lectura. El texto se extrae en tu dispositivo y el archivo no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Mi texto se sube a algún servidor?",
+        "a1": "No. El archivo se lee y el texto se extrae en tu navegador. Las voces del dispositivo leen el texto en tu equipo; solo las voces marcadas como «en línea» (por ejemplo, las de Google o Microsoft en Chrome y Edge) envían el texto a ese proveedor para generar el audio.",
+        "q2": "¿Qué archivos puedo abrir?",
+        "a2": "TXT, Markdown, HTML, PDF con texto, Word (DOCX), EPUB y fotos o escaneos (JPG, PNG, WEBP, TIFF, HEIC…), cuyo texto se reconoce con OCR. Hasta 50.000 caracteres por lectura; si el texto es más largo, se recorta y te avisamos.",
+        "q3": "¿En qué idiomas lee?",
+        "a3": "Detectamos el idioma del texto (español, inglés, portugués, francés o chino) y elegimos una voz de tu dispositivo en ese idioma. Puedes cambiar el idioma y la voz; las voces disponibles dependen de tu sistema y de tu navegador."
+      }
     }
   },
   "ToolUi": {
@@ -2986,5 +3000,53 @@
     "licenseText": "Texto de la licencia",
     "lameThanks": "Este sitio usa código del proyecto LAME (lame.sourceforge.io) para codificar MP3.",
     "questions": "¿Falta algo o necesitas una copia del código fuente? Escríbenos desde la página de contacto."
+  },
+  "ReadAloudTool": {
+    "textLabel": "Texto para leer",
+    "placeholder": "Escribe o pega un texto aquí, o abre un archivo.",
+    "openFile": "Abrir archivo",
+    "fileHint": "TXT, Markdown, HTML, PDF con texto, Word, EPUB o imagen (OCR). El archivo no sale de tu dispositivo.",
+    "dropHere": "Suelta el archivo para leer su texto",
+    "extracting": "Extrayendo el texto…",
+    "cancel": "Cancelar",
+    "clear": "Borrar texto",
+    "count": "{count} de {max} caracteres",
+    "truncated": "El texto tenía {count} caracteres: se recortó a los primeros {max}.",
+    "limitReached": "Llegaste al límite de {max} caracteres.",
+    "loadedFrom": "Texto de «{name}». Puedes editarlo antes de escucharlo.",
+    "language": "Idioma",
+    "detected": "Detectado: {language}",
+    "play": "Reproducir",
+    "pause": "Pausa",
+    "resume": "Reanudar",
+    "stop": "Detener",
+    "previous": "Frase anterior",
+    "next": "Frase siguiente",
+    "speed": "Velocidad",
+    "voice": "Voz",
+    "voiceOnline": "{name} (en línea)",
+    "defaultVoice": "Voz predeterminada del navegador",
+    "sentence": "Frase",
+    "progress": "Frase {current} de {total}",
+    "statusPlaying": "Leyendo",
+    "statusPaused": "En pausa",
+    "statusStopped": "Lectura detenida",
+    "statusFinished": "Lectura terminada",
+    "editText": "Editar texto",
+    "shortcut": "Barra espaciadora: pausa y reanuda.",
+    "onlineNote": "Las voces «en línea» envían el texto a su proveedor (Google, Microsoft…) para generar el audio. Las demás leen en tu dispositivo.",
+    "noSupport": "Tu navegador no puede leer en voz alta con las voces del dispositivo. Prueba con Chrome, Edge, Safari o Firefox actualizados.",
+    "noVoices": "No encontramos voces en {language} en tu dispositivo: se usará la voz predeterminada del navegador, que puede pronunciar mal. Puedes instalar voces en la configuración de tu sistema.",
+    "speechError": "No se pudo leer con esta voz. Prueba con otra voz o vuelve a intentarlo.",
+    "emptyText": "Escribe o abre un texto para escucharlo.",
+    "readingView": "Texto que se está leyendo",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文"
+    },
+    "noTextInFile": "No encontramos texto para leer en este archivo."
   }
 }

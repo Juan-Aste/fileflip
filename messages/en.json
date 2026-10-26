@@ -1530,6 +1530,20 @@
         "q6": "What do the PNG and the PDF look like?",
         "a6": "The PNG has the width you choose (1000, 2000 or 4000 pixels on the longest side), with a white or transparent background. The PDF is vector, one A4 or A3 page turned to match the drawing's shape, with the drawing fitted inside a 10 mm margin (not at 1:1 scale). In the PDF, texts with characters the standard font lacks (Chinese, Cyrillic…) are inserted as images."
       }
+    },
+    "text-to-speech": {
+      "title": "Text to speech",
+      "description": "Paste text or open a file and listen to it, with pause and the speed you choose, in your browser.",
+      "action": "Read aloud",
+      "about": "Type or paste text, or open a TXT, Markdown, HTML, text PDF, Word (DOCX) or EPUB file or a photo of a document, and listen to it read aloud. You can pause, go back to the previous sentence, skip to the next one and choose the speed, from 0.5× to 2×. The sentence being read is highlighted so you can follow along. The text is extracted on your device and the file is never uploaded to a server.",
+      "faq": {
+        "q1": "Is my text uploaded to a server?",
+        "a1": "No. The file is read and its text extracted in your browser. Device voices read the text on your computer or phone; only voices marked \"online\" (such as Google or Microsoft voices in Chrome and Edge) send the text to that provider to generate the audio.",
+        "q2": "Which files can I open?",
+        "a2": "TXT, Markdown, HTML, PDFs with text, Word (DOCX), EPUB and photos or scans (JPG, PNG, WEBP, TIFF, HEIC…), whose text is recognized with OCR. Up to 50,000 characters per reading; longer text is cut and we tell you.",
+        "q3": "Which languages does it read?",
+        "a3": "We detect the language of the text (Spanish, English, Portuguese, French or Chinese) and pick a voice on your device for it. You can change the language and the voice; the voices available depend on your system and browser."
+      }
     }
   },
   "ToolUi": {
@@ -2986,5 +3000,53 @@
     "licenseText": "License text",
     "lameThanks": "This site uses code from the LAME project (lame.sourceforge.io) to encode MP3.",
     "questions": "Something missing, or need a copy of the source code? Write to us from the contact page."
+  },
+  "ReadAloudTool": {
+    "textLabel": "Text to read",
+    "placeholder": "Type or paste text here, or open a file.",
+    "openFile": "Open file",
+    "fileHint": "TXT, Markdown, HTML, PDF with text, Word, EPUB or image (OCR). The file never leaves your device.",
+    "dropHere": "Drop the file to read its text",
+    "extracting": "Extracting the text…",
+    "cancel": "Cancel",
+    "clear": "Clear text",
+    "count": "{count} of {max} characters",
+    "truncated": "The text had {count} characters: it was cut to the first {max}.",
+    "limitReached": "You reached the limit of {max} characters.",
+    "loadedFrom": "Text from \"{name}\". You can edit it before listening.",
+    "language": "Language",
+    "detected": "Detected: {language}",
+    "play": "Play",
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop": "Stop",
+    "previous": "Previous sentence",
+    "next": "Next sentence",
+    "speed": "Speed",
+    "voice": "Voice",
+    "voiceOnline": "{name} (online)",
+    "defaultVoice": "Browser default voice",
+    "sentence": "Sentence",
+    "progress": "Sentence {current} of {total}",
+    "statusPlaying": "Reading",
+    "statusPaused": "Paused",
+    "statusStopped": "Reading stopped",
+    "statusFinished": "Reading finished",
+    "editText": "Edit text",
+    "shortcut": "Space bar: pause and resume.",
+    "onlineNote": "\"Online\" voices send the text to their provider (Google, Microsoft…) to generate the audio. The others read on your device.",
+    "noSupport": "Your browser can't read aloud with device voices. Try an up-to-date Chrome, Edge, Safari or Firefox.",
+    "noVoices": "We found no {language} voices on your device: the browser's default voice will be used and may mispronounce words. You can install voices in your system settings.",
+    "speechError": "This voice couldn't read the text. Try another voice or try again.",
+    "emptyText": "Type or open a text to listen to it.",
+    "readingView": "Text being read",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文"
+    },
+    "noTextInFile": "We found no text to read in this file."
   }
 }

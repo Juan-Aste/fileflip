@@ -401,11 +401,11 @@ Pedida por el dueño el 2026-10-26: lector en voz alta (texto a voz). "Yo le pon
 
 ### Hito 8.1 — Entrada de texto
 - [x] 8.1a Núcleo en `src/lib/tts/`: división en frases (abreviaturas, números, chino sin espacios), detección de idioma, límite de caracteres documentado, extracción de texto de TXT, MD, HTML, PDF, DOCX, EPUB e imagen (OCR) reutilizando los extractores existentes; tests unitarios
-- [ ] 8.1b Herramienta `text-to-speech` en el catálogo (slugs en 5 idiomas, categoría Audio, página) con entrada: pegar/escribir o subir archivo, área editable, aviso de límite, idioma detectado; tests de navegador de la entrada
+- [x] 8.1b Herramienta `text-to-speech` en el catálogo (slugs en 5 idiomas, categoría Audio, página) con entrada: pegar/escribir o subir archivo, área editable, aviso de límite, idioma detectado; tests de navegador de la entrada
 
 ### Hito 8.2 — Escuchar con las voces del dispositivo
-- [ ] 8.2a Lector con `speechSynthesis`: reproducir, pausa/reanudar, detener, anterior/siguiente frase, velocidad 0,5×–2× en vivo, selector de voz por idioma (voces "en línea" marcadas), progreso por frases, resaltado de frase y palabra con scroll suave, troceado (Chrome/iOS), `voiceschanged`, sin soporte; barra espaciadora, accesibilidad, recordar velocidad y voz
-- [ ] 8.2b Tests de navegador con `speechSynthesis` simulado (reproducir, pausa, reanudar, detener, velocidad, siguiente frase, resaltado, sin soporte)
+- [x] 8.2a Lector con `speechSynthesis`: reproducir, pausa/reanudar, detener, anterior/siguiente frase, velocidad 0,5×–2× en vivo, selector de voz por idioma (voces "en línea" marcadas), progreso por frases, resaltado de frase y palabra con scroll suave, troceado (Chrome/iOS), `voiceschanged`, sin soporte; barra espaciadora, accesibilidad, recordar velocidad y voz
+- [x] 8.2b Tests de navegador con `speechSynthesis` simulado (reproducir, pausa, reanudar, detener, velocidad, siguiente frase, resaltado, sin soporte)
 
 ### Hito 8.3 — Voz IA y descarga MP3
 - [ ] 8.3a Licencia de Supertonic (pesos OpenRAIL-M): leer el LICENSE, confirmar uso comercial y copiar restricciones; elegir versión (3 o 2), fijar archivos y sha256, decidir desde dónde se sirven los pesos (CSP, tráfico) y documentarlo

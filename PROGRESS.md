@@ -3313,3 +3313,23 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Tests**: `src/lib/tts/text.test.ts` (frases con abreviaturas, números, comillas, chino, saltos, cortes largos; idioma; limpieza; límite) y `src/lib/tts/formats.test.ts` (DOCX real y armado, DTD, dañados, EPUB, HTML, Markdown, TXT). PDF y OCR se prueban en el navegador en 8.1b (sus extractores ya tienen tests).
 
 **Verificación**: lint, typecheck, tests unitarios (1084 + 10 omitidos) y build pasan.
+
+## 2026-10-26 — Fase 8, tareas 8.1b, 8.2a y 8.2b (herramienta "Leer texto en voz alta" con las voces del dispositivo)
+
+**Qué se hizo (8.1b)**
+- Herramienta nueva `text-to-speech` en el catálogo, categoría Audio, slugs `leer-texto-en-voz-alta` (es), `text-to-speech` (en, zh), `ler-texto-em-voz-alta` (pt), `lire-texte-a-voix-haute` (fr). Ícono `Speech`. Página, sitemap, buscador y categoría salen del registro como las demás.
+- Entrada: escribir o pegar en un área editable, o "Abrir archivo" / arrastrar (TXT, MD, HTML, PDF con texto, DOCX, EPUB, imágenes con OCR en el idioma elegido), con barra de progreso y Cancelar. Contador de caracteres, límite de 50.000 con aviso y recorte de los archivos más largos ("El texto tenía N caracteres: se recortó…"). Mensajes claros para archivo vacío, PDF escaneado y formato no admitido; el texto anterior se conserva.
+- Idioma detectado (es, en, pt, fr, zh) con selector para cambiarlo.
+- Textos de la herramienta (título, descripción, introducción, 3 preguntas) y de la interfaz (`ReadAloudTool`) en los 5 idiomas. Las preguntas se amplían en 8.4a.
+
+**Qué se hizo (8.2a)**
+- `useDeviceSpeech` (Web Speech API): una frase por lectura (evita el corte de ~15 s de Chrome); Reproducir, Pausa/Reanudar (la pausa cancela y reanuda desde la última palabra oída: Android ignora `pause()`), Detener, Anterior/Siguiente, barra deslizante "Frase N de M". La primera lectura empieza dentro del clic (iOS).
+- Velocidad 0,5×–2× en pasos de 0,25; cambiar velocidad o voz reinicia la frase actual al instante.
+- Voces filtradas por idioma (es-ES, es_ES de Android, cmn/yue para chino), primero las del dispositivo; las voces en línea se marcan "(en línea)" con una nota de que envían el texto a su proveedor. `voiceschanged` y reintentos para voces que llegan tarde; aviso si no hay voces en el idioma y error claro si el navegador no tiene `speechSynthesis` (la voz IA se ofrecerá en 8.3).
+- Durante la lectura el área se reemplaza por una vista con la frase resaltada (`<mark>`) y la palabra subrayada cuando hay eventos `boundary`, con scroll suave dentro del recuadro (sin animación si el usuario pide menos movimiento).
+- Barra espaciadora para pausa/reanudar cuando el foco no está en un campo o botón; estado en una región `aria-live` discreta; botones con nombre accesible.
+- Velocidad y voz (por idioma) se recuerdan en `localStorage` con try/catch.
+
+**Tests (8.2b)**: `tests/e2e/tts-tools.spec.ts` — extracción de DOCX, MD, HTML, EPUB, PDF, imagen (OCR) y TXT largo con recorte; errores; y con un `speechSynthesis` simulado: reproducir, resaltado de frase y palabra, avance automático, pausa (no se habla nada más) y reanudar desde la última palabra, detener, final de lectura, siguiente/anterior, velocidad y voz en vivo, barra espaciadora, recordar velocidad y voz tras recargar, voz inglesa para texto inglés, aviso sin voces y navegador sin soporte. Unitarios de `src/lib/tts/voices.ts`. Dos tests marcados `@xb` para Firefox, WebKit y móviles.
+
+**Verificación**: lint, typecheck, tests unitarios (1089 + 10 omitidos), build; Chromium: `tts-tools` (6), `a11y` (22), `clickable` + `layout-shift` (96) pasan. En este entorno el Chromium de Playwright está en `/opt/pw-browsers/chromium-1243/chrome-linux64/chrome` (se pasa con `CHROME_PATH`); Firefox y WebKit se verifican en el CI.

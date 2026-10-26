@@ -1530,6 +1530,20 @@
         "q6": "À quoi ressemblent le PNG et le PDF ?",
         "a6": "Le PNG a la largeur choisie (1000, 2000 ou 4000 pixels sur le plus grand côté), avec un fond blanc ou transparent. Le PDF est vectoriel, sur une page A4 ou A3 tournée selon la forme du plan, avec le dessin ajusté dans une marge de 10 mm (pas à l'échelle 1:1). Dans le PDF, les textes contenant des caractères absents de la police standard (chinois, cyrillique…) sont insérés comme images."
       }
+    },
+    "text-to-speech": {
+      "title": "Lire un texte à voix haute",
+      "description": "Collez un texte ou ouvrez un fichier et écoutez-le, avec pause et la vitesse de votre choix, dans votre navigateur.",
+      "action": "Lire à voix haute",
+      "about": "Tapez ou collez un texte, ou ouvrez un fichier TXT, Markdown, HTML, PDF avec texte, Word (DOCX), EPUB ou la photo d'un document, et écoutez-le à voix haute. Vous pouvez mettre en pause, revenir à la phrase précédente, passer à la suivante et choisir la vitesse, de 0,5× à 2×. La phrase en cours de lecture est surlignée pour que vous puissiez suivre. Le texte est extrait sur votre appareil et le fichier n'est envoyé à aucun serveur.",
+      "faq": {
+        "q1": "Mon texte est-il envoyé à un serveur ?",
+        "a1": "Non. Le fichier est lu et son texte extrait dans votre navigateur. Les voix de l'appareil lisent le texte sur votre ordinateur ou téléphone ; seules les voix marquées « en ligne » (par exemple celles de Google ou de Microsoft dans Chrome et Edge) envoient le texte à ce fournisseur pour générer l'audio.",
+        "q2": "Quels fichiers puis-je ouvrir ?",
+        "a2": "TXT, Markdown, HTML, PDF avec texte, Word (DOCX), EPUB et photos ou numérisations (JPG, PNG, WEBP, TIFF, HEIC…), dont le texte est reconnu par OCR. Jusqu'à 50 000 caractères par lecture ; un texte plus long est coupé et nous vous prévenons.",
+        "q3": "Dans quelles langues lit-il ?",
+        "a3": "Nous détectons la langue du texte (espagnol, anglais, portugais, français ou chinois) et choisissons une voix de votre appareil dans cette langue. Vous pouvez changer la langue et la voix ; les voix disponibles dépendent de votre système et de votre navigateur."
+      }
     }
   },
   "ToolUi": {
@@ -2986,5 +3000,53 @@
     "licenseText": "Texte de la licence",
     "lameThanks": "Ce site utilise du code du projet LAME (lame.sourceforge.io) pour encoder le MP3.",
     "questions": "Il manque quelque chose ou vous voulez une copie du code source ? Écrivez-nous depuis la page de contact."
+  },
+  "ReadAloudTool": {
+    "textLabel": "Texte à lire",
+    "placeholder": "Tapez ou collez un texte ici, ou ouvrez un fichier.",
+    "openFile": "Ouvrir un fichier",
+    "fileHint": "TXT, Markdown, HTML, PDF avec texte, Word, EPUB ou image (OCR). Le fichier ne quitte pas votre appareil.",
+    "dropHere": "Déposez le fichier pour lire son texte",
+    "extracting": "Extraction du texte…",
+    "cancel": "Annuler",
+    "clear": "Effacer le texte",
+    "count": "{count} sur {max} caractères",
+    "truncated": "Le texte comptait {count} caractères : il a été coupé aux {max} premiers.",
+    "limitReached": "Vous avez atteint la limite de {max} caractères.",
+    "loadedFrom": "Texte de « {name} ». Vous pouvez le modifier avant de l'écouter.",
+    "language": "Langue",
+    "detected": "Détectée : {language}",
+    "play": "Lire",
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "stop": "Arrêter",
+    "previous": "Phrase précédente",
+    "next": "Phrase suivante",
+    "speed": "Vitesse",
+    "voice": "Voix",
+    "voiceOnline": "{name} (en ligne)",
+    "defaultVoice": "Voix par défaut du navigateur",
+    "sentence": "Phrase",
+    "progress": "Phrase {current} sur {total}",
+    "statusPlaying": "Lecture en cours",
+    "statusPaused": "En pause",
+    "statusStopped": "Lecture arrêtée",
+    "statusFinished": "Lecture terminée",
+    "editText": "Modifier le texte",
+    "shortcut": "Barre d'espace : pause et reprise.",
+    "onlineNote": "Les voix « en ligne » envoient le texte à leur fournisseur (Google, Microsoft…) pour générer l'audio. Les autres lisent sur votre appareil.",
+    "noSupport": "Votre navigateur ne peut pas lire à voix haute avec les voix de l'appareil. Essayez Chrome, Edge, Safari ou Firefox à jour.",
+    "noVoices": "Aucune voix en {language} sur votre appareil : la voix par défaut du navigateur sera utilisée et peut mal prononcer. Vous pouvez installer des voix dans les réglages du système.",
+    "speechError": "Cette voix n'a pas pu lire le texte. Essayez une autre voix ou réessayez.",
+    "emptyText": "Tapez ou ouvrez un texte pour l'écouter.",
+    "readingView": "Texte en cours de lecture",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文"
+    },
+    "noTextInFile": "Aucun texte à lire dans ce fichier."
   }
 }
