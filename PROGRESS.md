@@ -3346,3 +3346,11 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Tests**: `src/lib/tts/model.test.ts` (commit fijado, SHA-256 de cada ONNX, tamaño total, idiomas).
 
 **Verificación**: lint, typecheck y tests unitarios pasan.
+
+## 2026-10-26 — Arreglo del CI (WebKit/iPhone) tras 8.2b
+
+- El CI de `4be172f` y `c9c647c` falló solo en WebKit e iPhone, en `tts-tools.spec.ts`:
+  - **Bug real (también afectaba a "PDF a texto" en Safari)**: pdf.js lee el texto con `for await` sobre un `ReadableStream`, y WebKit no tiene ese iterador: `getTextContent()` fallaba con "undefined is not a function" y la herramienta mostraba "No se pudo convertir". Arreglo: `polyfillReadableStreamIterator()` en `src/lib/pdf/render.ts` (se aplica al cargar pdf.js, solo si falta), con test unitario `src/lib/pdf/stream-iterator.test.ts`.
+  - Test de pausa sensible al tiempo: en WebKit el clic en "Pausa" podía caer en la frase siguiente. La voz simulada ahora lee más lento y el test compara con la frase en la que realmente se pausó.
+- Verificado localmente con WebKit de Playwright 1.56 instalado aparte (`PLAYWRIGHT_BROWSERS_PATH` en el directorio temporal, con `playwright install-deps webkit`): `tts-tools` pasa en `webkit` e `iphone`; Chromium `tts-tools` + `pdf-tools` (48) pasan; lint y unitarios (1095) pasan.
+- Nota: el CI de `dc56830` (solo el candado) falló una vez por un timeout de `search-locale-states.spec.ts` ("index HTTP 500 → says so") que no se repitió en las corridas siguientes.

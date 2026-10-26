@@ -40,7 +40,8 @@ test.describe("tool: text-to-speech", () => {
     await expect(page.getByLabel("Idioma", { exact: true })).toHaveValue("en");
 
     await openFile(page, "document.pdf");
-    await expect(textArea(page)).toHaveValue(/^Fileflect sample page 1 of 3\nSynthetic text for automated tests\.\n\nFileflect sample page 2 of 3/);
+    // pdf.js starts its worker on first use: slower in WebKit.
+    await expect(textArea(page)).toHaveValue(/^Fileflect sample page 1 of 3\nSynthetic text for automated tests\.\n\nFileflect sample page 2 of 3/, { timeout: 20_000 });
   });
 
   test("an image is read with OCR in the page's language", async ({ page }) => {
@@ -84,7 +85,8 @@ async function fakeSpeech(page: Page, { supported = true } = {}) {
       return;
     }
     const w = window as unknown as { __tts: { spoken: { text: string; rate: number; voice?: string; lang: string }[]; wordMs: number } };
-    w.__tts = { spoken: [], wordMs: 120 };
+    // Slow enough that a click lands on the sentence the test just saw, even in WebKit.
+    w.__tts = { spoken: [], wordMs: 300 };
     const voices = [
       { name: "Google español", lang: "es-ES", voiceURI: "google-es", localService: false, default: false },
       { name: "Mónica", lang: "es-ES", voiceURI: "local-es", localService: true, default: true },
@@ -166,12 +168,13 @@ test.describe("text-to-speech: reading with the device's voices", () => {
     // Pause: nothing more is spoken; resume goes on from the last word heard.
     await page.getByRole("button", { name: "Pausa" }).click();
     await expect(status(page)).toHaveText("En pausa");
+    const pausedOn = await page.getByTestId("tts-current").innerText();
     const atPause = (await spoken(page)).length;
     await page.waitForTimeout(500);
     expect((await spoken(page)).length).toBe(atPause);
     await page.getByRole("button", { name: "Reanudar" }).click();
     const resumed = (await spoken(page)).at(-1)!.text;
-    expect("Segunda frase con más palabras para leer.".endsWith(resumed)).toBe(true);
+    expect(pausedOn.endsWith(resumed)).toBe(true);
     expect(resumed.length).toBeGreaterThan(0);
 
     // Stop: back to the editable text, from the start.

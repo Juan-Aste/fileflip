@@ -8,7 +8,35 @@ import { ConversionError } from "@/lib/convert-error";
 type Pdfjs = typeof import("pdfjs-dist");
 let pdfjs: Promise<{ lib: Pdfjs; worker: InstanceType<Pdfjs["PDFWorker"]> }> | null = null;
 
+/**
+ * pdf.js reads text with `for await` over a ReadableStream, which Safari
+ * (WebKit) can't iterate: getTextContent() failed there with "undefined is
+ * not a function". Same behavior as the standard iterator.
+ */
+export function polyfillReadableStreamIterator() {
+  if (typeof ReadableStream === "undefined") return;
+  const proto = ReadableStream.prototype as ReadableStream & { [Symbol.asyncIterator]?: unknown };
+  if (Symbol.asyncIterator in proto) return;
+  Object.defineProperty(proto, Symbol.asyncIterator, {
+    configurable: true,
+    writable: true,
+    value: async function* (this: ReadableStream) {
+      const reader = this.getReader();
+      try {
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) return;
+          yield value;
+        }
+      } finally {
+        reader.releaseLock();
+      }
+    },
+  });
+}
+
 function loadPdfjs() {
+  polyfillReadableStreamIterator();
   pdfjs ??= import("pdfjs-dist/legacy/build/pdf.min.mjs").then((mod) => {
     const lib = mod as unknown as Pdfjs;
     const port = new Worker(new URL("pdfjs-dist/legacy/build/pdf.worker.min.mjs", import.meta.url), { type: "module" });
