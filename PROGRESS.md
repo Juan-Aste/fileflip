@@ -3333,3 +3333,16 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Tests (8.2b)**: `tests/e2e/tts-tools.spec.ts` — extracción de DOCX, MD, HTML, EPUB, PDF, imagen (OCR) y TXT largo con recorte; errores; y con un `speechSynthesis` simulado: reproducir, resaltado de frase y palabra, avance automático, pausa (no se habla nada más) y reanudar desde la última palabra, detener, final de lectura, siguiente/anterior, velocidad y voz en vivo, barra espaciadora, recordar velocidad y voz tras recargar, voz inglesa para texto inglés, aviso sin voces y navegador sin soporte. Unitarios de `src/lib/tts/voices.ts`. Dos tests marcados `@xb` para Firefox, WebKit y móviles.
 
 **Verificación**: lint, typecheck, tests unitarios (1089 + 10 omitidos), build; Chromium: `tts-tools` (6), `a11y` (22), `clickable` + `layout-shift` (96) pasan. En este entorno el Chromium de Playwright está en `/opt/pw-browsers/chromium-1243/chrome-linux64/chrome` (se pasa con `CHROME_PATH`); Firefox y WebKit se verifican en el CI.
+
+## 2026-10-26 — Fase 8, tarea 8.3a (licencia y elección del modelo de voz IA)
+
+**Qué se hizo**
+- Se leyó el `LICENSE` de los pesos en Hugging Face: **BigScience OpenRAIL-M**, permite uso comercial. Obligaciones al distribuir los pesos al navegador: poner las restricciones de uso (Anexo A) como cláusula exigible en los Términos y avisar a los usuarios (8.4b), dar copia de la licencia (enlace en la herramienta y en Créditos, 8.4b) y conservar los avisos. Nada incumplible: se integra. Restricciones copiadas literalmente en `docs/tts-voz-ia.md`.
+- Modelo: **Supertonic 3** (`Supertone/supertonic-3`, commit `3cadd1ee…a323`), cubre es, en, pt y fr; **no tiene chino** (zh: solo voces del dispositivo, MP3 deshabilitado). Supertonic 2 queda como alternativa más liviana si 8.3c lo exige.
+- Archivos fijados con tamaño y SHA-256 en `src/lib/tts/model.ts`: **~398 MB** de descarga antes de la primera voz (vector_estimator 257 MB, vocoder 101 MB, text_encoder 36 MB, duration_predictor 3,7 MB) + ~0,3 MB por voz (10 voces F1–F5, M1–M5).
+- Pesos servidos **desde Hugging Face con versión fija** (CDN con CORS abierto, verificado), no desde Railway (cobra la salida; 398 MB por usuario). La CSP actual no restringe `connect-src`: no hace falta cambiarla. Cada ONNX se verifica con SHA-256.
+- El repositorio de código de Supertonic en GitHub está archivado y fuera del alcance de esta sesión; el pipeline de inferencia se escribirá en el proyecto (8.3b) a partir de los modelos y `tts.json`.
+
+**Tests**: `src/lib/tts/model.test.ts` (commit fijado, SHA-256 de cada ONNX, tamaño total, idiomas).
+
+**Verificación**: lint, typecheck y tests unitarios pasan.
