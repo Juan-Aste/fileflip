@@ -31,6 +31,11 @@ describe("i18n routing", () => {
     expect(res.headers.get("location")).toBe("http://localhost:3000/fr");
   });
 
+  it("sends no hreflang Link header (it would keep untranslated slugs)", () => {
+    const res = middleware(request("/en/csv-to-pdf"));
+    expect(res.headers.get("link")).toBeNull();
+  });
+
   it("stores the locale in a long-lived cookie", () => {
     const res = middleware(request("/zh"));
     const cookie = res.headers.get("set-cookie") ?? "";

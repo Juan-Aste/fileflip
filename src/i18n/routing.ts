@@ -28,4 +28,10 @@ export const routing = defineRouting({
     maxAge: 60 * 60 * 24 * 365,
     sameSite: "lax",
   },
+  // No `Link` hreflang header from the middleware: it only swaps the locale
+  // prefix and keeps the slug, so with translated slugs it pointed Google at
+  // URLs that don't exist (/fr/csv-to-pdf, /csv-to-pdf → 404 in Search
+  // Console). The correct alternates are in each page's metadata
+  // (alternatesFor in src/lib/seo.ts) and in the sitemap.
+  alternateLinks: false,
 });
