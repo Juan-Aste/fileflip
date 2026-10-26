@@ -400,7 +400,7 @@ Pedida por el dueño el 2026-10-23: bug del login en producción, ocultar el pla
 Pedida por el dueño el 2026-10-26: lector en voz alta (texto a voz). "Yo le pongo un texto, archivo, etc. y que me lo lea, poder ponerle pausa, elegir la velocidad de la lectura", y además descargar la lectura como MP3 con una voz de IA. Herramienta nueva del catálogo (categoría Audio) con slugs `leer-texto-en-voz-alta` (es), `text-to-speech` (en, zh), `ler-texto-em-voz-alta` (pt), `lire-texte-a-voix-haute` (fr). En este orden.
 
 ### Hito 8.1 — Entrada de texto
-- [ ] 8.1a Núcleo en `src/lib/tts/`: división en frases (abreviaturas, números, chino sin espacios), detección de idioma, límite de caracteres documentado, extracción de texto de TXT, MD, HTML, PDF, DOCX, EPUB e imagen (OCR) reutilizando los extractores existentes; tests unitarios
+- [x] 8.1a Núcleo en `src/lib/tts/`: división en frases (abreviaturas, números, chino sin espacios), detección de idioma, límite de caracteres documentado, extracción de texto de TXT, MD, HTML, PDF, DOCX, EPUB e imagen (OCR) reutilizando los extractores existentes; tests unitarios
 - [ ] 8.1b Herramienta `text-to-speech` en el catálogo (slugs en 5 idiomas, categoría Audio, página) con entrada: pegar/escribir o subir archivo, área editable, aviso de límite, idioma detectado; tests de navegador de la entrada
 
 ### Hito 8.2 — Escuchar con las voces del dispositivo

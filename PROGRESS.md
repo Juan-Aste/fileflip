@@ -3301,3 +3301,15 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 
 ## 2026-10-26 — Inicio de la fase 8
 - Se agregó la sección "Fase 8" a PLAN.md (lector en voz alta: entrada de texto, voces del dispositivo, voz IA Supertonic con descarga MP3, página/SEO/textos, tests y verificación).
+
+## 2026-10-26 — Fase 8, tarea 8.1a (núcleo de texto del lector)
+
+**Qué se hizo**
+- `src/lib/tts/text.ts`: limpieza del texto (saltos, espacios, BOM, palabras cortadas con guion al final de línea), viñetas fuera, detección de idioma (es, en, pt, fr por palabras frecuentes y letras propias; zh si dominan los caracteres Han; si no está claro, el idioma de la página) y división en frases con posiciones en el texto original para resaltar. No corta en abreviaturas (Dr., Sra., Mr., e.g., Mme…), iniciales, números de lista, decimales, miles, horas, ni antes de minúscula; corta tras 。！？； en chino sin espacios; los saltos simples cortan después de una línea corta sin puntuación (título, ítem) pero unen las líneas partidas de un PDF. Las frases de más de 220 caracteres se cortan en una coma, si no en un espacio, si no en cualquier lugar (chino).
+- **Límite: 50.000 caracteres** (`TTS_MAX_CHARS`, unas 8.000 palabras o 50–60 minutos de lectura).
+- `src/lib/tts/formats.ts`: texto de DOCX (párrafos, tabulaciones, saltos, tablas; sin texto borrado; título de `docProps/core.xml`; rechaza DTD y archivos dañados; descompresión con los límites del extractor de archivos), EPUB (`readEpub` + `chapterText`), HTML (sin scripts ni estilos) y Markdown (`marked` → HTML → texto), TXT en UTF-8 o Windows-1252.
+- `src/lib/tts/extract.ts`: detecta el formato por contenido y carga solo el motor necesario: pdf.js para PDF con texto (título de los metadatos), tesseract para imágenes (OCR), el resto con `formats.ts`. Todo en el navegador.
+
+**Tests**: `src/lib/tts/text.test.ts` (frases con abreviaturas, números, comillas, chino, saltos, cortes largos; idioma; limpieza; límite) y `src/lib/tts/formats.test.ts` (DOCX real y armado, DTD, dañados, EPUB, HTML, Markdown, TXT). PDF y OCR se prueban en el navegador en 8.1b (sus extractores ya tienen tests).
+
+**Verificación**: lint, typecheck, tests unitarios (1084 + 10 omitidos) y build pasan.
