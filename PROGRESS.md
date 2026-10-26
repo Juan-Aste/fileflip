@@ -3298,3 +3298,6 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 
 ## 2026-10-23 — FASE 7 TERMINADA
 - Todas las tareas de la fase 7 están marcadas y el CI está en verde (be7c881). Falta que el dueño ponga `PRO_ENABLED=false` y `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com` en Railway y mergee `dev` en `main`. La rutina programada se puede pausar.
+
+## 2026-10-26 — Inicio de la fase 8
+- Se agregó la sección "Fase 8" a PLAN.md (lector en voz alta: entrada de texto, voces del dispositivo, voz IA Supertonic con descarga MP3, página/SEO/textos, tests y verificación).
