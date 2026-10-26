@@ -3354,3 +3354,8 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
   - Test de pausa sensible al tiempo: en WebKit el clic en "Pausa" podía caer en la frase siguiente. La voz simulada ahora lee más lento y el test compara con la frase en la que realmente se pausó.
 - Verificado localmente con WebKit de Playwright 1.56 instalado aparte (`PLAYWRIGHT_BROWSERS_PATH` en el directorio temporal, con `playwright install-deps webkit`): `tts-tools` pasa en `webkit` e `iphone`; Chromium `tts-tools` + `pdf-tools` (48) pasan; lint y unitarios (1095) pasan.
 - Nota: el CI de `dc56830` (solo el candado) falló una vez por un timeout de `search-locale-states.spec.ts` ("index HTTP 500 → says so") que no se repitió en las corridas siguientes.
+
+## 2026-10-26 — Fin de la ejecución (fase 8)
+- Hechas en esta ejecución: 8.1a, 8.1b, 8.2a, 8.2b, 8.3a (máximo de 5 tareas) y el arreglo del CI en WebKit/iPhone. CI en verde en `5d230c3`.
+- Sigue: 8.3b (worker de inferencia Supertonic 3 con carga diferida y caché), 8.3c, 8.4a, 8.4b, 8.5a, 8.5b.
+- Importante para el dueño: la página de la herramienta ya está publicada en `dev` (solo voces del dispositivo, todavía sin voz IA ni MP3); conviene no mergear `dev` en `main` hasta que la fase 8 esté terminada, salvo que se quiera publicar ya la versión con voces del dispositivo.
