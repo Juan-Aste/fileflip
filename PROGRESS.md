@@ -3359,3 +3359,16 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Hechas en esta ejecución: 8.1a, 8.1b, 8.2a, 8.2b, 8.3a (máximo de 5 tareas) y el arreglo del CI en WebKit/iPhone. CI en verde en `5d230c3`.
 - Sigue: 8.3b (worker de inferencia Supertonic 3 con carga diferida y caché), 8.3c, 8.4a, 8.4b, 8.5a, 8.5b.
 - Importante para el dueño: la página de la herramienta ya está publicada en `dev` (solo voces del dispositivo, todavía sin voz IA ni MP3); conviene no mergear `dev` en `main` hasta que la fase 8 esté terminada, salvo que se quiera publicar ya la versión con voces del dispositivo.
+
+## 2026-10-27 — Fase 8, tarea 8.3b (worker de inferencia de la voz IA)
+
+**Qué se hizo**
+- `src/lib/tts/supertonic.ts`: el pipeline de Supertonic 3 portado del SDK de Python `supertonic` 1.3.1 (MIT, PyPI): normalización del texto, índices Unicode, predictor de duración, codificador de texto, 5 pasos del estimador de vectores y vocoder; independiente de onnxruntime para probar el lado del texto.
+- `src/lib/tts/model-cache.ts`: descarga desde Hugging Face con progreso por bytes, tamaño y SHA-256 verificados y Cache API (una caché por commit); entradas dañadas se reemplazan; sin Cache API funciona igual.
+- `src/lib/tts/model.ts`: SHA-256 también de `tts.json`, `unicode_indexer.json` y las 10 voces.
+- `src/workers/tts.worker.ts` (onnxruntime-web WASM, un hilo, sin COOP/COEP) con `prepare` (carga diferida y progreso) y `speak` (una frase); cliente `src/lib/tts/ai-voice.ts` (un worker, cancelar la descarga lo termina).
+- Detalle en `docs/tts-voz-ia.md` ("Inferencia en el navegador").
+
+**Tests**: `src/lib/tts/supertonic.test.ts` (normalización, ids, parsers, latentes, ruido), `src/lib/tts/model-cache.test.ts` (descarga con progreso, caché, SHA-256 alterado, archivo más largo, HTTP y red caídos, caché dañada, sin caché, cancelado), `src/lib/tts/model.test.ts` (hashes de voces) y `src/lib/tts/supertonic.model.test.ts` con el modelo real (solo local con `SUPERTONIC_DIR`): es, en, pt y fr dan 2,6–2,9 s de audio con energía, a ~1× tiempo real con un hilo.
+
+**Verificación**: lint, typecheck, tests unitarios y build pasan; en Chromium el modelo se descargó de Hugging Face (~25 s) y leyó dos frases (la interfaz llega en 8.3c).

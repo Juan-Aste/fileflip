@@ -409,7 +409,7 @@ Pedida por el dueño el 2026-10-26: lector en voz alta (texto a voz). "Yo le pon
 
 ### Hito 8.3 — Voz IA y descarga MP3
 - [x] 8.3a Licencia de Supertonic (pesos OpenRAIL-M): leer el LICENSE, confirmar uso comercial y copiar restricciones; elegir versión (3 o 2), fijar archivos y sha256, decidir desde dónde se sirven los pesos (CSP, tráfico) y documentarlo
-- [ ] 8.3b Worker de inferencia Supertonic (onnxruntime-web, sin COOP/COEP) con carga diferida, aviso de tamaño, progreso, Cache API y cancelar; tests
+- [x] 8.3b Worker de inferencia Supertonic (onnxruntime-web, sin COOP/COEP) con carga diferida, aviso de tamaño, progreso, Cache API y cancelar; tests
 - [ ] 8.3c Escuchar con la voz IA (reproducción progresiva, pausa, velocidad, voces del modelo) y descargar MP3 (@mediabunny/mp3-encoder, nombre a partir del texto); zh sin MP3 si no hay voz; medir tamaño y velocidad (PC y celular simulado) y fijar límite en el celular
 
 ### Hito 8.4 — Página, SEO y textos

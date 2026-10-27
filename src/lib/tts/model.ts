@@ -12,8 +12,8 @@ export const SUPERTONIC_REVISION = "3cadd1ee6394adea1bd021217a0e650ede09a323";
 export interface ModelFile {
   path: string;
   bytes: number;
-  /** SHA-256 of the content (the large ONNX files; small JSON files are checked by size and parsing). */
-  sha256?: string;
+  /** SHA-256 of the content, checked before the file is used or cached. */
+  sha256: string;
 }
 
 export const supertonicFiles: readonly ModelFile[] = [
@@ -21,13 +21,27 @@ export const supertonicFiles: readonly ModelFile[] = [
   { path: "onnx/text_encoder.onnx", bytes: 36_416_150, sha256: "c7befd5ea8c3119769e8a6c1486c4edc6a3bc8365c67621c881bbb774b9902ff" },
   { path: "onnx/vector_estimator.onnx", bytes: 256_534_781, sha256: "883ac868ea0275ef0e991524dc64f16b3c0376efd7c320af6b53f5b780d7c61c" },
   { path: "onnx/vocoder.onnx", bytes: 101_424_195, sha256: "085de76dd8e8d5836d6ca66826601f615939218f90e519f70ee8a36ed2a4c4ba" },
-  { path: "onnx/tts.json", bytes: 8_253 },
-  { path: "onnx/unicode_indexer.json", bytes: 277_676 },
+  { path: "onnx/tts.json", bytes: 8_253, sha256: "42078d3aef1cd43ab43021f3c54f47d2d75ceb4e75f627f118890128b06a0d09" },
+  { path: "onnx/unicode_indexer.json", bytes: 277_676, sha256: "9bf7346e43883a81f8645c81224f786d43c5b57f3641f6e7671a7d6c493cb24f" },
 ];
 
 /** Preset voices shipped with the model (F = female, M = male); one is downloaded when chosen (~290 KB each). */
 export const supertonicVoices = ["F1", "F2", "F3", "F4", "F5", "M1", "M2", "M3", "M4", "M5"] as const;
 export type SupertonicVoice = (typeof supertonicVoices)[number];
+
+/** Style file of each preset voice. */
+export const supertonicVoiceFiles: Readonly<Record<SupertonicVoice, ModelFile>> = {
+  F1: { path: "voice_styles/F1.json", bytes: 292_046, sha256: "bbdec6ee00231c2c742ad05483df5334cab3b52fda3ba38e6a07059c4563dbc2" },
+  F2: { path: "voice_styles/F2.json", bytes: 292_423, sha256: "7c722c6a72707b1a77f035d67f0d1351ba187738e06f7683e8c72b1df3477fc6" },
+  F3: { path: "voice_styles/F3.json", bytes: 290_794, sha256: "12f6ef2573baa2defa1128069cb59f203e3ab67c92af77b42df8a0e3a2f7c6ab" },
+  F4: { path: "voice_styles/F4.json", bytes: 291_808, sha256: "c2fa764c1225a76dfc3e2c73e8aa4f70d9ee48793860eb34c295fff01c2e032b" },
+  F5: { path: "voice_styles/F5.json", bytes: 291_479, sha256: "45966e73316415626cf41a7d1c6f3b4c70dbc1ba2bee5c1978ef0ce33244fc8d" },
+  M1: { path: "voice_styles/M1.json", bytes: 291_748, sha256: "e35604687f5d23694b8e91593a93eec0e4eca6c0b02bb8ed69139ab2ea6b0a5b" },
+  M2: { path: "voice_styles/M2.json", bytes: 292_055, sha256: "b76cbf62bac707c710cf0ae5aba5e31eea1a6339a9734bfae33ab98499534a50" },
+  M3: { path: "voice_styles/M3.json", bytes: 290_198, sha256: "ea1ac35ccb91b0d7ecad533a2fbd0eec10c91513d8951e3b25fbba99954e159b" },
+  M4: { path: "voice_styles/M4.json", bytes: 291_522, sha256: "ca8eefad4fcd989c9379032ff3e50738adc547eeb5e221b82593a6d7b3bac303" },
+  M5: { path: "voice_styles/M5.json", bytes: 291_469, sha256: "dd22b92740314321f8ae11c5e87f8dd60d060f15dd3a632b5adf77f471f77af2" },
+};
 
 /** Languages of the site the model speaks; Chinese has no compatible AI voice (device voices only). */
 export const aiVoiceLanguages = ["es", "en", "pt", "fr"] as const;
