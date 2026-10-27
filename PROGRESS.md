@@ -3399,3 +3399,14 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Tests**: `src/config/tools.test.ts` (pares relacionados en ambos sentidos) y `src/lib/search/index.test.ts` (búsqueda por sinónimos en es, en, fr y zh).
 
 **Verificación**: lint, tests unitarios (1109 + 11 omitidos), build y `check:static` pasan; Chromium: `tts-ai`, `tts-tools`, `search`, `a11y`, `layout-shift` pasan (un test de axe de "Comprimir imagen"/"JSON a CSV", ajeno a esta tarea, falló 1 de 4 veces por tiempos).
+
+## 2026-10-27 — Fase 8, tarea 8.4b (créditos, licencias, Términos y Privacidad)
+
+**Qué se hizo**
+- Créditos (`scripts/licenses/embedded.mjs` → `npm run licenses`): "Supertonic inference code" (MIT, Copyright (c) 2025 Supertone Inc., portado del SDK de PyPI) y "Supertonic 3 text-to-speech model" (BigScience-OpenRAIL-M, commit fijado, con enlace al texto de la licencia). Texto completo de la licencia en `scripts/licenses/texts/` y servido en `/licenses/BigScience-OpenRAIL-M.txt` (punto 4.b: copia para los usuarios); la herramienta enlaza esa copia. Texto de introducción de la sección en los 5 idiomas.
+- `docs/dependencies.md`: filas del código portado y del modelo (origen, licencia, tamaño, descarga diferida).
+- **Términos** (5 idiomas): nueva sección "Voz IA del lector en voz alta" con las 13 restricciones de uso del Anexo A como cláusula exigible, aviso de voz generada por IA al publicar, el audio es del usuario, prevalece el inglés de la licencia. Las secciones del plan siguen después de "Cuenta".
+- **Privacidad** (5 idiomas): resumen (el texto se procesa en el dispositivo), fila de la tabla de datos, proveedores (Hugging Face al descargar el modelo; voces "en línea" del navegador envían el texto a Google/Microsoft) y almacenamiento (preferencias de la herramienta en `localStorage`, modelo en la caché del navegador).
+- `LEGAL_UPDATED`/`TERMS_VERSION` = 2026-10-27 (las cuentas vuelven a aceptar al iniciar sesión). Notas para el abogado en `docs/legal/pendientes-legales.md`.
+
+**Verificación**: lint, typecheck, tests unitarios (1109 + 11 omitidos; `tests/licenses.test.ts` y textos legales), build y `check:static`; Chromium: `legal`, `tts-ai`, `tts-tools`, `a11y`, `layout-shift` pasan.

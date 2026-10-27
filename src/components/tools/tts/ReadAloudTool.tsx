@@ -12,7 +12,7 @@ import { formatBytes } from "@/lib/format";
 import type { Locale } from "@/i18n/routing";
 import { reportConversion } from "@/lib/stats-client";
 import type { TextSourceKind } from "@/lib/tts/extract";
-import { aiVoiceLanguages, supertonicDownloadBytes, supertonicUrl, supertonicVoices, type SupertonicVoice } from "@/lib/tts/model";
+import { aiVoiceLanguages, supertonicDownloadBytes, supertonicVoices, type SupertonicVoice } from "@/lib/tts/model";
 import { DEFAULT_STEPS, type SupertonicLanguage } from "@/lib/tts/supertonic";
 import { detectLanguage, splitSentences, ttsLanguages, TTS_MAX_CHARS, type TtsLanguage } from "@/lib/tts/text";
 import { clampRate, defaultVoice, SPEECH_RATES, speechLang, voicesFor } from "@/lib/tts/voices";
@@ -34,7 +34,8 @@ const AI_MIN_RATE = 0.75;
 const AI_MP3_MAX_CHARS_MOBILE = 3_000;
 /** Listening on a phone uses fewer denoising steps (~1.5× faster, measured in docs/tts-voz-ia.md); the MP3 always uses DEFAULT_STEPS. */
 const PHONE_LISTEN_STEPS = 3;
-const LICENSE_URL = supertonicUrl("LICENSE").replace("/resolve/", "/blob/");
+/** Our copy of the model license (OpenRAIL-M 4.b: users get a copy). */
+const LICENSE_URL = "/licenses/BigScience-OpenRAIL-M.txt";
 
 const isAiLanguage = (language: TtsLanguage): language is SupertonicLanguage => (aiVoiceLanguages as readonly string[]).includes(language);
 const isPhone = () => typeof window !== "undefined" && Boolean(window.matchMedia?.("(pointer: coarse)").matches) && navigator.maxTouchPoints > 0;

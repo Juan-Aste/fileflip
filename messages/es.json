@@ -1817,7 +1817,8 @@
             "La mayoría de tus archivos no salen de tu dispositivo: se procesan en tu navegador.",
             "Los archivos que sí se procesan en nuestro servidor se eliminan en un máximo de 1 hora. No los miramos ni los guardamos.",
             "No vendemos tus datos.",
-            "Nunca guardamos el nombre ni el contenido de tus archivos."
+            "Nunca guardamos el nombre ni el contenido de tus archivos.",
+            "«Leer texto en voz alta» procesa el texto en tu dispositivo, también con la voz IA. Solo las voces del navegador marcadas «en línea» envían el texto a su proveedor."
           ]
         },
         {
@@ -1829,6 +1830,12 @@
               "purpose": "Hacer la conversión",
               "basis": "—",
               "retention": "No los recibimos"
+            },
+            {
+              "data": "Texto que lees con «Leer texto en voz alta»",
+              "purpose": "Leerlo en voz alta o generar el MP3",
+              "basis": "—",
+              "retention": "No lo recibimos (se procesa en tu dispositivo)"
             },
             {
               "data": "Archivos que procesas en nuestro servidor (documentos de oficina, PDF a Word, HTML a PDF, PDF/A y, solo si tu navegador no puede, algunas imágenes)",
@@ -1876,7 +1883,9 @@
           "items": [
             "Railway (EE. UU.): servidores y base de datos donde corre el sitio.",
             "Resend (EE. UU.): envía el correo con tu enlace para iniciar sesión.",
-            "Google (EE. UU.): inicio de sesión con Google, si lo eliges; y Google AdSense, que muestra anuncios (ver la sección 6)."
+            "Google (EE. UU.): inicio de sesión con Google, si lo eliges; y Google AdSense, que muestra anuncios (ver la sección 6).",
+            "Hugging Face (EE. UU.): si eliges la voz IA de «Leer texto en voz alta», tu navegador descarga de Hugging Face los archivos del modelo (una sola vez). Como en cualquier descarga, Hugging Face recibe tu dirección IP y datos técnicos del navegador; tu texto no se envía.",
+            "Voces «en línea» de tu navegador (por ejemplo, Google en Chrome o Microsoft en Edge): si eliges una de ellas en «Leer texto en voz alta», el navegador envía el texto a ese proveedor para generar el audio, según la política de privacidad de ese proveedor. Las ofrece el navegador, no nosotros, y las marcamos como «en línea»; las demás voces y la voz IA leen en tu dispositivo."
           ],
           "proItems": [
             "Mercado Pago (Argentina y la región): procesa los pagos del plan Pro. Recibe tus datos de pago directamente; nosotros no."
@@ -1903,7 +1912,9 @@
           "items": [
             "NEXT_LOCALE: recuerda tu idioma (1 año).",
             "Cookies de sesión de Auth.js: mantienen tu sesión iniciada.",
-            "Almacenamiento local del navegador: recuerda el tema claro u oscuro."
+            "Almacenamiento local del navegador: recuerda el tema claro u oscuro.",
+            "Almacenamiento local del navegador: en «Leer texto en voz alta», la velocidad, el tipo de voz y la voz elegidos.",
+            "Caché del navegador: los archivos del modelo de la voz IA (unos 400 MB), para no volver a descargarlos. Puedes borrarlos eliminando los datos de este sitio en tu navegador."
           ],
           "proItems": [
             "Cookie de país: recuerda el país elegido para los precios (1 año)."
@@ -2009,6 +2020,30 @@
           ],
           "after": [
             "Podemos limitar, suspender o cerrar el acceso de quien incumpla estas reglas, y colaborar con las autoridades cuando la ley lo exija."
+          ]
+        },
+        {
+          "heading": "Voz IA del lector en voz alta",
+          "body": [
+            "La voz IA de «Leer texto en voz alta» usa el modelo Supertonic 3 de Supertone Inc., que tu navegador descarga y ejecuta en tu dispositivo. El modelo se distribuye bajo la licencia BigScience OpenRAIL-M (copia en https://fileflect.com/licenses/BigScience-OpenRAIL-M.txt) y está sujeto a sus restricciones de uso. Al usar la voz IA aceptas cumplirlas: no puedes usar el modelo ni sus derivados:"
+          ],
+          "items": [
+            "de cualquier forma que viole leyes o normas nacionales, federales, estatales, locales o internacionales aplicables;",
+            "para explotar, dañar o intentar explotar o dañar a menores de cualquier forma;",
+            "para generar o difundir información verificablemente falsa o contenido con el propósito de dañar a otros;",
+            "para generar o difundir información de identificación personal que pueda usarse para dañar a una persona;",
+            "para generar o difundir información o contenido y ubicarlo en cualquier contexto (por ejemplo, un bot que publica mensajes) sin indicar de forma expresa y comprensible que fue generado por una máquina;",
+            "para difamar, menospreciar o acosar a otros;",
+            "para suplantar o intentar suplantar a otras personas (por ejemplo, deepfakes) sin su consentimiento;",
+            "para decisiones totalmente automatizadas que afecten negativamente los derechos de una persona o que creen o modifiquen una obligación vinculante;",
+            "para cualquier uso que busque o tenga el efecto de discriminar o dañar a personas o grupos según su comportamiento social o sus características personales conocidas o previstas;",
+            "para explotar vulnerabilidades de un grupo de personas por su edad o sus características sociales, físicas o mentales, con el fin de distorsionar el comportamiento de alguien de ese grupo de una forma que cause o pueda causar daño físico o psicológico;",
+            "para cualquier uso que busque o tenga el efecto de discriminar a personas o grupos por características o categorías protegidas por la ley;",
+            "para dar consejo médico o interpretar resultados médicos;",
+            "para generar o difundir información destinada a la administración de justicia, la aplicación de la ley o procesos migratorios o de asilo, como predecir que alguien cometerá un fraude o un delito."
+          ],
+          "after": [
+            "En particular, si publicas o compartes el audio, indica que es una voz generada por IA. El audio que generas es tuyo y eres responsable de su uso; ni Supertone ni nosotros reclamamos derechos sobre él. Si hay diferencias con esta traducción, prevalece el texto en inglés de la licencia. Podemos limitar el acceso a la voz IA de quien incumpla estas restricciones."
           ]
         },
         {
@@ -2985,7 +3020,7 @@
     "lgplHeading": "Componentes bajo LGPL",
     "lgplIntro": "Estos componentes se usan bajo la Licencia Pública General Reducida de GNU (LGPL), sin modificaciones y como archivos separados (módulos WebAssembly o bibliotecas dinámicas) que se pueden reemplazar por otra versión. Puedes descargar su código fuente exacto y las instrucciones con las que se compilaron desde los enlaces de cada uno.",
     "enginesHeading": "Motores y datos incluidos",
-    "enginesIntro": "Bibliotecas compiladas a WebAssembly que vienen dentro de los paquetes de abajo, nuestra propia compilación de libarchive y los modelos que servimos desde nuestro dominio.",
+    "enginesIntro": "Bibliotecas compiladas a WebAssembly que vienen dentro de los paquetes de abajo, nuestra propia compilación de libarchive, los modelos que servimos desde nuestro dominio y la voz IA de «Leer texto en voz alta» (código portado del SDK de Supertonic, MIT, y el modelo Supertonic 3, que tu navegador descarga de Hugging Face solo si eliges esa voz; su licencia OpenRAIL-M está enlazada).",
     "servicesHeading": "Servicios del servidor",
     "servicesIntro": "Programas que corren aparte en nuestro servidor (no se distribuyen con Fileflect): convierten documentos de oficina y guardan los datos de las cuentas.",
     "packagesHeading": "Paquetes de JavaScript ({count})",

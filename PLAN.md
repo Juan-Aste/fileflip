@@ -414,7 +414,7 @@ Pedida por el dueño el 2026-10-26: lector en voz alta (texto a voz). "Yo le pon
 
 ### Hito 8.4 — Página, SEO y textos
 - [x] 8.4a Página con FAQ (privacidad, voces del dispositivo vs voz IA, idiomas), metadatos, sitemap, buscador, categorías y enlaces relacionados (PDF a texto, OCR, EPUB) en 5 idiomas
-- [ ] 8.4b Créditos y `docs/dependencies.md` (Supertonic), `npm run licenses`, restricciones de uso en los Términos si la licencia lo exige, Política de privacidad (texto en el dispositivo, voces en línea) en 5 idiomas
+- [x] 8.4b Créditos y `docs/dependencies.md` (Supertonic), `npm run licenses`, restricciones de uso en los Términos si la licencia lo exige, Política de privacidad (texto en el dispositivo, voces en línea) en 5 idiomas
 
 ### Hito 8.5 — Tests y verificación
 - [ ] 8.5a Tests con la voz IA real: MP3 de un texto corto en es, en, pt y fr validado de forma independiente (cabecera, duración coherente, no silencio); modelo cacheado en el CI o test local + test mínimo en el CI
