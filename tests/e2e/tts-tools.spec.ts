@@ -264,6 +264,7 @@ test.describe("text-to-speech: accessibility while reading", () => {
       await page.route("https://huggingface.co/**", (route) => route.fulfill({ status: 503, headers: { "access-control-allow-origin": "*" } }));
       await page.goto("/es/leer-texto-en-voz-alta", { waitUntil: "networkidle" });
       await textArea(page).fill(SAMPLE);
+      await expect(page.getByRole("button", { name: "Reproducir" })).toBeEnabled();
       expect(await axeViolations(page)).toEqual([]);
 
       await page.evaluate(() => ((window as unknown as { __tts: { wordMs: number } }).__tts.wordMs = 2000));

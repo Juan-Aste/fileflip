@@ -3438,3 +3438,8 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 ## 2026-10-27 — FASE 8 TERMINADA
 - Todas las tareas de la fase 8 están marcadas; CI en verde en `07c6617` (check, e2e-browsers con Firefox/WebKit y e2e-ai-voice con el modelo real).
 - Para el dueño: no hay cambios en Railway (el modelo se baja de Hugging Face; sin variables, CSP ni archivos públicos nuevos). Mergear `dev` en `main`. Los Términos cambiaron (`TERMS_VERSION` 2026-10-27), ver `docs/legal/pendientes-legales.md`. Se puede pausar la tarea programada.
+
+## 2026-10-27 — Arreglo del CI intermitente (axe en WebKit/iPhone)
+- El CI de `9d7db2f`, `e608929` y `c2a35fa` (solo commits del candado) falló en `e2e-browsers`: `tts-tools.spec.ts` "axe on the text…" en WebKit/iPhone reportaba `color-contrast` en "Reproducir" (`.px-6`) y "Descargar MP3" (`.self-start`). Causa: al llenar el texto los botones pasan de deshabilitados (opacidad 50 %) a habilitados con una transición de 150 ms, y axe a veces corría a mitad de la transición. No es un problema real de contraste.
+- Arreglo (solo tests): `tests/e2e/axe.ts` espera dos cuadros y que terminen las animaciones/transiciones finitas antes de correr axe (sirve a todos los specs); el test espera a que "Reproducir" esté habilitado.
+- Verificado: antes fallaba 2 de 40 corridas en WebKit/iPhone; después, 80 de 80 pasan. `tts-tools` + `a11y` en Chromium, Firefox, WebKit e iPhone (47) y lint pasan.

@@ -13,6 +13,18 @@ interface Violation {
 
 /** Runs axe on the loaded page; returns violations as readable lines. */
 export async function axeViolations(page: Page): Promise<string[]> {
+  // Let finite CSS transitions end first: a button fading in from its disabled
+  // opacity reads as low contrast if axe catches it halfway (seen in WebKit).
+  await page.evaluate(async () => {
+    // Two frames so a re-render that just enabled a control has started its transition.
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    await Promise.all(
+      document
+        .getAnimations()
+        .filter((a) => Number.isFinite(Number(a.effect?.getComputedTiming().endTime)))
+        .map((a) => a.finished.catch(() => undefined)),
+    );
+  });
   await page.evaluate(axeSource);
   const violations = await page.evaluate(async () => {
     const axe = (window as unknown as { axe: { run: (ctx: unknown, opts: unknown) => Promise<{ violations: Violation[] }> } }).axe;
