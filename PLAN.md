@@ -413,7 +413,7 @@ Pedida por el dueño el 2026-10-26: lector en voz alta (texto a voz). "Yo le pon
 - [x] 8.3c Escuchar con la voz IA (reproducción progresiva, pausa, velocidad, voces del modelo) y descargar MP3 (@mediabunny/mp3-encoder, nombre a partir del texto); zh sin MP3 si no hay voz; medir tamaño y velocidad (PC y celular simulado) y fijar límite en el celular
 
 ### Hito 8.4 — Página, SEO y textos
-- [ ] 8.4a Página con FAQ (privacidad, voces del dispositivo vs voz IA, idiomas), metadatos, sitemap, buscador, categorías y enlaces relacionados (PDF a texto, OCR, EPUB) en 5 idiomas
+- [x] 8.4a Página con FAQ (privacidad, voces del dispositivo vs voz IA, idiomas), metadatos, sitemap, buscador, categorías y enlaces relacionados (PDF a texto, OCR, EPUB) en 5 idiomas
 - [ ] 8.4b Créditos y `docs/dependencies.md` (Supertonic), `npm run licenses`, restricciones de uso en los Términos si la licencia lo exige, Política de privacidad (texto en el dispositivo, voces en línea) en 5 idiomas
 
 ### Hito 8.5 — Tests y verificación

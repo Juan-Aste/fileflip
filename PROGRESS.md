@@ -3387,3 +3387,15 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Tests**: `tests/e2e/tts-ai.spec.ts` — confirmación con tamaño y Cancelar sin descargar nada, elección recordada, descarga fallida con mensaje, chino sin voz IA ni MP3 (en el CI, Chromium); con `TTS_REAL_MODEL=1` (descarga real de Hugging Face una vez, en un contexto compartido): lectura progresiva con pausa y reanudar y segunda visita sin descargas, y MP3 en es, en, pt y fr validados con ffprobe/ffmpeg (mp3 mono 44,1 kHz, duración coherente con el texto, no silencio). `tests/e2e/tts-tools.spec.ts`: sin `speechSynthesis` ahora se ofrece la voz IA. Unitario `src/lib/tts/mp3.test.ts` (nombre del archivo).
 
 **Verificación**: lint, typecheck, tests unitarios (1108 + 11 omitidos), build; Chromium: `tts-ai` + `tts-tools` con el modelo real (14) y `a11y` (22) pasan. Firefox y WebKit se verifican en el CI.
+
+## 2026-10-27 — Fase 8, tarea 8.4a (página, SEO y textos)
+
+**Qué se hizo**
+- Textos de la herramienta en los 5 idiomas: descripción (metadatos y tarjeta) e introducción con la voz IA y el MP3; **6 preguntas frecuentes**: privacidad (el texto no sale del dispositivo; solo se descargan los archivos del modelo; voces "en línea"), archivos, idiomas (voz IA y MP3 en es/en/pt/fr; chino con voces del dispositivo), voces del dispositivo vs voz IA (calidad, descarga de ~400 MB, velocidad), cómo descargar el MP3 (límite de 3.000 caracteres en celulares) y si se puede publicar el audio (OpenRAIL-M: indicar que es voz IA, sin suplantación, difamación, acoso ni desinformación).
+- **Enlaces relacionados explícitos en ambos sentidos** (`related` en el registro): "Leer texto en voz alta" ↔ PDF a texto, Imagen a texto (OCR) y Convertidor EPUB; también aparece desde Crear EPUB y EPUB a PDF.
+- **Buscador Ctrl+K**: nueva clave opcional `searchTerms` por herramienta (sinónimos: "TTS", "texto a voz", "read aloud", "synthèse vocale", "文字转语音"…).
+- Librerías del registro actualizadas (Supertonic 3, onnxruntime-web, mediabunny + LAME). Sitemap, categoría Audio y metadatos salen del registro (`check:static`: 1012 páginas).
+
+**Tests**: `src/config/tools.test.ts` (pares relacionados en ambos sentidos) y `src/lib/search/index.test.ts` (búsqueda por sinónimos en es, en, fr y zh).
+
+**Verificación**: lint, tests unitarios (1109 + 11 omitidos), build y `check:static` pasan; Chromium: `tts-ai`, `tts-tools`, `search`, `a11y`, `layout-shift` pasan (un test de axe de "Comprimir imagen"/"JSON a CSV", ajeno a esta tarea, falló 1 de 4 veces por tiempos).

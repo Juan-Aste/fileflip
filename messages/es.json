@@ -1533,16 +1533,23 @@
     },
     "text-to-speech": {
       "title": "Leer texto en voz alta",
-      "description": "Pega un texto o abre un archivo y escúchalo con pausa y la velocidad que elijas, en tu navegador.",
+      "description": "Pega un texto o abre un archivo y escúchalo con pausa y la velocidad que elijas, o descárgalo como MP3 con una voz IA, en tu navegador.",
+      "searchTerms": "TTS texto a voz lector de voz narrador audio leer en voz alta voz IA",
       "action": "Leer en voz alta",
-      "about": "Escribe o pega un texto, o abre un archivo TXT, Markdown, HTML, PDF con texto, Word (DOCX), EPUB o la foto de un documento, y escúchalo en voz alta. Puedes pausar, volver a la frase anterior, saltar a la siguiente y elegir la velocidad, de 0,5× a 2×. La frase que se está leyendo se resalta para que sigas la lectura. El texto se extrae en tu dispositivo y el archivo no se sube a ningún servidor.",
+      "about": "Escribe o pega un texto, o abre un archivo TXT, Markdown, HTML, PDF con texto, Word (DOCX), EPUB o la foto de un documento, y escúchalo en voz alta. Puedes pausar, volver a la frase anterior, saltar a la siguiente y elegir la velocidad, de 0,5× a 2×. La frase que se está leyendo se resalta para que sigas la lectura. Lee con las voces de tu dispositivo o con una voz IA más natural (Supertonic 3) que funciona en tu navegador y permite descargar la lectura como MP3. El texto se extrae y se convierte en voz en tu dispositivo: el archivo no se sube a ningún servidor.",
       "faq": {
         "q1": "¿Mi texto se sube a algún servidor?",
-        "a1": "No. El archivo se lee y el texto se extrae en tu navegador. Las voces del dispositivo leen el texto en tu equipo; solo las voces marcadas como «en línea» (por ejemplo, las de Google o Microsoft en Chrome y Edge) envían el texto a ese proveedor para generar el audio.",
+        "a1": "No. El archivo se lee y el texto se extrae en tu navegador, y la voz IA genera el audio en tu dispositivo: lo único que se descarga son los archivos del modelo, desde Hugging Face, la primera vez. Las voces del dispositivo también leen en tu equipo; solo las marcadas como «en línea» (por ejemplo, las de Google o Microsoft en Chrome y Edge) envían el texto a ese proveedor para generar el audio.",
         "q2": "¿Qué archivos puedo abrir?",
         "a2": "TXT, Markdown, HTML, PDF con texto, Word (DOCX), EPUB y fotos o escaneos (JPG, PNG, WEBP, TIFF, HEIC…), cuyo texto se reconoce con OCR. Hasta 50.000 caracteres por lectura; si el texto es más largo, se recorta y te avisamos.",
         "q3": "¿En qué idiomas lee?",
-        "a3": "Detectamos el idioma del texto (español, inglés, portugués, francés o chino) y elegimos una voz de tu dispositivo en ese idioma. Puedes cambiar el idioma y la voz; las voces disponibles dependen de tu sistema y de tu navegador."
+        "a3": "Detectamos el idioma del texto (español, inglés, portugués, francés o chino) y elegimos la voz en ese idioma; puedes cambiar el idioma y la voz. La voz IA y la descarga MP3 están disponibles en español, inglés, portugués y francés; el chino se lee con las voces del dispositivo, que dependen de tu sistema y de tu navegador.",
+        "q4": "¿Qué diferencia hay entre las voces del dispositivo y la voz IA?",
+        "a4": "Las voces del dispositivo vienen con tu sistema o navegador: empiezan al instante y no descargan nada, pero su calidad varía y no se pueden guardar como archivo. La voz IA (Supertonic 3) suena más natural, tiene 10 voces y permite descargar MP3, pero la primera vez descarga unos 400 MB (después queda guardada en tu navegador) y genera el audio con el procesador de tu equipo: en una computadora tarda más o menos lo mismo que dura el audio; en un celular, bastante más.",
+        "q5": "¿Cómo descargo la lectura como MP3?",
+        "a5": "Elige la voz IA y pulsa «Descargar MP3». Se genera frase por frase en tu dispositivo, con una barra de progreso y la opción de cancelar, y el archivo se nombra con el título del documento o las primeras palabras del texto. En celulares el MP3 admite hasta 3.000 caracteres (unos 4 minutos de audio).",
+        "q6": "¿Puedo publicar el audio generado con la voz IA?",
+        "a6": "Sí, pero la licencia del modelo (OpenRAIL-M) exige indicar que es una voz generada por IA y prohíbe usarlo, entre otras cosas, para suplantar a personas, difamar, acosar o difundir información falsa para dañar a otros. Las restricciones completas están en nuestros Términos y en la licencia del modelo, enlazada junto al botón de descarga."
       }
     }
   },

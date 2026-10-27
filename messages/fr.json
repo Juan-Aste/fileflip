@@ -1533,16 +1533,23 @@
     },
     "text-to-speech": {
       "title": "Lire un texte à voix haute",
-      "description": "Collez un texte ou ouvrez un fichier et écoutez-le, avec pause et la vitesse de votre choix, dans votre navigateur.",
+      "description": "Collez un texte ou ouvrez un fichier et écoutez-le avec pause et la vitesse de votre choix, ou téléchargez-le en MP3 avec une voix IA, dans votre navigateur.",
+      "searchTerms": "TTS synthèse vocale lecteur narrateur lire à voix haute voix IA",
       "action": "Lire à voix haute",
-      "about": "Tapez ou collez un texte, ou ouvrez un fichier TXT, Markdown, HTML, PDF avec texte, Word (DOCX), EPUB ou la photo d'un document, et écoutez-le à voix haute. Vous pouvez mettre en pause, revenir à la phrase précédente, passer à la suivante et choisir la vitesse, de 0,5× à 2×. La phrase en cours de lecture est surlignée pour que vous puissiez suivre. Le texte est extrait sur votre appareil et le fichier n'est envoyé à aucun serveur.",
+      "about": "Saisissez ou collez un texte, ou ouvrez un fichier TXT, Markdown, HTML, PDF avec texte, Word (DOCX), EPUB ou la photo d’un document, et écoutez-le à voix haute. Vous pouvez mettre en pause, revenir à la phrase précédente, passer à la suivante et choisir la vitesse, de 0,5× à 2×. La phrase en cours de lecture est surlignée pour que vous suiviez. La lecture se fait avec les voix de votre appareil ou avec une voix IA plus naturelle (Supertonic 3) qui fonctionne dans votre navigateur et permet de télécharger la lecture en MP3. Le texte est extrait et converti en voix sur votre appareil : le fichier n’est envoyé à aucun serveur.",
       "faq": {
         "q1": "Mon texte est-il envoyé à un serveur ?",
-        "a1": "Non. Le fichier est lu et son texte extrait dans votre navigateur. Les voix de l'appareil lisent le texte sur votre ordinateur ou téléphone ; seules les voix marquées « en ligne » (par exemple celles de Google ou de Microsoft dans Chrome et Edge) envoient le texte à ce fournisseur pour générer l'audio.",
+        "a1": "Non. Le fichier est lu et son texte extrait dans votre navigateur, et la voix IA génère l’audio sur votre appareil : seuls les fichiers du modèle sont téléchargés, depuis Hugging Face, la première fois. Les voix de l’appareil lisent aussi sur votre ordinateur ou téléphone ; seules les voix marquées « en ligne » (par exemple celles de Google ou de Microsoft dans Chrome et Edge) envoient le texte à ce fournisseur pour générer l’audio.",
         "q2": "Quels fichiers puis-je ouvrir ?",
-        "a2": "TXT, Markdown, HTML, PDF avec texte, Word (DOCX), EPUB et photos ou numérisations (JPG, PNG, WEBP, TIFF, HEIC…), dont le texte est reconnu par OCR. Jusqu'à 50 000 caractères par lecture ; un texte plus long est coupé et nous vous prévenons.",
+        "a2": "TXT, Markdown, HTML, PDF avec texte, Word (DOCX), EPUB et photos ou numérisations (JPG, PNG, WEBP, TIFF, HEIC…), dont le texte est reconnu par OCR. Jusqu’à 50 000 caractères par lecture ; au-delà, le texte est coupé et nous vous prévenons.",
         "q3": "Dans quelles langues lit-il ?",
-        "a3": "Nous détectons la langue du texte (espagnol, anglais, portugais, français ou chinois) et choisissons une voix de votre appareil dans cette langue. Vous pouvez changer la langue et la voix ; les voix disponibles dépendent de votre système et de votre navigateur."
+        "a3": "Nous détectons la langue du texte (espagnol, anglais, portugais, français ou chinois) et choisissons une voix dans cette langue ; vous pouvez changer la langue et la voix. La voix IA et le téléchargement MP3 sont disponibles en espagnol, anglais, portugais et français ; le chinois est lu avec les voix de l’appareil, qui dépendent de votre système et de votre navigateur.",
+        "q4": "Quelle différence entre les voix de l’appareil et la voix IA ?",
+        "a4": "Les voix de l’appareil viennent avec votre système ou navigateur : elles démarrent tout de suite et ne téléchargent rien, mais leur qualité varie et elles ne peuvent pas être enregistrées en fichier. La voix IA (Supertonic 3) est plus naturelle, propose 10 voix et permet de télécharger un MP3, mais la première fois elle télécharge environ 400 Mo (ensuite elle reste enregistrée dans votre navigateur) et génère l’audio avec le processeur de votre appareil : sur un ordinateur, cela prend à peu près la durée de l’audio ; sur un téléphone, nettement plus.",
+        "q5": "Comment télécharger la lecture en MP3 ?",
+        "a5": "Choisissez la voix IA et appuyez sur « Télécharger le MP3 ». Il est généré phrase par phrase sur votre appareil, avec une barre de progression et un bouton Annuler, et le fichier porte le titre du document ou les premiers mots du texte. Sur téléphone, le MP3 accepte jusqu’à 3 000 caractères (environ 4 minutes d’audio).",
+        "q6": "Puis-je publier l’audio généré avec la voix IA ?",
+        "a6": "Oui, mais la licence du modèle (OpenRAIL-M) impose d’indiquer qu’il s’agit d’une voix générée par IA et interdit notamment de l’utiliser pour usurper l’identité de personnes, diffamer, harceler ou diffuser de fausses informations pour nuire à autrui. Les restrictions complètes figurent dans nos Conditions et dans la licence du modèle, accessible à côté du bouton de téléchargement."
       }
     }
   },

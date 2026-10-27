@@ -106,6 +106,9 @@ describe("tool registry", () => {
     expect(related).toContain("id-photo");
     expect(related).toContain("images-to-pdf");
     expect(relatedTools("scan-document").map((t) => t.id)).toContain("ocr-pdf");
+    // Explicit pairs link both ways: read aloud with PDF to text, OCR and EPUB.
+    expect(relatedTools("text-to-speech").map((t) => t.id)).toEqual(expect.arrayContaining(["pdf-to-text", "image-to-text", "epub-converter"]));
+    for (const id of ["pdf-to-text", "image-to-text", "epub-converter"] as const) expect(relatedTools(id).map((t) => t.id), id).toContain("text-to-speech");
     for (const id of availableTools) {
       if (toolsInCategory(tools[id].category).length > 1) expect(relatedTools(id).length, id).toBeGreaterThan(0);
     }
