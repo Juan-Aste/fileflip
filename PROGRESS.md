@@ -3419,3 +3419,8 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Arreglos para perfiles reutilizados: se borran los candados `Singleton*` y se usa una carpeta de descargas nueva (Chromium recordaba la de la corrida anterior y la descarga fallaba).
 
 **Verificación**: lint y typecheck; `tts-ai` en Chromium con el modelo real pasa con un perfil nuevo (descarga) y con el perfil ya cacheado (8 tests cada vez).
+
+## 2026-10-27 — Fin de la ejecución (fase 8)
+- Hechas en esta ejecución: 8.3b, 8.3c, 8.4a, 8.4b y 8.5a (máximo de 5 tareas). CI en verde en `1e3dedd` (check, e2e-browsers y el job nuevo e2e-ai-voice con el modelo real).
+- Sigue: 8.5b (Lighthouse móvil ≥ 90 y CLS 0 en la página nueva, detector de clics, axe, Firefox y WebKit; informe del catálogo y `docs/launch-checklist.md`).
+- Para el dueño: no hace falta cambiar nada en Railway (el modelo se descarga de Hugging Face; la CSP no restringe `connect-src`). Conviene no mergear `dev` en `main` hasta terminar 8.5b. Los Términos cambiaron (`TERMS_VERSION` 2026-10-27): ver `docs/legal/pendientes-legales.md`.
