@@ -3424,3 +3424,13 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Hechas en esta ejecución: 8.3b, 8.3c, 8.4a, 8.4b y 8.5a (máximo de 5 tareas). CI en verde en `1e3dedd` (check, e2e-browsers y el job nuevo e2e-ai-voice con el modelo real).
 - Sigue: 8.5b (Lighthouse móvil ≥ 90 y CLS 0 en la página nueva, detector de clics, axe, Firefox y WebKit; informe del catálogo y `docs/launch-checklist.md`).
 - Para el dueño: no hace falta cambiar nada en Railway (el modelo se descarga de Hugging Face; la CSP no restringe `connect-src`). Conviene no mergear `dev` en `main` hasta terminar 8.5b. Los Términos cambiaron (`TERMS_VERSION` 2026-10-27): ver `docs/legal/pendientes-legales.md`.
+
+## 2026-10-27 — Fase 8, tarea 8.5b (Lighthouse, clics, axe, Firefox y WebKit)
+
+**Qué se hizo**
+- Lighthouse móvil en `/es/leer-texto-en-voz-alta`, `/en/text-to-speech` y `/zh/text-to-speech` (3 corridas): rendimiento 93–96, accesibilidad 100, SEO 100, CLS 0; ninguna petición al modelo al abrir la página. Informe: `docs/perf/2026-10-27-phase8.md`. `scripts/perf/lighthouse.sh` incluye las 3 páginas y acepta `PAGES_FILTER` para correr solo algunas.
+- `tests/e2e/tts-tools.spec.ts`: axe sin violaciones con texto, leyendo (frase y palabra resaltadas), en pausa y con el aviso de descarga de la voz IA (claro y oscuro, también en Firefox y WebKit) y en en/zh; detector de clics de la fase 6 sobre el reproductor (escritorio y celular, claro y oscuro); comprobación de que no se pide nada a Hugging Face, `.onnx` ni onnxruntime al abrir ni al leer con las voces del dispositivo. El helper de axe pasó a `tests/e2e/axe.ts` (lo usan `a11y.spec.ts` y la herramienta).
+- `tests/e2e/layout-shift.spec.ts`: CLS 0 con fuentes tardías en la página nueva.
+- Matriz del catálogo regenerada (`docs/report-phase3-matrix.md`): **83 herramientas** publicadas y verificadas, 83/83 con prueba de navegador. `docs/launch-checklist.md`: verificación de la herramienta después de publicar; sin cambios de despliegue (el modelo viene de Hugging Face, la CSP no define `connect-src`, no hay archivos públicos nuevos).
+
+**Verificación**: lint, typecheck, unitarios (1111), build; en Chromium `tts-tools` (19), `layout-shift` (6) y `a11y` (22); en Firefox los tests `@xb` de la herramienta. WebKit no arranca en este contenedor (faltan bibliotecas del sistema): lo cubre el job `e2e-browsers` del CI.

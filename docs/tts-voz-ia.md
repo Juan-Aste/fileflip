@@ -104,3 +104,10 @@ La restricción (e) implica que quien publique el audio debe aclarar que es voz 
 - Playwright no puede servir por `route.fulfill` archivos tan grandes (el navegador se cierra), así que el modelo se descarga de Hugging Face de verdad.
 - **CI**: job `e2e-ai-voice` (en paralelo a los demás): restaura con `actions/cache` un perfil de Chromium (`TTS_MODEL_PROFILE=.cache/tts-profile`, ~600 MB) cuya clave es el hash de `src/lib/tts/model.ts`; el modelo se baja solo cuando cambia la versión fijada. Se borran los candados `Singleton*` del perfil y se usa una carpeta de descargas nueva en cada corrida.
 - Local: `TTS_REAL_MODEL=1 [TTS_MODEL_PROFILE=dir] npx playwright test tts-ai --project chromium` (en este entorno con proxy, además `E2E_IGNORE_HTTPS_ERRORS=1`). En Node: `SUPERTONIC_DIR=<copia de los archivos> npx vitest run src/lib/tts/supertonic.model.test.ts`.
+
+## Verificación final (8.5b, 2026-10-27)
+- Lighthouse móvil en es, en y zh: rendimiento 93–96, accesibilidad 100, CLS 0, sin peticiones al modelo al abrir la página ([`docs/perf/2026-10-27-phase8.md`](perf/2026-10-27-phase8.md)).
+- `tests/e2e/tts-tools.spec.ts`: axe sin violaciones con texto cargado, leyendo (frase y palabra resaltadas), en pausa y con el aviso de descarga de la voz IA, en claro y oscuro, y en en/zh; detector de clics de la fase 6 sobre el reproductor en escritorio y celular, claro y oscuro; ninguna petición a Hugging Face, `.onnx` ni onnxruntime hasta confirmar la descarga.
+- `tests/e2e/layout-shift.spec.ts`: CLS 0 con fuentes tardías en `/es/leer-texto-en-voz-alta`.
+- Firefox y WebKit (proyectos `@xb`): extracción de los 6 formatos, lectura con pausa/reanudar/detener y axe.
+

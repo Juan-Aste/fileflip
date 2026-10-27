@@ -3,6 +3,8 @@
 // test browsers have without voices, so a fake `speechSynthesis` records what
 // is spoken and fires word boundaries and ends on a timer.
 import type { Page } from "@playwright/test";
+import { axeViolations } from "./axe";
+import { hitTestPage } from "./hit-test";
 import { expect, fixturePath, test } from "./support";
 
 test.afterEach(({ serverCalls }) => {
@@ -248,3 +250,80 @@ test.describe("text-to-speech: reading with the device's voices", () => {
     await expect(other.getByRole("button", { name: "Reproducir" })).toBeDisabled();
   });
 });
+
+test.describe("text-to-speech: accessibility while reading", () => {
+  for (const colorScheme of ["light", "dark"] as const) {
+    test(`axe on the text, the reading view, the pause and the AI voice notice (${colorScheme})`, { tag: "@xb" }, async ({ page }) => {
+      await page.emulateMedia({ colorScheme });
+      await fakeSpeech(page);
+      // Opening the page loads neither the AI model nor the ONNX runtime.
+      const heavy: string[] = [];
+      page.on("request", (r) => {
+        if (/huggingface\.co|\.onnx|ort-wasm|onnxruntime/.test(r.url())) heavy.push(r.url());
+      });
+      await page.route("https://huggingface.co/**", (route) => route.fulfill({ status: 503, headers: { "access-control-allow-origin": "*" } }));
+      await page.goto("/es/leer-texto-en-voz-alta", { waitUntil: "networkidle" });
+      await textArea(page).fill(SAMPLE);
+      expect(await axeViolations(page)).toEqual([]);
+
+      await page.evaluate(() => ((window as unknown as { __tts: { wordMs: number } }).__tts.wordMs = 2000));
+      await page.getByRole("button", { name: "Reproducir" }).click();
+      await expect(page.getByTestId("tts-word")).toBeVisible();
+      expect(await axeViolations(page)).toEqual([]);
+      await page.getByRole("button", { name: "Pausa" }).click();
+      await expect(status(page)).toHaveText("En pausa");
+      expect(await axeViolations(page)).toEqual([]);
+      await page.getByRole("button", { name: "Detener" }).click();
+      expect(heavy).toEqual([]);
+
+      await page.getByRole("radio", { name: "Voz IA" }).check();
+      await page.getByRole("button", { name: "Reproducir" }).click();
+      await expect(page.getByText(/necesita descargar/)).toBeVisible();
+      expect(await axeViolations(page)).toEqual([]);
+      expect(heavy).toEqual([]);
+    });
+  }
+
+  test("axe on the reading view in English and Chinese", async ({ page }) => {
+    await fakeSpeech(page);
+    for (const [path, text] of [
+      ["/en/text-to-speech", "The first sentence. The second one is a bit longer."],
+      ["/zh/text-to-speech", "这是第一句话。这是第二句话。"],
+    ] as const) {
+      await page.goto(path, { waitUntil: "networkidle" });
+      await page.locator("textarea").fill(text);
+      expect(await axeViolations(page), path).toEqual([]);
+    }
+    // Reading with the (fake) English device voice.
+    await page.goto("/en/text-to-speech", { waitUntil: "networkidle" });
+    await page.evaluate(() => ((window as unknown as { __tts: { wordMs: number } }).__tts.wordMs = 2000));
+    await page.locator("textarea").fill("The cat is on the table. The dog is in the garden.");
+    await page.getByRole("button", { name: "Play" }).click();
+    await expect(page.getByTestId("tts-word")).toBeVisible();
+    expect(await axeViolations(page)).toEqual([]);
+  });
+});
+
+// Phase 6 click detector on the player controls, which only appear with text.
+for (const vp of [
+  { name: "desktop", width: 1280, height: 800, touch: false },
+  { name: "phone", width: 390, height: 844, touch: true },
+] as const) {
+  test.describe(`text-to-speech: every control receives its clicks (${vp.name})`, () => {
+    test.use({ viewport: { width: vp.width, height: vp.height }, hasTouch: vp.touch, isMobile: vp.name === "phone" });
+    for (const colorScheme of ["light", "dark"] as const) {
+      test(colorScheme, async ({ page }) => {
+        await page.emulateMedia({ colorScheme });
+        await fakeSpeech(page);
+        await page.goto("/es/leer-texto-en-voz-alta", { waitUntil: "networkidle" });
+        await textArea(page).fill(SAMPLE);
+        await page.evaluate(() => document.fonts.ready);
+        expect(await hitTestPage(page, { touch: vp.touch })).toEqual([]);
+        await page.evaluate(() => ((window as unknown as { __tts: { wordMs: number } }).__tts.wordMs = 2000));
+        await page.getByRole("button", { name: "Reproducir" }).click();
+        await expect(page.getByTestId("tts-word")).toBeVisible();
+        expect(await hitTestPage(page, { touch: vp.touch })).toEqual([]);
+      });
+    }
+  });
+}

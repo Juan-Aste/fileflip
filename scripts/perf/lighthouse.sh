@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Mobile Lighthouse run (median of N) against a running `next start`.
 # Usage: scripts/perf/lighthouse.sh [base_url] [runs]
+# PAGES_FILTER (a bash regex on the page names) runs only some pages.
 # Needs `lighthouse` (npm i -g lighthouse, or LIGHTHOUSE=/path/to/bin) and a
 # Chromium (CHROME_PATH; defaults to the Playwright one if present).
 set -euo pipefail
@@ -41,7 +42,13 @@ PAGES=(
   "tool-id-photo /es/foto-carnet"
   "tool-scan /es/escanear-documento"
   "tool-bg /es/quitar-fondo"
+  "tool-tts /es/leer-texto-en-voz-alta"
+  "tool-tts-en /en/text-to-speech"
+  "tool-tts-zh /zh/text-to-speech"
 )
+if [ -n "${PAGES_FILTER:-}" ]; then
+  sel=(); for p in "${PAGES[@]}"; do [[ "${p%% *}" =~ $PAGES_FILTER ]] && sel+=("$p"); done; PAGES=("${sel[@]}")
+fi
 # Warm up the server (first render of each route).
 for p in "${PAGES[@]}"; do curl -s -o /dev/null "$BASE${p#* }"; done
 echo "| Página | Perf | A11y | SEO | FCP | LCP | TBT | CLS | SI | JS (transfer) |"
