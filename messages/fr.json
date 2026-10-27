@@ -3047,6 +3047,26 @@
       "fr": "Français",
       "zh": "中文"
     },
-    "noTextInFile": "Aucun texte à lire dans ce fichier."
+    "noTextInFile": "Aucun texte à lire dans ce fichier.",
+    "engine": "Type de voix",
+    "engineDevice": "Voix de l’appareil",
+    "engineAi": "Voix IA",
+    "engineAiHint": "La voix IA est plus naturelle et permet de télécharger un MP3. Elle se télécharge une fois (environ {size}) et génère l’audio sur votre appareil.",
+    "aiNoChinese": "La voix IA n’est pas disponible en chinois : le texte est lu avec les voix de l’appareil.",
+    "aiVoiceFemale": "Femme {n}",
+    "aiVoiceMale": "Homme {n}",
+    "aiConfirm": "La voix IA doit télécharger environ {size} depuis Hugging Face. Seulement la première fois : elle reste enregistrée dans votre navigateur. Votre texte n’est pas envoyé : seuls les fichiers du modèle sont téléchargés.",
+    "aiConfirmPhone": "Sur un téléphone, mieux vaut le Wi-Fi ; la génération est plus lente et utilise beaucoup de mémoire.",
+    "aiDownload": "Télécharger la voix IA",
+    "aiDownloading": "Téléchargement de la voix IA…",
+    "aiGenerating": "Génération de la voix…",
+    "aiSpeechError": "La voix IA n’a pas pu être générée. Réessayez ou utilisez les voix de l’appareil.",
+    "downloadMp3": "Télécharger le MP3",
+    "mp3Generating": "Génération du MP3 : phrase {current} sur {total}",
+    "mp3Hint": "Le MP3 est généré avec la voix IA (Supertonic 3) sur votre appareil. Si vous publiez l’audio, indiquez qu’il s’agit d’une voix générée par IA.",
+    "mp3NoChinese": "Le téléchargement MP3 utilise la voix IA, qui n’est pas disponible en chinois.",
+    "aiLicense": "Licence du modèle (OpenRAIL-M)",
+    "mp3TooLongMobile": "Sur un téléphone, le MP3 accepte jusqu’à {max} caractères. Raccourcissez le texte ou générez le MP3 sur un ordinateur.",
+    "mp3Done": "MP3 prêt : {name}"
   }
 }

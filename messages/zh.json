@@ -3047,6 +3047,26 @@
       "fr": "Français",
       "zh": "中文"
     },
-    "noTextInFile": "此文件中没有可朗读的文字。"
+    "noTextInFile": "此文件中没有可朗读的文字。",
+    "engine": "语音类型",
+    "engineDevice": "设备语音",
+    "engineAi": "AI 语音",
+    "engineAiHint": "AI 语音更自然，并可下载 MP3。只需下载一次（约 {size}），音频在你的设备上生成。",
+    "aiNoChinese": "AI 语音不支持中文：将使用设备语音朗读。",
+    "aiVoiceFemale": "女声 {n}",
+    "aiVoiceMale": "男声 {n}",
+    "aiConfirm": "AI 语音需要从 Hugging Face 下载约 {size}。仅首次需要：之后保存在你的浏览器中。你的文字不会被发送：只下载模型文件。",
+    "aiConfirmPhone": "在手机上最好使用 Wi-Fi；生成速度较慢且占用大量内存。",
+    "aiDownload": "下载 AI 语音",
+    "aiDownloading": "正在下载 AI 语音…",
+    "aiGenerating": "正在生成语音…",
+    "aiSpeechError": "无法生成 AI 语音。请重试或使用设备语音。",
+    "downloadMp3": "下载 MP3",
+    "mp3Generating": "正在生成 MP3：第 {current} 句，共 {total} 句",
+    "mp3Hint": "MP3 由 AI 语音（Supertonic 3）在你的设备上生成。如果发布该音频，请注明是 AI 生成的语音。",
+    "mp3NoChinese": "MP3 下载使用 AI 语音，而 AI 语音不支持中文。",
+    "aiLicense": "模型许可（OpenRAIL-M）",
+    "mp3TooLongMobile": "在手机上 MP3 最多支持 {max} 个字符。请缩短文字或在电脑上生成 MP3。",
+    "mp3Done": "MP3 已生成：{name}"
   }
 }

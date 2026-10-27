@@ -3372,3 +3372,18 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 **Tests**: `src/lib/tts/supertonic.test.ts` (normalización, ids, parsers, latentes, ruido), `src/lib/tts/model-cache.test.ts` (descarga con progreso, caché, SHA-256 alterado, archivo más largo, HTTP y red caídos, caché dañada, sin caché, cancelado), `src/lib/tts/model.test.ts` (hashes de voces) y `src/lib/tts/supertonic.model.test.ts` con el modelo real (solo local con `SUPERTONIC_DIR`): es, en, pt y fr dan 2,6–2,9 s de audio con energía, a ~1× tiempo real con un hilo.
 
 **Verificación**: lint, typecheck, tests unitarios y build pasan; en Chromium el modelo se descargó de Hugging Face (~25 s) y leyó dos frases (la interfaz llega en 8.3c).
+
+## 2026-10-27 — Fase 8, tarea 8.3c (escuchar con la voz IA y descargar MP3)
+
+**Qué se hizo**
+- "Tipo de voz" en la herramienta: Voces del dispositivo / Voz IA (recordado). Voz IA con 10 voces del modelo y velocidad 0,75×–2×; si el navegador no tiene `speechSynthesis` se usa la voz IA.
+- Confirmación con el tamaño antes de la primera descarga (el modelo nunca se baja al abrir la página), progreso por bytes y Cancelar; luego se lee de la Cache API sin preguntar.
+- `useAiSpeech`: reproducción progresiva con Web Audio (genera las 2 frases siguientes mientras suena la actual), pausa/reanudar, detener, anterior/siguiente, cambio de voz o velocidad en vivo, resaltado de la frase y "Generando la voz…" mientras espera.
+- `src/lib/tts/mp3.ts`: MP3 escrito frase a frase con mediabunny + LAME (mono, 44,1 kHz, 64 kbit/s, 0,3 s entre frases), nombre a partir del título o de las primeras palabras; aviso de voz generada por IA y enlace a la licencia junto al botón.
+- Chino: voz IA y MP3 deshabilitados con la explicación.
+- **Mediciones** (`docs/tts-voz-ia.md`): 398 MB de descarga; ~800 MB de memoria; PC ~63 s por minuto de audio; celular de gama media estimado ~4 min por minuto (la limitación de CPU de DevTools no afecta a los workers: se estimó pausando el proceso de la pestaña el 75 % del tiempo). Escuchar en celular usa 3 pasos en vez de 5; **límite del MP3 en celulares: 3.000 caracteres**.
+- Arreglo durante la tarea: tras la primera descarga, el MP3 volvía a pedir la descarga en bucle (estado viejo en el cierre); ahora se usa una referencia.
+
+**Tests**: `tests/e2e/tts-ai.spec.ts` — confirmación con tamaño y Cancelar sin descargar nada, elección recordada, descarga fallida con mensaje, chino sin voz IA ni MP3 (en el CI, Chromium); con `TTS_REAL_MODEL=1` (descarga real de Hugging Face una vez, en un contexto compartido): lectura progresiva con pausa y reanudar y segunda visita sin descargas, y MP3 en es, en, pt y fr validados con ffprobe/ffmpeg (mp3 mono 44,1 kHz, duración coherente con el texto, no silencio). `tests/e2e/tts-tools.spec.ts`: sin `speechSynthesis` ahora se ofrece la voz IA. Unitario `src/lib/tts/mp3.test.ts` (nombre del archivo).
+
+**Verificación**: lint, typecheck, tests unitarios (1108 + 11 omitidos), build; Chromium: `tts-ai` + `tts-tools` con el modelo real (14) y `a11y` (22) pasan. Firefox y WebKit se verifican en el CI.

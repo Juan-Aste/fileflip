@@ -3047,6 +3047,26 @@
       "fr": "Français",
       "zh": "中文"
     },
-    "noTextInFile": "Não encontramos texto para ler neste arquivo."
+    "noTextInFile": "Não encontramos texto para ler neste arquivo.",
+    "engine": "Tipo de voz",
+    "engineDevice": "Vozes do dispositivo",
+    "engineAi": "Voz IA",
+    "engineAiHint": "A voz IA é mais natural e permite baixar MP3. É baixada uma vez (cerca de {size}) e gera o áudio no seu dispositivo.",
+    "aiNoChinese": "A voz IA não está disponível em chinês: o texto é lido com as vozes do dispositivo.",
+    "aiVoiceFemale": "Mulher {n}",
+    "aiVoiceMale": "Homem {n}",
+    "aiConfirm": "A voz IA precisa baixar cerca de {size} do Hugging Face. Só na primeira vez: fica salva no seu navegador. Seu texto não é enviado: só os arquivos do modelo são baixados.",
+    "aiConfirmPhone": "No celular, prefira o Wi-Fi; a geração é mais lenta e usa muita memória.",
+    "aiDownload": "Baixar a voz IA",
+    "aiDownloading": "Baixando a voz IA…",
+    "aiGenerating": "Gerando a voz…",
+    "aiSpeechError": "Não foi possível gerar a voz IA. Tente de novo ou use as vozes do dispositivo.",
+    "downloadMp3": "Baixar MP3",
+    "mp3Generating": "Gerando o MP3: frase {current} de {total}",
+    "mp3Hint": "O MP3 é gerado com a voz IA (Supertonic 3) no seu dispositivo. Se publicar o áudio, informe que é uma voz gerada por IA.",
+    "mp3NoChinese": "O download em MP3 usa a voz IA, que não está disponível em chinês.",
+    "aiLicense": "Licença do modelo (OpenRAIL-M)",
+    "mp3TooLongMobile": "No celular o MP3 aceita até {max} caracteres. Encurte o texto ou gere o MP3 em um computador.",
+    "mp3Done": "MP3 pronto: {name}"
   }
 }

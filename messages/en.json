@@ -3047,6 +3047,26 @@
       "fr": "Français",
       "zh": "中文"
     },
-    "noTextInFile": "We found no text to read in this file."
+    "noTextInFile": "We found no text to read in this file.",
+    "engine": "Kind of voice",
+    "engineDevice": "Device voices",
+    "engineAi": "AI voice",
+    "engineAiHint": "The AI voice sounds more natural and can be downloaded as MP3. It downloads once (about {size}) and generates the audio on your device.",
+    "aiNoChinese": "The AI voice isn't available in Chinese: the text is read with the device voices.",
+    "aiVoiceFemale": "Female {n}",
+    "aiVoiceMale": "Male {n}",
+    "aiConfirm": "The AI voice needs to download about {size} from Hugging Face. Only the first time: it stays saved in your browser. Your text isn't sent: only the model files are downloaded.",
+    "aiConfirmPhone": "On a phone, Wi-Fi is best; generation is slower and uses a lot of memory.",
+    "aiDownload": "Download the AI voice",
+    "aiDownloading": "Downloading the AI voice…",
+    "aiGenerating": "Generating the voice…",
+    "aiSpeechError": "The AI voice couldn't be generated. Try again or use the device voices.",
+    "downloadMp3": "Download MP3",
+    "mp3Generating": "Generating the MP3: sentence {current} of {total}",
+    "mp3Hint": "The MP3 is generated with the AI voice (Supertonic 3) on your device. If you publish the audio, say that it is an AI-generated voice.",
+    "mp3NoChinese": "MP3 download uses the AI voice, which isn't available in Chinese.",
+    "aiLicense": "Model license (OpenRAIL-M)",
+    "mp3TooLongMobile": "On a phone the MP3 can have up to {max} characters. Shorten the text or make the MP3 on a computer.",
+    "mp3Done": "MP3 ready: {name}"
   }
 }

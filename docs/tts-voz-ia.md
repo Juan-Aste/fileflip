@@ -76,3 +76,24 @@ La restricción (e) implica que quien publique el audio debe aclarar que es voz 
 - **Cliente** `src/lib/tts/ai-voice.ts`: un solo worker, creado la primera vez que el usuario elige usar la voz IA (nunca al abrir la página). Cancelar la descarga termina el worker; cancelar una lectura o un MP3 solo deja de pedir frases, así el modelo cargado se conserva.
 - **Memoria**: con el modelo cargado, el proceso de la pestaña usa ~800 MB (medido en Chromium de escritorio).
 - **Verificado**: en Node con el modelo real (`SUPERTONIC_DIR=… npx vitest run src/lib/tts/supertonic.model.test.ts`): una frase corta en es, en, pt y fr da 2,6–2,9 s de audio con energía (RMS 0,04–0,05) en ~1× tiempo real con un hilo. En Chromium con la descarga real desde Hugging Face: ~25 s para los 398 MB en este entorno y lectura correcta.
+
+## Escuchar y descargar MP3 con la voz IA (8.3c)
+
+- **Interfaz**: selector "Tipo de voz" (Voces del dispositivo / Voz IA, recordado en `localStorage`). Con la voz IA: 10 voces del modelo (Mujer 1–5, Hombre 1–5) y velocidad 0,75×–2× (el modelo no habla más lento que 0,7; se le pasa 1,05 × la velocidad elegida). Si el navegador no tiene `speechSynthesis`, se usa la voz IA directamente.
+- **Antes de la primera descarga** se muestra el tamaño (~380 MiB = 398 MB) y que el texto no se envía; en celulares, además, que conviene wifi. Barra de progreso por bytes y Cancelar. Las visitas siguientes leen el modelo de la Cache API sin preguntar.
+- **Escuchar**: cada frase se genera en el worker y suena con Web Audio mientras se generan las 2 siguientes (reproducción progresiva). Pausa/Reanudar suspenden el reloj de audio; anterior/siguiente, barra de frases y resaltado iguales que con las voces del dispositivo (sin resaltado de palabra: el modelo no da tiempos por palabra). Cambiar voz o velocidad regenera la frase actual. Mientras una frase no está lista se muestra "Generando la voz…". El `AudioContext` se crea dentro del clic (iOS).
+- **MP3**: "Descargar MP3" genera todas las frases (progreso "frase N de M", Cancelar) y las escribe al vuelo con mediabunny + `@mediabunny/mp3-encoder` (LAME), mono 44,1 kHz a 64 kbit/s (~0,5 MB por minuto), con 0,3 s de pausa entre frases. Nombre: el título del documento (metadatos del PDF/DOCX/EPUB o el nombre del archivo) o las 6 primeras palabras. Junto al botón: aviso de que el audio es voz generada por IA (restricción (e) de la licencia) y enlace a la licencia OpenRAIL-M.
+- **Chino**: sin voz IA (el modelo no lo incluye): la opción y el botón MP3 aparecen deshabilitados con la explicación.
+
+### Mediciones (2026-10-27, Chromium 1243, onnxruntime-web WASM con 1 hilo)
+
+| Medición | Resultado |
+|---|---|
+| Descarga del modelo (primera vez) | 398,4 MB + 0,29 MB por voz; ~20 s en este entorno (conexión de centro de datos); con 50 Mbit/s serían ~65 s |
+| Memoria de la pestaña con el modelo cargado | ~800 MB |
+| PC (vCPU de servidor, comparable a una PC común) | **~63 s para generar 1 minuto de audio** (5 pasos), es decir ~1× tiempo real; 81 s la primera vez incluyendo descarga y caché |
+| Celular de gama media (estimado: CPU de la pestaña limitada al 25 %) | **~4 min (246 s) para 1 minuto de audio** con 5 pasos |
+| Pasos del estimador (frase de 8,7 s, Node) | 2 pasos 3,9 s · 3 pasos 5,0 s · 5 pasos 7,6 s · 8 pasos 11,3 s |
+
+- La limitación de CPU de DevTools (`Emulation.setCPUThrottlingRate`) **no afecta a los Web Workers** (con 4× y 6× tardó lo mismo: 63 s), por eso el celular se estimó deteniendo y reanudando el proceso de la pestaña (SIGSTOP/SIGCONT, 25 ms de cada 100 ms).
+- Decisiones: para **escuchar en un celular se usan 3 pasos** (~1,5× más rápido; aun así la lectura hace pausas entre frases mientras genera, por eso en celulares conviene escuchar con las voces del dispositivo); el MP3 usa siempre 5 pasos. **Límite del MP3 en celulares: 3.000 caracteres** (~4 minutos de audio, ~15 minutos de generación); en computadoras el límite es el general de 50.000.

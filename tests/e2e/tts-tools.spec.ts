@@ -238,6 +238,12 @@ test.describe("text-to-speech: reading with the device's voices", () => {
     await fakeSpeech(other, { supported: false });
     await other.goto("/es/leer-texto-en-voz-alta", { waitUntil: "networkidle" });
     await other.getByRole("textbox", { name: "Texto para leer" }).fill(SAMPLE);
+    // Without device voices the AI voice is offered instead (downloaded only when used).
+    await expect(other.getByRole("radio", { name: "Voz IA" })).toBeChecked();
+    await expect(other.getByRole("radio", { name: "Voces del dispositivo" })).toBeDisabled();
+    await expect(other.getByRole("button", { name: "Reproducir" })).toBeEnabled();
+    // Chinese has no AI voice: nothing can read it.
+    await other.getByLabel("Idioma", { exact: true }).selectOption("zh");
     await expect(other.locator("main [role=alert]")).toContainText("Tu navegador no puede leer en voz alta");
     await expect(other.getByRole("button", { name: "Reproducir" })).toBeDisabled();
   });
