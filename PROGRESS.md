@@ -3410,3 +3410,12 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - `LEGAL_UPDATED`/`TERMS_VERSION` = 2026-10-27 (las cuentas vuelven a aceptar al iniciar sesión). Notas para el abogado en `docs/legal/pendientes-legales.md`.
 
 **Verificación**: lint, typecheck, tests unitarios (1109 + 11 omitidos; `tests/licenses.test.ts` y textos legales), build y `check:static`; Chromium: `legal`, `tts-ai`, `tts-tools`, `a11y`, `layout-shift` pasan.
+
+## 2026-10-27 — Fase 8, tarea 8.5a (tests con la voz IA real en el CI)
+
+**Qué se hizo**
+- Los tests con el modelo real de `tests/e2e/tts-ai.spec.ts` (lectura progresiva con pausa/reanudar y caché; MP3 en es, en, pt y fr validados con ffprobe/ffmpeg: códec mp3, mono, 44,1 kHz, duración coherente con el texto y no silencio) pueden usar un perfil persistente de Chromium (`TTS_MODEL_PROFILE`), y aceptan que el modelo ya esté en caché (sin confirmación ni descargas).
+- CI: job nuevo `e2e-ai-voice` (ubuntu-latest, Chromium de Playwright + ffmpeg, build) con el perfil cacheado por `actions/cache` según el hash de `src/lib/tts/model.ts`: el modelo (~400 MB) se descarga una vez por versión. `.cache/` en `.gitignore`.
+- Arreglos para perfiles reutilizados: se borran los candados `Singleton*` y se usa una carpeta de descargas nueva (Chromium recordaba la de la corrida anterior y la descarga fallaba).
+
+**Verificación**: lint y typecheck; `tts-ai` en Chromium con el modelo real pasa con un perfil nuevo (descarga) y con el perfil ya cacheado (8 tests cada vez).

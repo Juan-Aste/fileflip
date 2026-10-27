@@ -417,5 +417,5 @@ Pedida por el dueño el 2026-10-26: lector en voz alta (texto a voz). "Yo le pon
 - [x] 8.4b Créditos y `docs/dependencies.md` (Supertonic), `npm run licenses`, restricciones de uso en los Términos si la licencia lo exige, Política de privacidad (texto en el dispositivo, voces en línea) en 5 idiomas
 
 ### Hito 8.5 — Tests y verificación
-- [ ] 8.5a Tests con la voz IA real: MP3 de un texto corto en es, en, pt y fr validado de forma independiente (cabecera, duración coherente, no silencio); modelo cacheado en el CI o test local + test mínimo en el CI
+- [x] 8.5a Tests con la voz IA real: MP3 de un texto corto en es, en, pt y fr validado de forma independiente (cabecera, duración coherente, no silencio); modelo cacheado en el CI o test local + test mínimo en el CI
 - [ ] 8.5b Lighthouse móvil ≥ 90 y CLS 0 en la página nueva, detector de clics, axe, Firefox y WebKit; informe del catálogo y `docs/launch-checklist.md`

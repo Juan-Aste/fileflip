@@ -5,11 +5,13 @@
 // Cache API of one shared browser context): it speaks, and its MP3s are
 // checked with ffprobe/ffmpeg (independent of the app and of mediabunny).
 // Playwright cannot fulfill routes that large, so those go to the network.
+// With TTS_MODEL_PROFILE (a directory) the context is a persistent browser
+// profile: the CI caches it, so the model is downloaded once per version.
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { Browser, BrowserContext, Page } from "@playwright/test";
+import { chromium, type Browser, type BrowserContext, type Page } from "@playwright/test";
 import { expect, test, toolAlert } from "./support";
 
 const MODEL_PREFIX = "https://huggingface.co/Supertone/supertonic-3/resolve/";
@@ -113,11 +115,22 @@ test.describe("tool: text-to-speech, AI voice with the real model", () => {
   let page: Page;
   let requests: string[];
   const errors: string[] = [];
-  test.beforeAll(async ({ browser }: { browser: Browser }) => {
-    context = await browser.newContext({ locale: "es-ES", acceptDownloads: true, ignoreHTTPSErrors: Boolean(process.env.E2E_IGNORE_HTTPS_ERRORS) });
+  test.beforeAll(async ({ browser }: { browser: Browser }, info) => {
+    const options = { locale: "es-ES", acceptDownloads: true, ignoreHTTPSErrors: Boolean(process.env.E2E_IGNORE_HTTPS_ERRORS), baseURL: info.project.use.baseURL };
+    const profile = process.env.TTS_MODEL_PROFILE;
+    // A profile restored on another machine keeps Chromium's single-instance locks.
+    if (profile) for (const lock of ["SingletonLock", "SingletonCookie", "SingletonSocket"]) rmSync(join(profile, lock), { force: true });
+    context = profile
+      ? await chromium.launchPersistentContext(profile, {
+          ...options,
+          executablePath: info.project.use.launchOptions?.executablePath,
+          // A reused profile remembers the previous run's (deleted) download folder.
+          downloadsPath: mkdtempSync(join(tmpdir(), "tts-downloads-")),
+        })
+      : await browser.newContext(options);
     await context.route("**/api/stats", (route) => route.fulfill({ status: 204 }));
     await context.route("**/api/visit", (route) => route.fulfill({ status: 204 }));
-    page = await context.newPage();
+    page = context.pages()[0] ?? (await context.newPage());
     page.on("pageerror", (e) => errors.push(String(e)));
     requests = watchModel(page);
   });
@@ -144,8 +157,13 @@ test.describe("tool: text-to-speech, AI voice with the real model", () => {
     await chooseAiVoice(page, "/es/leer-texto-en-voz-alta", `${first} ${second}`);
     expect(requests).toEqual([]);
     await page.getByRole("button", { name: "Reproducir" }).click();
-    await page.getByRole("button", { name: "Descargar la voz IA" }).click();
-    await expect(page.getByTestId("tts-current")).toHaveText(first, { timeout: 500_000 });
+    // A cached profile (CI) already has the model: no confirmation then.
+    const confirm = page.getByRole("button", { name: "Descargar la voz IA" });
+    const current = page.getByTestId("tts-current");
+    await expect(confirm.or(current)).toBeVisible({ timeout: 60_000 });
+    const downloaded = await confirm.isVisible();
+    if (downloaded) await confirm.click();
+    await expect(current).toHaveText(first, { timeout: 500_000 });
     await expect.poll(async () => (await started()).length, { timeout: 120_000 }).toBeGreaterThan(0);
     // The first sentence as audio: several seconds (more than 4 characters per second is far too fast).
     expect((await started())[0]).toBeGreaterThan(first.length / 25);
@@ -157,7 +175,9 @@ test.describe("tool: text-to-speech, AI voice with the real model", () => {
     await page.getByRole("button", { name: "Reanudar" }).click();
     await expect(page.getByTestId("tts-current")).toHaveText(second, { timeout: 120_000 });
     await expect(page.getByText("Lectura terminada")).toBeAttached({ timeout: 120_000 });
-    expect(new Set(requests)).toEqual(new Set(["onnx/tts.json", "onnx/unicode_indexer.json", "onnx/duration_predictor.onnx", "onnx/text_encoder.onnx", "onnx/vector_estimator.onnx", "onnx/vocoder.onnx", "voice_styles/F1.json"]));
+    const files = ["onnx/tts.json", "onnx/unicode_indexer.json", "onnx/duration_predictor.onnx", "onnx/text_encoder.onnx", "onnx/vector_estimator.onnx", "onnx/vocoder.onnx", "voice_styles/F1.json"];
+    if (downloaded) expect(new Set(requests)).toEqual(new Set(files));
+    else expect(requests).toEqual([]);
 
     // Next visit: no confirmation, nothing downloaded again (Cache API).
     requests.length = 0;

@@ -30,6 +30,43 @@ jobs:
       - name: Static pages
         run: npm run check:static
 
+  # The read-aloud AI voice with the real Supertonic 3 model: reading with
+  # pause and resume, the Cache API, and an MP3 in es, en, pt and fr checked
+  # with ffprobe/ffmpeg. The model (~400 MB, from Hugging Face) lives in a
+  # cached browser profile, so it is downloaded once per model version.
+  e2e-ai-voice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Chromium and ffmpeg
+        run: npx playwright install --with-deps chromium && sudo apt-get install -y --no-install-recommends ffmpeg
+      - name: Build
+        run: npm run build
+      - name: Browser profile with the AI voice model
+        uses: actions/cache@v4
+        with:
+          path: .cache/tts-profile
+          key: tts-profile-${{ hashFiles('src/lib/tts/model.ts') }}
+      - name: AI voice with the real model
+        run: npx playwright test tts-ai --project chromium -g "real model"
+        env:
+          TTS_REAL_MODEL: "1"
+          TTS_MODEL_PROFILE: .cache/tts-profile
+      - name: Test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-ai-voice-results
+          path: test-results/
+          retention-days: 7
+
   # Browser tests in other engines: one representative test per tool family
   # (tagged @xb) in Firefox and WebKit, on desktop and in iPhone (WebKit)
   # and Android (Chromium) emulation, plus the quick Chromium checks that

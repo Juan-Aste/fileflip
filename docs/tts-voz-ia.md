@@ -97,3 +97,10 @@ La restricción (e) implica que quien publique el audio debe aclarar que es voz 
 
 - La limitación de CPU de DevTools (`Emulation.setCPUThrottlingRate`) **no afecta a los Web Workers** (con 4× y 6× tardó lo mismo: 63 s), por eso el celular se estimó deteniendo y reanudando el proceso de la pestaña (SIGSTOP/SIGCONT, 25 ms de cada 100 ms).
 - Decisiones: para **escuchar en un celular se usan 3 pasos** (~1,5× más rápido; aun así la lectura hace pausas entre frases mientras genera, por eso en celulares conviene escuchar con las voces del dispositivo); el MP3 usa siempre 5 pasos. **Límite del MP3 en celulares: 3.000 caracteres** (~4 minutos de audio, ~15 minutos de generación); en computadoras el límite es el general de 50.000.
+
+## Tests con el modelo real (8.5a)
+
+- `tests/e2e/tts-ai.spec.ts`, bloque "with the real model" (con `TTS_REAL_MODEL=1`): lectura progresiva con pausa y reanudar, segunda visita sin descargas (Cache API) y MP3 en es, en, pt y fr validados con ffprobe/ffmpeg (mp3 mono 44,1 kHz, duración entre texto/25 y texto/6 segundos, RMS > 0,01).
+- Playwright no puede servir por `route.fulfill` archivos tan grandes (el navegador se cierra), así que el modelo se descarga de Hugging Face de verdad.
+- **CI**: job `e2e-ai-voice` (en paralelo a los demás): restaura con `actions/cache` un perfil de Chromium (`TTS_MODEL_PROFILE=.cache/tts-profile`, ~600 MB) cuya clave es el hash de `src/lib/tts/model.ts`; el modelo se baja solo cuando cambia la versión fijada. Se borran los candados `Singleton*` del perfil y se usa una carpeta de descargas nueva en cada corrida.
+- Local: `TTS_REAL_MODEL=1 [TTS_MODEL_PROFILE=dir] npx playwright test tts-ai --project chromium` (en este entorno con proxy, además `E2E_IGNORE_HTTPS_ERRORS=1`). En Node: `SUPERTONIC_DIR=<copia de los archivos> npx vitest run src/lib/tts/supertonic.model.test.ts`.
