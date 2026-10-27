@@ -182,7 +182,13 @@ function ComponentList({
                 )}
               </span>
             </div>
-            <span className="shrink-0 text-sm font-medium">{e.license}</span>
+            {"licenseUrl" in e && e.licenseUrl ? (
+              <ExtLink href={e.licenseUrl}>
+                <span className="shrink-0 text-sm font-medium">{e.license}</span>
+              </ExtLink>
+            ) : (
+              <span className="shrink-0 text-sm font-medium">{e.license}</span>
+            )}
           </li>
         ))}
       </ul>

@@ -1,10 +1,26 @@
 name: CI
 
+# GitHub Actions minutes are limited on this private repo, so:
+# - pushes run only the quick `check` job, and not at all when a commit only
+#   touches the agent lock or docs;
+# - the heavy browser jobs (other engines, AI voice model) run on pull
+#   requests to main (the release gate) and on demand (workflow_dispatch).
+#   The scheduled agent still runs them locally before marking a task done.
 on:
   push:
     branches: [dev, main]
+    paths-ignore:
+      - ".agent-lock"
+      - "**/*.md"
+      - "docs/**"
   pull_request:
+    branches: [main]
   workflow_dispatch:
+
+# A newer commit on the same branch or PR cancels the run still in progress.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check:
@@ -30,6 +46,44 @@ jobs:
       - name: Static pages
         run: npm run check:static
 
+  # The read-aloud AI voice with the real Supertonic 3 model: reading with
+  # pause and resume, the Cache API, and an MP3 in es, en, pt and fr checked
+  # with ffprobe/ffmpeg. The model (~400 MB, from Hugging Face) lives in a
+  # cached browser profile, so it is downloaded once per model version.
+  e2e-ai-voice:
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Chromium and ffmpeg
+        run: npx playwright install --with-deps chromium && sudo apt-get install -y --no-install-recommends ffmpeg
+      - name: Build
+        run: npm run build
+      - name: Browser profile with the AI voice model
+        uses: actions/cache@v4
+        with:
+          path: .cache/tts-profile
+          key: tts-profile-${{ hashFiles('src/lib/tts/model.ts') }}
+      - name: AI voice with the real model
+        run: npx playwright test tts-ai --project chromium -g "real model"
+        env:
+          TTS_REAL_MODEL: "1"
+          TTS_MODEL_PROFILE: .cache/tts-profile
+      - name: Test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-ai-voice-results
+          path: test-results/
+          retention-days: 7
+
   # Browser tests in other engines: one representative test per tool family
   # (tagged @xb) in Firefox and WebKit, on desktop and in iPhone (WebKit)
   # and Android (Chromium) emulation, plus the quick Chromium checks that
@@ -41,10 +95,13 @@ jobs:
   # headers, session cookies, access control, API body and rate limits
   # (security-headers, access-control, api-limits and rate-limits specs),
   # email sign-in with the real Auth.js behind a proxy (login-real) and the
-  # site with the Pro plan switched off (pro-switch) and the legal texts (legal).
+  # site with the Pro plan switched off (pro-switch) and the legal texts (legal),
+  # and the AI voice confirmation and failures (tts-ai; its real-model tests
+  # need TTS_REAL_MODEL=1).
   # Runs in Playwright's image (same version as package.json): browsers and
   # their system libraries come preinstalled, no slow apt step.
   e2e-browsers:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     container:
@@ -65,7 +122,7 @@ jobs:
       - name: Edge-case fixtures (big photos, 500-page PDF, passwords, odd names)
         run: node scripts/fixtures/edge.mjs > /dev/null
       - name: Chromium click, missing-API, failure-state and edge-file checks
-        run: npx playwright test open-states login clickable unsupported failure-states billing-states search-locale-states environments edge-files security-headers access-control api-limits rate-limits login-real pro-switch legal --project chromium --grep-invert "pages \d+/"
+        run: npx playwright test open-states login clickable unsupported failure-states tts-ai billing-states search-locale-states environments edge-files security-headers access-control api-limits rate-limits login-real pro-switch legal --project chromium --grep-invert "pages \d+/"
       - name: Test results
         if: failure()
         uses: actions/upload-artifact@v4

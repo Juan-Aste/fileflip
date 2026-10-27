@@ -5,7 +5,7 @@ import { expect, test } from "./support";
 
 test.use({ viewport: { width: 412, height: 823 } });
 
-for (const path of ["/es", "/es/herramientas-pdf", "/en/pdf-tools", "/es/unir-pdf", "/es/creditos"]) {
+for (const path of ["/es", "/es/herramientas-pdf", "/en/pdf-tools", "/es/unir-pdf", "/es/creditos", "/es/leer-texto-en-voz-alta"]) {
   test(`no layout shift with late fonts: ${path}`, async ({ page }) => {
     await page.addInitScript(() => {
       const w = window as unknown as { __cls: number };

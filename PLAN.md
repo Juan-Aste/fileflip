@@ -394,3 +394,28 @@ Pedida por el dueño el 2026-10-23: bug del login en producción, ocultar el pla
 - [x] 7.3a Publicar Términos y condiciones y Política de privacidad desde `docs/legal/*-borrador.md` en los 5 idiomas, sin notas internas ni "borrador"; secciones Pro solo con `PRO_ENABLED`; privacidad según el estado real y con la leyenda de la AAIP; fecha de actualización; contacto con contact@fileflect.com y horario; tests
 - [x] 7.3b Aceptación expresa en el login (Google y email) y en el checkout con Pro encendido, con enlaces; guardar en el usuario versión y fecha de los términos aceptados (sin romper usuarios existentes); actualizar `docs/legal/pendientes-legales.md`; tests
 - [x] 7.4 Verificación final: Lighthouse móvil ≥ 90 y CLS 0 (portada, una herramienta, legales), detector de clics pasa; `docs/launch-checklist.md` con variables (`PRO_ENABLED=false`, `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com`) y pasos
+
+## Fase 8
+
+Pedida por el dueño el 2026-10-26: lector en voz alta (texto a voz). "Yo le pongo un texto, archivo, etc. y que me lo lea, poder ponerle pausa, elegir la velocidad de la lectura", y además descargar la lectura como MP3 con una voz de IA. Herramienta nueva del catálogo (categoría Audio) con slugs `leer-texto-en-voz-alta` (es), `text-to-speech` (en, zh), `ler-texto-em-voz-alta` (pt), `lire-texte-a-voix-haute` (fr). En este orden.
+
+### Hito 8.1 — Entrada de texto
+- [x] 8.1a Núcleo en `src/lib/tts/`: división en frases (abreviaturas, números, chino sin espacios), detección de idioma, límite de caracteres documentado, extracción de texto de TXT, MD, HTML, PDF, DOCX, EPUB e imagen (OCR) reutilizando los extractores existentes; tests unitarios
+- [x] 8.1b Herramienta `text-to-speech` en el catálogo (slugs en 5 idiomas, categoría Audio, página) con entrada: pegar/escribir o subir archivo, área editable, aviso de límite, idioma detectado; tests de navegador de la entrada
+
+### Hito 8.2 — Escuchar con las voces del dispositivo
+- [x] 8.2a Lector con `speechSynthesis`: reproducir, pausa/reanudar, detener, anterior/siguiente frase, velocidad 0,5×–2× en vivo, selector de voz por idioma (voces "en línea" marcadas), progreso por frases, resaltado de frase y palabra con scroll suave, troceado (Chrome/iOS), `voiceschanged`, sin soporte; barra espaciadora, accesibilidad, recordar velocidad y voz
+- [x] 8.2b Tests de navegador con `speechSynthesis` simulado (reproducir, pausa, reanudar, detener, velocidad, siguiente frase, resaltado, sin soporte)
+
+### Hito 8.3 — Voz IA y descarga MP3
+- [x] 8.3a Licencia de Supertonic (pesos OpenRAIL-M): leer el LICENSE, confirmar uso comercial y copiar restricciones; elegir versión (3 o 2), fijar archivos y sha256, decidir desde dónde se sirven los pesos (CSP, tráfico) y documentarlo
+- [x] 8.3b Worker de inferencia Supertonic (onnxruntime-web, sin COOP/COEP) con carga diferida, aviso de tamaño, progreso, Cache API y cancelar; tests
+- [x] 8.3c Escuchar con la voz IA (reproducción progresiva, pausa, velocidad, voces del modelo) y descargar MP3 (@mediabunny/mp3-encoder, nombre a partir del texto); zh sin MP3 si no hay voz; medir tamaño y velocidad (PC y celular simulado) y fijar límite en el celular
+
+### Hito 8.4 — Página, SEO y textos
+- [x] 8.4a Página con FAQ (privacidad, voces del dispositivo vs voz IA, idiomas), metadatos, sitemap, buscador, categorías y enlaces relacionados (PDF a texto, OCR, EPUB) en 5 idiomas
+- [x] 8.4b Créditos y `docs/dependencies.md` (Supertonic), `npm run licenses`, restricciones de uso en los Términos si la licencia lo exige, Política de privacidad (texto en el dispositivo, voces en línea) en 5 idiomas
+
+### Hito 8.5 — Tests y verificación
+- [x] 8.5a Tests con la voz IA real: MP3 de un texto corto en es, en, pt y fr validado de forma independiente (cabecera, duración coherente, no silencio); modelo cacheado en el CI o test local + test mínimo en el CI
+- [x] 8.5b Lighthouse móvil ≥ 90 y CLS 0 en la página nueva, detector de clics, axe, Firefox y WebKit; informe del catálogo y `docs/launch-checklist.md`

@@ -116,7 +116,7 @@ const embeddedNotices = embedded.map((e) => {
   const lgpl = e.lgpl
     ? `Used unmodified under the ${e.license}, as a separate, replaceable file (WASM module or shared library). License text: /licenses/${e.licenseText}.txt`
     : "";
-  const text = e.kind === "service" ? "Runs as a separate service; not distributed with Fileflect." : lgpl || canonicalText(e.licenseText, `the ${e.name} authors`);
+  const text = e.kind === "service" ? "Runs as a separate service; not distributed with Fileflect." : lgpl || canonicalText(e.licenseText, e.holder ?? `the ${e.name} authors`);
   return `${"=".repeat(78)}\n${header.join("\n")}\n${"=".repeat(78)}\n\n${text}\n`;
 });
 

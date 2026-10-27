@@ -1530,6 +1530,27 @@
         "q6": "Como ficam o PNG e o PDF?",
         "a6": "O PNG tem a largura que você escolher (1000, 2000 ou 4000 pixels no lado maior), com fundo branco ou transparente. O PDF é vetorial, de uma página A4 ou A3 girada conforme a forma do desenho, com o desenho ajustado dentro de uma margem de 10 mm (não em escala 1:1). No PDF, textos com caracteres que a fonte padrão não tem (chinês, cirílico…) são inseridos como imagem."
       }
+    },
+    "text-to-speech": {
+      "title": "Ler texto em voz alta",
+      "description": "Cole um texto ou abra um arquivo e ouça com pausa e a velocidade que quiser, ou baixe como MP3 com uma voz IA, no seu navegador.",
+      "searchTerms": "TTS texto para voz leitor narrador ler em voz alta voz IA",
+      "action": "Ler em voz alta",
+      "about": "Digite ou cole um texto, ou abra um arquivo TXT, Markdown, HTML, PDF com texto, Word (DOCX), EPUB ou a foto de um documento, e ouça em voz alta. Você pode pausar, voltar à frase anterior, pular para a próxima e escolher a velocidade, de 0,5× a 2×. A frase que está sendo lida fica destacada para você acompanhar. Lê com as vozes do seu dispositivo ou com uma voz IA mais natural (Supertonic 3) que funciona no navegador e permite baixar a leitura em MP3. O texto é extraído e convertido em voz no seu dispositivo: o arquivo não é enviado a nenhum servidor.",
+      "faq": {
+        "q1": "Meu texto é enviado a algum servidor?",
+        "a1": "Não. O arquivo é lido e o texto extraído no seu navegador, e a voz IA gera o áudio no seu dispositivo: o único download são os arquivos do modelo, do Hugging Face, na primeira vez. As vozes do dispositivo também leem no seu aparelho; só as marcadas como \"on-line\" (por exemplo, as do Google ou da Microsoft no Chrome e no Edge) enviam o texto a esse provedor para gerar o áudio.",
+        "q2": "Quais arquivos posso abrir?",
+        "a2": "TXT, Markdown, HTML, PDF com texto, Word (DOCX), EPUB e fotos ou digitalizações (JPG, PNG, WEBP, TIFF, HEIC…), cujo texto é reconhecido com OCR. Até 50.000 caracteres por leitura; se o texto for maior, ele é cortado e avisamos.",
+        "q3": "Em quais idiomas lê?",
+        "a3": "Detectamos o idioma do texto (espanhol, inglês, português, francês ou chinês) e escolhemos a voz nesse idioma; você pode mudar o idioma e a voz. A voz IA e o download em MP3 estão disponíveis em espanhol, inglês, português e francês; o chinês é lido com as vozes do dispositivo, que dependem do seu sistema e navegador.",
+        "q4": "Qual a diferença entre as vozes do dispositivo e a voz IA?",
+        "a4": "As vozes do dispositivo vêm com o sistema ou o navegador: começam na hora e não baixam nada, mas a qualidade varia e não podem ser salvas como arquivo. A voz IA (Supertonic 3) soa mais natural, tem 10 vozes e permite baixar MP3, mas na primeira vez baixa cerca de 400 MB (depois fica salva no navegador) e gera o áudio com o processador do seu aparelho: no computador leva mais ou menos o mesmo tempo que dura o áudio; no celular, bem mais.",
+        "q5": "Como baixo a leitura em MP3?",
+        "a5": "Escolha a voz IA e toque em \"Baixar MP3\". Ele é gerado frase por frase no seu dispositivo, com barra de progresso e opção de cancelar, e o arquivo recebe o título do documento ou as primeiras palavras do texto. No celular o MP3 aceita até 3.000 caracteres (cerca de 4 minutos de áudio).",
+        "q6": "Posso publicar o áudio gerado com a voz IA?",
+        "a6": "Sim, mas a licença do modelo (OpenRAIL-M) exige informar que é uma voz gerada por IA e proíbe usá-lo, entre outras coisas, para se passar por outras pessoas, difamar, assediar ou espalhar informação falsa para prejudicar outros. As restrições completas estão nos nossos Termos e na licença do modelo, com link ao lado do botão de download."
+      }
     }
   },
   "ToolUi": {
@@ -1796,7 +1817,8 @@
             "A maioria dos seus arquivos não sai do seu dispositivo: eles são processados no seu navegador.",
             "Os arquivos processados no nosso servidor são excluídos em no máximo 1 hora. Não olhamos nem guardamos esses arquivos.",
             "Não vendemos seus dados.",
-            "Nunca guardamos o nome nem o conteúdo dos seus arquivos."
+            "Nunca guardamos o nome nem o conteúdo dos seus arquivos.",
+            "\"Ler texto em voz alta\" processa o texto no seu dispositivo, inclusive com a voz IA. Só as vozes do navegador marcadas \"on-line\" enviam o texto ao seu provedor."
           ]
         },
         {
@@ -1808,6 +1830,12 @@
               "purpose": "Fazer a conversão",
               "basis": "—",
               "retention": "Não os recebemos"
+            },
+            {
+              "data": "Texto que você ouve com \"Ler texto em voz alta\"",
+              "purpose": "Lê-lo em voz alta ou gerar o MP3",
+              "basis": "—",
+              "retention": "Não o recebemos (processado no seu dispositivo)"
             },
             {
               "data": "Arquivos que você processa no nosso servidor (documentos de escritório, PDF para Word, HTML para PDF, PDF/A e, só se o seu navegador não conseguir, algumas imagens)",
@@ -1855,7 +1883,9 @@
           "items": [
             "Railway (EUA): servidores e banco de dados onde o site roda.",
             "Resend (EUA): envia o e-mail com o seu link para entrar.",
-            "Google (EUA): login com o Google, se você escolher; e Google AdSense, que exibe anúncios (veja a seção 6)."
+            "Google (EUA): login com o Google, se você escolher; e Google AdSense, que exibe anúncios (veja a seção 6).",
+            "Hugging Face (EUA): se você escolher a voz IA de \"Ler texto em voz alta\", o navegador baixa os arquivos do modelo do Hugging Face (uma vez). Como em qualquer download, o Hugging Face recebe seu endereço IP e dados técnicos do navegador; seu texto não é enviado.",
+            "Vozes \"on-line\" do navegador (por exemplo, Google no Chrome ou Microsoft no Edge): se você escolher uma delas em \"Ler texto em voz alta\", o navegador envia o texto a esse provedor para gerar o áudio, conforme a política de privacidade dele. Quem as oferece é o navegador, não nós, e as marcamos como \"on-line\"; as demais vozes e a voz IA leem no seu dispositivo."
           ],
           "proItems": [
             "Mercado Pago (Argentina e região): processa os pagamentos do plano Pro. Recebe seus dados de pagamento diretamente; nós não."
@@ -1882,7 +1912,9 @@
           "items": [
             "NEXT_LOCALE: lembra o seu idioma (1 ano).",
             "Cookies de sessão do Auth.js: mantêm você logado.",
-            "Armazenamento local do navegador: lembra o tema claro ou escuro."
+            "Armazenamento local do navegador: lembra o tema claro ou escuro.",
+            "Armazenamento local do navegador: em \"Ler texto em voz alta\", a velocidade, o tipo de voz e a voz escolhidos.",
+            "Cache do navegador: os arquivos do modelo da voz IA (cerca de 400 MB), para não baixá-los de novo. Você pode apagá-los limpando os dados deste site no navegador."
           ],
           "proItems": [
             "Cookie de país: lembra o país escolhido para os preços (1 ano)."
@@ -1988,6 +2020,30 @@
           ],
           "after": [
             "Podemos limitar, suspender ou encerrar o acesso de quem descumprir estas regras e colaborar com as autoridades quando a lei exigir."
+          ]
+        },
+        {
+          "heading": "Voz IA do leitor em voz alta",
+          "body": [
+            "A voz IA de \"Ler texto em voz alta\" usa o modelo Supertonic 3 da Supertone Inc., que o seu navegador baixa e executa no seu dispositivo. O modelo é distribuído sob a licença BigScience OpenRAIL-M (cópia em https://fileflect.com/licenses/BigScience-OpenRAIL-M.txt) e está sujeito às suas restrições de uso. Ao usar a voz IA, você concorda em cumpri-las: você não pode usar o modelo nem seus derivados:"
+          ],
+          "items": [
+            "de qualquer forma que viole leis ou normas nacionais, federais, estaduais, locais ou internacionais aplicáveis;",
+            "para explorar, prejudicar ou tentar explorar ou prejudicar menores de qualquer forma;",
+            "para gerar ou divulgar informação comprovadamente falsa ou conteúdo com o propósito de prejudicar outros;",
+            "para gerar ou divulgar informação de identificação pessoal que possa ser usada para prejudicar alguém;",
+            "para gerar ou divulgar informação ou conteúdo e colocá-lo em qualquer contexto (por exemplo, um bot que publica mensagens) sem informar de forma expressa e compreensível que foi gerado por máquina;",
+            "para difamar, depreciar ou assediar outros;",
+            "para se passar ou tentar se passar por outras pessoas (por exemplo, deepfakes) sem o consentimento delas;",
+            "para decisões totalmente automatizadas que afetem negativamente os direitos de uma pessoa ou criem ou modifiquem uma obrigação vinculante;",
+            "para qualquer uso que vise ou tenha o efeito de discriminar ou prejudicar pessoas ou grupos com base no seu comportamento social ou em características pessoais conhecidas ou previstas;",
+            "para explorar vulnerabilidades de um grupo de pessoas por idade ou características sociais, físicas ou mentais, a fim de distorcer o comportamento de alguém desse grupo de forma que cause ou possa causar dano físico ou psicológico;",
+            "para qualquer uso que vise ou tenha o efeito de discriminar pessoas ou grupos por características ou categorias protegidas por lei;",
+            "para dar conselho médico ou interpretar resultados médicos;",
+            "para gerar ou divulgar informação destinada à administração da justiça, à aplicação da lei ou a processos de imigração ou asilo, como prever que alguém cometerá fraude ou crime."
+          ],
+          "after": [
+            "Em especial, se publicar ou compartilhar o áudio, informe que é uma voz gerada por IA. O áudio que você gera é seu e você é responsável pelo seu uso; nem a Supertone nem nós reivindicamos direitos sobre ele. Em caso de diferença com esta tradução, prevalece o texto em inglês da licença. Podemos limitar o acesso à voz IA de quem descumprir estas restrições."
           ]
         },
         {
@@ -2964,7 +3020,7 @@
     "lgplHeading": "Componentes sob LGPL",
     "lgplIntro": "Estes componentes são usados sob a Licença Pública Geral Menor GNU (LGPL), sem modificações e como arquivos separados (módulos WebAssembly ou bibliotecas dinâmicas) que podem ser substituídos por outra versão. Os links de cada um levam ao código-fonte exato e às instruções com que foi compilado.",
     "enginesHeading": "Motores e dados incluídos",
-    "enginesIntro": "Bibliotecas compiladas para WebAssembly que vêm dentro dos pacotes abaixo, a nossa própria compilação do libarchive e os modelos que servimos do nosso domínio.",
+    "enginesIntro": "Bibliotecas compiladas para WebAssembly que vêm dentro dos pacotes abaixo, a nossa própria compilação do libarchive, os modelos que servimos do nosso domínio e a voz IA de \"Ler texto em voz alta\" (código portado do SDK do Supertonic, MIT, e o modelo Supertonic 3, que o seu navegador baixa do Hugging Face só se você escolher essa voz; a licença OpenRAIL-M tem link).",
     "servicesHeading": "Serviços do servidor",
     "servicesIntro": "Programas que rodam à parte no nosso servidor (não são distribuídos com o Fileflect): convertem documentos de escritório e guardam os dados das contas.",
     "packagesHeading": "Pacotes JavaScript ({count})",
@@ -2986,5 +3042,73 @@
     "licenseText": "Texto da licença",
     "lameThanks": "Este site usa código do projeto LAME (lame.sourceforge.io) para codificar MP3.",
     "questions": "Falta algo ou precisa de uma cópia do código-fonte? Escreva para nós pela página de contato."
+  },
+  "ReadAloudTool": {
+    "textLabel": "Texto para ler",
+    "placeholder": "Digite ou cole um texto aqui, ou abra um arquivo.",
+    "openFile": "Abrir arquivo",
+    "fileHint": "TXT, Markdown, HTML, PDF com texto, Word, EPUB ou imagem (OCR). O arquivo não sai do seu dispositivo.",
+    "dropHere": "Solte o arquivo para ler o texto",
+    "extracting": "Extraindo o texto…",
+    "cancel": "Cancelar",
+    "clear": "Apagar texto",
+    "count": "{count} de {max} caracteres",
+    "truncated": "O texto tinha {count} caracteres: foi cortado nos primeiros {max}.",
+    "limitReached": "Você chegou ao limite de {max} caracteres.",
+    "loadedFrom": "Texto de «{name}». Você pode editá-lo antes de ouvir.",
+    "language": "Idioma",
+    "detected": "Detectado: {language}",
+    "play": "Reproduzir",
+    "pause": "Pausar",
+    "resume": "Continuar",
+    "stop": "Parar",
+    "previous": "Frase anterior",
+    "next": "Próxima frase",
+    "speed": "Velocidade",
+    "voice": "Voz",
+    "voiceOnline": "{name} (online)",
+    "defaultVoice": "Voz padrão do navegador",
+    "sentence": "Frase",
+    "progress": "Frase {current} de {total}",
+    "statusPlaying": "Lendo",
+    "statusPaused": "Pausado",
+    "statusStopped": "Leitura parada",
+    "statusFinished": "Leitura concluída",
+    "editText": "Editar texto",
+    "shortcut": "Barra de espaço: pausa e continua.",
+    "onlineNote": "As vozes «online» enviam o texto ao provedor (Google, Microsoft…) para gerar o áudio. As outras leem no seu dispositivo.",
+    "noSupport": "Seu navegador não consegue ler em voz alta com as vozes do dispositivo. Tente um Chrome, Edge, Safari ou Firefox atualizado.",
+    "noVoices": "Não encontramos vozes em {language} no seu dispositivo: será usada a voz padrão do navegador, que pode pronunciar mal. Você pode instalar vozes nas configurações do sistema.",
+    "speechError": "Não foi possível ler com esta voz. Tente outra voz ou tente de novo.",
+    "emptyText": "Digite ou abra um texto para ouvi-lo.",
+    "readingView": "Texto sendo lido",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文"
+    },
+    "noTextInFile": "Não encontramos texto para ler neste arquivo.",
+    "engine": "Tipo de voz",
+    "engineDevice": "Vozes do dispositivo",
+    "engineAi": "Voz IA",
+    "engineAiHint": "A voz IA é mais natural e permite baixar MP3. É baixada uma vez (cerca de {size}) e gera o áudio no seu dispositivo.",
+    "aiNoChinese": "A voz IA não está disponível em chinês: o texto é lido com as vozes do dispositivo.",
+    "aiVoiceFemale": "Mulher {n}",
+    "aiVoiceMale": "Homem {n}",
+    "aiConfirm": "A voz IA precisa baixar cerca de {size} do Hugging Face. Só na primeira vez: fica salva no seu navegador. Seu texto não é enviado: só os arquivos do modelo são baixados.",
+    "aiConfirmPhone": "No celular, prefira o Wi-Fi; a geração é mais lenta e usa muita memória.",
+    "aiDownload": "Baixar a voz IA",
+    "aiDownloading": "Baixando a voz IA…",
+    "aiGenerating": "Gerando a voz…",
+    "aiSpeechError": "Não foi possível gerar a voz IA. Tente de novo ou use as vozes do dispositivo.",
+    "downloadMp3": "Baixar MP3",
+    "mp3Generating": "Gerando o MP3: frase {current} de {total}",
+    "mp3Hint": "O MP3 é gerado com a voz IA (Supertonic 3) no seu dispositivo. Se publicar o áudio, informe que é uma voz gerada por IA.",
+    "mp3NoChinese": "O download em MP3 usa a voz IA, que não está disponível em chinês.",
+    "aiLicense": "Licença do modelo (OpenRAIL-M)",
+    "mp3TooLongMobile": "No celular o MP3 aceita até {max} caracteres. Encurte o texto ou gere o MP3 em um computador.",
+    "mp3Done": "MP3 pronto: {name}"
   }
 }

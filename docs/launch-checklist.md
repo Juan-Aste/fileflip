@@ -96,6 +96,7 @@ Por cada país donde se cobre (una cuenta por país):
 - [ ] Convertir una imagen (JPG → PNG) y unir dos PDF: todo en el navegador.
 - [ ] DOCX → PDF y Markdown → PDF (usan Gotenberg).
 - [ ] Iniciar sesión con Google y con enlace por email; entrar a `/es/admin` con el correo de `ADMIN_EMAILS`.
+- [ ] Leer en voz alta (`/es/leer-texto-en-voz-alta`): con las voces del dispositivo lee sin descargar nada; con "Voz IA" pide confirmar la descarga (~398 MB desde Hugging Face, no desde Railway) y después lee y descarga MP3. No requiere variables ni archivos públicos nuevos; la CSP no define `connect-src` (si algún día se agrega, incluir `https://huggingface.co` y `https://*.hf.co`, ver [`docs/tts-voz-ia.md`](tts-voz-ia.md)).
 - [ ] Con Pro apagado: no hay enlace "Precios" en el header ni en el footer, `/es/pricing` da 404 y `sitemap.xml` no lo incluye. (Cuando se encienda Pro: `/es/pricing` muestra los precios del país y una suscripción de prueba llega como activa por el webhook.)
 - [ ] `/es/terms` y `/es/privacy` muestran "Juan Pablo Aste" y contact@fileflect.com; `/es/contact` muestra contact@fileflect.com y el horario.
 - [ ] En `/es/login`, debajo de los botones, el texto "Al continuar, aceptas los Términos y condiciones y la Política de privacidad…" con los dos enlaces. Pedir un enlace por email: la página pasa a "Revisa tu correo" (B-26) y el correo llega.

@@ -100,6 +100,7 @@ export const toolIds = [
   "adjust-audio",
   "normalize-audio",
   "join-audio",
+  "text-to-speech",
   "video-converter",
   "extract-audio",
   "compress-video",
@@ -141,6 +142,8 @@ export interface ToolInfo {
   limits: ToolLimits;
   status: ToolStatus;
   slugs: Record<Locale, string>;
+  /** Tools of other categories it pairs with, linked both ways from their pages. */
+  related?: readonly ToolId[];
 }
 
 const imageInputs: readonly FormatId[] = ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "ico", "heic", "svg"];
@@ -1011,6 +1014,21 @@ export const tools: Record<ToolId, ToolInfo> = {
     status: "verified",
     slugs: { es: "unir-audio", en: "join-audio", pt: "juntar-audio", fr: "fusionner-audio", zh: "join-audio" },
   },
+  "text-to-speech": {
+    id: "text-to-speech",
+    category: "audio",
+    inputs: ["txt", "md", "html", "pdf", "docx", "epub", "jpg", "png", "webp", "gif", "bmp", "tiff", "heic", "avif"],
+    outputs: ["mp3"],
+    engine: "browser",
+    // Text extracted on the page (pdf.js, tesseract for images, own DOCX/EPUB readers); read by the
+    // device's voices or the Supertonic 3 AI voice (onnxruntime-web), MP3 with mediabunny + LAME.
+    libraries: ["Web Speech API", "Supertonic 3 (OpenRAIL-M)", "onnxruntime-web", "pdfjs-dist", "tesseract.js", "fflate", "marked", "mediabunny", "@mediabunny/mp3-encoder (LAME)"],
+    // TTS_MAX_CHARS (50,000 characters) per reading; files are read whole to extract their text.
+    limits: { files: "single", timeoutMs: 10 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "leer-texto-en-voz-alta", en: "text-to-speech", pt: "ler-texto-em-voz-alta", fr: "lire-texte-a-voix-haute", zh: "text-to-speech" },
+    related: ["pdf-to-text", "image-to-text", "epub-converter"],
+  },
   "video-converter": {
     id: "video-converter",
     category: "video",
@@ -1178,11 +1196,16 @@ const shared = (a: readonly FormatId[], b: readonly FormatId[]) => a.filter((f) 
 /**
  * Published tools to link from a tool's page: up to 4 of the same category,
  * its nearest neighbors in registry order going round (so every tool of a
- * big category is linked from two others), then tools of other categories
- * that take this tool's output ("next step") or read the same files.
+ * big category is linked from two others), then its explicit pairs (`related`,
+ * both ways), then tools of other categories that take this tool's output
+ * ("next step") or read the same files.
  */
 export function relatedTools(id: ToolId, max = 6): ToolInfo[] {
   const tool = tools[id];
+  // Explicit pairs first, in both directions.
+  const pinned = [...(tool.related ?? []), ...availableTools.filter((other) => tools[other].related?.includes(id))]
+    .filter((other, i, list) => other !== id && availableTools.includes(other) && list.indexOf(other) === i)
+    .map((other) => tools[other]);
   const category = toolsInCategory(tool.category);
   const at = category.findIndex((t) => t.id === id);
   // Alternating after and before: +1, -1, +2, -2...
@@ -1197,8 +1220,10 @@ export function relatedTools(id: ToolId, max = 6): ToolInfo[] {
     .map((other) => tools[other])
     .filter((other) => other.category !== tool.category && nextStep(other) > 0)
     .sort((a, b) => nextStep(b) - nextStep(a));
-  const fromCategory = sameCategory.slice(0, Math.max(Math.min(4, max), max - otherCategories.length));
-  return [...fromCategory, ...otherCategories].slice(0, max);
+  const others = [...pinned, ...otherCategories.filter((t) => !pinned.includes(t))];
+  const fromCategory = sameCategory.filter((t) => !pinned.includes(t));
+  const keep = Math.max(Math.min(4, max - pinned.length), max - others.length);
+  return [...fromCategory.slice(0, keep), ...others].slice(0, max);
 }
 
 /** Published tools to link from a conversion page: the ones that take its result, then its input. */

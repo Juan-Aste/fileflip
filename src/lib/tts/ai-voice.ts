@@ -1,0 +1,40 @@
+import { createJobPool, type JobOptions } from "@/lib/jobs";
+import { cachedBytes, openModelStore } from "./model-cache";
+import { supertonicDownloadBytes, supertonicFiles, supertonicVoiceFiles, type SupertonicVoice } from "./model";
+import type { SupertonicLanguage } from "./supertonic";
+
+// The AI voice from the page: one worker holding the model, started the
+// first time the user picks "AI voice" or "Download MP3" (never on page load).
+// Cancelling the download terminates the worker; cancelling a reading just
+// stops asking for sentences, so the loaded model is kept.
+
+const pool = createJobPool(() => new Worker(new URL("../../workers/tts.worker.ts", import.meta.url), { type: "module" }));
+
+/** Bytes still to download before the first sentence (0 when everything is cached). */
+export async function aiVoiceDownloadBytes(voice: SupertonicVoice): Promise<number> {
+  const files = [...supertonicFiles, supertonicVoiceFiles[voice]];
+  const total = supertonicDownloadBytes + supertonicVoiceFiles[voice].bytes;
+  return total - (await cachedBytes(files, await openModelStore()));
+}
+
+/** Loads the model and a voice (downloading what is not cached); progress 0–1 by bytes. */
+export const prepareAiVoice = (voice: SupertonicVoice, job: JobOptions = {}) =>
+  pool.run<{ sampleRate: number }>("prepare", { voice }, job);
+
+export interface AiSpeech {
+  pcm: Float32Array;
+  sampleRate: number;
+}
+
+/** One sentence spoken by the AI voice. `speed` is the model's (0.7–2). */
+export async function speakAiSentence(
+  text: string,
+  { lang, voice, speed, steps, seed }: { lang: SupertonicLanguage; voice: SupertonicVoice; speed: number; steps?: number; seed?: number },
+  job: Omit<JobOptions, "transfer"> = {},
+): Promise<AiSpeech> {
+  const { pcm, sampleRate } = await pool.run<{ pcm: ArrayBuffer; sampleRate: number }>("speak", { text, lang, voice, speed, steps, seed }, job);
+  return { pcm: new Float32Array(pcm), sampleRate };
+}
+
+/** Frees the model (hundreds of MB of memory), e.g. when leaving the page. */
+export const disposeAiVoice = () => pool.dispose();

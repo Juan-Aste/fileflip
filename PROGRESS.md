@@ -3298,3 +3298,154 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 
 ## 2026-10-23 — FASE 7 TERMINADA
 - Todas las tareas de la fase 7 están marcadas y el CI está en verde (be7c881). Falta que el dueño ponga `PRO_ENABLED=false` y `NEXT_PUBLIC_CONTACT_EMAIL=contact@fileflect.com` en Railway y mergee `dev` en `main`. La rutina programada se puede pausar.
+
+## 2026-10-26 — Inicio de la fase 8
+- Se agregó la sección "Fase 8" a PLAN.md (lector en voz alta: entrada de texto, voces del dispositivo, voz IA Supertonic con descarga MP3, página/SEO/textos, tests y verificación).
+
+## 2026-10-26 — Fase 8, tarea 8.1a (núcleo de texto del lector)
+
+**Qué se hizo**
+- `src/lib/tts/text.ts`: limpieza del texto (saltos, espacios, BOM, palabras cortadas con guion al final de línea), viñetas fuera, detección de idioma (es, en, pt, fr por palabras frecuentes y letras propias; zh si dominan los caracteres Han; si no está claro, el idioma de la página) y división en frases con posiciones en el texto original para resaltar. No corta en abreviaturas (Dr., Sra., Mr., e.g., Mme…), iniciales, números de lista, decimales, miles, horas, ni antes de minúscula; corta tras 。！？； en chino sin espacios; los saltos simples cortan después de una línea corta sin puntuación (título, ítem) pero unen las líneas partidas de un PDF. Las frases de más de 220 caracteres se cortan en una coma, si no en un espacio, si no en cualquier lugar (chino).
+- **Límite: 50.000 caracteres** (`TTS_MAX_CHARS`, unas 8.000 palabras o 50–60 minutos de lectura).
+- `src/lib/tts/formats.ts`: texto de DOCX (párrafos, tabulaciones, saltos, tablas; sin texto borrado; título de `docProps/core.xml`; rechaza DTD y archivos dañados; descompresión con los límites del extractor de archivos), EPUB (`readEpub` + `chapterText`), HTML (sin scripts ni estilos) y Markdown (`marked` → HTML → texto), TXT en UTF-8 o Windows-1252.
+- `src/lib/tts/extract.ts`: detecta el formato por contenido y carga solo el motor necesario: pdf.js para PDF con texto (título de los metadatos), tesseract para imágenes (OCR), el resto con `formats.ts`. Todo en el navegador.
+
+**Tests**: `src/lib/tts/text.test.ts` (frases con abreviaturas, números, comillas, chino, saltos, cortes largos; idioma; limpieza; límite) y `src/lib/tts/formats.test.ts` (DOCX real y armado, DTD, dañados, EPUB, HTML, Markdown, TXT). PDF y OCR se prueban en el navegador en 8.1b (sus extractores ya tienen tests).
+
+**Verificación**: lint, typecheck, tests unitarios (1084 + 10 omitidos) y build pasan.
+
+## 2026-10-26 — Fase 8, tareas 8.1b, 8.2a y 8.2b (herramienta "Leer texto en voz alta" con las voces del dispositivo)
+
+**Qué se hizo (8.1b)**
+- Herramienta nueva `text-to-speech` en el catálogo, categoría Audio, slugs `leer-texto-en-voz-alta` (es), `text-to-speech` (en, zh), `ler-texto-em-voz-alta` (pt), `lire-texte-a-voix-haute` (fr). Ícono `Speech`. Página, sitemap, buscador y categoría salen del registro como las demás.
+- Entrada: escribir o pegar en un área editable, o "Abrir archivo" / arrastrar (TXT, MD, HTML, PDF con texto, DOCX, EPUB, imágenes con OCR en el idioma elegido), con barra de progreso y Cancelar. Contador de caracteres, límite de 50.000 con aviso y recorte de los archivos más largos ("El texto tenía N caracteres: se recortó…"). Mensajes claros para archivo vacío, PDF escaneado y formato no admitido; el texto anterior se conserva.
+- Idioma detectado (es, en, pt, fr, zh) con selector para cambiarlo.
+- Textos de la herramienta (título, descripción, introducción, 3 preguntas) y de la interfaz (`ReadAloudTool`) en los 5 idiomas. Las preguntas se amplían en 8.4a.
+
+**Qué se hizo (8.2a)**
+- `useDeviceSpeech` (Web Speech API): una frase por lectura (evita el corte de ~15 s de Chrome); Reproducir, Pausa/Reanudar (la pausa cancela y reanuda desde la última palabra oída: Android ignora `pause()`), Detener, Anterior/Siguiente, barra deslizante "Frase N de M". La primera lectura empieza dentro del clic (iOS).
+- Velocidad 0,5×–2× en pasos de 0,25; cambiar velocidad o voz reinicia la frase actual al instante.
+- Voces filtradas por idioma (es-ES, es_ES de Android, cmn/yue para chino), primero las del dispositivo; las voces en línea se marcan "(en línea)" con una nota de que envían el texto a su proveedor. `voiceschanged` y reintentos para voces que llegan tarde; aviso si no hay voces en el idioma y error claro si el navegador no tiene `speechSynthesis` (la voz IA se ofrecerá en 8.3).
+- Durante la lectura el área se reemplaza por una vista con la frase resaltada (`<mark>`) y la palabra subrayada cuando hay eventos `boundary`, con scroll suave dentro del recuadro (sin animación si el usuario pide menos movimiento).
+- Barra espaciadora para pausa/reanudar cuando el foco no está en un campo o botón; estado en una región `aria-live` discreta; botones con nombre accesible.
+- Velocidad y voz (por idioma) se recuerdan en `localStorage` con try/catch.
+
+**Tests (8.2b)**: `tests/e2e/tts-tools.spec.ts` — extracción de DOCX, MD, HTML, EPUB, PDF, imagen (OCR) y TXT largo con recorte; errores; y con un `speechSynthesis` simulado: reproducir, resaltado de frase y palabra, avance automático, pausa (no se habla nada más) y reanudar desde la última palabra, detener, final de lectura, siguiente/anterior, velocidad y voz en vivo, barra espaciadora, recordar velocidad y voz tras recargar, voz inglesa para texto inglés, aviso sin voces y navegador sin soporte. Unitarios de `src/lib/tts/voices.ts`. Dos tests marcados `@xb` para Firefox, WebKit y móviles.
+
+**Verificación**: lint, typecheck, tests unitarios (1089 + 10 omitidos), build; Chromium: `tts-tools` (6), `a11y` (22), `clickable` + `layout-shift` (96) pasan. En este entorno el Chromium de Playwright está en `/opt/pw-browsers/chromium-1243/chrome-linux64/chrome` (se pasa con `CHROME_PATH`); Firefox y WebKit se verifican en el CI.
+
+## 2026-10-26 — Fase 8, tarea 8.3a (licencia y elección del modelo de voz IA)
+
+**Qué se hizo**
+- Se leyó el `LICENSE` de los pesos en Hugging Face: **BigScience OpenRAIL-M**, permite uso comercial. Obligaciones al distribuir los pesos al navegador: poner las restricciones de uso (Anexo A) como cláusula exigible en los Términos y avisar a los usuarios (8.4b), dar copia de la licencia (enlace en la herramienta y en Créditos, 8.4b) y conservar los avisos. Nada incumplible: se integra. Restricciones copiadas literalmente en `docs/tts-voz-ia.md`.
+- Modelo: **Supertonic 3** (`Supertone/supertonic-3`, commit `3cadd1ee…a323`), cubre es, en, pt y fr; **no tiene chino** (zh: solo voces del dispositivo, MP3 deshabilitado). Supertonic 2 queda como alternativa más liviana si 8.3c lo exige.
+- Archivos fijados con tamaño y SHA-256 en `src/lib/tts/model.ts`: **~398 MB** de descarga antes de la primera voz (vector_estimator 257 MB, vocoder 101 MB, text_encoder 36 MB, duration_predictor 3,7 MB) + ~0,3 MB por voz (10 voces F1–F5, M1–M5).
+- Pesos servidos **desde Hugging Face con versión fija** (CDN con CORS abierto, verificado), no desde Railway (cobra la salida; 398 MB por usuario). La CSP actual no restringe `connect-src`: no hace falta cambiarla. Cada ONNX se verifica con SHA-256.
+- El repositorio de código de Supertonic en GitHub está archivado y fuera del alcance de esta sesión; el pipeline de inferencia se escribirá en el proyecto (8.3b) a partir de los modelos y `tts.json`.
+
+**Tests**: `src/lib/tts/model.test.ts` (commit fijado, SHA-256 de cada ONNX, tamaño total, idiomas).
+
+**Verificación**: lint, typecheck y tests unitarios pasan.
+
+## 2026-10-26 — Arreglo del CI (WebKit/iPhone) tras 8.2b
+
+- El CI de `4be172f` y `c9c647c` falló solo en WebKit e iPhone, en `tts-tools.spec.ts`:
+  - **Bug real (también afectaba a "PDF a texto" en Safari)**: pdf.js lee el texto con `for await` sobre un `ReadableStream`, y WebKit no tiene ese iterador: `getTextContent()` fallaba con "undefined is not a function" y la herramienta mostraba "No se pudo convertir". Arreglo: `polyfillReadableStreamIterator()` en `src/lib/pdf/render.ts` (se aplica al cargar pdf.js, solo si falta), con test unitario `src/lib/pdf/stream-iterator.test.ts`.
+  - Test de pausa sensible al tiempo: en WebKit el clic en "Pausa" podía caer en la frase siguiente. La voz simulada ahora lee más lento y el test compara con la frase en la que realmente se pausó.
+- Verificado localmente con WebKit de Playwright 1.56 instalado aparte (`PLAYWRIGHT_BROWSERS_PATH` en el directorio temporal, con `playwright install-deps webkit`): `tts-tools` pasa en `webkit` e `iphone`; Chromium `tts-tools` + `pdf-tools` (48) pasan; lint y unitarios (1095) pasan.
+- Nota: el CI de `dc56830` (solo el candado) falló una vez por un timeout de `search-locale-states.spec.ts` ("index HTTP 500 → says so") que no se repitió en las corridas siguientes.
+
+## 2026-10-26 — Fin de la ejecución (fase 8)
+- Hechas en esta ejecución: 8.1a, 8.1b, 8.2a, 8.2b, 8.3a (máximo de 5 tareas) y el arreglo del CI en WebKit/iPhone. CI en verde en `5d230c3`.
+- Sigue: 8.3b (worker de inferencia Supertonic 3 con carga diferida y caché), 8.3c, 8.4a, 8.4b, 8.5a, 8.5b.
+- Importante para el dueño: la página de la herramienta ya está publicada en `dev` (solo voces del dispositivo, todavía sin voz IA ni MP3); conviene no mergear `dev` en `main` hasta que la fase 8 esté terminada, salvo que se quiera publicar ya la versión con voces del dispositivo.
+
+## 2026-10-27 — Fase 8, tarea 8.3b (worker de inferencia de la voz IA)
+
+**Qué se hizo**
+- `src/lib/tts/supertonic.ts`: el pipeline de Supertonic 3 portado del SDK de Python `supertonic` 1.3.1 (MIT, PyPI): normalización del texto, índices Unicode, predictor de duración, codificador de texto, 5 pasos del estimador de vectores y vocoder; independiente de onnxruntime para probar el lado del texto.
+- `src/lib/tts/model-cache.ts`: descarga desde Hugging Face con progreso por bytes, tamaño y SHA-256 verificados y Cache API (una caché por commit); entradas dañadas se reemplazan; sin Cache API funciona igual.
+- `src/lib/tts/model.ts`: SHA-256 también de `tts.json`, `unicode_indexer.json` y las 10 voces.
+- `src/workers/tts.worker.ts` (onnxruntime-web WASM, un hilo, sin COOP/COEP) con `prepare` (carga diferida y progreso) y `speak` (una frase); cliente `src/lib/tts/ai-voice.ts` (un worker, cancelar la descarga lo termina).
+- Detalle en `docs/tts-voz-ia.md` ("Inferencia en el navegador").
+
+**Tests**: `src/lib/tts/supertonic.test.ts` (normalización, ids, parsers, latentes, ruido), `src/lib/tts/model-cache.test.ts` (descarga con progreso, caché, SHA-256 alterado, archivo más largo, HTTP y red caídos, caché dañada, sin caché, cancelado), `src/lib/tts/model.test.ts` (hashes de voces) y `src/lib/tts/supertonic.model.test.ts` con el modelo real (solo local con `SUPERTONIC_DIR`): es, en, pt y fr dan 2,6–2,9 s de audio con energía, a ~1× tiempo real con un hilo.
+
+**Verificación**: lint, typecheck, tests unitarios y build pasan; en Chromium el modelo se descargó de Hugging Face (~25 s) y leyó dos frases (la interfaz llega en 8.3c).
+
+## 2026-10-27 — Fase 8, tarea 8.3c (escuchar con la voz IA y descargar MP3)
+
+**Qué se hizo**
+- "Tipo de voz" en la herramienta: Voces del dispositivo / Voz IA (recordado). Voz IA con 10 voces del modelo y velocidad 0,75×–2×; si el navegador no tiene `speechSynthesis` se usa la voz IA.
+- Confirmación con el tamaño antes de la primera descarga (el modelo nunca se baja al abrir la página), progreso por bytes y Cancelar; luego se lee de la Cache API sin preguntar.
+- `useAiSpeech`: reproducción progresiva con Web Audio (genera las 2 frases siguientes mientras suena la actual), pausa/reanudar, detener, anterior/siguiente, cambio de voz o velocidad en vivo, resaltado de la frase y "Generando la voz…" mientras espera.
+- `src/lib/tts/mp3.ts`: MP3 escrito frase a frase con mediabunny + LAME (mono, 44,1 kHz, 64 kbit/s, 0,3 s entre frases), nombre a partir del título o de las primeras palabras; aviso de voz generada por IA y enlace a la licencia junto al botón.
+- Chino: voz IA y MP3 deshabilitados con la explicación.
+- **Mediciones** (`docs/tts-voz-ia.md`): 398 MB de descarga; ~800 MB de memoria; PC ~63 s por minuto de audio; celular de gama media estimado ~4 min por minuto (la limitación de CPU de DevTools no afecta a los workers: se estimó pausando el proceso de la pestaña el 75 % del tiempo). Escuchar en celular usa 3 pasos en vez de 5; **límite del MP3 en celulares: 3.000 caracteres**.
+- Arreglo durante la tarea: tras la primera descarga, el MP3 volvía a pedir la descarga en bucle (estado viejo en el cierre); ahora se usa una referencia.
+
+**Tests**: `tests/e2e/tts-ai.spec.ts` — confirmación con tamaño y Cancelar sin descargar nada, elección recordada, descarga fallida con mensaje, chino sin voz IA ni MP3 (en el CI, Chromium); con `TTS_REAL_MODEL=1` (descarga real de Hugging Face una vez, en un contexto compartido): lectura progresiva con pausa y reanudar y segunda visita sin descargas, y MP3 en es, en, pt y fr validados con ffprobe/ffmpeg (mp3 mono 44,1 kHz, duración coherente con el texto, no silencio). `tests/e2e/tts-tools.spec.ts`: sin `speechSynthesis` ahora se ofrece la voz IA. Unitario `src/lib/tts/mp3.test.ts` (nombre del archivo).
+
+**Verificación**: lint, typecheck, tests unitarios (1108 + 11 omitidos), build; Chromium: `tts-ai` + `tts-tools` con el modelo real (14) y `a11y` (22) pasan. Firefox y WebKit se verifican en el CI.
+
+## 2026-10-27 — Fase 8, tarea 8.4a (página, SEO y textos)
+
+**Qué se hizo**
+- Textos de la herramienta en los 5 idiomas: descripción (metadatos y tarjeta) e introducción con la voz IA y el MP3; **6 preguntas frecuentes**: privacidad (el texto no sale del dispositivo; solo se descargan los archivos del modelo; voces "en línea"), archivos, idiomas (voz IA y MP3 en es/en/pt/fr; chino con voces del dispositivo), voces del dispositivo vs voz IA (calidad, descarga de ~400 MB, velocidad), cómo descargar el MP3 (límite de 3.000 caracteres en celulares) y si se puede publicar el audio (OpenRAIL-M: indicar que es voz IA, sin suplantación, difamación, acoso ni desinformación).
+- **Enlaces relacionados explícitos en ambos sentidos** (`related` en el registro): "Leer texto en voz alta" ↔ PDF a texto, Imagen a texto (OCR) y Convertidor EPUB; también aparece desde Crear EPUB y EPUB a PDF.
+- **Buscador Ctrl+K**: nueva clave opcional `searchTerms` por herramienta (sinónimos: "TTS", "texto a voz", "read aloud", "synthèse vocale", "文字转语音"…).
+- Librerías del registro actualizadas (Supertonic 3, onnxruntime-web, mediabunny + LAME). Sitemap, categoría Audio y metadatos salen del registro (`check:static`: 1012 páginas).
+
+**Tests**: `src/config/tools.test.ts` (pares relacionados en ambos sentidos) y `src/lib/search/index.test.ts` (búsqueda por sinónimos en es, en, fr y zh).
+
+**Verificación**: lint, tests unitarios (1109 + 11 omitidos), build y `check:static` pasan; Chromium: `tts-ai`, `tts-tools`, `search`, `a11y`, `layout-shift` pasan (un test de axe de "Comprimir imagen"/"JSON a CSV", ajeno a esta tarea, falló 1 de 4 veces por tiempos).
+
+## 2026-10-27 — Fase 8, tarea 8.4b (créditos, licencias, Términos y Privacidad)
+
+**Qué se hizo**
+- Créditos (`scripts/licenses/embedded.mjs` → `npm run licenses`): "Supertonic inference code" (MIT, Copyright (c) 2025 Supertone Inc., portado del SDK de PyPI) y "Supertonic 3 text-to-speech model" (BigScience-OpenRAIL-M, commit fijado, con enlace al texto de la licencia). Texto completo de la licencia en `scripts/licenses/texts/` y servido en `/licenses/BigScience-OpenRAIL-M.txt` (punto 4.b: copia para los usuarios); la herramienta enlaza esa copia. Texto de introducción de la sección en los 5 idiomas.
+- `docs/dependencies.md`: filas del código portado y del modelo (origen, licencia, tamaño, descarga diferida).
+- **Términos** (5 idiomas): nueva sección "Voz IA del lector en voz alta" con las 13 restricciones de uso del Anexo A como cláusula exigible, aviso de voz generada por IA al publicar, el audio es del usuario, prevalece el inglés de la licencia. Las secciones del plan siguen después de "Cuenta".
+- **Privacidad** (5 idiomas): resumen (el texto se procesa en el dispositivo), fila de la tabla de datos, proveedores (Hugging Face al descargar el modelo; voces "en línea" del navegador envían el texto a Google/Microsoft) y almacenamiento (preferencias de la herramienta en `localStorage`, modelo en la caché del navegador).
+- `LEGAL_UPDATED`/`TERMS_VERSION` = 2026-10-27 (las cuentas vuelven a aceptar al iniciar sesión). Notas para el abogado en `docs/legal/pendientes-legales.md`.
+
+**Verificación**: lint, typecheck, tests unitarios (1109 + 11 omitidos; `tests/licenses.test.ts` y textos legales), build y `check:static`; Chromium: `legal`, `tts-ai`, `tts-tools`, `a11y`, `layout-shift` pasan.
+
+## 2026-10-27 — Fase 8, tarea 8.5a (tests con la voz IA real en el CI)
+
+**Qué se hizo**
+- Los tests con el modelo real de `tests/e2e/tts-ai.spec.ts` (lectura progresiva con pausa/reanudar y caché; MP3 en es, en, pt y fr validados con ffprobe/ffmpeg: códec mp3, mono, 44,1 kHz, duración coherente con el texto y no silencio) pueden usar un perfil persistente de Chromium (`TTS_MODEL_PROFILE`), y aceptan que el modelo ya esté en caché (sin confirmación ni descargas).
+- CI: job nuevo `e2e-ai-voice` (ubuntu-latest, Chromium de Playwright + ffmpeg, build) con el perfil cacheado por `actions/cache` según el hash de `src/lib/tts/model.ts`: el modelo (~400 MB) se descarga una vez por versión. `.cache/` en `.gitignore`.
+- Arreglos para perfiles reutilizados: se borran los candados `Singleton*` y se usa una carpeta de descargas nueva (Chromium recordaba la de la corrida anterior y la descarga fallaba).
+
+**Verificación**: lint y typecheck; `tts-ai` en Chromium con el modelo real pasa con un perfil nuevo (descarga) y con el perfil ya cacheado (8 tests cada vez).
+
+## 2026-10-27 — Fin de la ejecución (fase 8)
+- Hechas en esta ejecución: 8.3b, 8.3c, 8.4a, 8.4b y 8.5a (máximo de 5 tareas). CI en verde en `1e3dedd` (check, e2e-browsers y el job nuevo e2e-ai-voice con el modelo real).
+- Sigue: 8.5b (Lighthouse móvil ≥ 90 y CLS 0 en la página nueva, detector de clics, axe, Firefox y WebKit; informe del catálogo y `docs/launch-checklist.md`).
+- Para el dueño: no hace falta cambiar nada en Railway (el modelo se descarga de Hugging Face; la CSP no restringe `connect-src`). Conviene no mergear `dev` en `main` hasta terminar 8.5b. Los Términos cambiaron (`TERMS_VERSION` 2026-10-27): ver `docs/legal/pendientes-legales.md`.
+
+## 2026-10-27 — Fase 8, tarea 8.5b (Lighthouse, clics, axe, Firefox y WebKit)
+
+**Qué se hizo**
+- Lighthouse móvil en `/es/leer-texto-en-voz-alta`, `/en/text-to-speech` y `/zh/text-to-speech` (3 corridas): rendimiento 93–96, accesibilidad 100, SEO 100, CLS 0; ninguna petición al modelo al abrir la página. Informe: `docs/perf/2026-10-27-phase8.md`. `scripts/perf/lighthouse.sh` incluye las 3 páginas y acepta `PAGES_FILTER` para correr solo algunas.
+- `tests/e2e/tts-tools.spec.ts`: axe sin violaciones con texto, leyendo (frase y palabra resaltadas), en pausa y con el aviso de descarga de la voz IA (claro y oscuro, también en Firefox y WebKit) y en en/zh; detector de clics de la fase 6 sobre el reproductor (escritorio y celular, claro y oscuro); comprobación de que no se pide nada a Hugging Face, `.onnx` ni onnxruntime al abrir ni al leer con las voces del dispositivo. El helper de axe pasó a `tests/e2e/axe.ts` (lo usan `a11y.spec.ts` y la herramienta).
+- `tests/e2e/layout-shift.spec.ts`: CLS 0 con fuentes tardías en la página nueva.
+- Matriz del catálogo regenerada (`docs/report-phase3-matrix.md`): **83 herramientas** publicadas y verificadas, 83/83 con prueba de navegador. `docs/launch-checklist.md`: verificación de la herramienta después de publicar; sin cambios de despliegue (el modelo viene de Hugging Face, la CSP no define `connect-src`, no hay archivos públicos nuevos).
+
+**Verificación**: lint, typecheck, unitarios (1111), build; en Chromium `tts-tools` (19), `layout-shift` (6) y `a11y` (22); en Firefox los tests `@xb` de la herramienta. WebKit no arranca en este contenedor (faltan bibliotecas del sistema): lo cubre el job `e2e-browsers` del CI.
+
+## 2026-10-27 — FASE 8 TERMINADA
+- Todas las tareas de la fase 8 están marcadas; CI en verde en `07c6617` (check, e2e-browsers con Firefox/WebKit y e2e-ai-voice con el modelo real).
+- Para el dueño: no hay cambios en Railway (el modelo se baja de Hugging Face; sin variables, CSP ni archivos públicos nuevos). Mergear `dev` en `main`. Los Términos cambiaron (`TERMS_VERSION` 2026-10-27), ver `docs/legal/pendientes-legales.md`. Se puede pausar la tarea programada.
+
+## 2026-10-27 — Arreglo del CI intermitente (axe en WebKit/iPhone)
+- El CI de `9d7db2f`, `e608929` y `c2a35fa` (solo commits del candado) falló en `e2e-browsers`: `tts-tools.spec.ts` "axe on the text…" en WebKit/iPhone reportaba `color-contrast` en "Reproducir" (`.px-6`) y "Descargar MP3" (`.self-start`). Causa: al llenar el texto los botones pasan de deshabilitados (opacidad 50 %) a habilitados con una transición de 150 ms, y axe a veces corría a mitad de la transición. No es un problema real de contraste.
+- Arreglo (solo tests): `tests/e2e/axe.ts` espera dos cuadros y que terminen las animaciones/transiciones finitas antes de correr axe (sirve a todos los specs); el test espera a que "Reproducir" esté habilitado.
+- Verificado: antes fallaba 2 de 40 corridas en WebKit/iPhone; después, 80 de 80 pasan. `tts-tools` + `a11y` en Chromium, Firefox, WebKit e iPhone (47) y lint pasan.
+- CI en verde en `4ee432d` (check, e2e-browsers y e2e-ai-voice). La fase 8 sigue terminada; no quedan tareas pendientes.
+
+## 2026-10-27 — CI más liviano (minutos de GitHub Actions)
+- Se agotaron los minutos de Actions del repo privado: la tarea seguía corriendo cada hora con la fase terminada y cada commit del candado disparaba el CI completo.
+- `ci.yml`: los push a `dev`/`main` solo corren el job `check` (lint, unitarios, build) y se omiten si el commit solo toca `.agent-lock`, `*.md` o `docs/`. Los jobs pesados (`e2e-browsers`, `e2e-ai-voice`) corren en los PR a `main` y a mano (`workflow_dispatch`). `concurrency` cancela la corrida anterior de la misma rama o PR.
+- Para la tarea programada: los tests de navegador se siguen corriendo localmente antes de marcar cada tarea; en `dev` el CI de GitHub solo muestra `check`.

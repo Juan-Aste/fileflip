@@ -1530,6 +1530,27 @@
         "q6": "What do the PNG and the PDF look like?",
         "a6": "The PNG has the width you choose (1000, 2000 or 4000 pixels on the longest side), with a white or transparent background. The PDF is vector, one A4 or A3 page turned to match the drawing's shape, with the drawing fitted inside a 10 mm margin (not at 1:1 scale). In the PDF, texts with characters the standard font lacks (Chinese, Cyrillic…) are inserted as images."
       }
+    },
+    "text-to-speech": {
+      "title": "Text to speech",
+      "description": "Paste text or open a file and listen to it with pause and the speed you choose, or download it as MP3 with an AI voice, in your browser.",
+      "searchTerms": "TTS read aloud reader narrator voice reader speech synthesis AI voice",
+      "action": "Read aloud",
+      "about": "Type or paste text, or open a TXT, Markdown, HTML, text PDF, Word (DOCX) or EPUB file or a photo of a document, and listen to it read aloud. You can pause, go back to the previous sentence, skip to the next one and choose the speed, from 0.5× to 2×. The sentence being read is highlighted so you can follow along. It reads with your device's voices or with a more natural AI voice (Supertonic 3) that runs in your browser and lets you download the reading as MP3. The text is extracted and turned into speech on your device: the file is never uploaded to a server.",
+      "faq": {
+        "q1": "Is my text uploaded to a server?",
+        "a1": "No. The file is read and its text extracted in your browser, and the AI voice generates the audio on your device: the only download is the model files, from Hugging Face, the first time. Device voices also read on your computer or phone; only voices marked \"online\" (such as Google or Microsoft voices in Chrome and Edge) send the text to that provider to generate the audio.",
+        "q2": "Which files can I open?",
+        "a2": "TXT, Markdown, HTML, PDFs with text, Word (DOCX), EPUB and photos or scans (JPG, PNG, WEBP, TIFF, HEIC…), whose text is recognized with OCR. Up to 50,000 characters per reading; longer text is cut and we tell you.",
+        "q3": "Which languages does it read?",
+        "a3": "We detect the language of the text (Spanish, English, Portuguese, French or Chinese) and pick a voice for it; you can change the language and the voice. The AI voice and MP3 download are available in Spanish, English, Portuguese and French; Chinese is read with the device voices, which depend on your system and browser.",
+        "q4": "What's the difference between device voices and the AI voice?",
+        "a4": "Device voices come with your system or browser: they start at once and download nothing, but their quality varies and they can't be saved as a file. The AI voice (Supertonic 3) sounds more natural, has 10 voices and can be downloaded as MP3, but the first time it downloads about 400 MB (then it stays saved in your browser) and it generates the audio with your device's processor: on a computer it takes about as long as the audio lasts; on a phone, quite a bit longer.",
+        "q5": "How do I download the reading as MP3?",
+        "a5": "Choose the AI voice and press \"Download MP3\". It is generated sentence by sentence on your device, with a progress bar and a cancel button, and the file is named after the document's title or the first words of the text. On phones the MP3 can have up to 3,000 characters (about 4 minutes of audio).",
+        "q6": "Can I publish audio made with the AI voice?",
+        "a6": "Yes, but the model's license (OpenRAIL-M) requires saying that it is an AI-generated voice and forbids using it to, among other things, impersonate people, defame, harass or spread false information to harm others. The full restrictions are in our Terms and in the model's license, linked next to the download button."
+      }
     }
   },
   "ToolUi": {
@@ -1796,7 +1817,8 @@
             "Most of your files never leave your device: they are processed in your browser.",
             "Files that are processed on our server are deleted within 1 hour at most. We don't look at them or keep them.",
             "We don't sell your data.",
-            "We never store the name or content of your files."
+            "We never store the name or content of your files.",
+            "\"Text to speech\" processes the text on your device, including with the AI voice. Only browser voices marked \"online\" send the text to their provider."
           ]
         },
         {
@@ -1808,6 +1830,12 @@
               "purpose": "Running the conversion",
               "basis": "—",
               "retention": "We never receive them"
+            },
+            {
+              "data": "Text you listen to with \"Text to speech\"",
+              "purpose": "Reading it aloud or making the MP3",
+              "basis": "—",
+              "retention": "We don't receive it (processed on your device)"
             },
             {
               "data": "Files you process on our server (office documents, PDF to Word, HTML to PDF, PDF/A and, only when your browser can't do it, some images)",
@@ -1855,7 +1883,9 @@
           "items": [
             "Railway (USA): servers and database that run the site.",
             "Resend (USA): sends the email with your sign-in link.",
-            "Google (USA): Google sign-in, if you choose it; and Google AdSense, which shows ads (see section 6)."
+            "Google (USA): Google sign-in, if you choose it; and Google AdSense, which shows ads (see section 6).",
+            "Hugging Face (USA): if you choose the AI voice of \"Text to speech\", your browser downloads the model files from Hugging Face (once). As with any download, Hugging Face receives your IP address and technical browser data; your text is not sent.",
+            "\"Online\" voices of your browser (such as Google in Chrome or Microsoft in Edge): if you choose one of them in \"Text to speech\", the browser sends the text to that provider to generate the audio, under that provider's privacy policy. The browser offers them, not us, and we mark them \"online\"; the other voices and the AI voice read on your device."
           ],
           "proItems": [
             "Mercado Pago (Argentina and the region): processes Pro plan payments. It receives your payment details directly; we don't."
@@ -1882,7 +1912,9 @@
           "items": [
             "NEXT_LOCALE: remembers your language (1 year).",
             "Auth.js session cookies: keep you signed in.",
-            "Browser local storage: remembers the light or dark theme."
+            "Browser local storage: remembers the light or dark theme.",
+            "Browser local storage: in \"Text to speech\", the speed, kind of voice and voice you chose.",
+            "Browser cache: the AI voice's model files (about 400 MB), so they aren't downloaded again. You can delete them by clearing this site's data in your browser."
           ],
           "proItems": [
             "Country cookie: remembers the country chosen for pricing (1 year)."
@@ -1988,6 +2020,30 @@
           ],
           "after": [
             "We may limit, suspend or close access for anyone who breaks these rules, and cooperate with the authorities when the law requires it."
+          ]
+        },
+        {
+          "heading": "AI voice of the read-aloud tool",
+          "body": [
+            "The AI voice of \"Text to speech\" uses the Supertonic 3 model by Supertone Inc., which your browser downloads and runs on your device. The model is distributed under the BigScience OpenRAIL-M license (copy at https://fileflect.com/licenses/BigScience-OpenRAIL-M.txt) and is subject to its use restrictions. By using the AI voice you agree to comply with them: you may not use the model or its derivatives:"
+          ],
+          "items": [
+            "in any way that violates any applicable national, federal, state, local or international law or regulation;",
+            "for the purpose of exploiting, harming or attempting to exploit or harm minors in any way;",
+            "to generate or disseminate verifiably false information and/or content with the purpose of harming others;",
+            "to generate or disseminate personal identifiable information that can be used to harm an individual;",
+            "to generate or disseminate information and/or content and place it in any context (e.g. a bot generating posts) without expressly and intelligibly disclaiming that it is machine generated;",
+            "to defame, disparage or otherwise harass others;",
+            "to impersonate or attempt to impersonate (e.g. deepfakes) others without their consent;",
+            "for fully automated decision making that adversely impacts an individual's legal rights or otherwise creates or modifies a binding, enforceable obligation;",
+            "for any use intended to or which has the effect of discriminating against or harming individuals or groups based on online or offline social behavior or known or predicted personal or personality characteristics;",
+            "to exploit any of the vulnerabilities of a specific group of persons based on their age, social, physical or mental characteristics, in order to materially distort the behavior of a person pertaining to that group in a manner that causes or is likely to cause that person or another person physical or psychological harm;",
+            "for any use intended to or which has the effect of discriminating against individuals or groups based on legally protected characteristics or categories;",
+            "to provide medical advice and medical results interpretation;",
+            "to generate or disseminate information for the purpose to be used for administration of justice, law enforcement, immigration or asylum processes, such as predicting an individual will commit fraud/crime."
+          ],
+          "after": [
+            "In particular, if you publish or share the audio, say that it is an AI-generated voice. The audio you generate is yours and you are responsible for how you use it; neither Supertone nor we claim rights over it. We may limit access to the AI voice for anyone who breaks these restrictions."
           ]
         },
         {
@@ -2964,7 +3020,7 @@
     "lgplHeading": "LGPL components",
     "lgplIntro": "These components are used under the GNU Lesser General Public License (LGPL), unmodified and as separate files (WebAssembly modules or shared libraries) that can be replaced with another version. The links for each one lead to its exact source code and the instructions it was built with.",
     "enginesHeading": "Bundled engines and data",
-    "enginesIntro": "Libraries compiled to WebAssembly that ship inside the packages below, our own libarchive build and the models we serve from our domain.",
+    "enginesIntro": "Libraries compiled to WebAssembly that ship inside the packages below, our own libarchive build, the models we serve from our domain and the AI voice of \"Text to speech\" (code ported from the Supertonic SDK, MIT, and the Supertonic 3 model, which your browser downloads from Hugging Face only if you choose that voice; its OpenRAIL-M license is linked).",
     "servicesHeading": "Server services",
     "servicesIntro": "Programs that run separately on our server (not distributed with Fileflect): they convert office documents and store account data.",
     "packagesHeading": "JavaScript packages ({count})",
@@ -2986,5 +3042,73 @@
     "licenseText": "License text",
     "lameThanks": "This site uses code from the LAME project (lame.sourceforge.io) to encode MP3.",
     "questions": "Something missing, or need a copy of the source code? Write to us from the contact page."
+  },
+  "ReadAloudTool": {
+    "textLabel": "Text to read",
+    "placeholder": "Type or paste text here, or open a file.",
+    "openFile": "Open file",
+    "fileHint": "TXT, Markdown, HTML, PDF with text, Word, EPUB or image (OCR). The file never leaves your device.",
+    "dropHere": "Drop the file to read its text",
+    "extracting": "Extracting the text…",
+    "cancel": "Cancel",
+    "clear": "Clear text",
+    "count": "{count} of {max} characters",
+    "truncated": "The text had {count} characters: it was cut to the first {max}.",
+    "limitReached": "You reached the limit of {max} characters.",
+    "loadedFrom": "Text from \"{name}\". You can edit it before listening.",
+    "language": "Language",
+    "detected": "Detected: {language}",
+    "play": "Play",
+    "pause": "Pause",
+    "resume": "Resume",
+    "stop": "Stop",
+    "previous": "Previous sentence",
+    "next": "Next sentence",
+    "speed": "Speed",
+    "voice": "Voice",
+    "voiceOnline": "{name} (online)",
+    "defaultVoice": "Browser default voice",
+    "sentence": "Sentence",
+    "progress": "Sentence {current} of {total}",
+    "statusPlaying": "Reading",
+    "statusPaused": "Paused",
+    "statusStopped": "Reading stopped",
+    "statusFinished": "Reading finished",
+    "editText": "Edit text",
+    "shortcut": "Space bar: pause and resume.",
+    "onlineNote": "\"Online\" voices send the text to their provider (Google, Microsoft…) to generate the audio. The others read on your device.",
+    "noSupport": "Your browser can't read aloud with device voices. Try an up-to-date Chrome, Edge, Safari or Firefox.",
+    "noVoices": "We found no {language} voices on your device: the browser's default voice will be used and may mispronounce words. You can install voices in your system settings.",
+    "speechError": "This voice couldn't read the text. Try another voice or try again.",
+    "emptyText": "Type or open a text to listen to it.",
+    "readingView": "Text being read",
+    "languages": {
+      "es": "Español",
+      "en": "English",
+      "pt": "Português",
+      "fr": "Français",
+      "zh": "中文"
+    },
+    "noTextInFile": "We found no text to read in this file.",
+    "engine": "Kind of voice",
+    "engineDevice": "Device voices",
+    "engineAi": "AI voice",
+    "engineAiHint": "The AI voice sounds more natural and can be downloaded as MP3. It downloads once (about {size}) and generates the audio on your device.",
+    "aiNoChinese": "The AI voice isn't available in Chinese: the text is read with the device voices.",
+    "aiVoiceFemale": "Female {n}",
+    "aiVoiceMale": "Male {n}",
+    "aiConfirm": "The AI voice needs to download about {size} from Hugging Face. Only the first time: it stays saved in your browser. Your text isn't sent: only the model files are downloaded.",
+    "aiConfirmPhone": "On a phone, Wi-Fi is best; generation is slower and uses a lot of memory.",
+    "aiDownload": "Download the AI voice",
+    "aiDownloading": "Downloading the AI voice…",
+    "aiGenerating": "Generating the voice…",
+    "aiSpeechError": "The AI voice couldn't be generated. Try again or use the device voices.",
+    "downloadMp3": "Download MP3",
+    "mp3Generating": "Generating the MP3: sentence {current} of {total}",
+    "mp3Hint": "The MP3 is generated with the AI voice (Supertonic 3) on your device. If you publish the audio, say that it is an AI-generated voice.",
+    "mp3NoChinese": "MP3 download uses the AI voice, which isn't available in Chinese.",
+    "aiLicense": "Model license (OpenRAIL-M)",
+    "mp3TooLongMobile": "On a phone the MP3 can have up to {max} characters. Shorten the text or make the MP3 on a computer.",
+    "mp3Done": "MP3 ready: {name}"
   }
 }

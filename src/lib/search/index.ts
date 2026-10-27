@@ -34,7 +34,12 @@ export function buildSearchIndex(locale: Locale, messages: Messages): SearchEntr
       href: `/${tool.slugs[locale]}`,
       title: t(`Tools.${id}.title` as never),
       description: t(`Tools.${id}.description` as never),
-      keywords: [categoryName(tool.category), ...new Set([...tool.inputs, ...tool.outputs].map(label))].join(" "),
+      keywords: [
+        categoryName(tool.category),
+        // Other names people search the tool by ("TTS", "read aloud"), when the messages have them.
+        t.has(`Tools.${id}.searchTerms` as never) ? t(`Tools.${id}.searchTerms` as never) : "",
+        ...new Set([...tool.inputs, ...tool.outputs].map(label)),
+      ].join(" "),
     });
   }
   for (const c of conversionPages) {

@@ -24,4 +24,18 @@ describe("search index", () => {
     expect(searchEntries(index, "heic jpg")[0].href).toBe("/heic-a-jpg");
     expect(searchEntries(index, "imagenes")[0].href).toBe("/herramientas-de-imagen");
   });
+
+  it("finds a tool by the other names in its searchTerms", async () => {
+    const cases = [
+      ["es", "texto a voz", "/leer-texto-en-voz-alta"],
+      ["es", "tts", "/leer-texto-en-voz-alta"],
+      ["en", "read aloud", "/text-to-speech"],
+      ["fr", "synthèse vocale", "/lire-texte-a-voix-haute"],
+      ["zh", "文字转语音", "/text-to-speech"],
+    ] as const;
+    for (const [locale, query, href] of cases) {
+      const messages = (await import(`../../../messages/${locale}.json`)).default;
+      expect(searchEntries(buildSearchIndex(locale, messages), query)[0]?.href, `${locale} ${query}`).toBe(href);
+    }
+  });
 });

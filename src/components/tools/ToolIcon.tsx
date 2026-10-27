@@ -1,4 +1,5 @@
 import {
+  Speech,
   Binary,
   FileLock2,
   Heading,
@@ -146,6 +147,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "adjust-audio": SlidersHorizontal,
   "normalize-audio": Volume2,
   "join-audio": Layers,
+  "text-to-speech": Speech,
   "video-converter": Clapperboard,
   "extract-audio": FileAudio,
   "compress-video": FileVideo,

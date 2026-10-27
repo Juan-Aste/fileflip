@@ -28,7 +28,7 @@ interface Section {
 }
 
 /** Terms: the Pro sections (or the free-service one) go after this many common sections. */
-const TERMS_PLAN_AFTER = 7;
+const TERMS_PLAN_AFTER = 8;
 
 /** The sections to publish, according to the Pro switch. */
 export function legalSections(raw: Record<string, unknown>, doc: "privacy" | "terms", pro: boolean): Section[] {

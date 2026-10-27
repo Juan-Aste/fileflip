@@ -13,7 +13,7 @@
 const MB = "https://github.com/Vanilagy/mediabunny/tree/v1.62.0/packages";
 const SHARP_LIBVIPS = "https://github.com/lovell/sharp-libvips/tree/v1.3.4";
 
-/** @typedef {{ id: string, name: string, version: string, license: string, lgpl?: boolean, partOf?: string, where: ("browser"|"server")[], homepage: string, source?: string, exactSource?: boolean, build?: string, licenseText: string, kind: "engine"|"data"|"service" }} Embedded */
+/** @typedef {{ id: string, name: string, version: string, license: string, holder?: string, licenseUrl?: string, lgpl?: boolean, partOf?: string, where: ("browser"|"server")[], homepage: string, source?: string, exactSource?: boolean, build?: string, licenseText: string, kind: "engine"|"data"|"service" }} Embedded */
 
 /** @type {Embedded[]} */
 export const embedded = [
@@ -241,6 +241,32 @@ export const embedded = [
     licenseText: "BSD-2-Clause",
     kind: "engine",
   },
+  // The read-aloud AI voice: our TypeScript port of the MIT sample code, and the
+  // model weights the browser downloads from Hugging Face at a pinned commit
+  // (not from our domain). The weights' license requires passing its use
+  // restrictions on to users (our Terms) and giving them a copy of it.
+  {
+    id: "supertonic-code",
+    name: "Supertonic inference code (ported from the supertonic Python SDK)",
+    version: "1.3.1",
+    license: "MIT",
+    holder: "2025 Supertone Inc.",
+    where: ["browser"],
+    homepage: "https://pypi.org/project/supertonic/",
+    licenseText: "MIT",
+    kind: "engine",
+  },
+  {
+    id: "supertonic-3",
+    name: "Supertonic 3 text-to-speech model (Supertone Inc.)",
+    version: "3 (commit 3cadd1ee)",
+    license: "BigScience-OpenRAIL-M",
+    where: ["browser"],
+    homepage: "https://huggingface.co/Supertone/supertonic-3/tree/3cadd1ee6394adea1bd021217a0e650ede09a323",
+    licenseText: "BigScience-OpenRAIL-M",
+    licenseUrl: "/licenses/BigScience-OpenRAIL-M.txt",
+    kind: "data",
+  },
   // Data files served from our domain.
   {
     id: "u2netp",
@@ -308,4 +334,4 @@ export const embedded = [
 ];
 
 /** License texts copied to public/licenses/ for the credits page. */
-export const LICENSE_TEXTS = ["LGPL-2.0", "LGPL-2.1", "LGPL-3.0", "GPL-3.0", "MPL-2.0", "Apache-2.0"];
+export const LICENSE_TEXTS = ["LGPL-2.0", "LGPL-2.1", "LGPL-3.0", "GPL-3.0", "MPL-2.0", "Apache-2.0", "BigScience-OpenRAIL-M"];
