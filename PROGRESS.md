@@ -3434,3 +3434,7 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Matriz del catálogo regenerada (`docs/report-phase3-matrix.md`): **83 herramientas** publicadas y verificadas, 83/83 con prueba de navegador. `docs/launch-checklist.md`: verificación de la herramienta después de publicar; sin cambios de despliegue (el modelo viene de Hugging Face, la CSP no define `connect-src`, no hay archivos públicos nuevos).
 
 **Verificación**: lint, typecheck, unitarios (1111), build; en Chromium `tts-tools` (19), `layout-shift` (6) y `a11y` (22); en Firefox los tests `@xb` de la herramienta. WebKit no arranca en este contenedor (faltan bibliotecas del sistema): lo cubre el job `e2e-browsers` del CI.
+
+## 2026-10-27 — FASE 8 TERMINADA
+- Todas las tareas de la fase 8 están marcadas; CI en verde en `07c6617` (check, e2e-browsers con Firefox/WebKit y e2e-ai-voice con el modelo real).
+- Para el dueño: no hay cambios en Railway (el modelo se baja de Hugging Face; sin variables, CSP ni archivos públicos nuevos). Mergear `dev` en `main`. Los Términos cambiaron (`TERMS_VERSION` 2026-10-27), ver `docs/legal/pendientes-legales.md`. Se puede pausar la tarea programada.
