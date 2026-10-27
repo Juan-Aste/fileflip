@@ -3444,3 +3444,8 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Arreglo (solo tests): `tests/e2e/axe.ts` espera dos cuadros y que terminen las animaciones/transiciones finitas antes de correr axe (sirve a todos los specs); el test espera a que "Reproducir" esté habilitado.
 - Verificado: antes fallaba 2 de 40 corridas en WebKit/iPhone; después, 80 de 80 pasan. `tts-tools` + `a11y` en Chromium, Firefox, WebKit e iPhone (47) y lint pasan.
 - CI en verde en `4ee432d` (check, e2e-browsers y e2e-ai-voice). La fase 8 sigue terminada; no quedan tareas pendientes.
+
+## 2026-10-27 — CI más liviano (minutos de GitHub Actions)
+- Se agotaron los minutos de Actions del repo privado: la tarea seguía corriendo cada hora con la fase terminada y cada commit del candado disparaba el CI completo.
+- `ci.yml`: los push a `dev`/`main` solo corren el job `check` (lint, unitarios, build) y se omiten si el commit solo toca `.agent-lock`, `*.md` o `docs/`. Los jobs pesados (`e2e-browsers`, `e2e-ai-voice`) corren en los PR a `main` y a mano (`workflow_dispatch`). `concurrency` cancela la corrida anterior de la misma rama o PR.
+- Para la tarea programada: los tests de navegador se siguen corriendo localmente antes de marcar cada tarea; en `dev` el CI de GitHub solo muestra `check`.

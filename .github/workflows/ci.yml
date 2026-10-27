@@ -1,10 +1,26 @@
 name: CI
 
+# GitHub Actions minutes are limited on this private repo, so:
+# - pushes run only the quick `check` job, and not at all when a commit only
+#   touches the agent lock or docs;
+# - the heavy browser jobs (other engines, AI voice model) run on pull
+#   requests to main (the release gate) and on demand (workflow_dispatch).
+#   The scheduled agent still runs them locally before marking a task done.
 on:
   push:
     branches: [dev, main]
+    paths-ignore:
+      - ".agent-lock"
+      - "**/*.md"
+      - "docs/**"
   pull_request:
+    branches: [main]
   workflow_dispatch:
+
+# A newer commit on the same branch or PR cancels the run still in progress.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check:
@@ -35,6 +51,7 @@ jobs:
   # with ffprobe/ffmpeg. The model (~400 MB, from Hugging Face) lives in a
   # cached browser profile, so it is downloaded once per model version.
   e2e-ai-voice:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -84,6 +101,7 @@ jobs:
   # Runs in Playwright's image (same version as package.json): browsers and
   # their system libraries come preinstalled, no slow apt step.
   e2e-browsers:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     container:
