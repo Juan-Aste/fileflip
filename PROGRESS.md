@@ -3453,3 +3453,13 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 ## 2026-10-28 — Inicio de la fase 9
 - Fase 9 (código de AdSense en el `<head>` de todas las páginas) agregada a PLAN.md con las tareas 9.1–9.3.
 - CI: el run de `5355939` no corrió ningún job por un problema de facturación de la cuenta de GitHub (no es un error de código); las pruebas se corren localmente.
+
+## 2026-10-28 — Fase 9, tarea 9.1 (código de AdSense en el `<head>`)
+- Verificado el cambio de `5355939` compilando con y sin `NEXT_PUBLIC_ADSENSE_CLIENT=ca-pub-0000000000000000`: React deja el meta `google-adsense-account` y el `<script async src="…adsbygoogle.js?client=…" crossorigin="anonymous">` en el `<head>` del HTML del servidor (no hizo falta `beforeInteractive`). React lo deduplica con el payload RSC: se carga una sola vez, también en las páginas con bloques.
+- Comprobado en el HTML de `next start`: portada, una herramienta, una categoría, términos, privacidad, contacto y créditos en es, en, pt, fr y zh tienen exactamente un meta y un script en el `<head>` con la variable, y ninguno sin ella. Las 1017 páginas prerenderizadas también.
+- Excepción: los 404 de slugs inexistentes son el shell de error de Next (noindex) y su `<head>` se completa en el navegador; AdSense no revisa páginas 404 (anotado en `docs/launch-checklist.md`).
+- Bug arreglado: el bloque lateral está oculto por CSS debajo de `xl` y `AdSlot` igual hacía `push`, con lo que AdSense tiraba `TagError: No slot size for availableWidth=0` en celulares y tablets (lo detectaron `layout-shift`, `clickable` y `a11y` con el loader real). Ahora `AdSlot` llena el bloque solo cuando tiene ancho (`ResizeObserver`).
+- Tests nuevos: `scripts/check-adsense.mjs` (`npm run check:adsense`, todas las páginas prerenderizadas; el job `check` del CI compila con el ID de prueba y lo corre) y `tests/e2e/adsense-head.spec.ts` (HTML servido en 5 idiomas, una sola carga del loader, bloque oculto sin `push`, `/ads.txt`; en el CI corre en `e2e-browsers` sin la variable).
+- `/ads.txt` sigue igual (con la variable `google.com, pub-…, DIRECT, f08c47fec0942fa0`; sin ella 404).
+- Verificado: lint, 1113 unitarios, build con y sin la variable, `check:static`; con la variable `adsense-head` + `layout-shift` + `clickable` + `a11y` en Chromium (127 pasan); sin la variable la suite completa de Chromium (630 pasan; `video-to-gif` H.264 se pasó del tiempo una vez por carga y pasa solo en 2,9 s) y la muestra de Firefox y WebKit (37 pasan).
+- CI: los runs de `dev` no corren ningún job por un problema de facturación de la cuenta de GitHub.
