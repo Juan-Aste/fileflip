@@ -3614,3 +3614,11 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Las guías 1–3 enlazan ahora a estas (los enlaces a guías planeadas se activan solos al publicarlas). Estilo para bloques de código en las guías.
 - Verificado: lint, typecheck, build, unitarios de guías (40); Chromium guides + layout-shift + clickable (116) pasan.
 
+## 2026-10-28 — Fase 10, tarea 10E.4 (guías 8–10 en español)
+- «Cómo hacer que la computadora te lea un texto o un PDF» (`/es/guias/como-hacer-que-la-computadora-lea-un-texto-o-pdf`): las funciones de cada sistema (Edge y Narrador, «Contenido leído» de Mac y iPhone, «Seleccionar para pronunciar» de Android, Word), y Leer texto en voz alta: archivos, resaltado, velocidad, voces del dispositivo frente a voz IA (descarga, velocidad, idiomas, MP3), privacidad de las voces «en línea», PDF escaneados y licencia del audio.
+- «Cómo firmar un PDF sin imprimirlo» (`/es/guias/como-firmar-un-pdf-sin-imprimirlo`): firma manuscrita frente a firma digital con certificado, dibujar o subir una foto (fondo blanco quitado), colocar y medir, una página por vez (para varias, volver a abrir el PDF firmado), formularios y texto con Rellenar formulario y Editar PDF. Captura con una autorización en español generada por el script y una firma dibujada sobre la línea.
+- «Qué es PDF/A y cuándo lo piden en un trámite» (`/es/guias/que-es-pdf-a-y-cuando-lo-piden`): ISO 19005, qué exige, quién lo pide, versiones 1/2/3 y niveles a/b/u, conversión en el servidor (validada con veraPDF en los tests), qué se pierde (contraseña, formularios, firma digital previa) y cómo saber si un PDF ya es PDF/A.
+- Arreglo encontrado al preparar la guía de lectura: la detección de idioma de Leer texto en voz alta tomaba como francés un texto en español con varios «un» (y «o» sumaba al portugués). «un» y «o» ya no cuentan (son palabras compartidas); test nuevo con ese texto.
+- Las 10 guías del plan están publicadas en español (894–1251 palabras cada una).
+- Verificado: lint, typecheck, build, unitarios de guías y de voz (96); Chromium guides + layout-shift + clickable + tts-tools (138) pasan.
+

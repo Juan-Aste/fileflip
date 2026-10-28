@@ -169,6 +169,54 @@ export const guides: GuideMeta[] = [
       },
     },
   },
+  {
+    id: "read-aloud",
+    published: "2026-10-28",
+    updated: "2026-10-28",
+    tools: ["text-to-speech", "ocr-pdf", "audio-to-text"],
+    related: ["transcribe-audio", "pdf-to-word"],
+    howTo: true,
+    image: "leer-en-voz-alta",
+    versions: {
+      es: {
+        slug: "como-hacer-que-la-computadora-lea-un-texto-o-pdf",
+        title: "Cómo hacer que la computadora te lea un texto o un PDF",
+        description: "Las funciones de lectura en voz alta de Windows, Mac, iPhone y Android, y cómo escuchar un texto, un PDF o un Word con resaltado y descarga en MP3.",
+      },
+    },
+  },
+  {
+    id: "sign-pdf",
+    published: "2026-10-28",
+    updated: "2026-10-28",
+    tools: ["sign-pdf", "edit-pdf", "fill-pdf-form", "protect-pdf"],
+    related: ["pdf-a", "reduce-pdf-size", "pdf-to-word"],
+    howTo: true,
+    image: "firmar-pdf-colocar",
+    versions: {
+      es: {
+        slug: "como-firmar-un-pdf-sin-imprimirlo",
+        title: "Cómo firmar un PDF sin imprimirlo",
+        description: "Pon tu firma manuscrita en un PDF desde la computadora o el celular, sin imprimir ni escanear, y entiende en qué se diferencia de una firma digital.",
+      },
+    },
+  },
+  {
+    id: "pdf-a",
+    published: "2026-10-28",
+    updated: "2026-10-28",
+    tools: ["pdf-to-pdfa", "unlock-pdf", "compress-pdf", "merge-pdf"],
+    related: ["sign-pdf", "reduce-pdf-size"],
+    howTo: true,
+    image: "pdfa-opciones",
+    versions: {
+      es: {
+        slug: "que-es-pdf-a-y-cuando-lo-piden",
+        title: "Qué es PDF/A y cuándo lo piden en un trámite",
+        description: "Qué es el formato PDF/A, quién lo exige, qué versión elegir (1b, 2b o 3b) y cómo convertir un PDF sin que lo rechacen.",
+      },
+    },
+  },
 ];
 
 export function guideById(id: string): GuideMeta | undefined {

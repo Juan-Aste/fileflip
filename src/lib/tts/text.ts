@@ -48,11 +48,12 @@ export const stripBullets = (text: string) => text.replace(/^[ \t]*[-*•‣◦]
 const HAN = /[㐀-䶿一-鿿豈-﫿]/g;
 const LETTER = /\p{L}/gu;
 
-// Frequent words that tell the four Latin-script languages apart (shared ones left out).
+// Frequent words that tell the four Latin-script languages apart (shared ones left out:
+// "un" is also Spanish and "o" means "or" in Spanish, so neither counts).
 const STOPWORDS: Record<Exclude<TtsLanguage, "zh">, readonly string[]> = {
   es: ["el", "los", "las", "y", "es", "del", "por", "una", "con", "pero", "muy", "hay", "también", "cuando", "sin", "yo", "él", "qué", "fue", "son", "su", "sus", "al", "lo", "más", "está", "este", "esta"],
-  pt: ["o", "os", "as", "é", "do", "da", "dos", "das", "em", "um", "uma", "não", "com", "mas", "muito", "há", "também", "quando", "sem", "eu", "ele", "foi", "são", "no", "na", "nos", "ao", "pelo", "pela", "você", "mais", "seu", "sua"],
-  fr: ["le", "les", "et", "est", "des", "du", "un", "une", "dans", "pour", "pas", "qui", "sur", "avec", "ne", "il", "elle", "nous", "vous", "je", "au", "aux", "mais", "ou", "été", "sont", "cette", "ce", "plus", "ces", "c'est"],
+  pt: ["os", "as", "é", "do", "da", "dos", "das", "em", "um", "uma", "não", "com", "mas", "muito", "há", "também", "quando", "sem", "eu", "ele", "foi", "são", "no", "na", "nos", "ao", "pelo", "pela", "você", "mais", "seu", "sua"],
+  fr: ["le", "les", "et", "est", "des", "du", "une", "dans", "pour", "pas", "qui", "sur", "avec", "ne", "il", "elle", "nous", "vous", "je", "au", "aux", "mais", "ou", "été", "sont", "cette", "ce", "plus", "ces", "c'est"],
   en: ["the", "and", "is", "of", "to", "in", "that", "it", "was", "for", "on", "are", "with", "be", "this", "have", "from", "by", "not", "you", "he", "she", "they", "at", "which", "were", "or", "an", "will"],
 };
 const STOPWORD_LANGUAGE = new Map<string, Exclude<TtsLanguage, "zh">[]>();

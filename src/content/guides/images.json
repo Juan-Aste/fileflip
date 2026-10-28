@@ -7,6 +7,10 @@
     "width": 800,
     "height": 546
   },
+  "firmar-pdf-colocar": {
+    "width": 800,
+    "height": 1406
+  },
   "formatos-convertir": {
     "width": 800,
     "height": 746
@@ -14,6 +18,10 @@
   "heic-convertir": {
     "width": 800,
     "height": 663
+  },
+  "leer-en-voz-alta": {
+    "width": 800,
+    "height": 862
   },
   "pdf-a-word-convertir": {
     "width": 800,
@@ -26,6 +34,10 @@
   "pdf-excel-vista-previa": {
     "width": 800,
     "height": 884
+  },
+  "pdfa-opciones": {
+    "width": 800,
+    "height": 426
   },
   "transcribir-resultado": {
     "width": 800,

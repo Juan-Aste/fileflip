@@ -8,7 +8,7 @@
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { chromium } from "playwright-core";
 import sharp from "sharp";
 
@@ -24,6 +24,12 @@ const toolBlock = (page) => page.locator("[data-guide-col]").locator(":scope > *
 let shotIndex = 0;
 
 async function pick(page, files) {
+  await mark(page);
+  await page.locator('input[type="file"]').first().setInputFiles(files);
+  await page.waitForFunction(() => !document.body.innerText.includes("Detectando"), null, { timeout: 15_000 });
+}
+
+async function mark(page) {
   // Mark the block that holds the drop zone before it changes: the child of
   // the page column (the one with the title) that contains the file input.
   await page
@@ -34,8 +40,32 @@ async function pick(page, files) {
       return [...el.parentElement.children].indexOf(el);
     })
     .then((i) => (shotIndex = i));
-  await page.locator('input[type="file"]').first().setInputFiles(files);
-  await page.waitForFunction(() => !document.body.innerText.includes("Detectando"), null, { timeout: 15_000 });
+}
+
+/** A one-page authorization in Spanish with a line to sign at the bottom right. */
+async function authorizationPdf() {
+  const doc = await PDFDocument.create();
+  const page = doc.addPage([595.28, 841.89]);
+  const font = await doc.embedFont(StandardFonts.Helvetica);
+  const bold = await doc.embedFont(StandardFonts.HelveticaBold);
+  const ink = rgb(0.13, 0.13, 0.13);
+  page.drawText("Autorización de retiro", { x: 72, y: 760, size: 20, font: bold, color: ink });
+  const lines = [
+    "Por la presente autorizo a la persona indicada abajo a retirar en mi nombre",
+    "la documentación que se encuentra a mi disposición en la oficina de atención",
+    "al público, en los días y horarios habituales.",
+    "",
+    "Nombre de la persona autorizada: ______________________________",
+    "Documento: ______________________",
+    "",
+    "Lugar y fecha: ______________________",
+  ];
+  lines.forEach((line, i) => page.drawText(line, { x: 72, y: 710 - i * 22, size: 12, font, color: ink }));
+  page.drawLine({ start: { x: 340, y: 170 }, end: { x: 520, y: 170 }, thickness: 0.8, color: ink });
+  page.drawText("Firma", { x: 412, y: 152, size: 11, font, color: ink });
+  const file = join(work, "autorizacion.pdf");
+  writeFileSync(file, await doc.save());
+  return file;
 }
 
 /** Gaussian-like sensor noise around mid gray, the same on every run. */
@@ -134,6 +164,45 @@ const shots = {
     await pick(page, [join(fixtures, "speech-ai-es.ogg")]);
     await page.getByRole("button", { name: "Transcribir", exact: true }).click();
     await page.getByRole("button", { name: "Descargar SRT" }).waitFor({ timeout: 300_000 });
+    return toolBlock(page);
+  },
+  "leer-en-voz-alta": async (page) => {
+    await page.goto(`${base}/es/leer-texto-en-voz-alta`, { waitUntil: "networkidle" });
+    await mark(page);
+    await page
+      .getByRole("textbox", { name: "Texto para leer" })
+      .fill(
+        "Leer un texto en voz alta ayuda a revisar lo que escribiste, a descansar la vista o a escuchar un documento mientras haces otra cosa. Pega aquí cualquier texto, o abre un PDF, un Word o la foto de una página, y pulsa Reproducir.",
+      );
+    // The AI voice works the same everywhere (the test browser has no device voices).
+    await page.locator("label").filter({ hasText: "Voz IA" }).first().click();
+    return toolBlock(page);
+  },
+  "firmar-pdf-colocar": async (page) => {
+    await page.goto(`${base}/es/firmar-pdf`, { waitUntil: "networkidle" });
+    await pick(page, [await authorizationPdf()]);
+    const pad = page.getByRole("img", { name: "Recuadro para dibujar la firma" });
+    await pad.scrollIntoViewIfNeeded();
+    const box = await pad.boundingBox();
+    // A handwritten-looking stroke: a loop and a long tail.
+    await page.mouse.move(box.x + box.width * 0.12, box.y + box.height * 0.65);
+    await page.mouse.down();
+    for (let i = 1; i <= 40; i++) {
+      const t = i / 40;
+      await page.mouse.move(box.x + box.width * (0.12 + t * 0.76), box.y + box.height * (0.6 - Math.sin(t * Math.PI * 3) * 0.25 * (1 - t)));
+    }
+    await page.mouse.up();
+    await page.getByRole("button", { name: "Usar esta firma" }).click();
+    const preview = page.getByTestId("sign-preview");
+    await preview.scrollIntoViewIfNeeded();
+    const area = await preview.boundingBox();
+    // Over the signature line (x 340–520, y 170 of 595 × 842 points).
+    await page.mouse.click(area.x + area.width * 0.72, area.y + area.height * 0.775);
+    return toolBlock(page);
+  },
+  "pdfa-opciones": async (page) => {
+    await page.goto(`${base}/es/pdf-a-pdfa`, { waitUntil: "networkidle" });
+    await pick(page, [join(fixtures, "document.pdf")]);
     return toolBlock(page);
   },
   "comprimir-pdf-resultado": async (page, browser) => {

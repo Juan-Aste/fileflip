@@ -88,6 +88,10 @@ describe("detectLanguage", () => {
     expect(detectLanguage("Le chien et les chats sont dans la maison avec leur maître, mais il n'y a pas de nourriture.", "es")).toBe("fr");
     expect(detectLanguage("我们今天去公园散步，天气很好。Fileflect 是一个工具。", "es")).toBe("zh");
   });
+  it("does not take Spanish with many «un» and «o» for French or Portuguese", () => {
+    const text = "Leer un texto en voz alta ayuda a revisar lo que escribiste, a descansar la vista o a escuchar un documento mientras haces otra cosa. Pega aquí cualquier texto, o abre un PDF, un Word o la foto de una página, y pulsa Reproducir.";
+    for (const fallback of ["es", "en", "fr", "pt"] as const) expect(detectLanguage(text, fallback)).toBe("es");
+  });
   it("keeps the fallback for short or unclear text", () => {
     expect(detectLanguage("OK", "pt")).toBe("pt");
     expect(detectLanguage("123 456", "fr")).toBe("fr");

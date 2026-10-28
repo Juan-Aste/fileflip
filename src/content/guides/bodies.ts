@@ -2,9 +2,12 @@ import type { Locale } from "@/i18n/routing";
 import csvVsExcelEs from "./bodies/csv-vs-excel.es";
 import heicToJpgEs from "./bodies/heic-to-jpg.es";
 import imageFormatsEs from "./bodies/image-formats.es";
+import pdfAEs from "./bodies/pdf-a.es";
 import pdfTableToExcelEs from "./bodies/pdf-table-to-excel.es";
 import pdfToWordEs from "./bodies/pdf-to-word.es";
+import readAloudEs from "./bodies/read-aloud.es";
 import reducePdfSizeEs from "./bodies/reduce-pdf-size.es";
+import signPdfEs from "./bodies/sign-pdf.es";
 import transcribeAudioEs from "./bodies/transcribe-audio.es";
 
 // Markdown body of each guide, by guide id and language (see meta.ts and
@@ -18,4 +21,7 @@ export const guideBodies: Record<string, Partial<Record<Locale, string>>> = {
   "pdf-table-to-excel": { es: pdfTableToExcelEs },
   "csv-vs-excel": { es: csvVsExcelEs },
   "transcribe-audio": { es: transcribeAudioEs },
+  "read-aloud": { es: readAloudEs },
+  "sign-pdf": { es: signPdfEs },
+  "pdf-a": { es: pdfAEs },
 };
