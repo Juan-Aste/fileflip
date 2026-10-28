@@ -3449,3 +3449,7 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Se agotaron los minutos de Actions del repo privado: la tarea seguía corriendo cada hora con la fase terminada y cada commit del candado disparaba el CI completo.
 - `ci.yml`: los push a `dev`/`main` solo corren el job `check` (lint, unitarios, build) y se omiten si el commit solo toca `.agent-lock`, `*.md` o `docs/`. Los jobs pesados (`e2e-browsers`, `e2e-ai-voice`) corren en los PR a `main` y a mano (`workflow_dispatch`). `concurrency` cancela la corrida anterior de la misma rama o PR.
 - Para la tarea programada: los tests de navegador se siguen corriendo localmente antes de marcar cada tarea; en `dev` el CI de GitHub solo muestra `check`.
+
+## 2026-10-28 — Inicio de la fase 9
+- Fase 9 (código de AdSense en el `<head>` de todas las páginas) agregada a PLAN.md con las tareas 9.1–9.3.
+- CI: el run de `5355939` no corrió ningún job por un problema de facturación de la cuenta de GitHub (no es un error de código); las pruebas se corren localmente.
