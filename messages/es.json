@@ -230,6 +230,7 @@
     "noAudioTrack": "Este archivo no tiene una pista de audio.",
     "audioCodecUnsupported": "Tu navegador no puede leer el audio de este archivo (por ejemplo, AAC en algunos navegadores). Prueba con Chrome, Edge o Safari, o con otro formato.",
     "audioTooLong": "El audio es demasiado largo: el máximo es de 3 horas por archivo.",
+    "transcribeTooLong": "El audio es demasiado largo para transcribirlo en el navegador: el máximo es de 30 minutos. Recórtalo en partes con «Recortar audio».",
     "tooManyPages": "Este PDF tiene demasiadas páginas para reconocerlas en el navegador (máximo 100).",
     "pdfAlreadySearchable": "Todas las páginas de este PDF ya tienen texto: se puede buscar sin OCR. Usa «PDF a texto» para extraerlo.",
     "audioRangeInvalid": "Revisa los tiempos: el inicio debe ser anterior al fin y ambos deben estar dentro del audio.",

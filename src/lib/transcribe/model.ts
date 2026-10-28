@@ -55,3 +55,13 @@ export const whisperUrl = (model: WhisperModel, path: string) => `https://huggin
 
 /** What a model downloads the first time (later uses read it from the Cache API). */
 export const whisperDownloadBytes = (model: WhisperModel) => model.files.reduce((sum, f) => sum + f.bytes, 0);
+
+/** One Cache API cache per model and pinned commit: a new version never reads old files. */
+export const whisperCacheName = (model: WhisperModel) => `fileflect-whisper-${model.id}-${model.revision.slice(0, 12)}`;
+
+/**
+ * Longest audio accepted (seconds). The whole recording is kept as 16 kHz
+ * float samples (~115 MB for 30 min) and the fast model runs at about real
+ * time on a phone; measured in docs/transcripcion.md.
+ */
+export const MAX_TRANSCRIBE_SECONDS = 30 * 60;

@@ -441,8 +441,13 @@ export async function transcribe(
         sampled.splice(sampled.length - loop * 3);
         break;
       }
-      // No timestamp beyond the audio of this window.
-      if (next >= cfg.timestampBegin && (next - cfg.timestampBegin) * TIME_PRECISION > windowSeconds + 0.5) break;
+      if (next >= cfg.timestampBegin) {
+        const time = (next - cfg.timestampBegin) * TIME_PRECISION;
+        // No timestamp beyond the audio of this window.
+        if (time > windowSeconds + 0.5) break;
+        // Progress inside the window: up to the last timestamp written.
+        onProgress?.(Math.min(seek + Math.round(time * SAMPLE_RATE), audio.length), audio.length);
+      }
       logits = await decoder.step([next]);
     }
     const offset = seek / SAMPLE_RATE;

@@ -1,6 +1,7 @@
 // Download of the AI voice files: from Hugging Face at the pinned commit, with
 // byte progress, a size and SHA-256 check, and the browser's Cache API so the
 // ~398 MB are fetched once. Works in a worker or the page (both have `caches`).
+// The transcription models (Whisper) use the same code with their own URLs and cache.
 
 import { ConversionError } from "@/lib/convert-error";
 import { SUPERTONIC_REVISION, supertonicUrl, type ModelFile } from "./model";
@@ -16,10 +17,10 @@ export interface FileStore {
 export const MODEL_CACHE_NAME = `fileflect-tts-supertonic3-${SUPERTONIC_REVISION.slice(0, 12)}`;
 
 /** The model cache, or null where the Cache API is missing or blocked (private mode, insecure origin). */
-export async function openModelStore(): Promise<FileStore | null> {
+export async function openModelStore(name = MODEL_CACHE_NAME): Promise<FileStore | null> {
   try {
     if (typeof caches === "undefined") return null;
-    return await caches.open(MODEL_CACHE_NAME);
+    return await caches.open(name);
   } catch {
     return null;
   }
@@ -35,12 +36,16 @@ async function verified(file: ModelFile, data: Uint8Array) {
 }
 
 /** Bytes of `files` already in the cache (to tell the user what is left to download). */
-export async function cachedBytes(files: readonly ModelFile[], store: FileStore | null): Promise<number> {
+export async function cachedBytes(
+  files: readonly ModelFile[],
+  store: FileStore | null,
+  urlOf: (file: ModelFile) => string = (file) => supertonicUrl(file.path),
+): Promise<number> {
   if (!store) return 0;
   let total = 0;
   for (const file of files) {
     try {
-      const hit = await store.match(supertonicUrl(file.path));
+      const hit = await store.match(urlOf(file));
       if (hit && Number(hit.headers.get("content-length") ?? file.bytes) === file.bytes) total += file.bytes;
     } catch {
       // A broken entry counts as missing.
@@ -55,11 +60,12 @@ export interface FetchModelOptions {
   /** Bytes of this file received so far (a cached file reports its full size at once). */
   onBytes?: (received: number) => void;
   signal?: AbortSignal;
+  /** Where the file is downloaded from (and its cache key); the AI voice's URL by default. */
+  url?: string;
 }
 
 /** The verified bytes of one model file, from the cache or the network (then cached). */
-export async function fetchModelFile(file: ModelFile, { store, fetchFn = fetch, onBytes, signal }: FetchModelOptions): Promise<Uint8Array> {
-  const url = supertonicUrl(file.path);
+export async function fetchModelFile(file: ModelFile, { store, fetchFn = fetch, onBytes, signal, url = supertonicUrl(file.path) }: FetchModelOptions): Promise<Uint8Array> {
   if (store) {
     try {
       const hit = await store.match(url);

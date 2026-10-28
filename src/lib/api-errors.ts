@@ -51,6 +51,8 @@ export const apiErrorCodes = [
   "noAudioTrack",
   "audioCodecUnsupported",
   "audioTooLong",
+  // Client-side only: audio longer than the transcription limit (30 min).
+  "transcribeTooLong",
   // Client-side only: a trim range outside the audio or shorter than a tenth of a second.
   "audioRangeInvalid",
   // Client-side only: nothing to normalize.
@@ -119,6 +121,7 @@ const status: Record<ApiErrorCode, number> = {
   noAudioTrack: 422,
   audioCodecUnsupported: 415,
   audioTooLong: 413,
+  transcribeTooLong: 413,
   audioRangeInvalid: 422,
   audioSilent: 422,
   noVideoTrack: 422,

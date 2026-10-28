@@ -230,6 +230,7 @@
     "noAudioTrack": "此文件没有音轨。",
     "audioCodecUnsupported": "你的浏览器无法读取此文件中的音频（例如某些浏览器不支持 AAC）。请尝试 Chrome、Edge 或 Safari，或换一种格式。",
     "audioTooLong": "音频太长：每个文件最长 3 小时。",
+    "transcribeTooLong": "音频太长，无法在浏览器中转写：最长 30 分钟。请用“剪切音频”分成几段。",
     "tooManyPages": "此 PDF 页数过多，无法在浏览器中识别（最多 100 页）。",
     "pdfAlreadySearchable": "此 PDF 的所有页面都已有文字：无需 OCR 即可搜索。请使用“PDF 转文本”提取文字。",
     "audioRangeInvalid": "请检查时间：开始时间必须早于结束时间，并且都在音频范围内。",

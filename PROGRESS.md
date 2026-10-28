@@ -3561,3 +3561,13 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Verificado: lint, typecheck, build y 1211 unitarios; los 2 tests con modelos reales pasan con `WHISPER_DIR`.
 - Tests: 11 unitarios (filtros y espectrograma —silencio y un tono de 440 Hz en su banda—, tokenizador con acentos y chino, reglas de marcas de tiempo, bucles, segmentos) y 2 con los modelos reales (`WHISPER_DIR`, como la voz IA con `SUPERTONIC_DIR`): `tiny` en inglés con idioma detectado y `base` en español en dos ventanas, con las palabras esperadas y los tiempos en orden.
 
+
+## 2026-10-28 — Fase 10, tarea 10D.2b (worker de transcripción)
+- `src/workers/transcribe.worker.ts`: carga Whisper (`tiny` o `base`) una vez por worker con onnxruntime-web en WASM de un hilo (sin aislamiento entre orígenes, como la voz IA), progreso de la descarga por bytes y de la transcripción por posición del audio (también dentro de cada ventana de 30 s, según la última marca de tiempo escrita). Cancelar termina el worker (lo hace el pool de trabajos); la siguiente vez el modelo se lee de la caché.
+- Descarga y caché: `src/lib/tts/model-cache.ts` ahora acepta otra URL y otra caché (`url`, `openModelStore(nombre)`, `cachedBytes(…, urlOf)`); Whisper usa una caché por modelo y commit (`fileflect-whisper-tiny-…`), con tamaño y SHA-256 verificados como la voz IA.
+- `src/lib/transcribe/audio.ts`: cualquier audio o video que el navegador decodifique (mediabunny + WebCodecs) a 16 kHz mono en float, con progreso y cancelación; corre en la página (el `AudioDecoder` no está en los workers de todos los navegadores) y el búfer se transfiere al worker sin copiarlo.
+- `src/lib/transcribe/client.ts` (preparar, bytes que faltan bajar, transcribir, liberar) y `src/lib/transcribe/eta.ts` (tiempo restante por la velocidad media; el progreso nunca retrocede aunque una ventana empiece un poco antes).
+- Límite: 30 minutos de audio (`MAX_TRANSCRIBE_SECONDS`), error nuevo `transcribeTooLong` en 5 idiomas con la sugerencia de recortar el audio. Se revisará con las medidas de la 10D.4.
+- Idioma automático (el propio modelo lo detecta en la primera ventana) o elegido, ya soportado por el motor.
+- Verificado: lint, typecheck, build, 1215 unitarios (4 nuevos: tiempo restante y caché con otra URL) y los 2 tests con los modelos reales (`WHISPER_DIR`). La prueba de navegador del worker y la decodificación llega con la herramienta (10D.3).
+- CI: los runs de `dev` siguen sin correr ningún job por facturación de la cuenta de GitHub.
