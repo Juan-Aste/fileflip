@@ -1142,6 +1142,22 @@
         "a4": "Yes: the conversion runs on our own server (not a third-party service), over an encrypted connection, and the file is processed in memory without being stored."
       }
     },
+    "pdf-to-excel": {
+      "title": "PDF to Excel",
+      "description": "Extract the tables of a PDF to Excel (XLSX) or CSV in your browser, with a preview and real numbers, without uploading the file.",
+      "action": "Convert to Excel",
+      "about": "Turn the tables of a bank statement, a price list, an invoice or a report in PDF into a spreadsheet. The tool reads the PDF's text with its position on the page, builds rows from the line each text sits on and columns from how they line up, and shows you the detected table before you download. Amounts such as 1,234.56 or 1.234,56 become real numbers you can add up, and codes with leading zeros stay as text. Get one sheet per page, one per table or everything in a single sheet. It works with PDFs that contain text (the ones a program creates); a scanned PDF is an image and needs text recognition (OCR) first.",
+      "faq": {
+        "q1": "Which PDFs does it work with?",
+        "a1": "Those with selectable text: the ones a bank, an invoicing system, Word or Excel create with “Save as PDF”. If you can select a word with the mouse when you open the PDF, it will work. A scan or a photo turned into a PDF has no text: run it through “OCR scanned PDF” first and use the PDF it gives you back, knowing that accuracy will be lower.",
+        "q2": "Why isn't the table perfect?",
+        "a2": "A PDF does not store tables, only pieces of text and their positions, so columns are worked out from the alignment. Cells with text on several lines may come out as separate rows, and a cell spanning two columns may land in one. Check the preview before downloading; if numbers come out as text, pick the decimal separator yourself.",
+        "q3": "How are numbers with a decimal comma recognized?",
+        "a3": "Per table: if amounts are written like 84.35 or 1,234.56, the point is the decimal separator; if they are written like 84,35 or 1.234,56, it is the comma. A space as thousands separator (1 250,5) is recognized too. Dates, percentages and amounts with a currency symbol stay as text, as they appear.",
+        "q4": "Is my PDF uploaded?",
+        "a4": "No. The PDF is read in your browser with pdf.js and the spreadsheet is built on your device with SheetJS: nothing is sent to any server. PDFs of up to 100 MB are accepted."
+      }
+    },
     "spreadsheet-converter": {
       "title": "Spreadsheet converter",
       "description": "Convert between Excel (XLSX, XLS), OpenDocument (ODS) and CSV: every sheet, value and formula, in your browser.",
@@ -3233,5 +3249,31 @@
     "aiLicense": "Model license (OpenRAIL-M)",
     "mp3TooLongMobile": "On a phone the MP3 can have up to {max} characters. Shorten the text or make the MP3 on a computer.",
     "mp3Done": "MP3 ready: {name}"
+  },
+  "PdfExcelTool": {
+    "reading": "Looking for tables in the PDF…",
+    "scanned": "This PDF has no text: it looks like a scanned image, and tables are recognized from the text. Run it through text recognition (OCR) first and come back with the PDF it gives you. Accuracy is lower: check the numbers in the preview.",
+    "scannedLink": "Open “OCR scanned PDF”",
+    "found": "{count, plural, one {# table found.} other {# tables found.}}",
+    "noTable": "No table found: the text will be copied line by line.",
+    "previewOf": "Preview",
+    "tableOption": "Page {page}: {rows, plural, one {# row} other {# rows}} × {columns, plural, one {# column} other {# columns}}",
+    "previewCaption": "Table found on page {page}",
+    "moreRows": "{count, plural, one {and # more row} other {and # more rows}}",
+    "grouping": "Sheets",
+    "groupPage": "One sheet per page",
+    "groupTable": "One sheet per table",
+    "groupAll": "Everything in one sheet",
+    "groupPageCsv": "One CSV per page",
+    "groupTableCsv": "One CSV per table",
+    "groupAllCsv": "Everything in one CSV",
+    "decimal": "Decimal separator of the numbers",
+    "decimalAuto": "Detect",
+    "decimalComma": "Comma (1.234,56)",
+    "decimalPoint": "Point (1,234.56)",
+    "sheetPage": "Page {n}",
+    "sheetTable": "Table {n}",
+    "sheetAll": "Tables",
+    "note": "Columns are worked out from how the text lines up: check the preview before downloading."
   }
 }

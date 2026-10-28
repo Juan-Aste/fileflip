@@ -1142,6 +1142,22 @@
         "a4": "Sim: a conversão é feita no nosso servidor (não em um serviço de terceiros), por conexão criptografada, e o arquivo é processado em memória sem ser guardado."
       }
     },
+    "pdf-to-excel": {
+      "title": "PDF para Excel",
+      "description": "Extraia as tabelas de um PDF para Excel (XLSX) ou CSV no navegador, com pré-visualização e números de verdade, sem enviar o arquivo.",
+      "action": "Converter para Excel",
+      "about": "Transforme em planilha as tabelas de um extrato bancário, uma lista de preços, uma nota fiscal ou um relatório em PDF. A ferramenta lê o texto do PDF com a sua posição na página, monta as linhas pela linha em que cada texto está e as colunas pelo alinhamento, e mostra a tabela detectada antes do download. Valores como 1.234,56 ou 1,234.56 viram números de verdade para você poder somá-los, e códigos com zeros à esquerda ficam como texto. Gere uma planilha por página, uma por tabela ou tudo em uma só. Funciona com PDFs que têm texto (os gerados por um programa); um PDF escaneado é uma imagem e precisa antes de reconhecimento de texto (OCR).",
+      "faq": {
+        "q1": "Com quais PDFs funciona?",
+        "a1": "Com os que têm texto selecionável: os gerados por um banco, um sistema de notas fiscais, o Word ou o Excel com “Salvar como PDF”. Se ao abrir o PDF você consegue selecionar uma palavra com o mouse, vai funcionar. Um escaneamento ou uma foto transformada em PDF não tem texto: passe antes pelo “OCR de PDF digitalizado” e use o PDF que ele devolver, sabendo que a precisão será menor.",
+        "q2": "Por que a tabela não sai perfeita?",
+        "a2": "Um PDF não guarda tabelas, só trechos de texto com a sua posição, então as colunas são deduzidas pelo alinhamento. Células com texto em várias linhas podem sair como linhas separadas, e uma célula que ocupa duas colunas pode cair em uma só. Confira a pré-visualização antes de baixar; se os números saírem como texto, escolha o separador decimal manualmente.",
+        "q3": "Como reconhece números com vírgula decimal?",
+        "a3": "Por tabela: se os valores estão escritos como 84,35 ou 1.234,56, a vírgula é o decimal; se estão como 84.35 ou 1,234.56, é o ponto. O espaço como separador de milhar (1 250,5) também é reconhecido. Datas, porcentagens e valores com o símbolo da moeda ficam como texto, como aparecem.",
+        "q4": "Meu PDF é enviado?",
+        "a4": "Não. O PDF é lido no navegador com o pdf.js e a planilha é montada no seu aparelho com o SheetJS: nada é enviado a nenhum servidor. Aceita PDFs de até 100 MB."
+      }
+    },
     "spreadsheet-converter": {
       "title": "Converter planilha",
       "description": "Converta entre Excel (XLSX, XLS), OpenDocument (ODS) e CSV: todas as abas, valores e fórmulas, no seu navegador.",
@@ -3233,5 +3249,31 @@
     "aiLicense": "Licença do modelo (OpenRAIL-M)",
     "mp3TooLongMobile": "No celular o MP3 aceita até {max} caracteres. Encurte o texto ou gere o MP3 em um computador.",
     "mp3Done": "MP3 pronto: {name}"
+  },
+  "PdfExcelTool": {
+    "reading": "Procurando tabelas no PDF…",
+    "scanned": "Este PDF não tem texto: parece uma imagem escaneada, e as tabelas são reconhecidas pelo texto. Passe-o antes pelo reconhecimento de texto (OCR) e volte com o PDF que ele devolver. A precisão é menor: confira os números na pré-visualização.",
+    "scannedLink": "Abrir “OCR de PDF digitalizado”",
+    "found": "{count, plural, one {# tabela encontrada.} other {# tabelas encontradas.}}",
+    "noTable": "Nenhuma tabela encontrada: o texto será copiado linha por linha.",
+    "previewOf": "Pré-visualização",
+    "tableOption": "Página {page}: {rows, plural, one {# linha} other {# linhas}} × {columns, plural, one {# coluna} other {# colunas}}",
+    "previewCaption": "Tabela encontrada na página {page}",
+    "moreRows": "{count, plural, one {e mais # linha} other {e mais # linhas}}",
+    "grouping": "Planilhas",
+    "groupPage": "Uma planilha por página",
+    "groupTable": "Uma planilha por tabela",
+    "groupAll": "Tudo em uma planilha",
+    "groupPageCsv": "Um CSV por página",
+    "groupTableCsv": "Um CSV por tabela",
+    "groupAllCsv": "Tudo em um CSV",
+    "decimal": "Separador decimal dos números",
+    "decimalAuto": "Detectar",
+    "decimalComma": "Vírgula (1.234,56)",
+    "decimalPoint": "Ponto (1,234.56)",
+    "sheetPage": "Página {n}",
+    "sheetTable": "Tabela {n}",
+    "sheetAll": "Tabelas",
+    "note": "As colunas são deduzidas pelo alinhamento do texto: confira a pré-visualização antes de baixar."
   }
 }

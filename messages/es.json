@@ -1142,6 +1142,22 @@
         "a4": "Sí: la conversión se hace en nuestro servidor (no en un servicio de terceros), por conexión cifrada, y el archivo se procesa en memoria sin guardarse."
       }
     },
+    "pdf-to-excel": {
+      "title": "PDF a Excel",
+      "description": "Extrae las tablas de un PDF a Excel (XLSX) o CSV en tu navegador, con vista previa y números reales, sin subir el archivo.",
+      "action": "Convertir a Excel",
+      "about": "Pasa a una planilla las tablas de un extracto bancario, una lista de precios, una factura o un informe en PDF. La herramienta lee el texto del PDF con su posición en la página, arma las filas por la línea en la que está cada texto y las columnas por cómo se alinean, y te muestra la tabla detectada antes de descargar. Los importes como 1.234,56 o 1,234.56 se convierten en números de verdad para que puedas sumarlos, y los códigos con ceros adelante quedan como texto. Puedes sacar una hoja por página, una por tabla o todo en una sola hoja. Funciona con PDFs que tienen texto (los que se generan desde un programa); un PDF escaneado es una imagen y primero necesita reconocimiento de texto (OCR).",
+      "faq": {
+        "q1": "¿Con qué PDFs funciona?",
+        "a1": "Con los que tienen texto seleccionable: los que genera un banco, un sistema de facturación, Word o Excel al «Guardar como PDF». Si al abrir el PDF puedes seleccionar una palabra con el mouse, va a funcionar. Un escaneo o una foto convertida a PDF no tiene texto: pásalo antes por «OCR de PDF escaneado» y usa el PDF que te devuelve, sabiendo que la precisión será menor.",
+        "q2": "¿Por qué la tabla no sale perfecta?",
+        "a2": "Un PDF no guarda tablas, solo textos con su posición, así que las columnas se deducen por la alineación. Las celdas con texto en varias líneas pueden salir como filas separadas y una celda que ocupa dos columnas puede caer en una sola. Revisa la vista previa antes de descargar; si los números salen como texto, elige el separador decimal a mano.",
+        "q3": "¿Cómo reconoce los números con coma decimal?",
+        "a3": "Por tabla: si los importes se escriben como 84,35 o 1.234,56, la coma es el decimal; si se escriben como 84.35 o 1,234.56, es el punto. También reconoce el espacio como separador de miles (1 250,5). Las fechas, los porcentajes y los importes con el símbolo de la moneda quedan como texto, tal como se ven.",
+        "q4": "¿Se sube mi PDF?",
+        "a4": "No. El PDF se lee en tu navegador con pdf.js y la planilla se arma con SheetJS en tu dispositivo: nada se envía a ningún servidor. Acepta PDFs de hasta 100 MB."
+      }
+    },
     "spreadsheet-converter": {
       "title": "Convertir hoja de cálculo",
       "description": "Convierte entre Excel (XLSX, XLS), OpenDocument (ODS) y CSV: todas las hojas, valores y fórmulas, en tu navegador.",
@@ -3233,5 +3249,31 @@
     "aiLicense": "Licencia del modelo (OpenRAIL-M)",
     "mp3TooLongMobile": "En el celular el MP3 admite hasta {max} caracteres. Acorta el texto o genera el MP3 en una computadora.",
     "mp3Done": "MP3 listo: {name}"
+  },
+  "PdfExcelTool": {
+    "reading": "Buscando tablas en el PDF…",
+    "scanned": "Este PDF no tiene texto: parece una imagen escaneada, y las tablas se reconocen por el texto. Pásalo primero por el reconocimiento de texto (OCR) y vuelve con el PDF que te devuelve. Ten en cuenta que la precisión es menor: revisa los números en la vista previa.",
+    "scannedLink": "Abrir «OCR de PDF escaneado»",
+    "found": "{count, plural, one {Se detectó # tabla.} other {Se detectaron # tablas.}}",
+    "noTable": "No se detectó ninguna tabla: se copiará el texto línea por línea.",
+    "previewOf": "Vista previa",
+    "tableOption": "Página {page}: {rows, plural, one {# fila} other {# filas}} × {columns, plural, one {# columna} other {# columnas}}",
+    "previewCaption": "Tabla detectada en la página {page}",
+    "moreRows": "{count, plural, one {y # fila más} other {y # filas más}}",
+    "grouping": "Hojas",
+    "groupPage": "Una hoja por página",
+    "groupTable": "Una hoja por tabla",
+    "groupAll": "Todo en una hoja",
+    "groupPageCsv": "Un CSV por página",
+    "groupTableCsv": "Un CSV por tabla",
+    "groupAllCsv": "Todo en un CSV",
+    "decimal": "Separador decimal de los números",
+    "decimalAuto": "Detectar",
+    "decimalComma": "Coma (1.234,56)",
+    "decimalPoint": "Punto (1,234.56)",
+    "sheetPage": "Página {n}",
+    "sheetTable": "Tabla {n}",
+    "sheetAll": "Tablas",
+    "note": "Las columnas se deducen por la alineación del texto: revisa la vista previa antes de descargar."
   }
 }

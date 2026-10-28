@@ -45,6 +45,7 @@ export const toolIds = [
   "unlock-pdf",
   "extract-pdf-images",
   "pdf-to-pdfa",
+  "pdf-to-excel",
   "json-to-csv",
   "csv-to-json",
   "json-to-yaml",
@@ -163,6 +164,8 @@ const SUBTITLE_MAX_BYTES = 10 * 1024 * 1024;
 const PDF_PASSWORD_MAX_BYTES = 200 * 1024 * 1024;
 /** Same cap as the font engine (MAX_FONT_BYTES): bigger than any real font. */
 const FONT_MAX_BYTES = 40 * 1024 * 1024;
+/** pdf.js reads the text page by page; the tables found are kept in memory. */
+const PDF_TABLES_MAX_BYTES = 100 * 1024 * 1024;
 /** Spreadsheets are read whole by SheetJS in the worker (cells are also capped: MAX_CELLS). */
 const SHEET_MAX_BYTES = 50 * 1024 * 1024;
 /** Archives are built in memory (input + output): the same cap as the engine (MAX_ARCHIVE_INPUT_BYTES). */
@@ -375,6 +378,18 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "multiple", timeoutMs: 2 * MINUTE },
     status: "verified",
     slugs: { es: "pdf-a-pdfa", en: "pdf-to-pdfa", pt: "pdf-para-pdfa", fr: "pdf-en-pdfa", zh: "pdf-to-pdfa" },
+  },
+  "pdf-to-excel": {
+    id: "pdf-to-excel",
+    category: "pdf",
+    inputs: ["pdf"],
+    outputs: ["xlsx", "csv"],
+    engine: "browser",
+    libraries: ["pdfjs-dist", "xlsx (SheetJS CE)", "papaparse"],
+    limits: { files: "single", timeoutMs: 5 * MINUTE, maxFileBytes: PDF_TABLES_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "pdf-a-excel", en: "pdf-to-excel", pt: "pdf-para-excel", fr: "pdf-en-excel", zh: "pdf-to-excel" },
+    related: ["ocr-pdf", "excel-to-csv"],
   },
   "json-to-csv": {
     id: "json-to-csv",

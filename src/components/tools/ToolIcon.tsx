@@ -135,6 +135,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "markdown-to-pdf": FileText,
   "html-to-pdf": Printer,
   "spreadsheet-converter": FileSpreadsheet,
+  "pdf-to-excel": FileSpreadsheet,
   "excel-to-csv": Sheet,
   "csv-to-excel": Sheet,
   "xls-to-xlsx": Sheet,

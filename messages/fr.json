@@ -1142,6 +1142,22 @@
         "a4": "Oui : la conversion se fait sur notre propre serveur (pas chez un tiers), via une connexion chiffrée, et le fichier est traité en mémoire sans être conservé."
       }
     },
+    "pdf-to-excel": {
+      "title": "PDF en Excel",
+      "description": "Extrayez les tableaux d’un PDF vers Excel (XLSX) ou CSV dans votre navigateur, avec aperçu et vrais nombres, sans envoyer le fichier.",
+      "action": "Convertir en Excel",
+      "about": "Transformez en feuille de calcul les tableaux d’un relevé bancaire, d’une liste de prix, d’une facture ou d’un rapport en PDF. L’outil lit le texte du PDF avec sa position sur la page, reconstitue les lignes d’après la ligne où se trouve chaque texte et les colonnes d’après leur alignement, puis vous montre le tableau détecté avant le téléchargement. Les montants comme 1 234,56 ou 1,234.56 deviennent de vrais nombres que vous pouvez additionner, et les codes commençant par des zéros restent du texte. Obtenez une feuille par page, une par tableau ou tout dans une seule feuille. Cela fonctionne avec les PDF qui contiennent du texte (ceux créés par un logiciel) ; un PDF scanné est une image et nécessite d’abord une reconnaissance de texte (OCR).",
+      "faq": {
+        "q1": "Avec quels PDF cela fonctionne-t-il ?",
+        "a1": "Avec ceux dont le texte est sélectionnable : ceux que produisent une banque, un logiciel de facturation, Word ou Excel avec « Enregistrer au format PDF ». Si vous pouvez sélectionner un mot à la souris en ouvrant le PDF, cela fonctionnera. Un scan ou une photo convertie en PDF n’a pas de texte : passez-le d’abord par « OCR de PDF numérisé » et utilisez le PDF obtenu, en sachant que la précision sera moindre.",
+        "q2": "Pourquoi le tableau n’est-il pas parfait ?",
+        "a2": "Un PDF n’enregistre pas de tableaux, seulement des morceaux de texte avec leur position : les colonnes sont donc déduites de l’alignement. Les cellules sur plusieurs lignes peuvent sortir comme des lignes séparées, et une cellule sur deux colonnes peut tomber dans une seule. Vérifiez l’aperçu avant de télécharger ; si les nombres sortent en texte, choisissez vous-même le séparateur décimal.",
+        "q3": "Comment les nombres à virgule décimale sont-ils reconnus ?",
+        "a3": "Tableau par tableau : si les montants s’écrivent 84,35 ou 1.234,56, la virgule est le séparateur décimal ; s’ils s’écrivent 84.35 ou 1,234.56, c’est le point. L’espace comme séparateur de milliers (1 250,5) est aussi reconnu. Les dates, les pourcentages et les montants avec le symbole de la devise restent du texte, tels qu’ils apparaissent.",
+        "q4": "Mon PDF est-il envoyé ?",
+        "a4": "Non. Le PDF est lu dans votre navigateur avec pdf.js et le classeur est créé sur votre appareil avec SheetJS : rien n’est envoyé à un serveur. PDF jusqu’à 100 Mo."
+      }
+    },
     "spreadsheet-converter": {
       "title": "Convertir un tableur",
       "description": "Convertissez entre Excel (XLSX, XLS), OpenDocument (ODS) et CSV : toutes les feuilles, valeurs et formules, dans votre navigateur.",
@@ -3233,5 +3249,31 @@
     "aiLicense": "Licence du modèle (OpenRAIL-M)",
     "mp3TooLongMobile": "Sur un téléphone, le MP3 accepte jusqu’à {max} caractères. Raccourcissez le texte ou générez le MP3 sur un ordinateur.",
     "mp3Done": "MP3 prêt : {name}"
+  },
+  "PdfExcelTool": {
+    "reading": "Recherche des tableaux dans le PDF…",
+    "scanned": "Ce PDF n’a pas de texte : il ressemble à une image scannée, et les tableaux sont reconnus à partir du texte. Passez-le d’abord par la reconnaissance de texte (OCR) et revenez avec le PDF obtenu. La précision est moindre : vérifiez les nombres dans l’aperçu.",
+    "scannedLink": "Ouvrir « OCR de PDF numérisé »",
+    "found": "{count, plural, one {# tableau détecté.} other {# tableaux détectés.}}",
+    "noTable": "Aucun tableau détecté : le texte sera copié ligne par ligne.",
+    "previewOf": "Aperçu",
+    "tableOption": "Page {page} : {rows, plural, one {# ligne} other {# lignes}} × {columns, plural, one {# colonne} other {# colonnes}}",
+    "previewCaption": "Tableau détecté à la page {page}",
+    "moreRows": "{count, plural, one {et # ligne de plus} other {et # lignes de plus}}",
+    "grouping": "Feuilles",
+    "groupPage": "Une feuille par page",
+    "groupTable": "Une feuille par tableau",
+    "groupAll": "Tout dans une feuille",
+    "groupPageCsv": "Un CSV par page",
+    "groupTableCsv": "Un CSV par tableau",
+    "groupAllCsv": "Tout dans un CSV",
+    "decimal": "Séparateur décimal des nombres",
+    "decimalAuto": "Détecter",
+    "decimalComma": "Virgule (1 234,56)",
+    "decimalPoint": "Point (1,234.56)",
+    "sheetPage": "Page {n}",
+    "sheetTable": "Tableau {n}",
+    "sheetAll": "Tableaux",
+    "note": "Les colonnes sont déduites de l’alignement du texte : vérifiez l’aperçu avant de télécharger."
   }
 }

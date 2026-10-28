@@ -3494,3 +3494,10 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - `groupTables` (una hoja por página, por tabla o todas en una) y `writeTables` en el motor de hojas (XLSX o un CSV por hoja, en el worker de datos).
 - Fixtures propios (`scripts/fixtures/tables.mjs`): `table-simple.pdf`, `table-pages.pdf` (2 páginas, celdas vacías, coma decimal) y `table-two.pdf` (dos tablas, espacio como separador de miles).
 - Tests: 26 unitarios (pdf.js real sobre los fixtures; el XLSX leído con openpyxl). Lint, typecheck y 1157 unitarios pasan.
+
+## 2026-10-28 — Fase 10, tarea 10A.4 (herramienta PDF a Excel)
+- Herramienta nueva `pdf-to-excel` (categoría PDF, en el navegador): `/es/pdf-a-excel`, `/en/pdf-to-excel`, `/pt/pdf-para-excel`, `/fr/pdf-en-excel`, `/zh/pdf-to-excel`. Al elegir el PDF busca las tablas (pdf.js) y muestra cuántas encontró y una vista previa de cada una (12 filas, números con el formato del idioma, selector por página/tabla); salida XLSX o CSV, una hoja (o CSV) por página, por tabla o todo junto; separador decimal detectado o elegido; separador y BOM para CSV.
+- PDF escaneado (sin texto): no se puede convertir y se explica que hace falta OCR, con enlace a «OCR de PDF escaneado» y el aviso de que la precisión es menor. Página sin tabla: avisa y copia el texto línea por línea.
+- Textos, FAQ y metadatos en 5 idiomas (namespace `PdfExcelTool`, solo en páginas de herramientas).
+- Tests de navegador: extracto de 2 páginas (vista previa, XLSX con "Página 1/2" y números reales), dos tablas como dos CSV, escaneo con enlace al OCR y botón desactivado.
+- Verificado: lint, typecheck, 1158 unitarios, build; Chromium `sheet-tools` + `pdf-tools` + a11y + clickable + layout-shift (175 pasan); Firefox y WebKit `sheet-tools` @xb (8 pasan).

@@ -158,3 +158,43 @@ test.describe("tool: json-to-excel", () => {
     expect(sheet).toMatch(/t="b"[^>]*><v>1<\/v>/);
   });
 });
+
+test.describe("tool: pdf-to-excel", () => {
+  test("a two-page statement: preview, one sheet per page with real numbers", { tag: "@xb" }, async ({ page }) => {
+    await openWithFiles(page, "/es/pdf-a-excel", ["table-pages.pdf"]);
+    await expect(page.getByText("Se detectaron 2 tablas.")).toBeVisible({ timeout: 20_000 });
+    const preview = page.getByTestId("table-preview");
+    await expect(preview).toContainText("Supermercado");
+    // Numbers are shown as the browser's language writes them.
+    await expect(preview).toContainText("1234,56");
+    await page.getByLabel("Vista previa").selectOption({ index: 1 });
+    await expect(preview).toContainText("Comisión");
+    const xlsx = fileOf(await runTool(page, "Convertir a Excel"));
+    expect(xlsx.name).toBe("table-pages.xlsx");
+    expect(unzipText(xlsx.buf, "xl/workbook.xml")).toMatch(/name="Página 1"[\s\S]*name="Página 2"/);
+    const sheet = xlsxText(xlsx.buf);
+    expect(sheet).toMatch(/<v>84\.35<\/v>/);
+    expect(sheet).toMatch(/<v>1234\.56<\/v>/);
+    expect(sheet).toContain("Supermercado");
+  });
+
+  test("two tables on a page as one CSV each", async ({ page }) => {
+    await openWithFiles(page, "/en/pdf-to-excel", ["table-two.pdf"]);
+    await expect(page.getByText("2 tables found.")).toBeVisible({ timeout: 20_000 });
+    await choose(page, "CSV");
+    await choose(page, "One CSV per table");
+    await page.getByRole("button", { name: "Convert to Excel", exact: true }).click();
+    await expect(page.getByRole("button", { name: /ZIP/ })).toBeVisible({ timeout: 45_000 });
+    const links = page.locator("main a[download]");
+    expect(await links.evaluateAll((all) => all.map((a) => a.getAttribute("download")))).toEqual(["table-two-Table 1.csv", "table-two-Table 2.csv"]);
+    const [download] = await Promise.all([page.waitForEvent("download"), links.nth(1).click()]);
+    expect(readFileSync((await download.path())!, "utf8")).toBe("﻿Nombre,Área,Años\r\nAna Pérez,Ventas,4\r\nLuis Gómez,Logística,12\r\n");
+  });
+
+  test("a scan has no text: it points to OCR and cannot be converted", async ({ page }) => {
+    await openWithFiles(page, "/en/pdf-to-excel", ["scan.pdf"]);
+    await expect(page.getByText(/This PDF has no text/)).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByRole("link", { name: "Open “OCR scanned PDF”" })).toHaveAttribute("href", "/en/ocr-pdf");
+    await expect(page.getByRole("button", { name: "Convert to Excel", exact: true })).toBeDisabled();
+  });
+});

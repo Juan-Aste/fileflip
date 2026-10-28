@@ -56,6 +56,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "protect-pdf": dynamic(() => import("./PdfPasswordTools").then((m) => m.ProtectPdfTool)),
   "unlock-pdf": dynamic(() => import("./PdfPasswordTools").then((m) => m.UnlockPdfTool)),
   "pdf-to-pdfa": dynamic(() => import("./PdfaTool")),
+  "pdf-to-excel": dynamic(() => import("./PdfToExcelTool")),
   "extract-pdf-images": dynamic(() => import("./ExtractPdfImagesTool")),
   "font-converter": dynamic(() => import("./font/FontConverterTool")),
   "markdown-to-html": dynamic(() => import("./markup/MarkdownTools").then((m) => m.MarkdownToHtmlTool)),
