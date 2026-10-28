@@ -10,6 +10,7 @@ import type { CompressionLevel, CompressResult } from "./compress";
 import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
 import type { Margins } from "./crop";
 import type { Permissions } from "./password-options";
+import type { EditItem } from "./edit";
 import type { SignaturePlacement } from "./sign";
 import type { PageNumberOptions, WatermarkOptions } from "./stamp";
 
@@ -127,6 +128,18 @@ export async function signPdfFile(file: Blob, png: Blob, placements: SignaturePl
   const bytes = await bytesOf(file);
   const image = await bytesOf(png);
   return pdfBlob(await call<Uint8Array>("sign", { bytes, png: image, placements }, { transfer: [bytes.buffer, image.buffer], ...job }));
+}
+
+/** Draws the editor's items (text, highlights, shapes, ink, white boxes, images) onto the pages. */
+export async function editPdfFile(file: Blob, items: EditItem[], job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("edit", { bytes, items }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** Replaces pages by JPEG pictures of themselves (what was covered is really gone). */
+export async function rasterizePdfPages(file: Blob, pages: { index: number; jpeg: Uint8Array }[], job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  return pdfBlob(await call<Uint8Array>("rasterize", { bytes, pages }, { transfer: [bytes.buffer, ...pages.map((p) => p.jpeg.buffer)], ...job }));
 }
 
 /** Encrypts with AES-256 and an open password (qpdf). */

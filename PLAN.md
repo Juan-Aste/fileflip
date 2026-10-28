@@ -445,8 +445,8 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 - [x] 10B.3 Quitar líneas duplicadas (ordenar, quitar vacías, recortar espacios) y generador de lorem ipsum; enlaces con el contador de palabras; tests
 
 ### 10C Editar y rellenar PDF
-- [ ] 10C.1 Editar PDF: visor con miniaturas y zoom, agregar texto (fuente, tamaño, color), resaltar, mano alzada, formas, tapar, imagen; deshacer/rehacer; táctil
-- [ ] 10C.2 Editar PDF: guardar con pdf-lib, "ocultar de verdad" rasterizando la página (con aviso); página en 5 idiomas; tests con lector independiente
+- [x] 10C.1 Editar PDF: visor con miniaturas y zoom, agregar texto (fuente, tamaño, color), resaltar, mano alzada, formas, tapar, imagen; deshacer/rehacer; táctil
+- [x] 10C.2 Editar PDF: guardar con pdf-lib, "ocultar de verdad" rasterizando la página (con aviso); página en 5 idiomas; tests con lector independiente
 - [ ] 10C.3 Rellenar formularios PDF (AcroForm: texto, casillas, radios, listas; aplanar; XFA o sin campos → explicar y ofrecer Editar PDF); formulario de ejemplo propio; tests
 - [ ] 10C.4 PDF a PowerPoint (cada página como imagen en una diapositiva del tamaño de la página; aviso de texto no editable); test con lector independiente
 

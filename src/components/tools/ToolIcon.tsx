@@ -1,4 +1,5 @@
 import {
+  FilePenLine,
   ListX,
   Pilcrow,
   Diff,
@@ -132,6 +133,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "pdf-watermark": Stamp,
   "pdf-to-text": FileType,
   "crop-pdf": Scissors,
+  "edit-pdf": FilePenLine,
   "sign-pdf": Signature,
   "protect-pdf": FileLock2,
   "unlock-pdf": LockOpen,

@@ -1110,6 +1110,22 @@
         "a4": "Não. Tudo acontece no seu navegador: nem a assinatura nem o documento saem do seu dispositivo, e não guardamos sua assinatura."
       }
     },
+    "edit-pdf": {
+      "title": "Editar PDF",
+      "description": "Adicione texto, destaque, desenhe, coloque formas e imagens ou cubra partes de um PDF no seu navegador, sem instalar nada e sem enviar o arquivo.",
+      "action": "Salvar PDF",
+      "about": "Editar PDF deixa você escrever em qualquer página (por exemplo, para preencher um formulário que não tem campos), destacar frases, desenhar à mão livre, marcar com retângulos, linhas e setas, colocar uma imagem como um logotipo ou um carimbo e cobrir partes com um retângulo branco. Escolha a página nas miniaturas, use o zoom para trabalhar com precisão e desfaça ou refaça qualquer mudança. No celular funciona com o dedo. O que você adiciona é desenhado na página e aparece igual em qualquer leitor e impressora. Importante: cobrir com branco só esconde da vista; o texto de baixo continua no arquivo. Para eliminá-lo de verdade, marque «Ocultar de verdade» no retângulo e essa página é salva como imagem.",
+      "faq": {
+        "q1": "Posso mudar o texto que o PDF já tem?",
+        "a1": "Não diretamente: um PDF guarda o texto como desenhos de letras em posições fixas, não como um documento do Word. O que dá para fazer é cobrir a parte antiga com um retângulo branco e escrever o texto novo por cima.",
+        "q2": "Cobrir com branco apaga a informação?",
+        "a2": "Não. O retângulo branco só esconde: o texto de baixo ainda pode ser copiado, pesquisado ou recuperado. Se você vai compartilhar um documento com dados privados, marque «Ocultar de verdade»: essa página vira imagem e o texto some do arquivo (em troca, o texto dessa página não pode mais ser selecionado).",
+        "q3": "Quais fontes posso usar?",
+        "a3": "Helvetica (normal e negrito), Times e Courier, que todos os leitores de PDF têm. Letras de outros alfabetos, como o chinês, e emojis são adicionados como imagem com as fontes do seu dispositivo.",
+        "q4": "Meu PDF é enviado para algum servidor?",
+        "a4": "Não. Tudo é feito no seu navegador com pdf.js e pdf-lib: o documento e o que você adiciona não saem do seu dispositivo."
+      }
+    },
     "protect-pdf": {
       "title": "Proteger PDF com senha",
       "description": "Coloque uma senha no seu PDF com criptografia AES de 256 bits e escolha se ele pode ser impresso ou copiado. Grátis, no seu navegador.",
@@ -3424,5 +3440,66 @@
     "sheetTable": "Tabela {n}",
     "sheetAll": "Tabelas",
     "note": "As colunas são deduzidas pelo alinhamento do texto: confira a pré-visualização antes de baixar."
+  },
+  "EditPdf": {
+    "toolbar": "Ferramentas de edição",
+    "tools": {
+      "select": "Selecionar",
+      "text": "Texto",
+      "highlight": "Destacar",
+      "ink": "Desenhar",
+      "rect": "Retângulo",
+      "line": "Linha",
+      "arrow": "Seta",
+      "whiteout": "Cobrir",
+      "image": "Imagem"
+    },
+    "hints": {
+      "select": "Toque em um elemento para selecioná-lo e arraste para movê-lo; o quadradinho do canto muda o tamanho. Delete o apaga.",
+      "text": "Toque na página onde quer escrever e digite o texto na caixa acima.",
+      "highlight": "Arraste sobre o texto que quer destacar.",
+      "ink": "Desenhe com o dedo ou o mouse.",
+      "rect": "Arraste para desenhar um retângulo.",
+      "line": "Arraste para desenhar uma linha.",
+      "arrow": "Arraste de onde a seta começa até onde ela aponta.",
+      "whiteout": "Arraste sobre o que quer cobrir com um retângulo branco.",
+      "image": "Escolha uma imagem PNG ou JPG; ela aparece no meio da página e você pode movê-la e mudar o tamanho."
+    },
+    "undo": "Desfazer",
+    "redo": "Refazer",
+    "zoomIn": "Aproximar",
+    "zoomOut": "Afastar",
+    "color": "Cor",
+    "colors": {
+      "black": "Preto",
+      "red": "Vermelho",
+      "blue": "Azul",
+      "green": "Verde",
+      "orange": "Laranja",
+      "yellow": "Amarelo"
+    },
+    "otherColor": "Outra cor",
+    "width": "Espessura: {value} pt",
+    "font": "Fonte",
+    "fonts": {
+      "helvetica": "Helvetica",
+      "helvetica-bold": "Helvetica negrito",
+      "times": "Times",
+      "courier": "Courier"
+    },
+    "fontSize": "Tamanho (pt)",
+    "text": "Texto",
+    "textPlaceholder": "Digite aqui…",
+    "redact": "Ocultar de verdade (transforma esta página em imagem)",
+    "redactNote": "A página é salva como uma imagem de alta qualidade: o que foi coberto some do arquivo, mas o texto dessa página não poderá mais ser selecionado nem pesquisado.",
+    "whiteoutNote": "Cobrir com branco esconde da vista, mas o texto de baixo continua no arquivo e pode ser copiado ou pesquisado. Para eliminá-lo, selecione o retângulo e marque «Ocultar de verdade».",
+    "whiteBox": "Retângulo branco",
+    "redactedBox": "Retângulo branco (a página vai virar imagem)",
+    "delete": "Apagar",
+    "hintSelect": "Escolha uma ferramenta ou toque em um elemento para mudá-lo.",
+    "pages": "Páginas",
+    "pageEdited": "com alterações",
+    "surface": "Página {n}, {count, plural, =0 {sem elementos adicionados} one {# elemento adicionado} other {# elementos adicionados}}",
+    "save": "Salvar PDF"
   }
 }

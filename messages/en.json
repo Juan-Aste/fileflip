@@ -1110,6 +1110,22 @@
         "a4": "No. Everything happens in your browser: neither the signature nor the document leaves your device, and we don't keep your signature."
       }
     },
+    "edit-pdf": {
+      "title": "Edit PDF",
+      "description": "Add text, highlight, draw, add shapes and images or cover parts of a PDF in your browser, with nothing to install and no upload.",
+      "action": "Save PDF",
+      "about": "Edit PDF lets you write on any page (for example, to fill in a form that has no fields), highlight sentences, draw freehand, mark things with rectangles, lines and arrows, place an image such as a logo or a stamp, and cover parts with a white box. Pick the page from the thumbnails, zoom in to work precisely, and undo or redo any change. On a phone it works with your finger. What you add is drawn on the page, so it looks the same in every viewer and printer. Important: a white box only hides things from view; the text below is still in the file. To really remove it, tick \"Really hide\" on the box and that page is saved as an image.",
+      "faq": {
+        "q1": "Can I change the text that is already in the PDF?",
+        "a1": "Not directly: a PDF stores text as letter shapes at fixed positions, not like a Word document. What you can do is cover the old part with a white box and type the new text on top.",
+        "q2": "Does a white box delete the information?",
+        "a2": "No. The white box only hides it: the text below can still be copied, searched or recovered. If you are sharing a document with private data, tick \"Really hide\": that page becomes an image and the text disappears from the file (in exchange, the text on that page can no longer be selected).",
+        "q3": "Which fonts can I use?",
+        "a3": "Helvetica (regular and bold), Times and Courier, which every PDF reader has. Letters from other scripts, such as Chinese, and emoji are added as an image using your device's fonts.",
+        "q4": "Is my PDF uploaded to a server?",
+        "a4": "No. Everything happens in your browser with pdf.js and pdf-lib: the document and what you add never leave your device."
+      }
+    },
     "protect-pdf": {
       "title": "Password protect a PDF",
       "description": "Add a password to your PDF with 256-bit AES encryption and choose whether it can be printed or copied. Free, in your browser.",
@@ -3424,5 +3440,66 @@
     "sheetTable": "Table {n}",
     "sheetAll": "Tables",
     "note": "Columns are worked out from how the text lines up: check the preview before downloading."
+  },
+  "EditPdf": {
+    "toolbar": "Editing tools",
+    "tools": {
+      "select": "Select",
+      "text": "Text",
+      "highlight": "Highlight",
+      "ink": "Draw",
+      "rect": "Rectangle",
+      "line": "Line",
+      "arrow": "Arrow",
+      "whiteout": "Cover",
+      "image": "Image"
+    },
+    "hints": {
+      "select": "Tap an item to select it and drag it to move it; the small square in its corner resizes it. Delete removes it.",
+      "text": "Tap the page where you want to write and type the text in the box above.",
+      "highlight": "Drag over the text you want to highlight.",
+      "ink": "Draw with your finger or the mouse.",
+      "rect": "Drag to draw a rectangle.",
+      "line": "Drag to draw a line.",
+      "arrow": "Drag from where the arrow starts to where it points.",
+      "whiteout": "Drag over what you want to cover with a white box.",
+      "image": "Choose a PNG or JPG image; it appears in the middle of the page and you can move and resize it."
+    },
+    "undo": "Undo",
+    "redo": "Redo",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "color": "Color",
+    "colors": {
+      "black": "Black",
+      "red": "Red",
+      "blue": "Blue",
+      "green": "Green",
+      "orange": "Orange",
+      "yellow": "Yellow"
+    },
+    "otherColor": "Other color",
+    "width": "Thickness: {value} pt",
+    "font": "Font",
+    "fonts": {
+      "helvetica": "Helvetica",
+      "helvetica-bold": "Helvetica bold",
+      "times": "Times",
+      "courier": "Courier"
+    },
+    "fontSize": "Size (pt)",
+    "text": "Text",
+    "textPlaceholder": "Type here…",
+    "redact": "Really hide (turns this page into an image)",
+    "redactNote": "The page is saved as a high-quality image: what you covered is gone from the file, but the text on that page can no longer be selected or searched.",
+    "whiteoutNote": "A white box hides things from view, but the text below is still in the file and can be copied or searched. To remove it, select the box and tick \"Really hide\".",
+    "whiteBox": "White box",
+    "redactedBox": "White box (the page will become an image)",
+    "delete": "Delete",
+    "hintSelect": "Choose a tool or tap an item to change it.",
+    "pages": "Pages",
+    "pageEdited": "edited",
+    "surface": "Page {n}, {count, plural, =0 {no items added} one {# item added} other {# items added}}",
+    "save": "Save PDF"
   }
 }

@@ -16,15 +16,16 @@ import { browserRecompress } from "@/lib/pdf/recompress-browser";
 import { addPageNumbers, addWatermark, type PageNumberOptions, type RenderText, type WatermarkOptions } from "@/lib/pdf/stamp";
 import { cropPdf, type Margins } from "@/lib/pdf/crop";
 import { signPdf, type SignaturePlacement } from "@/lib/pdf/sign";
+import { applyEdits, rasterizePages, type EditFont, type EditItem } from "@/lib/pdf/edit";
 import { originalJpegs } from "@/lib/pdf/jpegs";
 import { protectPdf, unlockPdf, withoutEncryption, type Permissions, type Qpdf, type QpdfFactory } from "@/lib/pdf/password";
 import { addTextLayers } from "@/lib/pdf/ocr-layer";
 import { exposeHandlers } from "@/lib/worker-rpc";
 
 /** Text Helvetica can't encode (Chinese, emoji...) drawn with the device's fonts at 4× for print. */
-const renderText: RenderText = async (text, size, [r, g, b]) => {
+const textRenderer = (style: string, family: string): RenderText => async (text, size, [r, g, b]) => {
   const scale = 4;
-  const font = `bold ${size * scale}px system-ui, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif`;
+  const font = `${style} ${size * scale}px ${family}`;
   const measure = new OffscreenCanvas(1, 1).getContext("2d")!;
   measure.font = font;
   const width = Math.ceil(measure.measureText(text).width) + 2;
@@ -37,6 +38,14 @@ const renderText: RenderText = async (text, size, [r, g, b]) => {
   ctx.fillText(text, 1, height / 2);
   const png = new Uint8Array(await (await canvas.convertToBlob({ type: "image/png" })).arrayBuffer());
   return { png, width: width / scale, height: height / scale };
+};
+const SANS = `system-ui, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif`;
+const renderText = textRenderer("bold", SANS);
+const editRenderers: Record<EditFont, RenderText> = {
+  helvetica: textRenderer("normal", SANS),
+  "helvetica-bold": renderText,
+  times: textRenderer("normal", `"Times New Roman", "Noto Serif", "Songti SC", SimSun, serif`),
+  courier: textRenderer("normal", `"Courier New", "Noto Sans Mono", monospace`),
 };
 
 // qpdf (1.3 MB of WASM) is only downloaded by the password tools and for
@@ -91,6 +100,14 @@ exposeHandlers({
   },
   sign: async ({ bytes, png, placements }: { bytes: Uint8Array; png: Uint8Array; placements: SignaturePlacement[] }) => {
     const result = await signPdf(await plain(bytes), png, placements);
+    return { result, transfer: [result.buffer] };
+  },
+  edit: async ({ bytes, items }: { bytes: Uint8Array; items: EditItem[] }) => {
+    const result = await applyEdits(await plain(bytes), items, (font) => editRenderers[font] ?? editRenderers.helvetica);
+    return { result, transfer: [result.buffer] };
+  },
+  rasterize: async ({ bytes, pages }: { bytes: Uint8Array; pages: { index: number; jpeg: Uint8Array }[] }) => {
+    const result = await rasterizePages(bytes, pages);
     return { result, transfer: [result.buffer] };
   },
   protect: async ({ bytes, password, permissions }: { bytes: Uint8Array; password: string; permissions: Permissions }) => {

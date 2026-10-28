@@ -1110,6 +1110,22 @@
         "a4": "Non. Tout se fait dans votre navigateur : ni la signature ni le document ne quittent votre appareil, et nous ne conservons pas votre signature."
       }
     },
+    "edit-pdf": {
+      "title": "Modifier un PDF",
+      "description": "Ajoutez du texte, surlignez, dessinez, ajoutez des formes et des images ou masquez des parties d'un PDF dans votre navigateur, sans rien installer ni envoyer.",
+      "action": "Enregistrer le PDF",
+      "about": "Modifier un PDF vous permet d'écrire sur n'importe quelle page (par exemple pour remplir un formulaire sans champs), de surligner des phrases, de dessiner à main levée, d'annoter avec des rectangles, des lignes et des flèches, de placer une image comme un logo ou un tampon, et de masquer des parties avec un cadre blanc. Choisissez la page dans les miniatures, zoomez pour travailler avec précision et annulez ou rétablissez chaque modification. Sur téléphone, tout se fait au doigt. Ce que vous ajoutez est dessiné sur la page et s'affiche de la même façon dans tous les lecteurs et à l'impression. Important : un cadre blanc masque seulement à la vue ; le texte en dessous reste dans le fichier. Pour le supprimer vraiment, cochez « Masquer vraiment » sur le cadre : cette page est alors enregistrée comme une image.",
+      "faq": {
+        "q1": "Puis-je modifier le texte déjà présent dans le PDF ?",
+        "a1": "Pas directement : un PDF enregistre le texte comme des dessins de lettres à des positions fixes, pas comme un document Word. Vous pouvez en revanche masquer l'ancienne partie avec un cadre blanc et écrire le nouveau texte par-dessus.",
+        "q2": "Un cadre blanc efface-t-il l'information ?",
+        "a2": "Non. Le cadre blanc la cache seulement : le texte en dessous peut encore être copié, recherché ou récupéré. Si vous partagez un document contenant des données privées, cochez « Masquer vraiment » : la page devient une image et le texte disparaît du fichier (en contrepartie, le texte de cette page ne peut plus être sélectionné).",
+        "q3": "Quelles polices puis-je utiliser ?",
+        "a3": "Helvetica (normal et gras), Times et Courier, présentes dans tous les lecteurs PDF. Les lettres d'autres alphabets, comme le chinois, et les emoji sont ajoutés sous forme d'image avec les polices de votre appareil.",
+        "q4": "Mon PDF est-il envoyé à un serveur ?",
+        "a4": "Non. Tout se fait dans votre navigateur avec pdf.js et pdf-lib : le document et vos ajouts ne quittent pas votre appareil."
+      }
+    },
     "protect-pdf": {
       "title": "Protéger un PDF par mot de passe",
       "description": "Ajoutez un mot de passe à votre PDF avec un chiffrement AES 256 bits et choisissez s’il peut être imprimé ou copié. Gratuit, dans votre navigateur.",
@@ -3424,5 +3440,66 @@
     "sheetTable": "Tableau {n}",
     "sheetAll": "Tableaux",
     "note": "Les colonnes sont déduites de l’alignement du texte : vérifiez l’aperçu avant de télécharger."
+  },
+  "EditPdf": {
+    "toolbar": "Outils de modification",
+    "tools": {
+      "select": "Sélectionner",
+      "text": "Texte",
+      "highlight": "Surligner",
+      "ink": "Dessiner",
+      "rect": "Rectangle",
+      "line": "Ligne",
+      "arrow": "Flèche",
+      "whiteout": "Masquer",
+      "image": "Image"
+    },
+    "hints": {
+      "select": "Touchez un élément pour le sélectionner et faites-le glisser pour le déplacer ; le petit carré dans son coin le redimensionne. Suppr l'efface.",
+      "text": "Touchez la page à l'endroit où écrire et tapez le texte dans la zone ci-dessus.",
+      "highlight": "Faites glisser sur le texte à surligner.",
+      "ink": "Dessinez au doigt ou à la souris.",
+      "rect": "Faites glisser pour dessiner un rectangle.",
+      "line": "Faites glisser pour dessiner une ligne.",
+      "arrow": "Faites glisser depuis le début de la flèche jusqu'à sa pointe.",
+      "whiteout": "Faites glisser sur ce que vous voulez masquer avec un cadre blanc.",
+      "image": "Choisissez une image PNG ou JPG ; elle apparaît au centre de la page et vous pouvez la déplacer et la redimensionner."
+    },
+    "undo": "Annuler",
+    "redo": "Rétablir",
+    "zoomIn": "Zoom avant",
+    "zoomOut": "Zoom arrière",
+    "color": "Couleur",
+    "colors": {
+      "black": "Noir",
+      "red": "Rouge",
+      "blue": "Bleu",
+      "green": "Vert",
+      "orange": "Orange",
+      "yellow": "Jaune"
+    },
+    "otherColor": "Autre couleur",
+    "width": "Épaisseur : {value} pt",
+    "font": "Police",
+    "fonts": {
+      "helvetica": "Helvetica",
+      "helvetica-bold": "Helvetica gras",
+      "times": "Times",
+      "courier": "Courier"
+    },
+    "fontSize": "Taille (pt)",
+    "text": "Texte",
+    "textPlaceholder": "Écrivez ici…",
+    "redact": "Masquer vraiment (transforme cette page en image)",
+    "redactNote": "La page est enregistrée comme une image de haute qualité : ce qui est masqué disparaît du fichier, mais le texte de cette page ne pourra plus être sélectionné ni recherché.",
+    "whiteoutNote": "Un cadre blanc masque à la vue, mais le texte en dessous reste dans le fichier et peut être copié ou recherché. Pour le supprimer, sélectionnez le cadre et cochez « Masquer vraiment ».",
+    "whiteBox": "Cadre blanc",
+    "redactedBox": "Cadre blanc (la page deviendra une image)",
+    "delete": "Supprimer",
+    "hintSelect": "Choisissez un outil ou touchez un élément pour le modifier.",
+    "pages": "Pages",
+    "pageEdited": "modifiée",
+    "surface": "Page {n}, {count, plural, =0 {aucun élément ajouté} one {# élément ajouté} other {# éléments ajoutés}}",
+    "save": "Enregistrer le PDF"
   }
 }

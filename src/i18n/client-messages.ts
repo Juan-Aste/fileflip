@@ -8,7 +8,7 @@ const SERVER_ONLY = ["Tools", "Legal"];
  * A namespace missing here is just sent to every page.
  */
 export const TOOL_ONLY = [
-  "ArchiveTool", "AudioTool", "CompressVideoTool", "DataTools", "DxfConverterTool", "EbookTool",
+  "ArchiveTool", "AudioTool", "CompressVideoTool", "DataTools", "DxfConverterTool", "EbookTool", "EditPdf",
   "ExtractAudioTool", "FontTools", "IdPhotoTool", "ImageTools", "JoinVideosTool", "LithophaneTool",
   "MarkupTools", "ModelConverterTool", "ModelViewer", "OcrTool", "PdfExcelTool", "PdfTools", "PdfaTool", "QrTools",
   "ReadAloudTool", "RemoveBackgroundTool", "ScanDocumentTool", "SheetTool", "SignPdf", "SubtitleTools",
