@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Script from "next/script";
 import { useTranslations } from "next-intl";
 import { useSessionInfo } from "@/components/session/SessionInfo";
 import { adMode } from "./ad-mode";
@@ -67,22 +66,14 @@ export default function AdSlot({ placement, className = "" }: { placement: AdPla
           {t("placeholder")}
         </div>
       ) : (
-        <>
-          <Script
-            id="adsense"
-            async
-            strategy="lazyOnload"
-            crossOrigin="anonymous"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${CLIENT}`}
-          />
-          <ins
-            className={`adsbygoogle block ${sizes[placement]}`}
-            data-ad-client={CLIENT}
-            data-ad-slot={SLOTS[placement]}
-            data-ad-format={placement === "sidebar" ? "vertical" : "horizontal"}
-            data-full-width-responsive="true"
-          />
-        </>
+        // The loader script is in the page <head> (see [locale]/layout.tsx).
+        <ins
+          className={`adsbygoogle block ${sizes[placement]}`}
+          data-ad-client={CLIENT}
+          data-ad-slot={SLOTS[placement]}
+          data-ad-format={placement === "sidebar" ? "vertical" : "horizontal"}
+          data-full-width-responsive="true"
+        />
       )}
     </aside>
   );

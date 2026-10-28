@@ -12,6 +12,11 @@ import { themeInitScript } from "@/components/layout/theme";
 import { bodyFont, headingFont } from "@/app/fonts";
 import "./globals.css";
 
+// AdSense: the account meta tag and the loader go in the <head> of every
+// page (AdSense looks for them there to verify and review the site). The
+// slots themselves (<AdSlot>) only render the <ins> boxes.
+const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
+
 type Props = Readonly<{
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -53,6 +58,16 @@ export default async function LocaleLayout({ children, params }: Props) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {ADSENSE_CLIENT ? (
+          <>
+            <meta name="google-adsense-account" content={ADSENSE_CLIENT} />
+            <script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+              crossOrigin="anonymous"
+            />
+          </>
+        ) : null}
       </head>
       <body className="flex min-h-screen flex-col antialiased">
         <NextIntlClientProvider>
