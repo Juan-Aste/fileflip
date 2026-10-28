@@ -58,3 +58,103 @@ test.describe("tool: spreadsheet-converter", () => {
     await expect(main.getByText("This file is damaged or incomplete.")).toHaveCount(2);
   });
 });
+
+// One page per searched conversion, on the same engine.
+const unzipText = (buf: Buffer, path: string) => strFromU8(unzipSync(new Uint8Array(buf))[path]!);
+const xlsxText = (buf: Buffer) => {
+  const files = unzipSync(new Uint8Array(buf));
+  return strFromU8(files["xl/worksheets/sheet1.xml"]!) + strFromU8(files["xl/sharedStrings.xml"] ?? new Uint8Array());
+};
+
+test.describe("tool: excel-to-csv", () => {
+  test("picks one sheet of the workbook by name, with semicolons and BOM", { tag: "@xb" }, async ({ page }) => {
+    await openWithFiles(page, "/es/excel-a-csv", ["workbook.xlsx"]);
+    const select = page.getByLabel("Hoja", { exact: true });
+    await expect(select).toHaveValue("Ventas", { timeout: 15_000 });
+    await expect(select.locator("option")).toHaveText(["Ventas (4 filas)", "Notas (2 filas)", "Todas las hojas (un CSV por hoja)"]);
+    await select.selectOption("Notas");
+    await choose(page, "Punto y coma");
+    const csv = fileOf(await runTool(page, "Convertir a CSV"));
+    expect(csv.name).toBe("workbook-Notas.csv");
+    expect(new TextDecoder("utf-8", { ignoreBOM: true }).decode(csv.buf)).toBe("﻿nota\r\nsegunda hoja ñ\r\n");
+  });
+});
+
+test.describe("tool: csv-to-excel", () => {
+  test("an Excel CSV with decimal commas becomes an XLSX with numbers", async ({ page }) => {
+    await openWithFiles(page, "/en/csv-to-excel", ["table-excel.csv"]);
+    const xlsx = fileOf(await runTool(page, "Convert to Excel"));
+    expect(xlsx.name).toBe("table-excel.xlsx");
+    const sheet = xlsxText(xlsx.buf);
+    expect(sheet).toMatch(/<v>3\.25<\/v>/);
+    expect(sheet).toContain("Cañón");
+  });
+});
+
+test.describe("tool: xls-to-xlsx", () => {
+  test("an Excel 97 file becomes an XLSX with its values", async ({ page }) => {
+    await openWithFiles(page, "/pt/xls-para-xlsx", ["spreadsheet.xls"]);
+    const xlsx = fileOf(await runTool(page, "Converter para XLSX"));
+    expect(xlsx.name).toBe("spreadsheet.xlsx");
+    const sheet = xlsxText(xlsx.buf);
+    expect(sheet).toMatch(/<v>9\.5<\/v>/);
+    expect(sheet).toContain("gamma");
+  });
+});
+
+test.describe("tool: excel-to-ods", () => {
+  test("an XLSX becomes an ODS with both sheets and its formulas", async ({ page }) => {
+    await openWithFiles(page, "/fr/excel-en-ods", ["workbook.xlsx"]);
+    const ods = fileOf(await runTool(page, "Convertir en ODS"));
+    expect(ods.name).toBe("workbook.ods");
+    expect(unzipText(ods.buf, "mimetype")).toBe("application/vnd.oasis.opendocument.spreadsheet");
+    const content = unzipText(ods.buf, "content.xml");
+    expect(content).toContain('table:name="Ventas"');
+    expect(content).toContain('table:name="Notas"');
+    expect(content).toMatch(/table:formula="of:=\[\.B2\]\*\[\.C2\]"/);
+  });
+});
+
+test.describe("tool: ods-to-excel", () => {
+  test("an ODS becomes an XLSX with both sheets and its formulas", async ({ page }) => {
+    await openWithFiles(page, "/en/ods-to-excel", ["workbook.ods"]);
+    const xlsx = fileOf(await runTool(page, "Convert to Excel"));
+    expect(xlsx.name).toBe("workbook.xlsx");
+    expect(unzipText(xlsx.buf, "xl/workbook.xml")).toMatch(/name="Ventas"[\s\S]*name="Notas"/);
+    expect(unzipText(xlsx.buf, "xl/worksheets/sheet1.xml")).toContain("<f>SUM(D2:D3)</f>");
+  });
+});
+
+test.describe("tool: excel-to-json", () => {
+  test("rows as objects with real numbers and ISO dates; all sheets in one object", async ({ page }) => {
+    await openWithFiles(page, "/es/excel-a-json", ["workbook.ods"]);
+    await expect(page.getByLabel("Hoja", { exact: true })).toHaveValue("Ventas", { timeout: 15_000 });
+    const first = fileOf(await runTool(page, "Convertir a JSON"));
+    expect(first.name).toBe("workbook-Ventas.json");
+    expect(JSON.parse(first.buf.toString("utf8"))[0]).toEqual({ producto: "Café", cantidad: 2, precio: 3.25, total: 6.5, fecha: "2024-03-15" });
+
+    await page.getByRole("button", { name: /Empezar de nuevo/ }).click();
+    await page.locator('input[type="file"]').first().setInputFiles(join(__dirname, "..", "fixtures", "workbook.ods"));
+    const select = page.getByLabel("Hoja", { exact: true });
+    await expect(select).toHaveValue("Ventas", { timeout: 15_000 });
+    await select.selectOption({ label: "Todas las hojas (un objeto con una lista por hoja)" });
+    const all = fileOf(await runTool(page, "Convertir a JSON"));
+    expect(all.name).toBe("workbook.json");
+    const data = JSON.parse(all.buf.toString("utf8"));
+    expect(Object.keys(data)).toEqual(["Ventas", "Notas"]);
+    expect(data.Notas).toEqual([{ nota: "segunda hoja ñ" }]);
+  });
+});
+
+test.describe("tool: json-to-excel", () => {
+  test("a list of objects becomes a table with one column per key", { tag: "@xb" }, async ({ page }) => {
+    await openWithFiles(page, "/en/json-to-excel", ["data.json"]);
+    const xlsx = fileOf(await runTool(page, "Convert to Excel"));
+    expect(xlsx.name).toBe("data.xlsx");
+    const sheet = xlsxText(xlsx.buf);
+    for (const text of ["name", "address", "Ana Pérez", "São Paulo"]) expect(sheet).toContain(text);
+    expect(sheet).toMatch(/<v>9\.5<\/v>/);
+    // Booleans are typed cells.
+    expect(sheet).toMatch(/t="b"[^>]*><v>1<\/v>/);
+  });
+});

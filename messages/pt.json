@@ -1158,6 +1158,118 @@
         "a4": "Até 50 MB por arquivo e 2 milhões de células preenchidas, porque tudo é processado na memória do seu navegador. Seus arquivos não são enviados a nenhum servidor."
       }
     },
+    "excel-to-csv": {
+      "title": "Excel para CSV",
+      "description": "Converta um Excel (XLSX, XLS ou ODS) para CSV no navegador: escolha a planilha, o separador e UTF-8 com BOM para os acentos aparecerem certos.",
+      "action": "Converter para CSV",
+      "about": "Transforme uma planilha do Excel em CSV para importar em outro sistema, em um banco de dados ou em uma planilha on-line. Se a pasta de trabalho tiver várias planilhas, escolha qual converter ou gere um CSV por planilha. Os números saem com todas as casas decimais (não arredondados como aparecem na tela), as datas como o Excel as mostra e os códigos com zeros à esquerda, como 007, são mantidos. Escolha vírgula, ponto e vírgula (com vírgula decimal, como o Excel em português usa) ou tabulação.",
+      "faq": {
+        "q1": "Qual separador devo escolher?",
+        "a1": "Vírgula se o CSV vai para outro programa ou sistema (é o padrão). Ponto e vírgula se você vai abrir no Excel configurado em português: assim cada valor fica na sua coluna e os decimais usam vírgula. Tabulação se o sistema pedir TSV.",
+        "q2": "Por que os acentos e o ç aparecem errados ao abrir o CSV no Excel?",
+        "a2": "O Excel no Windows não reconhece UTF-8 se o arquivo não indicar. Deixe marcada a opção “UTF-8 com BOM”: ela adiciona uma marca invisível no início e o Excel mostra corretamente acentos, ç e outros alfabetos.",
+        "q3": "Minha pasta de trabalho tem várias planilhas. O que acontece?",
+        "a3": "Um CSV guarda uma única tabela. Com um só arquivo, escolha a planilha na lista ou “Todas as planilhas”, que cria um CSV por planilha com o nome dela. Com vários arquivos de uma vez, usa-se a primeira planilha de cada um, a menos que você marque a opção de todas.",
+        "q4": "Meus arquivos são enviados?",
+        "a4": "Não. A conversão é feita no navegador com o SheetJS; o arquivo não sai do seu aparelho. Aceita até 50 MB por arquivo e 2 milhões de células preenchidas."
+      }
+    },
+    "csv-to-excel": {
+      "title": "CSV para Excel",
+      "description": "Converta um CSV ou TSV para Excel (XLSX) no navegador, com números e acentos corretos mesmo com ponto e vírgula ou Windows-1252.",
+      "action": "Converter para Excel",
+      "about": "Abra como Excel o CSV exportado por um banco, uma loja virtual ou um sistema de notas fiscais. O separador (vírgula, ponto e vírgula, tabulação ou barra vertical) e a codificação são detectados, incluindo a Windows-1252 que os CSV salvos pelo Excel no Windows costumam usar. Números com vírgula decimal em um CSV com ponto e vírgula viram números de verdade, e códigos com zeros à esquerda, como 007, ficam como texto para não se perderem.",
+      "faq": {
+        "q1": "Por que não abrir o CSV direto no Excel?",
+        "a1": "O Excel costuma colocar tudo em uma só coluna quando o separador não bate com a sua configuração, mostra os acentos errados se o arquivo for UTF-8 sem BOM e apaga os zeros à esquerda de códigos e telefones. Convertido aqui, o XLSX fica com cada valor na sua célula.",
+        "q2": "Como os números são reconhecidos?",
+        "a2": "Um valor vira número só se puder ser lido de volta igual: 3.25 ou, em um CSV com ponto e vírgula, 3,25 e 1.234,5. Códigos como 007 e inteiros com mais de 15 dígitos (como números de cartão ou de conta) ficam como texto para o Excel não arredondá-los.",
+        "q3": "E as datas?",
+        "a3": "Ficam como vêm no CSV, como texto. O Excel pode convertê-las com Dados → Texto para Colunas se você precisar delas como datas para calcular.",
+        "q4": "Meus arquivos são enviados?",
+        "a4": "Não. Tudo acontece no navegador; o CSV não sai do seu aparelho. Você pode converter vários de uma vez, de até 50 MB cada."
+      }
+    },
+    "xls-to-xlsx": {
+      "title": "XLS para XLSX",
+      "description": "Converta planilhas do Excel antigo (XLS, Excel 97-2003) para o formato atual XLSX no navegador, com todas as planilhas e fórmulas.",
+      "action": "Converter para XLSX",
+      "about": "O XLS é o formato do Excel 97-2003. Muitos sistemas, formulários e aplicativos on-line só aceitam XLSX, que além disso ocupa menos. Esta ferramenta copia cada planilha, os valores e as fórmulas do XLS para um XLSX novo, sem instalar nada e sem enviar o arquivo.",
+      "faq": {
+        "q1": "O que é mantido?",
+        "a1": "Todas as planilhas com seus nomes, os valores (texto, números, datas) e as fórmulas. A formatação visual não é mantida: cores, bordas, larguras de coluna, gráficos e macros.",
+        "q2": "Por que passar de XLS para XLSX?",
+        "a2": "O XLSX é o formato padrão desde o Excel 2007: Excel, LibreOffice, Planilhas Google e Numbers abrem, ele aceita mais linhas (mais de um milhão contra 65.536) e costuma ser menor porque é compactado.",
+        "q3": "Funciona com arquivos protegidos por senha?",
+        "a3": "Não. Um XLS criptografado não pode ser lido sem a senha; abra no Excel, remova a proteção e tente de novo.",
+        "q4": "Meus arquivos são enviados?",
+        "a4": "Não. A conversão acontece no navegador e o arquivo não sai do seu aparelho."
+      }
+    },
+    "excel-to-ods": {
+      "title": "Excel para ODS",
+      "description": "Converta Excel (XLSX ou XLS) para ODS, o formato do LibreOffice Calc que alguns órgãos públicos pedem, no navegador.",
+      "action": "Converter para ODS",
+      "about": "ODS (OpenDocument) é o formato aberto do LibreOffice e do OpenOffice, e o que alguns órgãos públicos exigem. Esta ferramenta passa as planilhas, os valores e as fórmulas de um Excel para um ODS válido sem instalar o LibreOffice e sem enviar o arquivo para nenhum servidor.",
+      "faq": {
+        "q1": "As fórmulas são mantidas?",
+        "a1": "Sim. As fórmulas são escritas na sintaxe OpenDocument, então o LibreOffice as recalcula ao abrir o arquivo. A formatação visual (cores, bordas, larguras) não é mantida.",
+        "q2": "Posso abrir o ODS no Excel?",
+        "a2": "Sim, o Excel abre arquivos ODS, assim como as Planilhas Google e o LibreOffice.",
+        "q3": "E os gráficos e macros?",
+        "a3": "Não são copiados: são convertidos os dados e as fórmulas. Se precisar dos gráficos, salve o arquivo como ODS pelo Excel ou pelo LibreOffice.",
+        "q4": "Meus arquivos são enviados?",
+        "a4": "Não. Tudo é processado no navegador."
+      }
+    },
+    "ods-to-excel": {
+      "title": "ODS para Excel",
+      "description": "Converta planilhas do LibreOffice ou OpenOffice (ODS) para Excel (XLSX) no navegador, com todas as planilhas e fórmulas.",
+      "action": "Converter para Excel",
+      "about": "Se mandaram para você uma planilha .ods (LibreOffice Calc, OpenOffice) e você precisa entregá-la em Excel, converta para XLSX aqui em segundos. Todas as planilhas, os valores e as fórmulas são mantidos, e o arquivo não sai do seu aparelho.",
+      "faq": {
+        "q1": "O que é mantido?",
+        "a1": "As planilhas com seus nomes, os valores (texto, números, datas) e as fórmulas. A formatação visual não é mantida: cores, bordas, larguras, gráficos e imagens.",
+        "q2": "As fórmulas continuam funcionando no Excel?",
+        "a2": "Sim, as fórmulas habituais (somas, médias, condições, buscas e operações) são escritas na sintaxe do Excel. Uma função que só existe no LibreOffice pode mostrar erro no Excel.",
+        "q3": "Posso converter vários arquivos de uma vez?",
+        "a3": "Sim. Selecione todos juntos e baixe um por um ou todos em um ZIP.",
+        "q4": "Meus arquivos são enviados?",
+        "a4": "Não. A conversão é feita no navegador."
+      }
+    },
+    "excel-to-json": {
+      "title": "Excel para JSON",
+      "description": "Converta uma planilha do Excel (XLSX, XLS ou ODS) para JSON no navegador: cada linha como um objeto com os cabeçalhos como chaves.",
+      "action": "Converter para JSON",
+      "about": "Transforme uma planilha em JSON para usar em um aplicativo, uma API ou um script. A primeira linha é usada como cabeçalho e cada linha seguinte vira um objeto com essas chaves; também é possível gerar as linhas como listas. Números continuam números, células VERDADEIRO/FALSO viram true/false, datas usam o formato ISO (2024-03-15) e células vazias viram null. Com uma pasta de trabalho de várias planilhas, escolha uma ou gere todas em um só objeto.",
+      "faq": {
+        "q1": "Qual é o formato do JSON?",
+        "a1": "Com “Objetos” você recebe uma lista como ['{'\"produto\": \"Café\", \"preco\": 3.25'}', …], usando a primeira linha como chaves. Com “Listas” cada linha vira uma lista de valores, incluindo a primeira. Se você escolher todas as planilhas, o resultado é um objeto com uma lista por planilha.",
+        "q2": "Como saem as datas?",
+        "a2": "Como texto ISO 8601: 2024-03-15, ou 2024-03-15T10:30:00 quando têm hora. É o formato que JavaScript, Python e os bancos de dados entendem.",
+        "q3": "E os cabeçalhos vazios ou repetidos?",
+        "a3": "Um cabeçalho vazio recebe o nome da sua coluna, como column3, e um repetido ganha um sufixo, como nome_2, para que nenhuma coluna se perca.",
+        "q4": "Meus arquivos são enviados?",
+        "a4": "Não. A conversão é feita no navegador; o arquivo não sai do seu aparelho."
+      }
+    },
+    "json-to-excel": {
+      "title": "JSON para Excel",
+      "description": "Converta JSON (lista de objetos ou de listas) para Excel (XLSX) no navegador, com uma coluna por chave e datas e números de verdade.",
+      "action": "Converter para Excel",
+      "about": "Abra no Excel os dados que uma API ou um aplicativo exportou em JSON. Uma lista de objetos vira uma tabela com uma coluna por chave (na ordem em que aparecem) e uma linha por objeto; uma lista de listas é copiada como está. Se o JSON for um objeto cujos valores são listas, cada uma vai para a sua própria planilha. Números e true/false continuam como tais, datas ISO (2024-03-15) viram datas do Excel e valores aninhados são guardados como texto JSON.",
+      "faq": {
+        "q1": "Que JSON é aceito?",
+        "a1": "Uma lista de objetos (['{'\"a\": 1'}', '{'\"a\": 2'}']), uma lista de listas ([[\"a\", \"b\"], [1, 2]]), uma lista de valores, um único objeto (uma linha) ou um objeto com várias listas, como '{'\"clientes\": [...], \"vendas\": [...]'}', que gera uma planilha por lista.",
+        "q2": "E se os objetos não tiverem todos as mesmas chaves?",
+        "a2": "É criada uma coluna para cada chave que aparecer em qualquer objeto; onde um objeto não a tiver, a célula fica vazia.",
+        "q3": "E os objetos ou listas aninhados?",
+        "a3": "Uma célula guarda um só valor, então o conteúdo aninhado é escrito como texto JSON (por exemplo [\"a\",\"b\"]). Para achatar em colunas, use “JSON para CSV”, que gera nomes como endereco.cidade.",
+        "q4": "Meus arquivos são enviados?",
+        "a4": "Não. Tudo é processado no navegador. Aceita arquivos de até 50 MB."
+      }
+    },
     "create-archive": {
       "title": "Criar ZIP",
       "description": "Junte vários arquivos em um ZIP, TAR ou TAR.GZ no seu navegador, sem enviá-los a nenhum servidor.",
@@ -2699,7 +2811,18 @@
     "delimiterSemicolon": "Ponto e vírgula ( ; ) e vírgula decimal — Excel em português",
     "allSheets": "Um CSV por aba (senão, só a primeira)",
     "bom": "UTF-8 com BOM (o Excel mostra os acentos certos)",
-    "note": "Abas, valores e fórmulas são mantidos; a formatação visual (cores, bordas, larguras) não."
+    "note": "Abas, valores e fórmulas são mantidos; a formatação visual (cores, bordas, larguras) não.",
+    "sheet": "Planilha",
+    "sheetOption": "{name} ({rows, plural, one {# linha} other {# linhas}})",
+    "sheetAll": "Todas as planilhas (um CSV por planilha)",
+    "sheetAllJson": "Todas as planilhas (um objeto com uma lista por planilha)",
+    "allSheetsJson": "Todas as planilhas em um só JSON (senão, só a primeira)",
+    "delimiterTab": "Tabulação (TSV)",
+    "jsonShape": "Cada linha como",
+    "jsonObjects": "Objetos (a primeira linha dá as chaves)",
+    "jsonArrays": "Listas de valores",
+    "noteCsv": "Os números saem com todas as casas decimais e as datas como aparecem na planilha.",
+    "noteJson": "Números e true/false como tais, datas em ISO (2024-03-15) e células vazias como null."
   },
   "ArchiveTool": {
     "format": "Formato",

@@ -61,6 +61,9 @@ exposeHandlers({
     const result = (await sheetEngine()).convertSpreadsheet(new Uint8Array(await input.arrayBuffer()), input.name, options);
     return { result, transfer: result.map((file) => file.bytes.buffer) };
   },
+  listSheets: async ({ input }: { input: File }) => ({
+    result: (await sheetEngine()).listSheets(new Uint8Array(await input.arrayBuffer()), input.name),
+  }),
   createArchive: async ({ input, options }: { input: File[]; options: ArchiveOptions }) => {
     const entries = await Promise.all(
       input.map(async (file) => ({ name: file.name, data: new Uint8Array(await file.arrayBuffer()), mtime: file.lastModified })),

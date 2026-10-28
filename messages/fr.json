@@ -1158,6 +1158,118 @@
         "a4": "Jusqu'à 50 Mo par fichier et 2 millions de cellules remplies, car tout est traité dans la mémoire de votre navigateur. Vos fichiers ne sont envoyés sur aucun serveur."
       }
     },
+    "excel-to-csv": {
+      "title": "Excel en CSV",
+      "description": "Convertissez un fichier Excel (XLSX, XLS ou ODS) en CSV dans votre navigateur : choisissez la feuille, le séparateur et l’UTF-8 avec BOM pour des accents corrects.",
+      "action": "Convertir en CSV",
+      "about": "Transformez une feuille Excel en CSV pour l’importer dans un autre logiciel, une base de données ou un tableur en ligne. Si le classeur contient plusieurs feuilles, choisissez celle à convertir ou obtenez un CSV par feuille. Les nombres gardent toutes leurs décimales (pas arrondis comme à l’écran), les dates sortent telles qu’Excel les affiche et les codes commençant par des zéros, comme 007, sont conservés. Choisissez la virgule, le point-virgule (avec virgule décimale, comme Excel en français) ou la tabulation.",
+      "faq": {
+        "q1": "Quel séparateur choisir ?",
+        "a1": "La virgule si le CSV part vers un autre logiciel ou système (c’est la norme). Le point-virgule si vous l’ouvrez avec Excel en français : chaque valeur reste dans sa colonne et les décimales utilisent la virgule. La tabulation si le système demande du TSV.",
+        "q2": "Pourquoi les accents s’affichent-ils mal dans Excel ?",
+        "a2": "Excel sous Windows ne reconnaît pas l’UTF-8 si le fichier ne l’indique pas. Laissez cochée l’option « UTF-8 avec BOM » : elle ajoute une marque invisible au début et Excel affiche correctement les accents et les autres alphabets.",
+        "q3": "Mon classeur a plusieurs feuilles : que se passe-t-il ?",
+        "a3": "Un CSV ne contient qu’un seul tableau. Avec un seul classeur, choisissez la feuille dans la liste ou « Toutes les feuilles », qui crée un CSV par feuille portant son nom. Avec plusieurs classeurs à la fois, la première feuille de chacun est utilisée, sauf si vous cochez l’option de toutes les feuilles.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. La conversion se fait dans votre navigateur avec SheetJS ; le fichier ne quitte pas votre appareil. Jusqu’à 50 Mo par fichier et 2 millions de cellules remplies."
+      }
+    },
+    "csv-to-excel": {
+      "title": "CSV en Excel",
+      "description": "Convertissez un CSV ou un TSV en Excel (XLSX) dans votre navigateur, avec des nombres et des accents corrects même en point-virgule ou en Windows-1252.",
+      "action": "Convertir en Excel",
+      "about": "Ouvrez comme un fichier Excel le CSV exporté par une banque, une boutique en ligne ou un logiciel de facturation. Le séparateur (virgule, point-virgule, tabulation ou barre verticale) et l’encodage sont détectés, y compris le Windows-1252 souvent utilisé par les CSV enregistrés par Excel sous Windows. Les nombres à virgule décimale d’un CSV en point-virgule deviennent de vrais nombres, et les codes commençant par des zéros, comme 007, restent du texte pour ne pas être perdus.",
+      "faq": {
+        "q1": "Pourquoi ne pas ouvrir le CSV directement dans Excel ?",
+        "a1": "Excel met souvent tout dans une seule colonne quand le séparateur ne correspond pas à vos réglages, affiche mal les accents si le fichier est en UTF-8 sans BOM et supprime les zéros initiaux des codes et des numéros de téléphone. Converti ici, le XLSX a chaque valeur dans sa cellule.",
+        "q2": "Comment les nombres sont-ils reconnus ?",
+        "a2": "Une valeur devient un nombre seulement si elle se relit à l’identique : 3.25 ou, dans un CSV en point-virgule, 3,25 et 1.234,5. Les codes comme 007 et les entiers de plus de 15 chiffres (numéros de carte ou de compte) restent du texte pour qu’Excel ne les arrondisse pas.",
+        "q3": "Et les dates ?",
+        "a3": "Elles restent telles qu’elles figurent dans le CSV, sous forme de texte. Excel peut les convertir avec Données → Convertir si vous en avez besoin comme dates pour calculer.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. Tout se passe dans votre navigateur ; le CSV ne quitte pas votre appareil. Vous pouvez en convertir plusieurs à la fois, jusqu’à 50 Mo chacun."
+      }
+    },
+    "xls-to-xlsx": {
+      "title": "XLS en XLSX",
+      "description": "Convertissez les anciens classeurs Excel (XLS, Excel 97-2003) au format actuel XLSX dans votre navigateur, avec toutes les feuilles et formules.",
+      "action": "Convertir en XLSX",
+      "about": "Le XLS est le format d’Excel 97-2003. Beaucoup de systèmes, de formulaires et d’applications en ligne n’acceptent plus que le XLSX, qui est en plus plus léger. Cet outil copie chaque feuille, les valeurs et les formules du XLS dans un nouveau XLSX, sans rien installer ni envoyer le fichier.",
+      "faq": {
+        "q1": "Qu’est-ce qui est conservé ?",
+        "a1": "Toutes les feuilles avec leur nom, les valeurs (texte, nombres, dates) et les formules. La mise en forme n’est pas conservée : couleurs, bordures, largeurs de colonnes, graphiques et macros.",
+        "q2": "Pourquoi passer du XLS au XLSX ?",
+        "a2": "Le XLSX est le format par défaut depuis Excel 2007 : Excel, LibreOffice, Google Sheets et Numbers l’ouvrent, il accepte plus de lignes (plus d’un million contre 65 536) et il est généralement plus léger car compressé.",
+        "q3": "Cela fonctionne-t-il avec un fichier protégé par mot de passe ?",
+        "a3": "Non. Un XLS chiffré ne peut pas être lu sans son mot de passe ; ouvrez-le dans Excel, retirez la protection et réessayez.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. La conversion se fait dans votre navigateur et le fichier ne quitte pas votre appareil."
+      }
+    },
+    "excel-to-ods": {
+      "title": "Excel en ODS",
+      "description": "Convertissez un Excel (XLSX ou XLS) en ODS, le format de LibreOffice Calc demandé par certaines administrations, dans votre navigateur.",
+      "action": "Convertir en ODS",
+      "about": "L’ODS (OpenDocument) est le format ouvert de LibreOffice et d’OpenOffice, et celui qu’exigent certaines administrations. Cet outil transforme les feuilles, les valeurs et les formules d’un fichier Excel en un ODS valide, sans installer LibreOffice ni envoyer le fichier sur un serveur.",
+      "faq": {
+        "q1": "Les formules sont-elles conservées ?",
+        "a1": "Oui. Les formules sont écrites dans la syntaxe OpenDocument, donc LibreOffice les recalcule à l’ouverture. La mise en forme (couleurs, bordures, largeurs) n’est pas conservée.",
+        "q2": "Puis-je ouvrir l’ODS dans Excel ?",
+        "a2": "Oui, Excel ouvre les fichiers ODS, tout comme Google Sheets et LibreOffice.",
+        "q3": "Et les graphiques et les macros ?",
+        "a3": "Ils ne sont pas copiés : ce sont les données et les formules qui sont converties. Si vous avez besoin des graphiques, enregistrez le fichier en ODS depuis Excel ou LibreOffice.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. Tout est traité dans votre navigateur."
+      }
+    },
+    "ods-to-excel": {
+      "title": "ODS en Excel",
+      "description": "Convertissez des classeurs LibreOffice ou OpenOffice (ODS) en Excel (XLSX) dans votre navigateur, avec toutes les feuilles et formules.",
+      "action": "Convertir en Excel",
+      "about": "Si l’on vous a envoyé un classeur .ods (LibreOffice Calc, OpenOffice) et que vous devez le rendre au format Excel, convertissez-le ici en XLSX en quelques secondes. Toutes les feuilles, les valeurs et les formules sont conservées, et le fichier ne quitte pas votre appareil.",
+      "faq": {
+        "q1": "Qu’est-ce qui est conservé ?",
+        "a1": "Les feuilles avec leur nom, les valeurs (texte, nombres, dates) et les formules. La mise en forme n’est pas conservée : couleurs, bordures, largeurs, graphiques et images.",
+        "q2": "Les formules fonctionnent-elles encore dans Excel ?",
+        "a2": "Oui, les formules courantes (sommes, moyennes, conditions, recherches et opérations) sont écrites dans la syntaxe d’Excel. Une fonction propre à LibreOffice peut afficher une erreur dans Excel.",
+        "q3": "Puis-je convertir plusieurs fichiers à la fois ?",
+        "a3": "Oui. Sélectionnez-les ensemble et téléchargez-les un par un ou tous dans un ZIP.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. La conversion se fait dans votre navigateur."
+      }
+    },
+    "excel-to-json": {
+      "title": "Excel en JSON",
+      "description": "Convertissez une feuille Excel (XLSX, XLS ou ODS) en JSON dans votre navigateur : chaque ligne devient un objet dont les clés sont les en-têtes.",
+      "action": "Convertir en JSON",
+      "about": "Transformez un tableur en JSON pour l’utiliser dans une application, une API ou un script. La première ligne sert d’en-tête et chaque ligne suivante devient un objet avec ces clés ; vous pouvez aussi obtenir les lignes sous forme de listes. Les nombres restent des nombres, les cellules VRAI/FAUX deviennent true/false, les dates sont au format ISO (2024-03-15) et les cellules vides deviennent null. Avec un classeur de plusieurs feuilles, choisissez-en une ou obtenez-les toutes dans un seul objet.",
+      "faq": {
+        "q1": "À quoi ressemble le JSON ?",
+        "a1": "Avec « Objets », vous obtenez une liste comme ['{'\"produit\": \"Café\", \"prix\": 3.25'}', …], la première ligne servant de clés. Avec « Listes », chaque ligne devient une liste de valeurs, la première comprise. Si vous choisissez toutes les feuilles, le résultat est un objet avec une liste par feuille.",
+        "q2": "Comment sortent les dates ?",
+        "a2": "En texte ISO 8601 : 2024-03-15, ou 2024-03-15T10:30:00 si elles ont une heure. C’est le format que comprennent JavaScript, Python et les bases de données.",
+        "q3": "Et les en-têtes vides ou répétés ?",
+        "a3": "Un en-tête vide prend le nom de sa colonne, comme column3, et un en-tête répété reçoit un suffixe, comme nom_2, pour qu’aucune colonne ne soit perdue.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. La conversion se fait dans votre navigateur ; le fichier ne quitte pas votre appareil."
+      }
+    },
+    "json-to-excel": {
+      "title": "JSON en Excel",
+      "description": "Convertissez du JSON (liste d’objets ou de listes) en Excel (XLSX) dans votre navigateur, avec une colonne par clé et de vraies dates et de vrais nombres.",
+      "action": "Convertir en Excel",
+      "about": "Ouvrez dans Excel les données qu’une API ou une application a exportées en JSON. Une liste d’objets devient un tableau avec une colonne par clé (dans l’ordre d’apparition) et une ligne par objet ; une liste de listes est copiée telle quelle. Si le JSON est un objet dont les valeurs sont des listes, chacune va dans sa propre feuille. Les nombres et true/false restent tels quels, les dates ISO (2024-03-15) deviennent des dates Excel et les valeurs imbriquées sont enregistrées en texte JSON.",
+      "faq": {
+        "q1": "Quel JSON est accepté ?",
+        "a1": "Une liste d’objets (['{'\"a\": 1'}', '{'\"a\": 2'}']), une liste de listes ([[\"a\", \"b\"], [1, 2]]), une liste de valeurs, un objet unique (une ligne) ou un objet avec plusieurs listes, comme '{'\"clients\": [...], \"ventes\": [...]'}', qui donne une feuille par liste.",
+        "q2": "Et si les objets n’ont pas tous les mêmes clés ?",
+        "a2": "Une colonne est créée pour chaque clé présente dans au moins un objet ; quand un objet ne l’a pas, la cellule reste vide.",
+        "q3": "Et les objets ou listes imbriqués ?",
+        "a3": "Une cellule ne contient qu’une valeur : les données imbriquées sont donc écrites en texte JSON (par exemple [\"a\",\"b\"]). Pour les aplatir en colonnes, utilisez « JSON en CSV », qui les nomme comme adresse.ville.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. Tout est traité dans votre navigateur. Fichiers jusqu’à 50 Mo."
+      }
+    },
     "create-archive": {
       "title": "Créer un ZIP",
       "description": "Regroupez plusieurs fichiers dans un ZIP, TAR ou TAR.GZ dans votre navigateur, sans les envoyer sur un serveur.",
@@ -2699,7 +2811,18 @@
     "delimiterSemicolon": "Point-virgule ( ; ) et virgule décimale — Excel en français",
     "allSheets": "Un CSV par feuille (sinon, seulement la première)",
     "bom": "UTF-8 avec BOM (Excel affiche bien les accents)",
-    "note": "Les feuilles, valeurs et formules sont conservées ; la mise en forme (couleurs, bordures, largeurs) ne l'est pas."
+    "note": "Les feuilles, valeurs et formules sont conservées ; la mise en forme (couleurs, bordures, largeurs) ne l'est pas.",
+    "sheet": "Feuille",
+    "sheetOption": "{name} ({rows, plural, one {# ligne} other {# lignes}})",
+    "sheetAll": "Toutes les feuilles (un CSV par feuille)",
+    "sheetAllJson": "Toutes les feuilles (un objet avec une liste par feuille)",
+    "allSheetsJson": "Toutes les feuilles dans un seul JSON (sinon, seulement la première)",
+    "delimiterTab": "Tabulation (TSV)",
+    "jsonShape": "Chaque ligne comme",
+    "jsonObjects": "Objets (la première ligne donne les clés)",
+    "jsonArrays": "Listes de valeurs",
+    "noteCsv": "Les nombres gardent toutes leurs décimales et les dates sortent comme dans la feuille.",
+    "noteJson": "Nombres et true/false tels quels, dates en ISO (2024-03-15) et cellules vides en null."
   },
   "ArchiveTool": {
     "format": "Format",
