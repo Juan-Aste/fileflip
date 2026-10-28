@@ -460,7 +460,7 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 ### 10E Guías
 - [x] 10E.1 Sección de guías: índice, plantilla (autor "Equipo de Fileflect", fechas, tabla de contenidos, schema Article/HowTo, breadcrumbs, enlaces), slugs traducidos, sitemap, footer, anuncios según las reglas; tests
 - [x] 10E.2 Guías 1–3 en español con capturas reales (Playwright), verificadas contra las herramientas
-- [ ] 10E.3 Guías 4–7 en español
+- [x] 10E.3 Guías 4–7 en español
 - [ ] 10E.4 Guías 8–10 en español
 - [ ] 10E.5 Traducción natural de las guías a en, pt, fr y zh
 

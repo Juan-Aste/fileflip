@@ -112,6 +112,30 @@ const shots = {
       .catch(() => {});
     return toolBlock(page);
   },
+  "heic-convertir": async (page) => {
+    await page.goto(`${base}/es/heic-a-jpg`, { waitUntil: "networkidle" });
+    await pick(page, [join(fixtures, "photo.heic"), join(fixtures, "photo.heif")]);
+    return toolBlock(page);
+  },
+  "pdf-excel-vista-previa": async (page) => {
+    await page.goto(`${base}/es/pdf-a-excel`, { waitUntil: "networkidle" });
+    await pick(page, [join(fixtures, "table-pages.pdf")]);
+    await page.getByText("Vista previa").first().waitFor();
+    return toolBlock(page);
+  },
+  "excel-csv-opciones": async (page) => {
+    await page.goto(`${base}/es/excel-a-csv`, { waitUntil: "networkidle" });
+    await pick(page, [join(fixtures, "workbook.xlsx")]);
+    await page.locator("label").filter({ hasText: "Punto y coma" }).first().click();
+    return toolBlock(page);
+  },
+  "transcribir-resultado": async (page) => {
+    await page.goto(`${base}/es/transcribir-audio-a-texto`, { waitUntil: "networkidle" });
+    await pick(page, [join(fixtures, "speech-ai-es.ogg")]);
+    await page.getByRole("button", { name: "Transcribir", exact: true }).click();
+    await page.getByRole("button", { name: "Descargar SRT" }).waitFor({ timeout: 300_000 });
+    return toolBlock(page);
+  },
   "comprimir-pdf-resultado": async (page, browser) => {
     const file = await photoContractPdf(browser);
     await page.goto(`${base}/es/comprimir-pdf`, { waitUntil: "networkidle" });
@@ -143,7 +167,19 @@ for (const name of names) {
   await page.waitForTimeout(600);
   // No ad slots in the screenshots.
   await page.evaluate(() => document.querySelectorAll("aside, [aria-hidden='true']:has(> span.invisible)").forEach((el) => el.remove()));
-  const png = await target.screenshot({ animations: "disabled" });
+  // The sticky site header would cover the top of a tall block.
+  await page.addStyleTag({ content: "body > div > header, header.sticky { position: static !important; }" });
+  // A small margin around the block, in page coordinates.
+  const box = await target.evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    return { x: r.left + scrollX, y: r.top + scrollY, width: r.width, height: r.height };
+  });
+  const margin = 16;
+  const png = await page.screenshot({
+    animations: "disabled",
+    fullPage: true,
+    clip: { x: Math.max(0, box.x - margin), y: Math.max(0, box.y - margin), width: box.width + 2 * margin, height: box.height + 2 * margin },
+  });
   const webp = await sharp(png).webp({ quality: 82 }).toBuffer();
   const { width, height } = await sharp(webp).metadata();
   writeFileSync(join(outDir, `${name}.webp`), webp);

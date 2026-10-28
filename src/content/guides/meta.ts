@@ -105,6 +105,70 @@ export const guides: GuideMeta[] = [
       },
     },
   },
+  {
+    id: "heic-to-jpg",
+    published: "2026-10-28",
+    updated: "2026-10-28",
+    tools: ["images-to-pdf", "compress-image", "remove-exif", "resize-image"],
+    related: ["image-formats", "reduce-pdf-size"],
+    howTo: true,
+    image: "heic-convertir",
+    versions: {
+      es: {
+        slug: "como-pasar-fotos-heic-iphone-a-jpg",
+        title: "Cómo pasar fotos HEIC del iPhone a JPG",
+        description: "Qué es HEIC, cómo convertir las fotos del iPhone a JPG sin subirlas a internet y cómo hacer que el iPhone saque o pase las fotos en un formato compatible.",
+      },
+    },
+  },
+  {
+    id: "pdf-table-to-excel",
+    published: "2026-10-28",
+    updated: "2026-10-28",
+    tools: ["pdf-to-excel", "ocr-pdf", "merge-excel", "excel-to-csv"],
+    related: ["csv-vs-excel", "pdf-to-word"],
+    howTo: true,
+    image: "pdf-excel-vista-previa",
+    versions: {
+      es: {
+        slug: "como-pasar-tabla-pdf-a-excel",
+        title: "Cómo pasar una tabla de un PDF a Excel",
+        description: "Extrae la tabla de un extracto, una factura o una lista de precios en PDF a Excel con números de verdad: vista previa, coma decimal y PDF escaneados.",
+      },
+    },
+  },
+  {
+    id: "csv-vs-excel",
+    published: "2026-10-28",
+    updated: "2026-10-28",
+    tools: ["csv-to-excel", "excel-to-csv", "merge-excel", "excel-to-json"],
+    related: ["pdf-table-to-excel"],
+    howTo: true,
+    image: "excel-csv-opciones",
+    versions: {
+      es: {
+        slug: "csv-o-excel-diferencias-abrir-csv-con-acentos",
+        title: "CSV o Excel: diferencias y cómo abrir un CSV con acentos",
+        description: "Qué diferencia a un CSV de un Excel, por qué Excel muestra mal los acentos o pone todo en una columna, y cómo abrir y guardar un CSV sin perder datos.",
+      },
+    },
+  },
+  {
+    id: "transcribe-audio",
+    published: "2026-10-28",
+    updated: "2026-10-28",
+    tools: ["audio-to-text", "trim-audio", "subtitle-sync", "text-to-speech"],
+    related: ["read-aloud"],
+    howTo: true,
+    image: "transcribir-resultado",
+    versions: {
+      es: {
+        slug: "como-transcribir-audio-o-nota-de-voz-a-texto",
+        title: "Cómo transcribir un audio o una nota de voz a texto gratis",
+        description: "Pasa a texto una nota de voz de WhatsApp, una grabación o un video con Whisper en tu navegador, sin subir el audio: modelos, velocidad, errores típicos y subtítulos.",
+      },
+    },
+  },
 ];
 
 export function guideById(id: string): GuideMeta | undefined {

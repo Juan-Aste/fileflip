@@ -1,18 +1,34 @@
 {
   "comprimir-pdf-resultado": {
-    "width": 768,
-    "height": 318
+    "width": 800,
+    "height": 350
+  },
+  "excel-csv-opciones": {
+    "width": 800,
+    "height": 546
   },
   "formatos-convertir": {
-    "width": 768,
-    "height": 714
+    "width": 800,
+    "height": 746
+  },
+  "heic-convertir": {
+    "width": 800,
+    "height": 663
   },
   "pdf-a-word-convertir": {
-    "width": 768,
-    "height": 535
+    "width": 800,
+    "height": 567
   },
   "pdf-a-word-resultado": {
-    "width": 768,
-    "height": 625
+    "width": 800,
+    "height": 657
+  },
+  "pdf-excel-vista-previa": {
+    "width": 800,
+    "height": 884
+  },
+  "transcribir-resultado": {
+    "width": 800,
+    "height": 1012
   }
 }
