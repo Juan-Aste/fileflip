@@ -11,6 +11,7 @@ import type { PageSize, PageSpec, PdfImage, Rotation } from "./ops";
 import type { Margins } from "./crop";
 import type { Permissions } from "./password-options";
 import type { EditItem } from "./edit";
+import type { FillResult, FormInfo, FormValues } from "./form";
 import type { SignaturePlacement } from "./sign";
 import type { PageNumberOptions, WatermarkOptions } from "./stamp";
 
@@ -134,6 +135,19 @@ export async function signPdfFile(file: Blob, png: Blob, placements: SignaturePl
 export async function editPdfFile(file: Blob, items: EditItem[], job: JobOptions = {}) {
   const bytes = await bytesOf(file);
   return pdfBlob(await call<Uint8Array>("edit", { bytes, items }, { transfer: [bytes.buffer], ...job }));
+}
+
+/** The form's fields (AcroForm), and whether it also has an XFA version. */
+export async function readPdfForm(file: Blob): Promise<FormInfo> {
+  const bytes = await bytesOf(file);
+  return call<FormInfo>("readForm", bytes, { transfer: [bytes.buffer] });
+}
+
+/** Writes the values into the form, flattened into the pages if asked. */
+export async function fillPdfForm(file: Blob, values: FormValues, flatten: boolean, job: JobOptions = {}) {
+  const bytes = await bytesOf(file);
+  const { bytes: out, ...rest } = await call<FillResult>("fillForm", { bytes, values, flatten }, { transfer: [bytes.buffer], ...job });
+  return { blob: pdfBlob(out), ...rest };
 }
 
 /** Replaces pages by JPEG pictures of themselves (what was covered is really gone). */

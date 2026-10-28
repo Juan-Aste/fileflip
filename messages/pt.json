@@ -1126,6 +1126,38 @@
         "a4": "Não. Tudo é feito no seu navegador com pdf.js e pdf-lib: o documento e o que você adiciona não saem do seu dispositivo."
       }
     },
+    "fill-pdf-form": {
+      "title": "Preencher formulário PDF",
+      "description": "Preencha os campos de um formulário PDF (texto, caixas de seleção, opções e listas) no navegador e salve editável ou achatado. Grátis e sem enviar o arquivo.",
+      "action": "Salvar PDF",
+      "about": "Preencher formulário PDF encontra os campos do documento —caixas de texto, caixas de seleção, botões de opção, listas suspensas e de seleção— e mostra tudo como um formulário comum, organizado por página, com uma prévia da página que destaca o campo que você está preenchendo. Ao salvar, você pode deixá-lo editável, para outra pessoa continuar preenchendo, ou achatá-lo: os valores passam a fazer parte da página e não podem mais ser alterados, como costumam pedir os órgãos públicos. Se o PDF não tiver campos (um formulário escaneado, por exemplo) ou for um formulário XFA, avisamos e você pode escrever sobre ele com Editar PDF.",
+      "faq": {
+        "q1": "O que significa achatar o formulário?",
+        "a1": "Achatar transforma o que você digitou em parte do desenho da página: o PDF fica igual em qualquer leitor ou impressora e ninguém consegue alterar os valores depois. Se não achatar, os campos continuam editáveis.",
+        "q2": "Diz que meu PDF não tem campos. O que eu faço?",
+        "a2": "Muitos formulários são só um desenho com linhas para escrever, ou um papel escaneado. Nesse caso use Editar PDF: toque onde quer escrever e adicione o texto por cima.",
+        "q3": "O que é um formulário XFA?",
+        "a3": "É um formato antigo da Adobe (LiveCycle) que só o Adobe Acrobat abre direito. Não dá para preenchê-lo no navegador; se o PDF também tiver a versão padrão dos campos, usamos essa e removemos a XFA para que todos os leitores mostrem seus dados.",
+        "q4": "Meu formulário é enviado para um servidor?",
+        "a4": "Não. Os campos são lidos e preenchidos no seu navegador com pdf-lib, e a prévia é desenhada pelo pdf.js: seus dados não saem do seu dispositivo."
+      }
+    },
+    "pdf-to-powerpoint": {
+      "title": "PDF para PowerPoint",
+      "description": "Transforme cada página de um PDF em um slide do PowerPoint (PPTX), como imagem de alta qualidade. Grátis, no navegador e sem enviar o arquivo.",
+      "action": "Converter para PowerPoint",
+      "about": "PDF para PowerPoint cria uma apresentação PPTX com um slide para cada página do PDF. Cada página é salva como uma imagem nítida (150 ou 220 dpi) e o slide assume o tamanho da primeira página: um PDF na horizontal gera slides na horizontal e um A4 gera slides A4; páginas de outro tamanho ficam centralizadas, sem distorção. É útil para apresentar um relatório ou slides que você só tem em PDF, ou para acrescentar slides seus antes ou depois. Importante: o texto dos slides faz parte da imagem e não pode ser editado; para mudar o texto, converta o PDF para Word.",
+      "faq": {
+        "q1": "Posso editar o texto dos slides?",
+        "a1": "Não. Cada slide é uma imagem da página, por isso fica idêntico ao PDF. Você pode escrever por cima com novas caixas de texto, adicionar slides ou reordená-los, mas não alterar o texto original. Se precisar editá-lo, converta o PDF para Word.",
+        "q2": "Qual qualidade escolher?",
+        "a2": "Padrão (150 dpi) basta para projetar e para a maioria dos documentos, e gera arquivos mais leves. Alta (220 dpi) é melhor para plantas, letras muito pequenas ou se você for dar zoom.",
+        "q3": "Funciona com Google Slides, Keynote e LibreOffice?",
+        "a3": "Sim. O arquivo é um PPTX padrão: abre no PowerPoint, Google Slides, Keynote e LibreOffice Impress.",
+        "q4": "Meu PDF é enviado para um servidor?",
+        "a4": "Não. As páginas são desenhadas com pdf.js e a apresentação é montada no seu navegador: o arquivo não sai do seu dispositivo."
+      }
+    },
     "protect-pdf": {
       "title": "Proteger PDF com senha",
       "description": "Coloque uma senha no seu PDF com criptografia AES de 256 bits e escolha se ele pode ser impresso ou copiado. Grátis, no seu navegador.",
@@ -3501,5 +3533,32 @@
     "pageEdited": "com alterações",
     "surface": "Página {n}, {count, plural, =0 {sem elementos adicionados} one {# elemento adicionado} other {# elementos adicionados}}",
     "save": "Salvar PDF"
+  },
+  "FillPdfForm": {
+    "reading": "Procurando os campos do formulário…",
+    "found": "{count, plural, one {Encontramos # campo.} other {Encontramos # campos.}}",
+    "hint": "Preencha aqui: a prévia mostra onde fica cada um.",
+    "noFields": "Este PDF não tem campos de formulário para preencher (pode ser um formulário impresso e escaneado, ou feito só com linhas). Você pode escrever sobre a página com Editar PDF.",
+    "xfaOnly": "Este PDF é um formulário XFA (o formato do Adobe LiveCycle): só o Adobe Acrobat consegue preencher os campos dele. Como alternativa, você pode escrever sobre a página com Editar PDF.",
+    "hybridXfa": "Este formulário também tem uma versão XFA, que só o Adobe Acrobat usa. Será salva a versão padrão dos campos (a que Chrome, Firefox, Pré-Visualização e a maioria dos leitores mostram) e a XFA será removida, para ninguém ver dados antigos.",
+    "editPdfLink": "Abrir Editar PDF",
+    "signatureField": "O formulário tem um campo de assinatura digital: ele não é preenchido aqui.",
+    "signPdfLink": "Para adicionar sua assinatura desenhada, use Assinar PDF.",
+    "otherFields": "Outros campos",
+    "readOnly": "(somente leitura)",
+    "maxLength": "{count, plural, one {Máximo de # caractere} other {Máximo de # caracteres}}",
+    "noChoice": "— Nenhum —",
+    "clearChoice": "Limpar seleção",
+    "flatten": "Achatar o formulário (os valores ficam fixos na página e não podem mais ser editados)",
+    "flattenHint": "Sem achatar, o PDF continua sendo um formulário e pode ser preenchido ou corrigido de novo.",
+    "notFlattened": "Não foi possível achatar: estes campos têm caracteres que a fonte do formulário não consegue desenhar (por exemplo, chinês ou emojis): {fields}. O PDF foi salvo com os valores, sem achatar; Chrome, Firefox, Acrobat e Pré-Visualização mostram mesmo assim.",
+    "redrawnByReader": "Estes campos têm caracteres que a fonte do formulário não consegue desenhar (por exemplo, chinês ou emojis): {fields}. Os valores foram salvos e o leitor de PDF os desenha ao abrir (Chrome, Firefox, Acrobat e Pré-Visualização fazem isso)."
+  },
+  "PdfPptTool": {
+    "imagesNote": "Cada slide é uma imagem da página: fica igual ao PDF, mas o texto não pode ser editado.",
+    "wordLink": "Precisa editar o texto? Converta o PDF para Word.",
+    "quality": "Qualidade das imagens",
+    "standard": "Padrão (150 dpi)",
+    "high": "Alta (220 dpi, arquivo maior)"
   }
 }

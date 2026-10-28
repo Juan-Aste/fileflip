@@ -1126,6 +1126,38 @@
         "a4": "Non. Tout se fait dans votre navigateur avec pdf.js et pdf-lib : le document et vos ajouts ne quittent pas votre appareil."
       }
     },
+    "fill-pdf-form": {
+      "title": "Remplir un formulaire PDF",
+      "description": "Remplissez les champs d'un formulaire PDF (texte, cases à cocher, choix et listes) dans votre navigateur et enregistrez-le modifiable ou aplati. Gratuit et sans envoi du fichier.",
+      "action": "Enregistrer le PDF",
+      "about": "Remplir un formulaire PDF trouve les champs du document —zones de texte, cases à cocher, boutons radio, listes déroulantes et listes de choix— et vous les présente comme un formulaire classique, classés par page, avec un aperçu de la page qui met en évidence le champ que vous remplissez. À l'enregistrement, vous pouvez le laisser modifiable, pour qu'une autre personne continue de le remplir, ou l'aplatir : les valeurs font alors partie de la page et ne peuvent plus être modifiées, ce que demandent souvent les démarches administratives. Si le PDF n'a pas de champs (un formulaire scanné, par exemple) ou s'il s'agit d'un formulaire XFA, nous vous le disons, et vous pouvez écrire dessus avec Modifier un PDF.",
+      "faq": {
+        "q1": "Que veut dire aplatir le formulaire ?",
+        "a1": "Aplatir intègre ce que vous avez saisi au dessin de la page : le PDF s'affiche de la même façon dans tous les lecteurs et à l'impression, et personne ne peut plus modifier les valeurs. Si vous ne l'aplatissez pas, les champs restent modifiables.",
+        "q2": "On me dit que mon PDF n'a pas de champs. Que faire ?",
+        "a2": "Beaucoup de formulaires ne sont qu'un dessin avec des lignes où écrire, ou un papier scanné. Dans ce cas, utilisez Modifier un PDF : touchez l'endroit où vous voulez écrire et ajoutez le texte par-dessus.",
+        "q3": "Qu'est-ce qu'un formulaire XFA ?",
+        "a3": "C'est un ancien format d'Adobe (LiveCycle) que seul Adobe Acrobat ouvre correctement. Il ne peut pas être rempli dans le navigateur ; si le PDF contient aussi la version standard des champs, nous l'utilisons et retirons la partie XFA pour que tous les lecteurs affichent vos données.",
+        "q4": "Mon formulaire est-il envoyé sur un serveur ?",
+        "a4": "Non. Les champs sont lus et remplis dans votre navigateur avec pdf-lib, et l'aperçu est dessiné par pdf.js : vos données ne quittent pas votre appareil."
+      }
+    },
+    "pdf-to-powerpoint": {
+      "title": "PDF en PowerPoint",
+      "description": "Transformez chaque page d'un PDF en diapositive PowerPoint (PPTX), sous forme d'image de haute qualité. Gratuit, dans votre navigateur et sans envoi du fichier.",
+      "action": "Convertir en PowerPoint",
+      "about": "PDF en PowerPoint crée une présentation PPTX avec une diapositive par page du PDF. Chaque page est enregistrée comme une image nette (150 ou 220 ppp) et la diapositive prend la taille de la première page : un PDF au format paysage donne des diapositives en paysage, un A4 des diapositives A4 ; les pages d'une autre taille sont centrées sans être déformées. C'est pratique pour présenter un rapport ou des diapositives que vous n'avez qu'en PDF, ou pour ajouter vos propres diapositives avant ou après. Important : le texte des diapositives fait partie de l'image et ne peut pas être modifié ; pour changer le texte, convertissez plutôt le PDF en Word.",
+      "faq": {
+        "q1": "Puis-je modifier le texte des diapositives ?",
+        "a1": "Non. Chaque diapositive est une image de la page, elle est donc identique au PDF. Vous pouvez écrire par-dessus avec de nouvelles zones de texte, ajouter des diapositives ou les réorganiser, mais pas changer le texte d'origine. Pour le modifier, convertissez le PDF en Word.",
+        "q2": "Quelle qualité choisir ?",
+        "a2": "Standard (150 ppp) suffit pour projeter et pour la plupart des documents, avec des fichiers plus légers. Haute (220 ppp) convient mieux aux plans, aux très petits caractères ou si vous comptez zoomer.",
+        "q3": "Est-ce compatible avec Google Slides, Keynote et LibreOffice ?",
+        "a3": "Oui. Le fichier est un PPTX standard : il s'ouvre dans PowerPoint, Google Slides, Keynote et LibreOffice Impress.",
+        "q4": "Mon PDF est-il envoyé sur un serveur ?",
+        "a4": "Non. Les pages sont dessinées avec pdf.js et la présentation est assemblée dans votre navigateur : le fichier ne quitte pas votre appareil."
+      }
+    },
     "protect-pdf": {
       "title": "Protéger un PDF par mot de passe",
       "description": "Ajoutez un mot de passe à votre PDF avec un chiffrement AES 256 bits et choisissez s’il peut être imprimé ou copié. Gratuit, dans votre navigateur.",
@@ -3501,5 +3533,32 @@
     "pageEdited": "modifiée",
     "surface": "Page {n}, {count, plural, =0 {aucun élément ajouté} one {# élément ajouté} other {# éléments ajoutés}}",
     "save": "Enregistrer le PDF"
+  },
+  "FillPdfForm": {
+    "reading": "Recherche des champs du formulaire…",
+    "found": "{count, plural, one {Nous avons trouvé # champ.} other {Nous avons trouvé # champs.}}",
+    "hint": "Remplissez-les ici : l'aperçu montre où se trouve chacun d'eux.",
+    "noFields": "Ce PDF n'a pas de champs de formulaire à remplir (il peut s'agir d'un formulaire imprimé puis scanné, ou fait uniquement de lignes). Vous pouvez écrire sur la page avec Modifier un PDF.",
+    "xfaOnly": "Ce PDF est un formulaire XFA (le format d'Adobe LiveCycle) : seul Adobe Acrobat peut remplir ses champs. Vous pouvez aussi écrire sur la page avec Modifier un PDF.",
+    "hybridXfa": "Ce formulaire contient aussi une version XFA, que seul Adobe Acrobat utilise. La version standard des champs (celle qu'affichent Chrome, Firefox, Aperçu et la plupart des lecteurs) sera enregistrée et la partie XFA retirée, pour que personne ne voie d'anciennes données.",
+    "editPdfLink": "Ouvrir Modifier un PDF",
+    "signatureField": "Le formulaire contient un champ de signature numérique : il ne se remplit pas ici.",
+    "signPdfLink": "Pour ajouter une signature dessinée, utilisez Signer un PDF.",
+    "otherFields": "Autres champs",
+    "readOnly": "(lecture seule)",
+    "maxLength": "{count, plural, one {# caractère maximum} other {# caractères maximum}}",
+    "noChoice": "— Aucun —",
+    "clearChoice": "Effacer le choix",
+    "flatten": "Aplatir le formulaire (les valeurs sont figées sur la page et ne peuvent plus être modifiées)",
+    "flattenHint": "Sans aplatissement, le PDF reste un formulaire et peut être rempli ou corrigé à nouveau.",
+    "notFlattened": "Impossible d'aplatir : ces champs contiennent des caractères que la police du formulaire ne sait pas dessiner (par exemple du chinois ou des emoji) : {fields}. Le PDF a été enregistré avec les valeurs, sans aplatissement ; Chrome, Firefox, Acrobat et Aperçu les affichent quand même.",
+    "redrawnByReader": "Ces champs contiennent des caractères que la police du formulaire ne sait pas dessiner (par exemple du chinois ou des emoji) : {fields}. Les valeurs ont été enregistrées et le lecteur PDF les dessine à l'ouverture (Chrome, Firefox, Acrobat et Aperçu le font)."
+  },
+  "PdfPptTool": {
+    "imagesNote": "Chaque diapositive est une image de la page : elle est identique au PDF, mais le texte n'est pas modifiable.",
+    "wordLink": "Besoin de modifier le texte ? Convertissez le PDF en Word.",
+    "quality": "Qualité des images",
+    "standard": "Standard (150 ppp)",
+    "high": "Haute (220 ppp, fichier plus lourd)"
   }
 }

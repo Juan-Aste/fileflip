@@ -1126,6 +1126,38 @@
         "a4": "No. Everything happens in your browser with pdf.js and pdf-lib: the document and what you add never leave your device."
       }
     },
+    "fill-pdf-form": {
+      "title": "Fill PDF Form",
+      "description": "Fill in the fields of a PDF form (text, checkboxes, choices and lists) in your browser and save it editable or flattened. Free and with no upload.",
+      "action": "Save PDF",
+      "about": "Fill PDF Form finds the fields in the document —text boxes, checkboxes, radio buttons, dropdowns and list boxes— and shows them as a normal form, grouped by page, with a preview of the page that highlights the field you are filling in. When saving you can keep it editable, so someone else can keep filling it in, or flatten it: the values become part of the page and can no longer be changed, which is what many official procedures ask for. If the PDF has no fields (a scanned form, for example) or is an XFA form, we tell you, and you can write on it with Edit PDF.",
+      "faq": {
+        "q1": "What does flattening the form mean?",
+        "a1": "Flattening turns what you typed into part of the page's drawing: the PDF looks the same in every viewer and printer, and nobody can change the values afterwards. If you don't flatten it, the fields stay editable.",
+        "q2": "It says my PDF has no fields. What can I do?",
+        "a2": "Many forms are just a drawing with lines to write on, or a scanned paper. In that case use Edit PDF: tap where you want to write and add the text on top.",
+        "q3": "What is an XFA form?",
+        "a3": "It is an old Adobe format (LiveCycle) that only Adobe Acrobat opens properly. It can't be filled in the browser; if the PDF also includes the standard version of the fields, we use it and remove the XFA part so every reader shows your data.",
+        "q4": "Is my form uploaded to a server?",
+        "a4": "No. The fields are read and filled in your browser with pdf-lib, and the preview is drawn by pdf.js: your data never leaves your device."
+      }
+    },
+    "pdf-to-powerpoint": {
+      "title": "PDF to PowerPoint",
+      "description": "Turn every page of a PDF into a PowerPoint (PPTX) slide, as a high-quality image. Free, in your browser and with no upload.",
+      "action": "Convert to PowerPoint",
+      "about": "PDF to PowerPoint creates a PPTX presentation with one slide for each page of the PDF. Every page is saved as a sharp picture (150 or 220 dpi) and the slide takes the size of the first page, so a landscape PDF gives landscape slides and an A4 one gives A4 slides; pages of another size are centered without being stretched. It is handy for presenting a report or a set of slides you only have as a PDF, or for adding your own slides before or after. Important: the text on the slides is part of the picture and can't be edited; to change the text, convert the PDF to Word instead.",
+      "faq": {
+        "q1": "Can I edit the text on the slides?",
+        "a1": "No. Each slide is a picture of the page, so it looks exactly like the PDF. You can type on top with new text boxes, add slides or reorder them, but not change the original text. If you need to edit it, convert the PDF to Word.",
+        "q2": "Which quality should I pick?",
+        "a2": "Standard (150 dpi) is enough for projecting and for most documents, and makes lighter files. High (220 dpi) is better for drawings, very small print or if you will zoom in.",
+        "q3": "Does it work with Google Slides, Keynote and LibreOffice?",
+        "a3": "Yes. The file is a standard PPTX: it opens in PowerPoint, Google Slides, Keynote and LibreOffice Impress.",
+        "q4": "Is my PDF uploaded to a server?",
+        "a4": "No. The pages are drawn with pdf.js and the presentation is built in your browser: the file never leaves your device."
+      }
+    },
     "protect-pdf": {
       "title": "Password protect a PDF",
       "description": "Add a password to your PDF with 256-bit AES encryption and choose whether it can be printed or copied. Free, in your browser.",
@@ -3501,5 +3533,32 @@
     "pageEdited": "edited",
     "surface": "Page {n}, {count, plural, =0 {no items added} one {# item added} other {# items added}}",
     "save": "Save PDF"
+  },
+  "FillPdfForm": {
+    "reading": "Looking for the form fields…",
+    "found": "{count, plural, one {We found # field.} other {We found # fields.}}",
+    "hint": "Fill them in here: the preview shows where each one is.",
+    "noFields": "This PDF has no form fields to fill in (it may be a printed and scanned form, or one made only of lines). You can write on the page with Edit PDF.",
+    "xfaOnly": "This PDF is an XFA form (Adobe LiveCycle's format): only Adobe Acrobat can fill in its fields. As an alternative, you can write on the page with Edit PDF.",
+    "hybridXfa": "This form also includes an XFA version, which only Adobe Acrobat uses. The standard version of the fields (the one Chrome, Firefox, Preview and most readers show) will be saved and the XFA part removed, so nobody sees old data.",
+    "editPdfLink": "Open Edit PDF",
+    "signatureField": "The form has a digital signature field: it isn't filled in here.",
+    "signPdfLink": "To add a drawn signature, use Sign PDF.",
+    "otherFields": "Other fields",
+    "readOnly": "(read-only)",
+    "maxLength": "{count, plural, one {Up to # character} other {Up to # characters}}",
+    "noChoice": "— None —",
+    "clearChoice": "Clear choice",
+    "flatten": "Flatten the form (the values are fixed on the page and can no longer be edited)",
+    "flattenHint": "Without flattening, the PDF is still a form and can be filled in or corrected again.",
+    "notFlattened": "It couldn't be flattened: these fields have characters the form's font can't draw (for example, Chinese or emoji): {fields}. The PDF was saved with the values, not flattened; Chrome, Firefox, Acrobat and Preview show them anyway.",
+    "redrawnByReader": "These fields have characters the form's font can't draw (for example, Chinese or emoji): {fields}. The values were saved and the PDF reader draws them when opening it (Chrome, Firefox, Acrobat and Preview do)."
+  },
+  "PdfPptTool": {
+    "imagesNote": "Each slide is a picture of the page: it looks just like the PDF, but the text can't be edited.",
+    "wordLink": "Need to edit the text? Convert the PDF to Word.",
+    "quality": "Picture quality",
+    "standard": "Standard (150 dpi)",
+    "high": "High (220 dpi, larger file)"
   }
 }

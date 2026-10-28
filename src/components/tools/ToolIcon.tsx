@@ -1,5 +1,7 @@
 import {
   FilePenLine,
+  ClipboardPenLine,
+  Presentation,
   ListX,
   Pilcrow,
   Diff,
@@ -134,6 +136,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "pdf-to-text": FileType,
   "crop-pdf": Scissors,
   "edit-pdf": FilePenLine,
+  "fill-pdf-form": ClipboardPenLine,
+  "pdf-to-powerpoint": Presentation,
   "sign-pdf": Signature,
   "protect-pdf": FileLock2,
   "unlock-pdf": LockOpen,

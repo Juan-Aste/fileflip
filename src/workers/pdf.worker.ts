@@ -16,6 +16,7 @@ import { browserRecompress } from "@/lib/pdf/recompress-browser";
 import { addPageNumbers, addWatermark, type PageNumberOptions, type RenderText, type WatermarkOptions } from "@/lib/pdf/stamp";
 import { cropPdf, type Margins } from "@/lib/pdf/crop";
 import { signPdf, type SignaturePlacement } from "@/lib/pdf/sign";
+import { fillForm, readForm, type FormValues } from "@/lib/pdf/form";
 import { applyEdits, rasterizePages, type EditFont, type EditItem } from "@/lib/pdf/edit";
 import { originalJpegs } from "@/lib/pdf/jpegs";
 import { protectPdf, unlockPdf, withoutEncryption, type Permissions, type Qpdf, type QpdfFactory } from "@/lib/pdf/password";
@@ -105,6 +106,11 @@ exposeHandlers({
   edit: async ({ bytes, items }: { bytes: Uint8Array; items: EditItem[] }) => {
     const result = await applyEdits(await plain(bytes), items, (font) => editRenderers[font] ?? editRenderers.helvetica);
     return { result, transfer: [result.buffer] };
+  },
+  readForm: async (bytes: Uint8Array) => ({ result: await readForm(await plain(bytes)) }),
+  fillForm: async ({ bytes, values, flatten }: { bytes: Uint8Array; values: FormValues; flatten: boolean }) => {
+    const result = await fillForm(await plain(bytes), values, { flatten });
+    return { result, transfer: [result.bytes.buffer] };
   },
   rasterize: async ({ bytes, pages }: { bytes: Uint8Array; pages: { index: number; jpeg: Uint8Array }[] }) => {
     const result = await rasterizePages(bytes, pages);

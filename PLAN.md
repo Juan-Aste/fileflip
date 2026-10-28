@@ -447,11 +447,11 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 ### 10C Editar y rellenar PDF
 - [x] 10C.1 Editar PDF: visor con miniaturas y zoom, agregar texto (fuente, tamaño, color), resaltar, mano alzada, formas, tapar, imagen; deshacer/rehacer; táctil
 - [x] 10C.2 Editar PDF: guardar con pdf-lib, "ocultar de verdad" rasterizando la página (con aviso); página en 5 idiomas; tests con lector independiente
-- [ ] 10C.3 Rellenar formularios PDF (AcroForm: texto, casillas, radios, listas; aplanar; XFA o sin campos → explicar y ofrecer Editar PDF); formulario de ejemplo propio; tests
-- [ ] 10C.4 PDF a PowerPoint (cada página como imagen en una diapositiva del tamaño de la página; aviso de texto no editable); test con lector independiente
+- [x] 10C.3 Rellenar formularios PDF (AcroForm: texto, casillas, radios, listas; aplanar; XFA o sin campos → explicar y ofrecer Editar PDF); formulario de ejemplo propio; tests
+- [x] 10C.4 PDF a PowerPoint (cada página como imagen en una diapositiva del tamaño de la página; aviso de texto no editable); test con lector independiente
 
 ### 10D Transcribir audio y video a texto
-- [ ] 10D.1 Licencias y pesos: transformers.js (Apache-2.0) y Whisper ONNX (MIT) con versión y sha256 fijos; origen de los pesos y CSP; documentar
+- [x] 10D.1 Licencias y pesos: Whisper ONNX (MIT) con versión y sha256 fijos; origen de los pesos y CSP; documentar (transformers.js descartado por sus dependencias: se usa el onnxruntime-web existente, ver `docs/transcripcion.md`)
 - [ ] 10D.2 Worker: decodificar audio/video a 16 kHz mono (mediabunny), trozos de 30 s, progreso, tiempo estimado, cancelar, Cache API, idioma automático o elegido
 - [ ] 10D.3 Herramienta: texto editable, copiar, TXT, SRT y VTT, enlaces a sincronizar subtítulos y lector en voz alta; página en 5 idiomas; límite de duración
 - [ ] 10D.4 Medir tamaño y velocidad (PC y celular simulado); test con un audio propio y el modelo real (palabras esperadas, SRT/VTT válidos)
