@@ -36,3 +36,12 @@ Todos los archivos están fijados a un commit de Hugging Face y se comprueban co
 ## Origen de los pesos y CSP
 
 Como en la fase 8, los pesos se descargan desde Hugging Face (`https://huggingface.co/<repo>/resolve/<commit>/<archivo>`, que redirige a su CDN en `*.hf.co` con CORS abierto), no desde Railway: no ocupan espacio en la imagen ni ancho de banda del servidor. Se guardan en la Cache API del navegador para no volver a descargarlos. La CSP actual no define `connect-src`; si algún día se agrega, debe incluir `https://huggingface.co` y `https://*.hf.co` (ya anotado en `docs/launch-checklist.md`). La política de privacidad debe mencionar que, al usar la transcripción, el navegador se conecta a Hugging Face para bajar el modelo (el audio no se envía; tarea 10F.2).
+
+## Herramienta (10D.2b y 10D.3)
+
+- Página «Transcribir audio a texto» (categoría Audio): `/es/transcribir-audio-a-texto`, `/en/audio-to-text`, `/pt/transcrever-audio-para-texto`, `/fr/transcrire-audio-en-texte`, `/zh/audio-to-text`. Componente `src/components/tools/audio/TranscribeTool.tsx`.
+- Flujo: el archivo (audio, o video del que se toma el sonido) se lee con mediabunny en la página para mostrar su duración y comprobar el límite; al pulsar «Transcribir» se decodifica a 16 kHz mono (`src/lib/transcribe/audio.ts`), se carga el modelo en el worker (`src/workers/transcribe.worker.ts`, descarga desde Hugging Face o lectura de la Cache API) y se transcribe por ventanas de 30 s con progreso y tiempo restante (`src/lib/transcribe/eta.ts`). Cancelar termina el worker.
+- Nada se descarga al abrir la página ni al elegir el archivo: el tamaño de la descarga (o «ya descargado») se muestra junto a la elección del modelo, antes del botón.
+- Idioma: automático (detección del propio Whisper en la primera ventana) o elegido entre los 99 del modelo, con los 5 del sitio primero. Los nombres de los idiomas salen de `Intl.DisplayNames` del navegador y se arman después de hidratar (los de Node no coinciden).
+- Salida (`src/lib/transcribe/output.ts`): texto editable con un segmento por línea; TXT con el texto tal como se editó; SRT y VTT con las marcas de tiempo (líneas de hasta 42 caracteres, dos por subtítulo; los segmentos largos se parten repartiendo el tiempo). Si se corrigen palabras sin agregar ni quitar líneas, los subtítulos usan la corrección; si cambia la cantidad de líneas, se avisa y los subtítulos usan el texto original.
+- Límite: 30 minutos de audio por archivo (`MAX_TRANSCRIBE_SECONDS`, error `transcribeTooLong`).

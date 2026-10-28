@@ -267,6 +267,20 @@ export const embedded = [
     licenseUrl: "/licenses/BigScience-OpenRAIL-M.txt",
     kind: "data",
   },
+  // Audio to text: OpenAI's Whisper weights in onnx-community's ONNX exports,
+  // downloaded by the browser from Hugging Face at pinned commits (not from our
+  // domain); the inference code is ours (src/lib/transcribe/whisper.ts).
+  {
+    id: "whisper",
+    name: "Whisper speech recognition models, tiny and base (OpenAI; ONNX by onnx-community)",
+    version: "tiny (commit ff417702), base (commit 1846881b)",
+    license: "MIT",
+    holder: "2022 OpenAI",
+    where: ["browser"],
+    homepage: "https://github.com/openai/whisper",
+    licenseText: "MIT",
+    kind: "data",
+  },
   // Data files served from our domain.
   {
     id: "u2netp",

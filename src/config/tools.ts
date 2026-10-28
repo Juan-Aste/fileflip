@@ -118,6 +118,7 @@ export const toolIds = [
   "normalize-audio",
   "join-audio",
   "text-to-speech",
+  "audio-to-text",
   "video-converter",
   "extract-audio",
   "compress-video",
@@ -1246,6 +1247,20 @@ export const tools: Record<ToolId, ToolInfo> = {
     status: "verified",
     slugs: { es: "leer-texto-en-voz-alta", en: "text-to-speech", pt: "ler-texto-em-voz-alta", fr: "lire-texte-a-voix-haute", zh: "text-to-speech" },
     related: ["pdf-to-text", "image-to-text", "epub-converter"],
+  },
+  "audio-to-text": {
+    id: "audio-to-text",
+    category: "audio",
+    inputs: ["mp3", "wav", "flac", "ogg", "m4a", "aac", "webm", "aiff", "mp4", "mov", "mkv"],
+    outputs: ["txt", "srt", "vtt"],
+    engine: "browser",
+    // Decoded to 16 kHz mono on the page (mediabunny + WebCodecs); Whisper (MIT) run with onnxruntime-web in a worker.
+    libraries: ["Whisper tiny/base (OpenAI, MIT)", "onnxruntime-web", "mediabunny"],
+    // MAX_TRANSCRIBE_SECONDS (30 min) of audio; video files are read in parts, so their size matters less.
+    limits: { files: "single", timeoutMs: 60 * MINUTE, maxFileBytes: VIDEO_MAX_BYTES },
+    status: "verified",
+    slugs: { es: "transcribir-audio-a-texto", en: "audio-to-text", pt: "transcrever-audio-para-texto", fr: "transcrire-audio-en-texte", zh: "audio-to-text" },
+    related: ["subtitle-sync", "subtitle-converter", "extract-audio"],
   },
   "video-converter": {
     id: "video-converter",

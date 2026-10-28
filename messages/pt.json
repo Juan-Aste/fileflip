@@ -1824,6 +1824,27 @@
         "q6": "Posso publicar o áudio gerado com a voz IA?",
         "a6": "Sim, mas a licença do modelo (OpenRAIL-M) exige informar que é uma voz gerada por IA e proíbe usá-lo, entre outras coisas, para se passar por outras pessoas, difamar, assediar ou espalhar informação falsa para prejudicar outros. As restrições completas estão nos nossos Termos e na licença do modelo, com link ao lado do botão de download."
       }
+    },
+    "audio-to-text": {
+      "title": "Transcrever áudio para texto",
+      "description": "Converta um áudio, uma mensagem de voz ou um vídeo em texto com marcações de tempo e baixe em TXT, SRT ou VTT. Grátis, com IA no seu navegador e sem enviar o arquivo.",
+      "searchTerms": "transcrição voz para texto speech to text ditado legendas automáticas whisper mensagem de voz converter áudio em texto",
+      "action": "Transcrever",
+      "about": "Abra um áudio (MP3, WAV, M4A, OGG, FLAC, mensagens de voz…) ou um vídeo (MP4, MOV, MKV, WEBM) e obtenha o texto do que é dito, dividido em frases com o seu tempo. Você pode corrigir o texto na página, copiá-lo e baixá-lo como TXT, ou como legendas SRT e VTT prontas para um vídeo. A transcrição é feita pelo Whisper, o modelo de reconhecimento de voz da OpenAI, que funciona dentro do seu navegador: o áudio não sai do seu dispositivo. Na primeira vez, o modelo é baixado do Hugging Face (43 MB o rápido, 79 MB o preciso) e fica guardado para as próximas. Detecta o idioma automaticamente, ou você pode escolher entre quase 100 idiomas. Aceita até 30 minutos de áudio por arquivo.",
+      "faq": {
+        "q1": "Meu áudio é enviado para algum servidor?",
+        "a1": "Não. O arquivo é decodificado e transcrito no seu navegador, com o processador do seu aparelho. A única coisa baixada é o modelo de voz, do Hugging Face, na primeira vez que você o usa; depois ele fica guardado no navegador.",
+        "q2": "Qual modelo escolho, rápido ou preciso?",
+        "a2": "O rápido (Whisper tiny, 43 MB) serve para áudios claros, com uma pessoa falando e pouco ruído, e é o recomendado no celular. O preciso (Whisper base, 79 MB) erra menos com sotaques, ruído de fundo e palavras pouco comuns, mas leva cerca do dobro do tempo. Se o resultado do rápido tiver muitos erros, tente o preciso.",
+        "q3": "Quanto tempo demora?",
+        "a3": "Depende do seu aparelho e do modelo. Em um computador atual, o modelo rápido costuma transcrever mais rápido que a duração do áudio; no celular pode demorar mais. Durante o trabalho você vê o progresso e o tempo estimado, e pode cancelar quando quiser.",
+        "q4": "Posso transcrever um vídeo ou um áudio do WhatsApp?",
+        "a4": "Sim. De um vídeo, é transcrito o som (MP4, MOV, MKV ou WEBM). Os áudios do WhatsApp (.opus ou .ogg), do Telegram e as gravações do iPhone (.m4a) também funcionam. O limite é de 30 minutos por arquivo; se for mais longo, divida-o em partes com “Cortar áudio”.",
+        "q5": "Como faço legendas para um vídeo?",
+        "a5": "Transcreva o vídeo e baixe o arquivo SRT ou VTT: cada frase tem seu tempo de início e de fim, em linhas de até 42 caracteres. Se você corrigir palavras no texto sem juntar nem separar linhas, as legendas usam a sua correção. Se ficarem adiantadas ou atrasadas, ajuste-as com “Sincronizar legendas”.",
+        "q6": "Quão exata é a transcrição?",
+        "a6": "Com voz clara costuma acertar a grande maioria das palavras, mas pode errar nomes próprios, números, várias pessoas falando ao mesmo tempo, música ou ruído forte, e não separa quem fala. Revise o texto antes de usá-lo em algo importante."
+      }
     }
   },
   "ToolUi": {
@@ -3561,5 +3582,35 @@
     "quality": "Qualidade das imagens",
     "standard": "Padrão (150 dpi)",
     "high": "Alta (220 dpi, arquivo maior)"
+  },
+  "TranscribeTool": {
+    "whereNote": "Transcrito no seu navegador com o Whisper: o áudio não sai do seu dispositivo.",
+    "pickHint": "Áudio ou vídeo: MP3, WAV, M4A, OGG, OPUS, FLAC, MP4, MOV, MKV, WEBM… até 30 minutos.",
+    "reading": "lendo…",
+    "duration": "duração {time}",
+    "model": "Modelo",
+    "modelFast": "Rápido",
+    "modelPrecise": "Preciso (mais lento)",
+    "modelCached": "já baixado",
+    "downloadNote": "Na primeira vez são baixados {size} do Hugging Face; depois o modelo fica guardado neste navegador.",
+    "cachedNote": "O modelo já está guardado neste navegador: nada para baixar.",
+    "language": "Idioma do áudio",
+    "languageAuto": "Detectar automaticamente",
+    "decoding": "Lendo o áudio…",
+    "downloading": "Baixando o modelo ({size})…",
+    "loadingModel": "Carregando o modelo…",
+    "transcribing": "Transcrevendo…",
+    "timeLeft": "Faltam cerca de {time}",
+    "seconds": "{n} s",
+    "minutes": "{n} min",
+    "resultLabel": "Transcrição",
+    "resultHint": "Cada linha é uma legenda. Se você corrigir palavras sem juntar nem separar linhas, o SRT e o VTT usam a sua correção.",
+    "linesChanged": "Você mudou a quantidade de linhas: o TXT usa a sua versão, mas o SRT e o VTT usam o texto original para não perder os tempos.",
+    "detected": "Idioma detectado: {language}. Se não estiver certo, escolha-o e transcreva de novo.",
+    "download": "Baixar {format}",
+    "empty": "Nenhuma palavra foi reconhecida. O arquivo tem voz? Tente escolher o idioma ou usar o modelo preciso.",
+    "accuracyNote": "A transcrição automática pode ter erros, principalmente com nomes próprios, números, ruído ou várias pessoas falando: revise antes de usar.",
+    "syncLink": "Ajustar o tempo das legendas",
+    "readLink": "Ouvir um texto em voz alta"
   }
 }

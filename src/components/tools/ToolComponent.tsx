@@ -92,6 +92,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "normalize-audio": dynamic(() => import("./audio/NormalizeAudioTool")),
   "join-audio": dynamic(() => import("./audio/JoinAudioTool")),
   "text-to-speech": dynamic(() => import("./tts/ReadAloudTool")),
+  "audio-to-text": dynamic(() => import("./audio/TranscribeTool")),
   "video-converter": dynamic(() => import("./video/VideoConverterTool")),
   "extract-audio": dynamic(() => import("./video/ExtractAudioTool")),
   "compress-video": dynamic(() => import("./video/CompressVideoTool")),

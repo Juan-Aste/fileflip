@@ -172,6 +172,7 @@ const icons: Record<ToolId, LucideIcon> = {
   "normalize-audio": Volume2,
   "join-audio": Layers,
   "text-to-speech": Speech,
+  "audio-to-text": Captions,
   "video-converter": Clapperboard,
   "extract-audio": FileAudio,
   "compress-video": FileVideo,

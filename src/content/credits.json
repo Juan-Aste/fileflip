@@ -3154,6 +3154,19 @@
       "kind": "data"
     },
     {
+      "id": "whisper",
+      "name": "Whisper speech recognition models, tiny and base (OpenAI; ONNX by onnx-community)",
+      "version": "tiny (commit ff417702), base (commit 1846881b)",
+      "license": "MIT",
+      "holder": "2022 OpenAI",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/openai/whisper",
+      "licenseText": "MIT",
+      "kind": "data"
+    },
+    {
       "id": "u2netp",
       "name": "U²-Net (u2netp model, ONNX by rembg)",
       "version": "u2netp.onnx",

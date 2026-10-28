@@ -1824,6 +1824,27 @@
         "q6": "Puis-je publier l’audio généré avec la voix IA ?",
         "a6": "Oui, mais la licence du modèle (OpenRAIL-M) impose d’indiquer qu’il s’agit d’une voix générée par IA et interdit notamment de l’utiliser pour usurper l’identité de personnes, diffamer, harceler ou diffuser de fausses informations pour nuire à autrui. Les restrictions complètes figurent dans nos Conditions et dans la licence du modèle, accessible à côté du bouton de téléchargement."
       }
+    },
+    "audio-to-text": {
+      "title": "Transcrire un audio en texte",
+      "description": "Transformez un audio, un mémo vocal ou une vidéo en texte horodaté, à télécharger en TXT, SRT ou VTT. Gratuit, avec une IA dans votre navigateur, sans envoi du fichier.",
+      "searchTerms": "transcription voix en texte speech to text dictée sous-titres automatiques whisper message vocal convertir audio en texte",
+      "action": "Transcrire",
+      "about": "Ouvrez un audio (MP3, WAV, M4A, OGG, FLAC, mémos vocaux…) ou une vidéo (MP4, MOV, MKV, WEBM) et obtenez le texte de ce qui est dit, découpé en phrases avec leur minutage. Vous pouvez corriger le texte dans la page, le copier et le télécharger en TXT, ou en sous-titres SRT et VTT prêts pour une vidéo. La transcription est faite par Whisper, le modèle de reconnaissance vocale d'OpenAI, qui fonctionne dans votre navigateur : l'audio ne quitte pas votre appareil. La première fois, le modèle est téléchargé depuis Hugging Face (43 Mo pour le rapide, 79 Mo pour le précis) et conservé pour les fois suivantes. La langue est détectée automatiquement, ou vous pouvez la choisir parmi près de 100 langues. Jusqu'à 30 minutes d'audio par fichier.",
+      "faq": {
+        "q1": "Mon audio est-il envoyé sur un serveur ?",
+        "a1": "Non. Le fichier est décodé et transcrit dans votre navigateur, avec le processeur de votre appareil. Seul le modèle vocal est téléchargé, depuis Hugging Face, la première fois ; il reste ensuite dans votre navigateur.",
+        "q2": "Quel modèle choisir, rapide ou précis ?",
+        "a2": "Le rapide (Whisper tiny, 43 Mo) convient aux audios clairs, avec une seule personne et peu de bruit, et c'est celui à utiliser sur téléphone. Le précis (Whisper base, 79 Mo) se trompe moins avec les accents, le bruit de fond et les mots rares, mais prend environ deux fois plus de temps. Si le résultat du rapide contient beaucoup d'erreurs, essayez le précis.",
+        "q3": "Combien de temps cela prend-il ?",
+        "a3": "Cela dépend de votre appareil et du modèle. Sur un ordinateur récent, le modèle rapide transcrit en général plus vite que la durée de l'audio ; sur un téléphone, cela peut prendre plus longtemps. Pendant le travail, vous voyez la progression et le temps restant estimé, et vous pouvez annuler à tout moment.",
+        "q4": "Puis-je transcrire une vidéo ou un message vocal WhatsApp ?",
+        "a4": "Oui. Pour une vidéo, c'est son son qui est transcrit (MP4, MOV, MKV ou WEBM). Les messages vocaux WhatsApp (.opus ou .ogg), Telegram et les enregistrements de l'iPhone (.m4a) fonctionnent aussi. La limite est de 30 minutes par fichier ; au-delà, découpez-le avec « Couper un audio ».",
+        "q5": "Comment faire des sous-titres pour une vidéo ?",
+        "a5": "Transcrivez la vidéo et téléchargez le fichier SRT ou VTT : chaque phrase a son début et sa fin, en lignes de 42 caractères au plus. Si vous corrigez des mots sans fusionner ni couper de lignes, les sous-titres reprennent votre correction. S'ils sont en avance ou en retard, décalez-les avec « Synchroniser des sous-titres ».",
+        "q6": "La transcription est-elle exacte ?",
+        "a6": "Avec une voix claire, elle reconnaît en général la grande majorité des mots, mais elle peut se tromper sur les noms propres, les chiffres, plusieurs personnes qui parlent en même temps, la musique ou un bruit fort, et elle ne distingue pas les locuteurs. Relisez le texte avant de l'utiliser pour quelque chose d'important."
+      }
     }
   },
   "ToolUi": {
@@ -3561,5 +3582,35 @@
     "quality": "Qualité des images",
     "standard": "Standard (150 ppp)",
     "high": "Haute (220 ppp, fichier plus lourd)"
+  },
+  "TranscribeTool": {
+    "whereNote": "Transcription dans votre navigateur avec Whisper : l'audio ne quitte pas votre appareil.",
+    "pickHint": "Audio ou vidéo : MP3, WAV, M4A, OGG, OPUS, FLAC, MP4, MOV, MKV, WEBM… jusqu'à 30 minutes.",
+    "reading": "lecture…",
+    "duration": "durée {time}",
+    "model": "Modèle",
+    "modelFast": "Rapide",
+    "modelPrecise": "Précis (plus lent)",
+    "modelCached": "déjà téléchargé",
+    "downloadNote": "La première fois, {size} sont téléchargés depuis Hugging Face ; le modèle reste ensuite dans ce navigateur.",
+    "cachedNote": "Le modèle est déjà enregistré dans ce navigateur : rien à télécharger.",
+    "language": "Langue de l'audio",
+    "languageAuto": "Détecter automatiquement",
+    "decoding": "Lecture de l'audio…",
+    "downloading": "Téléchargement du modèle ({size})…",
+    "loadingModel": "Chargement du modèle…",
+    "transcribing": "Transcription…",
+    "timeLeft": "Encore environ {time}",
+    "seconds": "{n} s",
+    "minutes": "{n} min",
+    "resultLabel": "Transcription",
+    "resultHint": "Chaque ligne est un sous-titre. Si vous corrigez des mots sans fusionner ni couper de lignes, le SRT et le VTT reprennent votre correction.",
+    "linesChanged": "Vous avez changé le nombre de lignes : le TXT utilise votre version, mais le SRT et le VTT gardent le texte d'origine pour conserver le minutage.",
+    "detected": "Langue détectée : {language}. Si elle est fausse, choisissez-la et transcrivez à nouveau.",
+    "download": "Télécharger {format}",
+    "empty": "Aucun mot n'a été reconnu. Le fichier contient-il de la voix ? Essayez de choisir la langue ou le modèle précis.",
+    "accuracyNote": "La transcription automatique peut contenir des erreurs, surtout avec les noms propres, les chiffres, le bruit ou plusieurs personnes qui parlent : relisez-la avant de l'utiliser.",
+    "syncLink": "Ajuster le minutage des sous-titres",
+    "readLink": "Écouter un texte lu à voix haute"
   }
 }

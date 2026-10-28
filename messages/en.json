@@ -1824,6 +1824,27 @@
         "q6": "Can I publish audio made with the AI voice?",
         "a6": "Yes, but the model's license (OpenRAIL-M) requires saying that it is an AI-generated voice and forbids using it to, among other things, impersonate people, defame, harass or spread false information to harm others. The full restrictions are in our Terms and in the model's license, linked next to the download button."
       }
+    },
+    "audio-to-text": {
+      "title": "Audio to text (transcription)",
+      "description": "Turn an audio file, voice memo or video into text with timestamps, and download it as TXT, SRT or VTT. Free, AI in your browser, no upload.",
+      "searchTerms": "transcribe transcription speech to text voice to text dictation automatic subtitles captions whisper voice memo",
+      "action": "Transcribe",
+      "about": "Open an audio file (MP3, WAV, M4A, OGG, FLAC, voice memos…) or a video (MP4, MOV, MKV, WEBM) and get the text of what is said, split into sentences with their times. You can correct the text on the page, copy it and download it as TXT, or as SRT and VTT subtitles ready for a video. The transcription is done by Whisper, OpenAI's speech recognition model, running inside your browser: the audio never leaves your device. The first time, the model is downloaded from Hugging Face (43 MB for the fast one, 79 MB for the precise one) and kept for next time. It detects the language automatically, or you can pick it from almost 100 languages. Up to 30 minutes of audio per file.",
+      "faq": {
+        "q1": "Is my audio uploaded to a server?",
+        "a1": "No. The file is decoded and transcribed in your browser, with your device's processor. The only download is the speech model, from Hugging Face, the first time you use it; after that it stays in your browser.",
+        "q2": "Which model should I pick, fast or precise?",
+        "a2": "The fast one (Whisper tiny, 43 MB) works for clear audio with one person speaking and little noise, and is the one to use on phones. The precise one (Whisper base, 79 MB) makes fewer mistakes with accents, background noise and unusual words, but takes about twice as long. If the fast one's result has many errors, try the precise one.",
+        "q3": "How long does it take?",
+        "a3": "It depends on your device and the model. On a recent computer the fast model usually transcribes faster than the audio plays; on a phone it can take longer. While it works you see the progress and the estimated time left, and you can cancel at any moment.",
+        "q4": "Can I transcribe a video or a WhatsApp voice message?",
+        "a4": "Yes. From a video, its sound is transcribed (MP4, MOV, MKV or WEBM). WhatsApp voice messages (.opus or .ogg), Telegram ones and iPhone recordings (.m4a) work too. The limit is 30 minutes per file; if yours is longer, cut it into parts with “Trim audio”.",
+        "q5": "How do I make subtitles for a video?",
+        "a5": "Transcribe the video and download the SRT or VTT file: each sentence has its start and end time, in lines of up to 42 characters. If you correct words in the text without joining or splitting lines, the subtitles use your correction. If they show up early or late, shift them with “Subtitle sync”.",
+        "q6": "How accurate is the transcription?",
+        "a6": "With clear speech it usually gets the vast majority of words right, but it can get names, numbers, overlapping speakers, music or loud noise wrong, and it does not tell speakers apart. Check the text before using it for anything important."
+      }
     }
   },
   "ToolUi": {
@@ -3561,5 +3582,35 @@
     "quality": "Picture quality",
     "standard": "Standard (150 dpi)",
     "high": "High (220 dpi, larger file)"
+  },
+  "TranscribeTool": {
+    "whereNote": "Transcribed in your browser with Whisper: the audio never leaves your device.",
+    "pickHint": "Audio or video: MP3, WAV, M4A, OGG, OPUS, FLAC, MP4, MOV, MKV, WEBM… up to 30 minutes.",
+    "reading": "reading…",
+    "duration": "length {time}",
+    "model": "Model",
+    "modelFast": "Fast",
+    "modelPrecise": "Precise (slower)",
+    "modelCached": "downloaded",
+    "downloadNote": "The first time, {size} are downloaded from Hugging Face; after that the model stays in this browser.",
+    "cachedNote": "The model is already saved in this browser: nothing to download.",
+    "language": "Language of the audio",
+    "languageAuto": "Detect automatically",
+    "decoding": "Reading the audio…",
+    "downloading": "Downloading the model ({size})…",
+    "loadingModel": "Loading the model…",
+    "transcribing": "Transcribing…",
+    "timeLeft": "About {time} left",
+    "seconds": "{n} s",
+    "minutes": "{n} min",
+    "resultLabel": "Transcript",
+    "resultHint": "Each line is one subtitle. If you correct words without joining or splitting lines, the SRT and VTT use your correction.",
+    "linesChanged": "You changed the number of lines: the TXT uses your version, but the SRT and VTT use the original text so the times stay right.",
+    "detected": "Detected language: {language}. If it is wrong, pick it and transcribe again.",
+    "download": "Download {format}",
+    "empty": "No words were recognized. Does the file contain speech? Try picking the language or the precise model.",
+    "accuracyNote": "Automatic transcription can contain mistakes, especially with names, numbers, noise or several people talking: check it before using it.",
+    "syncLink": "Adjust the timing of subtitles",
+    "readLink": "Listen to a text read aloud"
   }
 }

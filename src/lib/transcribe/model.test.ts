@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { whisperDownloadBytes, whisperModels, whisperUrl } from "./model";
+import { whisperDownloadBytes, whisperLanguageCodes, whisperModels, whisperUrl } from "./model";
 
 describe("whisper models", () => {
   it("pin every file to a commit, with its size and SHA-256", () => {
@@ -16,5 +16,10 @@ describe("whisper models", () => {
   it("the fast model is about 43 MB and the precise one about 80 MB", () => {
     expect(Math.round(whisperDownloadBytes(whisperModels.tiny) / 1e6)).toBe(43);
     expect(Math.round(whisperDownloadBytes(whisperModels.base) / 1e6)).toBe(79);
+  });
+
+  it("knows Whisper's 99 languages, the site's five among them", () => {
+    expect(whisperLanguageCodes).toHaveLength(99);
+    for (const code of ["es", "en", "pt", "fr", "zh"]) expect(whisperLanguageCodes).toContain(code);
   });
 });
