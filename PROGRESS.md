@@ -3469,3 +3469,11 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Mitigación (el loader sigue en el `<head>` del HTML inicial): el layout ya no manda al navegador todos los textos del idioma (~200 KB de JSON en el HTML de cada página). `src/i18n/client-messages.ts` deja `Tools`, `Legal` y los textos de las familias de herramientas en el servidor; `ToolBlock`/`ToolMessages` agregan los de la herramienta en su página. HTML comprimido −55 a −70 % (portada 90 → 32 KB); FCP 1,5 → 1,2 s. Probado y descartado `fetchpriority="low"`.
 - Final (mediana de 3): portada 92, unir PDF 92, JPG a WebP 91, lector 91, categoría PDF 92; **CLS 0**, accesibilidad 100. Las corridas sueltas van de 87 a 95 por la variación del código de Google. Informe: `docs/perf/2026-10-28-phase9.md` (incluye la opción del loader sin `?client=`, no aplicada).
 - Detector de clics, axe y layout shift en Chromium con la variable (127 pasan); suite completa de Chromium sin la variable (630 pasan) y muestra de Firefox y WebKit (37 pasan); `client-messages.test.ts` nuevo; lint y unitarios pasan.
+
+## 2026-10-28 — Fase 9, tarea 9.3 (documentación)
+- `docs/launch-checklist.md`, sección AdSense: el código va en el `<head>` de todas las páginas; para la revisión basta con `NEXT_PUBLIC_ADSENSE_CLIENT` (Railway recompila al cambiarla porque las `NEXT_PUBLIC_*` se incrustan al compilar; reiniciar no alcanza); cómo comprobarlo (ver código fuente con Ctrl+U y buscar `adsbygoogle`, o `curl`); volver a pedir la revisión; tests que lo cuidan; excepción de los 404; costo en rendimiento.
+
+## 2026-10-28 — FASE 9 TERMINADA
+- Todas las tareas de la fase 9 están marcadas.
+- Para el dueño: mergear `dev` en `main`; confirmar que `NEXT_PUBLIC_ADSENSE_CLIENT` está en Railway y que se hizo un build nuevo; comprobar con "ver código fuente" que aparece `adsbygoogle` en el `<head>`; en AdSense, volver a pedir la revisión. Se puede pausar la tarea programada.
+- CI: los runs de `dev` no corren ningún job por un problema de facturación de la cuenta de GitHub (no es un error de código); todo se verificó localmente.
