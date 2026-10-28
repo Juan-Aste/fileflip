@@ -6,6 +6,7 @@ import { AllToolsView, CategoryView } from "@/components/catalog/CatalogViews";
 import Converter from "@/components/converter/Converter";
 import ProcessingBadge from "@/components/converter/ProcessingBadge";
 import CreditsPage from "@/components/legal/CreditsPage";
+import { GuidesIndexView } from "@/components/guides/GuideViews";
 import ToolBlock from "@/components/tools/ToolBlock";
 import { Cloud, ShieldCheck } from "lucide-react";
 import ToolIcon from "@/components/tools/ToolIcon";
@@ -42,6 +43,7 @@ import {
   longtailTranslation,
   type LongtailPage,
 } from "@/content/longtail";
+import { guideLocales, guidesSlugs } from "@/content/guides/meta";
 import { routing, type Locale } from "@/i18n/routing";
 import { limits } from "@/config/limits";
 import { jsonLdString } from "@/lib/faq";
@@ -54,6 +56,7 @@ type Params = { locale: string; slug: string };
 type Page =
   | { kind: "all" }
   | { kind: "credits" }
+  | { kind: "guides" }
   | { kind: "category"; category: ToolCategory }
   | { kind: "tool"; tool: ToolInfo }
   | { kind: "conversion"; conversion: Conversion }
@@ -63,6 +66,7 @@ export function generateStaticParams() {
   return routing.locales.flatMap((locale) => [
     { locale, slug: allToolsSlugs[locale] },
     { locale, slug: creditsSlugs[locale] },
+    ...(guideLocales.includes(locale) ? [{ locale, slug: guidesSlugs[locale] }] : []),
     ...publishedCategories.map((c) => ({ locale, slug: categorySlug(c, locale) })),
     ...availableTools.map((id) => ({ locale, slug: tools[id].slugs[locale] })),
     ...conversionPages.map((c) => ({
@@ -82,6 +86,7 @@ function resolve({ locale, slug }: Params): Page | undefined {
   const decoded = decodeURIComponent(slug);
   if (decoded === allToolsSlugs[locale as Locale]) return { kind: "all" };
   if (decoded === creditsSlugs[locale as Locale]) return { kind: "credits" };
+  if (decoded === guidesSlugs[locale as Locale] && guideLocales.includes(locale as Locale)) return { kind: "guides" };
   const category = categoryFromSlug(locale as Locale, decoded);
   if (category) return { kind: "category", category };
   const tool = toolFromSlug(locale as Locale, decoded);
@@ -98,6 +103,8 @@ function slugFor(page: Exclude<Page, { kind: "longtail" }>, locale: Locale): str
       return allToolsSlugs[locale];
     case "credits":
       return creditsSlugs[locale];
+    case "guides":
+      return guidesSlugs[locale];
     case "category":
       return categorySlug(page.category, locale);
     case "tool":
@@ -134,6 +141,16 @@ export async function generateMetadata({
     p.locale as Locale,
     (l) => `/${slugFor(page, l)}`,
   );
+  if (page.kind === "guides") {
+    const t = await getTranslations({ locale: p.locale, namespace: "Guides" });
+    // Only the languages that have guides.
+    const languages = Object.fromEntries(guideLocales.map((l) => [l, `/${l}/${guidesSlugs[l]}`]));
+    return {
+      title: `${t("indexMetaTitle")} — Fileflect`,
+      description: t("indexIntro"),
+      alternates: { canonical: `/${p.locale}/${guidesSlugs[p.locale as Locale]}`, languages },
+    };
+  }
   if (page.kind === "credits") {
     const t = await getTranslations({ locale: p.locale, namespace: "Credits" });
     return { title: `${t("metaTitle")} — Fileflect`, description: t("metaDescription"), alternates };
@@ -189,7 +206,9 @@ export default async function SlugPage({
   if (page.kind === "credits") return <CreditsPage locale={p.locale as Locale} />;
   return (
     <WithSidebarAd>
-      {page.kind === "all" ? (
+      {page.kind === "guides" ? (
+        <GuidesIndexView locale={p.locale as Locale} />
+      ) : page.kind === "all" ? (
         <AllToolsView />
       ) : page.kind === "category" ? (
         <CategoryView category={page.category} />

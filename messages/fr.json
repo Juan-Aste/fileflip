@@ -48,7 +48,8 @@
       "conversions": "Conversions populaires",
       "company": "Fileflect"
     },
-    "allTools": "Tous les outils"
+    "allTools": "Tous les outils",
+    "guides": "Guides"
   },
   "HomePage": {
     "title": "Convertissez vos fichiers sans qu'ils quittent votre ordinateur",
@@ -3612,5 +3613,22 @@
     "accuracyNote": "La transcription automatique peut contenir des erreurs, surtout avec les noms propres, les chiffres, le bruit ou plusieurs personnes qui parlent : relisez-la avant de l'utiliser.",
     "syncLink": "Ajuster le minutage des sous-titres",
     "readLink": "Écouter un texte lu à voix haute"
+  },
+  "Guides": {
+    "home": "Accueil",
+    "indexTitle": "Guides",
+    "indexMetaTitle": "Guides pour convertir et modifier vos fichiers",
+    "indexIntro": "Des explications pas à pas pour des tâches précises sur vos fichiers : quel format choisir, comment faire avec nos outils et à quoi faire attention.",
+    "author": "L’équipe Fileflect",
+    "byline": "Par {author}",
+    "published": "Publié le {date}",
+    "updated": "mis à jour le {date}",
+    "updatedOn": "Mis à jour le {date}",
+    "readingTime": "{minutes} min de lecture",
+    "contents": "Dans ce guide",
+    "toolsTitle": "Outils utilisés dans ce guide",
+    "relatedTitle": "Autres guides",
+    "allGuides": "Tous les guides",
+    "breadcrumb": "Fil d’Ariane"
   }
 }

@@ -4,6 +4,7 @@ import { conversionPages, conversionSlug } from "@/config/conversion-pages";
 import { creditsSlugs } from "@/config/credits";
 import { availableTools, tools } from "@/config/tools";
 import { longtailPages, longtailTranslation } from "@/content/longtail";
+import { guideLocales, guidePath, guides, guidesSlugs } from "@/content/guides/meta";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 import { proEnabled } from "@/lib/pro";
 
@@ -79,7 +80,27 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
       alternates: { languages: Object.fromEntries(versions) },
     };
   });
-  return [...localized, ...longtail];
+  // Guides and their index exist only in the languages they are written in.
+  const indexes = guideLocales.map((locale) => ({
+    url: `${base}/${locale}/${guidesSlugs[locale]}`,
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+    alternates: { languages: Object.fromEntries(guideLocales.map((l) => [l, `${base}/${l}/${guidesSlugs[l]}`])) },
+  }));
+  const articles = guides.flatMap((guide) => {
+    const versions = locales.flatMap((l) => {
+      const path = guidePath(guide, l);
+      return path ? [[l, `${base}/${l}${path}`] as const] : [];
+    });
+    return versions.map(([, url]) => ({
+      url,
+      lastModified: guide.updated,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+      alternates: { languages: Object.fromEntries(versions) },
+    }));
+  });
+  return [...localized, ...longtail, ...indexes, ...articles];
 }
 
 /** SoftwareApplication structured data (schema.org) for a free web tool page. */

@@ -48,7 +48,8 @@
       "conversions": "常用转换",
       "company": "Fileflect"
     },
-    "allTools": "全部工具"
+    "allTools": "全部工具",
+    "guides": "指南"
   },
   "HomePage": {
     "title": "转换文件，文件不离开你的电脑",
@@ -3612,5 +3613,22 @@
     "accuracyNote": "自动转写可能有错误，尤其是人名、数字、噪音或多人说话时：使用前请先检查。",
     "syncLink": "调整字幕时间",
     "readLink": "朗读文字"
+  },
+  "Guides": {
+    "home": "首页",
+    "indexTitle": "指南",
+    "indexMetaTitle": "文件转换与编辑指南",
+    "indexIntro": "针对具体文件任务的分步说明：该选哪种格式、如何用我们的工具完成，以及需要注意什么。",
+    "author": "Fileflect 团队",
+    "byline": "作者：{author}",
+    "published": "发布于 {date}",
+    "updated": "更新于 {date}",
+    "updatedOn": "更新于 {date}",
+    "readingTime": "阅读约 {minutes} 分钟",
+    "contents": "本指南内容",
+    "toolsTitle": "本指南用到的工具",
+    "relatedTitle": "更多指南",
+    "allGuides": "全部指南",
+    "breadcrumb": "面包屑导航"
   }
 }

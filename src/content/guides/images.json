@@ -1,0 +1,18 @@
+{
+  "comprimir-pdf-resultado": {
+    "width": 768,
+    "height": 318
+  },
+  "formatos-convertir": {
+    "width": 768,
+    "height": 714
+  },
+  "pdf-a-word-convertir": {
+    "width": 768,
+    "height": 535
+  },
+  "pdf-a-word-resultado": {
+    "width": 768,
+    "height": 625
+  }
+}

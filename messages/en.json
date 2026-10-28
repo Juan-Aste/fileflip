@@ -48,7 +48,8 @@
       "conversions": "Popular conversions",
       "company": "Fileflect"
     },
-    "allTools": "All tools"
+    "allTools": "All tools",
+    "guides": "Guides"
   },
   "HomePage": {
     "title": "Convert your files without them ever leaving your computer",
@@ -3612,5 +3613,22 @@
     "accuracyNote": "Automatic transcription can contain mistakes, especially with names, numbers, noise or several people talking: check it before using it.",
     "syncLink": "Adjust the timing of subtitles",
     "readLink": "Listen to a text read aloud"
+  },
+  "Guides": {
+    "home": "Home",
+    "indexTitle": "Guides",
+    "indexMetaTitle": "Guides to converting and editing files",
+    "indexIntro": "Step-by-step explanations for specific file tasks: which format to choose, how to do it with our tools and what to watch out for.",
+    "author": "Fileflect Team",
+    "byline": "By {author}",
+    "published": "Published {date}",
+    "updated": "updated {date}",
+    "updatedOn": "Updated {date}",
+    "readingTime": "{minutes} min read",
+    "contents": "In this guide",
+    "toolsTitle": "Tools used in this guide",
+    "relatedTitle": "More guides",
+    "allGuides": "All guides",
+    "breadcrumb": "Breadcrumb"
   }
 }

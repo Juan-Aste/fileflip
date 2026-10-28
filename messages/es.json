@@ -48,7 +48,8 @@
       "conversions": "Conversiones populares",
       "company": "Fileflect"
     },
-    "allTools": "Todas las herramientas"
+    "allTools": "Todas las herramientas",
+    "guides": "Guías"
   },
   "HomePage": {
     "title": "Convierte tus archivos sin que salgan de tu computadora",
@@ -3612,5 +3613,22 @@
     "accuracyNote": "La transcripción automática puede tener errores, sobre todo con nombres propios, cifras, ruido o varias personas hablando: revísala antes de usarla.",
     "syncLink": "Ajustar los tiempos de los subtítulos",
     "readLink": "Escuchar un texto en voz alta"
+  },
+  "Guides": {
+    "home": "Inicio",
+    "indexTitle": "Guías",
+    "indexMetaTitle": "Guías para convertir y editar archivos",
+    "indexIntro": "Explicaciones paso a paso para resolver tareas concretas con archivos: qué formato conviene, cómo hacerlo con nuestras herramientas y qué tener en cuenta.",
+    "author": "Equipo de Fileflect",
+    "byline": "Por {author}",
+    "published": "Publicado el {date}",
+    "updated": "actualizado el {date}",
+    "updatedOn": "Actualizado el {date}",
+    "readingTime": "{minutes} min de lectura",
+    "contents": "En esta guía",
+    "toolsTitle": "Herramientas de esta guía",
+    "relatedTitle": "Otras guías",
+    "allGuides": "Todas las guías",
+    "breadcrumb": "Ruta de navegación"
   }
 }
