@@ -435,7 +435,7 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 ### 10A Paquete Excel
 - [x] 10A.1 Motor (`src/lib/sheet/`): listar hojas, elegir una hoja para CSV/JSON, Excel → JSON (filas como objetos con la primera fila de encabezado, fechas ISO, números como números), JSON → Excel (lista de objetos o de listas; varias hojas si es un objeto de listas); tests validados con LibreOffice/openpyxl y el XML del archivo
 - [x] 10A.2 Siete herramientas con página propia (catálogo, slugs buscados en 5 idiomas, FAQ, metadatos, sitemap, buscador, categoría Documentos, enlaces): Excel a CSV, CSV a Excel, XLS a XLSX, Excel a ODS, ODS a Excel, Excel a JSON, JSON a Excel; selector de hoja, separador y BOM; tests de navegador
-- [ ] 10A.3 Motor de PDF a Excel: texto con posiciones (pdf.js) → filas y columnas por alineación, una hoja por página o por tabla, números con coma decimal; PDFs de ejemplo propios (tabla simple, varias páginas, celdas vacías, coma decimal); XLSX validado con un lector independiente
+- [x] 10A.3 Motor de PDF a Excel: texto con posiciones (pdf.js) → filas y columnas por alineación, una hoja por página o por tabla, números con coma decimal; PDFs de ejemplo propios (tabla simple, varias páginas, celdas vacías, coma decimal); XLSX validado con un lector independiente
 - [ ] 10A.4 Herramienta PDF a Excel (XLSX y CSV) con vista previa de la tabla detectada, aviso y enlace al OCR para PDFs escaneados; página en 5 idiomas; tests de navegador
 - [ ] 10A.5 Unir Excel (varios archivos u hojas en un libro, o todas las hojas apiladas en una) y Separar hojas (cada hoja a un archivo, en ZIP); páginas en 5 idiomas; tests
 

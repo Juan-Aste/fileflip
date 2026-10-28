@@ -9,7 +9,8 @@ import { jsonToXml, xmlToJson } from "@/lib/data/xml";
 import { jsonToYaml, yamlToJson } from "@/lib/data/yaml";
 import { convertSubtitles, syncSubtitles, type SubtitleFormat, type SyncOptions } from "@/lib/subtitle/subtitle";
 import { convertFont, type FontContainer, type Woff2Codec } from "@/lib/font/font";
-import type { SheetOptions } from "@/lib/sheet/sheet";
+import type { SheetOptions, TableWriteOptions } from "@/lib/sheet/sheet";
+import type { TableSheet } from "@/lib/pdf/tables";
 import { createArchive, type ArchiveOptions } from "@/lib/archive/create";
 import { extractArchive } from "@/lib/archive/extract";
 import { detectLibarchiveFormat } from "@/lib/archive/detect";
@@ -59,6 +60,10 @@ exposeHandlers({
   },
   convertSpreadsheet: async ({ input, options }: { input: File; options: SheetOptions }) => {
     const result = (await sheetEngine()).convertSpreadsheet(new Uint8Array(await input.arrayBuffer()), input.name, options);
+    return { result, transfer: result.map((file) => file.bytes.buffer) };
+  },
+  writeTables: async ({ input, options }: { input: TableSheet[]; options: TableWriteOptions }) => {
+    const result = (await sheetEngine()).writeTables(input, options);
     return { result, transfer: result.map((file) => file.bytes.buffer) };
   },
   listSheets: async ({ input }: { input: File }) => ({

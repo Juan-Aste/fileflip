@@ -7,6 +7,7 @@ import { unzipSync } from "fflate";
 import * as XLSX from "xlsx";
 import { ConversionError } from "@/lib/convert-error";
 import { decodeText, stripBom } from "@/lib/data/text";
+import type { TableSheet } from "@/lib/pdf/tables";
 
 export type SheetTarget = "xlsx" | "ods" | "csv" | "json";
 
@@ -325,4 +326,20 @@ export function listSheets(bytes: Uint8Array, name: string): SheetSummary[] {
     });
     return { name: sheet, rows: last + 1, columns };
   });
+}
+
+/** Tables read elsewhere (PDF to Excel) as an XLSX, or one CSV per sheet. */
+export type TableWriteOptions = Pick<SheetOptions, "delimiter" | "bom"> & { to: "xlsx" | "csv" };
+
+export function writeTables(sheets: readonly TableSheet[], options: TableWriteOptions): SheetFile[] {
+  const book = XLSX.utils.book_new();
+  for (const sheet of sheets) {
+    XLSX.utils.book_append_sheet(book, XLSX.utils.aoa_to_sheet(sheet.rows.length ? sheet.rows : [[]], { dense: true }), uniqueSheetName(book, sheet.name));
+  }
+  if (options.to === "csv") {
+    const full: SheetOptions = { ...options, to: "csv", sheets: "all" };
+    return book.SheetNames.map((name) => ({ sheet: book.SheetNames.length > 1 ? name : "", bytes: sheetToCsv(book.Sheets[name]!, full) }));
+  }
+  const out = XLSX.write(book, { type: "array", bookType: "xlsx", compression: true }) as ArrayBuffer;
+  return [{ sheet: "", bytes: new Uint8Array(out) }];
 }

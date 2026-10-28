@@ -12,6 +12,7 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `image.svg` | SVG escrito a mano (160×120) |
 | `photo.heic` | HEIC de 120×80 hecho con pillow-heif (fase 1; sharp no codifica HEIC) |
 | `document.pdf`, `document-1page.pdf`, `document-images.pdf` | pdf-lib: 3 páginas de texto, 1 página, y 2 páginas con una foto JPG de 640×480 (para comprimir) |
+| `table-simple.pdf`, `table-pages.pdf`, `table-two.pdf` | `scripts/fixtures/tables.mjs` (pdf-lib, Helvetica, cada celda es un texto propio y los números van alineados a la derecha): lista de precios con título, códigos como 007 y números con punto decimal / extracto de 2 páginas con encabezado repetido, celdas vacías y coma decimal (1.234,56) / dos tablas en una página sin líneas, con espacio como separador de miles (1 250,5) y una celda vacía |
 | `scan.pdf` | pdf-lib: una página A4 que solo tiene la imagen de 320×240 (sin capa de texto), como un escaneo |
 | `text.txt`, `table.csv` | UTF-8 con acentos y chino / CSV con una coma entre comillas |
 | `data.json` | 3 registros con objetos y listas anidados, comillas, `null`, salto de línea, chino y un código postal "007" |
