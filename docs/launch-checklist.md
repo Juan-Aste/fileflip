@@ -81,9 +81,17 @@ Por cada país donde se cobre (una cuenta por país):
 - [ ] Orden del primer deploy: `gotenberg` y `MongoDB`, después `app` ([DEPLOY.md §6](../DEPLOY.md#6-primer-deploy-y-verificación)).
 
 ## 8. AdSense (después de publicar)
-- [ ] Dar de alta `fileflect.com` en AdSense y esperar la aprobación (puede tardar días o semanas).
-- [ ] Crear dos bloques de anuncios (lateral vertical y horizontal) y cargar `NEXT_PUBLIC_ADSENSE_CLIENT` y los dos `NEXT_PUBLIC_ADSENSE_SLOT_*`; redesplegar.
+El código de AdSense va en el `<head>` de **todas** las páginas (portada, herramientas, categorías, legales, contacto, créditos, en los 5 idiomas), en el HTML que manda el servidor: el meta `<meta name="google-adsense-account" content="ca-pub-…">` y el loader `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-…" crossorigin="anonymous">`. Lo pone `src/app/[locale]/layout.tsx`; los bloques (`AdSlot`) solo dibujan los `<ins>`, así que el script se carga una sola vez.
+
+- [ ] Para la revisión de AdSense basta con `NEXT_PUBLIC_ADSENSE_CLIENT` (el ID de editor `ca-pub-…`); los `NEXT_PUBLIC_ADSENSE_SLOT_*` pueden esperar a la aprobación. El ID va solo en la variable de Railway, nunca en el código.
+- [ ] Las `NEXT_PUBLIC_*` se incrustan al compilar: al crear o cambiar la variable, Railway hace un build nuevo. Si no lo hace, redesplegar a mano; con solo reiniciar no alcanza.
+- [ ] Comprobar en producción: abrir `https://fileflect.com/es` (y por ejemplo `/en/terms` o una herramienta), **Ver código fuente de la página** (Ctrl+U, no el inspector) y buscar `adsbygoogle`: tiene que aparecer el script dentro del `<head>`, junto con `google-adsense-account`. Desde una terminal: `curl -s https://fileflect.com/es | grep -o 'google-adsense-account[^>]*\|adsbygoogle.js?client=[^"]*'`.
+- [ ] Dar de alta `fileflect.com` en AdSense (o, si ya fue rechazada, **volver a pedir la revisión**) y esperar la aprobación (puede tardar días o semanas).
+- [ ] Crear dos bloques de anuncios (lateral vertical y horizontal) y cargar los dos `NEXT_PUBLIC_ADSENSE_SLOT_*`; redesplegar.
 - [ ] Verificar que `https://fileflect.com/ads.txt` muestra `google.com, pub-…, DIRECT, f08c47fec0942fa0` (se genera solo desde `NEXT_PUBLIC_ADSENSE_CLIENT`).
+- Tests que lo cuidan: `scripts/check-adsense.mjs` (`npm run check:adsense`, revisa todas las páginas prerenderizadas después del build; en el CI el job `check` compila con un ID de prueba) y `tests/e2e/adsense-head.spec.ts` (HTML servido por `next start` en los 5 idiomas, sin la variable no hay código).
+- Las páginas 404 de slugs inexistentes son el "shell" de error de Next (noindex): su `<head>` se completa en el navegador, así que no llevan el código en el HTML inicial. AdSense no revisa páginas 404.
+- Rendimiento: el loader de Google suma ~250 KB de JS y ~250–350 ms de TBT en Lighthouse móvil, aunque la página no tenga bloques; con la mitigación de la fase 9 Lighthouse móvil queda en 91–92 y CLS 0 (ver `docs/perf/2026-10-28-phase9.md`).
 
 ## 9. Search Console
 - [ ] Agregar la propiedad de dominio `fileflect.com` (verificación por registro TXT en el DNS).

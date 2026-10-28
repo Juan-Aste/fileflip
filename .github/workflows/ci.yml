@@ -41,10 +41,18 @@ jobs:
         run: npm run lint
       - name: Test
         run: npm test
+      # With a test AdSense id, so check:adsense can see the code in every <head>
+      # (e2e-browsers builds without it: adsense-head.spec.ts checks none).
       - name: Build
         run: npm run build
+        env:
+          NEXT_PUBLIC_ADSENSE_CLIENT: ca-pub-0000000000000000
       - name: Static pages
         run: npm run check:static
+      - name: AdSense code in every page head
+        run: npm run check:adsense
+        env:
+          NEXT_PUBLIC_ADSENSE_CLIENT: ca-pub-0000000000000000
 
   # The read-aloud AI voice with the real Supertonic 3 model: reading with
   # pause and resume, the Cache API, and an MP3 in es, en, pt and fr checked
@@ -122,7 +130,7 @@ jobs:
       - name: Edge-case fixtures (big photos, 500-page PDF, passwords, odd names)
         run: node scripts/fixtures/edge.mjs > /dev/null
       - name: Chromium click, missing-API, failure-state and edge-file checks
-        run: npx playwright test open-states login clickable unsupported failure-states tts-ai billing-states search-locale-states environments edge-files security-headers access-control api-limits rate-limits login-real pro-switch legal --project chromium --grep-invert "pages \d+/"
+        run: npx playwright test open-states login clickable unsupported failure-states tts-ai billing-states search-locale-states environments edge-files security-headers access-control api-limits rate-limits login-real pro-switch legal adsense-head --project chromium --grep-invert "pages \d+/"
       - name: Test results
         if: failure()
         uses: actions/upload-artifact@v4

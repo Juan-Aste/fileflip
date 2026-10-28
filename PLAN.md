@@ -419,3 +419,11 @@ Pedida por el dueño el 2026-10-26: lector en voz alta (texto a voz). "Yo le pon
 ### Hito 8.5 — Tests y verificación
 - [x] 8.5a Tests con la voz IA real: MP3 de un texto corto en es, en, pt y fr validado de forma independiente (cabecera, duración coherente, no silencio); modelo cacheado en el CI o test local + test mínimo en el CI
 - [x] 8.5b Lighthouse móvil ≥ 90 y CLS 0 en la página nueva, detector de clics, axe, Firefox y WebKit; informe del catálogo y `docs/launch-checklist.md`
+
+## Fase 9
+
+Pedida por el dueño el 2026-10-27: AdSense rechazó la solicitud con "asegúrese de haber colocado el código en todas las páginas". El código de AdSense debe ir en el `<head>` del HTML del servidor de todas las páginas.
+
+- [x] 9.1 Verificar y completar el cambio de `5355939` (meta `google-adsense-account` y loader `adsbygoogle.js` en el `<head>` del layout): lint, unitarios, build con y sin `NEXT_PUBLIC_ADSENSE_CLIENT`; en el HTML de `next start`, portada, herramienta, categoría, términos, privacidad, contacto y créditos en 5 idiomas con exactamente un meta y un script en el `<head>` (ninguno sin la variable); test que lo cubra; sin doble carga en páginas con bloques; `/ads.txt` sigue funcionando
+- [x] 9.2 Rendimiento: Lighthouse móvil (portada y una herramienta) con la variable ≥ 90 y CLS 0 (mitigar sin sacar el loader del `<head>`); detector de clics, axe y tests de navegador en Chromium, Firefox y WebKit de las páginas afectadas
+- [x] 9.3 `docs/launch-checklist.md` (sección AdSense): el código va en el `<head>` de todas las páginas, basta con `NEXT_PUBLIC_ADSENSE_CLIENT` (Railway recompila al cambiarla), cómo comprobarlo

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Script from "next/script";
 import { useTranslations } from "next-intl";
 import { useSessionInfo } from "@/components/session/SessionInfo";
 import { adMode } from "./ad-mode";
@@ -34,15 +33,30 @@ export default function AdSlot({ placement, className = "" }: { placement: AdPla
   const { plan, loaded } = useSessionInfo();
   const mode = adMode({ client: CLIENT, plan, loaded });
   const pushed = useRef(false);
+  const ins = useRef<HTMLModElement>(null);
 
   useEffect(() => {
-    if (mode !== "ad" || pushed.current) return;
-    pushed.current = true;
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch {
-      // Blocked by an ad blocker: fine.
-    }
+    const el = ins.current;
+    if (mode !== "ad" || pushed.current || !el) return;
+    // A slot hidden by CSS (the sidebar below xl) has no width, and AdSense
+    // throws "No slot size for availableWidth=0": fill it once it shows.
+    const fill = () => {
+      if (pushed.current || el.offsetWidth === 0) return;
+      pushed.current = true;
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch {
+        // Blocked by an ad blocker: fine.
+      }
+    };
+    fill();
+    if (pushed.current || typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(() => {
+      fill();
+      if (pushed.current) observer.disconnect();
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
   }, [mode]);
 
   if (mode === "hidden") return null;
@@ -67,22 +81,15 @@ export default function AdSlot({ placement, className = "" }: { placement: AdPla
           {t("placeholder")}
         </div>
       ) : (
-        <>
-          <Script
-            id="adsense"
-            async
-            strategy="lazyOnload"
-            crossOrigin="anonymous"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${CLIENT}`}
-          />
-          <ins
-            className={`adsbygoogle block ${sizes[placement]}`}
-            data-ad-client={CLIENT}
-            data-ad-slot={SLOTS[placement]}
-            data-ad-format={placement === "sidebar" ? "vertical" : "horizontal"}
-            data-full-width-responsive="true"
-          />
-        </>
+        // The loader script is in the page <head> (see [locale]/layout.tsx).
+        <ins
+          ref={ins}
+          className={`adsbygoogle block ${sizes[placement]}`}
+          data-ad-client={CLIENT}
+          data-ad-slot={SLOTS[placement]}
+          data-ad-format={placement === "sidebar" ? "vertical" : "horizontal"}
+          data-full-width-responsive="true"
+        />
       )}
     </aside>
   );

@@ -3449,3 +3449,31 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Se agotaron los minutos de Actions del repo privado: la tarea seguía corriendo cada hora con la fase terminada y cada commit del candado disparaba el CI completo.
 - `ci.yml`: los push a `dev`/`main` solo corren el job `check` (lint, unitarios, build) y se omiten si el commit solo toca `.agent-lock`, `*.md` o `docs/`. Los jobs pesados (`e2e-browsers`, `e2e-ai-voice`) corren en los PR a `main` y a mano (`workflow_dispatch`). `concurrency` cancela la corrida anterior de la misma rama o PR.
 - Para la tarea programada: los tests de navegador se siguen corriendo localmente antes de marcar cada tarea; en `dev` el CI de GitHub solo muestra `check`.
+
+## 2026-10-28 — Inicio de la fase 9
+- Fase 9 (código de AdSense en el `<head>` de todas las páginas) agregada a PLAN.md con las tareas 9.1–9.3.
+- CI: el run de `5355939` no corrió ningún job por un problema de facturación de la cuenta de GitHub (no es un error de código); las pruebas se corren localmente.
+
+## 2026-10-28 — Fase 9, tarea 9.1 (código de AdSense en el `<head>`)
+- Verificado el cambio de `5355939` compilando con y sin `NEXT_PUBLIC_ADSENSE_CLIENT=ca-pub-0000000000000000`: React deja el meta `google-adsense-account` y el `<script async src="…adsbygoogle.js?client=…" crossorigin="anonymous">` en el `<head>` del HTML del servidor (no hizo falta `beforeInteractive`). React lo deduplica con el payload RSC: se carga una sola vez, también en las páginas con bloques.
+- Comprobado en el HTML de `next start`: portada, una herramienta, una categoría, términos, privacidad, contacto y créditos en es, en, pt, fr y zh tienen exactamente un meta y un script en el `<head>` con la variable, y ninguno sin ella. Las 1017 páginas prerenderizadas también.
+- Excepción: los 404 de slugs inexistentes son el shell de error de Next (noindex) y su `<head>` se completa en el navegador; AdSense no revisa páginas 404 (anotado en `docs/launch-checklist.md`).
+- Bug arreglado: el bloque lateral está oculto por CSS debajo de `xl` y `AdSlot` igual hacía `push`, con lo que AdSense tiraba `TagError: No slot size for availableWidth=0` en celulares y tablets (lo detectaron `layout-shift`, `clickable` y `a11y` con el loader real). Ahora `AdSlot` llena el bloque solo cuando tiene ancho (`ResizeObserver`).
+- Tests nuevos: `scripts/check-adsense.mjs` (`npm run check:adsense`, todas las páginas prerenderizadas; el job `check` del CI compila con el ID de prueba y lo corre) y `tests/e2e/adsense-head.spec.ts` (HTML servido en 5 idiomas, una sola carga del loader, bloque oculto sin `push`, `/ads.txt`; en el CI corre en `e2e-browsers` sin la variable).
+- `/ads.txt` sigue igual (con la variable `google.com, pub-…, DIRECT, f08c47fec0942fa0`; sin ella 404).
+- Verificado: lint, 1113 unitarios, build con y sin la variable, `check:static`; con la variable `adsense-head` + `layout-shift` + `clickable` + `a11y` en Chromium (127 pasan); sin la variable la suite completa de Chromium (630 pasan; `video-to-gif` H.264 se pasó del tiempo una vez por carga y pasa solo en 2,9 s) y la muestra de Firefox y WebKit (37 pasan).
+- CI: los runs de `dev` no corren ningún job por un problema de facturación de la cuenta de GitHub.
+
+## 2026-10-28 — Fase 9, tarea 9.2 (rendimiento con AdSense)
+- Lighthouse 12.8.2 móvil con `NEXT_PUBLIC_ADSENSE_CLIENT=ca-pub-0000000000000000`. El sandbox llegaba a `googlesyndication.com`: se midió con el loader real de Google. El loader suma ~250 KB de JS y 250–350 ms de TBT aunque la página no tenga bloques: antes de mitigar, portada 89 y unir PDF 85–87.
+- Mitigación (el loader sigue en el `<head>` del HTML inicial): el layout ya no manda al navegador todos los textos del idioma (~200 KB de JSON en el HTML de cada página). `src/i18n/client-messages.ts` deja `Tools`, `Legal` y los textos de las familias de herramientas en el servidor; `ToolBlock`/`ToolMessages` agregan los de la herramienta en su página. HTML comprimido −55 a −70 % (portada 90 → 32 KB); FCP 1,5 → 1,2 s. Probado y descartado `fetchpriority="low"`.
+- Final (mediana de 3): portada 92, unir PDF 92, JPG a WebP 91, lector 91, categoría PDF 92; **CLS 0**, accesibilidad 100. Las corridas sueltas van de 87 a 95 por la variación del código de Google. Informe: `docs/perf/2026-10-28-phase9.md` (incluye la opción del loader sin `?client=`, no aplicada).
+- Detector de clics, axe y layout shift en Chromium con la variable (127 pasan); suite completa de Chromium sin la variable (630 pasan) y muestra de Firefox y WebKit (37 pasan); `client-messages.test.ts` nuevo; lint y unitarios pasan.
+
+## 2026-10-28 — Fase 9, tarea 9.3 (documentación)
+- `docs/launch-checklist.md`, sección AdSense: el código va en el `<head>` de todas las páginas; para la revisión basta con `NEXT_PUBLIC_ADSENSE_CLIENT` (Railway recompila al cambiarla porque las `NEXT_PUBLIC_*` se incrustan al compilar; reiniciar no alcanza); cómo comprobarlo (ver código fuente con Ctrl+U y buscar `adsbygoogle`, o `curl`); volver a pedir la revisión; tests que lo cuidan; excepción de los 404; costo en rendimiento.
+
+## 2026-10-28 — FASE 9 TERMINADA
+- Todas las tareas de la fase 9 están marcadas.
+- Para el dueño: mergear `dev` en `main`; confirmar que `NEXT_PUBLIC_ADSENSE_CLIENT` está en Railway y que se hizo un build nuevo; comprobar con "ver código fuente" que aparece `adsbygoogle` en el `<head>`; en AdSense, volver a pedir la revisión. Se puede pausar la tarea programada.
+- CI: los runs de `dev` no corren ningún job por un problema de facturación de la cuenta de GitHub (no es un error de código); todo se verificó localmente.

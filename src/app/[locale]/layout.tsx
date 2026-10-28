@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { clientMessages } from "@/i18n/client-messages";
 import { routing } from "@/i18n/routing";
 import { siteUrl } from "@/lib/seo";
 import VisitBeacon from "@/components/analytics/VisitBeacon";
@@ -11,6 +12,11 @@ import { SessionInfoProvider } from "@/components/session/SessionInfo";
 import { themeInitScript } from "@/components/layout/theme";
 import { bodyFont, headingFont } from "@/app/fonts";
 import "./globals.css";
+
+// AdSense: the account meta tag and the loader go in the <head> of every
+// page (AdSense looks for them there to verify and review the site). The
+// slots themselves (<AdSlot>) only render the <ins> boxes.
+const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
 
 type Props = Readonly<{
   children: React.ReactNode;
@@ -43,6 +49,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: "Common" });
+  const messages = await getMessages();
 
   return (
     // The theme script toggles the `dark` class before hydration.
@@ -53,9 +60,19 @@ export default async function LocaleLayout({ children, params }: Props) {
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {ADSENSE_CLIENT ? (
+          <>
+            <meta name="google-adsense-account" content={ADSENSE_CLIENT} />
+            <script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+              crossOrigin="anonymous"
+            />
+          </>
+        ) : null}
       </head>
       <body className="flex min-h-screen flex-col antialiased">
-        <NextIntlClientProvider>
+        <NextIntlClientProvider messages={clientMessages(messages)}>
           <SessionInfoProvider>
           <a
             href="#main"
