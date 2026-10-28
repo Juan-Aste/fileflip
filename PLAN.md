@@ -427,3 +427,42 @@ Pedida por el dueño el 2026-10-27: AdSense rechazó la solicitud con "asegúres
 - [x] 9.1 Verificar y completar el cambio de `5355939` (meta `google-adsense-account` y loader `adsbygoogle.js` en el `<head>` del layout): lint, unitarios, build con y sin `NEXT_PUBLIC_ADSENSE_CLIENT`; en el HTML de `next start`, portada, herramienta, categoría, términos, privacidad, contacto y créditos en 5 idiomas con exactamente un meta y un script en el `<head>` (ninguno sin la variable); test que lo cubra; sin doble carga en páginas con bloques; `/ads.txt` sigue funcionando
 - [x] 9.2 Rendimiento: Lighthouse móvil (portada y una herramienta) con la variable ≥ 90 y CLS 0 (mitigar sin sacar el loader del `<head>`); detector de clics, axe y tests de navegador en Chromium, Firefox y WebKit de las páginas afectadas
 - [x] 9.3 `docs/launch-checklist.md` (sección AdSense): el código va en el `<head>` de todas las páginas, basta con `NEXT_PUBLIC_ADSENSE_CLIENT` (Railway recompila al cambiarla), cómo comprobarlo
+
+## Fase 10
+
+Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y rellenar PDF, PDF a PowerPoint, transcribir audio y video, guías y verificación final. En este orden (10A → 10F). Reglas del catálogo vigentes: herramientas reales con tests y validadores independientes, 5 idiomas con slugs traducidos, FAQ, metadatos, sitemap, buscador, categorías y enlaces; en el navegador cuando se pueda; Lighthouse móvil ≥ 90 y CLS 0; detector de clics y axe; muestra en Firefox y WebKit; dependencias en `docs/dependencies.md`, créditos y `npm run licenses` (sin GPL/AGPL ni no comerciales).
+
+### 10A Paquete Excel
+- [ ] 10A.1 Motor (`src/lib/sheet/`): listar hojas, elegir una hoja para CSV/JSON, Excel → JSON (filas como objetos con la primera fila de encabezado, fechas ISO, números como números), JSON → Excel (lista de objetos o de listas; varias hojas si es un objeto de listas); tests validados con LibreOffice/openpyxl y el XML del archivo
+- [ ] 10A.2 Siete herramientas con página propia (catálogo, slugs buscados en 5 idiomas, FAQ, metadatos, sitemap, buscador, categoría Documentos, enlaces): Excel a CSV, CSV a Excel, XLS a XLSX, Excel a ODS, ODS a Excel, Excel a JSON, JSON a Excel; selector de hoja, separador y BOM; tests de navegador
+- [ ] 10A.3 Motor de PDF a Excel: texto con posiciones (pdf.js) → filas y columnas por alineación, una hoja por página o por tabla, números con coma decimal; PDFs de ejemplo propios (tabla simple, varias páginas, celdas vacías, coma decimal); XLSX validado con un lector independiente
+- [ ] 10A.4 Herramienta PDF a Excel (XLSX y CSV) con vista previa de la tabla detectada, aviso y enlace al OCR para PDFs escaneados; página en 5 idiomas; tests de navegador
+- [ ] 10A.5 Unir Excel (varios archivos u hojas en un libro, o todas las hojas apiladas en una) y Separar hojas (cada hoja a un archivo, en ZIP); páginas en 5 idiomas; tests
+
+### 10B Utilidades de texto
+- [ ] 10B.1 Convertir mayúsculas/minúsculas (MAYÚSCULAS, minúsculas, Tipo Título según el idioma, Tipo oración, alternar); tests
+- [ ] 10B.2 Comparar dos textos (diferencias por línea y por palabra, resaltadas; jsdiff BSD-3); tests
+- [ ] 10B.3 Quitar líneas duplicadas (ordenar, quitar vacías, recortar espacios) y generador de lorem ipsum; enlaces con el contador de palabras; tests
+
+### 10C Editar y rellenar PDF
+- [ ] 10C.1 Editar PDF: visor con miniaturas y zoom, agregar texto (fuente, tamaño, color), resaltar, mano alzada, formas, tapar, imagen; deshacer/rehacer; táctil
+- [ ] 10C.2 Editar PDF: guardar con pdf-lib, "ocultar de verdad" rasterizando la página (con aviso); página en 5 idiomas; tests con lector independiente
+- [ ] 10C.3 Rellenar formularios PDF (AcroForm: texto, casillas, radios, listas; aplanar; XFA o sin campos → explicar y ofrecer Editar PDF); formulario de ejemplo propio; tests
+- [ ] 10C.4 PDF a PowerPoint (cada página como imagen en una diapositiva del tamaño de la página; aviso de texto no editable); test con lector independiente
+
+### 10D Transcribir audio y video a texto
+- [ ] 10D.1 Licencias y pesos: transformers.js (Apache-2.0) y Whisper ONNX (MIT) con versión y sha256 fijos; origen de los pesos y CSP; documentar
+- [ ] 10D.2 Worker: decodificar audio/video a 16 kHz mono (mediabunny), trozos de 30 s, progreso, tiempo estimado, cancelar, Cache API, idioma automático o elegido
+- [ ] 10D.3 Herramienta: texto editable, copiar, TXT, SRT y VTT, enlaces a sincronizar subtítulos y lector en voz alta; página en 5 idiomas; límite de duración
+- [ ] 10D.4 Medir tamaño y velocidad (PC y celular simulado); test con un audio propio y el modelo real (palabras esperadas, SRT/VTT válidos)
+
+### 10E Guías
+- [ ] 10E.1 Sección de guías: índice, plantilla (autor "Equipo de Fileflect", fechas, tabla de contenidos, schema Article/HowTo, breadcrumbs, enlaces), slugs traducidos, sitemap, footer, anuncios según las reglas; tests
+- [ ] 10E.2 Guías 1–3 en español con capturas reales (Playwright), verificadas contra las herramientas
+- [ ] 10E.3 Guías 4–7 en español
+- [ ] 10E.4 Guías 8–10 en español
+- [ ] 10E.5 Traducción natural de las guías a en, pt, fr y zh
+
+### 10F Verificación final
+- [ ] 10F.1 Lighthouse móvil ≥ 90 y CLS 0 en una página nueva de cada bloque (con AdSense de prueba), detector de clics, axe, Firefox y WebKit, suite de Chromium completa
+- [ ] 10F.2 Informe del catálogo, `docs/dependencies.md`, créditos, `docs/launch-checklist.md` (CSP, archivos públicos, variables) y política de privacidad (descarga de modelos)

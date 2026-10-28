@@ -3477,3 +3477,7 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Todas las tareas de la fase 9 están marcadas.
 - Para el dueño: mergear `dev` en `main`; confirmar que `NEXT_PUBLIC_ADSENSE_CLIENT` está en Railway y que se hizo un build nuevo; comprobar con "ver código fuente" que aparece `adsbygoogle` en el `<head>`; en AdSense, volver a pedir la revisión. Se puede pausar la tarea programada.
 - CI: los runs de `dev` no corren ningún job por un problema de facturación de la cuenta de GitHub (no es un error de código); todo se verificó localmente.
+
+## 2026-10-28 — Inicio de la fase 10
+- Fase 10 (paquete Excel, utilidades de texto, editar y rellenar PDF, PDF a PowerPoint, transcripción, guías, verificación) agregada a PLAN.md con las tareas 10A.1–10F.2.
+- CI: los runs de `dev` no corren ningún job por un problema de facturación de la cuenta de GitHub (no es un error de código); las pruebas se corren localmente.
