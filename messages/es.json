@@ -1835,7 +1835,7 @@
         "q1": "¿Se sube mi audio a algún servidor?",
         "a1": "No. El archivo se decodifica y se transcribe en tu navegador, con el procesador de tu equipo. Lo único que se descarga es el modelo de voz, desde Hugging Face, la primera vez que lo usas; después queda guardado en tu navegador.",
         "q2": "¿Qué modelo elijo, rápido o preciso?",
-        "a2": "El rápido (Whisper tiny, 43 MB) sirve para audios claros, con una sola persona hablando y poco ruido, y es el recomendado en celulares. El preciso (Whisper base, 79 MB) se equivoca menos con acentos, ruido de fondo y palabras poco comunes, pero tarda aproximadamente el doble. Si el resultado del rápido tiene muchos errores, prueba con el preciso.",
+        "a2": "El rápido (Whisper tiny, 43 MB) sirve para audios claros, con una sola persona hablando y poco ruido, y es el recomendado en celulares. El preciso (Whisper base, 79 MB) se equivoca menos con acentos, ruido de fondo y palabras poco comunes, pero tarda alrededor de 1,7 veces más. Si el resultado del rápido tiene muchos errores, prueba con el preciso.",
         "q3": "¿Cuánto tarda?",
         "a3": "Depende de tu equipo y del modelo. En una computadora actual, el modelo rápido suele transcribir más rápido que la duración del audio; en un celular puede tardar más. Mientras trabaja ves el progreso y el tiempo estimado, y puedes cancelar cuando quieras.",
         "q4": "¿Puedo transcribir un video o una nota de voz de WhatsApp?",

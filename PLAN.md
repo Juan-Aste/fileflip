@@ -455,7 +455,7 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 - [x] 10D.2a Motor de Whisper sobre onnxruntime-web: log-mel, codificador, decodificador con caché, reglas de marcas de tiempo, tokenizador, ventanas de 30 s, detección de idioma, cortar bucles; tests con el modelo real
 - [x] 10D.2b Worker: decodificar audio/video a 16 kHz mono (mediabunny), progreso, tiempo estimado, cancelar, descarga con Cache API, idioma automático o elegido
 - [x] 10D.3 Herramienta: texto editable, copiar, TXT, SRT y VTT, enlaces a sincronizar subtítulos y lector en voz alta; página en 5 idiomas; límite de duración
-- [ ] 10D.4 Medir tamaño y velocidad (PC y celular simulado); test con un audio propio y el modelo real (palabras esperadas, SRT/VTT válidos)
+- [x] 10D.4 Medir tamaño y velocidad (PC y celular simulado); test con un audio propio y el modelo real (palabras esperadas, SRT/VTT válidos)
 
 ### 10E Guías
 - [ ] 10E.1 Sección de guías: índice, plantilla (autor "Equipo de Fileflect", fechas, tabla de contenidos, schema Article/HowTo, breadcrumbs, enlaces), slugs traducidos, sitemap, footer, anuncios según las reglas; tests

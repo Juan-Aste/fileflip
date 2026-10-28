@@ -45,3 +45,20 @@ Como en la fase 8, los pesos se descargan desde Hugging Face (`https://huggingfa
 - Idioma: automático (detección del propio Whisper en la primera ventana) o elegido entre los 99 del modelo, con los 5 del sitio primero. Los nombres de los idiomas salen de `Intl.DisplayNames` del navegador y se arman después de hidratar (los de Node no coinciden).
 - Salida (`src/lib/transcribe/output.ts`): texto editable con un segmento por línea; TXT con el texto tal como se editó; SRT y VTT con las marcas de tiempo (líneas de hasta 42 caracteres, dos por subtítulo; los segmentos largos se parten repartiendo el tiempo). Si se corrigen palabras sin agregar ni quitar líneas, los subtítulos usan la corrección; si cambia la cantidad de líneas, se avisa y los subtítulos usan el texto original.
 - Límite: 30 minutos de audio por archivo (`MAX_TRANSCRIBE_SECONDS`, error `transcribeTooLong`).
+
+## Tamaño y velocidad medidos (10D.4, 2026-10-28)
+
+Medido con `scripts/perf/transcribe-speed.mjs` en Chromium contra `next start`, con los archivos del modelo servidos desde disco, sobre 3 minutos de voz natural en español (`speech-ai-es.ogg` repetido 5 veces; 182 s). «PC» es la vCPU de esta máquina (4 núcleos, el worker usa uno). «Celular» es una estimación de gama media: los procesos de la pestaña corren 25 ms de cada 100 ms (SIGSTOP/SIGCONT; la limitación de CPU de DevTools no frena los Web Workers, como se vio en la fase 8).
+
+| Modelo | Descarga | Dispositivo | Leer el audio | Cargar el modelo | Transcribir | Velocidad |
+|---|---|---|---|---|---|---|
+| Rápido (`tiny`) | 43 MB | PC | 9,6 s | 4,7 s | 47,9 s | **3,8 min de audio por minuto** |
+| Preciso (`base`) | 79 MB | PC | 10,1 s | 6,7 s | 78,3 s | **2,3 min de audio por minuto** |
+| Rápido (`tiny`) | 43 MB | Celular (estimado) | 49,9 s | 12,2 s | 207,6 s | **0,9 min de audio por minuto** |
+| Preciso (`base`) | 79 MB | Celular (estimado) | 52,8 s | 17,3 s | 353,1 s | **0,5 min de audio por minuto** |
+
+- El preciso tarda ~1,7 veces lo que el rápido (no el doble): así lo dicen las FAQ.
+- En Node (un hilo, misma máquina) `tiny` transcribe los 36 s de español en ~12 s y `base` en ~21 s, con las seis frases casi sin errores; con la voz robótica de espeak, `tiny` puede saltearse frases.
+- Límite: **30 minutos** de audio. En una PC son ~8 minutos con el modelo rápido; en un celular de gama media ~35 minutos más ~8 de lectura del audio. Más que eso no es razonable en un celular y el audio completo en memoria (16 kHz en float, ~115 MB para 30 min) se suma al modelo. Se mantiene; el tiempo restante se muestra mientras trabaja.
+- Leer el audio (decodificar y bajar a 16 kHz con mediabunny en la página) es la parte que más crece en el celular. Mejora posible a futuro: decodificar con `AudioSampleSink` y un remuestreo propio en vez de una `Conversion` a WAV descartado.
+- Memoria: el montículo de JavaScript de la página queda en ~10 MB; el modelo vive en el worker (memoria WASM), que no se midió aparte.

@@ -3582,3 +3582,10 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Créditos (`scripts/licenses/embedded.mjs`) y `docs/dependencies.md`: modelos Whisper (MIT, OpenAI). `npm run licenses` pasa; sin dependencias npm nuevas.
 - Tests: 7 unitarios nuevos (salida TXT/SRT/VTT leída por ffmpeg; decodificación a 16 kHz mono con nivel correcto; límite de 30 minutos; 99 idiomas) y 3 de navegador (`tests/e2e/transcribe.spec.ts`: transcribir un audio con el modelo real y detección de idioma, corregir una palabra y verla en SRT/VTT/TXT leídos por ffmpeg, luego un video con el modelo desde la caché sin volver a descargar; descarga fallida y Cancelar; archivo que no es audio). Con `WHISPER_DIR` los archivos del modelo se sirven desde disco; si no, se descargan de Hugging Face.
 - Verificado: lint, typecheck, build, 1224 unitarios; Chromium a11y + clickable + layout-shift + search + tts-tools + subtitle-tools + legal (162 pasan); `transcribe` en Chromium, Firefox y WebKit y a11y + layout-shift repetidos 2 veces (70 pasan).
+
+## 2026-10-28 — Fase 10, tarea 10D.4 (medidas y tests con audio propio)
+- Medido en el navegador (`scripts/perf/transcribe-speed.mjs`, 3 min de voz natural en español): PC — rápido 3,8 min de audio por minuto, preciso 2,3; celular de gama media estimado (pestaña al 25 % con SIGSTOP/SIGCONT) — rápido 0,9, preciso 0,5. Descargas: 43 MB y 79 MB. Tabla completa en `docs/transcripcion.md`. Se mantiene el límite de 30 minutos.
+- FAQ corregida en 5 idiomas: el modelo preciso tarda ~1,7 veces lo que el rápido (decía «el doble»).
+- Arreglo de accesibilidad: la sección del resultado tomaba como nombre el texto de la transcripción (estaba etiquetada por el `textarea`); ahora no tiene `aria-labelledby`.
+- Tests con audio propio (voz IA) y el modelo real: navegador, 36 s de español en dos ventanas con el modelo preciso (las seis frases, SRT leído por ffmpeg con tiempos crecientes y la segunda ventana transcrita); Node, el mismo audio con `tiny` y detección de idioma.
+- Verificado: lint, typecheck, build, unitarios; transcribe + a11y + layout-shift + clickable en Chromium, Firefox y WebKit (133 pasan).

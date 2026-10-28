@@ -100,6 +100,39 @@ test.describe("tool: audio-to-text", () => {
     expect(requests.length).toBe(6);
   });
 
+  test("36 s of Spanish in two windows with the precise model: every sentence, subtitles in order", async ({ page, context }) => {
+    test.setTimeout(300_000);
+    const requests = await serveModel(context);
+    await open(page, "speech-ai-es.ogg");
+    await expect(page.getByText("duración 0:36")).toBeVisible();
+    await page.getByText(/^Preciso/).click();
+    await expect(page.getByText(/La primera vez se descargan 7\d[,.]\d MB/)).toBeVisible();
+    await page.getByLabel("Idioma del audio").selectOption("es");
+    await page.getByRole("button", { name: "Transcribir", exact: true }).click();
+    const text = page.getByLabel("Transcripción");
+    await expect(text).toBeVisible({ timeout: 240_000 });
+    for (const r of requests) expect(r.startsWith("whisper-base/resolve/1846881b6b3a3024392c1eea3ad983695bc23925/")).toBe(true);
+    // The language was chosen: no detection message.
+    await expect(page.getByText(/Idioma detectado/)).toHaveCount(0);
+    const transcript = (await text.inputValue()).toLowerCase();
+    expect(transcript.split("\n").length).toBeGreaterThanOrEqual(5);
+    for (const words of ["prueba de transcripción", "dentro del navegador", "reconocimiento de voz", "dos partes", "subtítulos con sus tiempos", "gracias por escuchar"]) expect(transcript).toContain(words);
+
+    const srt = await download(page, "Descargar SRT");
+    if (hasFfmpeg) expect(ffmpegSrt(srt.text, "srt")).toMatch(/gracias por escuchar/i);
+    const times = [...srt.text.matchAll(/(\d\d):(\d\d):(\d\d),(\d{3}) --> (\d\d):(\d\d):(\d\d),(\d{3})/g)].map((m) => [
+      +m[1]! * 3600 + +m[2]! * 60 + +m[3]! + +m[4]! / 1000,
+      +m[5]! * 3600 + +m[6]! * 60 + +m[7]! + +m[8]! / 1000,
+    ]);
+    expect(times.length).toBeGreaterThanOrEqual(5);
+    for (const [i, [start, end]] of times.entries()) {
+      expect(end).toBeGreaterThan(start!);
+      if (i > 0) expect(start).toBeGreaterThanOrEqual(times[i - 1]![1]! - 0.01);
+    }
+    // The second window was transcribed too.
+    expect(times.at(-1)![1]).toBeGreaterThan(32);
+  });
+
   test("a failed download is explained; cancelling stops the download", async ({ page, context }) => {
     test.setTimeout(120_000);
     await serveModel(context, { status: 503 });

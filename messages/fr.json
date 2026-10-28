@@ -1835,7 +1835,7 @@
         "q1": "Mon audio est-il envoyé sur un serveur ?",
         "a1": "Non. Le fichier est décodé et transcrit dans votre navigateur, avec le processeur de votre appareil. Seul le modèle vocal est téléchargé, depuis Hugging Face, la première fois ; il reste ensuite dans votre navigateur.",
         "q2": "Quel modèle choisir, rapide ou précis ?",
-        "a2": "Le rapide (Whisper tiny, 43 Mo) convient aux audios clairs, avec une seule personne et peu de bruit, et c'est celui à utiliser sur téléphone. Le précis (Whisper base, 79 Mo) se trompe moins avec les accents, le bruit de fond et les mots rares, mais prend environ deux fois plus de temps. Si le résultat du rapide contient beaucoup d'erreurs, essayez le précis.",
+        "a2": "Le rapide (Whisper tiny, 43 Mo) convient aux audios clairs, avec une seule personne et peu de bruit, et c'est celui à utiliser sur téléphone. Le précis (Whisper base, 79 Mo) se trompe moins avec les accents, le bruit de fond et les mots rares, mais prend environ 1,7 fois plus de temps. Si le résultat du rapide contient beaucoup d'erreurs, essayez le précis.",
         "q3": "Combien de temps cela prend-il ?",
         "a3": "Cela dépend de votre appareil et du modèle. Sur un ordinateur récent, le modèle rapide transcrit en général plus vite que la durée de l'audio ; sur un téléphone, cela peut prendre plus longtemps. Pendant le travail, vous voyez la progression et le temps restant estimé, et vous pouvez annuler à tout moment.",
         "q4": "Puis-je transcrire une vidéo ou un message vocal WhatsApp ?",

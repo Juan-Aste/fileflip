@@ -172,4 +172,13 @@ describe.skipIf(!dir)("Whisper with the real models", () => {
     expect(segments.at(-1)!.end).toBeGreaterThan(30);
     expect(progress.at(-1)).toBe(1);
   }, 300_000);
+
+  it("tiny: our AI voice in Spanish (36 s), language detected, every sentence", async () => {
+    const m = await load("tiny");
+    const { segments, language } = await transcribe(m.ort, m.sessions, m.cfg, m.tokenizer, pcm("speech-ai-es.ogg"));
+    expect(language).toBe("es");
+    const text = segments.map((s) => s.text).join(" ").toLowerCase();
+    for (const words of ["dentro del navegador", "reconocimiento de voz", "dos partes", "subtítulos con sus tiempos", "gracias por escuchar"]) expect(text).toContain(words);
+    expect(segments.at(-1)!.end).toBeGreaterThan(32);
+  }, 300_000);
 });

@@ -254,7 +254,7 @@ export default function TranscribeTool() {
       {error && <ToolAlert>{error}</ToolAlert>}
 
       {result && (
-        <section className="flex flex-col gap-3" aria-labelledby={textId}>
+        <section className="flex flex-col gap-3">
           {result.segments.length === 0 ? (
             <ToolAlert>{t("empty")}</ToolAlert>
           ) : (
