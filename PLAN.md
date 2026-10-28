@@ -463,7 +463,7 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 - [x] 10E.3 Guías 4–7 en español
 - [x] 10E.4 Guías 8–10 en español
 - [x] 10E.5a Capturas por idioma (`scripts/guides/screenshots.mjs --locale=…`) y traducción natural de las 10 guías al inglés
-- [ ] 10E.5b Traducción de las guías al portugués (con capturas en portugués)
+- [x] 10E.5b Traducción de las guías al portugués (con capturas en portugués)
 - [ ] 10E.5c Traducción de las guías al francés (con capturas en francés)
 - [ ] 10E.5d Traducción de las guías al chino (con capturas en chino)
 

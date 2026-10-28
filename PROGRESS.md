@@ -3630,3 +3630,9 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Verificado: lint, typecheck, build, unitarios de contenido, guías y SEO (80); Chromium guides + layout-shift + clickable (138) pasan.
 - Al cierre de esta ejecución quedan: 10E.5b–d (pt, fr, zh) y 10F.
 
+
+## 2026-10-28 — Fase 10, tarea 10E.5b (guías en portugués)
+- Las 10 guías en portugués de Brasil (`/pt/guias`, 917–1227 palabras), adaptadas: menús de iPhone, Mac, Windows, Android y Excel en portugués, punto y coma y coma decimal para el Excel en portugués, ejemplos con acentos del portugués («ConceiÃ§Ã£o»), CEP con cero inicial, ICP-Brasil en la guía de firma, R$ en la de tablas. Las etiquetas de la interfaz citadas salen de `messages/pt.json` (por eso «OCR de PDF digitalizado»).
+- Capturas en portugués, francés y chino tomadas de una vez (`node scripts/guides/screenshots.mjs --locale=pt,fr,zh`); las de francés y chino se usan en las tareas siguientes.
+- Comprimir PDF medido de nuevo con el PDF de ejemplo en portugués (4,8 MB → baja 756 KB, recomendada 321 KB, fuerte 144 KB); también en francés (4,8 Mo → 750 / 319 / 144 Ko) y chino (4,5 MB → 644 / 265 / 117 KB) para sus guías.
+- Verificado: lint, typecheck, build, 1297 unitarios (62 de guías); Chromium guides + layout-shift + clickable (149) pasan.

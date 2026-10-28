@@ -7,6 +7,18 @@
     "width": 800,
     "height": 350
   },
+  "comprimir-pdf-resultado.fr": {
+    "width": 800,
+    "height": 350
+  },
+  "comprimir-pdf-resultado.pt": {
+    "width": 800,
+    "height": 350
+  },
+  "comprimir-pdf-resultado.zh": {
+    "width": 800,
+    "height": 350
+  },
   "excel-csv-opciones": {
     "width": 800,
     "height": 546
@@ -15,11 +27,35 @@
     "width": 800,
     "height": 588
   },
+  "excel-csv-opciones.fr": {
+    "width": 800,
+    "height": 588
+  },
+  "excel-csv-opciones.pt": {
+    "width": 800,
+    "height": 588
+  },
+  "excel-csv-opciones.zh": {
+    "width": 800,
+    "height": 546
+  },
   "firmar-pdf-colocar": {
     "width": 800,
     "height": 1405
   },
   "firmar-pdf-colocar.en": {
+    "width": 800,
+    "height": 1405
+  },
+  "firmar-pdf-colocar.fr": {
+    "width": 800,
+    "height": 1425
+  },
+  "firmar-pdf-colocar.pt": {
+    "width": 800,
+    "height": 1405
+  },
+  "firmar-pdf-colocar.zh": {
     "width": 800,
     "height": 1405
   },
@@ -31,11 +67,35 @@
     "width": 800,
     "height": 746
   },
+  "formatos-convertir.fr": {
+    "width": 800,
+    "height": 746
+  },
+  "formatos-convertir.pt": {
+    "width": 800,
+    "height": 746
+  },
+  "formatos-convertir.zh": {
+    "width": 800,
+    "height": 746
+  },
   "heic-convertir": {
     "width": 800,
     "height": 663
   },
   "heic-convertir.en": {
+    "width": 800,
+    "height": 663
+  },
+  "heic-convertir.fr": {
+    "width": 800,
+    "height": 663
+  },
+  "heic-convertir.pt": {
+    "width": 800,
+    "height": 663
+  },
+  "heic-convertir.zh": {
     "width": 800,
     "height": 663
   },
@@ -47,11 +107,35 @@
     "width": 800,
     "height": 878
   },
+  "leer-en-voz-alta.fr": {
+    "width": 800,
+    "height": 878
+  },
+  "leer-en-voz-alta.pt": {
+    "width": 800,
+    "height": 862
+  },
+  "leer-en-voz-alta.zh": {
+    "width": 800,
+    "height": 846
+  },
   "pdf-a-word-convertir": {
     "width": 800,
     "height": 567
   },
   "pdf-a-word-convertir.en": {
+    "width": 800,
+    "height": 547
+  },
+  "pdf-a-word-convertir.fr": {
+    "width": 800,
+    "height": 567
+  },
+  "pdf-a-word-convertir.pt": {
+    "width": 800,
+    "height": 567
+  },
+  "pdf-a-word-convertir.zh": {
     "width": 800,
     "height": 547
   },
@@ -63,11 +147,35 @@
     "width": 800,
     "height": 637
   },
+  "pdf-a-word-resultado.fr": {
+    "width": 800,
+    "height": 657
+  },
+  "pdf-a-word-resultado.pt": {
+    "width": 800,
+    "height": 657
+  },
+  "pdf-a-word-resultado.zh": {
+    "width": 800,
+    "height": 637
+  },
   "pdf-excel-vista-previa": {
     "width": 800,
     "height": 884
   },
   "pdf-excel-vista-previa.en": {
+    "width": 800,
+    "height": 884
+  },
+  "pdf-excel-vista-previa.fr": {
+    "width": 800,
+    "height": 884
+  },
+  "pdf-excel-vista-previa.pt": {
+    "width": 800,
+    "height": 884
+  },
+  "pdf-excel-vista-previa.zh": {
     "width": 800,
     "height": 884
   },
@@ -79,11 +187,35 @@
     "width": 800,
     "height": 426
   },
+  "pdfa-opciones.fr": {
+    "width": 800,
+    "height": 426
+  },
+  "pdfa-opciones.pt": {
+    "width": 800,
+    "height": 426
+  },
+  "pdfa-opciones.zh": {
+    "width": 800,
+    "height": 426
+  },
   "transcribir-resultado": {
     "width": 800,
     "height": 1012
   },
   "transcribir-resultado.en": {
+    "width": 800,
+    "height": 996
+  },
+  "transcribir-resultado.fr": {
+    "width": 800,
+    "height": 1012
+  },
+  "transcribir-resultado.pt": {
+    "width": 800,
+    "height": 996
+  },
+  "transcribir-resultado.zh": {
     "width": 800,
     "height": 996
   }

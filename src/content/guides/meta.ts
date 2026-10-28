@@ -76,6 +76,11 @@ export const guides: GuideMeta[] = [
         title: "How to convert a PDF to an editable Word document (and what to do with tables, scans and images)",
         description: "Convert a PDF to Word to edit it: what is kept, what changes and which tool to use if the PDF is scanned or what you need are its tables or images.",
       },
+      pt: {
+        slug: "como-converter-pdf-em-word",
+        title: "Como converter PDF em Word editável (e o que fazer com tabelas, digitalizações e imagens)",
+        description: "Converta um PDF em Word para editar: o que se mantém, o que muda e qual ferramenta usar se o PDF for digitalizado ou se você precisa das tabelas ou das imagens.",
+      },
     },
   },
   {
@@ -96,6 +101,11 @@ export const guides: GuideMeta[] = [
         slug: "jpg-vs-png-vs-webp-vs-avif",
         title: "JPG, PNG, WebP or AVIF: which one to use",
         description: "The differences between JPG, PNG, WebP and AVIF, with sizes measured on a photo and a screenshot: which suits photos, logos, transparency and websites.",
+      },
+      pt: {
+        slug: "jpg-png-webp-ou-avif-qual-usar",
+        title: "JPG, PNG, WebP ou AVIF: qual usar em cada caso",
+        description: "As diferenças entre JPG, PNG, WebP e AVIF, com tamanhos medidos numa foto e numa captura de tela: qual serve para fotos, logotipos, transparência e sites.",
       },
     },
   },
@@ -118,6 +128,11 @@ export const guides: GuideMeta[] = [
         title: "How to reduce a PDF's size to send it by email or WhatsApp",
         description: "What makes a PDF heavy and how to shrink it while keeping it readable: measured compression levels, what to do if it won't shrink and how small it should be.",
       },
+      pt: {
+        slug: "como-diminuir-tamanho-de-pdf",
+        title: "Como diminuir o tamanho de um PDF para enviar por e-mail ou WhatsApp",
+        description: "O que deixa um PDF pesado e como reduzi-lo sem perder a legibilidade: níveis de compressão medidos, o que fazer se não diminuir e quanto ele deve pesar.",
+      },
     },
   },
   {
@@ -138,6 +153,11 @@ export const guides: GuideMeta[] = [
         slug: "how-to-convert-iphone-heic-photos-to-jpg",
         title: "How to convert iPhone HEIC photos to JPG",
         description: "What HEIC is, how to convert iPhone photos to JPG without uploading them and how to make the iPhone take or transfer photos in a compatible format.",
+      },
+      pt: {
+        slug: "como-converter-fotos-heic-do-iphone-para-jpg",
+        title: "Como converter fotos HEIC do iPhone para JPG",
+        description: "O que é HEIC, como converter as fotos do iPhone para JPG sem enviá-las à internet e como fazer o iPhone tirar ou transferir fotos num formato compatível.",
       },
     },
   },
@@ -160,6 +180,11 @@ export const guides: GuideMeta[] = [
         title: "How to convert a table from a PDF to Excel",
         description: "Extract the table from a statement, an invoice or a price list in PDF to Excel with real numbers: preview, decimal separators and scanned PDFs.",
       },
+      pt: {
+        slug: "como-passar-tabela-de-pdf-para-excel",
+        title: "Como passar uma tabela de PDF para o Excel",
+        description: "Passe a tabela de um extrato, uma nota fiscal ou uma lista de preços em PDF para o Excel com números de verdade: pré-visualização, vírgula decimal e PDFs digitalizados.",
+      },
     },
   },
   {
@@ -180,6 +205,11 @@ export const guides: GuideMeta[] = [
         slug: "csv-vs-excel-how-to-open-csv-correctly",
         title: "CSV vs Excel: differences and how to open a CSV correctly",
         description: "What sets a CSV apart from an Excel file, why Excel garbles accents or puts everything in one column, and how to open and save a CSV without losing data.",
+      },
+      pt: {
+        slug: "csv-ou-excel-diferencas-e-como-abrir-csv-com-acentos",
+        title: "CSV ou Excel: diferenças e como abrir um CSV sem estragar os acentos",
+        description: "O que diferencia um CSV de um arquivo do Excel, por que o Excel estraga os acentos ou põe tudo numa coluna, e como abrir e salvar um CSV sem perder dados.",
       },
     },
   },
@@ -202,6 +232,11 @@ export const guides: GuideMeta[] = [
         title: "How to transcribe audio or a voice message to text for free",
         description: "Turn a WhatsApp voice message, a recording or a video into text with Whisper in your browser, without uploading it: models, speed, typical errors and subtitles.",
       },
+      pt: {
+        slug: "como-transcrever-audio-para-texto",
+        title: "Como transcrever um áudio ou mensagem de voz para texto de graça",
+        description: "Transforme um áudio do WhatsApp, uma gravação ou um vídeo em texto com o Whisper no navegador, sem enviar o arquivo: modelos, velocidade, erros típicos e legendas.",
+      },
     },
   },
   {
@@ -222,6 +257,11 @@ export const guides: GuideMeta[] = [
         slug: "how-to-make-your-computer-read-text-aloud",
         title: "How to make your computer read a text or a PDF aloud",
         description: "The read-aloud features of Windows, Mac, iPhone and Android, and how to listen to a text, a PDF or a Word file with highlighting and MP3 download.",
+      },
+      pt: {
+        slug: "como-fazer-o-computador-ler-texto-em-voz-alta",
+        title: "Como fazer o computador ler um texto ou PDF em voz alta",
+        description: "Os recursos de leitura em voz alta do Windows, Mac, iPhone e Android, e como ouvir um texto, um PDF ou um Word com a frase destacada e download em MP3.",
       },
     },
   },
@@ -244,6 +284,11 @@ export const guides: GuideMeta[] = [
         title: "How to sign a PDF without printing it",
         description: "Put your handwritten signature on a PDF from a computer or a phone, without printing or scanning, and understand how it differs from a digital signature.",
       },
+      pt: {
+        slug: "como-assinar-pdf-sem-imprimir",
+        title: "Como assinar um PDF sem imprimir",
+        description: "Coloque a sua assinatura de próprio punho num PDF pelo computador ou celular, sem imprimir nem escanear, e entenda a diferença para uma assinatura digital.",
+      },
     },
   },
   {
@@ -264,6 +309,11 @@ export const guides: GuideMeta[] = [
         slug: "what-is-pdf-a",
         title: "What PDF/A is and when you need it",
         description: "What the PDF/A format is, who requires it, which version to choose (1b, 2b or 3b) and how to convert a PDF so it isn't rejected.",
+      },
+      pt: {
+        slug: "o-que-e-pdf-a",
+        title: "O que é PDF/A e quando ele é exigido",
+        description: "O que é o formato PDF/A, quem o exige, qual versão escolher (1b, 2b ou 3b) e como converter um PDF para que ele não seja recusado.",
       },
     },
   },
