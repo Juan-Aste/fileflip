@@ -3636,3 +3636,12 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Capturas en portugués, francés y chino tomadas de una vez (`node scripts/guides/screenshots.mjs --locale=pt,fr,zh`); las de francés y chino se usan en las tareas siguientes.
 - Comprimir PDF medido de nuevo con el PDF de ejemplo en portugués (4,8 MB → baja 756 KB, recomendada 321 KB, fuerte 144 KB); también en francés (4,8 Mo → 750 / 319 / 144 Ko) y chino (4,5 MB → 644 / 265 / 117 KB) para sus guías.
 - Verificado: lint, typecheck, build, 1297 unitarios (62 de guías); Chromium guides + layout-shift + clickable (149) pasan.
+
+## 2026-10-28 — Fase 10, tareas 10E.5c y 10E.5d (guías en francés y chino)
+- Las 10 guías en francés (`/fr/guides`, 978–1266 palabras) y en chino simplificado (`/zh/guides`, 1620–1782 caracteres; slugs en inglés como las herramientas en chino), con las capturas de su idioma tomadas en la 10E.5b. Ya están las 10 guías en los 5 idiomas.
+  - Francés: menús de iPhone, Mac, Windows, Android y Excel en francés; punto y coma y coma decimal para el Excel en francés; ejemplos con acentos franceses y código postal con cero inicial; tipografía según `messages/fr.json`.
+  - Chino: el CSV para Excel en chino con coma; aviso honesto de que nuestro lector de CSV no reconoce GBK (los CSV guardados por Excel en chino suelen estarlo) y cómo importarlos con la página de códigos 936 en Excel; número de identidad de 18 cifras como ejemplo de más de 15 dígitos; la guía de lectura en voz alta dice que la voz IA y el MP3 no existen para chino (como la herramienta); WeChat solo donde no se afirma nada que no podamos sostener.
+- Pendiente detectado (no es de esta fase): `src/lib/data/text.ts` no decodifica GBK; CSV a Excel muestra mal los CSV chinos en GBK. Anotado para una mejora futura.
+- `render.ts`: los títulos con caracteres chinos ya no generan ids con sus fragmentos latinos («30», «1b-2b-3b», que además empezaban con un dígito y no servían como selector CSS); usan `section-N`. Tests nuevos. El test de enlaces a guías planeadas ahora despublica una guía en el propio test (ya están todas publicadas).
+- Una guía china en `layout-shift`.
+- Verificado: lint, typecheck, build, 1317 unitarios; Chromium guides + layout-shift + clickable (172) pasan.

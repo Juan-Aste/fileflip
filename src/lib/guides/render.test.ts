@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { guideById } from "@/content/guides/meta";
 import { headingId, renderGuide, resolveGuideHref } from "./render";
 
 describe("headingId", () => {
@@ -6,6 +7,8 @@ describe("headingId", () => {
     expect(headingId("Paso 1: elegir el archivo")).toBe("paso-1-elegir-el-archivo");
     expect(headingId("¿Qué es PDF/A?")).toBe("que-es-pdf-a");
     expect(headingId("怎么做")).toBe("");
+    expect(headingId("30 分钟以上的音频")).toBe("");
+    expect(headingId("PDF/A 是什么")).toBe("");
   });
 });
 
@@ -74,7 +77,15 @@ describe("renderGuide", () => {
   });
 
   it("leaves links to planned guides as text until they are published", () => {
-    expect(renderGuide("[la guía](guide:pdf-a)", "zh").html).toBe("<p>la guía</p>\n");
+    // Every planned guide is published now: unpublish one for the test.
+    const guide = guideById("pdf-a")!;
+    const zh = guide.versions.zh;
+    delete guide.versions.zh;
+    try {
+      expect(renderGuide("[la guía](guide:pdf-a)", "zh").html).toBe("<p>la guía</p>\n");
+    } finally {
+      guide.versions.zh = zh;
+    }
   });
 
   it("fails on broken links and unknown screenshots", () => {

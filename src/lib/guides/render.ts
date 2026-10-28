@@ -38,8 +38,12 @@ export const shotSrc = (name: string) => `/guides/${name}.webp`;
 const escapeHtml = (text: string) =>
   text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
 
-/** "Paso 1: elegir el archivo" → "paso-1-elegir-el-archivo"; "" for text without Latin letters. */
+/**
+ * "Paso 1: elegir el archivo" → "paso-1-elegir-el-archivo"; "" for Chinese
+ * headings (their Latin fragments alone, like "30" or "pdf", make poor ids).
+ */
 export function headingId(text: string): string {
+  if (/\p{Script=Han}/u.test(text)) return "";
   return text
     .normalize("NFD")
     .replace(/[̀-ͯ]/g, "")
