@@ -6,7 +6,7 @@ import { AllToolsView, CategoryView } from "@/components/catalog/CatalogViews";
 import Converter from "@/components/converter/Converter";
 import ProcessingBadge from "@/components/converter/ProcessingBadge";
 import CreditsPage from "@/components/legal/CreditsPage";
-import ToolComponent from "@/components/tools/ToolComponent";
+import ToolBlock from "@/components/tools/ToolBlock";
 import { Cloud, ShieldCheck } from "lucide-react";
 import ToolIcon from "@/components/tools/ToolIcon";
 import FaqList from "@/components/ui/FaqList";
@@ -257,7 +257,7 @@ async function ToolView({ tool }: { tool: ToolInfo }) {
           <p className="max-w-xl text-lg text-muted text-pretty">{t("description")}</p>
           <ProcessingBadge engine={tool.engine} />
         </PageHero>
-        <ToolComponent id={tool.id} />
+        <ToolBlock id={tool.id} />
       </div>
 
       <section aria-labelledby="about" className="flex flex-col gap-3">
@@ -423,7 +423,7 @@ async function LongtailView({ page }: { page: LongtailPage }) {
           <div className="flex justify-center">
             <ProcessingBadge engine={tools[widget.tool].engine} />
           </div>
-          <ToolComponent id={widget.tool} />
+          <ToolBlock id={widget.tool} />
         </div>
       )}
       {page.sections.map((section) => (

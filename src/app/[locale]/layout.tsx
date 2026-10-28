@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { clientMessages } from "@/i18n/client-messages";
 import { routing } from "@/i18n/routing";
 import { siteUrl } from "@/lib/seo";
 import VisitBeacon from "@/components/analytics/VisitBeacon";
@@ -48,6 +49,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
 
   const t = await getTranslations({ locale, namespace: "Common" });
+  const messages = await getMessages();
 
   return (
     // The theme script toggles the `dark` class before hydration.
@@ -70,7 +72,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         ) : null}
       </head>
       <body className="flex min-h-screen flex-col antialiased">
-        <NextIntlClientProvider>
+        <NextIntlClientProvider messages={clientMessages(messages)}>
           <SessionInfoProvider>
           <a
             href="#main"
