@@ -628,6 +628,70 @@
         "a3": "Con un ritmo de 200 palabras por minuto, redondeado hacia arriba."
       }
     },
+    "case-converter": {
+      "title": "Convertir mayúsculas y minúsculas",
+      "description": "Pasa un texto a MAYÚSCULAS, minúsculas, Tipo Título, Tipo oración o aLtErNaDo al instante, con las reglas de cada idioma.",
+      "action": "Convertir",
+      "about": "Pega un texto escrito con el bloqueo de mayúsculas activado, un título todo en minúsculas o una lista de nombres, y cámbialo con un clic. «Tipo oración» pone mayúscula solo al principio de cada oración (también después de ¿ y ¡); «Tipo Título» pone mayúscula a cada palabra y, si lo dejas marcado, deja en minúscula los artículos, preposiciones y conjunciones cortas del idioma que elijas (de, la, y, of, the…), salvo la primera y la última palabra. Se respetan las reglas propias de cada idioma, como la i con punto del turco (İ) o la IJ del neerlandés. Si el resultado no te sirve, «Deshacer» devuelve el texto anterior.",
+      "faq": {
+        "q1": "¿Qué diferencia hay entre Tipo Título y Tipo oración?",
+        "a1": "Tipo oración deja todo en minúscula menos la primera letra de cada oración, que es lo que pide la ortografía del español para títulos y frases. Tipo Título pone mayúscula a cada palabra importante, como se acostumbra en inglés («The Lord of the Rings»).",
+        "q2": "¿Cambia los nombres propios a minúscula?",
+        "a2": "Sí: la herramienta no sabe qué palabra es un nombre propio, así que en minúsculas o Tipo oración «Madrid» pasa a «madrid». Revisa los nombres después de convertir.",
+        "q3": "¿Para qué sirve el idioma del texto?",
+        "a3": "Para elegir qué palabras cortas quedan en minúscula en Tipo Título y para aplicar reglas especiales: en turco la i minúscula pasa a İ con punto y en neerlandés «ijsland» pasa a «IJsland».",
+        "q4": "¿Se envía mi texto a algún servidor?",
+        "a4": "No. La conversión se hace en tu navegador y el texto no sale de tu dispositivo."
+      }
+    },
+    "compare-text": {
+      "title": "Comparar textos",
+      "description": "Compara dos textos y resalta las diferencias por línea y por palabra: qué se agregó, qué se quitó y qué cambió, en tu navegador.",
+      "action": "Comparar",
+      "about": "Pega la versión original a la izquierda y la nueva a la derecha (o abre dos archivos de texto) y verás línea por línea qué se quitó, en rojo y tachado, y qué se agregó, en verde. En las líneas que cambiaron se marcan solo las palabras distintas, así encuentras una coma o un número cambiado sin leer todo de nuevo. También puedes comparar palabra por palabra el texto completo, sin importar los saltos de línea, ignorar mayúsculas o espacios de más, y descargar las diferencias como archivo .diff, el formato que leen git y los programas de revisión.",
+      "faq": {
+        "q1": "¿Qué diferencia hay entre comparar por línea y por palabra?",
+        "a1": "Por línea sirve para listas, código, configuraciones o contratos con párrafos que no cambian de lugar: muestra cada línea con su número. Por palabra une todo el texto y marca las palabras distintas: es mejor para un párrafo reescrito donde cambiaron los saltos de línea.",
+        "q2": "¿Puedo comparar archivos Word o PDF?",
+        "a2": "Directamente no: compara texto. Copia el texto de cada documento y pégalo, o sácalo antes con «PDF a texto» y luego compáralo aquí.",
+        "q3": "¿Qué es el archivo .diff?",
+        "a3": "Es un «parche» en formato unificado: lista solo las líneas que cambiaron con 3 líneas de contexto. Lo leen git, los programas de revisión de código y el comando patch, que puede aplicar los cambios al texto original.",
+        "q4": "¿Se envían mis textos a algún servidor?",
+        "a4": "No. La comparación se hace en tu navegador con jsdiff y los textos no salen de tu dispositivo, así que puedes comparar contratos o documentos privados."
+      }
+    },
+    "remove-duplicate-lines": {
+      "title": "Quitar líneas duplicadas",
+      "description": "Elimina las líneas repetidas de una lista, quita las vacías, recorta espacios y ordena alfabéticamente, al instante y en tu navegador.",
+      "action": "Limpiar",
+      "about": "Pega una lista de correos, nombres, palabras clave o códigos y el resultado aparece al instante sin las líneas repetidas: se conserva la primera vez que aparece cada una, en el orden original. Puedes no distinguir mayúsculas (así «Ana» y «ana» cuentan como la misma), recortar los espacios del principio y del final que no se ven pero hacen que dos líneas parezcan distintas, quitar las líneas vacías y ordenar de la A a la Z o al revés con las reglas del idioma: las letras con tilde van junto a su letra y los números se ordenan por su valor («item 2» antes que «item 10»). Debajo se indica cuántas líneas se quitaron.",
+      "faq": {
+        "q1": "¿Cuál de las líneas repetidas se conserva?",
+        "a1": "La primera, en el lugar donde aparece. Si no distingues mayúsculas, queda escrita como en esa primera aparición.",
+        "q2": "¿Por qué dos líneas iguales no se detectan como duplicadas?",
+        "a2": "Suele ser por espacios invisibles al principio o al final, o por mayúsculas distintas. Deja marcada «Recortar espacios» y marca «No distinguir mayúsculas de minúsculas».",
+        "q3": "¿Cómo ordena las palabras con tilde o ñ?",
+        "a3": "Con el orden alfabético del idioma de la página: «árbol» va junto a «arbusto» y no al final, la ñ va después de la n, y los números dentro del texto se comparan por su valor.",
+        "q4": "¿Se sube mi lista a algún servidor?",
+        "a4": "No. Todo se hace en tu navegador y la lista no sale de tu dispositivo, así que puedes limpiar listas de correos o de clientes sin compartirlas."
+      }
+    },
+    "lorem-ipsum": {
+      "title": "Generador de Lorem ipsum",
+      "description": "Genera texto de relleno Lorem ipsum por párrafos, oraciones o palabras, como texto o HTML, para maquetas y diseños.",
+      "action": "Generar",
+      "about": "El Lorem ipsum es el texto de relleno que se usa desde hace décadas en diseño e imprenta para ver cómo queda una página antes de tener el texto real: parece latín, así que no distrae, pero no significa nada. Viene de un pasaje de Cicerón («De finibus bonorum et malorum») recortado y desordenado. Elige cuántos párrafos, oraciones o palabras quieres, si debe empezar con el clásico «Lorem ipsum dolor sit amet…» y si lo quieres en párrafos HTML (etiquetas p) para pegarlo en una página web. Cada vez que generas sale un texto distinto.",
+      "faq": {
+        "q1": "¿Qué significa Lorem ipsum?",
+        "a1": "Nada: son palabras latinas de un texto de Cicerón cortadas y mezcladas. «Dolorem ipsum» significa «el dolor mismo», pero el texto de relleno no tiene sentido a propósito, para que se mire el diseño y no el contenido.",
+        "q2": "¿Cuánto texto puedo generar?",
+        "a2": "Hasta 100 párrafos, 500 oraciones o 10.000 palabras de una vez.",
+        "q3": "¿Para qué sirve la opción HTML?",
+        "a3": "Pone cada párrafo dentro de etiquetas p de HTML, listo para pegar en el código de una página web o en un editor que acepte HTML.",
+        "q4": "¿Puedo usarlo sin citar la fuente?",
+        "a4": "Sí. El texto de Cicerón es de dominio público y el texto se genera en tu navegador, sin restricciones de uso."
+      }
+    },
     "color-converter": {
       "title": "Conversor de colores",
       "description": "Convierte colores entre HEX, RGB, HSL y OKLCH y comprueba el contraste para accesibilidad (WCAG).",
@@ -2467,11 +2531,51 @@
       "upper": "MAYÚSCULAS",
       "lower": "minúsculas",
       "title": "Tipo Título",
-      "sentence": "Tipo oración"
+      "sentence": "Tipo oración",
+      "alternating": "aLtErNaDo",
+      "inverse": "iNVERTIR"
     },
     "copy": "Copiar texto",
     "copied": "Copiado",
-    "download": "Descargar .txt"
+    "download": "Descargar .txt",
+    "textLanguage": "Idioma del texto",
+    "smallWords": "Tipo Título: dejar en minúscula artículos, preposiciones y conjunciones cortas",
+    "undo": "Deshacer",
+    "countWords": "Contar palabras",
+    "textA": "Texto original",
+    "textB": "Texto nuevo",
+    "compareBy": "Comparar por",
+    "byLine": "Líneas",
+    "byWord": "Palabras",
+    "ignoreCase": "No distinguir mayúsculas de minúsculas",
+    "ignoreWhitespace": "Ignorar espacios de más",
+    "compare": "Comparar",
+    "swap": "Intercambiar",
+    "differences": "Diferencias",
+    "identical": "Los textos son iguales.",
+    "lineSummary": "{changed, plural, =0 {Ninguna línea cambiada} one {# línea cambiada} other {# líneas cambiadas}}, {added, plural, =0 {ninguna agregada} one {# agregada} other {# agregadas}} y {removed, plural, =0 {ninguna eliminada} one {# eliminada} other {# eliminadas}}.",
+    "wordSummary": "{added, plural, =0 {Ninguna palabra agregada} one {# palabra agregada} other {# palabras agregadas}} y {removed, plural, =0 {ninguna eliminada} one {# eliminada} other {# eliminadas}}.",
+    "tooDifferent": "Los textos son demasiado distintos para compararlos línea por línea. Prueba con partes más cortas.",
+    "removedWord": "eliminado:",
+    "addedWord": "agregado:",
+    "removedLine": "Línea eliminada:",
+    "addedLine": "Línea agregada:",
+    "downloadDiff": "Descargar .diff",
+    "removeDuplicates": "Quitar líneas duplicadas",
+    "trimLines": "Recortar espacios al principio y al final",
+    "removeEmpty": "Quitar líneas vacías",
+    "sort": "Ordenar",
+    "sortNone": "Sin ordenar",
+    "sortAsc": "A → Z",
+    "sortDesc": "Z → A",
+    "lineResult": "{before, plural, one {# línea} other {# líneas}} → {after, plural, one {# línea} other {# líneas}} ({duplicates, plural, one {# duplicada quitada} other {# duplicadas quitadas}}, {empty, plural, one {# vacía} other {# vacías}}).",
+    "result": "Resultado",
+    "loremUnit": "Generar",
+    "startWithLorem": "Empezar con «Lorem ipsum dolor sit amet…»",
+    "asHtml": "En párrafos HTML (etiquetas p)",
+    "generate": "Generar texto",
+    "regenerate": "Generar otro",
+    "downloadHtml": "Descargar .html"
   },
   "UtilityTools": {
     "copied": "Copiado",

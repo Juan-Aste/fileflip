@@ -46,6 +46,7 @@ Licencias leídas del `package.json` de cada paquete instalado (2026-10-20). La 
 | parse5 | 8.0.1 | MIT | Parser HTML5 en el servidor: sanea el HTML de "HTML a PDF" antes de imprimirlo | S |
 | marked | 18.1.1 | MIT | Markdown (CommonMark + GFM) → HTML (en el navegador para Markdown → HTML; en el servidor para Markdown → PDF) | N + S (en el navegador, chunk de la herramienta con import diferido) |
 | dompurify | 3.4.17 | MPL-2.0 OR Apache-2.0 (se usa bajo Apache-2.0) | sanea el HTML generado (sin scripts, eventos, formularios ni `javascript:`) | N (ídem) |
+| diff (jsdiff) | 9.0.0 | BSD-3-Clause (sin dependencias) | diferencias por línea y por palabra (con `Intl.Segmenter`, también en chino) y el parche unificado `.diff` en "Comparar textos" | N (chunk de la herramienta con import diferido) |
 | turndown, turndown-plugin-gfm | 7.2.4 / 1.0.2 | MIT (dep. @mixmark-io/domino BSD-2-Clause, solo en Node: el build del navegador la excluye) | HTML → Markdown con tablas, tachado y listas de tareas | N (ídem) |
 | pdf-lib | 1.17.1 | MIT | crear y editar PDF | N (worker) |
 | @neslinesli93/qpdf-wasm | 0.3.0 | ISC (motor qpdf 12.2: Apache-2.0) | cifrar (AES-256) y descifrar PDF con contraseña; WASM de 1,3 MB que solo descargan "Proteger PDF" y "Quitar contraseña" | N (worker de PDF, import diferido) |

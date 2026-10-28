@@ -1019,6 +1019,17 @@
       "direct": false
     },
     {
+      "name": "diff",
+      "version": "9.0.0",
+      "license": "BSD-3-Clause",
+      "author": "Kevin Decker",
+      "url": "https://github.com/kpdecker/jsdiff",
+      "where": [
+        "browser"
+      ],
+      "direct": true
+    },
+    {
       "name": "dijkstrajs",
       "version": "1.0.3",
       "license": "MIT",

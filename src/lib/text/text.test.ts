@@ -75,4 +75,29 @@ describe("text stats", () => {
     expect(changeCase("el ÁRBOL de josé-luis", "title", "es")).toBe("El Árbol De José-Luis");
     expect(changeCase("HOLA. ¿QUÉ TAL? «bien» gracias", "sentence", "es")).toBe("Hola. ¿Qué tal? «Bien» gracias");
   });
+
+  it("title case keeps the small words of each language in lower case", () => {
+    const title = (text: string, locale: string) => changeCase(text, "title", locale, { smallWords: true });
+    expect(title("el señor de los anillos: la comunidad del anillo", "es")).toBe("El Señor de los Anillos: La Comunidad del Anillo");
+    expect(title("THE LORD OF THE RINGS", "en")).toBe("The Lord of the Rings");
+    expect(title("what are you looking at", "en")).toBe("What Are You Looking At");
+    expect(title("o nome da rosa", "pt-BR")).toBe("O Nome da Rosa");
+    expect(title("le petit prince et la rose", "fr")).toBe("Le Petit Prince et la Rose");
+    expect(title("ijsland en de zee", "nl")).toBe("IJsland en de Zee");
+    // Without the option every word is capitalized (as Word's "Capitalize Each Word").
+    expect(changeCase("the lord of the rings", "title", "en")).toBe("The Lord Of The Rings");
+  });
+
+  it("follows the casing rules of the language", () => {
+    expect(changeCase("istanbul", "upper", "tr")).toBe("İSTANBUL");
+    expect(changeCase("istanbul", "upper", "en")).toBe("ISTANBUL");
+    expect(changeCase("İZMİR", "lower", "tr")).toBe("izmir");
+  });
+
+  it("alternates letters and inverts case, leaving other characters alone", () => {
+    expect(changeCase("hola, mundo 2024!", "alternating", "es")).toBe("hOlA, mUnDo 2024!");
+    expect(changeCase("Ñandú ABC def", "inverse", "es")).toBe("ñANDÚ abc DEF");
+    expect(changeCase("emoji 👍🏽 ok", "alternating", "en")).toBe("eMoJi 👍🏽 Ok");
+    expect(changeCase("中文 abc", "inverse", "zh")).toBe("中文 ABC");
+  });
 });

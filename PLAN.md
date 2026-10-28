@@ -440,9 +440,9 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 - [x] 10A.5 Unir Excel (varios archivos u hojas en un libro, o todas las hojas apiladas en una) y Separar hojas (cada hoja a un archivo, en ZIP); páginas en 5 idiomas; tests
 
 ### 10B Utilidades de texto
-- [ ] 10B.1 Convertir mayúsculas/minúsculas (MAYÚSCULAS, minúsculas, Tipo Título según el idioma, Tipo oración, alternar); tests
-- [ ] 10B.2 Comparar dos textos (diferencias por línea y por palabra, resaltadas; jsdiff BSD-3); tests
-- [ ] 10B.3 Quitar líneas duplicadas (ordenar, quitar vacías, recortar espacios) y generador de lorem ipsum; enlaces con el contador de palabras; tests
+- [x] 10B.1 Convertir mayúsculas/minúsculas (MAYÚSCULAS, minúsculas, Tipo Título según el idioma, Tipo oración, alternar); tests
+- [x] 10B.2 Comparar dos textos (diferencias por línea y por palabra, resaltadas; jsdiff BSD-3); tests
+- [x] 10B.3 Quitar líneas duplicadas (ordenar, quitar vacías, recortar espacios) y generador de lorem ipsum; enlaces con el contador de palabras; tests
 
 ### 10C Editar y rellenar PDF
 - [ ] 10C.1 Editar PDF: visor con miniaturas y zoom, agregar texto (fuente, tamaño, color), resaltar, mano alzada, formas, tapar, imagen; deshacer/rehacer; táctil

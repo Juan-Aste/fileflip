@@ -628,6 +628,70 @@
         "a3": "At 200 words per minute, rounded up."
       }
     },
+    "case-converter": {
+      "title": "Case converter",
+      "description": "Change text to UPPER CASE, lower case, Title Case, Sentence case or aLtErNaTiNg case instantly, following each language's rules.",
+      "action": "Convert",
+      "about": "Paste text typed with Caps Lock on, a heading in all lower case or a list of names, and change it with one click. Sentence case capitalizes only the first letter of each sentence; Title Case capitalizes every word and, if you leave the option on, keeps short articles, prepositions and conjunctions of the chosen language in lower case (of, the, and, de, la…) except for the first and last word, as most English style guides do. Language-specific rules are respected, such as the dotted capital İ in Turkish and the Dutch IJ. If you don't like the result, Undo brings back the previous text.",
+      "faq": {
+        "q1": "Which style of title case does it use?",
+        "a1": "Major words are capitalized; articles, coordinating conjunctions and prepositions of up to four letters stay in lower case unless they are the first or last word or follow a colon. Turn the option off to capitalize every word.",
+        "q2": "Does it change proper nouns to lower case?",
+        "a2": "Yes: the tool can't tell which words are names, so lower case or Sentence case turns \"London\" into \"london\". Check names after converting.",
+        "q3": "What is the text language for?",
+        "a3": "It chooses which short words stay in lower case in Title Case and applies special rules: in Turkish a lower-case i becomes a dotted İ, and in Dutch \"ijsland\" becomes \"IJsland\".",
+        "q4": "Is my text sent to a server?",
+        "a4": "No. The conversion runs in your browser and the text never leaves your device."
+      }
+    },
+    "compare-text": {
+      "title": "Compare text",
+      "description": "Compare two texts and highlight the differences by line and by word: what was added, removed and changed, in your browser.",
+      "action": "Compare",
+      "about": "Paste the original version on the left and the new one on the right (or open two text files) and see line by line what was removed, in red and struck through, and what was added, in green. In lines that changed only the different words are marked, so you can spot a changed comma or number without reading everything again. You can also compare the whole text word by word regardless of line breaks, ignore case or extra spaces, and download the differences as a .diff file, the format git and review tools read.",
+      "faq": {
+        "q1": "What is the difference between comparing by line and by word?",
+        "a1": "By line suits lists, code, settings or contracts whose paragraphs stay in place: every line is shown with its number. By word joins the whole text and marks the words that differ: better for a rewritten paragraph whose line breaks moved.",
+        "q2": "Can I compare Word or PDF files?",
+        "a2": "Not directly: it compares text. Copy the text of each document and paste it, or extract it first with \"PDF to text\" and then compare it here.",
+        "q3": "What is the .diff file?",
+        "a3": "A patch in unified format: it lists only the changed lines with 3 lines of context. git, code review tools and the patch command read it, and patch can apply the changes to the original text.",
+        "q4": "Are my texts sent to a server?",
+        "a4": "No. The comparison runs in your browser with jsdiff and the texts never leave your device, so you can compare contracts or private documents."
+      }
+    },
+    "remove-duplicate-lines": {
+      "title": "Remove duplicate lines",
+      "description": "Remove repeated lines from a list, drop empty ones, trim spaces and sort alphabetically, instantly and in your browser.",
+      "action": "Clean",
+      "about": "Paste a list of emails, names, keywords or codes and the result appears instantly without the repeated lines: the first occurrence of each one is kept, in the original order. You can ignore case (so \"Ann\" and \"ann\" count as the same), trim the leading and trailing spaces that you can't see but make two lines look different, remove empty lines, and sort A to Z or the other way round using the language's rules: accented letters sort next to their base letter and numbers sort by value (\"item 2\" before \"item 10\"). Below it shows how many lines were removed.",
+      "faq": {
+        "q1": "Which of the repeated lines is kept?",
+        "a1": "The first one, where it appears. If you ignore case, it stays written as in that first occurrence.",
+        "q2": "Why aren't two identical lines detected as duplicates?",
+        "a2": "Usually because of invisible spaces at the start or end, or different capitalization. Keep \"Trim spaces\" on and turn on \"Ignore upper and lower case\".",
+        "q3": "How does it sort accented words?",
+        "a3": "With the alphabetical order of the page's language: \"éclair\" sorts next to \"eclipse\", not at the end, and numbers inside the text are compared by value.",
+        "q4": "Is my list uploaded to a server?",
+        "a4": "No. Everything happens in your browser and the list never leaves your device, so you can clean lists of emails or customers without sharing them."
+      }
+    },
+    "lorem-ipsum": {
+      "title": "Lorem ipsum generator",
+      "description": "Generate Lorem ipsum placeholder text by paragraphs, sentences or words, as plain text or HTML, for mockups and layouts.",
+      "action": "Generate",
+      "about": "Lorem ipsum is the placeholder text designers and printers have used for decades to see how a page looks before the real copy exists: it looks like Latin, so it doesn't distract, but it means nothing. It comes from a passage by Cicero (\"De finibus bonorum et malorum\"), cut and scrambled. Choose how many paragraphs, sentences or words you need, whether it should start with the classic \"Lorem ipsum dolor sit amet…\", and whether you want HTML paragraphs (p tags) to paste into a web page. Each time you generate you get a different text.",
+      "faq": {
+        "q1": "What does Lorem ipsum mean?",
+        "a1": "Nothing: they are Latin words from a text by Cicero, cut and mixed up. \"Dolorem ipsum\" means \"pain itself\", but the placeholder text makes no sense on purpose, so that people look at the design and not the content.",
+        "q2": "How much text can I generate?",
+        "a2": "Up to 100 paragraphs, 500 sentences or 10,000 words at a time.",
+        "q3": "What is the HTML option for?",
+        "a3": "It wraps each paragraph in HTML p tags, ready to paste into a web page's code or an editor that accepts HTML.",
+        "q4": "Can I use it without crediting anyone?",
+        "a4": "Yes. Cicero's text is in the public domain and the text is generated in your browser, with no restrictions on use."
+      }
+    },
     "color-converter": {
       "title": "Color converter",
       "description": "Convert colors between HEX, RGB, HSL and OKLCH and check accessibility contrast (WCAG).",
@@ -2467,11 +2531,51 @@
       "upper": "UPPER CASE",
       "lower": "lower case",
       "title": "Title Case",
-      "sentence": "Sentence case"
+      "sentence": "Sentence case",
+      "alternating": "aLtErNaTiNg",
+      "inverse": "iNVERSE"
     },
     "copy": "Copy text",
     "copied": "Copied",
-    "download": "Download .txt"
+    "download": "Download .txt",
+    "textLanguage": "Text language",
+    "smallWords": "Title Case: keep short articles, prepositions and conjunctions in lower case",
+    "undo": "Undo",
+    "countWords": "Count words",
+    "textA": "Original text",
+    "textB": "New text",
+    "compareBy": "Compare by",
+    "byLine": "Lines",
+    "byWord": "Words",
+    "ignoreCase": "Ignore upper and lower case",
+    "ignoreWhitespace": "Ignore extra spaces",
+    "compare": "Compare",
+    "swap": "Swap",
+    "differences": "Differences",
+    "identical": "The texts are identical.",
+    "lineSummary": "{changed, plural, =0 {No lines changed} one {# line changed} other {# lines changed}}, {added, plural, =0 {none added} other {# added}} and {removed, plural, =0 {none removed} other {# removed}}.",
+    "wordSummary": "{added, plural, =0 {No words added} one {# word added} other {# words added}} and {removed, plural, =0 {none removed} other {# removed}}.",
+    "tooDifferent": "The texts are too different to compare line by line. Try shorter parts.",
+    "removedWord": "removed:",
+    "addedWord": "added:",
+    "removedLine": "Removed line:",
+    "addedLine": "Added line:",
+    "downloadDiff": "Download .diff",
+    "removeDuplicates": "Remove duplicate lines",
+    "trimLines": "Trim spaces at the start and end",
+    "removeEmpty": "Remove empty lines",
+    "sort": "Sort",
+    "sortNone": "Don't sort",
+    "sortAsc": "A → Z",
+    "sortDesc": "Z → A",
+    "lineResult": "{before, plural, one {# line} other {# lines}} → {after, plural, one {# line} other {# lines}} ({duplicates, plural, one {# duplicate removed} other {# duplicates removed}}, {empty} empty).",
+    "result": "Result",
+    "loremUnit": "Generate",
+    "startWithLorem": "Start with \"Lorem ipsum dolor sit amet…\"",
+    "asHtml": "As HTML paragraphs (p tags)",
+    "generate": "Generate text",
+    "regenerate": "Generate another",
+    "downloadHtml": "Download .html"
   },
   "UtilityTools": {
     "copied": "Copied",

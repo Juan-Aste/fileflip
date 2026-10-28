@@ -628,6 +628,70 @@
         "a3": "Sur la base de 200 mots par minute, arrondi au supérieur."
       }
     },
+    "case-converter": {
+      "title": "Convertir majuscules et minuscules",
+      "description": "Passez un texte en MAJUSCULES, minuscules, Casse De Titre, casse de phrase ou aLtErNéE instantanément, selon les règles de chaque langue.",
+      "action": "Convertir",
+      "about": "Collez un texte tapé avec la touche Verr. Maj activée, un titre tout en minuscules ou une liste de noms, et changez-le en un clic. La casse de phrase ne garde une majuscule qu'au début de chaque phrase ; la Casse De Titre met une majuscule à chaque mot et, si l'option reste cochée, laisse en minuscules les articles, prépositions et conjonctions courtes de la langue choisie (le, de, et, of, the…), sauf le premier et le dernier mot. Les règles propres à chaque langue sont respectées, comme le İ pointé du turc et le IJ du néerlandais. Si le résultat ne convient pas, « Annuler » rétablit le texte précédent.",
+      "faq": {
+        "q1": "Quelle différence entre Casse De Titre et casse de phrase ?",
+        "a1": "La casse de phrase met tout en minuscules sauf la première lettre de chaque phrase, ce que recommande l'usage français pour les titres. La Casse De Titre met une majuscule à chaque mot important, comme on le fait en anglais (« The Lord of the Rings »).",
+        "q2": "Les noms propres passent-ils en minuscules ?",
+        "a2": "Oui : l'outil ne sait pas quels mots sont des noms, donc en minuscules ou en casse de phrase « Paris » devient « paris ». Vérifiez les noms après la conversion.",
+        "q3": "À quoi sert la langue du texte ?",
+        "a3": "À choisir quels petits mots restent en minuscules en Casse De Titre et à appliquer des règles particulières : en turc le i minuscule devient un İ pointé, et en néerlandais « ijsland » devient « IJsland ».",
+        "q4": "Mon texte est-il envoyé à un serveur ?",
+        "a4": "Non. La conversion se fait dans votre navigateur et le texte ne quitte pas votre appareil."
+      }
+    },
+    "compare-text": {
+      "title": "Comparer des textes",
+      "description": "Comparez deux textes et surlignez les différences ligne par ligne et mot par mot : ce qui a été ajouté, supprimé et modifié, dans votre navigateur.",
+      "action": "Comparer",
+      "about": "Collez la version d'origine à gauche et la nouvelle à droite (ou ouvrez deux fichiers texte) pour voir ligne par ligne ce qui a été supprimé, en rouge et barré, et ce qui a été ajouté, en vert. Dans les lignes modifiées, seuls les mots différents sont marqués : vous repérez une virgule ou un chiffre changé sans tout relire. Vous pouvez aussi comparer tout le texte mot par mot sans tenir compte des retours à la ligne, ignorer la casse ou les espaces en trop, et télécharger les différences au format .diff, celui que lisent git et les outils de relecture.",
+      "faq": {
+        "q1": "Quelle différence entre comparer par ligne et par mot ?",
+        "a1": "Par ligne convient aux listes, au code, aux réglages ou aux contrats dont les paragraphes ne bougent pas : chaque ligne est affichée avec son numéro. Par mot réunit tout le texte et marque les mots différents : c'est mieux pour un paragraphe réécrit dont les retours à la ligne ont changé.",
+        "q2": "Puis-je comparer des fichiers Word ou PDF ?",
+        "a2": "Pas directement : l'outil compare du texte. Copiez le texte de chaque document et collez-le, ou extrayez-le d'abord avec « PDF en texte » puis comparez-le ici.",
+        "q3": "Qu'est-ce que le fichier .diff ?",
+        "a3": "Un correctif au format unifié : il ne liste que les lignes modifiées avec 3 lignes de contexte. git, les outils de relecture de code et la commande patch le lisent, et patch peut appliquer les modifications au texte d'origine.",
+        "q4": "Mes textes sont-ils envoyés à un serveur ?",
+        "a4": "Non. La comparaison se fait dans votre navigateur avec jsdiff et les textes ne quittent pas votre appareil : vous pouvez comparer des contrats ou des documents privés."
+      }
+    },
+    "remove-duplicate-lines": {
+      "title": "Supprimer les lignes en double",
+      "description": "Supprimez les lignes répétées d'une liste, retirez les lignes vides, coupez les espaces et triez par ordre alphabétique, instantanément et dans votre navigateur.",
+      "action": "Nettoyer",
+      "about": "Collez une liste d'adresses e-mail, de noms, de mots-clés ou de codes et le résultat apparaît aussitôt sans les lignes répétées : la première occurrence de chacune est conservée, dans l'ordre d'origine. Vous pouvez ignorer la casse (« Anne » et « anne » comptent alors comme la même ligne), couper les espaces de début et de fin qu'on ne voit pas mais qui rendent deux lignes différentes, supprimer les lignes vides et trier de A à Z ou l'inverse selon les règles de la langue : les lettres accentuées se rangent avec leur lettre de base et les nombres selon leur valeur (« item 2 » avant « item 10 »). En dessous s'affiche le nombre de lignes supprimées.",
+      "faq": {
+        "q1": "Laquelle des lignes répétées est conservée ?",
+        "a1": "La première, à l'endroit où elle apparaît. Si vous ignorez la casse, elle reste écrite comme lors de cette première occurrence.",
+        "q2": "Pourquoi deux lignes identiques ne sont-elles pas détectées comme doublons ?",
+        "a2": "Souvent à cause d'espaces invisibles au début ou à la fin, ou de majuscules différentes. Laissez « Couper les espaces » coché et cochez « Ignorer majuscules et minuscules ».",
+        "q3": "Comment sont triés les mots accentués ?",
+        "a3": "Selon l'ordre alphabétique de la langue de la page : « été » se range près de « étoile » et non à la fin, et les nombres dans le texte sont comparés selon leur valeur.",
+        "q4": "Ma liste est-elle envoyée à un serveur ?",
+        "a4": "Non. Tout se fait dans votre navigateur et la liste ne quitte pas votre appareil : vous pouvez nettoyer des listes d'e-mails ou de clients sans les partager."
+      }
+    },
+    "lorem-ipsum": {
+      "title": "Générateur de Lorem ipsum",
+      "description": "Générez du faux texte Lorem ipsum par paragraphes, phrases ou mots, en texte brut ou en HTML, pour vos maquettes.",
+      "action": "Générer",
+      "about": "Le Lorem ipsum est le faux texte qu'utilisent graphistes et imprimeurs depuis des décennies pour voir le rendu d'une page avant d'avoir le vrai texte : il ressemble à du latin, il ne distrait donc pas, mais il ne veut rien dire. Il vient d'un passage de Cicéron (« De finibus bonorum et malorum ») découpé et mélangé. Choisissez combien de paragraphes, de phrases ou de mots il vous faut, s'il doit commencer par le classique « Lorem ipsum dolor sit amet… » et si vous voulez des paragraphes HTML (balises p) à coller dans une page web. Chaque génération donne un texte différent.",
+      "faq": {
+        "q1": "Que signifie Lorem ipsum ?",
+        "a1": "Rien : ce sont des mots latins d'un texte de Cicéron coupés et mélangés. « Dolorem ipsum » signifie « la douleur elle-même », mais le faux texte n'a volontairement aucun sens, pour qu'on regarde la mise en page et non le contenu.",
+        "q2": "Combien de texte puis-je générer ?",
+        "a2": "Jusqu'à 100 paragraphes, 500 phrases ou 10 000 mots à la fois.",
+        "q3": "À quoi sert l'option HTML ?",
+        "a3": "Elle place chaque paragraphe dans des balises p HTML, prêt à coller dans le code d'une page web ou dans un éditeur qui accepte le HTML.",
+        "q4": "Puis-je l'utiliser sans citer de source ?",
+        "a4": "Oui. Le texte de Cicéron est dans le domaine public et le texte est généré dans votre navigateur, sans restriction d'usage."
+      }
+    },
     "color-converter": {
       "title": "Convertisseur de couleurs",
       "description": "Convertissez des couleurs entre HEX, RGB, HSL et OKLCH et vérifiez le contraste pour l’accessibilité (WCAG).",
@@ -2467,11 +2531,51 @@
       "upper": "MAJUSCULES",
       "lower": "minuscules",
       "title": "Casse De Titre",
-      "sentence": "Casse de phrase"
+      "sentence": "Casse de phrase",
+      "alternating": "aLtErNéE",
+      "inverse": "iNVERSER"
     },
     "copy": "Copier le texte",
     "copied": "Copié",
-    "download": "Télécharger .txt"
+    "download": "Télécharger .txt",
+    "textLanguage": "Langue du texte",
+    "smallWords": "Casse De Titre : laisser en minuscules les articles, prépositions et conjonctions courtes",
+    "undo": "Annuler",
+    "countWords": "Compter les mots",
+    "textA": "Texte d'origine",
+    "textB": "Nouveau texte",
+    "compareBy": "Comparer par",
+    "byLine": "Lignes",
+    "byWord": "Mots",
+    "ignoreCase": "Ignorer majuscules et minuscules",
+    "ignoreWhitespace": "Ignorer les espaces en trop",
+    "compare": "Comparer",
+    "swap": "Inverser",
+    "differences": "Différences",
+    "identical": "Les textes sont identiques.",
+    "lineSummary": "{changed, plural, =0 {Aucune ligne modifiée} one {# ligne modifiée} other {# lignes modifiées}}, {added, plural, =0 {aucune ajoutée} one {# ajoutée} other {# ajoutées}} et {removed, plural, =0 {aucune supprimée} one {# supprimée} other {# supprimées}}.",
+    "wordSummary": "{added, plural, =0 {Aucun mot ajouté} one {# mot ajouté} other {# mots ajoutés}} et {removed, plural, =0 {aucun supprimé} one {# supprimé} other {# supprimés}}.",
+    "tooDifferent": "Les textes sont trop différents pour être comparés ligne par ligne. Essayez avec des parties plus courtes.",
+    "removedWord": "supprimé :",
+    "addedWord": "ajouté :",
+    "removedLine": "Ligne supprimée :",
+    "addedLine": "Ligne ajoutée :",
+    "downloadDiff": "Télécharger le .diff",
+    "removeDuplicates": "Supprimer les lignes en double",
+    "trimLines": "Couper les espaces au début et à la fin",
+    "removeEmpty": "Supprimer les lignes vides",
+    "sort": "Trier",
+    "sortNone": "Sans tri",
+    "sortAsc": "A → Z",
+    "sortDesc": "Z → A",
+    "lineResult": "{before, plural, one {# ligne} other {# lignes}} → {after, plural, one {# ligne} other {# lignes}} ({duplicates, plural, one {# doublon supprimé} other {# doublons supprimés}}, {empty, plural, one {# vide} other {# vides}}).",
+    "result": "Résultat",
+    "loremUnit": "Générer",
+    "startWithLorem": "Commencer par « Lorem ipsum dolor sit amet… »",
+    "asHtml": "En paragraphes HTML (balises p)",
+    "generate": "Générer le texte",
+    "regenerate": "En générer un autre",
+    "downloadHtml": "Télécharger le .html"
   },
   "UtilityTools": {
     "copied": "Copié",
