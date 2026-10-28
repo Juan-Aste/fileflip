@@ -10,7 +10,8 @@ import images from "@/content/guides/images.json";
 //   [text](tool:compress-pdf)  → that tool's page in the guide's language
 //   [text](conv:pdf-docx)      → a conversion page (from-to)
 //   [text](guide:heic-to-jpg)  → another guide (plain text while it is only planned)
-//   ![alt](shot:name "caption") → /guides/name.webp with its size from images.json
+//   ![alt](shot:name "caption") → /guides/name.<locale>.webp (or name.webp, the Spanish
+//                                  one) with its size from images.json
 
 export interface GuideHeading {
   id: string;
@@ -109,7 +110,9 @@ export function renderGuide(markdown: string, locale: Locale): RenderedGuide {
         return `<a href="${escapeHtml(target)}"${titleAttr}${rel}>${inner}</a>`;
       },
       image({ href, title, text }: Tokens.Image) {
-        const name = href.replace(/^shot:/, "");
+        // The shot taken in the guide's language ("name.en"), else the Spanish one.
+        const base = href.replace(/^shot:/, "");
+        const name = imageInfo[`${base}.${locale}`] ? `${base}.${locale}` : base;
         const info = imageInfo[name];
         if (!href.startsWith("shot:") || !info) throw new Error(`Unknown guide screenshot: ${href}`);
         // The first one may be near the top: load it eagerly.

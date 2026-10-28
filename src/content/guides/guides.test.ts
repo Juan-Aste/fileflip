@@ -56,8 +56,10 @@ describe.each(guides)("guide $id", (guide) => {
     expect(r.words).toBeLessThanOrEqual(max);
     expect(r.toc.length).toBeGreaterThanOrEqual(3);
     if (guide.howTo) expect(r.steps.length).toBeGreaterThanOrEqual(3);
-    if (guide.image) expect(r.shots[0]).toBe(guide.image);
+    if (guide.image) expect(r.shots[0]?.split(".")[0]).toBe(guide.image);
     for (const shot of r.shots) {
+      // Screenshots of the page in the guide's own language.
+      if (l !== "es") expect(shot, "shot in the guide's language").toMatch(new RegExp(`\\.${l}$`));
       expect(existsSync(path.join("public", shotSrc(shot))), shot).toBe(true);
       expect((images as Record<string, unknown>)[shot]).toBeTruthy();
     }

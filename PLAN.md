@@ -462,7 +462,10 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 - [x] 10E.2 Guías 1–3 en español con capturas reales (Playwright), verificadas contra las herramientas
 - [x] 10E.3 Guías 4–7 en español
 - [x] 10E.4 Guías 8–10 en español
-- [ ] 10E.5 Traducción natural de las guías a en, pt, fr y zh
+- [x] 10E.5a Capturas por idioma (`scripts/guides/screenshots.mjs --locale=…`) y traducción natural de las 10 guías al inglés
+- [ ] 10E.5b Traducción de las guías al portugués (con capturas en portugués)
+- [ ] 10E.5c Traducción de las guías al francés (con capturas en francés)
+- [ ] 10E.5d Traducción de las guías al chino (con capturas en chino)
 
 ### 10F Verificación final
 - [ ] 10F.1 Lighthouse móvil ≥ 90 y CLS 0 en una página nueva de cada bloque (con AdSense de prueba), detector de clics, axe, Firefox y WebKit, suite de Chromium completa

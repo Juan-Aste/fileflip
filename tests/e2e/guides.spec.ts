@@ -1,73 +1,91 @@
 // Guides: index and articles render with their table of contents, breadcrumbs,
-// structured data and screenshots; every link works; axe in light and dark.
-import { guidePath, guides, guidesFor, guidesSlugs } from "../../src/content/guides/meta";
+// structured data and screenshots in every language they are published in;
+// every link works; the language switcher keeps the guide; axe in light and dark.
+import { readFileSync } from "node:fs";
+import { guideLocales, guidePath, guides, guidesFor, guidesSlugs } from "../../src/content/guides/meta";
+import { locales, type Locale } from "../../src/i18n/routing";
 import { axeViolations } from "./axe";
 import { expect, test } from "./support";
 
-const spanish = guidesFor("es");
-const articlePath = (id: string) => `/es${guidePath(guides.find((g) => g.id === id)!, "es")}`;
+type Labels = Record<string, string>;
+const labels = (l: Locale) => JSON.parse(readFileSync(`messages/${l}.json`, "utf8")) as { Guides: Labels; Footer: Labels; LocaleSwitcher: Labels };
+const articlePath = (id: string, l: Locale) => `/${l}${guidePath(guides.find((g) => g.id === id)!, l)}`;
 
-test("the index lists every guide and the footer links to it", async ({ page }) => {
-  await page.goto("/es", { waitUntil: "networkidle" });
-  await page.locator("footer").getByRole("link", { name: "Guías" }).click();
-  await expect(page).toHaveURL(new RegExp(`/es/${guidesSlugs.es}$`));
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Guías");
-  for (const guide of spanish) {
-    await expect(page.getByRole("link", { name: new RegExp(guide.versions.es!.title.slice(0, 30).replace(/[()]/g, ".")) })).toHaveAttribute("href", articlePath(guide.id));
-  }
-  // Languages without guides have no index.
-  expect((await page.request.get(`/en/${guidesSlugs.en}`)).status()).toBe(404);
-});
+for (const l of guideLocales) {
+  const m = labels(l);
+  const list = guidesFor(l);
 
-for (const guide of spanish) {
-  test(`guide ${guide.id}: contents, structured data, images and links${guide === spanish[0] ? " @xb" : ""}`, async ({ page }) => {
-    test.setTimeout(90_000);
-    const path = articlePath(guide.id);
-    await page.goto(path, { waitUntil: "networkidle" });
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(guide.versions.es!.title);
-    await expect(page.getByText("Por Equipo de Fileflect")).toBeVisible();
-
-    // Breadcrumbs back to the index.
-    await expect(page.getByRole("navigation", { name: "Ruta de navegación" }).getByRole("link", { name: "Guías" })).toHaveAttribute("href", `/es/${guidesSlugs.es}`);
-
-    // Every table-of-contents entry points to a heading of the article.
-    const toc = page.getByRole("navigation", { name: "En esta guía" }).getByRole("link");
-    expect(await toc.count()).toBeGreaterThanOrEqual(3);
-    for (const href of await toc.evaluateAll((links) => links.map((a) => a.getAttribute("href")!))) {
-      await expect(page.locator(`h2${href}`)).toHaveCount(1);
-    }
-
-    const types = await page.locator('script[type="application/ld+json"]').evaluateAll((s) => s.map((el) => JSON.parse(el.textContent!)["@type"]));
-    expect(types).toEqual(expect.arrayContaining(["Article", "BreadcrumbList", ...(guide.howTo ? ["HowTo"] : [])]));
-
-    // Screenshots load, with their size reserved.
-    const images = page.locator(".guide-body img");
-    expect(await images.count()).toBeGreaterThan(0);
-    for (const img of await images.all()) {
-      await img.scrollIntoViewIfNeeded();
-      await expect(img).toHaveAttribute("width", /\d+/);
-      await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth)).toBeGreaterThan(0);
-    }
-
-    // Every internal link of the article works.
-    const hrefs = await page.locator("main a[href^='/']").evaluateAll((links) => [...new Set(links.map((a) => a.getAttribute("href")!))]);
-    for (const href of hrefs) expect((await page.request.get(href)).status(), href).toBe(200);
+  test(`${l}: the index lists every guide and the footer links to it`, async ({ page }) => {
+    await page.goto(`/${l}`, { waitUntil: "networkidle" });
+    await page.locator("footer").getByRole("link", { name: m.Footer.guides }).click();
+    await expect(page).toHaveURL(new RegExp(`/${l}/${guidesSlugs[l]}$`));
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(m.Guides.indexTitle);
+    const hrefs = await page.locator("main ul a").evaluateAll((links) => links.map((a) => a.getAttribute("href")));
+    expect(hrefs).toEqual(list.map((g) => articlePath(g.id, l)));
   });
+
+  for (const guide of list) {
+    test(`${l}: guide ${guide.id}: contents, structured data, images and links${guide === list[0] ? " @xb" : ""}`, async ({ page }) => {
+      test.setTimeout(90_000);
+      await page.goto(articlePath(guide.id, l), { waitUntil: "networkidle" });
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(guide.versions[l]!.title);
+      await expect(page.getByText(m.Guides.byline.replace("{author}", m.Guides.author))).toBeVisible();
+
+      // Breadcrumbs back to the index.
+      await expect(page.getByRole("navigation", { name: m.Guides.breadcrumb }).getByRole("link", { name: m.Guides.indexTitle })).toHaveAttribute("href", `/${l}/${guidesSlugs[l]}`);
+
+      // Every table-of-contents entry points to a heading of the article.
+      const toc = page.getByRole("navigation", { name: m.Guides.contents }).getByRole("link");
+      expect(await toc.count()).toBeGreaterThanOrEqual(3);
+      for (const href of await toc.evaluateAll((links) => links.map((a) => a.getAttribute("href")!))) {
+        await expect(page.locator(`h2${href}`)).toHaveCount(1);
+      }
+
+      const types = await page.locator('script[type="application/ld+json"]').evaluateAll((s) => s.map((el) => JSON.parse(el.textContent!)["@type"]));
+      expect(types).toEqual(expect.arrayContaining(["Article", "BreadcrumbList", ...(guide.howTo ? ["HowTo"] : [])]));
+
+      // Screenshots load, with their size reserved, taken in this language.
+      const images = page.locator(".guide-body img");
+      expect(await images.count()).toBeGreaterThan(0);
+      for (const img of await images.all()) {
+        await img.scrollIntoViewIfNeeded();
+        await expect(img).toHaveAttribute("width", /\d+/);
+        if (l !== "es") await expect(img).toHaveAttribute("src", new RegExp(`\\.${l}\\.webp$`));
+        await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth)).toBeGreaterThan(0);
+      }
+
+      // Every internal link of the article works.
+      const hrefs = await page.locator("main a[href^='/']").evaluateAll((links) => [...new Set(links.map((a) => a.getAttribute("href")!))]);
+      for (const href of hrefs) expect((await page.request.get(href)).status(), href).toBe(200);
+    });
+  }
 }
 
-test("a guide in another language goes to that language's home while it is not translated", async ({ page }) => {
-  await page.goto(articlePath(spanish[0].id), { waitUntil: "networkidle" });
-  await page.getByRole("combobox", { name: "Idioma" }).first().selectOption("en");
-  await expect(page).toHaveURL(/\/en$/);
+test("languages without guides have no index", async ({ request }) => {
+  for (const l of locales.filter((l) => !guideLocales.includes(l))) {
+    expect((await request.get(`/${l}/${guidesSlugs[l]}`)).status()).toBe(404);
+  }
+});
+
+test("the language switcher keeps the guide, or goes home where it is not translated", async ({ page }) => {
+  const guide = guidesFor("es")[0];
+  await page.goto(articlePath(guide.id, "es"), { waitUntil: "networkidle" });
+  for (const l of locales.filter((l) => l !== "es")) {
+    await page.goto(articlePath(guide.id, "es"), { waitUntil: "networkidle" });
+    await page.getByRole("combobox", { name: labels("es").LocaleSwitcher.label }).first().selectOption(l);
+    await expect(page).toHaveURL(guide.versions[l] ? new RegExp(`${articlePath(guide.id, l)}$`) : new RegExp(`/${l}$`));
+  }
 });
 
 for (const colorScheme of ["light", "dark"] as const) {
-  test(`axe on the index and the guides (${colorScheme})`, async ({ page }) => {
-    test.setTimeout(120_000);
+  test(`axe on the indexes and the guides (${colorScheme})`, async ({ page }) => {
+    test.setTimeout(240_000);
     await page.emulateMedia({ colorScheme });
-    for (const path of [`/es/${guidesSlugs.es}`, ...spanish.map((g) => articlePath(g.id))]) {
-      await page.goto(path, { waitUntil: "networkidle" });
-      expect(await axeViolations(page), path).toEqual([]);
+    for (const l of guideLocales) {
+      for (const path of [`/${l}/${guidesSlugs[l]}`, ...guidesFor(l).map((g) => articlePath(g.id, l))]) {
+        await page.goto(path, { waitUntil: "networkidle" });
+        expect(await axeViolations(page), path).toEqual([]);
+      }
     }
   });
 }

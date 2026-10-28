@@ -3622,3 +3622,11 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Las 10 guías del plan están publicadas en español (894–1251 palabras cada una).
 - Verificado: lint, typecheck, build, unitarios de guías y de voz (96); Chromium guides + layout-shift + clickable + tts-tools (138) pasan.
 
+## 2026-10-28 — Fase 10, tarea 10E.5a (capturas por idioma y guías en inglés)
+- La 10E.5 se dividió por idioma (10E.5a inglés, 10E.5b portugués, 10E.5c francés, 10E.5d chino) por su tamaño.
+- `scripts/guides/screenshots.mjs --locale=es,en,…` toma cada captura en la página de ese idioma: textos de los botones leídos de `messages/*.json`, slugs de `src/config/tools.ts` y archivos de ejemplo en cada idioma (la autorización ahora se genera desde HTML con Chromium para que sirva cualquier alfabeto; el contrato fotografiado y el texto de la lectura en voz alta también están traducidos; la transcripción usa la grabación en inglés fuera del español). Se guardan como `nombre.en.webp`; `render.ts` usa la del idioma de la guía y, si no existe, la española. Un test exige que las guías que no están en español usen capturas de su idioma.
+- Las 10 guías en inglés (`/en/guides`, 865–1205 palabras), adaptadas y no calcadas: nombres de menús de iPhone, Mac, Windows y Android en inglés, separador decimal y CSV pensados para Excel en inglés, ejemplos de errores de transcripción con la grabación en inglés (que salió sin errores) y el audio en español de las pruebas, y el PDF de ejemplo de Comprimir PDF medido de nuevo (4,6 MB → 687 / 286 / 131 KB).
+- `tests/e2e/guides.spec.ts` ahora recorre todos los idiomas con guías (índice, footer, cada guía, capturas del idioma, enlaces, axe claro y oscuro), comprueba el 404 de los idiomas sin guías y que el selector de idioma lleva a la guía traducida o a la portada; una guía inglesa en `layout-shift`.
+- Verificado: lint, typecheck, build, unitarios de contenido, guías y SEO (80); Chromium guides + layout-shift + clickable (138) pasan.
+- Al cierre de esta ejecución quedan: 10E.5b–d (pt, fr, zh) y 10F.
+
