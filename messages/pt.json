@@ -1286,6 +1286,38 @@
         "a4": "Não. Tudo é processado no navegador. Aceita arquivos de até 50 MB."
       }
     },
+    "merge-excel": {
+      "title": "Juntar Excel",
+      "description": "Junte vários Excel, ODS ou CSV em uma só pasta de trabalho, com uma planilha por arquivo ou todas as linhas em uma única planilha, no navegador.",
+      "action": "Juntar",
+      "about": "Reúna em um único arquivo os Excel de vários meses, filiais ou pessoas. Você pode colocar cada planilha de cada arquivo como uma planilha da nova pasta de trabalho (um CSV ou um arquivo de uma só planilha recebe o nome do arquivo) ou empilhar todas as linhas em uma só planilha, uma embaixo da outra, para filtrar e somar tudo junto. Ao empilhar, o cabeçalho repetido no início de cada planilha fica uma única vez e, se quiser, uma primeira coluna indica de qual arquivo vem cada linha. Ordene os arquivos antes de juntar: eles são usados nessa ordem.",
+      "faq": {
+        "q1": "Qual a diferença entre as duas formas de juntar?",
+        "a1": "“Uma planilha para cada planilha” copia as planilhas como estão para uma nova pasta de trabalho, com as fórmulas. “Todas em uma só planilha” coloca as linhas de todas as planilhas uma embaixo da outra: serve quando todas têm as mesmas colunas, como as vendas de cada mês.",
+        "q2": "As fórmulas são mantidas?",
+        "a2": "Quando cada planilha continua sendo uma planilha, sim. Ao empilhar, não, porque as linhas mudam de lugar e as fórmulas apontariam para outras células: o resultado de cada fórmula é guardado como valor.",
+        "q3": "Posso juntar as planilhas de um só arquivo?",
+        "a3": "Sim: escolha uma só pasta de trabalho e “Todas em uma só planilha” para empilhar todas as planilhas em uma.",
+        "q4": "Meus arquivos são enviados?",
+        "a4": "Não. Tudo é feito no navegador com o SheetJS; os arquivos não saem do seu aparelho. A formatação visual (cores, bordas, larguras) não é mantida."
+      }
+    },
+    "split-excel": {
+      "title": "Separar planilhas do Excel",
+      "description": "Separe cada planilha de uma pasta de trabalho Excel ou ODS em um arquivo próprio (XLSX, ODS ou CSV) e baixe todas em um ZIP, no navegador.",
+      "action": "Separar planilhas",
+      "about": "Quando uma pasta de trabalho tem uma planilha por mês, por cliente ou por filial e você precisa enviar cada uma separadamente, esta ferramenta cria um arquivo por planilha com o nome dela, pronto para baixar um por um ou todos juntos em um ZIP. Gere em Excel (XLSX), OpenDocument (ODS) ou CSV. As fórmulas dentro de cada planilha são mantidas; as que usam dados de outra planilha são substituídas pelo resultado, porque essa outra planilha não estará no arquivo.",
+      "faq": {
+        "q1": "Como os arquivos são nomeados?",
+        "a1": "Com o nome da pasta de trabalho e o da planilha, por exemplo vendas-Janeiro.xlsx. Caracteres não permitidos em nomes de arquivo são trocados por sublinhado.",
+        "q2": "E as fórmulas que usam outras planilhas?",
+        "a2": "Uma fórmula como =Resumo!B2 deixaria de funcionar em um arquivo com uma só planilha, então o último resultado dela é guardado como valor. As demais fórmulas continuam como fórmulas.",
+        "q3": "Posso separar várias pastas de trabalho de uma vez?",
+        "a3": "Sim. Escolha vários arquivos e cada um é separado em suas planilhas; tudo pode ser baixado em um ZIP.",
+        "q4": "Meus arquivos são enviados?",
+        "a4": "Não. A pasta de trabalho é processada no navegador e não sai do seu aparelho."
+      }
+    },
     "create-archive": {
       "title": "Criar ZIP",
       "description": "Junte vários arquivos em um ZIP, TAR ou TAR.GZ no seu navegador, sem enviá-los a nenhum servidor.",
@@ -2838,7 +2870,20 @@
     "jsonObjects": "Objetos (a primeira linha dá as chaves)",
     "jsonArrays": "Listas de valores",
     "noteCsv": "Os números saem com todas as casas decimais e as datas como aparecem na planilha.",
-    "noteJson": "Números e true/false como tais, datas em ISO (2024-03-15) e células vazias como null."
+    "noteJson": "Números e true/false como tais, datas em ISO (2024-03-15) e células vazias como null.",
+    "mergeMode": "Como juntar",
+    "mergeSheets": "Uma planilha para cada planilha",
+    "mergeStack": "Todas em uma só planilha, uma embaixo da outra",
+    "skipHeader": "Manter só uma vez o cabeçalho repetido",
+    "sourceColumn": "Adicionar uma coluna com o arquivo de origem",
+    "noteMerge": "Valores e fórmulas são mantidos; a formatação visual não.",
+    "noteStack": "As linhas são empilhadas na ordem dos arquivos; as fórmulas viram o resultado.",
+    "mergedSheet": "Juntas",
+    "sourceHeader": "Origem",
+    "mergedFile": "juntado",
+    "splitTarget": "Salvar cada planilha como",
+    "noteSplit": "Um arquivo por planilha, com o nome dela; todas juntas em um ZIP.",
+    "sheetLoading": "Lendo as planilhas…"
   },
   "ArchiveTool": {
     "format": "Formato",

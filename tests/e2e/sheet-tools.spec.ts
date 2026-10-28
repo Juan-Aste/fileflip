@@ -198,3 +198,42 @@ test.describe("tool: pdf-to-excel", () => {
     await expect(page.getByRole("button", { name: "Convert to Excel", exact: true })).toBeDisabled();
   });
 });
+
+test.describe("tool: merge-excel", () => {
+  test("files as sheets of one workbook, or stacked with the header once and a source column", async ({ page }) => {
+    await openWithFiles(page, "/es/unir-excel", ["workbook.xlsx", "table.tsv"]);
+    const merged = fileOf(await runTool(page, "Unir"));
+    expect(merged.name).toBe("unido.xlsx");
+    expect(unzipText(merged.buf, "xl/workbook.xml")).toMatch(/name="Ventas"[\s\S]*name="Notas"[\s\S]*name="table"/);
+
+    await page.getByRole("button", { name: /Empezar de nuevo/ }).click();
+    await page.locator('input[type="file"]').first().setInputFiles([
+      { name: "enero.csv", mimeType: "text/csv", buffer: Buffer.from("producto,total\nCafé,6.5\n") },
+      { name: "febrero.csv", mimeType: "text/csv", buffer: Buffer.from("producto,total\nTé,9.5\n") },
+    ]);
+    await choose(page, "Todas en una sola hoja");
+    await page.getByLabel("Agregar una columna con el archivo de origen").check();
+    const stacked = fileOf(await runTool(page, "Unir"));
+    expect(unzipText(stacked.buf, "xl/workbook.xml")).toContain('name="Unidas"');
+    const sheet = xlsxText(stacked.buf);
+    // One header row, then one row per file.
+    expect(sheet.match(/<row /g)).toHaveLength(3);
+    for (const text of ["Origen", "enero.csv", "febrero.csv", "Té"]) expect(sheet).toContain(text);
+    expect(sheet).toMatch(/<v>6\.5<\/v>/);
+  });
+});
+
+test.describe("tool: split-excel", () => {
+  test("every sheet of a workbook as its own file", { tag: "@xb" }, async ({ page }) => {
+    await openWithFiles(page, "/en/split-excel-sheets", ["workbook.ods"]);
+    await page.getByRole("button", { name: "Split sheets", exact: true }).click();
+    await expect(page.getByRole("button", { name: /ZIP/ })).toBeVisible({ timeout: 45_000 });
+    const links = page.locator("main a[download]");
+    expect(await links.evaluateAll((all) => all.map((a) => a.getAttribute("download")))).toEqual(["workbook-Ventas.xlsx", "workbook-Notas.xlsx"]);
+    const [download] = await Promise.all([page.waitForEvent("download"), links.nth(1).click()]);
+    const book = unzipSync(new Uint8Array(readFileSync((await download.path())!)));
+    expect(strFromU8(book["xl/workbook.xml"]!)).toMatch(/<sheet [^>]*name="Notas"/);
+    expect(strFromU8(book["xl/workbook.xml"]!).match(/<sheet /g)).toHaveLength(1);
+    expect(strFromU8(book["xl/worksheets/sheet1.xml"]!) + strFromU8(book["xl/sharedStrings.xml"] ?? new Uint8Array())).toContain("segunda hoja ñ");
+  });
+});

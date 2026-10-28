@@ -1286,6 +1286,38 @@
         "a4": "No. Todo se procesa en tu navegador. Acepta archivos de hasta 50 MB."
       }
     },
+    "merge-excel": {
+      "title": "Unir Excel",
+      "description": "Junta varios Excel, ODS o CSV en un solo libro, con una hoja por archivo o todas las filas en una sola hoja, en tu navegador.",
+      "action": "Unir",
+      "about": "Reúne en un solo archivo los Excel de varios meses, sucursales o personas. Puedes poner cada hoja de cada archivo como una hoja del libro nuevo (un CSV o un archivo de una sola hoja toma el nombre del archivo) o apilar todas las filas en una sola hoja, una debajo de otra, para filtrarlas y sumarlas juntas. Al apilar, el encabezado que se repite al principio de cada hoja se deja una sola vez y, si quieres, una primera columna indica de qué archivo viene cada fila. Ordena los archivos antes de unir: se usan en ese orden.",
+      "faq": {
+        "q1": "¿Qué diferencia hay entre las dos formas de unir?",
+        "a1": "«Una hoja por cada hoja» copia las hojas tal cual a un libro nuevo, con sus fórmulas. «Todas en una sola hoja» pone las filas de todas las hojas una debajo de otra: sirve cuando todas tienen las mismas columnas, por ejemplo las ventas de cada mes.",
+        "q2": "¿Se conservan las fórmulas?",
+        "a2": "Al poner cada hoja como hoja, sí. Al apilar no, porque las filas cambian de lugar y las fórmulas apuntarían a otras celdas: se guarda el resultado de cada fórmula como valor.",
+        "q3": "¿Puedo unir las hojas de un solo archivo?",
+        "a3": "Sí: elige un solo libro y «Todas en una sola hoja» para apilar todas sus hojas en una.",
+        "q4": "¿Se suben mis archivos?",
+        "a4": "No. Todo se hace en tu navegador con SheetJS; los archivos no salen de tu dispositivo. El formato visual (colores, bordes, anchos) no se conserva."
+      }
+    },
+    "split-excel": {
+      "title": "Separar hojas de Excel",
+      "description": "Separa cada hoja de un libro de Excel u ODS en su propio archivo (XLSX, ODS o CSV) y descárgalas todas en un ZIP, en tu navegador.",
+      "action": "Separar hojas",
+      "about": "Cuando un libro tiene una hoja por mes, por cliente o por sucursal y necesitas mandar cada una por separado, esta herramienta crea un archivo por hoja con el nombre de la hoja, listo para descargar uno por uno o todos juntos en un ZIP. Puedes sacarlas como Excel (XLSX), OpenDocument (ODS) o CSV. Las fórmulas dentro de cada hoja se mantienen; las que usan datos de otra hoja se reemplazan por su resultado, porque esa otra hoja ya no estará en el archivo.",
+      "faq": {
+        "q1": "¿Cómo se llaman los archivos?",
+        "a1": "Con el nombre del libro y el de la hoja, por ejemplo ventas-Enero.xlsx. Los caracteres que no se permiten en nombres de archivo se cambian por un guion bajo.",
+        "q2": "¿Qué pasa con las fórmulas que usan otras hojas?",
+        "a2": "Una fórmula como =Resumen!B2 dejaría de funcionar en un archivo que solo tiene una hoja, así que se guarda su último resultado como valor. Las demás fórmulas quedan como fórmulas.",
+        "q3": "¿Puedo separar varios libros a la vez?",
+        "a3": "Sí. Elige varios archivos y cada uno se separa en sus hojas; todo se puede bajar en un ZIP.",
+        "q4": "¿Se suben mis archivos?",
+        "a4": "No. El libro se procesa en tu navegador y no sale de tu dispositivo."
+      }
+    },
     "create-archive": {
       "title": "Crear ZIP",
       "description": "Junta varios archivos en un ZIP, TAR o TAR.GZ en tu navegador, sin subirlos a ningún servidor.",
@@ -2838,7 +2870,20 @@
     "jsonObjects": "Objetos (la primera fila da las claves)",
     "jsonArrays": "Listas de valores",
     "noteCsv": "Los números salen con todos sus decimales y las fechas como se ven en la hoja.",
-    "noteJson": "Números y true/false como tales, fechas en ISO (2024-03-15) y celdas vacías como null."
+    "noteJson": "Números y true/false como tales, fechas en ISO (2024-03-15) y celdas vacías como null.",
+    "mergeMode": "Cómo unir",
+    "mergeSheets": "Una hoja por cada hoja",
+    "mergeStack": "Todas en una sola hoja, una debajo de otra",
+    "skipHeader": "Dejar una sola vez el encabezado que se repite",
+    "sourceColumn": "Agregar una columna con el archivo de origen",
+    "noteMerge": "Se conservan valores y fórmulas; el formato visual no.",
+    "noteStack": "Las filas se apilan en el orden de los archivos; las fórmulas pasan a ser su resultado.",
+    "mergedSheet": "Unidas",
+    "sourceHeader": "Origen",
+    "mergedFile": "unido",
+    "splitTarget": "Guardar cada hoja como",
+    "noteSplit": "Un archivo por hoja, con su nombre; todas juntas en un ZIP.",
+    "sheetLoading": "Leyendo las hojas…"
   },
   "ArchiveTool": {
     "format": "Formato",

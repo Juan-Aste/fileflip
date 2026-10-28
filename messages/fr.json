@@ -1286,6 +1286,38 @@
         "a4": "Non. Tout est traité dans votre navigateur. Fichiers jusqu’à 50 Mo."
       }
     },
+    "merge-excel": {
+      "title": "Fusionner des fichiers Excel",
+      "description": "Réunissez plusieurs fichiers Excel, ODS ou CSV dans un seul classeur, avec une feuille par fichier ou toutes les lignes dans une seule feuille, dans votre navigateur.",
+      "action": "Fusionner",
+      "about": "Regroupez dans un seul fichier les classeurs Excel de plusieurs mois, agences ou personnes. Chaque feuille de chaque fichier peut devenir une feuille du nouveau classeur (un CSV ou un fichier d’une seule feuille prend le nom du fichier), ou toutes les lignes peuvent être empilées dans une seule feuille, les unes sous les autres, pour les filtrer et les additionner ensemble. En empilant, l’en-tête répété en haut de chaque feuille n’est gardé qu’une fois et, si vous le souhaitez, une première colonne indique de quel fichier vient chaque ligne. Classez les fichiers avant de fusionner : ils sont utilisés dans cet ordre.",
+      "faq": {
+        "q1": "Quelle différence entre les deux façons de fusionner ?",
+        "a1": "« Une feuille pour chaque feuille » copie les feuilles telles quelles dans un nouveau classeur, avec leurs formules. « Tout dans une seule feuille » met les lignes de toutes les feuilles les unes sous les autres : c’est utile quand elles ont toutes les mêmes colonnes, comme les ventes de chaque mois.",
+        "q2": "Les formules sont-elles conservées ?",
+        "a2": "Quand chaque feuille reste une feuille, oui. En empilant, non, car les lignes changent de place et les formules pointeraient vers d’autres cellules : le résultat de chaque formule est gardé comme valeur.",
+        "q3": "Puis-je fusionner les feuilles d’un seul fichier ?",
+        "a3": "Oui : choisissez un seul classeur et « Tout dans une seule feuille » pour empiler toutes ses feuilles en une.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. Tout se fait dans votre navigateur avec SheetJS ; les fichiers ne quittent pas votre appareil. La mise en forme (couleurs, bordures, largeurs) n’est pas conservée."
+      }
+    },
+    "split-excel": {
+      "title": "Séparer les feuilles Excel",
+      "description": "Séparez chaque feuille d’un classeur Excel ou ODS dans son propre fichier (XLSX, ODS ou CSV) et téléchargez-les toutes dans un ZIP, dans votre navigateur.",
+      "action": "Séparer les feuilles",
+      "about": "Quand un classeur a une feuille par mois, par client ou par agence et que vous devez envoyer chacune séparément, cet outil crée un fichier par feuille portant son nom, prêt à être téléchargé un par un ou tous ensemble dans un ZIP. Obtenez-les en Excel (XLSX), OpenDocument (ODS) ou CSV. Les formules à l’intérieur de chaque feuille sont conservées ; celles qui utilisent les données d’une autre feuille sont remplacées par leur résultat, car cette autre feuille ne sera pas dans le fichier.",
+      "faq": {
+        "q1": "Comment les fichiers sont-ils nommés ?",
+        "a1": "Avec le nom du classeur et celui de la feuille, par exemple ventes-Janvier.xlsx. Les caractères interdits dans les noms de fichiers sont remplacés par un tiret bas.",
+        "q2": "Que deviennent les formules qui utilisent d’autres feuilles ?",
+        "a2": "Une formule comme =Résumé!B2 ne fonctionnerait plus dans un fichier d’une seule feuille : son dernier résultat est donc gardé comme valeur. Les autres formules restent des formules.",
+        "q3": "Puis-je séparer plusieurs classeurs à la fois ?",
+        "a3": "Oui. Choisissez plusieurs fichiers et chacun est séparé en ses feuilles ; tout peut être téléchargé dans un ZIP.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. Le classeur est traité dans votre navigateur et ne quitte pas votre appareil."
+      }
+    },
     "create-archive": {
       "title": "Créer un ZIP",
       "description": "Regroupez plusieurs fichiers dans un ZIP, TAR ou TAR.GZ dans votre navigateur, sans les envoyer sur un serveur.",
@@ -2838,7 +2870,20 @@
     "jsonObjects": "Objets (la première ligne donne les clés)",
     "jsonArrays": "Listes de valeurs",
     "noteCsv": "Les nombres gardent toutes leurs décimales et les dates sortent comme dans la feuille.",
-    "noteJson": "Nombres et true/false tels quels, dates en ISO (2024-03-15) et cellules vides en null."
+    "noteJson": "Nombres et true/false tels quels, dates en ISO (2024-03-15) et cellules vides en null.",
+    "mergeMode": "Comment fusionner",
+    "mergeSheets": "Une feuille pour chaque feuille",
+    "mergeStack": "Tout dans une seule feuille, les unes sous les autres",
+    "skipHeader": "Ne garder qu’une fois l’en-tête répété",
+    "sourceColumn": "Ajouter une colonne avec le fichier d’origine",
+    "noteMerge": "Les valeurs et les formules sont conservées ; la mise en forme ne l’est pas.",
+    "noteStack": "Les lignes sont empilées dans l’ordre des fichiers ; les formules deviennent leur résultat.",
+    "mergedSheet": "Fusion",
+    "sourceHeader": "Origine",
+    "mergedFile": "fusion",
+    "splitTarget": "Enregistrer chaque feuille en",
+    "noteSplit": "Un fichier par feuille, portant son nom ; toutes ensemble dans un ZIP.",
+    "sheetLoading": "Lecture des feuilles…"
   },
   "ArchiveTool": {
     "format": "Format",

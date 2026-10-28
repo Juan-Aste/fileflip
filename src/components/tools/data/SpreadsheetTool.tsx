@@ -59,9 +59,11 @@ export default function SpreadsheetTool({ preset }: { preset?: SheetPreset }) {
   const sheetId = useId();
   const perSheet = to === "csv" || to === "json";
 
+  // Read as soon as the file is picked; until then the picker shows it is reading,
+  // with the same height, so the options never move under the pointer.
   useEffect(() => {
     setSheets(null);
-    if (!file || !perSheet) return;
+    if (!file) return;
     const controller = new AbortController();
     listSpreadsheetSheets(file, { signal: controller.signal })
       .then((list) => {
@@ -70,11 +72,11 @@ export default function SpreadsheetTool({ preset }: { preset?: SheetPreset }) {
         setSheet(preset || list.length === 1 ? list[0]!.name : ALL);
       })
       // A damaged file fails again (with its message) when converted.
-      .catch(() => {});
+      .catch(() => !controller.signal.aborted && setSheets([]));
     return () => controller.abort();
-  }, [file, perSheet, preset]);
+  }, [file, preset]);
 
-  const named = sheets && sheets.length > 1;
+  const named = perSheet && !!sheets && sheets.length > 1;
 
   return (
     <ToolShell
@@ -93,22 +95,31 @@ export default function SpreadsheetTool({ preset }: { preset?: SheetPreset }) {
             <ChoiceGroup legend={t("target")} value={picked} onChange={setTo} options={targets.map((f) => ({ value: f, label: t(`targets.${f}`) }))} />
           )}
           {perSheet &&
-            (named ? (
-              <div className="flex flex-col gap-1">
-                <label htmlFor={sheetId} className="text-sm font-medium">
-                  {t("sheet")}
-                </label>
-                <select id={sheetId} value={sheet} onChange={(e) => setSheet(e.target.value)} className={`h-10 max-w-sm ${field}`}>
-                  {sheets.map((s) => (
-                    <option key={s.name} value={s.name}>
-                      {t("sheetOption", { name: s.name, rows: s.rows })}
-                    </option>
-                  ))}
-                  <option value={ALL}>{to === "json" ? t("sheetAllJson") : t("sheetAll")}</option>
-                </select>
-              </div>
+            (file ? (
+              sheets?.length !== 0 && (
+                <div className="flex flex-col gap-1">
+                  <label htmlFor={sheetId} className="text-sm font-medium">
+                    {t("sheet")}
+                  </label>
+                  <select
+                    id={sheetId}
+                    value={sheets ? sheet : ""}
+                    disabled={!sheets || sheets.length < 2}
+                    onChange={(e) => setSheet(e.target.value)}
+                    className={`h-10 max-w-sm ${field}`}
+                  >
+                    {!sheets && <option value="">{t("sheetLoading")}</option>}
+                    {sheets?.map((s) => (
+                      <option key={s.name} value={s.name}>
+                        {t("sheetOption", { name: s.name, rows: s.rows })}
+                      </option>
+                    ))}
+                    {named && <option value={ALL}>{to === "json" ? t("sheetAllJson") : t("sheetAll")}</option>}
+                  </select>
+                </div>
+                )
             ) : (
-              !sheets && <Checkbox checked={allSheets} onChange={setAllSheets} label={to === "json" ? t("allSheetsJson") : t("allSheets")} />
+              <Checkbox checked={allSheets} onChange={setAllSheets} label={to === "json" ? t("allSheetsJson") : t("allSheets")} />
             ))}
           {to === "csv" && (
             <>

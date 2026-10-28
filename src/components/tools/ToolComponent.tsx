@@ -70,6 +70,8 @@ const components: Record<ToolId, React.ComponentType> = {
   "ods-to-excel": dynamic(() => import("./data/SheetConversionTools").then((m) => m.OdsToExcelTool)),
   "excel-to-json": dynamic(() => import("./data/SheetConversionTools").then((m) => m.ExcelToJsonTool)),
   "json-to-excel": dynamic(() => import("./data/SheetConversionTools").then((m) => m.JsonToExcelTool)),
+  "merge-excel": dynamic(() => import("./data/MergeSplitSheetTools").then((m) => m.MergeExcelTool)),
+  "split-excel": dynamic(() => import("./data/MergeSplitSheetTools").then((m) => m.SplitExcelTool)),
   "create-archive": dynamic(() => import("./archive/CreateArchiveTool")),
   "extract-archive": dynamic(() => import("./archive/ExtractArchiveTool")),
   "image-to-text": dynamic(() => import("./ocr/ImageToTextTool")),

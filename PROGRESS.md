@@ -3501,3 +3501,11 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Textos, FAQ y metadatos en 5 idiomas (namespace `PdfExcelTool`, solo en páginas de herramientas).
 - Tests de navegador: extracto de 2 páginas (vista previa, XLSX con "Página 1/2" y números reales), dos tablas como dos CSV, escaneo con enlace al OCR y botón desactivado.
 - Verificado: lint, typecheck, 1158 unitarios, build; Chromium `sheet-tools` + `pdf-tools` + a11y + clickable + layout-shift (175 pasan); Firefox y WebKit `sheet-tools` @xb (8 pasan).
+
+## 2026-10-28 — Fase 10, tarea 10A.5 (unir Excel y separar hojas)
+- Motor: `mergeSpreadsheets` (varios XLSX/XLS/ODS/CSV/TSV en un libro: una hoja por cada hoja —un archivo de una sola hoja toma el nombre del archivo, nombres únicos— o todas apiladas en una hoja con el encabezado repetido una sola vez y, opcional, una columna «Origen»; al apilar las fórmulas pasan a su resultado) y `splitSpreadsheet` (cada hoja a su propio XLSX, ODS o CSV; las fórmulas que apuntan a otra hoja quedan como valor). Límite de celdas sumando todos los archivos.
+- Herramientas nuevas (categoría Documentos, en el navegador): Unir Excel (`/es/unir-excel`, en `merge-excel`, pt `juntar-excel`, fr `fusionner-excel`) con archivos ordenables, y Separar hojas de Excel (`/es/separar-hojas-excel`, en `split-excel-sheets`, pt `separar-planilhas-excel`, fr `separer-feuilles-excel`) con descarga en ZIP. Textos, FAQ y metadatos en 5 idiomas.
+- Arreglo en `SpreadsheetTool` (encontrado por la muestra de Firefox, 1 de cada ~8 corridas; la versión anterior a la fase 10 pasaba 16/16): el selector de hoja aparecía cuando terminaba de leer el libro y movía el botón Convertir justo cuando se hacía clic, y el clic se perdía. Ahora las hojas se leen al elegir el archivo y el selector ocupa su lugar desde el principio («Leyendo las hojas…», desactivado), así nada se mueve.
+- Tests: 4 unitarios nuevos (merge y split, validados con el XML del archivo y LibreOffice) y 2 de navegador.
+- Verificado: lint, typecheck, 1164 unitarios, build; Chromium `sheet-tools` + a11y + clickable + layout-shift (135 pasan); Firefox y WebKit `sheet-tools` @xb repetidos 4 veces (40 pasan) y el test que fallaba repetido 12 veces en Firefox (24 pasan).
+- Bloque 10A terminado. Sigue 10B (utilidades de texto).

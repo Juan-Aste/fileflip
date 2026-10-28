@@ -143,6 +143,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "ods-to-excel": Sheet,
   "excel-to-json": FileJson,
   "json-to-excel": FileJson,
+  "merge-excel": Layers,
+  "split-excel": Scissors,
   "create-archive": FolderArchive,
   "extract-archive": FolderOpen,
   "image-to-text": ScanText,

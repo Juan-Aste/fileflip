@@ -1286,6 +1286,38 @@
         "a4": "No. Everything is processed in your browser. Files of up to 50 MB are accepted."
       }
     },
+    "merge-excel": {
+      "title": "Merge Excel files",
+      "description": "Combine several Excel, ODS or CSV files into one workbook, with a sheet per file or every row in a single sheet, in your browser.",
+      "action": "Merge",
+      "about": "Put the Excel files of several months, branches or people into a single file. Make every sheet of every file a sheet of the new workbook (a CSV or a one-sheet file takes the file's name), or stack all the rows in one sheet, one below the other, to filter and add them up together. When stacking, the header repeated at the top of each sheet is kept only once and, if you want, a first column tells which file each row comes from. Order the files before merging: they are used in that order.",
+      "faq": {
+        "q1": "What is the difference between the two ways of merging?",
+        "a1": "“One sheet per sheet” copies the sheets as they are into a new workbook, with their formulas. “All in one sheet” puts the rows of every sheet one under another: use it when they all have the same columns, such as each month's sales.",
+        "q2": "Are formulas kept?",
+        "a2": "When each sheet stays a sheet, yes. When stacking, no, because rows move and formulas would point at other cells: each formula's result is kept as a value.",
+        "q3": "Can I merge the sheets of a single file?",
+        "a3": "Yes: pick one workbook and “All in one sheet” to stack all its sheets into one.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. Everything happens in your browser with SheetJS; the files never leave your device. Visual formatting (colors, borders, widths) is not kept."
+      }
+    },
+    "split-excel": {
+      "title": "Split Excel sheets",
+      "description": "Split every sheet of an Excel or ODS workbook into its own file (XLSX, ODS or CSV) and download them all in a ZIP, in your browser.",
+      "action": "Split sheets",
+      "about": "When a workbook has one sheet per month, customer or branch and you need to send each one separately, this tool creates one file per sheet named after it, ready to download one by one or all together in a ZIP. Get them as Excel (XLSX), OpenDocument (ODS) or CSV. Formulas inside each sheet are kept; those that use data from another sheet are replaced by their result, because that other sheet will not be in the file.",
+      "faq": {
+        "q1": "What are the files called?",
+        "a1": "After the workbook and the sheet, for example sales-January.xlsx. Characters that are not allowed in file names are replaced with an underscore.",
+        "q2": "What happens to formulas that use other sheets?",
+        "a2": "A formula like =Summary!B2 would stop working in a file with a single sheet, so its last result is kept as a value. Other formulas stay formulas.",
+        "q3": "Can I split several workbooks at once?",
+        "a3": "Yes. Pick several files and each one is split into its sheets; everything can be downloaded in a ZIP.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. The workbook is processed in your browser and never leaves your device."
+      }
+    },
     "create-archive": {
       "title": "Create ZIP",
       "description": "Put several files in one ZIP, TAR or TAR.GZ in your browser, without uploading them to any server.",
@@ -2838,7 +2870,20 @@
     "jsonObjects": "Objects (the first row gives the keys)",
     "jsonArrays": "Lists of values",
     "noteCsv": "Numbers keep every decimal and dates come out as the sheet shows them.",
-    "noteJson": "Numbers and true/false as such, dates in ISO (2024-03-15) and empty cells as null."
+    "noteJson": "Numbers and true/false as such, dates in ISO (2024-03-15) and empty cells as null.",
+    "mergeMode": "How to merge",
+    "mergeSheets": "One sheet per sheet",
+    "mergeStack": "All in one sheet, one below the other",
+    "skipHeader": "Keep a repeated header only once",
+    "sourceColumn": "Add a column with the source file",
+    "noteMerge": "Values and formulas are kept; visual formatting is not.",
+    "noteStack": "Rows are stacked in the order of the files; formulas become their results.",
+    "mergedSheet": "Merged",
+    "sourceHeader": "Source",
+    "mergedFile": "merged",
+    "splitTarget": "Save each sheet as",
+    "noteSplit": "One file per sheet, named after it; all of them in a ZIP.",
+    "sheetLoading": "Reading the sheets…"
   },
   "ArchiveTool": {
     "format": "Format",

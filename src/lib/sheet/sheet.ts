@@ -343,3 +343,91 @@ export function writeTables(sheets: readonly TableSheet[], options: TableWriteOp
   const out = XLSX.write(book, { type: "array", bookType: "xlsx", compression: true }) as ArrayBuffer;
   return [{ sheet: "", bytes: new Uint8Array(out) }];
 }
+
+export interface MergeOptions {
+  /** Every sheet of every file in one workbook, or all of them one under another in a single sheet. */
+  mode: "sheets" | "stack";
+  to: "xlsx" | "ods";
+  /** Stack only: drop a sheet's first row when it repeats the first sheet's (a shared header). */
+  skipRepeatedHeader: boolean;
+  /** Stack only: header of a first column naming where each row comes from (none when absent). */
+  sourceColumn?: string;
+  /** Stack only: name of the single sheet. */
+  stackedName: string;
+}
+
+export interface NamedBytes {
+  name: string;
+  bytes: Uint8Array;
+}
+
+/** A copy of a cell keeping its value and number format, but not a formula that points elsewhere. */
+function valueCell(cell: XLSX.CellObject, keepFormula: (f: string) => boolean): XLSX.CellObject {
+  const copy: XLSX.CellObject = { ...cell };
+  if (copy.f !== undefined && !keepFormula(copy.f)) delete copy.f;
+  return copy;
+}
+
+const nonEmptyRows = (sheet: XLSX.WorkSheet): Cell[][] => {
+  const rows = rowsOf(sheet).map((row) => row ?? []);
+  while (rows.length && rows[rows.length - 1]!.every((c) => !c || c.v === undefined || c.v === "")) rows.pop();
+  return rows;
+};
+
+const rowKey = (row: Cell[]) => JSON.stringify(row.map((c) => (c?.v === undefined || c.v === null ? "" : String(c.v))).filter((v, i, all) => v !== "" || all.slice(i).some((x) => x !== "")));
+
+/**
+ * Several spreadsheets (XLSX, XLS, ODS, CSV) into one workbook: one sheet per
+ * sheet (a one-sheet file is named after the file), or every sheet stacked in
+ * one, its header kept once.
+ */
+export function mergeSpreadsheets(files: readonly NamedBytes[], options: MergeOptions): SheetFile {
+  const out = XLSX.utils.book_new();
+  const stacked: Cell[][] = [];
+  let header: string | null = null;
+  let cells = 0;
+  for (const file of files) {
+    const book = readBook(file.bytes, file.name);
+    cells += countCells(book);
+    if (cells > MAX_CELLS) throw new ConversionError("tooManyCells");
+    for (const name of book.SheetNames) {
+      const sheet = book.Sheets[name]!;
+      const single = book.SheetNames.length === 1;
+      if (options.mode === "sheets") {
+        XLSX.utils.book_append_sheet(out, sheet, uniqueSheetName(out, single ? file.name : name));
+        continue;
+      }
+      // Stacked rows move: their formulas would point at other cells, so only values are kept.
+      let rows = nonEmptyRows(sheet).map((row) => row.map((cell) => (cell ? valueCell(cell, () => false) : undefined)));
+      if (!rows.length) continue;
+      const first = header === null;
+      if (first) header = rowKey(rows[0]!);
+      else if (options.skipRepeatedHeader && rowKey(rows[0]!) === header) rows = rows.slice(1);
+      if (options.sourceColumn !== undefined) {
+        const label = single ? file.name : `${file.name} / ${name}`;
+        rows = rows.map((row, i) => [{ t: "s", v: first && i === 0 && options.skipRepeatedHeader ? options.sourceColumn! : label } as XLSX.CellObject, ...row]);
+      }
+      stacked.push(...rows);
+    }
+  }
+  if (options.mode === "stack") XLSX.utils.book_append_sheet(out, XLSX.utils.aoa_to_sheet(stacked.length ? stacked : [[]], { dense: true }), sheetName(options.stackedName));
+  if (!out.SheetNames.length) throw damaged();
+  const bytes = XLSX.write(out, { type: "array", bookType: options.to, compression: true }) as ArrayBuffer;
+  return { sheet: "", bytes: new Uint8Array(bytes) };
+}
+
+export type SplitOptions = Pick<SheetOptions, "delimiter" | "bom"> & { to: "xlsx" | "ods" | "csv" };
+
+/** Each sheet of a workbook as its own file (formulas pointing at other sheets keep only their value). */
+export function splitSpreadsheet(bytes: Uint8Array, name: string, options: SplitOptions): SheetFile[] {
+  const book = readBook(bytes, name);
+  if (options.to === "csv") return convertSpreadsheet(bytes, name, { ...options, to: "csv", sheets: "all" }).map((f, i) => ({ ...f, sheet: book.SheetNames[i]! }));
+  return book.SheetNames.map((sheet) => {
+    const single = XLSX.utils.book_new();
+    const source = book.Sheets[sheet]!;
+    const copy: XLSX.WorkSheet = { ...source, "!data": rowsOf(source).map((row) => (row ?? []).map((cell) => (cell ? valueCell(cell, (f) => !f.includes("!")) : cell))) as XLSX.CellObject[][] };
+    XLSX.utils.book_append_sheet(single, copy, sheet);
+    const out = XLSX.write(single, { type: "array", bookType: options.to, compression: true }) as ArrayBuffer;
+    return { sheet, bytes: new Uint8Array(out) };
+  });
+}

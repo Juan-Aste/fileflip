@@ -6,7 +6,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { strFromU8, unzipSync, zipSync } from "fflate";
 import { afterAll, describe, expect, it } from "vitest";
-import { convertSpreadsheet, listSheets, type SheetOptions } from "./sheet";
+import { convertSpreadsheet, listSheets, mergeSpreadsheets, splitSpreadsheet, type MergeOptions, type SheetOptions } from "./sheet";
 
 const fixture = (name: string) => new Uint8Array(readFileSync(join(__dirname, "../../../tests/fixtures", name)));
 const opts = (to: SheetOptions["to"], extra: Partial<SheetOptions> = {}): SheetOptions => ({ to, sheets: "all", delimiter: ",", bom: false, ...extra });
@@ -198,6 +198,65 @@ describe("Excel ↔ JSON and picking a sheet", () => {
     expect(code(new TextEncoder().encode("{ broken"))).toBe("invalidData");
     expect(code(encode(42))).toBe("invalidData");
     expect(code(encode("text"))).toBe("invalidData");
+  });
+});
+
+describe("merge and split", () => {
+  const csv = (name: string, body: string) => ({ name, bytes: new TextEncoder().encode(body) });
+  const merge = (files: Parameters<typeof mergeSpreadsheets>[0], extra: Partial<MergeOptions> = {}) =>
+    mergeSpreadsheets(files, { mode: "sheets", to: "xlsx", skipRepeatedHeader: true, stackedName: "Unidas", ...extra });
+
+  it("one sheet per sheet: one-sheet files named after the file, names kept unique", () => {
+    const out = merge([{ name: "workbook.xlsx", bytes: fixture("workbook.xlsx") }, csv("enero.csv", "a,b\n1,2\n"), csv("Ventas.csv", "x\n1\n")]);
+    expect(listSheets(out.bytes, "m.xlsx").map((s) => s.name)).toEqual(["Ventas", "Notas", "enero", "Ventas (2)"]);
+    // Formulas inside a sheet are kept.
+    expect(xmlOf(out.bytes, "xl/worksheets/sheet1.xml")).toContain("<f>SUM(D2:D3)</f>");
+  });
+
+  it("stacked: the shared header once, values only, an optional source column", () => {
+    const files = [csv("enero.csv", "producto,total\nCafé,6.5\n"), csv("febrero.csv", "producto,total\nTé,9.5\nPan,1\n"), csv("otra.csv", "x,y\n1,2\n")];
+    const plain = merge(files, { mode: "stack" });
+    expect(listSheets(plain.bytes, "m.xlsx")).toEqual([{ name: "Unidas", rows: 6, columns: 2 }]);
+    expect(json(convertSpreadsheet(plain.bytes, "m.xlsx", opts("json", { json: "arrays" }))[0]!.bytes)).toEqual([
+      ["producto", "total"], ["Café", 6.5], ["Té", 9.5], ["Pan", 1], ["x", "y"], [1, 2],
+    ]);
+    const sourced = merge(files.slice(0, 2), { mode: "stack", sourceColumn: "Origen" });
+    expect(json(convertSpreadsheet(sourced.bytes, "m.xlsx", opts("json"))[0]!.bytes)).toEqual([
+      { Origen: "enero.csv", producto: "Café", total: 6.5 },
+      { Origen: "febrero.csv", producto: "Té", total: 9.5 },
+      { Origen: "febrero.csv", producto: "Pan", total: 1 },
+    ]);
+    // Rows that move lose their formulas but keep the computed value.
+    const book = merge([{ name: "workbook.ods", bytes: fixture("workbook.ods") }], { mode: "stack", skipRepeatedHeader: false, to: "ods" });
+    const content = xmlOf(book.bytes, "content.xml");
+    expect(content).not.toContain("table:formula");
+    expect(content).toContain("segunda hoja ñ");
+  });
+
+  it("splits every sheet into its own file", () => {
+    const parts = splitSpreadsheet(fixture("workbook.xlsx"), "workbook.xlsx", { to: "xlsx", delimiter: ",", bom: false });
+    expect(parts.map((p) => p.sheet)).toEqual(["Ventas", "Notas"]);
+    expect(listSheets(parts[1]!.bytes, "n.xlsx")).toEqual([{ name: "Notas", rows: 2, columns: 1 }]);
+    expect(xmlOf(parts[0]!.bytes, "xl/worksheets/sheet1.xml")).toContain("<f>SUM(D2:D3)</f>");
+    const csvs = splitSpreadsheet(fixture("workbook.ods"), "workbook.ods", { to: "csv", delimiter: ";", bom: false });
+    expect(csvs.map((p) => [p.sheet, text(p.bytes)])).toEqual([
+      ["Ventas", expect.stringContaining("Café;2;3,25;6,5;2024-03-15")],
+      ["Notas", "nota\r\nsegunda hoja ñ\r\n"],
+    ]);
+    const ods = splitSpreadsheet(fixture("workbook.xlsx"), "workbook.xlsx", { to: "ods", delimiter: ",", bom: false });
+    expect(xmlOf(ods[1]!.bytes, "content.xml")).toContain('table:name="Notas"');
+  });
+});
+
+describe.runIf(soffice)("LibreOffice opens merged and split workbooks", () => {
+  it("merged sheets and a split sheet", { timeout: 120_000 }, () => {
+    const merged = mergeSpreadsheets([{ name: "workbook.ods", bytes: fixture("workbook.ods") }, { name: "spreadsheet.xls", bytes: fixture("spreadsheet.xls") }], { mode: "stack", to: "xlsx", skipRepeatedHeader: true, stackedName: "Todo" });
+    const lines = libreOfficeCsv(merged.bytes, "xlsx").trim().split("\n");
+    expect(lines[0]).toBe("producto,cantidad,precio,total,fecha");
+    expect(lines).toContain("Café,2,3.25,6.5,2024-03-15");
+    expect(lines).toContain("alpha,1,9.5,,");
+    const [ventas] = splitSpreadsheet(fixture("workbook.xlsx"), "workbook.xlsx", { to: "xlsx", delimiter: ",", bom: false });
+    expect(libreOfficeCsv(ventas!.bytes, "xlsx").trim().split("\n")).toEqual(VENTAS.map((l) => l.replace(/,$/, ",")));
   });
 });
 
