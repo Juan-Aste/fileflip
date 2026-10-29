@@ -470,3 +470,32 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 ### 10F Verificación final
 - [x] 10F.1 Lighthouse móvil ≥ 90 y CLS 0 en una página nueva de cada bloque (con AdSense de prueba), detector de clics, axe, Firefox y WebKit, suite de Chromium completa
 - [x] 10F.2 Informe del catálogo, `docs/dependencies.md`, créditos, `docs/launch-checklist.md` (CSP, archivos públicos, variables) y política de privacidad (descarga de modelos)
+
+## Fase 11
+
+Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbolos; elegir la voz escuchando muestras sin descargar el modelo; modelo más liviano; servir los modelos desde Cloudflare R2; preparar el repo para hacerlo público bajo AGPL-3.0-or-later (sin hacerlo público); verificación final. En orden. Sin dependencias GPL/AGPL ni no comerciales en esta fase.
+
+### 11.1 Voz IA: números, fechas y símbolos
+- [ ] 11.1a Normalización por idioma (es, en, pt, fr) antes de las etiquetas de idioma: enteros y decimales según el separador del idioma, años, fechas en el orden del idioma, horas, porcentajes, monedas ($, US$, €, R$), ordinales (1.º, 1er, 1st), romanos frecuentes (siglo XXI), rangos, teléfonos y números largos; tests unitarios exhaustivos por idioma
+- [ ] 11.1b Abreviaturas comunes (Sr., Dra., etc., pág.) y siglas en mayúsculas; revisar "fecha" → "feka" (NFKD frente al SDK de referencia, idioma que llega al modelo) y documentarlo en `docs/tts-voz-ia.md`
+
+### 11.2 Elegir la voz IA escuchando muestras
+- [ ] 11.2a Script `scripts/tts/` que genera con el modelo real una muestra por voz × idioma (Opus/OGG o MP3, ≤ 40 KB, nombre y sha256 fijos) en `public/tts-samples/`, documentado
+- [ ] 11.2b Script de WER: ~10 frases por voz × idioma transcritas con Whisper `base`; tabla en `docs/` y voz recomendada por idioma
+- [ ] 11.2c Lector: selector de voces con ▶ "Escuchar muestra" (archivo estático, cargado solo al tocar), "Recomendada" por idioma, descarga del modelo recién al usar la voz IA o el MP3; aclarar en la herramienta y la FAQ (5 idiomas) que todas las voces usan el mismo modelo y se descarga una sola vez; tests
+
+### 11.3 Modelo de voz IA más liviano
+- [ ] 11.3a Generar versiones fp16 e int8 dinámico de los ONNX de Supertonic (herramientas MIT) y compararlas con el original (WER con Whisper, duración, métricas de audio); documentar tamaños y resultados
+- [ ] 11.3b Adoptar la versión más liviana que cumpla (WER ≤ +10 % relativo, sin diferencia evidente) con versión y sha256 fijos; tests
+
+### 11.4 Servir los modelos desde Cloudflare R2 (preparar)
+- [ ] 11.4a `NEXT_PUBLIC_MODELS_BASE_URL` opcional: voz IA y transcripción descargan desde ahí verificando el sha256 y vuelven a Hugging Face si falla; CSP y política de privacidad; tests con un servidor local que simula el bucket
+- [ ] 11.4b `scripts/models/sync-r2.mjs` (descarga, verifica y sube con la API S3, credenciales solo por variables de entorno, Cache-Control inmutable, Content-Type), `docs/modelos-r2.md` con los pasos del dueño y `docs/launch-checklist.md`
+
+### 11.5 Preparar el repo para hacerlo público (sin hacerlo público)
+- [ ] 11.5a Escaneo de secretos de todo el historial (gitleaks o trufflehog, todas las ramas y tags) y búsqueda manual; archivos y datos personales que no deberían ser públicos
+- [ ] 11.5b Auditoría de licencias para AGPL-3.0-or-later (`docs/licencia-agpl.md`)
+- [ ] 11.5c `LICENSE` (AGPL-3.0), `license` en package.json, README.md público (es/en), `NEXT_PUBLIC_SOURCE_URL` opcional con "Código fuente" en el footer y créditos
+
+### 11.6 Verificación final
+- [ ] 11.6 Lighthouse móvil ≥ 90 y CLS 0 en el lector y la transcripción, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium, `docs/launch-checklist.md` con `NEXT_PUBLIC_MODELS_BASE_URL` y `NEXT_PUBLIC_SOURCE_URL`

@@ -3660,3 +3660,7 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Verificado: lint, typecheck, 1317 unitarios, `npm run licenses`, build; Chromium legal + a11y (31) pasan.
 
 FASE 10 TERMINADA
+
+## 2026-10-29 — Inicio de la fase 11
+- Fase 11 pedida por el dueño el 2026-10-28, cargada en `PLAN.md` (11.1 a 11.6, divididas en subtareas).
+- CI de dev: los últimos runs fallaron sin correr ningún job por la facturación de GitHub Actions (no es un error de código).
