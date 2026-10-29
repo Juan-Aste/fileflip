@@ -3677,3 +3677,8 @@ FASE 10 TERMINADA
 - "feka": revisado con el modelo real y Whisper `base` (`scripts/tts/engine.mjs`, que también usarán las tareas 11.2 y 11.3). No es el NFKD (el SDK de referencia 1.3.1 hace los mismos pasos) ni el idioma (llega `<es>`; las 10 voces dicen bien "fecha" en frases normales). La causa son las **mayúsculas**: "FECHA" sale "Feca/Faker/Peca" en todas las voces probadas. Arreglo general sin diccionario: las palabras en mayúsculas que no se deletrean pasan a minúsculas (y un texto todo en mayúsculas, entero). Limitación del modelo que queda: con 2–3 pasos de difusión (el celular usa 3 al escuchar) la pronunciación empeora. Documentado en `docs/tts-voz-ia.md`.
 - En inglés "October 28, 2026" lee el año como "twenty twenty-six".
 - Verificado: lint, typecheck, 1348 unitarios, build, test con el modelo real (`supertonic.model.test.ts`); Chromium `tts-tools` + `tts-ai` (16 pasan, 5 saltados).
+
+## 2026-10-29 — Fase 11, tarea 11.2a (muestras de cada voz)
+- `scripts/tts/samples.mjs` genera con el modelo real (valores del sitio) una muestra por voz × idioma: 40 MP3 de 32 kbps, 24 kHz mono, sin ID3, en `public/tts-samples/<idioma>-<voz>.mp3` (26–36 KB, 6,6–8,9 s; 1,3 MB en total). Frase por idioma con un número y una fecha (`SAMPLE_TEXT` en `src/lib/tts/samples.ts`); tamaños y SHA-256 en `src/lib/tts/samples.json`. MP3 en vez de Ogg Opus porque los iPhone anteriores a Safari 18.4 no reproducen Ogg.
+- `samples.test.ts` comprueba los 40 archivos (tamaño, SHA-256, cabecera MPEG, ≤ 40 KB, 5–9 s). Documentado en `docs/tts-voz-ia.md`.
+- Verificado: lint, typecheck, unitarios de voz. Todavía no se usan en la página (11.2c).

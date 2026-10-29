@@ -79,9 +79,9 @@ export async function loadWhisper(size = "base", dir = process.env.WHISPER_DIR) 
   };
 }
 
-/** Words for WER: lowercase, without punctuation or accents marks kept as letters ("fecha", "dos mil veintiséis"). */
+/** Words for WER: lowercase, without punctuation or accents (Whisper often drops them: "Anotá" → "Anota"). */
 export function words(text) {
-  return text.toLowerCase().normalize("NFC").replace(/[^\p{L}\p{N}' -]+/gu, " ").replace(/-/g, " ").split(/\s+/).filter(Boolean);
+  return text.toLowerCase().normalize("NFD").replace(/\p{M}/gu, "").replace(/[^\p{L}\p{N}' -]+/gu, " ").replace(/-/g, " ").split(/\s+/).filter(Boolean);
 }
 
 /** Word error rate: (substitutions + deletions + insertions) / reference words, and the counts. */
