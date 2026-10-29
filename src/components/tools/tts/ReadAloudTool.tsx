@@ -12,6 +12,7 @@ import { formatBytes } from "@/lib/format";
 import type { Locale } from "@/i18n/routing";
 import { reportConversion } from "@/lib/stats-client";
 import type { TextSourceKind } from "@/lib/tts/extract";
+import { modelsBaseUrl } from "@/lib/models/sources";
 import { aiVoiceLanguages, supertonicDownloadBytes, supertonicVoices, type SupertonicVoice } from "@/lib/tts/model";
 import { DEFAULT_STEPS, type SupertonicLanguage } from "@/lib/tts/supertonic";
 import { detectLanguage, splitSentences, ttsLanguages, TTS_MAX_CHARS, type TtsLanguage } from "@/lib/tts/text";
@@ -411,14 +412,14 @@ export default function ReadAloudTool() {
           })}
         </div>
         <p className="text-xs text-muted">
-          {aiLanguage ? t("engineAiHint", { size: formatBytes(supertonicDownloadBytes, locale as Locale) }) : t("aiNoChinese")}
+          {aiLanguage ? t("engineAiHint", { size: formatBytes(supertonicDownloadBytes(modelsBaseUrl()), locale as Locale) }) : t("aiNoChinese")}
         </p>
       </fieldset>
       {aiLanguage && (
         <AiVoicePicker
           lang={aiLanguage}
           voice={aiVoice}
-          size={formatBytes(supertonicDownloadBytes, locale as Locale)}
+          size={formatBytes(supertonicDownloadBytes(modelsBaseUrl()), locale as Locale)}
           disabled={reading || busy}
           onChoose={(v) => {
             setAiVoice(v);
@@ -517,7 +518,7 @@ export default function ReadAloudTool() {
 
       {aiPrep?.phase === "confirm" && (
         <div role="group" aria-label={t("engineAi")} className="flex flex-col gap-3 rounded-xl border border-border-strong bg-surface p-4 text-sm">
-          <p>{t("aiConfirm", { size: formatBytes(aiPrep.bytes, locale as Locale) })}</p>
+          <p>{t("aiConfirm", { size: formatBytes(aiPrep.bytes, locale as Locale), source: modelsBaseUrl() ? "own" : "hub" })}</p>
           {phone && <p className="text-muted">{t("aiConfirmPhone")}</p>}
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => void prepareAi(aiPrep.action)} className={buttonPrimary}>

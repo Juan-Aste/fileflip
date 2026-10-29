@@ -489,7 +489,7 @@ Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbol
 - [x] 11.3b Adoptar la versión más liviana que cumpla (WER ≤ +10 % relativo, sin diferencia evidente) con versión y sha256 fijos; tests
 
 ### 11.4 Servir los modelos desde Cloudflare R2 (preparar)
-- [ ] 11.4a `NEXT_PUBLIC_MODELS_BASE_URL` opcional: voz IA y transcripción descargan desde ahí verificando el sha256 y vuelven a Hugging Face si falla; CSP y política de privacidad; tests con un servidor local que simula el bucket
+- [x] 11.4a `NEXT_PUBLIC_MODELS_BASE_URL` opcional: voz IA y transcripción descargan desde ahí verificando el sha256 y vuelven a Hugging Face si falla; CSP y política de privacidad; tests con un servidor local que simula el bucket
 - [ ] 11.4b `scripts/models/sync-r2.mjs` (descarga, verifica y sube con la API S3, credenciales solo por variables de entorno, Cache-Control inmutable, Content-Type), `docs/modelos-r2.md` con los pasos del dueño y `docs/launch-checklist.md`
 
 ### 11.5 Preparar el repo para hacerlo público (sin hacerlo público)

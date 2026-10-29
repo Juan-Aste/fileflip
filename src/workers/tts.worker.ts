@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 import type { InferenceSession } from "onnxruntime-web";
-import { fetchModelFile, openModelStore } from "@/lib/tts/model-cache";
-import { supertonicFiles, supertonicVoiceFiles, type ModelFile, type SupertonicVoice } from "@/lib/tts/model";
+import { fetchModelSources, openModelStore } from "@/lib/tts/model-cache";
+import { supertonicFiles, supertonicSources, supertonicVoiceFiles, type ModelFile, type SupertonicVoice } from "@/lib/tts/model";
 import {
   parseConfig,
   parseIndexer,
@@ -17,7 +17,8 @@ import { exposeHandlers } from "@/lib/worker-rpc";
 // The AI voice (Supertonic 3) off the main thread: the model files are
 // downloaded (or read from the Cache API) and verified once, the four ONNX
 // sessions stay loaded for the following sentences. onnxruntime-web on
-// CPU/WASM with one thread: no cross-origin isolation needed.
+// CPU/WASM with one thread: no cross-origin isolation needed. Files come from
+// our storage when the page passes its URL (`base`), else from Hugging Face.
 
 type Ort = typeof import("onnxruntime-web/wasm");
 
@@ -29,6 +30,8 @@ interface Model {
 }
 
 let model: Promise<Model> | null = null;
+/** Our model storage (src/lib/models/sources.ts), set by `prepare`; "" = Hugging Face only. */
+let base = "";
 const voices = new Map<SupertonicVoice, Promise<VoiceStyle>>();
 
 const decodeJson = (data: Uint8Array) => JSON.parse(new TextDecoder().decode(data)) as unknown;
@@ -41,7 +44,7 @@ function loadModel(onBytes: (file: ModelFile, received: number) => void) {
     const store = await openModelStore();
     const get = (path: string) => {
       const file = supertonicFiles.find((f) => f.path === path)!;
-      return fetchModelFile(file, { store, onBytes: (n) => onBytes(file, n) });
+      return fetchModelSources(supertonicSources(file, base), { store, onBytes });
     };
     const cfg = parseConfig(decodeJson(await get("onnx/tts.json")));
     const indexer = parseIndexer(decodeJson(await get("onnx/unicode_indexer.json")));
@@ -66,7 +69,7 @@ function loadVoice(voice: SupertonicVoice, onBytes: (file: ModelFile, received: 
   if (!style) {
     const file = supertonicVoiceFiles[voice];
     style = openModelStore()
-      .then((store) => fetchModelFile(file, { store, onBytes: (n) => onBytes(file, n) }))
+      .then((store) => fetchModelSources(supertonicSources(file, base), { store, onBytes }))
       .then((data) => parseVoiceStyle(decodeJson(data)));
     voices.set(voice, style);
     style.catch(() => voices.delete(voice));
@@ -75,14 +78,19 @@ function loadVoice(voice: SupertonicVoice, onBytes: (file: ModelFile, received: 
 }
 
 /** Downloads (or reads from the cache) the model and one voice; progress is by bytes. */
-async function prepare({ voice }: { voice: SupertonicVoice }, onProgress: (progress: number) => void) {
-  const files = [...supertonicFiles, supertonicVoiceFiles[voice]];
-  const total = files.reduce((sum, f) => sum + f.bytes, 0);
+async function prepare({ voice, base: from = "" }: { voice: SupertonicVoice; base?: string }, onProgress: (progress: number) => void) {
+  base = from;
+  // Expected and received bytes per file; a source that fails hands over to
+  // the next one, whose size may differ (the float16 copy vs the original).
+  const expected = new Map([...supertonicFiles, supertonicVoiceFiles[voice]].map((f) => [f.path, supertonicSources(f, base)[0].file.bytes]));
   const received = new Map<string, number>();
   const onBytes = (file: ModelFile, n: number) => {
+    expected.set(file.path, file.bytes);
     received.set(file.path, n);
     let sum = 0;
+    let total = 0;
     for (const v of received.values()) sum += v;
+    for (const v of expected.values()) total += v;
     // The last few percent are the sessions being created.
     onProgress(Math.min(0.97, (sum / total) * 0.97));
   };

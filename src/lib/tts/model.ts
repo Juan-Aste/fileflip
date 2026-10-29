@@ -5,6 +5,8 @@
 // repository is archived, so every file is pinned to one Hugging Face commit
 // and checked against its size and SHA-256 before use.
 
+import { mirrorUrl, type ModelSource } from "@/lib/models/sources";
+
 export const SUPERTONIC_REPO = "Supertone/supertonic-3";
 /** Hugging Face commit of the files below (2026). */
 export const SUPERTONIC_REVISION = "3cadd1ee6394adea1bd021217a0e650ede09a323";
@@ -62,5 +64,23 @@ export const aiVoiceLanguages = ["es", "en", "pt", "fr"] as const;
 /** Download URL of a file at the pinned commit (served by Hugging Face's CDN, not by our server). */
 export const supertonicUrl = (path: string) => `https://huggingface.co/${SUPERTONIC_REPO}/resolve/${SUPERTONIC_REVISION}/${path}`;
 
-/** Total download before the first voice: the four models and the two JSON files. */
-export const supertonicDownloadBytes = supertonicFiles.reduce((sum, f) => sum + f.bytes, 0);
+/** Folder ("revision") of the float16 ONNX in our storage, next to the original files. */
+export const SUPERTONIC_LIGHT_REVISION = `${SUPERTONIC_REVISION}-fp16`;
+
+/**
+ * Where a model or voice file comes from, in order: with our storage (`base`,
+ * src/lib/models/sources.ts), its copy there (the float16 ONNX for the four
+ * models), then the original on Hugging Face.
+ */
+export function supertonicSources(file: ModelFile, base: string): ModelSource[] {
+  const hub = { file, url: supertonicUrl(file.path) };
+  if (!base) return [hub];
+  const light = supertonicLightFiles.find((f) => f.path === file.path);
+  const own = light
+    ? { file: light, url: mirrorUrl(base, SUPERTONIC_REPO, SUPERTONIC_LIGHT_REVISION, light.path) }
+    : { file, url: mirrorUrl(base, SUPERTONIC_REPO, SUPERTONIC_REVISION, file.path) };
+  return [own, hub];
+}
+
+/** Total download before the first voice: the four models and the two JSON files (smaller from our storage). */
+export const supertonicDownloadBytes = (base: string) => supertonicFiles.reduce((sum, f) => sum + supertonicSources(f, base)[0].file.bytes, 0);

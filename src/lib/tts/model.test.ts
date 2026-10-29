@@ -17,7 +17,9 @@ describe("Supertonic model manifest", () => {
   });
 
   it("documents the download size (~398 MB) and the languages with an AI voice", () => {
-    expect(supertonicDownloadBytes).toBe(398_361_202);
+    expect(supertonicDownloadBytes("")).toBe(398_361_202);
+    // From our storage: the float16 copy of the four models (~200 MB).
+    expect(supertonicDownloadBytes("https://modelos.example")).toBe(200_300_587);
     expect(aiVoiceLanguages).toEqual(["es", "en", "pt", "fr"]);
   });
 });

@@ -15,6 +15,7 @@ import { errorCode } from "@/lib/convert-error";
 import { saveBlob } from "@/lib/download";
 import { formatBytes } from "@/lib/format";
 import { reportConversion } from "@/lib/stats-client";
+import { modelsBaseUrl } from "@/lib/models/sources";
 import { whisperDownloadBytes, whisperLanguageCodes, whisperModels, type WhisperModelId } from "@/lib/transcribe/model";
 import { correctedSegments, transcriptFile, transcriptMime, transcriptName, transcriptText, type TranscriptFormat } from "@/lib/transcribe/output";
 import type { Segment } from "@/lib/transcribe/whisper";
@@ -222,7 +223,7 @@ export default function TranscribeTool() {
           label: `${id === "tiny" ? t("modelFast") : t("modelPrecise")} · ${toDownload[id] === 0 ? t("modelCached") : sizeOf(id)}`,
         }))}
       />
-      <p className="-mt-3 text-xs text-muted">{left > 0 ? t("downloadNote", { size: formatBytes(left, locale) }) : t("cachedNote")}</p>
+      <p className="-mt-3 text-xs text-muted">{left > 0 ? t("downloadNote", { size: formatBytes(left, locale), source: modelsBaseUrl() ? "own" : "hub" }) : t("cachedNote")}</p>
 
       <div className="flex flex-col gap-1 text-sm font-medium sm:max-w-xs">
         <label htmlFor={languageId}>{t("language")}</label>

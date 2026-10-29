@@ -1,6 +1,7 @@
 import { createJobPool, type JobOptions } from "@/lib/jobs";
-import { cachedBytes, openModelStore } from "@/lib/tts/model-cache";
-import { whisperCacheName, whisperDownloadBytes, whisperModels, whisperUrl, type WhisperModelId } from "./model";
+import { modelsBaseUrl } from "@/lib/models/sources";
+import { bytesToDownload, openModelStore } from "@/lib/tts/model-cache";
+import { whisperCacheName, whisperModels, whisperSources, type WhisperModelId } from "./model";
 import type { Segment } from "./whisper";
 
 // Transcription from the page: one worker holding Whisper, started the first
@@ -12,12 +13,12 @@ const pool = createJobPool(() => new Worker(new URL("../../workers/transcribe.wo
 /** Bytes still to download before transcribing (0 when the model is cached). */
 export async function whisperBytesToDownload(id: WhisperModelId): Promise<number> {
   const model = whisperModels[id];
-  const store = await openModelStore(whisperCacheName(model));
-  return whisperDownloadBytes(model) - (await cachedBytes(model.files, store, (f) => whisperUrl(model, f.path)));
+  const base = modelsBaseUrl();
+  return bytesToDownload(model.files.map((f) => whisperSources(model, f, base)), await openModelStore(whisperCacheName(model)));
 }
 
 /** Loads a model (downloading what is not cached); progress 0–1 by bytes. */
-export const prepareWhisper = (model: WhisperModelId, job: JobOptions = {}) => pool.run<null>("prepare", { model }, job);
+export const prepareWhisper = (model: WhisperModelId, job: JobOptions = {}) => pool.run<null>("prepare", { model, base: modelsBaseUrl() }, job);
 
 export interface Transcript {
   segments: Segment[];

@@ -42,6 +42,7 @@ Las `NEXT_PUBLIC_*` se fijan al construir: si se cambian, redesplegar.
 | `NEXT_PUBLIC_ADSENSE_CLIENT` | `ca-pub-1234567890123456` |
 | `NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR` | `1234567890` |
 | `NEXT_PUBLIC_ADSENSE_SLOT_RESULT` | `0987654321` |
+| `NEXT_PUBLIC_MODELS_BASE_URL` | `https://modelos.fileflect.com` (opcional: copia propia de los modelos de IA en Cloudflare R2, [docs/modelos-r2.md](modelos-r2.md); vacía = solo Hugging Face) |
 | `RATE_LIMIT_PER_MINUTE` | `20` |
 | `TEMP_FILE_TTL_MINUTES` | `60` |
 

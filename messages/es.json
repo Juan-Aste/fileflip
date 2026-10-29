@@ -1813,13 +1813,13 @@
       "about": "Escribe o pega un texto, o abre un archivo TXT, Markdown, HTML, PDF con texto, Word (DOCX), EPUB o la foto de un documento, y escúchalo en voz alta. Puedes pausar, volver a la frase anterior, saltar a la siguiente y elegir la velocidad, de 0,5× a 2×. La frase que se está leyendo se resalta para que sigas la lectura. Lee con las voces de tu dispositivo o con una voz IA más natural (Supertonic 3) que funciona en tu navegador y permite descargar la lectura como MP3. El texto se extrae y se convierte en voz en tu dispositivo: el archivo no se sube a ningún servidor.",
       "faq": {
         "q1": "¿Mi texto se sube a algún servidor?",
-        "a1": "No. El archivo se lee y el texto se extrae en tu navegador, y la voz IA genera el audio en tu dispositivo: lo único que se descarga son los archivos del modelo, desde Hugging Face, la primera vez. Las voces del dispositivo también leen en tu equipo; solo las marcadas como «en línea» (por ejemplo, las de Google o Microsoft en Chrome y Edge) envían el texto a ese proveedor para generar el audio.",
+        "a1": "No. El archivo se lee y el texto se extrae en tu navegador, y la voz IA genera el audio en tu dispositivo: lo único que se descarga son los archivos del modelo, la primera vez, desde nuestro servidor de modelos o desde Hugging Face. Las voces del dispositivo también leen en tu equipo; solo las marcadas como «en línea» (por ejemplo, las de Google o Microsoft en Chrome y Edge) envían el texto a ese proveedor para generar el audio.",
         "q2": "¿Qué archivos puedo abrir?",
         "a2": "TXT, Markdown, HTML, PDF con texto, Word (DOCX), EPUB y fotos o escaneos (JPG, PNG, WEBP, TIFF, HEIC…), cuyo texto se reconoce con OCR. Hasta 50.000 caracteres por lectura; si el texto es más largo, se recorta y te avisamos.",
         "q3": "¿En qué idiomas lee?",
         "a3": "Detectamos el idioma del texto (español, inglés, portugués, francés o chino) y elegimos la voz en ese idioma; puedes cambiar el idioma y la voz. La voz IA y la descarga MP3 están disponibles en español, inglés, portugués y francés; el chino se lee con las voces del dispositivo, que dependen de tu sistema y de tu navegador.",
         "q4": "¿Qué diferencia hay entre las voces del dispositivo y la voz IA?",
-        "a4": "Las voces del dispositivo vienen con tu sistema o navegador: empiezan al instante y no descargan nada, pero su calidad varía y no se pueden guardar como archivo. La voz IA (Supertonic 3) suena más natural, tiene 10 voces y permite descargar MP3, pero la primera vez descarga unos 400 MB (después queda guardada en tu navegador) y genera el audio con el procesador de tu equipo: en una computadora tarda más o menos lo mismo que dura el audio; en un celular, bastante más. Antes de descargar puedes escuchar una muestra de cada voz; todas usan el mismo modelo, así que la descarga es la misma para cualquiera y se hace una sola vez.",
+        "a4": "Las voces del dispositivo vienen con tu sistema o navegador: empiezan al instante y no descargan nada, pero su calidad varía y no se pueden guardar como archivo. La voz IA (Supertonic 3) suena más natural, tiene 10 voces y permite descargar MP3, pero la primera vez descarga el modelo, de 200 a 400 MB según el servidor (la herramienta muestra el tamaño antes de empezar; después queda guardada en tu navegador) y genera el audio con el procesador de tu equipo: en una computadora tarda más o menos lo mismo que dura el audio; en un celular, bastante más. Antes de descargar puedes escuchar una muestra de cada voz; todas usan el mismo modelo, así que la descarga es la misma para cualquiera y se hace una sola vez.",
         "q5": "¿Cómo descargo la lectura como MP3?",
         "a5": "Elige la voz IA y pulsa «Descargar MP3». Se genera frase por frase en tu dispositivo, con una barra de progreso y la opción de cancelar, y el archivo se nombra con el título del documento o las primeras palabras del texto. En celulares el MP3 admite hasta 3.000 caracteres (unos 4 minutos de audio).",
         "q6": "¿Puedo publicar el audio generado con la voz IA?",
@@ -1834,7 +1834,7 @@
       "about": "Abre un audio (MP3, WAV, M4A, OGG, FLAC, notas de voz…) o un video (MP4, MOV, MKV, WEBM) y obtén el texto de lo que se dice, dividido en frases con su tiempo. Puedes corregir el texto en la página, copiarlo y descargarlo como TXT, o como subtítulos SRT y VTT listos para un video. La transcripción la hace Whisper, el modelo de reconocimiento de voz de OpenAI, que funciona dentro de tu navegador: el audio no sale de tu dispositivo. La primera vez se descarga el modelo desde Hugging Face (43 MB el rápido, 79 MB el preciso) y queda guardado para las siguientes. Detecta el idioma automáticamente o puedes elegirlo entre casi 100 idiomas. Admite hasta 30 minutos de audio por archivo.",
       "faq": {
         "q1": "¿Se sube mi audio a algún servidor?",
-        "a1": "No. El archivo se decodifica y se transcribe en tu navegador, con el procesador de tu equipo. Lo único que se descarga es el modelo de voz, desde Hugging Face, la primera vez que lo usas; después queda guardado en tu navegador.",
+        "a1": "No. El archivo se decodifica y se transcribe en tu navegador, con el procesador de tu equipo. Lo único que se descarga es el modelo de voz, desde nuestro servidor de modelos o desde Hugging Face, la primera vez que lo usas; después queda guardado en tu navegador.",
         "q2": "¿Qué modelo elijo, rápido o preciso?",
         "a2": "El rápido (Whisper tiny, 43 MB) sirve para audios claros, con una sola persona hablando y poco ruido, y es el recomendado en celulares. El preciso (Whisper base, 79 MB) se equivoca menos con acentos, ruido de fondo y palabras poco comunes, pero tarda alrededor de 1,7 veces más. Si el resultado del rápido tiene muchos errores, prueba con el preciso.",
         "q3": "¿Cuánto tarda?",
@@ -2179,7 +2179,7 @@
             "Railway (EE. UU.): servidores y base de datos donde corre el sitio.",
             "Resend (EE. UU.): envía el correo con tu enlace para iniciar sesión.",
             "Google (EE. UU.): inicio de sesión con Google, si lo eliges; y Google AdSense, que muestra anuncios (ver la sección 6).",
-            "Hugging Face (EE. UU.): si eliges la voz IA de «Leer texto en voz alta» o usas «Transcribir audio a texto», tu navegador descarga de Hugging Face los archivos del modelo (una sola vez por modelo). Como en cualquier descarga, Hugging Face recibe tu dirección IP y datos técnicos del navegador; tu texto y tu audio no se envían.",
+            "Hugging Face (EE. UU.): si eliges la voz IA de «Leer texto en voz alta» o usas «Transcribir audio a texto», tu navegador descarga los archivos del modelo (una sola vez por modelo) de nuestro almacenamiento en Cloudflare R2 (Cloudflare, EE. UU.) o, si no está disponible, de Hugging Face. Como en cualquier descarga, el que sirve el archivo recibe tu dirección IP y datos técnicos del navegador; tu texto y tu audio no se envían.",
             "Voces «en línea» de tu navegador (por ejemplo, Google en Chrome o Microsoft en Edge): si eliges una de ellas en «Leer texto en voz alta», el navegador envía el texto a ese proveedor para generar el audio, según la política de privacidad de ese proveedor. Las ofrece el navegador, no nosotros, y las marcamos como «en línea»; las demás voces y la voz IA leen en tu dispositivo."
           ],
           "proItems": [
@@ -2209,7 +2209,7 @@
             "Cookies de sesión de Auth.js: mantienen tu sesión iniciada.",
             "Almacenamiento local del navegador: recuerda el tema claro u oscuro.",
             "Almacenamiento local del navegador: en «Leer texto en voz alta», la velocidad, el tipo de voz y la voz elegidos.",
-            "Caché del navegador: los archivos del modelo de la voz IA (unos 400 MB), para no volver a descargarlos. Puedes borrarlos eliminando los datos de este sitio en tu navegador."
+            "Caché del navegador: los archivos del modelo de la voz IA (de 200 a 400 MB), para no volver a descargarlos. Puedes borrarlos eliminando los datos de este sitio en tu navegador."
           ],
           "proItems": [
             "Cookie de país: recuerda el país elegido para los precios (1 año)."
@@ -3379,7 +3379,7 @@
     "lgplHeading": "Componentes bajo LGPL",
     "lgplIntro": "Estos componentes se usan bajo la Licencia Pública General Reducida de GNU (LGPL), sin modificaciones y como archivos separados (módulos WebAssembly o bibliotecas dinámicas) que se pueden reemplazar por otra versión. Puedes descargar su código fuente exacto y las instrucciones con las que se compilaron desde los enlaces de cada uno.",
     "enginesHeading": "Motores y datos incluidos",
-    "enginesIntro": "Bibliotecas compiladas a WebAssembly que vienen dentro de los paquetes de abajo, nuestra propia compilación de libarchive, los modelos que servimos desde nuestro dominio y la voz IA de «Leer texto en voz alta» (código portado del SDK de Supertonic, MIT, y el modelo Supertonic 3, que tu navegador descarga de Hugging Face solo si eliges esa voz; su licencia OpenRAIL-M está enlazada).",
+    "enginesIntro": "Bibliotecas compiladas a WebAssembly que vienen dentro de los paquetes de abajo, nuestra propia compilación de libarchive, los modelos que servimos desde nuestro dominio y la voz IA de «Leer texto en voz alta» (código portado del SDK de Supertonic, MIT, y el modelo Supertonic 3, que tu navegador descarga de Hugging Face, o una copia con los pesos en float16 de nuestro servidor de modelos, solo si eliges esa voz; su licencia OpenRAIL-M está enlazada).",
     "servicesHeading": "Servicios del servidor",
     "servicesIntro": "Programas que corren aparte en nuestro servidor (no se distribuyen con Fileflect): convierten documentos de oficina y guardan los datos de las cuentas.",
     "packagesHeading": "Paquetes de JavaScript ({count})",
@@ -3464,7 +3464,7 @@
     "aiRecommended": "Recomendada",
     "aiVoiceChoose": "Elegir",
     "aiVoiceChosen": "Elegida",
-    "aiConfirm": "La voz IA necesita descargar unos {size} desde Hugging Face. Es solo la primera vez: queda guardada en tu navegador. Tu texto no se envía: solo se descargan los archivos del modelo.",
+    "aiConfirm": "La voz IA necesita descargar unos {size} desde {source, select, own {nuestro servidor de modelos} other {Hugging Face}}. Es solo la primera vez: queda guardada en tu navegador. Tu texto no se envía: solo se descargan los archivos del modelo.",
     "aiConfirmPhone": "En un celular conviene usar wifi; la generación es más lenta y usa mucha memoria.",
     "aiDownload": "Descargar la voz IA",
     "aiDownloading": "Descargando la voz IA…",
@@ -3601,7 +3601,7 @@
     "modelFast": "Rápido",
     "modelPrecise": "Preciso (más lento)",
     "modelCached": "ya descargado",
-    "downloadNote": "La primera vez se descargan {size} desde Hugging Face; después queda guardado en este navegador.",
+    "downloadNote": "La primera vez se descargan {size} desde {source, select, own {nuestro servidor de modelos} other {Hugging Face}}; después queda guardado en este navegador.",
     "cachedNote": "El modelo ya está guardado en este navegador: no se descarga nada.",
     "language": "Idioma del audio",
     "languageAuto": "Detectar automáticamente",

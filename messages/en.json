@@ -1813,13 +1813,13 @@
       "about": "Type or paste text, or open a TXT, Markdown, HTML, text PDF, Word (DOCX) or EPUB file or a photo of a document, and listen to it read aloud. You can pause, go back to the previous sentence, skip to the next one and choose the speed, from 0.5× to 2×. The sentence being read is highlighted so you can follow along. It reads with your device's voices or with a more natural AI voice (Supertonic 3) that runs in your browser and lets you download the reading as MP3. The text is extracted and turned into speech on your device: the file is never uploaded to a server.",
       "faq": {
         "q1": "Is my text uploaded to a server?",
-        "a1": "No. The file is read and its text extracted in your browser, and the AI voice generates the audio on your device: the only download is the model files, from Hugging Face, the first time. Device voices also read on your computer or phone; only voices marked \"online\" (such as Google or Microsoft voices in Chrome and Edge) send the text to that provider to generate the audio.",
+        "a1": "No. The file is read and its text extracted in your browser, and the AI voice generates the audio on your device: the only download is the model files, the first time, from our model server or from Hugging Face. Device voices also read on your computer or phone; only voices marked \"online\" (such as Google or Microsoft voices in Chrome and Edge) send the text to that provider to generate the audio.",
         "q2": "Which files can I open?",
         "a2": "TXT, Markdown, HTML, PDFs with text, Word (DOCX), EPUB and photos or scans (JPG, PNG, WEBP, TIFF, HEIC…), whose text is recognized with OCR. Up to 50,000 characters per reading; longer text is cut and we tell you.",
         "q3": "Which languages does it read?",
         "a3": "We detect the language of the text (Spanish, English, Portuguese, French or Chinese) and pick a voice for it; you can change the language and the voice. The AI voice and MP3 download are available in Spanish, English, Portuguese and French; Chinese is read with the device voices, which depend on your system and browser.",
         "q4": "What's the difference between device voices and the AI voice?",
-        "a4": "Device voices come with your system or browser: they start at once and download nothing, but their quality varies and they can't be saved as a file. The AI voice (Supertonic 3) sounds more natural, has 10 voices and can be downloaded as MP3, but the first time it downloads about 400 MB (then it stays saved in your browser) and it generates the audio with your device's processor: on a computer it takes about as long as the audio lasts; on a phone, quite a bit longer. Before downloading you can listen to a sample of each voice; they all use the same model, so the download is the same for any of them and happens only once.",
+        "a4": "Device voices come with your system or browser: they start at once and download nothing, but their quality varies and they can't be saved as a file. The AI voice (Supertonic 3) sounds more natural, has 10 voices and can be downloaded as MP3, but the first time it downloads the model, 200 to 400 MB depending on the server (the tool shows the size before starting; then it stays saved in your browser) and it generates the audio with your device's processor: on a computer it takes about as long as the audio lasts; on a phone, quite a bit longer. Before downloading you can listen to a sample of each voice; they all use the same model, so the download is the same for any of them and happens only once.",
         "q5": "How do I download the reading as MP3?",
         "a5": "Choose the AI voice and press \"Download MP3\". It is generated sentence by sentence on your device, with a progress bar and a cancel button, and the file is named after the document's title or the first words of the text. On phones the MP3 can have up to 3,000 characters (about 4 minutes of audio).",
         "q6": "Can I publish audio made with the AI voice?",
@@ -1834,7 +1834,7 @@
       "about": "Open an audio file (MP3, WAV, M4A, OGG, FLAC, voice memos…) or a video (MP4, MOV, MKV, WEBM) and get the text of what is said, split into sentences with their times. You can correct the text on the page, copy it and download it as TXT, or as SRT and VTT subtitles ready for a video. The transcription is done by Whisper, OpenAI's speech recognition model, running inside your browser: the audio never leaves your device. The first time, the model is downloaded from Hugging Face (43 MB for the fast one, 79 MB for the precise one) and kept for next time. It detects the language automatically, or you can pick it from almost 100 languages. Up to 30 minutes of audio per file.",
       "faq": {
         "q1": "Is my audio uploaded to a server?",
-        "a1": "No. The file is decoded and transcribed in your browser, with your device's processor. The only download is the speech model, from Hugging Face, the first time you use it; after that it stays in your browser.",
+        "a1": "No. The file is decoded and transcribed in your browser, with your device's processor. The only download is the speech model, from our model server or from Hugging Face, the first time you use it; after that it stays in your browser.",
         "q2": "Which model should I pick, fast or precise?",
         "a2": "The fast one (Whisper tiny, 43 MB) works for clear audio with one person speaking and little noise, and is the one to use on phones. The precise one (Whisper base, 79 MB) makes fewer mistakes with accents, background noise and unusual words, but takes about 1.7 times as long. If the fast one's result has many errors, try the precise one.",
         "q3": "How long does it take?",
@@ -2179,7 +2179,7 @@
             "Railway (USA): servers and database that run the site.",
             "Resend (USA): sends the email with your sign-in link.",
             "Google (USA): Google sign-in, if you choose it; and Google AdSense, which shows ads (see section 6).",
-            "Hugging Face (USA): if you choose the AI voice of \"Text to speech\" or use \"Audio to text\", your browser downloads the model files from Hugging Face (once per model). As with any download, Hugging Face receives your IP address and technical browser data; your text and your audio are not sent.",
+            "Hugging Face (USA): if you choose the AI voice of \"Text to speech\" or use \"Audio to text\", your browser downloads the model files (once per model) from our storage on Cloudflare R2 (Cloudflare, USA) or, if it is unavailable, from Hugging Face. As with any download, whoever serves the file receives your IP address and technical browser data; your text and your audio are not sent.",
             "\"Online\" voices of your browser (such as Google in Chrome or Microsoft in Edge): if you choose one of them in \"Text to speech\", the browser sends the text to that provider to generate the audio, under that provider's privacy policy. The browser offers them, not us, and we mark them \"online\"; the other voices and the AI voice read on your device."
           ],
           "proItems": [
@@ -2209,7 +2209,7 @@
             "Auth.js session cookies: keep you signed in.",
             "Browser local storage: remembers the light or dark theme.",
             "Browser local storage: in \"Text to speech\", the speed, kind of voice and voice you chose.",
-            "Browser cache: the AI voice's model files (about 400 MB), so they aren't downloaded again. You can delete them by clearing this site's data in your browser."
+            "Browser cache: the AI voice's model files (200 to 400 MB), so they aren't downloaded again. You can delete them by clearing this site's data in your browser."
           ],
           "proItems": [
             "Country cookie: remembers the country chosen for pricing (1 year)."
@@ -3379,7 +3379,7 @@
     "lgplHeading": "LGPL components",
     "lgplIntro": "These components are used under the GNU Lesser General Public License (LGPL), unmodified and as separate files (WebAssembly modules or shared libraries) that can be replaced with another version. The links for each one lead to its exact source code and the instructions it was built with.",
     "enginesHeading": "Bundled engines and data",
-    "enginesIntro": "Libraries compiled to WebAssembly that ship inside the packages below, our own libarchive build, the models we serve from our domain and the AI voice of \"Text to speech\" (code ported from the Supertonic SDK, MIT, and the Supertonic 3 model, which your browser downloads from Hugging Face only if you choose that voice; its OpenRAIL-M license is linked).",
+    "enginesIntro": "Libraries compiled to WebAssembly that ship inside the packages below, our own libarchive build, the models we serve from our domain and the AI voice of \"Text to speech\" (code ported from the Supertonic SDK, MIT, and the Supertonic 3 model, which your browser downloads from Hugging Face, or a copy with float16 weights from our model server, only if you choose that voice; its OpenRAIL-M license is linked).",
     "servicesHeading": "Server services",
     "servicesIntro": "Programs that run separately on our server (not distributed with Fileflect): they convert office documents and store account data.",
     "packagesHeading": "JavaScript packages ({count})",
@@ -3464,7 +3464,7 @@
     "aiRecommended": "Recommended",
     "aiVoiceChoose": "Choose",
     "aiVoiceChosen": "Chosen",
-    "aiConfirm": "The AI voice needs to download about {size} from Hugging Face. Only the first time: it stays saved in your browser. Your text isn't sent: only the model files are downloaded.",
+    "aiConfirm": "The AI voice needs to download about {size} from {source, select, own {our model server} other {Hugging Face}}. Only the first time: it stays saved in your browser. Your text isn't sent: only the model files are downloaded.",
     "aiConfirmPhone": "On a phone, Wi-Fi is best; generation is slower and uses a lot of memory.",
     "aiDownload": "Download the AI voice",
     "aiDownloading": "Downloading the AI voice…",
@@ -3601,7 +3601,7 @@
     "modelFast": "Fast",
     "modelPrecise": "Precise (slower)",
     "modelCached": "downloaded",
-    "downloadNote": "The first time, {size} are downloaded from Hugging Face; after that the model stays in this browser.",
+    "downloadNote": "The first time, {size} are downloaded from {source, select, own {our model server} other {Hugging Face}}; after that the model stays in this browser.",
     "cachedNote": "The model is already saved in this browser: nothing to download.",
     "language": "Language of the audio",
     "languageAuto": "Detect automatically",

@@ -4,6 +4,7 @@
 // Face card says Apache-2.0, also permissive). Every file is pinned to one
 // commit and checked against its size and SHA-256 before use; decision and
 // measurements in docs/transcripcion.md.
+import { mirrorUrl, type ModelSource } from "@/lib/models/sources";
 import type { ModelFile } from "@/lib/tts/model";
 
 export type WhisperModelId = "tiny" | "base";
@@ -52,6 +53,12 @@ export const whisperModels: Readonly<Record<WhisperModelId, WhisperModel>> = {
 
 /** Download URL of a file at the pinned commit (Hugging Face's CDN, not our server). */
 export const whisperUrl = (model: WhisperModel, path: string) => `https://huggingface.co/${model.repo}/resolve/${model.revision}/${path}`;
+
+/** Where a file comes from, in order: our storage (`base`, same file) when configured, then Hugging Face. */
+export function whisperSources(model: WhisperModel, file: ModelFile, base: string): ModelSource[] {
+  const hub = { file, url: whisperUrl(model, file.path) };
+  return base ? [{ file, url: mirrorUrl(base, model.repo, model.revision, file.path) }, hub] : [hub];
+}
 
 /** What a model downloads the first time (later uses read it from the Cache API). */
 export const whisperDownloadBytes = (model: WhisperModel) => model.files.reduce((sum, f) => sum + f.bytes, 0);

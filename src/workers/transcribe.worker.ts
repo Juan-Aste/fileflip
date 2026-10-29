@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
-import { fetchModelFile, openModelStore } from "@/lib/tts/model-cache";
+import { fetchModelSources, openModelStore } from "@/lib/tts/model-cache";
 import type { ModelFile } from "@/lib/tts/model";
-import { whisperCacheName, whisperModels, whisperUrl, type WhisperModelId } from "@/lib/transcribe/model";
+import { whisperCacheName, whisperModels, whisperSources, type WhisperModelId } from "@/lib/transcribe/model";
 import {
   parseGenerationConfig,
   parseTokenizer,
@@ -18,6 +18,8 @@ import { exposeHandlers } from "@/lib/worker-rpc";
 // loaded for the next file. onnxruntime-web on CPU/WASM with one thread, as
 // the AI voice: no cross-origin isolation needed. Cancelling terminates the
 // worker (the job pool does it); the next run reads the model from the cache.
+// Files come from our storage when the page passes its URL (`base`), else
+// from Hugging Face.
 
 type Ort = typeof import("onnxruntime-web/wasm");
 
@@ -29,6 +31,8 @@ interface Loaded {
 }
 
 const loaded = new Map<WhisperModelId, Promise<Loaded>>();
+/** Our model storage (src/lib/models/sources.ts), set by `prepare`; "" = Hugging Face only. */
+let base = "";
 
 const decodeJson = (data: Uint8Array) => JSON.parse(new TextDecoder().decode(data)) as unknown;
 
@@ -43,7 +47,7 @@ function load(id: WhisperModelId, onBytes: (file: ModelFile, received: number) =
       const store = await openModelStore(whisperCacheName(spec));
       const get = (path: string) => {
         const file = spec.files.find((f) => f.path === path)!;
-        return fetchModelFile(file, { store, url: whisperUrl(spec, path), onBytes: (n) => onBytes(file, n) });
+        return fetchModelSources(whisperSources(spec, file, base), { store, onBytes });
       };
       // The small files Whisper does not read here are still fetched: they are part of the pinned set.
       await Promise.all([get("config.json"), get("preprocessor_config.json")]);
@@ -62,7 +66,8 @@ function load(id: WhisperModelId, onBytes: (file: ModelFile, received: number) =
 }
 
 /** Downloads (or reads from the cache) one model; progress is by bytes. */
-async function prepare({ model: id }: { model: WhisperModelId }, onProgress: (progress: number) => void) {
+async function prepare({ model: id, base: from = "" }: { model: WhisperModelId; base?: string }, onProgress: (progress: number) => void) {
+  base = from;
   const files = whisperModels[id].files;
   const total = files.reduce((sum, f) => sum + f.bytes, 0);
   const received = new Map<string, number>();

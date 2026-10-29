@@ -146,3 +146,13 @@ Para que el usuario elija la voz sin descargar el modelo, cada voz (F1–F5, M1�
 - En el lector, «Escuchar las voces IA antes de descargar» (un `<details>` cerrado, así no mueve la página al cargar) lista las 10 voces del idioma con ▶ (reproduce la muestra estática; se pide recién al tocarlo, nunca al abrir la página), la **Recomendada** del idioma (`RECOMMENDED_VOICE` en `src/lib/tts/recommended.ts`, medida en `docs/tts-wer.md`) y «Elegir». Elegir una voz pasa a la voz IA pero **no descarga nada**: el modelo se descarga, con el aviso de tamaño de siempre, recién al pulsar «Reproducir» o «Descargar MP3».
 - Si el usuario no eligió ninguna voz, se usa la recomendada del idioma del texto (antes, siempre F1). En el selector de voz la recomendada dice «· Recomendada».
 - La herramienta y la FAQ (5 idiomas) aclaran que todas las voces usan el mismo modelo: la descarga es la misma para cualquiera y se hace una sola vez.
+
+## Almacenamiento propio de los modelos (fase 11.4)
+
+- `NEXT_PUBLIC_MODELS_BASE_URL` (opcional, se fija al construir): URL de nuestra copia de los modelos (Cloudflare R2, pasos en `docs/modelos-r2.md`). Código: `src/lib/models/sources.ts`.
+- Estructura, igual a la de Hugging Face: `<base>/<repo>/<commit>/<ruta>`. La voz IA usa la copia **fp16** de los 4 ONNX en `<base>/Supertone/supertonic-3/<commit>-fp16/onnx/…` (~200 MB, `docs/tts-modelo-liviano.md`) y los JSON y las voces en `<base>/Supertone/supertonic-3/<commit>/…`; la transcripción, `<base>/onnx-community/whisper-tiny|whisper-base/<commit>/…`.
+- Cada archivo se verifica con su tamaño y SHA-256 fijados. Si nuestra copia no responde, da error o no coincide, se descarga el original de Hugging Face automáticamente (`fetchModelSources` en `src/lib/tts/model-cache.ts`). Una copia ya guardada en la caché, venga de donde venga, se usa sin descargar nada.
+- La herramienta muestra el tamaño real (200 MB con nuestra copia, 398 MB sin ella) y de dónde se descarga.
+- **CSP**: sigue sin `connect-src`, así que no hace falta cambiarla. Si en el futuro se agrega, incluir el dominio de `NEXT_PUBLIC_MODELS_BASE_URL` además de `https://huggingface.co` y `https://*.hf.co`.
+- **Privacidad**: la política menciona que los archivos pueden venir de Cloudflare (R2) además de Hugging Face.
+- Tests: `tests/model-mirror.test.ts` (dos servidores HTTP locales hacen de bucket y de Hugging Face: usa la URL base; con la URL base caída, un archivo ausente o un SHA-256 distinto vuelve a Hugging Face; no descarga lo que ya está en caché; cancelar no reintenta).
