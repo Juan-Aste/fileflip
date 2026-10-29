@@ -7,7 +7,7 @@ describe("Supertonic text preprocessing", () => {
   it("normalizes like the reference SDK and adds the language tags", () => {
     expect(preprocessText("Hello  world", "en")).toBe("<en>Hello world.</en>");
     expect(preprocessText("“Quoted” — text ,  done !", "en")).toBe('<en>"Quoted" - text, done!</en>');
-    expect(preprocessText("a/b_c [x] #1 😀 ♥", "es")).toBe("<es>a b c x 1.</es>");
+    expect(preprocessText("a/b_c [x] #1 😀 ♥", "es")).toBe("<es>a b c x uno.</es>");
     expect(preprocessText("Ends with a question?", "fr")).toBe("<fr>Ends with a question?</fr>");
   });
 

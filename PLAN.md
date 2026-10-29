@@ -476,7 +476,7 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbolos; elegir la voz escuchando muestras sin descargar el modelo; modelo más liviano; servir los modelos desde Cloudflare R2; preparar el repo para hacerlo público bajo AGPL-3.0-or-later (sin hacerlo público); verificación final. En orden. Sin dependencias GPL/AGPL ni no comerciales en esta fase.
 
 ### 11.1 Voz IA: números, fechas y símbolos
-- [ ] 11.1a Normalización por idioma (es, en, pt, fr) antes de las etiquetas de idioma: enteros y decimales según el separador del idioma, años, fechas en el orden del idioma, horas, porcentajes, monedas ($, US$, €, R$), ordinales (1.º, 1er, 1st), romanos frecuentes (siglo XXI), rangos, teléfonos y números largos; tests unitarios exhaustivos por idioma
+- [x] 11.1a Normalización por idioma (es, en, pt, fr) antes de las etiquetas de idioma: enteros y decimales según el separador del idioma, años, fechas en el orden del idioma, horas, porcentajes, monedas ($, US$, €, R$), ordinales (1.º, 1er, 1st), romanos frecuentes (siglo XXI), rangos, teléfonos y números largos; tests unitarios exhaustivos por idioma
 - [ ] 11.1b Abreviaturas comunes (Sr., Dra., etc., pág.) y siglas en mayúsculas; revisar "fecha" → "feka" (NFKD frente al SDK de referencia, idioma que llega al modelo) y documentarlo en `docs/tts-voz-ia.md`
 
 ### 11.2 Elegir la voz IA escuchando muestras
