@@ -49,7 +49,8 @@
       "company": "Fileflect"
     },
     "allTools": "Tous les outils",
-    "guides": "Guides"
+    "guides": "Guides",
+    "source": "Code source"
   },
   "HomePage": {
     "title": "Convertissez vos fichiers sans qu'ils quittent votre ordinateur",
@@ -3376,6 +3377,9 @@
     "intro": "Fileflect repose sur des logiciels libres et open source. Voici chaque composant tiers qui arrive dans votre navigateur ou tourne sur notre serveur, avec sa version, sa licence et l’endroit où trouver son code.",
     "download": "Télécharger les mentions des tiers (.txt)",
     "downloadHint": "Textes complets des licences, mentions de copyright et fichiers NOTICE de tous les composants.",
+    "sourceCodeHeading": "Code source",
+    "sourceCodeIntro": "Fileflect est un logiciel libre : son code est publié sous la licence GNU AGPL-3.0 ou ultérieure. Vous pouvez le lire, le modifier et le redistribuer selon cette licence. Le nom « Fileflect » et le logo ne sont pas couverts par la licence.",
+    "sourceCodeLink": "Voir le code source de Fileflect",
     "lgplHeading": "Composants sous LGPL",
     "lgplIntro": "Ces composants sont utilisés sous la Licence publique générale limitée GNU (LGPL), sans modification et sous forme de fichiers séparés (modules WebAssembly ou bibliothèques dynamiques) remplaçables par une autre version. Les liens de chacun mènent à son code source exact et aux instructions avec lesquelles il a été compilé.",
     "enginesHeading": "Moteurs et données inclus",

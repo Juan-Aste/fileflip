@@ -68,6 +68,7 @@ Todas están documentadas en `.env.example`. Las `NEXT_PUBLIC_*` se incrustan en
 | `AUTH_EMAIL_LOG_LINKS` | no | `true` solo en pruebas sin Resend ni SMTP (los enlaces quedan en el log) |
 | `NEXT_PUBLIC_ADSENSE_CLIENT`, `NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR`, `NEXT_PUBLIC_ADSENSE_SLOT_RESULT` | no | sin ellas se muestran espacios reservados |
 | `NEXT_PUBLIC_MODELS_BASE_URL` | no | copia propia de los modelos de IA (Cloudflare R2, `docs/modelos-r2.md`); sin ella se descargan de Hugging Face |
+| `NEXT_PUBLIC_SOURCE_URL` | no | enlace «Código fuente» en el footer y en créditos (AGPL-3.0 §13); vacía mientras el repo sea privado. Se lee al construir |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | recomendada | correo de la página de contacto |
 | `RATE_LIMIT_PER_MINUTE` | no | conversiones de servidor por minuto por IP anónima (20); con sesión, 5 veces eso por cuenta |
 | `TEMP_FILE_TTL_MINUTES` | no | vida máxima de temporales (60) |

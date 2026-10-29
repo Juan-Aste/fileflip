@@ -43,6 +43,7 @@ Las `NEXT_PUBLIC_*` se fijan al construir: si se cambian, redesplegar.
 | `NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR` | `1234567890` |
 | `NEXT_PUBLIC_ADSENSE_SLOT_RESULT` | `0987654321` |
 | `NEXT_PUBLIC_MODELS_BASE_URL` | `https://modelos.fileflect.com` (opcional: copia propia de los modelos de IA en Cloudflare R2, [docs/modelos-r2.md](modelos-r2.md); vacía = solo Hugging Face) |
+| `NEXT_PUBLIC_SOURCE_URL` | `https://github.com/Juan-Aste/fileflip` (opcional: solo cuando el repo sea público; muestra «Código fuente» en el footer y en créditos, obligación de la AGPL-3.0 §13; vacía = no aparece) |
 | `RATE_LIMIT_PER_MINUTE` | `20` |
 | `TEMP_FILE_TTL_MINUTES` | `60` |
 
@@ -108,6 +109,13 @@ Pasos completos en [`docs/modelos-r2.md`](modelos-r2.md). Sin esto, la voz IA y 
 - [ ] Desde tu PC: `node scripts/models/sync-r2.mjs --dry-run` y después con `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` y `R2_BUCKET`.
 - [ ] Railway: `NEXT_PUBLIC_MODELS_BASE_URL=https://modelos.fileflect.com` y redesplegar.
 - [ ] Comprobar: en `/es/leer-texto-en-voz-alta` → Voz IA → Reproducir, el aviso dice «unos 191 MB desde nuestro servidor de modelos».
+
+## 9c. Publicar el código (opcional, fase 11.5)
+Antes: [`docs/escaneo-secretos.md`](escaneo-secretos.md) (sin secretos en el historial) y [`docs/licencia-agpl.md`](licencia-agpl.md) (licencias compatibles con la AGPL-3.0-or-later).
+- [ ] Mergear `dev` en `main` (trae `LICENSE`, el README público y el campo `license`).
+- [ ] GitHub → Settings → General → Danger Zone → Change visibility → Public.
+- [ ] Railway: `NEXT_PUBLIC_SOURCE_URL=https://github.com/Juan-Aste/fileflip` y redesplegar.
+- [ ] Comprobar: el footer y `/es/creditos` muestran «Código fuente» con el enlace al repositorio.
 
 ## 10. Verificar después de publicar
 - [ ] `https://fileflect.com/api/health` → `{"status":"ok","gotenberg":true}`.

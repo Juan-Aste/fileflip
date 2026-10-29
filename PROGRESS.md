@@ -3742,3 +3742,10 @@ FASE 10 TERMINADA
 - `docs/licencia-agpl.md`: 250 paquetes de producción (MIT, Apache-2.0, ISC, BSD, MPL-2.0 sin Anexo B, LGPL, OFL, 0BSD, MIT-0, Zlib, BlueOak, CC-BY-4.0) y 31 motores/modelos de `embedded.mjs`. **Conclusión: compatible**; no hay GPL-2.0-only, no comerciales ni SSPL distribuida.
 - Casos dudosos revisados: Supertonic 3 (OpenRAIL-M: pesos descargados en tiempo de ejecución, obra separada; las restricciones de los Términos se refieren al modelo, no al código; la copia fp16 se marca como modificada), tipografías OFL (agregado), MongoDB SSPL (servidor aparte, no se distribuye), herramientas GPL solo de tests.
 - Fixtures, capturas, muestras de voz y logo: propios o sintéticos. Nota para la fase 12: qué cambiar en `chooseLicense` y `tests/licenses.test.ts`.
+
+## 2026-10-29 — Fase 11, tarea 11.5c (LICENSE, README público y `NEXT_PUBLIC_SOURCE_URL`)
+- `LICENSE`: texto oficial de la AGPL-3.0 de gnu.org (SHA-256 `0d96a4ff…abcb0`, igual al de otros proyectos AGPL). `"license": "AGPL-3.0-or-later"` en `package.json` y en la raíz de `package-lock.json`.
+- `README.md` público en español e inglés: qué es Fileflect, cómo correrlo (Node ≥ 20.9, `docker compose` para MongoDB y Gotenberg), comandos, variables de entorno sin valores, cómo contribuir (rama `dev`, checks, 5 idiomas, licencias compatibles), licencia y que la marca «Fileflect» y el logo no se licencian bajo la AGPL.
+- `NEXT_PUBLIC_SOURCE_URL` opcional (`src/lib/source-url.ts`, solo https, se fija al construir): «Código fuente» en el footer y una sección en créditos con la licencia, en 5 idiomas. Sin la variable no aparece. `ARG` en el Dockerfile, `.env.example`, `DEPLOY.md` y `docs/launch-checklist.md` (variable y nueva sección 9c «Publicar el código»).
+- Tests: `src/lib/source-url.test.ts` y un test de navegador en `legal.spec.ts` (con la variable: enlaces en footer y créditos, es/en; sin ella: nada).
+- Verificado: lint, typecheck, 1373 unitarios, `npm run licenses` (sin cambios), build con la variable; Chromium `legal` + `a11y` (32 pasan, incluido axe en créditos).

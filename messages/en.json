@@ -49,7 +49,8 @@
       "company": "Fileflect"
     },
     "allTools": "All tools",
-    "guides": "Guides"
+    "guides": "Guides",
+    "source": "Source code"
   },
   "HomePage": {
     "title": "Convert your files without them ever leaving your computer",
@@ -3376,6 +3377,9 @@
     "intro": "Fileflect is built on free and open-source software. Here is every third-party component that reaches your browser or runs on our server, with its version, its license and where to find its code.",
     "download": "Download the third-party notices (.txt)",
     "downloadHint": "Full license texts, copyright notices and NOTICE files of every component.",
+    "sourceCodeHeading": "Source code",
+    "sourceCodeIntro": "Fileflect is free software: its code is published under the GNU AGPL-3.0 or later. You can read, modify and redistribute it under that license. The “Fileflect” name and logo are not covered by the license.",
+    "sourceCodeLink": "View Fileflect’s source code",
     "lgplHeading": "LGPL components",
     "lgplIntro": "These components are used under the GNU Lesser General Public License (LGPL), unmodified and as separate files (WebAssembly modules or shared libraries) that can be replaced with another version. The links for each one lead to its exact source code and the instructions it was built with.",
     "enginesHeading": "Bundled engines and data",

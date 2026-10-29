@@ -49,7 +49,8 @@
       "company": "Fileflect"
     },
     "allTools": "全部工具",
-    "guides": "指南"
+    "guides": "指南",
+    "source": "源代码"
   },
   "HomePage": {
     "title": "转换文件，文件不离开你的电脑",
@@ -3376,6 +3377,9 @@
     "intro": "Fileflect 建立在自由及开源软件之上。这里列出了进入你的浏览器或在我们服务器上运行的每个第三方组件，以及它们的版本、许可证和源代码位置。",
     "download": "下载第三方声明（.txt）",
     "downloadHint": "所有组件的完整许可证文本、版权声明和 NOTICE 文件。",
+    "sourceCodeHeading": "源代码",
+    "sourceCodeIntro": "Fileflect 是自由软件：其代码以 GNU AGPL-3.0 或更高版本许可证发布。你可以按照该许可证阅读、修改和再分发。“Fileflect”名称和标志不在许可证范围内。",
+    "sourceCodeLink": "查看 Fileflect 的源代码",
     "lgplHeading": "LGPL 组件",
     "lgplIntro": "这些组件依据 GNU 宽通用公共许可证（LGPL）使用，未经修改，并以独立文件（WebAssembly 模块或动态库）的形式提供，可替换为其他版本。每个组件的链接指向其确切版本的源代码和编译说明。",
     "enginesHeading": "内置引擎和数据",

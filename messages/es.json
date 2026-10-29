@@ -49,7 +49,8 @@
       "company": "Fileflect"
     },
     "allTools": "Todas las herramientas",
-    "guides": "Guías"
+    "guides": "Guías",
+    "source": "Código fuente"
   },
   "HomePage": {
     "title": "Convierte tus archivos sin que salgan de tu computadora",
@@ -3376,6 +3377,9 @@
     "intro": "Fileflect existe gracias al software libre y de código abierto. Aquí está cada componente de terceros que llega a tu navegador o corre en nuestro servidor, con su versión, su licencia y dónde encontrar su código.",
     "download": "Descargar los avisos de terceros (.txt)",
     "downloadHint": "Textos completos de las licencias, avisos de copyright y archivos NOTICE de todos los componentes.",
+    "sourceCodeHeading": "Código fuente",
+    "sourceCodeIntro": "Fileflect es software libre: su código se publica bajo la licencia GNU AGPL-3.0 o posterior. Puedes leerlo, modificarlo y redistribuirlo según esa licencia. La marca «Fileflect» y el logo no forman parte de la licencia.",
+    "sourceCodeLink": "Ver el código fuente de Fileflect",
     "lgplHeading": "Componentes bajo LGPL",
     "lgplIntro": "Estos componentes se usan bajo la Licencia Pública General Reducida de GNU (LGPL), sin modificaciones y como archivos separados (módulos WebAssembly o bibliotecas dinámicas) que se pueden reemplazar por otra versión. Puedes descargar su código fuente exacto y las instrucciones con las que se compilaron desde los enlaces de cada uno.",
     "enginesHeading": "Motores y datos incluidos",

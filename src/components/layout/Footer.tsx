@@ -9,6 +9,7 @@ import { formats } from "@/config/formats";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { proEnabled } from "@/lib/pro";
+import { sourceUrl } from "@/lib/source-url";
 
 const linkClass = "text-muted transition hover:text-brand";
 
@@ -25,6 +26,7 @@ export default function Footer() {
   const th = useTranslations("HomePage");
   const locale = useLocale() as Locale;
   const year = new Date().getFullYear();
+  const source = sourceUrl();
 
   return (
     <footer className="mt-16 border-t border-border bg-surface">
@@ -97,6 +99,13 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
+            {source && (
+              <li>
+                <a href={source} rel="noopener noreferrer" className={linkClass}>
+                  {t("source")}
+                </a>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
