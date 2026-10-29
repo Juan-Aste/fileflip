@@ -36,3 +36,4 @@ Promedio de las 10 voces: inglés 1,1 %, español 6,7 %, portugués 9,8 %, franc
 - Parte del error es de Whisper `base` y no de la voz (nombres propios, acentos, "veintiséis" oído como "veintidós"); afecta por igual a todas las voces, así que la comparación entre voces sigue siendo justa.
 - El modelo es mucho más claro en inglés que en los otros idiomas, con cualquier voz.
 - La recomendación está fijada en `RECOMMENDED_VOICE` (`src/lib/tts/recommended.ts`); si el modelo cambia (tarea 11.3), se repite la medición.
+- Las versiones livianas del modelo de la tarea 11.3 se midieron igual: `docs/tts-wer/fp16.json`, `int8*.json`; comparación en `docs/tts-modelo-liviano.md`.

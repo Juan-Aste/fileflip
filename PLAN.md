@@ -485,7 +485,7 @@ Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbol
 - [x] 11.2c Lector: selector de voces con ▶ "Escuchar muestra" (archivo estático, cargado solo al tocar), "Recomendada" por idioma, descarga del modelo recién al usar la voz IA o el MP3; aclarar en la herramienta y la FAQ (5 idiomas) que todas las voces usan el mismo modelo y se descarga una sola vez; tests
 
 ### 11.3 Modelo de voz IA más liviano
-- [ ] 11.3a Generar versiones fp16 e int8 dinámico de los ONNX de Supertonic (herramientas MIT) y compararlas con el original (WER con Whisper, duración, métricas de audio); documentar tamaños y resultados
+- [x] 11.3a Generar versiones fp16 e int8 dinámico de los ONNX de Supertonic (herramientas MIT) y compararlas con el original (WER con Whisper, duración, métricas de audio); documentar tamaños y resultados
 - [ ] 11.3b Adoptar la versión más liviana que cumpla (WER ≤ +10 % relativo, sin diferencia evidente) con versión y sha256 fijos; tests
 
 ### 11.4 Servir los modelos desde Cloudflare R2 (preparar)

@@ -1,0 +1,963 @@
+{
+  "model": "int8din-estimador",
+  "date": "2026-10-29",
+  "recommended": {
+    "es": "F5",
+    "en": "F1",
+    "pt": "M5",
+    "fr": "F1"
+  },
+  "results": [
+    {
+      "lang": "en",
+      "voice": "F1",
+      "wer": 0,
+      "errors": 0,
+      "words": 90,
+      "seconds": 33.1,
+      "misses": []
+    },
+    {
+      "lang": "en",
+      "voice": "F2",
+      "wer": 0.011111111111111112,
+      "errors": 1,
+      "words": 90,
+      "seconds": 31,
+      "misses": [
+        {
+          "text": "The library opens every day at nine in the morning.",
+          "heard": "The library opens every day at night in the morning."
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "voice": "F3",
+      "wer": 0,
+      "errors": 0,
+      "words": 90,
+      "seconds": 34.2,
+      "misses": []
+    },
+    {
+      "lang": "en",
+      "voice": "F4",
+      "wer": 0.011111111111111112,
+      "errors": 1,
+      "words": 90,
+      "seconds": 29,
+      "misses": [
+        {
+          "text": "The kids played soccer until it got dark.",
+          "heard": "The kids play soccer until it got dark."
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "voice": "F5",
+      "wer": 0.022222222222222223,
+      "errors": 2,
+      "words": 90,
+      "seconds": 31.9,
+      "misses": [
+        {
+          "text": "When it rains, the city fills with colorful umbrellas.",
+          "heard": "when it rains the city feels with colourful umbrellas."
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "voice": "M1",
+      "wer": 0,
+      "errors": 0,
+      "words": 90,
+      "seconds": 33.1,
+      "misses": []
+    },
+    {
+      "lang": "en",
+      "voice": "M2",
+      "wer": 0.011111111111111112,
+      "errors": 1,
+      "words": 90,
+      "seconds": 32.3,
+      "misses": [
+        {
+          "text": "The train to Boston leaves from platform four.",
+          "heard": "The train to Boston leaves from platform."
+        }
+      ]
+    },
+    {
+      "lang": "en",
+      "voice": "M3",
+      "wer": 0,
+      "errors": 0,
+      "words": 90,
+      "seconds": 28.4,
+      "misses": []
+    },
+    {
+      "lang": "en",
+      "voice": "M4",
+      "wer": 0,
+      "errors": 0,
+      "words": 90,
+      "seconds": 30.9,
+      "misses": []
+    },
+    {
+      "lang": "en",
+      "voice": "M5",
+      "wer": 0.07777777777777778,
+      "errors": 7,
+      "words": 90,
+      "seconds": 33,
+      "misses": [
+        {
+          "text": "I need to buy bread, milk and a pound of tomatoes.",
+          "heard": "I need to buy a bread milk and a pound of tomatoes."
+        },
+        {
+          "text": "The report is due on March 15.",
+          "heard": "The reporters do on March 15th."
+        },
+        {
+          "text": "Save the file before you close the laptop.",
+          "heard": "Save the file before you close the lap."
+        },
+        {
+          "text": "In 2026 the ticket costs 35 dollars.",
+          "heard": "In 2026, ticket costs $35."
+        },
+        {
+          "text": "When it rains, the city fills with colorful umbrellas.",
+          "heard": "when it rains the city fills with colourful umbrellas."
+        }
+      ]
+    },
+    {
+      "lang": "es",
+      "voice": "F1",
+      "wer": 0.05154639175257732,
+      "errors": 5,
+      "words": 97,
+      "seconds": 40.4,
+      "misses": [
+        {
+          "text": "El tren a Córdoba sale del andén cuatro.",
+          "heard": "El tren acordó basale de la Andén 4."
+        },
+        {
+          "text": "Guardá el archivo antes de cerrar la computadora.",
+          "heard": "Guardar el archivo antes de cerrar la computadora."
+        }
+      ]
+    },
+    {
+      "lang": "es",
+      "voice": "F2",
+      "wer": 0.07216494845360824,
+      "errors": 7,
+      "words": 97,
+      "seconds": 38,
+      "misses": [
+        {
+          "text": "Mi abuela prepara un guiso de lentejas los domingos.",
+          "heard": "Mi abuela prepara un guiso de alentejas los domingos."
+        },
+        {
+          "text": "El tren a Córdoba sale del andén cuatro.",
+          "heard": "El tren acorde va a salir de la Andén 4."
+        },
+        {
+          "text": "Guardá el archivo antes de cerrar la computadora.",
+          "heard": "Guardar el archivo antes de cerrar la computadora."
+        }
+      ]
+    },
+    {
+      "lang": "es",
+      "voice": "F3",
+      "wer": 0.05154639175257732,
+      "errors": 5,
+      "words": 97,
+      "seconds": 41.7,
+      "misses": [
+        {
+          "text": "El tren a Córdoba sale del andén cuatro.",
+          "heard": "El tren acorde basale de la Andén 4."
+        },
+        {
+          "text": "Guardá el archivo antes de cerrar la computadora.",
+          "heard": "Guardar el archivo antes de cerrar la computadora."
+        }
+      ]
+    },
+    {
+      "lang": "es",
+      "voice": "F4",
+      "wer": 0.15463917525773196,
+      "errors": 15,
+      "words": 97,
+      "seconds": 35.4,
+      "misses": [
+        {
+          "text": "Mi abuela prepara un guiso de lentejas los domingos.",
+          "heard": "Mi abuela preparó un guiso de lentejas los domingos."
+        },
+        {
+          "text": "El tren a Córdoba sale del andén cuatro.",
+          "heard": "El tren acordó va a salir antes de 4."
+        },
+        {
+          "text": "La fecha de entrega del trabajo es el 15 de marzo.",
+          "heard": "La fecha de entrega de trabajo el 15 de marzo."
+        },
+        {
+          "text": "Guardá el archivo antes de cerrar la computadora.",
+          "heard": "Guadalajivo antes de cerrar la computadora."
+        },
+        {
+          "text": "En 2026 el pasaje cuesta 350 pesos.",
+          "heard": "En 2021 es el pasaje cuesta 350 pesos."
+        },
+        {
+          "text": "Cuando llueve, la ciudad se llena de paraguas de colores.",
+          "heard": "Cuando llueve, la ciudad se llena de paraguas de tecores."
+        }
+      ]
+    },
+    {
+      "lang": "es",
+      "voice": "F5",
+      "wer": 0.05154639175257732,
+      "errors": 5,
+      "words": 97,
+      "seconds": 39.1,
+      "misses": [
+        {
+          "text": "El tren a Córdoba sale del andén cuatro.",
+          "heard": "El tren acordó a sale de la Andén 4."
+        },
+        {
+          "text": "Guardá el archivo antes de cerrar la computadora.",
+          "heard": "Guardar el archivo antes de cerrar la computadora."
+        }
+      ]
+    },
+    {
+      "lang": "es",
+      "voice": "M1",
+      "wer": 0.05154639175257732,
+      "errors": 5,
+      "words": 97,
+      "seconds": 40.4,
+      "misses": [
+        {
+          "text": "El tren a Córdoba sale del andén cuatro.",
+          "heard": "El tren acordó basal de la Andén 4."
+        },
+        {
+          "text": "Guardá el archivo antes de cerrar la computadora.",
+          "heard": "Guardar el archivo antes de cerrar la computadora."
+        }
+      ]
+    },
+    {
+      "lang": "es",
+      "voice": "M2",
+      "wer": 0.07216494845360824,
+      "errors": 7,
+      "words": 97,
+      "seconds": 39.5,
+      "misses": [
+        {
+          "text": "El tren a Córdoba sale del andén cuatro.",
+          "heard": "El tren acuerdo va sale de la Ande en 4."
+        },
+        {
+          "text": "Guardá el archivo antes de cerrar la computadora.",
+          "heard": "Guardar el archivo antes de cerrar la computadora."
+        }
+      ]
+    },
+    {
+      "lang": "es",
+      "voice": "M3",
+      "wer": 0.061855670103092786,
+      "errors": 6,
+      "words": 97,
+      "seconds": 34.7,
+      "misses": [
+        {
+          "text": "Mi abuela prepara un guiso de lentejas los domingos.",
+          "heard": "Mi abuela prepara un guiso de la enteja a los domingos."
+        },
+        {
+          "text": "El tren a Córdoba sale del andén cuatro.",
+          "heard": "El tren acordó a sale del Anden 4."
+        },
+        {
+          "text": "Guardá el archivo antes de cerrar la computadora.",
+          "heard": "Guardar el archivo antes de cerrar la computadora."
+        }
+      ]
+    },
+    {
+      "lang": "es",
+      "voice": "M4",
+      "wer": 0.09278350515463918,
+      "errors": 9,
+      "words": 97,
+      "seconds": 37.9,
+      "misses": [
+        {
+          "text": "Mi abuela prepara un guiso de lentejas los domingos.",
+          "heard": "Mi abuela preparó un guiso de la inteja a los domingos."
+        },
+        {
+          "text": "El tren a Córdoba sale del andén cuatro.",
+          "heard": "El tren acordó a sale de la Andén 4."
+        },
+        {
+          "text": "Guardá el archivo antes de cerrar la computadora.",
+          "heard": "Guardar el archivo antes de cerrar la computadora."
+        }
+      ]
+    },
+    {
+      "lang": "es",
+      "voice": "M5",
+      "wer": 0.061855670103092786,
+      "errors": 6,
+      "words": 97,
+      "seconds": 40.3,
+      "misses": [
+        {
+          "text": "Mi abuela prepara un guiso de lentejas los domingos.",
+          "heard": "Mi abuela prepara un guiso de lenteja los domingos."
+        },
+        {
+          "text": "El tren a Córdoba sale del andén cuatro.",
+          "heard": "El tren acordó va a salir del Andén 4."
+        },
+        {
+          "text": "El médico me recomendó caminar media hora por día.",
+          "heard": "El médico me recomiendo caminar media hora por día."
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "voice": "F1",
+      "wer": 0.07142857142857142,
+      "errors": 7,
+      "words": 98,
+      "seconds": 37.6,
+      "misses": [
+        {
+          "text": "Le train pour Lyon part du quai numéro quatre.",
+          "heard": "Le train pour lui on part du cas numéroquage."
+        },
+        {
+          "text": "Je dois acheter du pain, du lait et un kilo de tomates.",
+          "heard": "Je dois acheter du pain, du lait et un kilo de tomate."
+        },
+        {
+          "text": "Quand il pleut, la ville se remplit de parapluies colorés.",
+          "heard": "Quand il pleut, la ville se remplit de parapois colorés."
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "voice": "F2",
+      "wer": 0.07142857142857142,
+      "errors": 7,
+      "words": 98,
+      "seconds": 35.2,
+      "misses": [
+        {
+          "text": "Le train pour Lyon part du quai numéro quatre.",
+          "heard": "Le train pour les en part du K numéro 4."
+        },
+        {
+          "text": "Je dois acheter du pain, du lait et un kilo de tomates.",
+          "heard": "Je dois acheter du pain, du lait et un kilo de tomate."
+        },
+        {
+          "text": "Le médecin m'a conseillé de marcher une demi-heure par jour.",
+          "heard": "Le médecin m'a conseillé de marcher une demi-hiverse par jour."
+        },
+        {
+          "text": "Quand il pleut, la ville se remplit de parapluies colorés.",
+          "heard": "Quand il pleut, la ville se remplit de parapuis colorée."
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "voice": "F3",
+      "wer": 0.12244897959183673,
+      "errors": 12,
+      "words": 98,
+      "seconds": 38.8,
+      "misses": [
+        {
+          "text": "La bibliothèque ouvre tous les jours à neuf heures du matin.",
+          "heard": "La bibliothèque ouvre tous les jours à 9h30."
+        },
+        {
+          "text": "Le train pour Lyon part du quai numéro quatre.",
+          "heard": "Le train pour Léon-Pard du Canemèro IV."
+        },
+        {
+          "text": "Je dois acheter du pain, du lait et un kilo de tomates.",
+          "heard": "Je dois acheter du pan du lait et un kilo de tomate."
+        },
+        {
+          "text": "Enregistrez le fichier avant de fermer l'ordinateur.",
+          "heard": "enregistrer le fichier avant de fermer l'ordinateur."
+        },
+        {
+          "text": "Quand il pleut, la ville se remplit de parapluies colorés.",
+          "heard": "Quand il pleut, la ville se remplit de par-appui colorée."
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "voice": "F4",
+      "wer": 0.20408163265306123,
+      "errors": 20,
+      "words": 98,
+      "seconds": 32.5,
+      "misses": [
+        {
+          "text": "La bibliothèque ouvre tous les jours à neuf heures du matin.",
+          "heard": "La bibliothèque ouvre tous les jours à 9h30."
+        },
+        {
+          "text": "Ma grand-mère prépare une soupe de légumes le dimanche.",
+          "heard": "Ma grand-mère prépare une souve de légumes de dimanche."
+        },
+        {
+          "text": "Le train pour Lyon part du quai numéro quatre.",
+          "heard": "Le tram pour lien au part du can numéro 4."
+        },
+        {
+          "text": "Je dois acheter du pain, du lait et un kilo de tomates.",
+          "heard": "Je dois acheter du pan du lait et un kilo de tomate."
+        },
+        {
+          "text": "Les enfants ont joué au football jusqu'à la nuit.",
+          "heard": "Les enfants jouent au football jusqu'à la nuit."
+        },
+        {
+          "text": "Enregistrez le fichier avant de fermer l'ordinateur.",
+          "heard": "enregistrer le fichier avant de fermer leur dinateur."
+        },
+        {
+          "text": "En 2026, le billet coûte 35 euros.",
+          "heard": "En 2020, le billet coûte 35 euros."
+        },
+        {
+          "text": "Quand il pleut, la ville se remplit de parapluies colorés.",
+          "heard": "Quand il pleut, la vie se remplit de par-appui colorée."
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "voice": "F5",
+      "wer": 0.09183673469387756,
+      "errors": 9,
+      "words": 98,
+      "seconds": 36.3,
+      "misses": [
+        {
+          "text": "Le train pour Lyon part du quai numéro quatre.",
+          "heard": "Le train pour les ont part du cas numéro 4."
+        },
+        {
+          "text": "Je dois acheter du pain, du lait et un kilo de tomates.",
+          "heard": "Je dois acheter du pain, du lait et un kilo de tomate."
+        },
+        {
+          "text": "En 2026, le billet coûte 35 euros.",
+          "heard": "En 2020, le billet coûte 35 euros."
+        },
+        {
+          "text": "Quand il pleut, la ville se remplit de parapluies colorés.",
+          "heard": "Quand il pleut, la ville se remplit de par rapport à l'oreille."
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "voice": "M1",
+      "wer": 0.12244897959183673,
+      "errors": 12,
+      "words": 98,
+      "seconds": 37.6,
+      "misses": [
+        {
+          "text": "La bibliothèque ouvre tous les jours à neuf heures du matin.",
+          "heard": "La bibliothèque ouvre tous les jours un heure-feur du matin."
+        },
+        {
+          "text": "Ma grand-mère prépare une soupe de légumes le dimanche.",
+          "heard": "Ma grand-mère prépare une soupe de légume le dimanche."
+        },
+        {
+          "text": "Le train pour Lyon part du quai numéro quatre.",
+          "heard": "Le train pour l'ion part du can numéro 4."
+        },
+        {
+          "text": "Je dois acheter du pain, du lait et un kilo de tomates.",
+          "heard": "Je dois acheter du pan, du lait et un kilo de tomate."
+        },
+        {
+          "text": "Enregistrez le fichier avant de fermer l'ordinateur.",
+          "heard": "Enregistrez le puissier avant de fermer l'ordinateur."
+        },
+        {
+          "text": "Quand il pleut, la ville se remplit de parapluies colorés.",
+          "heard": "Quand il pleut, la ville se remplit de par-appui colorée."
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "voice": "M2",
+      "wer": 0.1326530612244898,
+      "errors": 13,
+      "words": 98,
+      "seconds": 36.7,
+      "misses": [
+        {
+          "text": "Ma grand-mère prépare une soupe de légumes le dimanche.",
+          "heard": "Ma grand-mère prête par une soupe de légume le dimanche."
+        },
+        {
+          "text": "Le train pour Lyon part du quai numéro quatre.",
+          "heard": "Le train pour l'île en part du cas numéro 4."
+        },
+        {
+          "text": "Je dois acheter du pain, du lait et un kilo de tomates.",
+          "heard": "Je dois acheter du pain, du lait et un kilo de tomate."
+        },
+        {
+          "text": "Enregistrez le fichier avant de fermer l'ordinateur.",
+          "heard": "Enregistrez les fichiers avant de fermer leur dinateur."
+        },
+        {
+          "text": "Quand il pleut, la ville se remplit de parapluies colorés.",
+          "heard": "Quand il pleut, la ville se remplit de parapuis colorée."
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "voice": "M3",
+      "wer": 0.14285714285714285,
+      "errors": 14,
+      "words": 98,
+      "seconds": 31.8,
+      "misses": [
+        {
+          "text": "Le train pour Lyon part du quai numéro quatre.",
+          "heard": "Le train pour l'hombre du cas numéro 4."
+        },
+        {
+          "text": "Je dois acheter du pain, du lait et un kilo de tomates.",
+          "heard": "Je dois acheter du pan du lait et un kilotomate."
+        },
+        {
+          "text": "Les enfants ont joué au football jusqu'à la nuit.",
+          "heard": "Les enfants jouaient au football jusqu'à la nuit."
+        },
+        {
+          "text": "Enregistrez le fichier avant de fermer l'ordinateur.",
+          "heard": "enregistrer le fichier avant de fermer l'ordinateur."
+        },
+        {
+          "text": "En 2026, le billet coûte 35 euros.",
+          "heard": "En 2026, le bidet coûte 35 euros."
+        },
+        {
+          "text": "Quand il pleut, la ville se remplit de parapluies colorés.",
+          "heard": "Quand il pleut, la ville se remplit de par-appui coloré."
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "voice": "M4",
+      "wer": 0.1326530612244898,
+      "errors": 13,
+      "words": 98,
+      "seconds": 35.1,
+      "misses": [
+        {
+          "text": "Le train pour Lyon part du quai numéro quatre.",
+          "heard": "Le train pour l'ayant part du can numéro 4."
+        },
+        {
+          "text": "Je dois acheter du pain, du lait et un kilo de tomates.",
+          "heard": "Je dois acheter du pan du lait et un kilo de tomate."
+        },
+        {
+          "text": "Enregistrez le fichier avant de fermer l'ordinateur.",
+          "heard": "enregistrer le fichier avant de fermer leur dinateur."
+        },
+        {
+          "text": "En 2026, le billet coûte 35 euros.",
+          "heard": "En 2026, le bidet coûte 35 euros."
+        },
+        {
+          "text": "Quand il pleut, la ville se remplit de parapluies colorés.",
+          "heard": "Quand il pleut, la ville se remplit de par rapport à le colorer."
+        }
+      ]
+    },
+    {
+      "lang": "fr",
+      "voice": "M5",
+      "wer": 0.10204081632653061,
+      "errors": 10,
+      "words": 98,
+      "seconds": 37.5,
+      "misses": [
+        {
+          "text": "Le train pour Lyon part du quai numéro quatre.",
+          "heard": "Le tram pour lien par du cas numéro 4."
+        },
+        {
+          "text": "Je dois acheter du pain, du lait et un kilo de tomates.",
+          "heard": "Je dois acheter du pan du lait et un kilo de tomate."
+        },
+        {
+          "text": "Les enfants ont joué au football jusqu'à la nuit.",
+          "heard": "Les enfants joués au football jusqu'à la nuit."
+        },
+        {
+          "text": "Quand il pleut, la ville se remplit de parapluies colorés.",
+          "heard": "Quand il pleut, la ville se remplit de parapluie colorée."
+        }
+      ]
+    },
+    {
+      "lang": "pt",
+      "voice": "F1",
+      "wer": 0.21739130434782608,
+      "errors": 20,
+      "words": 92,
+      "seconds": 39.2,
+      "misses": [
+        {
+          "text": "A biblioteca abre todos os dias às nove da manhã.",
+          "heard": "A biblioteca abre todo o dia dezenove da manhã."
+        },
+        {
+          "text": "Minha avó faz sopa de legumes aos domingos.",
+          "heard": "Minha voz faz sopa de legumes aos domingues."
+        },
+        {
+          "text": "O trem para Campinas sai da plataforma quatro.",
+          "heard": "O trem para campina sai da plataforma 4."
+        },
+        {
+          "text": "Preciso comprar pão, leite e um quilo de tomates.",
+          "heard": "Preciso comprar pão, leite e umquilo de tomates."
+        },
+        {
+          "text": "O médico me recomendou caminhar meia hora por dia.",
+          "heard": "O médico me recomendou que a minha amea agora por dia."
+        },
+        {
+          "text": "Em 2026 a passagem custa 35 reais.",
+          "heard": "Em 2020, seis à passagem custa 30 e cinco reais."
+        },
+        {
+          "text": "Quando chove, a cidade se enche de guarda-chuvas coloridos.",
+          "heard": "Quando chove, a cidade se é instiguar das chuvas coloridos."
+        }
+      ]
+    },
+    {
+      "lang": "pt",
+      "voice": "F2",
+      "wer": 0.10869565217391304,
+      "errors": 10,
+      "words": 92,
+      "seconds": 37,
+      "misses": [
+        {
+          "text": "Minha avó faz sopa de legumes aos domingos.",
+          "heard": "Minha voz faz sopa de legumes aos domingues."
+        },
+        {
+          "text": "O trem para Campinas sai da plataforma quatro.",
+          "heard": "O trem para a campina sai da plataforma 4."
+        },
+        {
+          "text": "Preciso comprar pão, leite e um quilo de tomates.",
+          "heard": "Preciso comprar fão, leite em um quilo de tomates."
+        },
+        {
+          "text": "Em 2026 a passagem custa 35 reais.",
+          "heard": "Em 2020 e 6 a passagem custa 35 reais."
+        },
+        {
+          "text": "Quando chove, a cidade se enche de guarda-chuvas coloridos.",
+          "heard": "Quando chove, a cidade ciência de guardas chuvas coloridos."
+        }
+      ]
+    },
+    {
+      "lang": "pt",
+      "voice": "F3",
+      "wer": 0.16304347826086957,
+      "errors": 15,
+      "words": 92,
+      "seconds": 40.4,
+      "misses": [
+        {
+          "text": "A biblioteca abre todos os dias às nove da manhã.",
+          "heard": "A Biblio até quebre todos os dias às nove da manhã."
+        },
+        {
+          "text": "O trem para Campinas sai da plataforma quatro.",
+          "heard": "O trem para a campina sai da plataforma 4."
+        },
+        {
+          "text": "As crianças jogaram futebol até escurecer.",
+          "heard": "As crianças jogaram futebol até escurrecer."
+        },
+        {
+          "text": "Salve o arquivo antes de fechar o computador.",
+          "heard": "Sauve o arquivo antes de fechar o computador."
+        },
+        {
+          "text": "O médico me recomendou caminhar meia hora por dia.",
+          "heard": "O médico me recomendou que a minha meia hora por dia."
+        },
+        {
+          "text": "Em 2026 a passagem custa 35 reais.",
+          "heard": "Em 2021, a passagem custa 35 reais."
+        },
+        {
+          "text": "Quando chove, a cidade se enche de guarda-chuvas coloridos.",
+          "heard": "Quando chove a cidade se enchiguarda chuvas coloridos."
+        }
+      ]
+    },
+    {
+      "lang": "pt",
+      "voice": "F4",
+      "wer": 0.1956521739130435,
+      "errors": 18,
+      "words": 92,
+      "seconds": 34.8,
+      "misses": [
+        {
+          "text": "A biblioteca abre todos os dias às nove da manhã.",
+          "heard": "A Bíblia você é a Cábretia todos os dias às 9 da manhã."
+        },
+        {
+          "text": "Minha avó faz sopa de legumes aos domingos.",
+          "heard": "Minha avó faz sopa de legumes aos domingues."
+        },
+        {
+          "text": "O trem para Campinas sai da plataforma quatro.",
+          "heard": "O trem para a campina sai da plataforma 4."
+        },
+        {
+          "text": "Preciso comprar pão, leite e um quilo de tomates.",
+          "heard": "Preciso comprar pão leite em um quilo de tomates."
+        },
+        {
+          "text": "Salve o arquivo antes de fechar o computador.",
+          "heard": "Salve o arquivante e fechar o computador."
+        },
+        {
+          "text": "O médico me recomendou caminhar meia hora por dia.",
+          "heard": "O médico me recomendou que a minha meia hora por dia."
+        },
+        {
+          "text": "Em 2026 a passagem custa 35 reais.",
+          "heard": "Em 2020 e 6 a passagem custa 30 e 5 reais."
+        },
+        {
+          "text": "Quando chove, a cidade se enche de guarda-chuvas coloridos.",
+          "heard": "Quando chove a cidade ciência de guarda chuvas coloridos."
+        }
+      ]
+    },
+    {
+      "lang": "pt",
+      "voice": "F5",
+      "wer": 0.09782608695652174,
+      "errors": 9,
+      "words": 92,
+      "seconds": 38,
+      "misses": [
+        {
+          "text": "A biblioteca abre todos os dias às nove da manhã.",
+          "heard": "A Bíblia teca abre todos os dias às 9 da manhã."
+        },
+        {
+          "text": "O trem para Campinas sai da plataforma quatro.",
+          "heard": "O trem para a campina sai da plataforma 4."
+        },
+        {
+          "text": "As crianças jogaram futebol até escurecer.",
+          "heard": "As crianças jogaram futebol até escudo ser."
+        },
+        {
+          "text": "O médico me recomendou caminhar meia hora por dia.",
+          "heard": "O médico me recomendo caminhar meia hora por dia."
+        },
+        {
+          "text": "Em 2026 a passagem custa 35 reais.",
+          "heard": "Em 2020, 6 a passagem custa 30 e 5 reais."
+        }
+      ]
+    },
+    {
+      "lang": "pt",
+      "voice": "M1",
+      "wer": 0.11956521739130435,
+      "errors": 11,
+      "words": 92,
+      "seconds": 39.2,
+      "misses": [
+        {
+          "text": "A biblioteca abre todos os dias às nove da manhã.",
+          "heard": "A Biblia até acabe todos os dias às 9 da manhã."
+        },
+        {
+          "text": "Minha avó faz sopa de legumes aos domingos.",
+          "heard": "Minha volta faz sopa de legumes aos domingos."
+        },
+        {
+          "text": "O trem para Campinas sai da plataforma quatro.",
+          "heard": "O trem para a campina sai da plataforma 4."
+        },
+        {
+          "text": "O médico me recomendou caminhar meia hora por dia.",
+          "heard": "O médico me recomendou que a minha amea hora por dia."
+        },
+        {
+          "text": "Quando chove, a cidade se enche de guarda-chuvas coloridos.",
+          "heard": "Quando chove, a cidade se enche de guardas chuvas coloridos."
+        }
+      ]
+    },
+    {
+      "lang": "pt",
+      "voice": "M2",
+      "wer": 0.13043478260869565,
+      "errors": 12,
+      "words": 92,
+      "seconds": 38.4,
+      "misses": [
+        {
+          "text": "O trem para Campinas sai da plataforma quatro.",
+          "heard": "O trem para a campina sai da plataforma 4."
+        },
+        {
+          "text": "O médico me recomendou caminhar meia hora por dia.",
+          "heard": "O médico me recomendo que a minha meia hora por dia."
+        },
+        {
+          "text": "Em 2026 a passagem custa 35 reais.",
+          "heard": "Em 2016 a passagem custa R$ 30,5."
+        },
+        {
+          "text": "Quando chove, a cidade se enche de guarda-chuvas coloridos.",
+          "heard": "Quando chove a cidade ciência de guarda chuvas coloridos."
+        }
+      ]
+    },
+    {
+      "lang": "pt",
+      "voice": "M3",
+      "wer": 0.07608695652173914,
+      "errors": 7,
+      "words": 92,
+      "seconds": 34.1,
+      "misses": [
+        {
+          "text": "O trem para Campinas sai da plataforma quatro.",
+          "heard": "O trem para a campina sai da plataforma 4."
+        },
+        {
+          "text": "Preciso comprar pão, leite e um quilo de tomates.",
+          "heard": "Preciso comprar pão, leite e um kilo de tomates."
+        },
+        {
+          "text": "O médico me recomendou caminhar meia hora por dia.",
+          "heard": "O médico me recomendou caminhar meu hora por dia."
+        },
+        {
+          "text": "Em 2026 a passagem custa 35 reais.",
+          "heard": "Em 2020, e cês a passagem custa R$30,5."
+        }
+      ]
+    },
+    {
+      "lang": "pt",
+      "voice": "M4",
+      "wer": 0.08695652173913043,
+      "errors": 8,
+      "words": 92,
+      "seconds": 36.9,
+      "misses": [
+        {
+          "text": "Preciso comprar pão, leite e um quilo de tomates.",
+          "heard": "Preciso comprar a pão late e um quilo de tomates."
+        },
+        {
+          "text": "Salve o arquivo antes de fechar o computador.",
+          "heard": "Salve o Orquí antes de fechar o computador."
+        },
+        {
+          "text": "Em 2026 a passagem custa 35 reais.",
+          "heard": "Em 2021, a passagem custa R$ 35."
+        },
+        {
+          "text": "Quando chove, a cidade se enche de guarda-chuvas coloridos.",
+          "heard": "Quando chove, a cidade se enche de guarda as chuvas colorê-los."
+        }
+      ]
+    },
+    {
+      "lang": "pt",
+      "voice": "M5",
+      "wer": 0.06521739130434782,
+      "errors": 6,
+      "words": 92,
+      "seconds": 39.1,
+      "misses": [
+        {
+          "text": "A biblioteca abre todos os dias às nove da manhã.",
+          "heard": "A Bíblia Teca abre todos os dias às novas da manhã."
+        },
+        {
+          "text": "O trem para Campinas sai da plataforma quatro.",
+          "heard": "O trem para a campina sai da plataforma 4."
+        },
+        {
+          "text": "As crianças jogaram futebol até escurecer.",
+          "heard": "As crianças jogaram futebol até escurser."
+        }
+      ]
+    }
+  ]
+}

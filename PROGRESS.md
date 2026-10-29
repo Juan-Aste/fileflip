@@ -3697,3 +3697,10 @@ FASE 10 TERMINADA
 ## 2026-10-29 — Fin de esta ejecución (fase 11)
 - Hechas: 11.1a, 11.1b, 11.2a, 11.2b, 11.2c (límite de 5 por ejecución). Siguen: 11.3a (fp16/int8 de Supertonic), 11.3b, 11.4a–b, 11.5a–c, 11.6.
 - CI de dev: todos los runs fallan sin correr ningún job por la facturación de GitHub Actions (no es código); la verificación fue local.
+
+## 2026-10-29 — Fase 11, tarea 11.3a (versiones livianas de Supertonic)
+- No hay versiones oficiales cuantizadas de Supertonic 3; las de terceros usan otros grafos o no tienen versión ni licencia clara.
+- `scripts/models/onnx-light.mjs` (Node puro, sin dependencias; da archivos idénticos byte a byte a los de `onnx`/`onnxruntime` de Python): `fp16w` (pesos en float16 + `Cast`, cálculo en float32) e `int8w` (pesos int8 + `DequantizeLinear` por canal). El int8 dinámico de onnxruntime se probó una vez con Python.
+- `scripts/tts/compare.mjs`: distancia log-espectral, duración y tiempo contra el original con la misma semilla (referencia: otra semilla del original = 12,8 dB).
+- Resultados (WER con Whisper `base`, 400 frases por versión; `docs/tts-wer/*.json`): **fp16w 200 MB (−50 %), WER +1 % relativo, 0,6 dB, misma velocidad**; las variantes int8 (102–137 MB) empeoran el WER +11 % a +19 % (sobre todo pt y en) y se descartan. Detalle y SHA-256 en `docs/tts-modelo-liviano.md`.
+- Verificado: lint; los scripts corrieron con el modelo real.
