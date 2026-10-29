@@ -111,3 +111,22 @@ La restricción (e) implica que quien publique el audio debe aclarar que es voz 
 - `tests/e2e/layout-shift.spec.ts`: CLS 0 con fuentes tardías en `/es/leer-texto-en-voz-alta`.
 - Firefox y WebKit (proyectos `@xb`): extracción de los 6 formatos, lectura con pausa/reanudar/detener y axe.
 
+
+## Números, fechas, símbolos, abreviaturas y siglas (fase 11.1)
+
+Supertonic recibe el texto como caracteres (sin fonemas) y no normaliza números: el SDK de referencia tampoco lo hace. Con los dígitos tal cual leía mal "2026", "3,5", "14:30", "15 %" o "US$ 20". Desde la tarea 11.1 `preprocessText` (`src/lib/tts/supertonic.ts`) hace, en el idioma de la frase y **antes** del NFKD y de las etiquetas de idioma:
+
+1. `expandAbbreviations` (`src/lib/tts/normalize.ts`): Sr., Sra., Dra., Ud., etc., pág./págs., p. ej., EE. UU., a. C.; Mr., Dr., e.g., i.e., vs.; Sr., Dra., p. ex., V. Exa.; Mme, M. (antes de un nombre), Dr, c.-à-d., av. J.-C. "p." y "pp." solo antes de un número.
+2. `normalizeNumbers`: enteros y decimales con el separador del idioma (coma decimal y punto de miles en es/pt/fr, al revés en inglés; "3,5" → "tres coma cinco", "3.5" en español → "tres punto cinco"), años (en inglés "twenty twenty-six"), fechas (dd/mm/aaaa, mm/dd en inglés si el primer número ≤ 12, ISO, "1 de mayo" → "primero de mayo"), horas, porcentajes, monedas ($ = pesos en español y dólares en los demás idiomas; US$, USD, €, R$, £; centavos; "de" antes de millones), ordinales (1.º, 1.ª, 1er, 2do, 1st, 1re, 2e), "Nº", números romanos tras palabras como siglo/capítulo/World War y tras nombres propios (Felipe II, Louis XIV, Henry VIII, XXIe siècle), rangos ("10-20" → "diez a veinte"), teléfonos y códigos largos dígito por dígito, unidades comunes, fracciones simples y versiones. El género del sustantivo siguiente se estima por su terminación ("una casa", "doscientas personas", "duas casas", "vingt et une personnes"). Números a palabras propios (`src/lib/tts/numbers.ts`): `n2words` 6.3.0 (MIT) se evaluó y se descartó porque escribe "dieciseis" sin tilde, lee "3,5" como "tres punto cinco" en español y no maneja el género.
+3. `spellAcronyms`: las siglas que no se pueden leer como palabra se deletrean con el nombre de las letras del idioma ("PDF" → "pe de efe", "pê dê efe", "pé dé effe"; en inglés las letras separadas, "P D F", que el modelo lee por su nombre). Las demás palabras en mayúsculas se pasan a minúsculas (ver abajo).
+
+Tests: `numbers.test.ts` y `normalize.test.ts` (unos 200 casos en los 4 idiomas).
+
+### "fecha" leída como "feka"
+
+Revisado el 2026-10-29 con el modelo real y Whisper `base` (script `scripts/tts/engine.mjs`):
+
+- **No es el NFKD ni otra diferencia con el SDK de referencia**: el SDK `supertonic` 1.3.1 hace exactamente los mismos pasos (NFKD, emojis, símbolos, espacios, punto final, `<es>…</es>`); "fecha" no tiene caracteres que el NFKD cambie.
+- **El idioma llega bien**: la herramienta manda el idioma detectado del texto completo (o el que elige el usuario) en cada frase; con `<es>` las 10 voces dicen "fecha" en frases normales ("La fecha de hoy es importante.", "Anotá la fecha en el cuaderno.": Whisper oyó "fecha" en las 20 pruebas).
+- **La causa son las mayúsculas**: "FECHA" (como en un formulario o un encabezado) sale "Feca", "Faker", "Peca" o "Seca" en las cuatro voces probadas; "Fecha" y "fecha" salen bien. El modelo casi no vio palabras en mayúsculas al entrenarse y lee "CH" como /k/. **Arreglo general, sin diccionario**: las palabras en mayúsculas que no son siglas para deletrear se pasan a minúsculas (y un texto todo en mayúsculas, entero). Con eso "FECHA: 28/10/2026" se oye "Fecha, 28 de octubre de 2026".
+- **Limitación del modelo que queda**: con menos pasos de difusión la pronunciación empeora mucho. Con 2 pasos "La fecha de hoy es importante" se oyó "La feca…", "La flita…" o se perdieron palabras; con 3 pasos (los que usa el celular al escuchar, `PHONE_LISTEN_STEPS`) falló 1 de 4 voces; con 5 (PC y MP3) ninguna. También hay variación natural entre voces y tomas: "Fecha" sola con M3 se oyó "Ficha", y "veintiséis" a veces se oye como "veintidós" o "veintiuno". Eso no se corrige con texto.

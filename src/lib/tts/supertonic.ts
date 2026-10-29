@@ -6,7 +6,7 @@
 // the ONNX runtime and sessions are passed in (see src/workers/tts.worker.ts).
 
 import type { InferenceSession, Tensor } from "onnxruntime-web";
-import { normalizeNumbers } from "./normalize";
+import { expandAbbreviations, normalizeNumbers, spellAcronyms } from "./normalize";
 
 /** The parts of `onnx/tts.json` the pipeline needs. */
 export interface SupertonicConfig {
@@ -65,12 +65,12 @@ const SYMBOLS: [string, string][] = [
 const AT: Record<SupertonicLanguage, string> = { en: " at ", es: " arroba ", pt: " arroba ", fr: " arobase " };
 
 /**
- * Numbers, dates and symbols in words (the model does not read digits well,
- * see normalize.ts), the reference SDK's normalization, then the language
- * tags the multilingual model expects.
+ * Abbreviations, numbers, dates and symbols in words and acronyms spelled
+ * (the model does not read digits well, see normalize.ts), the reference
+ * SDK's normalization, then the language tags the multilingual model expects.
  */
 export function preprocessText(text: string, lang: SupertonicLanguage): string {
-  let t = normalizeNumbers(text, lang).normalize("NFKD").replace(EMOJI, "");
+  let t = spellAcronyms(normalizeNumbers(expandAbbreviations(text, lang), lang), lang).normalize("NFKD").replace(EMOJI, "");
   for (const [from, to] of SYMBOLS) t = t.replaceAll(from, to);
   t = t.replace(/[♥☆♡©\\]/g, "").replaceAll("@", AT[lang]);
   if (lang === "en") t = t.replaceAll("e.g.,", "for example, ").replaceAll("i.e.,", "that is, ");

@@ -146,6 +146,7 @@ describe("English", () => {
       ["On 28/10/2026 we met.", "On October twenty-eighth, twenty twenty-six we met."],
       ["On October 28, 2026.", "On October twenty-eighth, twenty twenty-six."],
       ["On Oct. 3rd.", "On October third."],
+      ["On October 28, 2026 at 2:30 pm.", "On October twenty-eighth, twenty twenty-six at two thirty p m."],
       ["On 5 May 2026.", "On the fifth of May twenty twenty-six."],
       ["At 2:30 pm.", "At two thirty p m."],
       ["At 9:05.", "At nine oh five."],
@@ -266,10 +267,47 @@ describe("in the model input", () => {
   it("runs before NFKD (which would turn º into o) and the language tags", () => {
     expect(preprocessText("El 1.º de 2026", "es")).toBe("<es>El primero de dos mil veintiséis.</es>".normalize("NFKD"));
     expect(preprocessText("Count 1,2,3", "en")).toBe("<en>Count one, two, three.</en>");
-    expect(preprocessText("COVID-19 y MP3", "es")).toBe("<es>COVID-diecinueve y MP tres.</es>");
+    expect(preprocessText("COVID-19 y MP3", "es")).toBe("<es>covid-diecinueve y eme pe tres.</es>");
   });
   it("leaves text without numbers as the reference SDK would", () => {
     expect(preprocessText("Hola, ¿qué tal?", "es")).toBe("<es>Hola, ¿qué tal?</es>".normalize("NFKD"));
     expect(preprocessText("I think so.", "en")).toBe("<en>I think so.</en>");
+  });
+});
+
+describe("abbreviations and acronyms", () => {
+  const pre = (text: string, lang: Lang) => preprocessText(text, lang).normalize("NFC");
+  it("Spanish", () => {
+    expect(pre("El Sr. Pérez y la Dra. Gómez, etc.", "es")).toBe("<es>El señor Pérez y la doctora Gómez, etcétera.</es>");
+    expect(pre("Ver pág. 5 y págs. 10-12, p. 7.", "es")).toBe("<es>Ver página cinco y páginas diez a doce, página siete.</es>");
+    expect(pre("Pág. 3 dice.", "es")).toBe("<es>Página tres dice.</es>");
+    expect(pre("Viajó a EE. UU. con Ud., p. ej. ayer.", "es")).toBe("<es>Viajó a Estados Unidos con usted, por ejemplo ayer.</es>");
+    expect(pre("Bajá el PDF con tu DNI por USB.", "es")).toBe("<es>Bajá el pe de efe con tu de ene i por u ese be.</es>");
+    expect(pre("La IA, la TV y la OMS.", "es")).toBe("<es>La i a, la te ve y la o eme ese.</es>");
+  });
+  it("acronyms that read as words, emphasis and shouting are left alone", () => {
+    // Lowercased: the model mispronounces words in capitals ("FECHA" → "feca").
+    expect(pre("La NASA, la OTAN, la ONU y la UNESCO.", "es")).toBe("<es>La nasa, la otan, la onu y la unesco.</es>");
+    expect(pre("NO quiero.", "es")).toBe("<es>no quiero.</es>");
+    expect(pre("FECHA: hoy.", "es")).toBe("<es>fecha: hoy.</es>");
+    expect(pre("NO QUIERO IR AL MÉDICO HOY.", "es")).toBe("<es>no quiero ir al médico hoy.</es>");
+    expect(pre("COVID-19.", "es")).toBe("<es>covid-diecinueve.</es>");
+  });
+  it("English", () => {
+    expect(pre("Mr. Smith and Dr. Who, e.g. this, etc.", "en")).toBe("<en>Mister Smith and Doctor Who, for example this, et cetera.</en>");
+    expect(pre("See p. 5 and pp. 10-12.", "en")).toBe("<en>See page five and pages ten to twelve.</en>");
+    expect(pre("The NASA PDF via USB.", "en")).toBe("<en>The nasa P D F via U S B.</en>");
+    expect(pre("I think NO.", "en")).toBe("<en>I think no.</en>");
+  });
+  it("Portuguese", () => {
+    expect(pre("O Sr. Silva e a Dra. Souza, p. ex. isso.", "pt")).toBe("<pt>O senhor Silva e a doutora Souza, por exemplo isso.</pt>");
+    expect(pre("O PDF do INSS e o CPF.", "pt")).toBe("<pt>O pê dê efe do i ene esse esse e o cê pê efe.</pt>");
+    expect(pre("Eu sei.", "pt")).toBe("<pt>Eu sei.</pt>");
+  });
+  it("French", () => {
+    expect(pre("Mme Dupont et M. Martin, c.-à-d. eux, etc.", "fr")).toBe("<fr>Madame Dupont et Monsieur Martin, c'est-à-dire eux, et cetera.</fr>");
+    expect(pre("Le Dr Martin.", "fr")).toBe("<fr>Le Docteur Martin.</fr>");
+    expect(pre("Le PDF de la SNCF et l'ONU.", "fr")).toBe("<fr>Le pé dé effe de la esse enne cé effe et l'onu.</fr>");
+    expect(pre("M. le maire.", "fr")).toBe("<fr>M. le maire.</fr>");
   });
 });

@@ -88,7 +88,7 @@ export function detectLanguage(text: string, fallback: TtsLanguage): TtsLanguage
 // Abbreviations followed by a period that don't end a sentence (lowercase, without the period).
 const ABBREVIATIONS = new Set([
   // es
-  "sr", "sra", "srta", "sres", "dr", "dra", "ud", "uds", "vd", "lic", "ing", "arq", "prof", "pág", "págs", "núm", "art", "cap", "aprox", "av", "avda", "tel", "ej", "admón", "cía", "dto", "esq",
+  "sr", "sra", "srta", "sres", "dr", "dra", "ud", "uds", "vd", "lic", "ing", "arq", "prof", "pág", "págs", "núm", "art", "cap", "aprox", "av", "avda", "tel", "ej", "admón", "cía", "dto", "esq", "ee", "ee.uu", "ej", "máx", "mín", "depto", "dpto", "págs",
   // en
   "mr", "mrs", "ms", "st", "jr", "vs", "fig", "approx", "dept", "inc", "ltd", "co", "mt", "e.g", "i.e", "p", "pp",
   // pt

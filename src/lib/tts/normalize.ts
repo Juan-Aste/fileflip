@@ -168,10 +168,10 @@ function replaceDates(t: string, lang: Lang): string {
   });
   // A day written next to a month name: "1 de octubre" → "primero de octubre", "October 28" → "October twenty-eighth".
   if (lang === "en") {
-    t = t.replace(new RegExp(`\\b(${MONTH_RE.en})\\s+(\\d{1,2})(?:st|nd|rd|th)?${NOT_AFTER}`, "gu"), (all, month: string, d: string) => {
+    t = t.replace(new RegExp(`\\b(${MONTH_RE.en})\\s+(\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s+(\\d{4}))?${NOT_AFTER}`, "gu"), (all, month: string, d: string, y: string | undefined) => {
       const name = EN_SHORT_MONTH[month.replace(".", "").toLowerCase()] ?? month;
       const day = Number(d);
-      return day >= 1 && day <= 31 ? `${name} ${ordinal(day, "en")}` : all;
+      return day >= 1 && day <= 31 ? `${name} ${ordinal(day, "en")}${y ? `, ${year(Number(y), "en")}` : ""}` : all;
     });
     t = t.replace(new RegExp(`${NOT_BEFORE}(\\d{1,2})(?:st|nd|rd|th)?\\s+(?:of\\s+)?(${MONTH_RE.en})\\b`, "gu"), (all, d: string, month: string) => {
       const day = Number(d);
@@ -556,6 +556,91 @@ function replacePlainNumbers(t: string, lang: Lang): string {
     // Not one number ("1,2" in English): each run of digits on its own.
     if (!words) words = num.replace(/\d+/g, (d) => ` ${parseNumber(d, lang)?.digits ? digitsToWords(d, lang) : cardinal(BigInt(d), lang)} `).replace(/ {2,}/g, " ");
     return `${minus ? (negative ? `${MINUS[lang]} ` : `${minus} `) : ""}${words}`;
+  });
+}
+
+// ---------- Abbreviations and acronyms ----------
+
+/** [abbreviation as written, words]; the first letter also matches in uppercase ("Pág." at the start of a sentence). */
+const ABBREVIATIONS: Record<Lang, [string, string][]> = {
+  es: [
+    ["EE. UU.", "Estados Unidos"], ["EE.UU.", "Estados Unidos"], ["EEUU", "Estados Unidos"], ["p. ej.", "por ejemplo"], ["a. C.", "antes de Cristo"], ["d. C.", "después de Cristo"],
+    ["Sr.", "señor"], ["Sra.", "señora"], ["Srta.", "señorita"], ["Sres.", "señores"], ["Dr.", "doctor"], ["Dra.", "doctora"], ["Lic.", "licenciado"],
+    ["Ing.", "ingeniero"], ["Prof.", "profesor"], ["Profa.", "profesora"], ["Arq.", "arquitecto"], ["Ud.", "usted"], ["Uds.", "ustedes"], ["Vd.", "usted"], ["Vds.", "ustedes"],
+    ["etc.", "etcétera"], ["págs.", "páginas"], ["pág.", "página"], ["núm.", "número"], ["art.", "artículo"], ["cap.", "capítulo"], ["aprox.", "aproximadamente"],
+    ["Avda.", "avenida"], ["Av.", "avenida"], ["tel.", "teléfono"], ["máx.", "máximo"], ["mín.", "mínimo"], ["dpto.", "departamento"], ["depto.", "departamento"], ["vs.", "versus"],
+  ],
+  en: [
+    ["e.g.", "for example"], ["i.e.", "that is"], ["Mr.", "Mister"], ["Mrs.", "Missus"], ["Ms.", "Miz"], ["Dr.", "Doctor"], ["Prof.", "Professor"], ["Jr.", "Junior"], ["Sr.", "Senior"],
+    ["etc.", "et cetera"], ["vs.", "versus"], ["approx.", "approximately"], ["Inc.", "Incorporated"], ["Ltd.", "Limited"], ["Dept.", "Department"], ["Fig.", "Figure"], ["U.S.", "U S"],
+  ],
+  pt: [
+    ["p. ex.", "por exemplo"], ["a.C.", "antes de Cristo"], ["d.C.", "depois de Cristo"], ["V. Exa.", "Vossa Excelência"], ["Sr.", "senhor"], ["Sra.", "senhora"], ["Srta.", "senhorita"],
+    ["Dr.", "doutor"], ["Dra.", "doutora"], ["Prof.", "professor"], ["Profa.", "professora"], ["etc.", "etcétera"], ["págs.", "páginas"], ["pág.", "página"], ["Av.", "avenida"],
+    ["tel.", "telefone"], ["aprox.", "aproximadamente"], ["máx.", "máximo"], ["mín.", "mínimo"], ["vs.", "versus"],
+  ],
+  fr: [
+    ["c.-à-d.", "c'est-à-dire"], ["p. ex.", "par exemple"], ["av. J.-C.", "avant Jésus-Christ"], ["apr. J.-C.", "après Jésus-Christ"], ["MM.", "Messieurs"], ["Mmes", "Mesdames"],
+    ["Mme", "Madame"], ["Mlle", "Mademoiselle"], ["Dr", "Docteur"], ["Pr", "Professeur"], ["etc.", "et cetera"], ["cf.", "confer"], ["env.", "environ"], ["Ste", "Sainte"], ["St", "Saint"],
+  ],
+};
+
+// Abbreviations that are also a page or a word: only before a number ("p. 5", "pp. 10-12").
+const PAGE: Record<Lang, [string, string, string]> = { es: ["p.", "página", "páginas"], en: ["p.", "page", "pages"], pt: ["p.", "página", "páginas"], fr: ["p.", "page", "pages"] };
+
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
+
+export function expandAbbreviations(text: string, lang: Lang): string {
+  let t = text;
+  for (const [abbr, words] of ABBREVIATIONS[lang]) {
+    const first = abbr[0]!;
+    const head = first.toLowerCase() !== first.toUpperCase() ? `[${first.toLowerCase()}${first.toUpperCase()}]` : escapeRe(first);
+    // French titles are written without a period: "Mme Dupont", "Dr Martin" (a capitalized name follows).
+    const tail = lang === "fr" && !abbr.endsWith(".") && /^[A-Z]/.test(abbr) ? "(?=\\s+\\p{Lu})" : abbr.endsWith(".") ? "" : `(?![${L}])`;
+    const re = new RegExp(`(?<![${L}.])${head}${escapeRe(abbr.slice(1)).replace(/ /g, "\\s?")}${tail}`, "gu");
+    t = t.replace(re, (m) => (/^\p{Lu}/u.test(m) && /^\p{Ll}/u.test(words) && /^\p{Ll}/u.test(abbr) ? words[0]!.toUpperCase() + words.slice(1) : words));
+  }
+  // "M. Dupont" (French): only before a capitalized name.
+  if (lang === "fr") t = t.replace(/(?<![\p{L}.])M\.\s(?=\p{Lu}\p{Ll})/gu, "Monsieur ");
+  const [, one, many] = PAGE[lang];
+  t = t.replace(/(?<![\p{L}.])pp\.\s?(?=\d)/gu, `${many} `).replace(/(?<![\p{L}.])p\.\s?(?=\d)/gu, `${one} `);
+  return t;
+}
+
+const LETTER_NAMES: Record<Lang, Record<string, string>> = {
+  es: { A: "a", B: "be", C: "ce", D: "de", E: "e", F: "efe", G: "ge", H: "hache", I: "i", J: "jota", K: "ka", L: "ele", M: "eme", N: "ene", Ñ: "eñe", O: "o", P: "pe", Q: "cu", R: "erre", S: "ese", T: "te", U: "u", V: "ve", W: "doble ve", X: "equis", Y: "i griega", Z: "zeta" },
+  // English letters spaced out: the model reads a capital letter on its own by its name.
+  en: Object.fromEntries([..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"].map((c) => [c, c])),
+  pt: { A: "a", B: "bê", C: "cê", D: "dê", E: "é", F: "efe", G: "gê", H: "agá", I: "i", J: "jota", K: "cá", L: "ele", M: "eme", N: "ene", O: "ó", P: "pê", Q: "quê", R: "erre", S: "esse", T: "tê", U: "u", V: "vê", W: "dáblio", X: "xis", Y: "ípsilon", Z: "zê" },
+  fr: { A: "a", B: "bé", C: "cé", D: "dé", E: "e", F: "effe", G: "gé", H: "ache", I: "i", J: "ji", K: "ka", L: "elle", M: "emme", N: "enne", O: "o", P: "pé", Q: "ku", R: "erre", S: "esse", T: "té", U: "u", V: "vé", W: "double vé", X: "ixe", Y: "i grec", Z: "zède" },
+};
+
+// Short words that are written in capitals for emphasis ("NO quiero"), not acronyms.
+const CAPS_WORDS: Record<Lang, Set<string>> = {
+  es: new Set(["NO", "SI", "SÍ", "YA", "YO", "EL", "LA", "LO", "UN", "DE", "EN", "ES", "MI", "TU", "SU", "SE", "TE", "ME", "LE", "OK", "OH", "AY", "VA", "HA", "HE", "IR", "AL", "NI", "O", "Y", "A", "E", "U"]),
+  en: new Set(["NO", "IT", "IS", "TO", "OF", "IN", "ON", "AT", "BE", "DO", "GO", "SO", "UP", "MY", "WE", "HE", "ME", "OR", "AN", "AS", "IF", "OK", "OH", "BY", "US", "A", "I"]),
+  pt: new Set(["NO", "NA", "DE", "DO", "DA", "EM", "UM", "OU", "SE", "JÁ", "EU", "ME", "TE", "LÁ", "AÍ", "OK", "OI", "AO", "OS", "AS", "O", "A", "E"]),
+  fr: new Set(["LE", "LA", "DE", "UN", "EN", "ET", "OU", "IL", "ON", "NE", "SE", "CE", "MA", "TA", "SA", "DU", "AU", "OK", "OH", "JE", "TU", "A", "Y", "À"]),
+};
+
+// Syllables a word can be read with: then "NASA", "OTAN", "UNESCO" are said as words; "PDF", "DNI", "USB" are spelled.
+const SYLLABLE = "(?:[BCDFGKPT][RL]|CH|LL|QU|[BCDFGHJKLMNPQRSTVWXYZÑ])?[AEIOUY]{1,2}(?:[NRL]S|[BCDGLMNPRSTXZ])?";
+const PRONOUNCEABLE = new RegExp(`^(?:${SYLLABLE})+$`);
+
+/**
+ * Acronyms in capitals that cannot be read as a word are spelled with the
+ * letters' names; other words in capitals are lowercased: the model
+ * mispronounces them ("FECHA" comes out as "feca", "fecha" does not; measured
+ * with Whisper in docs/tts-voz-ia.md).
+ */
+export function spellAcronyms(text: string, lang: Lang): string {
+  const words = text.match(/\p{L}+/gu) ?? [];
+  const caps = words.filter((w) => w.length > 1 && w === w.toUpperCase() && w !== w.toLowerCase());
+  // A sentence written all in capitals is shouting, not acronyms.
+  if (words.length >= 3 && caps.length / words.length > 0.75) return text.toLowerCase();
+  return text.replace(/(?<![\p{L}\d.])\p{Lu}{2,}(?![\p{L}\d]|\.\p{L})/gu, (w) => {
+    if (w.length <= 6 && /^[A-ZÑ]+$/.test(w) && !CAPS_WORDS[lang].has(w) && !(w.length > 2 && PRONOUNCEABLE.test(w))) return [...w].map((c) => LETTER_NAMES[lang][c] ?? c).join(" ");
+    return w.toLowerCase();
   });
 }
 
