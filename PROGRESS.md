@@ -3645,3 +3645,9 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - `render.ts`: los títulos con caracteres chinos ya no generan ids con sus fragmentos latinos («30», «1b-2b-3b», que además empezaban con un dígito y no servían como selector CSS); usan `section-N`. Tests nuevos. El test de enlaces a guías planeadas ahora despublica una guía en el propio test (ya están todas publicadas).
 - Una guía china en `layout-shift`.
 - Verificado: lint, typecheck, build, 1317 unitarios; Chromium guides + layout-shift + clickable (172) pasan.
+
+## 2026-10-29 — Fase 10, tarea 10F.1 (verificación final)
+- Lighthouse móvil con `NEXT_PUBLIC_ADSENSE_CLIENT` de prueba (mediana de 3): 91–96 de rendimiento, 100 de accesibilidad y SEO y CLS 0 en una página nueva de cada bloque y en las guías (`docs/perf/2026-10-29-phase10.md`; páginas agregadas a `scripts/perf/lighthouse.sh`).
+- Suite de Chromium completa: 736 pasan, 10 saltadas (sin Gotenberg ni EPUBCheck), 1 falla por tiempo límite con la máquina cargada (conversor de audio a MP3, 60 s) que pasa sola en 14,6 s. Incluye axe, detector de clics y CLS.
+- Firefox y WebKit (`@xb`): 68 pasan y la transcripción en Firefox pasa con `WHISPER_DIR`. Sin él falla solo en este entorno: el Firefox de Playwright no sale a internet por el proxy de la sesión (cualquier `fetch` externo da «NetworkError»; la herramienta muestra «El servicio no está disponible», que es el comportamiento correcto).
+- Informe de la fase: `docs/report-phase10.md`.

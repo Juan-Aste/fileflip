@@ -468,5 +468,5 @@ Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y
 - [x] 10E.5d Traducción de las guías al chino (con capturas en chino)
 
 ### 10F Verificación final
-- [ ] 10F.1 Lighthouse móvil ≥ 90 y CLS 0 en una página nueva de cada bloque (con AdSense de prueba), detector de clics, axe, Firefox y WebKit, suite de Chromium completa
+- [x] 10F.1 Lighthouse móvil ≥ 90 y CLS 0 en una página nueva de cada bloque (con AdSense de prueba), detector de clics, axe, Firefox y WebKit, suite de Chromium completa
 - [ ] 10F.2 Informe del catálogo, `docs/dependencies.md`, créditos, `docs/launch-checklist.md` (CSP, archivos públicos, variables) y política de privacidad (descarga de modelos)

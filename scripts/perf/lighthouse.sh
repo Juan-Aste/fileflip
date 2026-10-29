@@ -45,6 +45,16 @@ PAGES=(
   "tool-tts /es/leer-texto-en-voz-alta"
   "tool-tts-en /en/text-to-speech"
   "tool-tts-zh /zh/text-to-speech"
+  "tool-excel-csv /es/excel-a-csv"
+  "tool-pdf-excel /es/pdf-a-excel"
+  "tool-text-case /es/convertir-mayusculas-minusculas"
+  "tool-compare-text /es/comparar-textos"
+  "tool-edit-pdf /es/editar-pdf"
+  "tool-fill-form /es/rellenar-formulario-pdf"
+  "tool-transcribe /es/transcribir-audio-a-texto"
+  "guides /es/guias"
+  "guide /es/guias/como-pasar-tabla-pdf-a-excel"
+  "guide-zh /zh/guides/how-to-transcribe-audio-to-text"
 )
 if [ -n "${PAGES_FILTER:-}" ]; then
   sel=(); for p in "${PAGES[@]}"; do [[ "${p%% *}" =~ $PAGES_FILTER ]] && sel+=("$p"); done; PAGES=("${sel[@]}")

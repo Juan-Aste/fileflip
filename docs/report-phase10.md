@@ -50,7 +50,11 @@ Límite: 30 minutos de audio. Pesos desde Hugging Face con commit y SHA-256 fijo
 
 ## 5. Verificación final (10F.1)
 
-Pendiente: se completa en la tarea 10F.1.
+- **Lighthouse móvil** (con AdSense de prueba, mediana de 3): 91–96 de rendimiento, 100 de accesibilidad y SEO, **CLS 0** en las páginas nuevas de cada bloque (Excel a CSV, PDF a Excel, Mayúsculas y minúsculas, Comparar textos, Editar PDF, Rellenar formulario PDF, Transcribir audio a texto, índice de guías, una guía en español y una en chino). Tabla en `docs/perf/2026-10-29-phase10.md`.
+- **Suite de Chromium completa**: 747 pruebas; 736 pasan, 10 saltadas (sin Gotenberg ni EPUBCheck) y 1 que falló por el tiempo límite con la máquina cargada (conversor de audio, 60 s) y pasa sola en 14,6 s.
+- **axe** (dentro de la suite): sin violaciones en las 101 herramientas, portada, categorías, créditos, páginas legales y guías en los 5 idiomas, claro y oscuro.
+- **Detector de clics** (fase 6) y **CLS con fuentes tardías**: pasan en todas las páginas, incluidas las guías.
+- **Firefox y WebKit** (muestra `@xb`): 69 pruebas; pasan todas. La de Transcribir en Firefox se corrió con `WHISPER_DIR` (modelo servido desde disco): el Firefox de Playwright de esta sesión no puede salir a internet a través del proxy del entorno («NetworkError» en cualquier `fetch` externo; la herramienta muestra «El servicio no está disponible»). Chromium y WebKit sí descargan el modelo de Hugging Face.
 
 ## 6. Despliegue
 
