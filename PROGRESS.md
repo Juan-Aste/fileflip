@@ -3704,3 +3704,10 @@ FASE 10 TERMINADA
 - `scripts/tts/compare.mjs`: distancia log-espectral, duración y tiempo contra el original con la misma semilla (referencia: otra semilla del original = 12,8 dB).
 - Resultados (WER con Whisper `base`, 400 frases por versión; `docs/tts-wer/*.json`): **fp16w 200 MB (−50 %), WER +1 % relativo, 0,6 dB, misma velocidad**; las variantes int8 (102–137 MB) empeoran el WER +11 % a +19 % (sobre todo pt y en) y se descartan. Detalle y SHA-256 en `docs/tts-modelo-liviano.md`.
 - Verificado: lint; los scripts corrieron con el modelo real.
+
+## 2026-10-29 — Fase 11, tarea 11.3b (adoptar el modelo fp16)
+- Adoptada la versión **fp16w: 398 MB → 200 MB**. Fijada en `supertonicLightFiles` (`src/lib/tts/model.ts`, tamaño y SHA-256 de los 4 ONNX; `tts.json`, el indexador y las voces no cambian).
+- Supertone no la publica, así que no está en Hugging Face: se servirá desde nuestro almacenamiento (`NEXT_PUBLIC_MODELS_BASE_URL`, tarea 11.4a), donde `sync-r2.mjs` (11.4b) la genera desde los originales verificados con `scripts/models/onnx-light.mjs`. Sin la variable el sitio sigue bajando el original de Hugging Face.
+- Licencia OpenRAIL-M punto 4.c (marcar archivos modificados): Créditos dice que también se sirve una copia convertida a float16 por Fileflect; `docs/tts-voz-ia.md` actualizado.
+- Tests: `tests/onnx-light.test.ts` (float16 con redondeo al par, modelo ONNX mínimo hecho a mano corrido con onnxruntime-web antes y después en fp16w e int8w, determinismo, tensores chicos intactos; con `SUPERTONIC_DIR`, reconstruye los 4 archivos fijados con el mismo SHA-256 — pasa con el modelo real).
+- Verificado: lint, typecheck, 1356 unitarios, `npm run licenses`, build; Chromium `legal` + `tts-ai` (11 pasan, 5 saltados que necesitan el modelo real).

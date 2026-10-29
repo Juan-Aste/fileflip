@@ -486,7 +486,7 @@ Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbol
 
 ### 11.3 Modelo de voz IA más liviano
 - [x] 11.3a Generar versiones fp16 e int8 dinámico de los ONNX de Supertonic (herramientas MIT) y compararlas con el original (WER con Whisper, duración, métricas de audio); documentar tamaños y resultados
-- [ ] 11.3b Adoptar la versión más liviana que cumpla (WER ≤ +10 % relativo, sin diferencia evidente) con versión y sha256 fijos; tests
+- [x] 11.3b Adoptar la versión más liviana que cumpla (WER ≤ +10 % relativo, sin diferencia evidente) con versión y sha256 fijos; tests
 
 ### 11.4 Servir los modelos desde Cloudflare R2 (preparar)
 - [ ] 11.4a `NEXT_PUBLIC_MODELS_BASE_URL` opcional: voz IA y transcripción descargan desde ahí verificando el sha256 y vuelven a Hugging Face si falla; CSP y política de privacidad; tests con un servidor local que simula el bucket

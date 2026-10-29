@@ -99,7 +99,7 @@ const intAttr = (name, i) => Buffer.concat([sField(1, name), vField(3, i), vFiel
 const f32 = new Float32Array(1);
 const u32 = new Uint32Array(f32.buffer);
 /** float32 → float16 bits, round to nearest even. */
-function toHalf(x) {
+export function toHalf(x) {
   f32[0] = x;
   const b = u32[0];
   const sign = (b >>> 16) & 0x8000;

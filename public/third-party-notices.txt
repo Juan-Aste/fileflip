@@ -17333,7 +17333,7 @@ USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 ==============================================================================
-Supertonic 3 text-to-speech model (Supertone Inc.) 3 (commit 3cadd1ee)
+Supertonic 3 text-to-speech model (Supertone Inc.; also served as a copy with the weights converted to float16 by Fileflect, which is a modified version) 3 (commit 3cadd1ee)
 License: BigScience-OpenRAIL-M
 Project: https://huggingface.co/Supertone/supertonic-3/tree/3cadd1ee6394adea1bd021217a0e650ede09a323
 ==============================================================================

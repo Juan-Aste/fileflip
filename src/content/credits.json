@@ -3142,7 +3142,7 @@
     },
     {
       "id": "supertonic-3",
-      "name": "Supertonic 3 text-to-speech model (Supertone Inc.)",
+      "name": "Supertonic 3 text-to-speech model (Supertone Inc.; also served as a copy with the weights converted to float16 by Fileflect, which is a modified version)",
       "version": "3 (commit 3cadd1ee)",
       "license": "BigScience-OpenRAIL-M",
       "where": [

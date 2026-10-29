@@ -244,7 +244,10 @@ export const embedded = [
   // The read-aloud AI voice: our TypeScript port of the MIT sample code, and the
   // model weights the browser downloads from Hugging Face at a pinned commit
   // (not from our domain). The weights' license requires passing its use
-  // restrictions on to users (our Terms) and giving them a copy of it.
+  // restrictions on to users (our Terms) and giving them a copy of it. When our
+  // own storage is configured, the browser gets an fp16 copy of the weights
+  // that we made (docs/tts-modelo-liviano.md): a modified file, which the
+  // license (4.c) asks to say.
   {
     id: "supertonic-code",
     name: "Supertonic inference code (ported from the supertonic Python SDK)",
@@ -258,7 +261,7 @@ export const embedded = [
   },
   {
     id: "supertonic-3",
-    name: "Supertonic 3 text-to-speech model (Supertone Inc.)",
+    name: "Supertonic 3 text-to-speech model (Supertone Inc.; also served as a copy with the weights converted to float16 by Fileflect, which is a modified version)",
     version: "3 (commit 3cadd1ee)",
     license: "BigScience-OpenRAIL-M",
     where: ["browser"],

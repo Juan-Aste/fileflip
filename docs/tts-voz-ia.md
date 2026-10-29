@@ -22,7 +22,7 @@ Decisión tomada el 2026-10-26 (tarea 8.3a). Código: `src/lib/tts/model.ts`.
 | `voice_styles/{F1…F5,M1…M5}.json` | ~290.000 c/u | (una por voz elegida) |
 | `LICENSE` | 15.007 | `0d944a9110fed9a9602d60e0423a272903e7bd21ab060490774efc77c2275e9f` |
 
-**Descarga total antes de la primera voz: ~398 MB** (más ~0,3 MB por voz). Se pide confirmación al usuario mostrando el tamaño, con barra de progreso, y se guarda en la Cache API del navegador.
+**Descarga total antes de la primera voz: ~398 MB** (~200 MB con la versión fp16 servida desde nuestro almacenamiento, fase 11.3–11.4: `docs/tts-modelo-liviano.md`) (más ~0,3 MB por voz). Se pide confirmación al usuario mostrando el tamaño, con barra de progreso, y se guarda en la Cache API del navegador.
 
 ## Licencia de los pesos: BigScience OpenRAIL-M (18/08/2022)
 
@@ -32,7 +32,7 @@ Leída del archivo `LICENSE` del commit fijado. Conclusiones:
 - **Distribución (punto 4)**: servir los pesos al navegador del usuario cuenta como "Distribution" (incluye "web access"). Obligaciones:
   - 4.a: incluir las **restricciones de uso del Anexo A como cláusula exigible** en el acuerdo que rige el uso (nuestros **Términos y condiciones**, sección de uso aceptable, en los 5 idiomas) y **avisar** a los usuarios de que el modelo está sujeto al punto 5. → tarea 8.4b.
   - 4.b: **dar una copia de la licencia** a quienes reciben el modelo. → enlace al texto de la licencia en la herramienta y en Créditos (8.4b).
-  - 4.c: marcar archivos modificados (no modificamos los pesos).
+  - 4.c: marcar archivos modificados. Desde la fase 11.3 servimos además una copia con los pesos en float16 (`docs/tts-modelo-liviano.md`): Créditos la indica como versión modificada.
   - 4.d: conservar los avisos de copyright y atribución (Créditos y `docs/dependencies.md`).
 - **Punto 5**: debemos exigir a nuestros usuarios que cumplan las restricciones del Anexo A.
 - **Punto 6**: el licenciante no reclama derechos sobre el audio generado; el usuario es responsable de su uso.

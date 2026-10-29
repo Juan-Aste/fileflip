@@ -25,6 +25,19 @@ export const supertonicFiles: readonly ModelFile[] = [
   { path: "onnx/unicode_indexer.json", bytes: 277_676, sha256: "9bf7346e43883a81f8645c81224f786d43c5b57f3641f6e7671a7d6c493cb24f" },
 ];
 
+/**
+ * The four ONNX above with their weights stored as float16 (half the download,
+ * same float32 math; WER and audio compared in docs/tts-modelo-liviano.md),
+ * made from them by scripts/models/onnx-light.mjs ("fp16w"). Supertone does
+ * not publish them: they are served from our own storage when configured.
+ */
+export const supertonicLightFiles: readonly ModelFile[] = [
+  { path: "onnx/duration_predictor.onnx", bytes: 1_993_709, sha256: "6f53e96d47917a28918ed0970abf393089e3bc6d7d6bf7b115342a1bdae89c36" },
+  { path: "onnx/text_encoder.onnx", bytes: 18_474_768, sha256: "cbf2c872a22b7d1d99303425c249ee1eca1198db11fe1459aec53921073159a0" },
+  { path: "onnx/vector_estimator.onnx", bytes: 128_735_277, sha256: "0e3c8d92896ad6642036a5a856f4311a087f712dffcaf2e4c0f412a64aded6a4" },
+  { path: "onnx/vocoder.onnx", bytes: 50_810_904, sha256: "8ea6955582b93eb4ac5d8746549e49cb4d6b5ffaa844f8506f8d9fa0ab9a4309" },
+];
+
 /** Preset voices shipped with the model (F = female, M = male); one is downloaded when chosen (~290 KB each). */
 export const supertonicVoices = ["F1", "F2", "F3", "F4", "F5", "M1", "M2", "M3", "M4", "M5"] as const;
 export type SupertonicVoice = (typeof supertonicVoices)[number];
