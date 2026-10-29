@@ -3737,3 +3737,8 @@ FASE 10 TERMINADA
 - Hechas: 11.3a, 11.3b, 11.4a, 11.4b, 11.5a (límite de 5). Siguen: 11.5b (auditoría AGPL), 11.5c (LICENSE, README, `NEXT_PUBLIC_SOURCE_URL`), 11.6 (verificación final, incluidos Firefox y WebKit).
 - CI de dev: los runs fallan sin correr ningún job por la facturación de GitHub Actions (no es código); verificación local.
 - Nota para próximas sesiones: en esta imagen el Chromium está en `/opt/pw-browsers/chromium-1243/chrome-linux64/chrome` (usar `CHROME_PATH`).
+
+## 2026-10-29 — Fase 11, tarea 11.5b (auditoría de licencias para AGPL-3.0-or-later)
+- `docs/licencia-agpl.md`: 250 paquetes de producción (MIT, Apache-2.0, ISC, BSD, MPL-2.0 sin Anexo B, LGPL, OFL, 0BSD, MIT-0, Zlib, BlueOak, CC-BY-4.0) y 31 motores/modelos de `embedded.mjs`. **Conclusión: compatible**; no hay GPL-2.0-only, no comerciales ni SSPL distribuida.
+- Casos dudosos revisados: Supertonic 3 (OpenRAIL-M: pesos descargados en tiempo de ejecución, obra separada; las restricciones de los Términos se refieren al modelo, no al código; la copia fp16 se marca como modificada), tipografías OFL (agregado), MongoDB SSPL (servidor aparte, no se distribuye), herramientas GPL solo de tests.
+- Fixtures, capturas, muestras de voz y logo: propios o sintéticos. Nota para la fase 12: qué cambiar en `chooseLicense` y `tests/licenses.test.ts`.

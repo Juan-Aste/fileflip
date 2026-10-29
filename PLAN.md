@@ -494,7 +494,7 @@ Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbol
 
 ### 11.5 Preparar el repo para hacerlo público (sin hacerlo público)
 - [x] 11.5a Escaneo de secretos de todo el historial (gitleaks o trufflehog, todas las ramas y tags) y búsqueda manual; archivos y datos personales que no deberían ser públicos
-- [ ] 11.5b Auditoría de licencias para AGPL-3.0-or-later (`docs/licencia-agpl.md`)
+- [x] 11.5b Auditoría de licencias para AGPL-3.0-or-later (`docs/licencia-agpl.md`)
 - [ ] 11.5c `LICENSE` (AGPL-3.0), `license` en package.json, README.md público (es/en), `NEXT_PUBLIC_SOURCE_URL` opcional con "Código fuente" en el footer y créditos
 
 ### 11.6 Verificación final
