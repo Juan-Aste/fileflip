@@ -197,9 +197,9 @@ function ComponentList({
               </span>
             </div>
             {"licenseUrl" in e && e.licenseUrl ? (
-              <ExtLink href={e.licenseUrl}>
-                <span className="shrink-0 text-sm font-medium">{e.license}</span>
-              </ExtLink>
+              <span className="shrink-0 text-sm font-medium">
+                <ExtLink href={e.licenseUrl}>{e.license}</ExtLink>
+              </span>
             ) : (
               <span className="shrink-0 text-sm font-medium">{e.license}</span>
             )}

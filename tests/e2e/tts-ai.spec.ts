@@ -93,7 +93,8 @@ test.describe("tool: text-to-speech, AI voice", () => {
     expect(await axeViolations(page)).toEqual([]);
     await page.emulateMedia({ colorScheme: "light" });
     await page.getByRole("button", { name: "Escuchar muestra: Hombre 2" }).click();
-    await expect.poll(() => samples).toEqual(["/tts-samples/es-M2.mp3"]);
+    // WebKit asks for a media file twice (a byte-range probe, then the data).
+    await expect.poll(() => [...new Set(samples)]).toEqual(["/tts-samples/es-M2.mp3"]);
     const response = await page.request.get("/tts-samples/es-M2.mp3");
     expect(response.headers()["content-type"]).toMatch(/audio\/mpeg/);
     // Choosing a voice switches to the AI voice without downloading the model.

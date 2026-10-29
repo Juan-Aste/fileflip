@@ -3749,3 +3749,20 @@ FASE 10 TERMINADA
 - `NEXT_PUBLIC_SOURCE_URL` opcional (`src/lib/source-url.ts`, solo https, se fija al construir): «Código fuente» en el footer y una sección en créditos con la licencia, en 5 idiomas. Sin la variable no aparece. `ARG` en el Dockerfile, `.env.example`, `DEPLOY.md` y `docs/launch-checklist.md` (variable y nueva sección 9c «Publicar el código»).
 - Tests: `src/lib/source-url.test.ts` y un test de navegador en `legal.spec.ts` (con la variable: enlaces en footer y créditos, es/en; sin ella: nada).
 - Verificado: lint, typecheck, 1373 unitarios, `npm run licenses` (sin cambios), build con la variable; Chromium `legal` + `a11y` (32 pasan, incluido axe en créditos).
+
+## 2026-10-29 — Fase 11, tarea 11.6 (verificación final)
+- Lighthouse móvil (mediana de 5, AdSense de prueba; `docs/perf/2026-10-29-phase11.md`): lector 93 (es y en), transcripción 93, inicio 94; **CLS 0** en todas, A11y 100.
+- Suite completa de Chromium (749 tests): 723 pasan con el build con AdSense de prueba; las 16 que fallaron eran por los anuncios reales cargados (la CI corre los e2e sin `NEXT_PUBLIC_ADSENSE_CLIENT`) y pasan con el build de CI, salvo una real: **`/es/creditos` se desplazaba de lado a 768 px** (el enlace de la licencia OpenRAIL-M se encogía y su texto no; apareció cuando el nombre del modelo se alargó en 11.3b). Arreglado en `CreditsPage.tsx`; detector de clics + legal + a11y: 135 pasan. `check:static` y `check:adsense` (1162 páginas) bien.
+- Firefox y WebKit (instalados en una carpeta aparte de la sesión con sus dependencias del sistema): todo el conjunto `@xb` (72) pasa, 1 saltado. Dos ajustes: el test de muestras de voz ignora la petición duplicada de WebKit (sondeo por rangos antes de bajar el audio); la transcripción en Firefox necesita `WHISPER_DIR` en esta sesión porque el Firefox de Playwright no confía en el certificado del proxy de la nube (la página mostraba bien el error de descarga; no es un fallo del sitio).
+- `docs/launch-checklist.md` ya tiene `NEXT_PUBLIC_MODELS_BASE_URL` (9b) y `NEXT_PUBLIC_SOURCE_URL` (9c).
+- Verificado: lint, typecheck, 1373 unitarios, build.
+- CI de dev: los runs siguen fallando sin correr ningún job (facturación de GitHub Actions; no es código).
+
+FASE 11 TERMINADA
+
+### Resumen de la fase 11 para el dueño
+- Lectura de números: normalización propia en es/en/pt/fr (años, decimales, fechas, horas, %, monedas, ordinales, romanos, rangos, teléfonos, abreviaturas, siglas). "feka": lo causaban las mayúsculas, no el NFKD ni el idioma.
+- Voz recomendada por WER (Whisper `base`): es F5 5,2 %, en M2 0,0 %, pt F5 4,3 %, fr M5 6,1 %. Muestras de cada voz sin bajar el modelo.
+- Modelo de voz: 398 MB → 200 MB (fp16, WER +1 % relativo), servido desde R2 cuando esté `NEXT_PUBLIC_MODELS_BASE_URL`.
+- Escaneo de secretos: 0 hallazgos, nada que rotar. Auditoría AGPL: compatible.
+- Pasos del dueño: R2 según `docs/modelos-r2.md` y `NEXT_PUBLIC_MODELS_BASE_URL` en Railway; mergear `dev` en `main`; hacer público el repo y cargar `NEXT_PUBLIC_SOURCE_URL` (`docs/launch-checklist.md` 9b y 9c).

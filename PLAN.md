@@ -498,4 +498,4 @@ Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbol
 - [x] 11.5c `LICENSE` (AGPL-3.0), `license` en package.json, README.md público (es/en), `NEXT_PUBLIC_SOURCE_URL` opcional con "Código fuente" en el footer y créditos
 
 ### 11.6 Verificación final
-- [ ] 11.6 Lighthouse móvil ≥ 90 y CLS 0 en el lector y la transcripción, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium, `docs/launch-checklist.md` con `NEXT_PUBLIC_MODELS_BASE_URL` y `NEXT_PUBLIC_SOURCE_URL`
+- [x] 11.6 Lighthouse móvil ≥ 90 y CLS 0 en el lector y la transcripción, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium, `docs/launch-checklist.md` con `NEXT_PUBLIC_MODELS_BASE_URL` y `NEXT_PUBLIC_SOURCE_URL`
