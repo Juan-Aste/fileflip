@@ -4,7 +4,7 @@ Fecha: 2026-10-28. Rama `dev`. Fase pedida por el dueño el 2026-10-28: paquete 
 
 ## 1. Catálogo
 
-- **101 herramientas publicadas** (83 al empezar la fase; 18 nuevas) + el conversor de formatos con **97 páginas de conversión**. Todas procesan archivos reales y tienen pruebas que validan la salida con lectores independientes.
+- **101 herramientas publicadas** (18 nuevas en esta fase) + el conversor de formatos con **97 páginas de conversión**. Todas procesan archivos reales y tienen pruebas que validan la salida con lectores independientes.
 - Todas las nuevas funcionan **en el navegador** (el archivo no sale del dispositivo) y lo dicen en la página.
 
 | Bloque | Herramienta | URL (es) | Validación de la salida en los tests |

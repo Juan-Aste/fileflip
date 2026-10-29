@@ -2179,7 +2179,7 @@
             "Railway (États-Unis) : serveurs et base de données qui font fonctionner le site.",
             "Resend (États-Unis) : envoie l'e-mail contenant votre lien de connexion.",
             "Google (États-Unis) : connexion avec Google, si vous la choisissez ; et Google AdSense, qui affiche des annonces (voir la section 6).",
-            "Hugging Face (États-Unis) : si vous choisissez la voix IA de « Lire un texte à voix haute », votre navigateur télécharge les fichiers du modèle depuis Hugging Face (une seule fois). Comme pour tout téléchargement, Hugging Face reçoit votre adresse IP et des données techniques du navigateur ; votre texte n’est pas envoyé.",
+            "Hugging Face (États-Unis) : si vous choisissez la voix IA de « Lire un texte à voix haute » ou utilisez « Transcrire un audio en texte », votre navigateur télécharge les fichiers du modèle depuis Hugging Face (une seule fois par modèle). Comme pour tout téléchargement, Hugging Face reçoit votre adresse IP et des données techniques du navigateur ; votre texte et votre audio ne sont pas envoyés.",
             "Voix « en ligne » de votre navigateur (par exemple Google dans Chrome ou Microsoft dans Edge) : si vous en choisissez une dans « Lire un texte à voix haute », le navigateur envoie le texte à ce fournisseur pour générer l’audio, selon la politique de confidentialité de ce fournisseur. C’est le navigateur qui les propose, pas nous, et nous les marquons « en ligne » ; les autres voix et la voix IA lisent sur votre appareil."
           ],
           "proItems": [

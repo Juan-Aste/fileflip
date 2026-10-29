@@ -1,5 +1,7 @@
 # Informe final de la fase 3 — Fileflect
 
+> Informe vigente del catálogo: [`docs/report-phase10.md`](report-phase10.md) (101 herramientas y 97 páginas de conversión al 2026-10-29). Este documento queda como registro de la fase 3.
+
 Fecha: 2026-10-22. Rama `dev`. Este informe resume la fase 3 (cambio de nombre a Fileflect y ampliación del catálogo). El detalle tarea por tarea está en `PROGRESS.md`; la auditoría de partida, en `docs/audit.md`.
 
 ## 1. Resumen

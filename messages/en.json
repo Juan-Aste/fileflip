@@ -2179,7 +2179,7 @@
             "Railway (USA): servers and database that run the site.",
             "Resend (USA): sends the email with your sign-in link.",
             "Google (USA): Google sign-in, if you choose it; and Google AdSense, which shows ads (see section 6).",
-            "Hugging Face (USA): if you choose the AI voice of \"Text to speech\", your browser downloads the model files from Hugging Face (once). As with any download, Hugging Face receives your IP address and technical browser data; your text is not sent.",
+            "Hugging Face (USA): if you choose the AI voice of \"Text to speech\" or use \"Audio to text\", your browser downloads the model files from Hugging Face (once per model). As with any download, Hugging Face receives your IP address and technical browser data; your text and your audio are not sent.",
             "\"Online\" voices of your browser (such as Google in Chrome or Microsoft in Edge): if you choose one of them in \"Text to speech\", the browser sends the text to that provider to generate the audio, under that provider's privacy policy. The browser offers them, not us, and we mark them \"online\"; the other voices and the AI voice read on your device."
           ],
           "proItems": [

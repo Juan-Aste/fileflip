@@ -3651,3 +3651,12 @@ Auditoría de bugs (ver PLAN.md, "Fase 6"). Registro de hallazgos en `docs/bug-a
 - Suite de Chromium completa: 736 pasan, 10 saltadas (sin Gotenberg ni EPUBCheck), 1 falla por tiempo límite con la máquina cargada (conversor de audio a MP3, 60 s) que pasa sola en 14,6 s. Incluye axe, detector de clics y CLS.
 - Firefox y WebKit (`@xb`): 68 pasan y la transcripción en Firefox pasa con `WHISPER_DIR`. Sin él falla solo en este entorno: el Firefox de Playwright no sale a internet por el proxy de la sesión (cualquier `fetch` externo da «NetworkError»; la herramienta muestra «El servicio no está disponible», que es el comportamiento correcto).
 - Informe de la fase: `docs/report-phase10.md`.
+
+## 2026-10-29 — Fase 10, tarea 10F.2 (informe, dependencias, créditos, despliegue y privacidad)
+- Informe vigente del catálogo: `docs/report-phase10.md` (101 herramientas, 18 nuevas en la fase, y 97 páginas de conversión; guías; modelos; dependencias; verificación; despliegue; pendientes). `docs/report-phase3.md` apunta a él.
+- `docs/dependencies.md` y créditos: ya estaban al día desde cada tarea (jsdiff BSD-3 y modelos Whisper MIT); `npm run licenses` pasa sin cambios.
+- `docs/launch-checklist.md`: comprobaciones de la fase 10 después de publicar (Excel a CSV, Editar PDF, Transcribir con descarga desde Hugging Face y nota sobre `connect-src`, guías en 5 idiomas y `public/guides/`). Sin variables, servicios ni cambios de CSP nuevos en Railway.
+- Política de privacidad (5 idiomas y `docs/legal/privacidad-borrador.md`): Hugging Face figura también para «Transcribir audio a texto» (se descarga el modelo; el audio no se envía). `LEGAL_UPDATED` pasa a 2026-10-29.
+- Verificado: lint, typecheck, 1317 unitarios, `npm run licenses`, build; Chromium legal + a11y (31) pasan.
+
+FASE 10 TERMINADA
