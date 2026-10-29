@@ -3682,3 +3682,7 @@ FASE 10 TERMINADA
 - `scripts/tts/samples.mjs` genera con el modelo real (valores del sitio) una muestra por voz × idioma: 40 MP3 de 32 kbps, 24 kHz mono, sin ID3, en `public/tts-samples/<idioma>-<voz>.mp3` (26–36 KB, 6,6–8,9 s; 1,3 MB en total). Frase por idioma con un número y una fecha (`SAMPLE_TEXT` en `src/lib/tts/samples.ts`); tamaños y SHA-256 en `src/lib/tts/samples.json`. MP3 en vez de Ogg Opus porque los iPhone anteriores a Safari 18.4 no reproducen Ogg.
 - `samples.test.ts` comprueba los 40 archivos (tamaño, SHA-256, cabecera MPEG, ≤ 40 KB, 5–9 s). Documentado en `docs/tts-voz-ia.md`.
 - Verificado: lint, typecheck, unitarios de voz. Todavía no se usan en la página (11.2c).
+
+## 2026-10-29 — Fase 11, tarea 11.2b (voz recomendada por WER)
+- `scripts/tts/wer.mjs`: cada voz lee 10 frases por idioma (valores del sitio), el Whisper `base` del sitio las transcribe y se calcula el WER contra el texto (números normalizados en los dos lados, sin tildes ni puntuación). Admite `--onnx` para comparar otros ONNX (11.3) y un proceso por idioma en paralelo con `--merge`. Helpers en `scripts/tts/engine.mjs`.
+- Recomendadas: **es F5 (5,2 %)**, **en M2 (0,0 %)**, **pt F5 (4,3 %)**, **fr M5 (6,1 %)**. Promedios: en 1,1 %, es 6,7 %, pt 9,8 %, fr 10,3 %. Tabla y método en `docs/tts-wer.md`; datos con las frases mal transcritas en `docs/tts-wer/fp32.json`. Con ~100 palabras por idioma, 1 error ≈ 1 punto: diferencias pequeñas no son significativas.

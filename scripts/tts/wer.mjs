@@ -6,7 +6,9 @@
 // the lowest WER; ties go to the duration closest to the language's median.
 //   SUPERTONIC_DIR=… WHISPER_DIR=… node scripts/tts/wer.mjs [--onnx=<dir of other ONNX files>] [--out=<name>] [--voices=F1,M1] [--langs=es,en]
 // Writes docs/tts-wer/<name>.json (default name "fp32") and prints a Markdown table.
-import { mkdirSync, writeFileSync } from "node:fs";
+// One process per language runs them in parallel: --langs=es --out=fp32-es, ..., then
+//   node scripts/tts/wer.mjs --merge=fp32   (joins docs/tts-wer/fp32-*.json into fp32.json)
+import { mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { createJiti } from "jiti";
 import { loadSupertonic, loadWhisper, resample16k, root, wer } from "./engine.mjs";
@@ -67,14 +69,26 @@ export const SENTENCES = {
   ],
 };
 
-const name = arg("out") ?? "fp32";
-const voices = arg("voices")?.split(",") ?? supertonicVoices;
-const langs = arg("langs")?.split(",") ?? aiVoiceLanguages;
-const tts = await loadSupertonic(process.env.SUPERTONIC_DIR, arg("onnx"));
-const asr = await loadWhisper("base");
+const merge = arg("merge");
+const name = merge ?? arg("out") ?? "fp32";
+const outDir = join(root, "docs/tts-wer");
+let voices = arg("voices")?.split(",") ?? supertonicVoices;
+let langs = arg("langs")?.split(",") ?? aiVoiceLanguages;
 
 const results = [];
-for (const lang of langs) {
+if (merge) {
+  const parts = readdirSync(outDir).filter((f) => f.startsWith(`${merge}-`) && f.endsWith(".json"));
+  for (const f of parts) {
+    results.push(...JSON.parse(readFileSync(join(outDir, f), "utf8")).results);
+    unlinkSync(join(outDir, f));
+  }
+  langs = aiVoiceLanguages.filter((l) => results.some((r) => r.lang === l));
+  voices = supertonicVoices.filter((v) => results.some((r) => r.voice === v));
+}
+const tts = merge ? null : await loadSupertonic(process.env.SUPERTONIC_DIR, arg("onnx"));
+const asr = merge ? null : await loadWhisper("base");
+
+for (const lang of merge ? [] : langs) {
   for (const voice of voices) {
     let errors = 0;
     let total = 0;
@@ -103,8 +117,8 @@ for (const lang of langs) {
   recommended[lang] = rows[0].voice;
 }
 
-mkdirSync(join(root, "docs/tts-wer"), { recursive: true });
-writeFileSync(join(root, "docs/tts-wer", `${name}.json`), `${JSON.stringify({ model: name, date: new Date().toISOString().slice(0, 10), recommended, results }, null, 2)}\n`);
+mkdirSync(outDir, { recursive: true });
+writeFileSync(join(outDir, `${name}.json`), `${JSON.stringify({ model: name, date: new Date().toISOString().slice(0, 10), recommended, results }, null, 2)}\n`);
 console.log(`| Voz | ${langs.join(" | ")} |\n|---|${langs.map(() => "---:").join("|")}|`);
 for (const voice of voices) {
   console.log(`| ${voice} | ${langs.map((lang) => { const r = results.find((x) => x.lang === lang && x.voice === voice); return `${(r.wer * 100).toFixed(1)} % (${r.seconds} s)${recommended[lang] === voice ? " **★**" : ""}`; }).join(" | ")} |`);
