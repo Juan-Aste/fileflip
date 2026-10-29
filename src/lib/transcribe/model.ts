@@ -4,7 +4,7 @@
 // Face card says Apache-2.0, also permissive). Every file is pinned to one
 // commit and checked against its size and SHA-256 before use; decision and
 // measurements in docs/transcripcion.md.
-import { mirrorUrl, type ModelSource } from "@/lib/models/sources";
+import { mirrorUrl, type ModelSource } from "../models/sources";
 import type { ModelFile } from "@/lib/tts/model";
 
 export type WhisperModelId = "tiny" | "base";

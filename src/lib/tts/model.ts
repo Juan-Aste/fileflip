@@ -5,7 +5,7 @@
 // repository is archived, so every file is pinned to one Hugging Face commit
 // and checked against its size and SHA-256 before use.
 
-import { mirrorUrl, type ModelSource } from "@/lib/models/sources";
+import { mirrorUrl, type ModelSource } from "../models/sources";
 
 export const SUPERTONIC_REPO = "Supertone/supertonic-3";
 /** Hugging Face commit of the files below (2026). */
