@@ -3732,3 +3732,8 @@ FASE 10 TERMINADA
 - gitleaks (242 commits, todas las ramas; no hay tags) y trufflehog (todo el historial): **0 secretos**. En la carpeta de trabajo solo falsos positivos en `.next/` (build local, ignorado). Búsqueda manual de `.env`, Mongo, Google, Resend, Mercado Pago, AdSense, claves privadas y correos: solo valores de ejemplo. **Nada que rotar.**
 - Capturas y fixtures: datos de prueba o sintéticos. El nombre y la localidad del dueño están en los textos legales (ya públicos, obligatorios). `scripts/smoke-production.mjs` ya no usa por defecto la URL interna de Railway (sigue en el historial; no es secreto).
 - Informe en `docs/escaneo-secretos.md`. Verificado: lint del script tocado.
+
+## 2026-10-29 — Fin de esta ejecución (fase 11)
+- Hechas: 11.3a, 11.3b, 11.4a, 11.4b, 11.5a (límite de 5). Siguen: 11.5b (auditoría AGPL), 11.5c (LICENSE, README, `NEXT_PUBLIC_SOURCE_URL`), 11.6 (verificación final, incluidos Firefox y WebKit).
+- CI de dev: los runs fallan sin correr ningún job por la facturación de GitHub Actions (no es código); verificación local.
+- Nota para próximas sesiones: en esta imagen el Chromium está en `/opt/pw-browsers/chromium-1243/chrome-linux64/chrome` (usar `CHROME_PATH`).
