@@ -3727,3 +3727,8 @@ FASE 10 TERMINADA
 - Tests: `tests/sync-r2.test.ts` (vector SigV4 de AWS; el manifiesto sube exactamente las claves, tamaños y SHA-256 que pide el sitio; un bucket S3 falso local que valida la firma: sube, convierte, pone `Cache-Control`/`Content-Type`, la segunda vez salta todo; un SHA-256 distinto no sube nada; secreto incorrecto → 403).
 - `--dry-run` real: los 31 archivos verificados, incluidos los 4 fp16 regenerados con su SHA-256 fijado.
 - Verificado: lint, typecheck, 1370 unitarios, build.
+
+## 2026-10-29 — Fase 11, tarea 11.5a (escaneo de secretos)
+- gitleaks (242 commits, todas las ramas; no hay tags) y trufflehog (todo el historial): **0 secretos**. En la carpeta de trabajo solo falsos positivos en `.next/` (build local, ignorado). Búsqueda manual de `.env`, Mongo, Google, Resend, Mercado Pago, AdSense, claves privadas y correos: solo valores de ejemplo. **Nada que rotar.**
+- Capturas y fixtures: datos de prueba o sintéticos. El nombre y la localidad del dueño están en los textos legales (ya públicos, obligatorios). `scripts/smoke-production.mjs` ya no usa por defecto la URL interna de Railway (sigue en el historial; no es secreto).
+- Informe en `docs/escaneo-secretos.md`. Verificado: lint del script tocado.
