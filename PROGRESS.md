@@ -3693,3 +3693,7 @@ FASE 10 TERMINADA
 - `RECOMMENDED_VOICE` y la ruta de las muestras en `src/lib/tts/recommended.ts` (sin la lista de SHA-256, que queda para tests y scripts); un test exige que coincida con `docs/tts-wer/fp32.json`.
 - Tests: nuevo test de navegador (`@xb`) en `tts-ai.spec.ts` (nada se pide al abrir; ▶ pide solo `/tts-samples/es-M2.mp3` como `audio/mpeg`; elegir no descarga el modelo; otro idioma usa sus muestras; axe claro y oscuro con el panel abierto). El test con el modelo real ahora espera `voice_styles/F5.json`.
 - Verificado: lint, typecheck, 1351 unitarios, build; Chromium `tts-ai` + `tts-tools` con `TTS_REAL_MODEL=1` (22 pasan, incluye descarga real de Hugging Face, lectura y MP3), detector de clics + CLS (113 pasan). Lighthouse móvil con AdSense de prueba (mediana de 5): lector 90, CLS 0, 429 KB de JS (igual que la transcripción, que no se tocó y dio 89–91 en esta máquina contra 94 en la fase 10: la máquina está más lenta). Firefox y WebKit no están instalados en esta sesión: quedan para la 11.6.
+
+## 2026-10-29 — Fin de esta ejecución (fase 11)
+- Hechas: 11.1a, 11.1b, 11.2a, 11.2b, 11.2c (límite de 5 por ejecución). Siguen: 11.3a (fp16/int8 de Supertonic), 11.3b, 11.4a–b, 11.5a–c, 11.6.
+- CI de dev: todos los runs fallan sin correr ningún job por la facturación de GitHub Actions (no es código); la verificación fue local.
