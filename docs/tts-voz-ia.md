@@ -140,3 +140,9 @@ Para que el usuario elija la voz sin descargar el modelo, cada voz (F1–F5, M1�
 - **Formato**: MP3 32 kbps, 24 kHz mono, sin etiquetas ID3 (se reproduce en todos los navegadores, también en iPhone viejos sin Ogg Opus). 26–36 KB y 6,6–8,9 s cada uno; límite de 40 KB comprobado por el script y por `samples.test.ts`.
 - **Integridad**: tamaño y SHA-256 de cada archivo en `src/lib/tts/samples.json` (lo escribe el script); `samples.test.ts` comprueba que los archivos coinciden. Si cambia el modelo (tarea 11.3) o el texto, se vuelven a generar.
 - **Licencia**: es audio generado con el modelo; según el punto 6 de la OpenRAIL-M el licenciante no reclama derechos sobre lo generado. La restricción (e) del Anexo A se cumple porque la herramienta dice que son voces generadas por IA.
+
+## Elegir la voz escuchando las muestras (fase 11.2c)
+
+- En el lector, «Escuchar las voces IA antes de descargar» (un `<details>` cerrado, así no mueve la página al cargar) lista las 10 voces del idioma con ▶ (reproduce la muestra estática; se pide recién al tocarlo, nunca al abrir la página), la **Recomendada** del idioma (`RECOMMENDED_VOICE` en `src/lib/tts/recommended.ts`, medida en `docs/tts-wer.md`) y «Elegir». Elegir una voz pasa a la voz IA pero **no descarga nada**: el modelo se descarga, con el aviso de tamaño de siempre, recién al pulsar «Reproducir» o «Descargar MP3».
+- Si el usuario no eligió ninguna voz, se usa la recomendada del idioma del texto (antes, siempre F1). En el selector de voz la recomendada dice «· Recomendada».
+- La herramienta y la FAQ (5 idiomas) aclaran que todas las voces usan el mismo modelo: la descarga es la misma para cualquiera y se hace una sola vez.

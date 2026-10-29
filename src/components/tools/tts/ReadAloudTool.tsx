@@ -19,6 +19,8 @@ import { clampRate, defaultVoice, SPEECH_RATES, speechLang, voicesFor } from "@/
 import ProgressBar from "../ProgressBar";
 import ToolAlert from "../ToolAlert";
 import { useAiSpeech } from "./useAiSpeech";
+import { AiVoicePicker } from "./AiVoicePicker";
+import { RECOMMENDED_VOICE } from "@/lib/tts/recommended";
 import { useDeviceSpeech, useSpeechVoices } from "./useDeviceSpeech";
 
 const RATE_KEY = "fileflect.tts.rate";
@@ -85,7 +87,8 @@ export default function ReadAloudTool() {
   const [voiceURI, setVoiceURI] = useState<string | null>(null);
   const [title, setTitle] = useState<string | undefined>(undefined);
   const [engine, setEngine] = useState<"device" | "ai">("device");
-  const [aiVoice, setAiVoice] = useState<SupertonicVoice>("F1");
+  // The voice the user picked; until then, the recommended one for the language.
+  const [aiVoicePicked, setAiVoice] = useState<SupertonicVoice | null>(null);
   // Set once the model is loaded; a ref, since the download continues in the closure that started it.
   const aiReady = useRef(false);
   // Before the first AI reading: the size to confirm, then the download.
@@ -119,6 +122,7 @@ export default function ReadAloudTool() {
   const voice = voices.find((v) => v.voiceURI === voiceURI);
 
   const aiLanguage = isAiLanguage(language) ? language : null;
+  const aiVoice = aiVoicePicked ?? RECOMMENDED_VOICE[aiLanguage ?? "es"];
   // Without device voices the AI voice is the only way to listen.
   const useAi = aiLanguage !== null && (engine === "ai" || device.supported === false);
   const aiRate = Math.max(AI_MIN_RATE, rate);
@@ -410,6 +414,20 @@ export default function ReadAloudTool() {
           {aiLanguage ? t("engineAiHint", { size: formatBytes(supertonicDownloadBytes, locale as Locale) }) : t("aiNoChinese")}
         </p>
       </fieldset>
+      {aiLanguage && (
+        <AiVoicePicker
+          lang={aiLanguage}
+          voice={aiVoice}
+          size={formatBytes(supertonicDownloadBytes, locale as Locale)}
+          disabled={reading || busy}
+          onChoose={(v) => {
+            setAiVoice(v);
+            store(AI_VOICE_KEY, v);
+            setEngine("ai");
+            store(ENGINE_KEY, "ai");
+          }}
+        />
+      )}
 
       <div className="grid gap-3 sm:grid-cols-3">
         <div className="flex flex-col gap-1 text-sm font-medium">
@@ -447,6 +465,7 @@ export default function ReadAloudTool() {
               {supertonicVoices.map((v) => (
                 <option key={v} value={v}>
                   {t(v.startsWith("F") ? "aiVoiceFemale" : "aiVoiceMale", { n: v.slice(1) })}
+                  {aiLanguage && RECOMMENDED_VOICE[aiLanguage] === v ? ` · ${t("aiRecommended")}` : ""}
                 </option>
               ))}
             </select>

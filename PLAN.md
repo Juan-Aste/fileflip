@@ -482,7 +482,7 @@ Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbol
 ### 11.2 Elegir la voz IA escuchando muestras
 - [x] 11.2a Script `scripts/tts/` que genera con el modelo real una muestra por voz × idioma (Opus/OGG o MP3, ≤ 40 KB, nombre y sha256 fijos) en `public/tts-samples/`, documentado
 - [x] 11.2b Script de WER: ~10 frases por voz × idioma transcritas con Whisper `base`; tabla en `docs/` y voz recomendada por idioma
-- [ ] 11.2c Lector: selector de voces con ▶ "Escuchar muestra" (archivo estático, cargado solo al tocar), "Recomendada" por idioma, descarga del modelo recién al usar la voz IA o el MP3; aclarar en la herramienta y la FAQ (5 idiomas) que todas las voces usan el mismo modelo y se descarga una sola vez; tests
+- [x] 11.2c Lector: selector de voces con ▶ "Escuchar muestra" (archivo estático, cargado solo al tocar), "Recomendada" por idioma, descarga del modelo recién al usar la voz IA o el MP3; aclarar en la herramienta y la FAQ (5 idiomas) que todas las voces usan el mismo modelo y se descarga una sola vez; tests
 
 ### 11.3 Modelo de voz IA más liviano
 - [ ] 11.3a Generar versiones fp16 e int8 dinámico de los ONNX de Supertonic (herramientas MIT) y compararlas con el original (WER con Whisper, duración, métricas de audio); documentar tamaños y resultados

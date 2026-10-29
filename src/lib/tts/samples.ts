@@ -27,3 +27,5 @@ export interface VoiceSample {
 export const voiceSamples = list as readonly VoiceSample[];
 
 export const sampleFor = (lang: SupertonicLanguage, voice: SupertonicVoice) => voiceSamples.find((s) => s.lang === lang && s.voice === voice);
+
+export { RECOMMENDED_VOICE, samplePath } from "./recommended";
