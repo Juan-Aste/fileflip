@@ -3766,3 +3766,7 @@ FASE 11 TERMINADA
 - Modelo de voz: 398 MB → 200 MB (fp16, WER +1 % relativo), servido desde R2 cuando esté `NEXT_PUBLIC_MODELS_BASE_URL`.
 - Escaneo de secretos: 0 hallazgos, nada que rotar. Auditoría AGPL: compatible.
 - Pasos del dueño: R2 según `docs/modelos-r2.md` y `NEXT_PUBLIC_MODELS_BASE_URL` en Railway; mergear `dev` en `main`; hacer público el repo y cargar `NEXT_PUBLIC_SOURCE_URL` (`docs/launch-checklist.md` 9b y 9c).
+
+## 2026-10-31 — Inicio de la fase 12
+- Fase 12 agregada a `PLAN.md` (pedida por el dueño el 2026-10-31): GPL/AGPL habilitadas, voces Piper (incluida es_AR), quitar fondo mejorado, formatos de video/audio viejos con ffmpeg.wasm, Ghostscript para Comprimir PDF (opcional) y verificación final.
+- CI de dev: los últimos runs fallaron sin correr ningún job por facturación de GitHub Actions (aviso «recent account payments have failed or your spending limit needs to be increased»), aunque el repo ya es público. No es código.

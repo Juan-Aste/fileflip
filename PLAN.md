@@ -499,3 +499,32 @@ Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbol
 
 ### 11.6 Verificación final
 - [x] 11.6 Lighthouse móvil ≥ 90 y CLS 0 en el lector y la transcripción, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium, `docs/launch-checklist.md` con `NEXT_PUBLIC_MODELS_BASE_URL` y `NEXT_PUBLIC_SOURCE_URL`
+
+## Fase 12
+
+Pedida por el dueño el 2026-10-31. El proyecto se distribuye bajo AGPL-3.0-or-later con el código público, así que se aceptan componentes GPL-3.0 y AGPL-3.0 (y GPL-2.0-or-later, que puede usarse bajo la GPL-3.0). Siguen prohibidos GPL-2.0-only, licencias no comerciales y SSPL. Cada modelo o voz se revisa por separado (y su dataset). Los componentes (A)GPL enlazan su código fuente exacto en créditos. En orden.
+
+### 12.1 Habilitar GPL/AGPL en las reglas del proyecto
+- [ ] 12.1 `chooseLicense`, `tests/licenses.test.ts` y `npm run licenses` aceptan GPL-3.0(-or-later), AGPL-3.0(-or-later) y GPL-2.0-or-later, y rechazan GPL-2.0-only, no comerciales y SSPL; los componentes (A)GPL deben tener enlace a su código fuente; política en `docs/dependencies.md` y README
+
+### 12.2 Piper: voces IA con mejor español (incluida voz argentina)
+- [ ] 12.2a Inventario de voces Piper (es_AR, es_MX, es_ES, pt_BR, pt_PT, fr, en, zh) con licencia de cada MODEL_CARD y dataset; calidad medium/high; descartar no comerciales o sin licencia clara (`docs/tts-piper.md`)
+- [ ] 12.2b Motor Piper en el navegador: VITS ONNX con el onnxruntime-web existente + espeak-ng en WASM (GPL-3.0), versiones y sha256 fijos, carga diferida; tests unitarios
+- [ ] 12.2c WER con Whisper `base` (~10 frases por idioma, normalización de 11.1) de cada voz Piper candidata contra la mejor de Supertonic; tabla en `docs/`; muestras estáticas por voz
+- [ ] 12.2d Lector: "Voz IA" con voces de ambos motores agrupadas por idioma, ▶ muestra, tamaño de descarga propio, "Recomendada" por menor WER (es_AR si empata o está a ≤ 1 punto); voz zh si hay una compatible y buena
+- [ ] 12.2e Descarga R2/Hugging Face con sha256 y Cache API; voces en `scripts/models/sync-r2.mjs`; MP3 y lectura progresiva con ambos motores; tests (MP3 validado de forma independiente por idioma)
+
+### 12.3 Quitar fondo mejorado
+- [ ] 12.3a Set propio de fotos de prueba con máscaras de referencia; comparar @imgly/background-removal (y licencia de sus modelos) u otra opción compatible contra u2netp (IoU y tiempo en PC y celular simulado); documentar
+- [ ] 12.3b Si gana: integrarlo con carga diferida, aviso de tamaño, R2/Hugging Face, u2netp como opción "rápida"; tests
+
+### 12.4 Formatos de video y audio viejos
+- [ ] 12.4a ffmpeg.wasm de un solo hilo (sin SharedArrayBuffer) como respaldo de mediabunny/WebCodecs: AVI, WMV, FLV, MPG, 3GP, VOB, RM si es viable, WMA, AMR, AC3, APE → MP4/WebM/MP3; límites de tamaño y duración; licencia y código fuente del build; tests con archivos generados
+- [ ] 12.4b Herramientas de video/audio existentes y sus páginas (formatos nuevos en FAQ y conversión) en 5 idiomas
+- [ ] 12.4c Páginas de conversión nuevas (avi-a-mp4, wmv-a-mp4, flv-a-mp4, mpg-a-mp4, wma-a-mp3, amr-a-mp3…) en 5 idiomas; tests
+
+### 12.5 Comprimir PDF más fuerte (opcional según resultados)
+- [ ] 12.5 Evaluar Ghostscript WASM (AGPL-3.0) contra el método actual en PDFs escaneados, con fotos y con texto; integrar como "compresión fuerte" solo si reduce ≥ 20 % adicional en PDFs con imágenes sin romper el texto seleccionable; si no, documentar
+
+### 12.6 Verificación final
+- [ ] 12.6 Lighthouse, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium; créditos con enlaces al código fuente; política de privacidad; `docs/launch-checklist.md`; `docs/modelos-r2.md`
