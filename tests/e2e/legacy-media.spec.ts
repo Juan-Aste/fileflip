@@ -121,6 +121,36 @@ test.describe("old formats (FFmpeg WASM fallback)", () => {
     }
   });
 
+  test("trim an AVI (no player, times still work) and extract the sound of a WMV", async ({ page }) => {
+    const avi = make("clip.avi", "video.mp4", ["-c:v", "mpeg4", "-q:v", "3", "-c:a", "libmp3lame", "-b:a", "192k", "-f", "avi"]);
+    await page.goto("/en/trim-video", { waitUntil: "networkidle" });
+    await page.locator('input[type="file"]').first().setInputFiles(avi);
+    const end = page.getByRole("textbox", { name: "End" });
+    await expect(end).toHaveValue("0:02.0", { timeout: 60_000 });
+    await expect(page.locator("main video")).toHaveCount(0);
+    await page.getByRole("textbox", { name: "Start" }).fill("0:00.5");
+    await end.fill("0:01.5");
+    const trimmed = fileOf(await runTool(page, "Trim video"));
+    expect(trimmed.name).toBe("clip.mp4");
+    const t = probe(trimmed.buf, trimmed.name);
+    expect(Math.abs(t.duration - 1), `trimmed lasts ${t.duration} s`).toBeLessThan(0.15);
+    const [red, blue] = [t.color(0.25), t.color(0.75)];
+    expect(red[0]! > 170 && red[2]! < 90, `red at 0.25 s: ${red}`).toBe(true);
+    expect(blue[2]! > 170 && blue[0]! < 90, `blue at 0.75 s: ${blue}`).toBe(true);
+
+    const wmv = make("talk.wmv", "video.mp4", ["-c:v", "wmv2", "-b:v", "1M", "-c:a", "wmav2", "-b:a", "192k", "-f", "asf"]);
+    await page.goto("/en/extract-audio-from-video", { waitUntil: "networkidle" });
+    await page.locator('input[type="file"]').first().setInputFiles(wmv);
+    await page.getByText("MP3", { exact: true }).click();
+    const sound = fileOf(await runTool(page, "Extract audio"));
+    expect(sound.name).toBe("talk.mp3");
+    const a = probe(sound.buf, sound.name);
+    expect(a).toMatchObject({ audio: "mp3", video: undefined });
+    const [left, right] = a.tones();
+    expect(Math.abs(left! - 440), `left ${left} Hz`).toBeLessThan(15);
+    expect(Math.abs(right! - 660), `right ${right} Hz`).toBeLessThan(15);
+  });
+
   test("a fake AVI fails with a clear message", async ({ page }) => {
     const fake = join(dir, "fake.avi");
     writeFileSync(fake, readFileSync(fixturePath("audio.wav")).subarray(0, 200));

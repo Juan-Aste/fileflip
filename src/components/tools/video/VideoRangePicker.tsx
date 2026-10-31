@@ -113,7 +113,8 @@ export default function VideoRangePicker({
   return (
     <>
       {/* The browser may not play every file (H.264 or MKV in some); the times can still be typed. */}
-      {playerUrl && <video ref={player} src={playerUrl} controls preload="metadata" playsInline className="max-h-80 w-full rounded-lg bg-black" aria-label={tv("player")} />}
+      {/* Old formats (AVI, WMV…) don't play in the browser: the player is hidden, the times still work. */}
+      {playerUrl && <video ref={player} src={playerUrl} controls preload="metadata" playsInline onError={() => setPlayerUrl(null)} className="max-h-80 w-full rounded-lg bg-black" aria-label={tv("player")} />}
       <div className="flex flex-wrap gap-4">
         {timeField("start", start, setStart)}
         {timeField("end", end, setEnd)}

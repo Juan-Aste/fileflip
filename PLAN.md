@@ -520,7 +520,7 @@ Pedida por el dueño el 2026-10-31. El proyecto se distribuye bajo AGPL-3.0-or-l
 
 ### 12.4 Formatos de video y audio viejos
 - [x] 12.4a ffmpeg.wasm de un solo hilo (sin SharedArrayBuffer) como respaldo de mediabunny/WebCodecs: AVI, WMV, FLV, MPG, 3GP, VOB, RM si es viable, WMA, AMR, AC3, APE → MP4/WebM/MP3; límites de tamaño y duración; licencia y código fuente del build; tests con archivos generados
-- [ ] 12.4b Herramientas de video/audio existentes y sus páginas (formatos nuevos en FAQ y conversión) en 5 idiomas
+- [x] 12.4b Herramientas de video/audio existentes y sus páginas (formatos nuevos en FAQ y conversión) en 5 idiomas
 - [ ] 12.4c Páginas de conversión nuevas (avi-a-mp4, wmv-a-mp4, flv-a-mp4, mpg-a-mp4, wma-a-mp3, amr-a-mp3…) en 5 idiomas; tests
 
 ### 12.5 Comprimir PDF más fuerte (opcional según resultados)

@@ -1550,7 +1550,7 @@
     },
     "audio-converter": {
       "title": "Converter áudio",
-      "description": "Converta áudio entre MP3, WAV, FLAC, OGG, M4A e AIFF no seu navegador, sem enviar seus arquivos.",
+      "description": "Converta áudio entre MP3, WAV, FLAC, OGG, M4A e AIFF (e leia WMA, AMR ou AC3), no seu navegador e sem enviar seus arquivos.",
       "action": "Converter áudio",
       "about": "Converta músicas, mensagens de voz, podcasts e gravações entre os formatos mais usados: MP3 para tocar em qualquer lugar, WAV, FLAC ou AIFF sem perda para editar ou arquivar, OGG (Opus) para a web e M4A (AAC) para aparelhos Apple. Lê MP3, WAV, FLAC, OGG, Opus, M4A, AAC, WebM e AIFF, e você pode escolher a qualidade. A conversão acontece no seu dispositivo: os arquivos não são enviados a nenhum servidor.",
       "faq": {
@@ -1564,7 +1564,9 @@
         "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com o Pro) e 3 horas de duração, porque o resultado é montado na memória do seu navegador. Só a faixa de áudio principal é mantida; se o arquivo for um vídeo, a imagem é ignorada.",
         "a4NoPro": "Até 200 MB por arquivo e 3 horas de duração, porque o resultado é montado na memória do seu navegador. Só a faixa de áudio principal é mantida; se o arquivo for um vídeo, a imagem é ignorada.",
         "q5": "O que é AIFF e quando usar?",
-        "a5": "AIFF é o formato sem perda da Apple, o equivalente do WAV no Mac, no Logic ou no GarageBand. São lidos AIFF e AIFF-C sem compressão (8, 16, 24 e 32 bits) e o AIFF é gravado em 16 bits; AIFF-C comprimidos (μ-law, por exemplo) não são aceitos."
+        "a5": "AIFF é o formato sem perda da Apple, o equivalente do WAV no Mac, no Logic ou no GarageBand. São lidos AIFF e AIFF-C sem compressão (8, 16, 24 e 32 bits) e o AIFF é gravado em 16 bits; AIFF-C comprimidos (μ-law, por exemplo) não são aceitos.",
+        "q6": "Lê WMA, AMR (mensagens de voz) ou AC3?",
+        "a6": "Sim. Esses formatos são lidos com um motor FFmpeg baixado na primeira vez (cerca de 31 MB, do nosso domínio), só quando você precisa. Serve para músicas antigas do Windows Media (WMA), mensagens de voz e gravações de celulares antigos (AMR) e o som AC3 de DVDs (mixado para estéreo). Com esses formatos o máximo é 1 hora de áudio por arquivo. Tudo acontece no seu dispositivo."
       }
     },
     "trim-audio": {
@@ -1637,7 +1639,7 @@
     },
     "video-converter": {
       "title": "Converter vídeo",
-      "description": "Converta vídeos entre MP4, MOV, MKV e WebM no seu navegador, sem enviar seus arquivos.",
+      "description": "Converta vídeos entre MP4, MOV, MKV e WebM, e também AVI, WMV, FLV, MPG ou 3GP antigos, no seu navegador e sem enviar seus arquivos.",
       "action": "Converter vídeo",
       "about": "Mude o formato dos seus vídeos entre MP4 (o que qualquer celular, TV ou rede social reproduz), MOV (o do iPhone e do Mac), MKV e WebM (o da web). Se o vídeo já usa um codec aceito pelo formato escolhido, ele é copiado sem recomprimir: leva segundos e não perde qualidade. Se não, é codificado de novo em alta qualidade com o codec do seu navegador. O som vai junto com a imagem. Tudo acontece no seu dispositivo: os vídeos não são enviados a nenhum servidor.",
       "faq": {
@@ -1648,8 +1650,10 @@
         "q3": "Por que meu MP4 saiu em VP9 ou AV1?",
         "a3": "Alguns navegadores (como o Chromium ou o Firefox no Linux) não têm codificador H.264. Nesse caso o MP4 é criado com VP9 ou AV1, que tocam no Chrome, Edge, Firefox e Android, mas talvez não no iPhone. Para H.264 use o Chrome, o Edge ou o Safari; você verá um aviso quando faltar.",
         "q4": "Existe algum limite?",
-        "a4": "Até 200 MB por arquivo no plano grátis (500 MB com Pro) e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. AVI, WMV e FLV ainda não podem ser lidos.",
-        "a4NoPro": "Até 200 MB por arquivo e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. AVI, WMV e FLV ainda não podem ser lidos."
+        "a4": "Até 200 MB por arquivo no plano grátis (500 MB com Pro) e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. Os formatos antigos (AVI, WMV, FLV…) têm limites próprios: veja a próxima pergunta.",
+        "a4NoPro": "Até 200 MB por arquivo e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. Os formatos antigos (AVI, WMV, FLV…) têm limites próprios: veja a próxima pergunta.",
+        "q5": "Posso converter AVI, WMV, FLV, MPG, VOB, 3GP ou RM?",
+        "a5": "Sim. Seu navegador não lê esses formatos antigos, então na primeira vez é baixado um motor FFmpeg (cerca de 31 MB, do nosso domínio) que passa o vídeo para um formato intermediário e depois segue a conversão normal. É mais lento que com MP4 e aceita no máximo 20 minutos de vídeo por arquivo. Funciona com vídeos de câmeras antigas, DVD (VOB), celulares antigos (3GP) e downloads de anos atrás (AVI, WMV, FLV, RealMedia). Tudo acontece no seu dispositivo."
       }
     },
     "extract-audio": {
@@ -1666,7 +1670,9 @@
         "a3": "Só de arquivos que você já tem no seu dispositivo e tem direito de usar. Esta ferramenta não baixa vídeos da internet.",
         "q4": "Existe algum limite?",
         "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro) e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos.",
-        "a4NoPro": "Até 200 MB por vídeo e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos."
+        "a4NoPro": "Até 200 MB por vídeo e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos.",
+        "q5": "Funciona com vídeos AVI, WMV, FLV, MPG ou VOB?",
+        "a5": "Sim: esses formatos antigos são lidos com um motor FFmpeg baixado na primeira vez (cerca de 31 MB), e o som é salvo no formato que você escolher (com «Original» sai em MP3). O máximo é 1 hora de áudio por arquivo. Tudo acontece no seu dispositivo."
       }
     },
     "compress-video": {
