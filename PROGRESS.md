@@ -619,6 +619,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - **(Fase 6) Cloudflare y límites por IP (B-24)**: si se pone Cloudflare (u otro proxy) delante de Railway, avisar para que `clientIp()` lea `CF-Connecting-IP`; si no, todos los visitantes compartirían el límite de conversiones.
 - **(Fase 6) Límite de conversiones con sesión**: ahora es 5 veces el anónimo (100 por minuto por cuenta con `RATE_LIMIT_PER_MINUTE=20`). Cambiarlo si se prefiere otro valor.
 - **Foto carnet (3C.42)**: no se encontraron fuentes oficiales fiables de las medidas por país; la herramienta usa medidas habituales y pide confirmar con la oficina. Si se quieren presets por país (AR, BR, MX, CL, CO, PE, UY), validar cada medida con el organismo correspondiente.
+- **(Fase 12, 2026-10-31) Voces Piper ajustadas desde «lessac»**: casi todas las voces Piper en español y portugués (incluida la única argentina, `es_AR-daniela-high`) se ajustaron desde `en_US-lessac`, entrenada con un dataset **solo para investigación** que excluye el uso comercial en síntesis de voz. Por la regla «descartar las no comerciales» quedaron fuera. Decidir: (1) aceptar ese riesgo y usarlas, (2) regla estricta: Piper solo para francés (`fr_FR-mls`), o (3) entrenar una voz argentina propia desde cero con OpenSLR 61 (necesita GPU). Detalle en `docs/tts-piper.md`. Las tareas 12.2b–12.2e esperan esta respuesta.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
 - No quedan tareas sin marcar en PLAN.md y la especificación no tiene puntos sin cubrir. Verificado: `npm ci`, `npm run lint`, `npm run build` y `npm test` (40 archivos, 231 tests) pasan en `dev`.
@@ -3777,3 +3778,8 @@ FASE 11 TERMINADA
 - Créditos: sección «Componentes bajo GPL y AGPL» (5 idiomas; aparece cuando haya alguno), con proyecto, código fuente de la versión, build y texto de la licencia.
 - Tests: `tests/licenses.test.ts` (aceptadas, prohibidas, y entradas GPL con fuente/build). Política en `docs/dependencies.md`, README (es/en) y nota de `docs/licencia-agpl.md` actualizadas.
 - Verificado: lint, typecheck, 1377 unitarios, `npm run licenses` (250 paquetes, sin cambios en los datos), build, Chromium `legal` + `a11y` (32 pasan).
+
+## 2026-10-31 — Fase 12, tarea 12.2a (inventario de voces Piper)
+- `docs/tts-piper.md`: voces Piper es/pt/fr/en/zh (medium/high) del repo `rhasspy/piper-voices` (commit `b4e358ff`) y de la comunidad en Hugging Face, con dataset, licencia y modelo base de cada una (leídos de cada MODEL_CARD).
+- **Hallazgo**: casi todas las voces se ajustaron desde `en_US-lessac`, cuyo dataset (Blizzard 2013) tiene una licencia **solo de investigación** que excluye el uso comercial en síntesis de voz. Descartadas por precaución: todas las de español (incluida `es_AR-daniela-high`) y portugués, `fr_FR-siwis/upmc` y la mayoría de las inglesas. Aptas: `fr_FR-mls` (CC-BY 4.0, desde cero) y las inglesas de dominio público de Bryce Beattie y `en_US-libritts-high`. `fr_FR-tom` (AGPL-3.0) queda dudosa (no declara su base). Chino: ninguna (xiao_ya es no comercial y chaowen deriva de ella; huayan sin licencia).
+- **Decisión pedida al dueño** (en «Pendiente del dueño»): aceptar el riesgo de las voces derivadas de lessac, regla estricta (Piper solo en francés) o entrenar una voz argentina propia. 12.2b–12.2e quedan en espera; se sigue con 12.3.
