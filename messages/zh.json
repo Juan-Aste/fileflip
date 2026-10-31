@@ -3382,6 +3382,8 @@
     "sourceCodeLink": "查看 Fileflect 的源代码",
     "lgplHeading": "LGPL 组件",
     "lgplIntro": "这些组件依据 GNU 宽通用公共许可证（LGPL）使用，未经修改，并以独立文件（WebAssembly 模块或动态库）的形式提供，可替换为其他版本。每个组件的链接指向其确切版本的源代码和编译说明。",
+    "gplHeading": "GPL 和 AGPL 组件",
+    "gplIntro": "这些组件依据 GNU 通用公共许可证（GPL）或 GNU Affero 通用公共许可证（AGPL）使用。Fileflect 整体以 AGPL-3.0 或更高版本发布。每个组件都附有我们所用版本的确切源代码及其构建方式的链接。",
     "enginesHeading": "内置引擎和数据",
     "enginesIntro": "下列软件包中自带的 WebAssembly 库、我们自行编译的 libarchive、从我们的域名提供的模型，以及“文字转语音”的 AI 语音（移植自 Supertonic SDK 的代码，MIT 许可；以及 Supertonic 3 模型，只有在你选择该语音时浏览器才会从 Hugging Face 下载，或从我们的模型服务器下载权重为 float16 的副本；附有其 OpenRAIL-M 许可链接）。",
     "servicesHeading": "服务器服务",

@@ -3382,6 +3382,8 @@
     "sourceCodeLink": "Voir le code source de Fileflect",
     "lgplHeading": "Composants sous LGPL",
     "lgplIntro": "Ces composants sont utilisés sous la Licence publique générale limitée GNU (LGPL), sans modification et sous forme de fichiers séparés (modules WebAssembly ou bibliothèques dynamiques) remplaçables par une autre version. Les liens de chacun mènent à son code source exact et aux instructions avec lesquelles il a été compilé.",
+    "gplHeading": "Composants sous GPL et AGPL",
+    "gplIntro": "Ces composants sont utilisés sous la Licence publique générale GNU (GPL) ou la Licence publique générale GNU Affero (AGPL). Fileflect dans son ensemble est distribué sous l’AGPL-3.0 ou ultérieure. Chacun renvoie au code source exact de la version que nous utilisons et à la manière de le compiler.",
     "enginesHeading": "Moteurs et données inclus",
     "enginesIntro": "Bibliothèques compilées en WebAssembly incluses dans les paquets ci-dessous, notre propre compilation de libarchive, les modèles servis depuis notre domaine et la voix IA de « Lire un texte à voix haute » (code porté du SDK Supertonic, MIT, et le modèle Supertonic 3, que votre navigateur télécharge depuis Hugging Face, ou une copie aux poids en float16 depuis notre serveur de modèles, seulement si vous choisissez cette voix ; sa licence OpenRAIL-M est en lien).",
     "servicesHeading": "Services du serveur",

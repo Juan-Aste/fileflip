@@ -1,8 +1,18 @@
 # Dependencias, motores y licencias
 
-Regla de la fase 3: antes de agregar una dependencia se revisa su licencia y se anota aquí. Se prefieren MIT, Apache-2.0, BSD, ISC, MPL-2.0 o LGPL. **No se agregan dependencias GPL o AGPL sin aprobación del dueño** (se anotan en "Pendiente del dueño" de PROGRESS.md con una alternativa).
+## Política de licencias (desde la fase 12)
 
-Licencias leídas del `package.json` de cada paquete instalado (2026-10-20). La lista completa (con dependencias transitivas y los motores dentro de los WASM) la genera `npm run licenses` para la página de créditos; `tests/licenses.test.ts` falla si una dependencia de producción no tiene entrada o si aparece una GPL/AGPL no aprobada.
+Fileflect se distribuye bajo **AGPL-3.0-or-later** con el código público, así que una dependencia (paquete, motor WASM, modelo, voz o dataset) puede usar:
+
+- **Permisivas o copyleft débil**: MIT, Apache-2.0, BSD, ISC, Zlib, MPL-2.0, LGPL, OFL, CC-BY-4.0, CC0, etc. Son las preferidas cuando hay alternativa de calidad parecida (en una expresión `A OR B` se elige la permisiva).
+- **Copyleft fuerte compatible** (aprobado por el dueño el 2026-10-31): GPL-3.0(-only/-or-later), AGPL-3.0(-only/-or-later) y GPL-2.0-or-later (se usa bajo la GPL-3.0). Cada componente así debe tener una entrada `gpl: true` en `scripts/licenses/embedded.mjs` con el **código fuente exacto de la versión usada** (`source`) y **cómo se compila** (`build`; si lo compilamos nosotros, el script reproducible), que la página de créditos muestra en «Componentes bajo GPL y AGPL».
+- **Prohibidas**: GPL-2.0-only (incompatible con la (A)GPL-3.0), GPL-1.0, licencias no comerciales (CC-BY-NC*, PolyForm Noncommercial…), SSPL, BUSL y cualquier licencia con restricciones que no podamos cumplir.
+
+Cada modelo o voz tiene su propia licencia (y la de su dataset): se revisa una por una antes de usarla.
+
+`npm run licenses` (`scripts/licenses/generate.mjs`, regla en `chooseLicense` de `scripts/licenses/production.mjs`) regenera los créditos y falla si una dependencia de producción no tiene entrada aquí, si su licencia está prohibida o es desconocida, o si un componente GPL/AGPL no enlaza su código fuente; `tests/licenses.test.ts` comprueba lo mismo.
+
+Historia: hasta la fase 11 no se agregaban dependencias GPL/AGPL sin aprobación del dueño. Licencias leídas del `package.json` de cada paquete instalado (2026-10-20).
 
 ## Producción (se distribuyen al navegador o corren en el servidor)
 
@@ -112,7 +122,7 @@ Ver `docs/audit.md`. Resumen de licencias (`npm view`, 2026-10-20):
 | fonteditor-core | MIT (el registro no informa el campo; confirmar el archivo LICENSE al instalar) | a confirmar |
 | occt-import-js | LGPL-2.1 | aceptable si hiciera falta STEP/IGES (no planificado) |
 | 7z-wasm | 7-Zip LGPL + restricción unRAR | evitar; usar libarchive.js |
-| **@ffmpeg/core** | **GPL-2.0-or-later** | **no sin aprobación del dueño** |
-| **@imgly/background-removal** | **AGPL-3.0** (ver su LICENSE.md) | **no sin aprobación del dueño** |
-| Calibre (MOBI/AZW) | GPL-3.0 | no sin aprobación |
-| LibreDWG (DWG) | GPL-3.0 | no sin aprobación |
+| @ffmpeg/core | GPL-2.0-or-later (según el build) | aceptable desde la fase 12 (con código fuente enlazado) |
+| @imgly/background-removal | AGPL-3.0 (ver su LICENSE.md; revisar la licencia de sus modelos) | aceptable desde la fase 12 (con código fuente enlazado) |
+| Calibre (MOBI/AZW) | GPL-3.0 | aceptable desde la fase 12 (no planificado) |
+| LibreDWG (DWG) | GPL-3.0 | aceptable desde la fase 12 (no planificado) |

@@ -5,7 +5,8 @@
 // sharp-libvips) and docs/dependencies.md. `npm run licenses` copies them into
 // the credits data; tests/licenses.test.ts checks they stay consistent.
 //
-// LGPL entries must give the license text, the exact source of the version
+// LGPL entries (`lgpl: true`) and GPL/AGPL ones (`gpl: true`, phase 12)
+// must give the license text, the exact source of the version
 // used and how it was built: `source` is that exact source (exactSource:
 // false when the build does not record it), `build` the build scripts or
 // instructions.
@@ -13,7 +14,7 @@
 const MB = "https://github.com/Vanilagy/mediabunny/tree/v1.62.0/packages";
 const SHARP_LIBVIPS = "https://github.com/lovell/sharp-libvips/tree/v1.3.4";
 
-/** @typedef {{ id: string, name: string, version: string, license: string, holder?: string, licenseUrl?: string, lgpl?: boolean, partOf?: string, where: ("browser"|"server")[], homepage: string, source?: string, exactSource?: boolean, build?: string, licenseText: string, kind: "engine"|"data"|"service" }} Embedded */
+/** @typedef {{ id: string, name: string, version: string, license: string, holder?: string, licenseUrl?: string, lgpl?: boolean, gpl?: boolean, partOf?: string, where: ("browser"|"server")[], homepage: string, source?: string, exactSource?: boolean, build?: string, licenseText: string, kind: "engine"|"data"|"service" }} Embedded */
 
 /** @type {Embedded[]} */
 export const embedded = [
@@ -351,4 +352,4 @@ export const embedded = [
 ];
 
 /** License texts copied to public/licenses/ for the credits page. */
-export const LICENSE_TEXTS = ["LGPL-2.0", "LGPL-2.1", "LGPL-3.0", "GPL-3.0", "MPL-2.0", "Apache-2.0", "BigScience-OpenRAIL-M"];
+export const LICENSE_TEXTS = ["LGPL-2.0", "LGPL-2.1", "LGPL-3.0", "GPL-3.0", "AGPL-3.0", "MPL-2.0", "Apache-2.0", "BigScience-OpenRAIL-M"];

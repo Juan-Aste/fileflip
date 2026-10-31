@@ -3770,3 +3770,10 @@ FASE 11 TERMINADA
 ## 2026-10-31 — Inicio de la fase 12
 - Fase 12 agregada a `PLAN.md` (pedida por el dueño el 2026-10-31): GPL/AGPL habilitadas, voces Piper (incluida es_AR), quitar fondo mejorado, formatos de video/audio viejos con ffmpeg.wasm, Ghostscript para Comprimir PDF (opcional) y verificación final.
 - CI de dev: los últimos runs fallaron sin correr ningún job por facturación de GitHub Actions (aviso «recent account payments have failed or your spending limit needs to be increased»), aunque el repo ya es público. No es código.
+
+## 2026-10-31 — Fase 12, tarea 12.1 (GPL/AGPL habilitadas en las reglas)
+- `chooseLicense` (`scripts/licenses/production.mjs`): acepta GPL-3.0(-only/-or-later), AGPL-3.0(-only/-or-later) y GPL-2.0-or-later (`COMPATIBLE_COPYLEFT`); rechaza GPL-2.0-only, GPL-1.0, no comerciales (CC-BY-NC*, PolyForm Noncommercial, cualquier `-NC`), SSPL y BUSL (`FORBIDDEN_LICENSE`). En `A OR B` sigue eligiendo la alternativa permisiva.
+- `npm run licenses` falla si un paquete GPL/AGPL no tiene una entrada `gpl: true` en `scripts/licenses/embedded.mjs`, o si un componente copyleft (LGPL o GPL) no enlaza código fuente exacto y build. Nuevo texto `/licenses/AGPL-3.0.txt`.
+- Créditos: sección «Componentes bajo GPL y AGPL» (5 idiomas; aparece cuando haya alguno), con proyecto, código fuente de la versión, build y texto de la licencia.
+- Tests: `tests/licenses.test.ts` (aceptadas, prohibidas, y entradas GPL con fuente/build). Política en `docs/dependencies.md`, README (es/en) y nota de `docs/licencia-agpl.md` actualizadas.
+- Verificado: lint, typecheck, 1377 unitarios, `npm run licenses` (250 paquetes, sin cambios en los datos), build, Chromium `legal` + `a11y` (32 pasan).

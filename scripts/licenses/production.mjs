@@ -5,9 +5,6 @@
 /** The deploy target (Docker node:22-bookworm-slim on Railway). */
 export const TARGET = { os: "linux", cpu: "x64", libc: "glibc" };
 
-/** GPL/AGPL packages the owner approved (none so far; see docs/dependencies.md). */
-export const APPROVED_COPYLEFT = [];
-
 /** For dual-licensed packages, the alternative we use (see docs/dependencies.md). */
 export const PREFERRED_LICENSE = { dompurify: "Apache-2.0" };
 
@@ -19,12 +16,32 @@ export const KNOWN_LICENSES = [
   "OFL-1.1", "BigScience-OpenRAIL-M", "CC-BY-4.0", "CC0-1.0", "BlueOak-1.0.0", "Python-2.0", "Unlicense", "IJG", "bzip2-1.0.6", "MPL-1.1",
 ];
 
-const isStrongCopyleft = (id) => /^(A?GPL|GPL)-/.test(id);
+/**
+ * Strong copyleft licenses compatible with Fileflect's AGPL-3.0-or-later
+ * (phase 12): the GPL-3.0 and AGPL-3.0, and the GPL-2.0 "or later", which we
+ * take under the GPL-3.0. Components under them must link their exact source
+ * code in the credits (`gpl: true` entries of scripts/licenses/embedded.mjs).
+ */
+export const COMPATIBLE_COPYLEFT = [
+  "GPL-3.0", "GPL-3.0-only", "GPL-3.0-or-later", "GPL-3.0+",
+  "AGPL-3.0", "AGPL-3.0-only", "AGPL-3.0-or-later", "AGPL-3.0+",
+  "GPL-2.0-or-later", "GPL-2.0+",
+];
+
+/**
+ * Never acceptable: GPL-2.0-only (incompatible with the (A)GPL-3.0), the
+ * GPL-1.0, non-commercial licenses (CC-BY-NC*, etc.) and the SSPL.
+ */
+export const FORBIDDEN_LICENSE =
+  /^(GPL-2\.0(-only)?|GPL-1\.0.*|AGPL-1\.0.*|SSPL.*|CC-BY(-SA)?-NC.*|CC-BY-NC.*|.*-NC(-.*)?|Commons-Clause|BUSL.*|Elastic-.*|PolyForm-Noncommercial.*)$/i;
+
+/** GPL/AGPL (not LGPL) SPDX ids. */
+export const isStrongCopyleft = (id) => /^A?GPL-/.test(id);
 
 /**
  * Picks the license we use a package under from its SPDX expression: for
- * "A OR B" the first alternative without GPL/AGPL; "A AND B" needs all.
- * Returns { license, ok, reason }.
+ * "A OR B" the first permissive alternative, then a compatible copyleft one;
+ * "A AND B" needs all. Returns { license, ok, reason }.
  */
 export function chooseLicense(expression, name = "") {
   const expr = String(expression ?? "").trim().replace(/^\((.*)\)$/, "$1");
@@ -32,15 +49,28 @@ export function chooseLicense(expression, name = "") {
   const options = expr.split(/\s+OR\s+/).map((o) => o.trim().replace(/^\((.*)\)$/, "$1"));
   const preferred = PREFERRED_LICENSE[name];
   if (preferred && options.includes(preferred)) options.unshift(preferred);
-  for (const option of options) {
-    const ids = option.split(/\s+AND\s+/).map((s) => s.trim());
-    const copyleft = ids.filter(isStrongCopyleft);
-    if (copyleft.length && !APPROVED_COPYLEFT.includes(name)) continue;
-    const unknown = ids.filter((id) => !KNOWN_LICENSES.includes(id) && !APPROVED_COPYLEFT.includes(name));
-    if (unknown.length) return { license: option, ok: false, reason: `unknown license ${unknown.join(", ")}` };
+  const idsOf = (option) => option.split(/\s+AND\s+/).map((s) => s.trim().replace(/^\((.*)\)$/, "$1"));
+  // Permissive/weak-copyleft alternatives first: fewer obligations.
+  const ordered = [
+    ...options.filter((o) => !idsOf(o).some(isStrongCopyleft)),
+    ...options.filter((o) => idsOf(o).some(isStrongCopyleft)),
+  ];
+  let firstProblem;
+  for (const option of ordered) {
+    const ids = idsOf(option);
+    const forbidden = ids.filter((id) => FORBIDDEN_LICENSE.test(id));
+    if (forbidden.length) {
+      firstProblem ??= { license: option, reason: `forbidden license ${forbidden.join(", ")}` };
+      continue;
+    }
+    const unknown = ids.filter((id) => !KNOWN_LICENSES.includes(id) && !COMPATIBLE_COPYLEFT.includes(id));
+    if (unknown.length) {
+      firstProblem ??= { license: option, reason: `unknown license ${unknown.join(", ")}` };
+      continue;
+    }
     return { license: option, ok: true };
   }
-  return { license: expr, ok: false, reason: "GPL/AGPL not approved by the owner" };
+  return { license: firstProblem?.license ?? expr, ok: false, reason: firstProblem?.reason ?? "no acceptable license" };
 }
 
 function matches(list, value) {

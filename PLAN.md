@@ -505,7 +505,7 @@ Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbol
 Pedida por el dueño el 2026-10-31. El proyecto se distribuye bajo AGPL-3.0-or-later con el código público, así que se aceptan componentes GPL-3.0 y AGPL-3.0 (y GPL-2.0-or-later, que puede usarse bajo la GPL-3.0). Siguen prohibidos GPL-2.0-only, licencias no comerciales y SSPL. Cada modelo o voz se revisa por separado (y su dataset). Los componentes (A)GPL enlazan su código fuente exacto en créditos. En orden.
 
 ### 12.1 Habilitar GPL/AGPL en las reglas del proyecto
-- [ ] 12.1 `chooseLicense`, `tests/licenses.test.ts` y `npm run licenses` aceptan GPL-3.0(-or-later), AGPL-3.0(-or-later) y GPL-2.0-or-later, y rechazan GPL-2.0-only, no comerciales y SSPL; los componentes (A)GPL deben tener enlace a su código fuente; política en `docs/dependencies.md` y README
+- [x] 12.1 `chooseLicense`, `tests/licenses.test.ts` y `npm run licenses` aceptan GPL-3.0(-or-later), AGPL-3.0(-or-later) y GPL-2.0-or-later, y rechazan GPL-2.0-only, no comerciales y SSPL; los componentes (A)GPL deben tener enlace a su código fuente; política en `docs/dependencies.md` y README
 
 ### 12.2 Piper: voces IA con mejor español (incluida voz argentina)
 - [ ] 12.2a Inventario de voces Piper (es_AR, es_MX, es_ES, pt_BR, pt_PT, fr, en, zh) con licencia de cada MODEL_CARD y dataset; calidad medium/high; descartar no comerciales o sin licencia clara (`docs/tts-piper.md`)
