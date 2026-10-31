@@ -515,7 +515,7 @@ Pedida por el dueño el 2026-10-31. El proyecto se distribuye bajo AGPL-3.0-or-l
 - [ ] 12.2e Descarga R2/Hugging Face con sha256 y Cache API; voces en `scripts/models/sync-r2.mjs`; MP3 y lectura progresiva con ambos motores; tests (MP3 validado de forma independiente por idioma)
 
 ### 12.3 Quitar fondo mejorado
-- [ ] 12.3a Set propio de fotos de prueba con máscaras de referencia; comparar @imgly/background-removal (y licencia de sus modelos) u otra opción compatible contra u2netp (IoU y tiempo en PC y celular simulado); documentar
+- [ ] 12.3a (en espera de la decisión del dueño sobre IS-Net/DIS5K, ver `docs/quitar-fondo-eval.md`) Set propio de fotos de prueba con máscaras de referencia; comparar @imgly/background-removal (y licencia de sus modelos) u otra opción compatible contra u2netp (IoU y tiempo en PC y celular simulado); documentar
 - [ ] 12.3b Si gana: integrarlo con carga diferida, aviso de tamaño, R2/Hugging Face, u2netp como opción "rápida"; tests
 
 ### 12.4 Formatos de video y audio viejos
