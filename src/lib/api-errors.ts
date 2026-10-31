@@ -62,6 +62,9 @@ export const apiErrorCodes = [
   "videoCodecUnsupported",
   "videoEncoderUnsupported",
   "videoTooLong",
+  // An old format read with the slower FFmpeg WASM fallback (src/lib/legacy-media), over its own limit.
+  "legacyVideoTooLong",
+  "legacyAudioTooLong",
   "videoRangeInvalid",
   "modelEmpty",
   "modelTooLarge",
@@ -128,6 +131,8 @@ const status: Record<ApiErrorCode, number> = {
   videoCodecUnsupported: 415,
   videoEncoderUnsupported: 415,
   videoTooLong: 413,
+  legacyVideoTooLong: 413,
+  legacyAudioTooLong: 413,
   videoRangeInvalid: 422,
   modelEmpty: 422,
   modelTooLarge: 413,

@@ -28,7 +28,7 @@ export async function decodeForWhisper(
   file: Blob,
   { signal, onProgress }: { signal?: AbortSignal; onProgress?: (progress: number) => void } = {},
 ): Promise<DecodedAudio> {
-  const { input, duration } = await openAudio(file);
+  const { input, duration } = await openAudio(file, { signal });
   try {
     if (duration > MAX_TRANSCRIBE_SECONDS) throw new ConversionError("transcribeTooLong");
     // One buffer of the expected length (plus a second of slack for rounding), grown if a file lies.

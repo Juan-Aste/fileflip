@@ -48,6 +48,7 @@ Condiciones que hay que seguir cumpliendo:
 | LibreOffice (dentro de Gotenberg, servicio aparte) | MPL-2.0 | Sí; además es un programa separado que se usa por HTTP, no se combina con nuestro código |
 | Supertonic 3 (pesos del modelo) | BigScience OpenRAIL-M | Ver casos dudosos |
 | MongoDB Server | SSPL-1.0 | No se distribuye; ver casos dudosos |
+| FFmpeg n5.1.4 con `--enable-gpl` (`@ffmpeg/core` 0.12.10), con x264 y x265 | GPL-2.0-or-later | Sí: se usa bajo la GPL-3.0 (el «or later» lo permite), compatible con la AGPL-3.0; código fuente exacto y build enlazados en créditos (tarea 12.4a). LAME y FriBidi del mismo build: LGPL; el resto BSD/MIT/ISC/Zlib/FTL/WTFPL |
 
 ## Recursos propios versionados
 

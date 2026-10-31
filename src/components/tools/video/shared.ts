@@ -1,5 +1,7 @@
-/** Extensions the video tools accept; the engine still checks the content. */
-export const VIDEO_EXTENSIONS = ["mp4", "m4v", "mov", "qt", "mkv", "webm"];
+import { LEGACY_VIDEO_EXTENSIONS } from "@/lib/legacy-media/options";
+
+/** Extensions the video tools accept (old formats go through the FFmpeg WASM fallback); the engine still checks the content. */
+export const VIDEO_EXTENSIONS = ["mp4", "m4v", "mov", "qt", "mkv", "webm", ...LEGACY_VIDEO_EXTENSIONS];
 
 export type VideoSupport = "checking" | "full" | "noH264" | "none";
 

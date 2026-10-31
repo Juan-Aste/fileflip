@@ -241,6 +241,8 @@
     "videoCodecUnsupported": "你的浏览器无法读取此文件中的视频（例如某些浏览器不支持 H.264 或 HEVC）。请尝试 Chrome、Edge 或 Safari，或选择无需重新编码的格式。",
     "videoEncoderUnsupported": "你的浏览器无法创建此格式的视频（MOV 需要 H.264）。请尝试 Chrome、Edge 或 Safari，或选择 MP4、WebM 或 MKV。",
     "videoTooLong": "视频太长：每个文件最长 2 小时。",
+    "legacyVideoTooLong": "这种旧格式使用较慢的引擎转换：每个文件最长 20 分钟视频。",
+    "legacyAudioTooLong": "这种旧格式使用较慢的引擎转换：每个文件最长 1 小时音频。",
     "videoRangeInvalid": "请检查时间：开始时间必须早于结束时间，且都在视频范围内。",
     "gifTooManyFrames": "GIF 的帧数过多：请缩短片段或降低每秒帧数。",
     "modelEmpty": "此模型没有可转换的面（三角形）：可能是空模型或点云。",

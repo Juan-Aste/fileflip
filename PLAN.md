@@ -519,7 +519,7 @@ Pedida por el dueño el 2026-10-31. El proyecto se distribuye bajo AGPL-3.0-or-l
 - [x] 12.3b (resuelta: no se integra @imgly; alternativas A–D para u2netp en `docs/quitar-fondo-eval.md`, esperan al dueño) Si gana: integrarlo con carga diferida, aviso de tamaño, R2/Hugging Face, u2netp como opción "rápida"; tests
 
 ### 12.4 Formatos de video y audio viejos
-- [ ] 12.4a ffmpeg.wasm de un solo hilo (sin SharedArrayBuffer) como respaldo de mediabunny/WebCodecs: AVI, WMV, FLV, MPG, 3GP, VOB, RM si es viable, WMA, AMR, AC3, APE → MP4/WebM/MP3; límites de tamaño y duración; licencia y código fuente del build; tests con archivos generados
+- [x] 12.4a ffmpeg.wasm de un solo hilo (sin SharedArrayBuffer) como respaldo de mediabunny/WebCodecs: AVI, WMV, FLV, MPG, 3GP, VOB, RM si es viable, WMA, AMR, AC3, APE → MP4/WebM/MP3; límites de tamaño y duración; licencia y código fuente del build; tests con archivos generados
 - [ ] 12.4b Herramientas de video/audio existentes y sus páginas (formatos nuevos en FAQ y conversión) en 5 idiomas
 - [ ] 12.4c Páginas de conversión nuevas (avi-a-mp4, wmv-a-mp4, flv-a-mp4, mpg-a-mp4, wma-a-mp3, amr-a-mp3…) en 5 idiomas; tests
 

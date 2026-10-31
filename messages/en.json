@@ -241,6 +241,8 @@
     "videoCodecUnsupported": "Your browser can't read the video in this file (for example, H.264 or HEVC in some browsers). Try Chrome, Edge or Safari, or choose a format that doesn't need to re-encode it.",
     "videoEncoderUnsupported": "Your browser can't create video in this format (MOV needs H.264). Try Chrome, Edge or Safari, or choose MP4, WebM or MKV.",
     "videoTooLong": "The video is too long: the maximum is 2 hours per file.",
+    "legacyVideoTooLong": "This older format is converted with a slower engine: the maximum is 20 minutes of video per file.",
+    "legacyAudioTooLong": "This older format is converted with a slower engine: the maximum is 1 hour of audio per file.",
     "videoRangeInvalid": "Check the times: the start must come before the end and both must be inside the video.",
     "gifTooManyFrames": "The GIF would have too many frames: shorten the clip or lower the frames per second.",
     "modelEmpty": "This model has no faces (triangles) to convert: it may be empty or a point cloud.",

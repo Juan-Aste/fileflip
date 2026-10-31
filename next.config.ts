@@ -39,6 +39,8 @@ const nextConfig: NextConfig = {
       { source: "/:path*", headers: securityHeaders },
       // The OCR engine and models are served under versioned paths (src/lib/ocr/assets.ts).
       { source: "/ocr/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
+      // Same for the FFmpeg WASM build (src/lib/legacy-media/assets.ts).
+      { source: "/ffmpeg/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
     ];
   },
   webpack(config, { webpack }) {

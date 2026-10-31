@@ -13,6 +13,9 @@
 
 const MB = "https://github.com/Vanilagy/mediabunny/tree/v1.62.0/packages";
 const SHARP_LIBVIPS = "https://github.com/lovell/sharp-libvips/tree/v1.3.4";
+// @ffmpeg/core 0.12.10 was published from the v12.15 tag of ffmpeg.wasm (commit 71aa99d); its
+// Dockerfile pins every library below (docs/formatos-viejos.md).
+const FFWASM = "https://github.com/ffmpegwasm/ffmpeg.wasm/tree/v12.15";
 
 /** @typedef {{ id: string, name: string, version: string, license: string, holder?: string, licenseUrl?: string, lgpl?: boolean, gpl?: boolean, partOf?: string, where: ("browser"|"server")[], homepage: string, source?: string, exactSource?: boolean, build?: string, licenseText: string, kind: "engine"|"data"|"service" }} Embedded */
 
@@ -284,6 +287,82 @@ export const embedded = [
     homepage: "https://github.com/openai/whisper",
     licenseText: "MIT",
     kind: "data",
+  },
+  // The FFmpeg WASM fallback for old video and audio formats (src/lib/legacy-media, phase 12).
+  {
+    id: "ffmpeg-wasm-core",
+    name: "FFmpeg (ffmpeg.wasm single-threaded core, with --enable-gpl)",
+    version: "@ffmpeg/core 0.12.10 (FFmpeg n5.1.4)",
+    license: "GPL-2.0-or-later",
+    gpl: true,
+    partOf: "@ffmpeg/core",
+    where: ["browser"],
+    homepage: "https://github.com/ffmpegwasm/ffmpeg.wasm",
+    source: "https://github.com/FFmpeg/FFmpeg/tree/n5.1.4",
+    exactSource: true,
+    build: `${FFWASM}/Dockerfile`,
+    licenseText: "GPL-2.0",
+    kind: "engine",
+  },
+  {
+    id: "x264-wasm",
+    name: "x264 (in the ffmpeg.wasm core; not used by Fileflect's commands)",
+    version: "branch 4-cores of ffmpegwasm/x264",
+    license: "GPL-2.0-or-later",
+    gpl: true,
+    partOf: "@ffmpeg/core",
+    where: ["browser"],
+    homepage: "https://www.videolan.org/developers/x264.html",
+    source: "https://github.com/ffmpegwasm/x264/tree/4-cores",
+    exactSource: false,
+    build: `${FFWASM}/Dockerfile`,
+    licenseText: "GPL-2.0",
+    kind: "engine",
+  },
+  {
+    id: "x265-wasm",
+    name: "x265 (in the ffmpeg.wasm core; not used by Fileflect's commands)",
+    version: "branch 3.4 of ffmpegwasm/x265",
+    license: "GPL-2.0-or-later",
+    gpl: true,
+    partOf: "@ffmpeg/core",
+    where: ["browser"],
+    homepage: "https://www.videolan.org/developers/x265.html",
+    source: "https://github.com/ffmpegwasm/x265/tree/3.4",
+    exactSource: false,
+    build: `${FFWASM}/Dockerfile`,
+    licenseText: "GPL-2.0",
+    kind: "engine",
+  },
+  {
+    id: "lame-wasm",
+    name: "LAME (in the ffmpeg.wasm core)",
+    version: "branch master of ffmpegwasm/lame",
+    license: "LGPL-2.0-or-later",
+    lgpl: true,
+    partOf: "@ffmpeg/core",
+    where: ["browser"],
+    homepage: "https://lame.sourceforge.io",
+    source: "https://github.com/ffmpegwasm/lame/tree/master",
+    exactSource: false,
+    build: `${FFWASM}/Dockerfile`,
+    licenseText: "LGPL-2.0",
+    kind: "engine",
+  },
+  {
+    id: "fribidi-wasm",
+    name: "GNU FriBidi (in the ffmpeg.wasm core)",
+    version: "1.0.9",
+    license: "LGPL-2.1-or-later",
+    lgpl: true,
+    partOf: "@ffmpeg/core",
+    where: ["browser"],
+    homepage: "https://github.com/fribidi/fribidi",
+    source: "https://github.com/fribidi/fribidi/tree/v1.0.9",
+    exactSource: true,
+    build: `${FFWASM}/Dockerfile`,
+    licenseText: "LGPL-2.1",
+    kind: "engine",
   },
   // Data files served from our domain.
   {
