@@ -3821,3 +3821,11 @@ FASE 11 TERMINADA
 - Recortar video (y los otros que usan el selector de tramo): si el navegador no puede reproducir el archivo (AVI, WMV…), se oculta el reproductor y los tiempos siguen funcionando.
 - Tests de navegador nuevos: recortar un AVI (0:00.5–0:01.5 → MP4 de 1 s, rojo/azul) y extraer el audio de un WMV a MP3 (440/660 Hz).
 - Verificado: lint, typecheck, 1395 unitarios, build; Chromium `legacy-media` (7) + `video-tools` + `audio-tools` + `a11y` + `search` + `transcribe` (77 pasan).
+
+## 2026-10-31 — Fase 12, tarea 12.4c (páginas de conversión de formatos viejos)
+- `src/content/legacy-conversions.ts`: 30 páginas (AVI, WMV, FLV y MPG → MP4; WMA y AMR → MP3, en 5 idiomas: `/es/avi-a-mp4`, `/en/avi-to-mp4`, `/pt/avi-para-mp4`, `/fr/avi-en-mp4`, `/zh/avi-to-mp4`…), sumadas a las páginas de cola larga (router, sitemap, hreflang, buscador y FAQPage ya resueltos). Cada una tiene texto propio del formato (de dónde viene, qué variantes se leen: DivX/Xvid, WMV 7–9/VC-1, Sorenson/VP6/H.264, VOB de DVD, WMA Pro/Lossless, AMR-NB/WB) y una pregunta propia, más los pasos, por qué la primera vez tarda (motor de ~31 MB) y 3 preguntas comunes (privacidad, límites 20 min / 1 h, calidad). Sin menciones a Pro.
+- Tests: `src/content/longtail.test.ts` (las 30 existen, traducciones cruzadas completas, herramienta correcta, ≥ 4 preguntas, texto distinto por formato) y un e2e: `/es/avi-a-mp4` muestra el título, enlaza sus 4 traducciones y convierte un AVI a MP4.
+- Verificado: lint, typecheck, unitarios, build, `check:static`; Chromium `legacy-media` (8) + `clickable` (todas las páginas, incluidas las nuevas) + `a11y` + `layout-shift` + `search-locale-states`: 162 pasan. Lighthouse de estas páginas queda para 12.6.
+
+## 2026-10-31 — Fin de esta ejecución (fase 12)
+- Hechas: 12.2 (Piper no se integra, decisión del dueño), 12.3 (u2netp revisado: **bloqueante para el dueño**), 12.4a, 12.4b, 12.4c (límite de 5). Siguen: 12.5 (Ghostscript), 12.6 (verificación final), después la fase 13.

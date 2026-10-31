@@ -151,6 +151,19 @@ test.describe("old formats (FFmpeg WASM fallback)", () => {
     expect(Math.abs(right! - 660), `right ${right} Hz`).toBeLessThan(15);
   });
 
+  test("the /es/avi-a-mp4 page converts an AVI and links its translations", async ({ page }) => {
+    const input = make("viejo.avi", "video.mp4", ["-c:v", "mpeg4", "-q:v", "3", "-c:a", "libmp3lame", "-f", "avi"]);
+    await page.goto("/es/avi-a-mp4", { waitUntil: "networkidle" });
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Convertir AVI a MP4");
+    for (const [lang, path] of [["en", "/en/avi-to-mp4"], ["pt", "/pt/avi-para-mp4"], ["fr", "/fr/avi-en-mp4"], ["zh", "/zh/avi-to-mp4"]]) {
+      await expect(page.locator(`link[rel="alternate"][hreflang="${lang}"]`)).toHaveAttribute("href", new RegExp(`${path}$`));
+    }
+    await page.locator('input[type="file"]').first().setInputFiles(input);
+    const out = fileOf(await runTool(page, "Convertir video"));
+    expect(out.name).toBe("viejo.mp4");
+    expect(probe(out.buf, out.name).format).toContain("mp4");
+  });
+
   test("a fake AVI fails with a clear message", async ({ page }) => {
     const fake = join(dir, "fake.avi");
     writeFileSync(fake, readFileSync(fixturePath("audio.wav")).subarray(0, 200));

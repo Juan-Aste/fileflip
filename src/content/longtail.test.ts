@@ -56,3 +56,29 @@ describe("long-tail pages data", () => {
     expect(ld.mainEntity[0]).toMatchObject({ "@type": "Question", acceptedAnswer: { "@type": "Answer" } });
   });
 });
+
+describe("conversion pages of old video and audio formats", () => {
+  const slugs: Record<string, string[]> = {
+    es: ["avi-a-mp4", "wmv-a-mp4", "flv-a-mp4", "mpg-a-mp4", "wma-a-mp3", "amr-a-mp3"],
+    en: ["avi-to-mp4", "wmv-to-mp4", "flv-to-mp4", "mpg-to-mp4", "wma-to-mp3", "amr-to-mp3"],
+    pt: ["avi-para-mp4", "wmv-para-mp4", "flv-para-mp4", "mpg-para-mp4", "wma-para-mp3", "amr-para-mp3"],
+    fr: ["avi-en-mp4", "wmv-en-mp4", "flv-en-mp4", "mpg-en-mp4", "wma-en-mp3", "amr-en-mp3"],
+    zh: ["avi-to-mp4", "wmv-to-mp4", "flv-to-mp4", "mpg-to-mp4", "wma-to-mp3", "amr-to-mp3"],
+  };
+
+  it("exist in the 5 languages, linked to each other, with the right tool", () => {
+    for (const [locale, list] of Object.entries(slugs)) {
+      for (const slug of list) {
+        const page = longtailFromSlug(locale as never, slug);
+        expect(page, `${locale}/${slug}`).toBeDefined();
+        expect(Object.keys(page!.translations ?? {}).sort()).toEqual(["en", "es", "fr", "pt", "zh"].filter((l) => l !== locale));
+        expect(page!.widget).toEqual({ kind: "tool", tool: slug.endsWith("mp3") ? "audio-converter" : "video-converter" });
+        expect(page!.faq.length).toBeGreaterThanOrEqual(4);
+        // Their own text: the first paragraph and question differ between formats.
+        expect(page!.intro[0]!.length).toBeGreaterThan(40);
+      }
+      const intros = list.map((s) => longtailFromSlug(locale as never, s)!.intro[0]);
+      expect(new Set(intros).size).toBe(list.length);
+    }
+  });
+});
