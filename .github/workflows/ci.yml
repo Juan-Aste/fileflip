@@ -31,10 +31,15 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      # Unit tests read our archives back with independent tools: Python's
-      # zipfile (ZIP, UTF-8 names) and GNU tar. Fail early if one is missing.
+      # Unit tests check our outputs with independent tools: Python's zipfile
+      # (ZIP, UTF-8 names), GNU tar, ffmpeg (audio, subtitles) and poppler
+      # (pdftotext, pdfinfo, pdftoppm, pdfimages). The Ubuntu 26 runner image
+      # no longer ships ffmpeg or poppler, so they are installed here.
       - name: System tools
-        run: python3 --version && tar --version | head -1
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends ffmpeg poppler-utils python3-openpyxl
+          python3 --version && tar --version | head -1 && ffmpeg -version | head -1 && pdftotext -v
       - name: Install
         run: npm ci
       - name: Lint
@@ -71,7 +76,7 @@ jobs:
       - name: Install
         run: npm ci
       - name: Chromium and ffmpeg
-        run: npx playwright install --with-deps chromium && sudo apt-get install -y --no-install-recommends ffmpeg
+        run: npx playwright install --with-deps chromium && sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ffmpeg
       - name: Build
         run: npm run build
       - name: Browser profile with the AI voice model

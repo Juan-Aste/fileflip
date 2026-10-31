@@ -3792,3 +3792,4 @@ FASE 11 TERMINADA
 
 ## 2026-10-31 — Fin de la ejecución
 - Hechas: inicio de la fase 12, 12.1 y 12.2a; 12.3a documentada sin marcar. Motivo de la parada: 12.2b–e y 12.3 esperan la decisión del dueño sobre modelos entrenados con datos no comerciales; 12.4a (grande) queda para la próxima ejecución.
+- CI: el run de `e088cf1` sí corrió (la facturación ya no lo bloquea) y falló el job `check`: el runner pasó a Ubuntu 26, que ya no trae `ffmpeg` ni `poppler-utils`, y los unitarios que validan con ellos daban `ENOENT`. Arreglado en `.github/workflows/ci.yml`: el paso «System tools» los instala con apt (más `python3-openpyxl`), y el job de voz IA hace `apt-get update` antes de instalar ffmpeg.
