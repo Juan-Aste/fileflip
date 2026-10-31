@@ -72,12 +72,21 @@ Leyenda: ✅ apta (licencia y origen claros y compatibles) · ⚠️ licencia pr
 
 Independiente de las voces: [Piper](https://github.com/OHF-Voice/piper1-gpl) (GPL-3.0) usa modelos VITS en ONNX (se pueden correr con el `onnxruntime-web` que ya usa el sitio) y fonemiza con [espeak-ng](https://github.com/espeak-ng/espeak-ng) (GPL-3.0-or-later) compilado a WASM. Con la tarea 12.1 ambas licencias son aceptables, con su código fuente enlazado en créditos.
 
-## Conclusión y decisión pendiente del dueño
+## Conclusión de licencias
 
-- Con la regla estricta, las únicas voces Piper aptas son **fr_FR-mls** (francés) y las inglesas de dominio público. **No queda ninguna en español ni en portugués** (todas se ajustaron desde lessac) **ni en chino**.
-- El inglés ya tiene WER 0 % con Supertonic (fase 11), así que Piper solo podría mejorar el francés (Supertonic M5: 6,1 %).
-- Opciones para el dueño (anotadas en «Pendiente del dueño» de `PROGRESS.md`):
-  1. **Aceptar el riesgo** de las voces ajustadas desde lessac (su licencia declarada es CC0/CC-BY/CC-BY-SA y son de uso muy extendido, pero la base viene de un dataset solo para investigación). Con esto entran es_AR-daniela, es_ES-davefx, es_MX-ald, pt_BR-faber/cadu/jeff, pt_PT-tugão, y la tarea 12.2 sigue como está planificada.
-  2. **Mantener la regla estricta**: Piper solo para francés (fr_FR-mls, si mejora el WER de Supertonic) y se documenta que no hay voces es/pt/zh aptas.
-  3. **Entrenar una voz argentina propia desde cero** con OpenSLR 61 (CC-BY-SA 4.0, voces argentinas) con Piper: requiere GPU durante días y queda fuera de lo que puede hacer esta rutina.
-- Hasta la respuesta, las subtareas 12.2b–12.2e quedan en espera y se avanza con las tareas independientes (12.3, 12.4, 12.5).
+- Con la regla estricta (licencia del modelo **y** de los datos de entrenamiento, incluido el modelo de partida), las únicas voces Piper aptas son **fr_FR-mls** (francés) y las inglesas de dominio público. **No queda ninguna en español ni en portugués**: todas (incluida `es_AR-daniela-high`) se ajustaron desde `en_US-lessac`, cuyo dataset (Blizzard 2013) es **solo para investigación**. Tampoco hay voz china apta.
+
+## Decisión del dueño (2026-10-31): no integrar Piper
+
+El dueño decidió que la voz IA de calidad se genere **en la nube** (Google Cloud Text-to-Speech, fase 13) y que la voz IA en el navegador (Supertonic) quede como «modo privado». Por eso **no se integran Piper ni espeak-ng**: las subtareas 12.2b–12.2e quedan resueltas con esta decisión y el sitio no cambia. Este documento queda como inventario.
+
+## Para el futuro: voz argentina propia desde cero
+
+Si algún día se quiere una voz es-AR propia en el navegador, la única vía que cumple la regla estricta es entrenarla **desde cero** (sin partir de lessac ni de otra voz) con datos de licencia comercial:
+
+- **Datos**: [OpenSLR 61](https://www.openslr.org/61/) — «Crowdsourced high-quality Argentinian Spanish speech data set», grabado por voluntarios en Buenos Aires (Google). 5739 grabaciones WAV con transcripción: `es_ar_female.zip` (1,2 GB) y `es_ar_male.zip` (551 MB), `line_index_female.tsv`, `line_index_male.tsv`. Licencia verificada en la página: **«Attribution-ShareAlike 4.0 International»** (CC BY-SA 4.0).
+- **Qué implica CC BY-SA 4.0**: permite el uso comercial. Un modelo entrenado con esos datos se trata, por precaución, como material adaptado: hay que **dar crédito** (OpenSLR 61, Google, enlace a la licencia, indicar cambios) y **publicar los pesos bajo CC BY-SA 4.0** (o una licencia compatible según la lista de Creative Commons; la GPL-3.0 es compatible en un solo sentido). El audio generado no es una copia de las grabaciones; aun así conviene mencionar el origen en créditos. No impide servir el modelo desde R2 ni usarlo en un sitio comercial.
+- **Hablante**: Piper funciona mejor con una sola voz; el archivo femenino tiene varias hablantes, así que se elige una (la de más frases, por el identificador del nombre de archivo) o se entrena multi-hablante (`--num_speakers`).
+- **Herramientas**: [piper1-gpl](https://github.com/OHF-Voice/piper1-gpl) (entrenamiento, GPL-3.0) y espeak-ng (fonemas `es-419`, GPL-3.0-or-later), ambos aceptables desde la tarea 12.1; exportar a ONNX y correrlo con el `onnxruntime-web` que ya usa el sitio (más espeak-ng en WASM).
+- **GPU y tiempo aproximado**: una GPU de 24 GB (RTX 3090/4090 o A10G/L4 en la nube) para calidad `medium`. Desde cero, unas 3–6 horas de una sola voz necesitan del orden de 2000–3000 épocas: **1–2 semanas** en una RTX 3090/4090, o **4–7 días** en una A100 (a US$1–2 por hora, unos US$150–300 en la nube). Preparar los datos (filtrar, normalizar texto con la normalización de la fase 11) y evaluar con WER (Whisper `base`) agrega 1–2 días de trabajo.
+- Queda fuera de lo que puede hacer esta rutina (necesita GPU durante días).

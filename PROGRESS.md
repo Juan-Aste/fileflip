@@ -619,7 +619,7 @@ Todas las tareas de PLAN.md están marcadas. Resumen de lo construido:
 - **(Fase 6) Cloudflare y límites por IP (B-24)**: si se pone Cloudflare (u otro proxy) delante de Railway, avisar para que `clientIp()` lea `CF-Connecting-IP`; si no, todos los visitantes compartirían el límite de conversiones.
 - **(Fase 6) Límite de conversiones con sesión**: ahora es 5 veces el anónimo (100 por minuto por cuenta con `RATE_LIMIT_PER_MINUTE=20`). Cambiarlo si se prefiere otro valor.
 - **Foto carnet (3C.42)**: no se encontraron fuentes oficiales fiables de las medidas por país; la herramienta usa medidas habituales y pide confirmar con la oficina. Si se quieren presets por país (AR, BR, MX, CL, CO, PE, UY), validar cada medida con el organismo correspondiente.
-- **(Fase 12, 2026-10-31) Voces Piper ajustadas desde «lessac»**: casi todas las voces Piper en español y portugués (incluida la única argentina, `es_AR-daniela-high`) se ajustaron desde `en_US-lessac`, entrenada con un dataset **solo para investigación** que excluye el uso comercial en síntesis de voz. Por la regla «descartar las no comerciales» quedaron fuera. Decidir: (1) aceptar ese riesgo y usarlas, (2) regla estricta: Piper solo para francés (`fr_FR-mls`), o (3) entrenar una voz argentina propia desde cero con OpenSLR 61 (necesita GPU). Detalle en `docs/tts-piper.md`. Las tareas 12.2b–12.2e esperan esta respuesta.
+- ~~(Fase 12) Voces Piper ajustadas desde «lessac»~~ **Resuelto (2026-10-31)**: el dueño decidió no integrar Piper; voz IA de calidad en la nube (fase 13) y Supertonic como «modo privado». Cómo entrenar una voz argentina propia desde cero: `docs/tts-piper.md`.
 - **(Fase 12, 2026-10-31) Quitar fondo con IS-Net (@imgly/background-removal)**: el paquete es AGPL-3.0 y los pesos Apache-2.0, pero IS-Net se entrena con DIS5K, cuyos términos prohíben el uso comercial «incluso después de procesar» los datos. Misma decisión que con lessac: aceptar el riesgo o regla estricta (se queda u2netp). Detalle en `docs/quitar-fondo-eval.md`.
 
 ## 2026-10-19 15:12 UTC — Ejecución de control (proyecto ya terminado)
@@ -3793,3 +3793,9 @@ FASE 11 TERMINADA
 ## 2026-10-31 — Fin de la ejecución
 - Hechas: inicio de la fase 12, 12.1 y 12.2a; 12.3a documentada sin marcar. Motivo de la parada: 12.2b–e y 12.3 esperan la decisión del dueño sobre modelos entrenados con datos no comerciales; 12.4a (grande) queda para la próxima ejecución.
 - CI: el run de `e088cf1` sí corrió (la facturación ya no lo bloquea) y falló el job `check`: el runner pasó a Ubuntu 26, que ya no trae `ffmpeg` ni `poppler-utils`, y los unitarios que validan con ellos daban `ENOENT`. Arreglado en `.github/workflows/ci.yml`: el paso «System tools» los instala con apt (más `python3-openpyxl`), y el job de voz IA hace `apt-get update` antes de instalar ffmpeg.
+
+## 2026-10-31 — Fase 12, tarea 12.2 (Piper: no se integra, decisión del dueño)
+- Candado tomado; CI de dev en verde (run de `6a9406f`).
+- El dueño decidió que la voz IA de calidad se genere en la nube (fase 13) y que Supertonic quede como «modo privado»: **no se integran Piper ni espeak-ng**. 12.2b–12.2e marcadas como resueltas con esa decisión; el sitio no cambia.
+- `docs/tts-piper.md`: queda el inventario, la conclusión de licencias (es/pt derivan de lessac, dataset solo de investigación) y la sección «Para el futuro»: voz argentina propia desde cero con [OpenSLR 61](https://www.openslr.org/61/) (licencia verificada: CC BY-SA 4.0; permite uso comercial, pide crédito y publicar el modelo bajo CC BY-SA), piper1-gpl + espeak-ng, GPU de 24 GB, 1–2 semanas en RTX 3090/4090 o 4–7 días en A100 (~US$150–300).
+- Solo documentación (sin código): no hacen falta lint/build/tests.

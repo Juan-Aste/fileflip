@@ -509,10 +509,10 @@ Pedida por el dueño el 2026-10-31. El proyecto se distribuye bajo AGPL-3.0-or-l
 
 ### 12.2 Piper: voces IA con mejor español (incluida voz argentina)
 - [x] 12.2a Inventario de voces Piper (es_AR, es_MX, es_ES, pt_BR, pt_PT, fr, en, zh) con licencia de cada MODEL_CARD y dataset; calidad medium/high; descartar no comerciales o sin licencia clara (`docs/tts-piper.md`)
-- [ ] 12.2b (en espera de la decisión del dueño sobre las voces ajustadas desde lessac, ver `docs/tts-piper.md`) Motor Piper en el navegador: VITS ONNX con el onnxruntime-web existente + espeak-ng en WASM (GPL-3.0), versiones y sha256 fijos, carga diferida; tests unitarios
-- [ ] 12.2c WER con Whisper `base` (~10 frases por idioma, normalización de 11.1) de cada voz Piper candidata contra la mejor de Supertonic; tabla en `docs/`; muestras estáticas por voz
-- [ ] 12.2d Lector: "Voz IA" con voces de ambos motores agrupadas por idioma, ▶ muestra, tamaño de descarga propio, "Recomendada" por menor WER (es_AR si empata o está a ≤ 1 punto); voz zh si hay una compatible y buena
-- [ ] 12.2e Descarga R2/Hugging Face con sha256 y Cache API; voces en `scripts/models/sync-r2.mjs`; MP3 y lectura progresiva con ambos motores; tests (MP3 validado de forma independiente por idioma)
+- [x] 12.2b (resuelta: el dueño decidió el 2026-10-31 no integrar Piper ni espeak-ng; voz IA de calidad en la nube, fase 13) Motor Piper en el navegador: VITS ONNX con el onnxruntime-web existente + espeak-ng en WASM (GPL-3.0), versiones y sha256 fijos, carga diferida; tests unitarios
+- [x] 12.2c (resuelta: no se integra Piper, decisión del dueño 2026-10-31) WER con Whisper `base` (~10 frases por idioma, normalización de 11.1) de cada voz Piper candidata contra la mejor de Supertonic; tabla en `docs/`; muestras estáticas por voz
+- [x] 12.2d (resuelta: no se integra Piper, decisión del dueño 2026-10-31) Lector: "Voz IA" con voces de ambos motores agrupadas por idioma, ▶ muestra, tamaño de descarga propio, "Recomendada" por menor WER (es_AR si empata o está a ≤ 1 punto); voz zh si hay una compatible y buena
+- [x] 12.2e (resuelta: no se integra Piper, decisión del dueño 2026-10-31) Descarga R2/Hugging Face con sha256 y Cache API; voces en `scripts/models/sync-r2.mjs`; MP3 y lectura progresiva con ambos motores; tests (MP3 validado de forma independiente por idioma)
 
 ### 12.3 Quitar fondo mejorado
 - [ ] 12.3a (en espera de la decisión del dueño sobre IS-Net/DIS5K, ver `docs/quitar-fondo-eval.md`) Set propio de fotos de prueba con máscaras de referencia; comparar @imgly/background-removal (y licencia de sus modelos) u otra opción compatible contra u2netp (IoU y tiempo en PC y celular simulado); documentar
