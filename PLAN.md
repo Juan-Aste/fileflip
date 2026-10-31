@@ -515,8 +515,8 @@ Pedida por el dueño el 2026-10-31. El proyecto se distribuye bajo AGPL-3.0-or-l
 - [x] 12.2e (resuelta: no se integra Piper, decisión del dueño 2026-10-31) Descarga R2/Hugging Face con sha256 y Cache API; voces en `scripts/models/sync-r2.mjs`; MP3 y lectura progresiva con ambos motores; tests (MP3 validado de forma independiente por idioma)
 
 ### 12.3 Quitar fondo mejorado
-- [ ] 12.3a (en espera de la decisión del dueño sobre IS-Net/DIS5K, ver `docs/quitar-fondo-eval.md`) Set propio de fotos de prueba con máscaras de referencia; comparar @imgly/background-removal (y licencia de sus modelos) u otra opción compatible contra u2netp (IoU y tiempo en PC y celular simulado); documentar
-- [ ] 12.3b Si gana: integrarlo con carga diferida, aviso de tamaño, R2/Hugging Face, u2netp como opción "rápida"; tests
+- [x] 12.3a (resuelta: el dueño descartó @imgly/DIS5K el 2026-10-31; se revisó el u2netp actual: DUTS-TR/ImageNet no cumple la regla estricta → decisión del dueño, ver `docs/quitar-fondo-eval.md`) Set propio de fotos de prueba con máscaras de referencia; comparar @imgly/background-removal (y licencia de sus modelos) u otra opción compatible contra u2netp (IoU y tiempo en PC y celular simulado); documentar
+- [x] 12.3b (resuelta: no se integra @imgly; alternativas A–D para u2netp en `docs/quitar-fondo-eval.md`, esperan al dueño) Si gana: integrarlo con carga diferida, aviso de tamaño, R2/Hugging Face, u2netp como opción "rápida"; tests
 
 ### 12.4 Formatos de video y audio viejos
 - [ ] 12.4a ffmpeg.wasm de un solo hilo (sin SharedArrayBuffer) como respaldo de mediabunny/WebCodecs: AVI, WMV, FLV, MPG, 3GP, VOB, RM si es viable, WMA, AMR, AC3, APE → MP4/WebM/MP3; límites de tamaño y duración; licencia y código fuente del build; tests con archivos generados
