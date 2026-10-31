@@ -5,7 +5,8 @@ import type { HashAlgorithm } from "./hash";
 import type { CsvToJsonOptions, JsonToCsvOptions } from "./csv";
 import type { SubtitleFormat, SubtitleResult, SyncOptions } from "@/lib/subtitle/subtitle";
 import type { FontContainer, FontFlavor } from "@/lib/font/font";
-import type { SheetFile, SheetOptions } from "@/lib/sheet/sheet";
+import type { MergeOptions, SheetFile, SheetOptions, SheetSummary, SplitOptions, TableWriteOptions } from "@/lib/sheet/sheet";
+import type { TableSheet } from "@/lib/pdf/tables";
 import type { ArchiveOptions } from "@/lib/archive/create";
 import type { ExtractResult } from "@/lib/archive/extract";
 import type { EpubBook } from "@/lib/ebook/epub";
@@ -76,6 +77,21 @@ export const convertFontFile = (file: Blob, to: FontContainer, job: JobOptions =
 /** A spreadsheet as XLSX, ODS or CSV (one CSV per sheet when asked). */
 export const convertSpreadsheetFile = (file: File, options: SheetOptions, job: JobOptions = {}) =>
   call<SheetFile[]>("convertSpreadsheet", { input: file, options }, job);
+
+/** Tables (from a PDF) as an XLSX, or one CSV per sheet. */
+export const writeTableSheets = (sheets: TableSheet[], options: TableWriteOptions, job: JobOptions = {}) =>
+  call<SheetFile[]>("writeTables", { input: sheets, options }, job);
+
+/** Several spreadsheets in one workbook: a sheet per sheet, or all stacked in one. */
+export const mergeSpreadsheetFiles = (files: File[], options: MergeOptions, job: JobOptions = {}) =>
+  call<SheetFile>("mergeSpreadsheets", { input: files, options }, job);
+
+/** Each sheet of a workbook as its own file. */
+export const splitSpreadsheetFile = (file: File, options: SplitOptions, job: JobOptions = {}) =>
+  call<SheetFile[]>("splitSpreadsheet", { input: file, options }, job);
+
+/** The sheets of a workbook, with how many rows and columns hold data. */
+export const listSpreadsheetSheets = (file: File, job: JobOptions = {}) => call<SheetSummary[]>("listSheets", { input: file }, job);
 
 /** The picked files in one ZIP, TAR or TAR.GZ. */
 export const createArchiveFile = (files: File[], options: ArchiveOptions, job: JobOptions = {}) =>

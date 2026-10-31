@@ -1,5 +1,5 @@
 // Read-only smoke test of a deployed site (6D.3 in PLAN.md):
-//   node scripts/smoke-production.mjs [https://app-production-4266.up.railway.app]
+//   node scripts/smoke-production.mjs [https://fileflect.com]
 // About 14 page requests (a few seconds apart) plus two browser page loads
 // that run one image and one PDF tool locally (the conversion API is blocked).
 // It never signs in, asks for login emails, starts payments or converts on
@@ -8,7 +8,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
 
-const base = (process.argv[2] ?? "https://app-production-4266.up.railway.app").replace(/\/+$/, "");
+const base = (process.argv[2] ?? "https://fileflect.com").replace(/\/+$/, "");
 const pause = () => new Promise((r) => setTimeout(r, 3000));
 const fixture = (name) => join(import.meta.dirname, "..", "tests", "fixtures", name);
 const securityHeaders = [

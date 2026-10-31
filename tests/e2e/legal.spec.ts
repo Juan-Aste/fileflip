@@ -53,3 +53,23 @@ test("express acceptance next to the sign-in buttons, with links", async ({ page
   await expect(consent.getByRole("link", { name: "Términos y condiciones" })).toHaveAttribute("href", "/es/terms");
   await expect(consent.getByRole("link", { name: "Política de privacidad" })).toHaveAttribute("href", "/es/privacy");
 });
+
+// AGPL-3.0 §13 (task 11.5c): with NEXT_PUBLIC_SOURCE_URL set at build time the
+// footer and the credits page link to the source code; without it, nothing.
+test("source code link only with NEXT_PUBLIC_SOURCE_URL", async ({ page }) => {
+  const source = process.env.NEXT_PUBLIC_SOURCE_URL?.trim();
+  await page.goto("/es/creditos");
+  const footerLink = page.locator("footer").getByRole("link", { name: "Código fuente", exact: true });
+  const section = page.getByRole("heading", { level: 2, name: "Código fuente" });
+  if (!source) {
+    await expect(footerLink).toHaveCount(0);
+    await expect(section).toHaveCount(0);
+    return;
+  }
+  await expect(footerLink).toHaveAttribute("href", new URL(source).href);
+  await expect(section).toBeVisible();
+  await expect(page.getByRole("link", { name: /Ver el código fuente de Fileflect/ })).toHaveAttribute("href", new URL(source).href);
+  await expect(page.locator("main")).toContainText("AGPL-3.0");
+  await page.goto("/en");
+  await expect(page.locator("footer").getByRole("link", { name: "Source code", exact: true })).toHaveAttribute("href", new URL(source).href);
+});

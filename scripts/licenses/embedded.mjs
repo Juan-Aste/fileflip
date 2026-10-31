@@ -244,7 +244,10 @@ export const embedded = [
   // The read-aloud AI voice: our TypeScript port of the MIT sample code, and the
   // model weights the browser downloads from Hugging Face at a pinned commit
   // (not from our domain). The weights' license requires passing its use
-  // restrictions on to users (our Terms) and giving them a copy of it.
+  // restrictions on to users (our Terms) and giving them a copy of it. When our
+  // own storage is configured, the browser gets an fp16 copy of the weights
+  // that we made (docs/tts-modelo-liviano.md): a modified file, which the
+  // license (4.c) asks to say.
   {
     id: "supertonic-code",
     name: "Supertonic inference code (ported from the supertonic Python SDK)",
@@ -258,13 +261,27 @@ export const embedded = [
   },
   {
     id: "supertonic-3",
-    name: "Supertonic 3 text-to-speech model (Supertone Inc.)",
+    name: "Supertonic 3 text-to-speech model (Supertone Inc.; also served as a copy with the weights converted to float16 by Fileflect, which is a modified version)",
     version: "3 (commit 3cadd1ee)",
     license: "BigScience-OpenRAIL-M",
     where: ["browser"],
     homepage: "https://huggingface.co/Supertone/supertonic-3/tree/3cadd1ee6394adea1bd021217a0e650ede09a323",
     licenseText: "BigScience-OpenRAIL-M",
     licenseUrl: "/licenses/BigScience-OpenRAIL-M.txt",
+    kind: "data",
+  },
+  // Audio to text: OpenAI's Whisper weights in onnx-community's ONNX exports,
+  // downloaded by the browser from Hugging Face at pinned commits (not from our
+  // domain); the inference code is ours (src/lib/transcribe/whisper.ts).
+  {
+    id: "whisper",
+    name: "Whisper speech recognition models, tiny and base (OpenAI; ONNX by onnx-community)",
+    version: "tiny (commit ff417702), base (commit 1846881b)",
+    license: "MIT",
+    holder: "2022 OpenAI",
+    where: ["browser"],
+    homepage: "https://github.com/openai/whisper",
+    licenseText: "MIT",
     kind: "data",
   },
   // Data files served from our domain.

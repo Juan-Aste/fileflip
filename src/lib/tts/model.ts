@@ -5,6 +5,8 @@
 // repository is archived, so every file is pinned to one Hugging Face commit
 // and checked against its size and SHA-256 before use.
 
+import { mirrorUrl, type ModelSource } from "../models/sources";
+
 export const SUPERTONIC_REPO = "Supertone/supertonic-3";
 /** Hugging Face commit of the files below (2026). */
 export const SUPERTONIC_REVISION = "3cadd1ee6394adea1bd021217a0e650ede09a323";
@@ -23,6 +25,19 @@ export const supertonicFiles: readonly ModelFile[] = [
   { path: "onnx/vocoder.onnx", bytes: 101_424_195, sha256: "085de76dd8e8d5836d6ca66826601f615939218f90e519f70ee8a36ed2a4c4ba" },
   { path: "onnx/tts.json", bytes: 8_253, sha256: "42078d3aef1cd43ab43021f3c54f47d2d75ceb4e75f627f118890128b06a0d09" },
   { path: "onnx/unicode_indexer.json", bytes: 277_676, sha256: "9bf7346e43883a81f8645c81224f786d43c5b57f3641f6e7671a7d6c493cb24f" },
+];
+
+/**
+ * The four ONNX above with their weights stored as float16 (half the download,
+ * same float32 math; WER and audio compared in docs/tts-modelo-liviano.md),
+ * made from them by scripts/models/onnx-light.mjs ("fp16w"). Supertone does
+ * not publish them: they are served from our own storage when configured.
+ */
+export const supertonicLightFiles: readonly ModelFile[] = [
+  { path: "onnx/duration_predictor.onnx", bytes: 1_993_709, sha256: "6f53e96d47917a28918ed0970abf393089e3bc6d7d6bf7b115342a1bdae89c36" },
+  { path: "onnx/text_encoder.onnx", bytes: 18_474_768, sha256: "cbf2c872a22b7d1d99303425c249ee1eca1198db11fe1459aec53921073159a0" },
+  { path: "onnx/vector_estimator.onnx", bytes: 128_735_277, sha256: "0e3c8d92896ad6642036a5a856f4311a087f712dffcaf2e4c0f412a64aded6a4" },
+  { path: "onnx/vocoder.onnx", bytes: 50_810_904, sha256: "8ea6955582b93eb4ac5d8746549e49cb4d6b5ffaa844f8506f8d9fa0ab9a4309" },
 ];
 
 /** Preset voices shipped with the model (F = female, M = male); one is downloaded when chosen (~290 KB each). */
@@ -49,5 +64,23 @@ export const aiVoiceLanguages = ["es", "en", "pt", "fr"] as const;
 /** Download URL of a file at the pinned commit (served by Hugging Face's CDN, not by our server). */
 export const supertonicUrl = (path: string) => `https://huggingface.co/${SUPERTONIC_REPO}/resolve/${SUPERTONIC_REVISION}/${path}`;
 
-/** Total download before the first voice: the four models and the two JSON files. */
-export const supertonicDownloadBytes = supertonicFiles.reduce((sum, f) => sum + f.bytes, 0);
+/** Folder ("revision") of the float16 ONNX in our storage, next to the original files. */
+export const SUPERTONIC_LIGHT_REVISION = `${SUPERTONIC_REVISION}-fp16`;
+
+/**
+ * Where a model or voice file comes from, in order: with our storage (`base`,
+ * src/lib/models/sources.ts), its copy there (the float16 ONNX for the four
+ * models), then the original on Hugging Face.
+ */
+export function supertonicSources(file: ModelFile, base: string): ModelSource[] {
+  const hub = { file, url: supertonicUrl(file.path) };
+  if (!base) return [hub];
+  const light = supertonicLightFiles.find((f) => f.path === file.path);
+  const own = light
+    ? { file: light, url: mirrorUrl(base, SUPERTONIC_REPO, SUPERTONIC_LIGHT_REVISION, light.path) }
+    : { file, url: mirrorUrl(base, SUPERTONIC_REPO, SUPERTONIC_REVISION, file.path) };
+  return [own, hub];
+}
+
+/** Total download before the first voice: the four models and the two JSON files (smaller from our storage). */
+export const supertonicDownloadBytes = (base: string) => supertonicFiles.reduce((sum, f) => sum + supertonicSources(f, base)[0].file.bytes, 0);

@@ -427,3 +427,75 @@ Pedida por el dueño el 2026-10-27: AdSense rechazó la solicitud con "asegúres
 - [x] 9.1 Verificar y completar el cambio de `5355939` (meta `google-adsense-account` y loader `adsbygoogle.js` en el `<head>` del layout): lint, unitarios, build con y sin `NEXT_PUBLIC_ADSENSE_CLIENT`; en el HTML de `next start`, portada, herramienta, categoría, términos, privacidad, contacto y créditos en 5 idiomas con exactamente un meta y un script en el `<head>` (ninguno sin la variable); test que lo cubra; sin doble carga en páginas con bloques; `/ads.txt` sigue funcionando
 - [x] 9.2 Rendimiento: Lighthouse móvil (portada y una herramienta) con la variable ≥ 90 y CLS 0 (mitigar sin sacar el loader del `<head>`); detector de clics, axe y tests de navegador en Chromium, Firefox y WebKit de las páginas afectadas
 - [x] 9.3 `docs/launch-checklist.md` (sección AdSense): el código va en el `<head>` de todas las páginas, basta con `NEXT_PUBLIC_ADSENSE_CLIENT` (Railway recompila al cambiarla), cómo comprobarlo
+
+## Fase 10
+
+Pedida por el dueño el 2026-10-28: paquete Excel, utilidades de texto, editar y rellenar PDF, PDF a PowerPoint, transcribir audio y video, guías y verificación final. En este orden (10A → 10F). Reglas del catálogo vigentes: herramientas reales con tests y validadores independientes, 5 idiomas con slugs traducidos, FAQ, metadatos, sitemap, buscador, categorías y enlaces; en el navegador cuando se pueda; Lighthouse móvil ≥ 90 y CLS 0; detector de clics y axe; muestra en Firefox y WebKit; dependencias en `docs/dependencies.md`, créditos y `npm run licenses` (sin GPL/AGPL ni no comerciales).
+
+### 10A Paquete Excel
+- [x] 10A.1 Motor (`src/lib/sheet/`): listar hojas, elegir una hoja para CSV/JSON, Excel → JSON (filas como objetos con la primera fila de encabezado, fechas ISO, números como números), JSON → Excel (lista de objetos o de listas; varias hojas si es un objeto de listas); tests validados con LibreOffice/openpyxl y el XML del archivo
+- [x] 10A.2 Siete herramientas con página propia (catálogo, slugs buscados en 5 idiomas, FAQ, metadatos, sitemap, buscador, categoría Documentos, enlaces): Excel a CSV, CSV a Excel, XLS a XLSX, Excel a ODS, ODS a Excel, Excel a JSON, JSON a Excel; selector de hoja, separador y BOM; tests de navegador
+- [x] 10A.3 Motor de PDF a Excel: texto con posiciones (pdf.js) → filas y columnas por alineación, una hoja por página o por tabla, números con coma decimal; PDFs de ejemplo propios (tabla simple, varias páginas, celdas vacías, coma decimal); XLSX validado con un lector independiente
+- [x] 10A.4 Herramienta PDF a Excel (XLSX y CSV) con vista previa de la tabla detectada, aviso y enlace al OCR para PDFs escaneados; página en 5 idiomas; tests de navegador
+- [x] 10A.5 Unir Excel (varios archivos u hojas en un libro, o todas las hojas apiladas en una) y Separar hojas (cada hoja a un archivo, en ZIP); páginas en 5 idiomas; tests
+
+### 10B Utilidades de texto
+- [x] 10B.1 Convertir mayúsculas/minúsculas (MAYÚSCULAS, minúsculas, Tipo Título según el idioma, Tipo oración, alternar); tests
+- [x] 10B.2 Comparar dos textos (diferencias por línea y por palabra, resaltadas; jsdiff BSD-3); tests
+- [x] 10B.3 Quitar líneas duplicadas (ordenar, quitar vacías, recortar espacios) y generador de lorem ipsum; enlaces con el contador de palabras; tests
+
+### 10C Editar y rellenar PDF
+- [x] 10C.1 Editar PDF: visor con miniaturas y zoom, agregar texto (fuente, tamaño, color), resaltar, mano alzada, formas, tapar, imagen; deshacer/rehacer; táctil
+- [x] 10C.2 Editar PDF: guardar con pdf-lib, "ocultar de verdad" rasterizando la página (con aviso); página en 5 idiomas; tests con lector independiente
+- [x] 10C.3 Rellenar formularios PDF (AcroForm: texto, casillas, radios, listas; aplanar; XFA o sin campos → explicar y ofrecer Editar PDF); formulario de ejemplo propio; tests
+- [x] 10C.4 PDF a PowerPoint (cada página como imagen en una diapositiva del tamaño de la página; aviso de texto no editable); test con lector independiente
+
+### 10D Transcribir audio y video a texto
+- [x] 10D.1 Licencias y pesos: Whisper ONNX (MIT) con versión y sha256 fijos; origen de los pesos y CSP; documentar (transformers.js descartado por sus dependencias: se usa el onnxruntime-web existente, ver `docs/transcripcion.md`)
+- [x] 10D.2a Motor de Whisper sobre onnxruntime-web: log-mel, codificador, decodificador con caché, reglas de marcas de tiempo, tokenizador, ventanas de 30 s, detección de idioma, cortar bucles; tests con el modelo real
+- [x] 10D.2b Worker: decodificar audio/video a 16 kHz mono (mediabunny), progreso, tiempo estimado, cancelar, descarga con Cache API, idioma automático o elegido
+- [x] 10D.3 Herramienta: texto editable, copiar, TXT, SRT y VTT, enlaces a sincronizar subtítulos y lector en voz alta; página en 5 idiomas; límite de duración
+- [x] 10D.4 Medir tamaño y velocidad (PC y celular simulado); test con un audio propio y el modelo real (palabras esperadas, SRT/VTT válidos)
+
+### 10E Guías
+- [x] 10E.1 Sección de guías: índice, plantilla (autor "Equipo de Fileflect", fechas, tabla de contenidos, schema Article/HowTo, breadcrumbs, enlaces), slugs traducidos, sitemap, footer, anuncios según las reglas; tests
+- [x] 10E.2 Guías 1–3 en español con capturas reales (Playwright), verificadas contra las herramientas
+- [x] 10E.3 Guías 4–7 en español
+- [x] 10E.4 Guías 8–10 en español
+- [x] 10E.5a Capturas por idioma (`scripts/guides/screenshots.mjs --locale=…`) y traducción natural de las 10 guías al inglés
+- [x] 10E.5b Traducción de las guías al portugués (con capturas en portugués)
+- [x] 10E.5c Traducción de las guías al francés (con capturas en francés)
+- [x] 10E.5d Traducción de las guías al chino (con capturas en chino)
+
+### 10F Verificación final
+- [x] 10F.1 Lighthouse móvil ≥ 90 y CLS 0 en una página nueva de cada bloque (con AdSense de prueba), detector de clics, axe, Firefox y WebKit, suite de Chromium completa
+- [x] 10F.2 Informe del catálogo, `docs/dependencies.md`, créditos, `docs/launch-checklist.md` (CSP, archivos públicos, variables) y política de privacidad (descarga de modelos)
+
+## Fase 11
+
+Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbolos; elegir la voz escuchando muestras sin descargar el modelo; modelo más liviano; servir los modelos desde Cloudflare R2; preparar el repo para hacerlo público bajo AGPL-3.0-or-later (sin hacerlo público); verificación final. En orden. Sin dependencias GPL/AGPL ni no comerciales en esta fase.
+
+### 11.1 Voz IA: números, fechas y símbolos
+- [x] 11.1a Normalización por idioma (es, en, pt, fr) antes de las etiquetas de idioma: enteros y decimales según el separador del idioma, años, fechas en el orden del idioma, horas, porcentajes, monedas ($, US$, €, R$), ordinales (1.º, 1er, 1st), romanos frecuentes (siglo XXI), rangos, teléfonos y números largos; tests unitarios exhaustivos por idioma
+- [x] 11.1b Abreviaturas comunes (Sr., Dra., etc., pág.) y siglas en mayúsculas; revisar "fecha" → "feka" (NFKD frente al SDK de referencia, idioma que llega al modelo) y documentarlo en `docs/tts-voz-ia.md`
+
+### 11.2 Elegir la voz IA escuchando muestras
+- [x] 11.2a Script `scripts/tts/` que genera con el modelo real una muestra por voz × idioma (Opus/OGG o MP3, ≤ 40 KB, nombre y sha256 fijos) en `public/tts-samples/`, documentado
+- [x] 11.2b Script de WER: ~10 frases por voz × idioma transcritas con Whisper `base`; tabla en `docs/` y voz recomendada por idioma
+- [x] 11.2c Lector: selector de voces con ▶ "Escuchar muestra" (archivo estático, cargado solo al tocar), "Recomendada" por idioma, descarga del modelo recién al usar la voz IA o el MP3; aclarar en la herramienta y la FAQ (5 idiomas) que todas las voces usan el mismo modelo y se descarga una sola vez; tests
+
+### 11.3 Modelo de voz IA más liviano
+- [x] 11.3a Generar versiones fp16 e int8 dinámico de los ONNX de Supertonic (herramientas MIT) y compararlas con el original (WER con Whisper, duración, métricas de audio); documentar tamaños y resultados
+- [x] 11.3b Adoptar la versión más liviana que cumpla (WER ≤ +10 % relativo, sin diferencia evidente) con versión y sha256 fijos; tests
+
+### 11.4 Servir los modelos desde Cloudflare R2 (preparar)
+- [x] 11.4a `NEXT_PUBLIC_MODELS_BASE_URL` opcional: voz IA y transcripción descargan desde ahí verificando el sha256 y vuelven a Hugging Face si falla; CSP y política de privacidad; tests con un servidor local que simula el bucket
+- [x] 11.4b `scripts/models/sync-r2.mjs` (descarga, verifica y sube con la API S3, credenciales solo por variables de entorno, Cache-Control inmutable, Content-Type), `docs/modelos-r2.md` con los pasos del dueño y `docs/launch-checklist.md`
+
+### 11.5 Preparar el repo para hacerlo público (sin hacerlo público)
+- [x] 11.5a Escaneo de secretos de todo el historial (gitleaks o trufflehog, todas las ramas y tags) y búsqueda manual; archivos y datos personales que no deberían ser públicos
+- [x] 11.5b Auditoría de licencias para AGPL-3.0-or-later (`docs/licencia-agpl.md`)
+- [x] 11.5c `LICENSE` (AGPL-3.0), `license` en package.json, README.md público (es/en), `NEXT_PUBLIC_SOURCE_URL` opcional con "Código fuente" en el footer y créditos
+
+### 11.6 Verificación final
+- [x] 11.6 Lighthouse móvil ≥ 90 y CLS 0 en el lector y la transcripción, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium, `docs/launch-checklist.md` con `NEXT_PUBLIC_MODELS_BASE_URL` y `NEXT_PUBLIC_SOURCE_URL`

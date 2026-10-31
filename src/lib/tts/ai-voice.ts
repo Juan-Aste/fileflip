@@ -1,6 +1,7 @@
 import { createJobPool, type JobOptions } from "@/lib/jobs";
-import { cachedBytes, openModelStore } from "./model-cache";
-import { supertonicDownloadBytes, supertonicFiles, supertonicVoiceFiles, type SupertonicVoice } from "./model";
+import { modelsBaseUrl } from "@/lib/models/sources";
+import { bytesToDownload, openModelStore } from "./model-cache";
+import { supertonicFiles, supertonicSources, supertonicVoiceFiles, type SupertonicVoice } from "./model";
 import type { SupertonicLanguage } from "./supertonic";
 
 // The AI voice from the page: one worker holding the model, started the
@@ -12,14 +13,13 @@ const pool = createJobPool(() => new Worker(new URL("../../workers/tts.worker.ts
 
 /** Bytes still to download before the first sentence (0 when everything is cached). */
 export async function aiVoiceDownloadBytes(voice: SupertonicVoice): Promise<number> {
-  const files = [...supertonicFiles, supertonicVoiceFiles[voice]];
-  const total = supertonicDownloadBytes + supertonicVoiceFiles[voice].bytes;
-  return total - (await cachedBytes(files, await openModelStore()));
+  const base = modelsBaseUrl();
+  return bytesToDownload([...supertonicFiles, supertonicVoiceFiles[voice]].map((f) => supertonicSources(f, base)), await openModelStore());
 }
 
 /** Loads the model and a voice (downloading what is not cached); progress 0–1 by bytes. */
 export const prepareAiVoice = (voice: SupertonicVoice, job: JobOptions = {}) =>
-  pool.run<{ sampleRate: number }>("prepare", { voice }, job);
+  pool.run<{ sampleRate: number }>("prepare", { voice, base: modelsBaseUrl() }, job);
 
 export interface AiSpeech {
   pcm: Float32Array;

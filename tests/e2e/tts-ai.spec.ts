@@ -12,6 +12,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { chromium, type Browser, type BrowserContext, type Page } from "@playwright/test";
+import { axeViolations } from "./axe";
 import { expect, test, toolAlert } from "./support";
 
 const MODEL_PREFIX = "https://huggingface.co/Supertone/supertonic-3/resolve/";
@@ -72,6 +73,41 @@ test.describe("tool: text-to-speech, AI voice", () => {
     await expect(page.getByRole("button", { name: "Play" })).toBeEnabled();
     await page.getByRole("radio", { name: "Device voices" }).check();
     await expect(page.getByRole("radio", { name: "Device voices" })).toBeChecked();
+  });
+
+  test("each voice can be heard from a static sample before the model is downloaded @xb", async ({ page, context }) => {
+    const requests = await serveModel(context, { status: 503 });
+    const samples: string[] = [];
+    page.on("request", (r) => {
+      if (r.url().includes("/tts-samples/")) samples.push(new URL(r.url()).pathname);
+    });
+    await page.goto("/es/leer-texto-en-voz-alta", { waitUntil: "networkidle" });
+    await page.locator("textarea").fill("Hola. Esta es una prueba de voz.");
+    // Nothing is fetched until a sample is played (Lighthouse, data).
+    expect(samples).toEqual([]);
+    await page.getByText("Escuchar las voces IA antes de descargar").click();
+    await expect(page.getByText(/Todas las voces usan el mismo modelo: la descarga es la misma para cualquiera \(unos 3[78]\d[.,]\d MB\)/)).toBeVisible();
+    await expect(page.getByText("Recomendada", { exact: true })).toHaveCount(1);
+    expect(await axeViolations(page)).toEqual([]);
+    await page.emulateMedia({ colorScheme: "dark" });
+    expect(await axeViolations(page)).toEqual([]);
+    await page.emulateMedia({ colorScheme: "light" });
+    await page.getByRole("button", { name: "Escuchar muestra: Hombre 2" }).click();
+    // WebKit asks for a media file twice (a byte-range probe, then the data).
+    await expect.poll(() => [...new Set(samples)]).toEqual(["/tts-samples/es-M2.mp3"]);
+    const response = await page.request.get("/tts-samples/es-M2.mp3");
+    expect(response.headers()["content-type"]).toMatch(/audio\/mpeg/);
+    // Choosing a voice switches to the AI voice without downloading the model.
+    await page.getByRole("button", { name: "Elegir Hombre 2" }).click();
+    await expect(page.getByRole("radio", { name: "Voz IA" })).toBeChecked();
+    await expect(page.getByRole("combobox", { name: "Voz" })).toHaveValue("M2");
+    await expect(page.getByRole("button", { name: "Elegida" })).toHaveAttribute("aria-pressed", "true");
+    expect(requests).toEqual([]);
+    // Another language plays that language's sample.
+    await page.getByLabel("Idioma", { exact: true }).selectOption("fr");
+    await page.getByRole("button", { name: "Escuchar muestra: Mujer 3" }).click();
+    await expect.poll(() => samples).toContain("/tts-samples/fr-F3.mp3");
+    expect(requests).toEqual([]);
   });
 
   test("Chinese has no AI voice: device voices only and MP3 disabled, with the reason", async ({ page, context }) => {
@@ -175,7 +211,7 @@ test.describe("tool: text-to-speech, AI voice with the real model", () => {
     await page.getByRole("button", { name: "Reanudar" }).click();
     await expect(page.getByTestId("tts-current")).toHaveText(second, { timeout: 120_000 });
     await expect(page.getByText("Lectura terminada")).toBeAttached({ timeout: 120_000 });
-    const files = ["onnx/tts.json", "onnx/unicode_indexer.json", "onnx/duration_predictor.onnx", "onnx/text_encoder.onnx", "onnx/vector_estimator.onnx", "onnx/vocoder.onnx", "voice_styles/F1.json"];
+    const files = ["onnx/tts.json", "onnx/unicode_indexer.json", "onnx/duration_predictor.onnx", "onnx/text_encoder.onnx", "onnx/vector_estimator.onnx", "onnx/vocoder.onnx", "voice_styles/F5.json"]; // F5: the recommended Spanish voice
     if (downloaded) expect(new Set(requests)).toEqual(new Set(files));
     else expect(requests).toEqual([]);
 

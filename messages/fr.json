@@ -48,7 +48,9 @@
       "conversions": "Conversions populaires",
       "company": "Fileflect"
     },
-    "allTools": "Tous les outils"
+    "allTools": "Tous les outils",
+    "guides": "Guides",
+    "source": "Code source"
   },
   "HomePage": {
     "title": "Convertissez vos fichiers sans qu'ils quittent votre ordinateur",
@@ -230,6 +232,7 @@
     "noAudioTrack": "Ce fichier n'a pas de piste audio.",
     "audioCodecUnsupported": "Votre navigateur ne peut pas lire l'audio de ce fichier (par exemple l'AAC dans certains navigateurs). Essayez Chrome, Edge ou Safari, ou un autre format.",
     "audioTooLong": "L'audio est trop long : le maximum est de 3 heures par fichier.",
+    "transcribeTooLong": "L'audio est trop long pour être transcrit dans le navigateur : le maximum est de 30 minutes. Découpez-le en parties avec « Couper un audio ».",
     "tooManyPages": "Ce PDF a trop de pages pour être reconnu dans le navigateur (100 au maximum).",
     "pdfAlreadySearchable": "Toutes les pages de ce PDF contiennent déjà du texte : il est consultable sans OCR. Utilisez « PDF en texte » pour l’extraire.",
     "audioRangeInvalid": "Vérifiez les temps : le début doit précéder la fin et les deux doivent être dans l'audio.",
@@ -626,6 +629,70 @@
         "a2": "Oui : ouvrez un fichier texte (.txt, .md, .csv, .srt…) et il sera chargé dans la zone. S’il vient de Windows avec des accents dans un autre encodage, celui-ci est détecté automatiquement.",
         "q3": "Comment le temps de lecture est-il calculé ?",
         "a3": "Sur la base de 200 mots par minute, arrondi au supérieur."
+      }
+    },
+    "case-converter": {
+      "title": "Convertir majuscules et minuscules",
+      "description": "Passez un texte en MAJUSCULES, minuscules, Casse De Titre, casse de phrase ou aLtErNéE instantanément, selon les règles de chaque langue.",
+      "action": "Convertir",
+      "about": "Collez un texte tapé avec la touche Verr. Maj activée, un titre tout en minuscules ou une liste de noms, et changez-le en un clic. La casse de phrase ne garde une majuscule qu'au début de chaque phrase ; la Casse De Titre met une majuscule à chaque mot et, si l'option reste cochée, laisse en minuscules les articles, prépositions et conjonctions courtes de la langue choisie (le, de, et, of, the…), sauf le premier et le dernier mot. Les règles propres à chaque langue sont respectées, comme le İ pointé du turc et le IJ du néerlandais. Si le résultat ne convient pas, « Annuler » rétablit le texte précédent.",
+      "faq": {
+        "q1": "Quelle différence entre Casse De Titre et casse de phrase ?",
+        "a1": "La casse de phrase met tout en minuscules sauf la première lettre de chaque phrase, ce que recommande l'usage français pour les titres. La Casse De Titre met une majuscule à chaque mot important, comme on le fait en anglais (« The Lord of the Rings »).",
+        "q2": "Les noms propres passent-ils en minuscules ?",
+        "a2": "Oui : l'outil ne sait pas quels mots sont des noms, donc en minuscules ou en casse de phrase « Paris » devient « paris ». Vérifiez les noms après la conversion.",
+        "q3": "À quoi sert la langue du texte ?",
+        "a3": "À choisir quels petits mots restent en minuscules en Casse De Titre et à appliquer des règles particulières : en turc le i minuscule devient un İ pointé, et en néerlandais « ijsland » devient « IJsland ».",
+        "q4": "Mon texte est-il envoyé à un serveur ?",
+        "a4": "Non. La conversion se fait dans votre navigateur et le texte ne quitte pas votre appareil."
+      }
+    },
+    "compare-text": {
+      "title": "Comparer des textes",
+      "description": "Comparez deux textes et surlignez les différences ligne par ligne et mot par mot : ce qui a été ajouté, supprimé et modifié, dans votre navigateur.",
+      "action": "Comparer",
+      "about": "Collez la version d'origine à gauche et la nouvelle à droite (ou ouvrez deux fichiers texte) pour voir ligne par ligne ce qui a été supprimé, en rouge et barré, et ce qui a été ajouté, en vert. Dans les lignes modifiées, seuls les mots différents sont marqués : vous repérez une virgule ou un chiffre changé sans tout relire. Vous pouvez aussi comparer tout le texte mot par mot sans tenir compte des retours à la ligne, ignorer la casse ou les espaces en trop, et télécharger les différences au format .diff, celui que lisent git et les outils de relecture.",
+      "faq": {
+        "q1": "Quelle différence entre comparer par ligne et par mot ?",
+        "a1": "Par ligne convient aux listes, au code, aux réglages ou aux contrats dont les paragraphes ne bougent pas : chaque ligne est affichée avec son numéro. Par mot réunit tout le texte et marque les mots différents : c'est mieux pour un paragraphe réécrit dont les retours à la ligne ont changé.",
+        "q2": "Puis-je comparer des fichiers Word ou PDF ?",
+        "a2": "Pas directement : l'outil compare du texte. Copiez le texte de chaque document et collez-le, ou extrayez-le d'abord avec « PDF en texte » puis comparez-le ici.",
+        "q3": "Qu'est-ce que le fichier .diff ?",
+        "a3": "Un correctif au format unifié : il ne liste que les lignes modifiées avec 3 lignes de contexte. git, les outils de relecture de code et la commande patch le lisent, et patch peut appliquer les modifications au texte d'origine.",
+        "q4": "Mes textes sont-ils envoyés à un serveur ?",
+        "a4": "Non. La comparaison se fait dans votre navigateur avec jsdiff et les textes ne quittent pas votre appareil : vous pouvez comparer des contrats ou des documents privés."
+      }
+    },
+    "remove-duplicate-lines": {
+      "title": "Supprimer les lignes en double",
+      "description": "Supprimez les lignes répétées d'une liste, retirez les lignes vides, coupez les espaces et triez par ordre alphabétique, instantanément et dans votre navigateur.",
+      "action": "Nettoyer",
+      "about": "Collez une liste d'adresses e-mail, de noms, de mots-clés ou de codes et le résultat apparaît aussitôt sans les lignes répétées : la première occurrence de chacune est conservée, dans l'ordre d'origine. Vous pouvez ignorer la casse (« Anne » et « anne » comptent alors comme la même ligne), couper les espaces de début et de fin qu'on ne voit pas mais qui rendent deux lignes différentes, supprimer les lignes vides et trier de A à Z ou l'inverse selon les règles de la langue : les lettres accentuées se rangent avec leur lettre de base et les nombres selon leur valeur (« item 2 » avant « item 10 »). En dessous s'affiche le nombre de lignes supprimées.",
+      "faq": {
+        "q1": "Laquelle des lignes répétées est conservée ?",
+        "a1": "La première, à l'endroit où elle apparaît. Si vous ignorez la casse, elle reste écrite comme lors de cette première occurrence.",
+        "q2": "Pourquoi deux lignes identiques ne sont-elles pas détectées comme doublons ?",
+        "a2": "Souvent à cause d'espaces invisibles au début ou à la fin, ou de majuscules différentes. Laissez « Couper les espaces » coché et cochez « Ignorer majuscules et minuscules ».",
+        "q3": "Comment sont triés les mots accentués ?",
+        "a3": "Selon l'ordre alphabétique de la langue de la page : « été » se range près de « étoile » et non à la fin, et les nombres dans le texte sont comparés selon leur valeur.",
+        "q4": "Ma liste est-elle envoyée à un serveur ?",
+        "a4": "Non. Tout se fait dans votre navigateur et la liste ne quitte pas votre appareil : vous pouvez nettoyer des listes d'e-mails ou de clients sans les partager."
+      }
+    },
+    "lorem-ipsum": {
+      "title": "Générateur de Lorem ipsum",
+      "description": "Générez du faux texte Lorem ipsum par paragraphes, phrases ou mots, en texte brut ou en HTML, pour vos maquettes.",
+      "action": "Générer",
+      "about": "Le Lorem ipsum est le faux texte qu'utilisent graphistes et imprimeurs depuis des décennies pour voir le rendu d'une page avant d'avoir le vrai texte : il ressemble à du latin, il ne distrait donc pas, mais il ne veut rien dire. Il vient d'un passage de Cicéron (« De finibus bonorum et malorum ») découpé et mélangé. Choisissez combien de paragraphes, de phrases ou de mots il vous faut, s'il doit commencer par le classique « Lorem ipsum dolor sit amet… » et si vous voulez des paragraphes HTML (balises p) à coller dans une page web. Chaque génération donne un texte différent.",
+      "faq": {
+        "q1": "Que signifie Lorem ipsum ?",
+        "a1": "Rien : ce sont des mots latins d'un texte de Cicéron coupés et mélangés. « Dolorem ipsum » signifie « la douleur elle-même », mais le faux texte n'a volontairement aucun sens, pour qu'on regarde la mise en page et non le contenu.",
+        "q2": "Combien de texte puis-je générer ?",
+        "a2": "Jusqu'à 100 paragraphes, 500 phrases ou 10 000 mots à la fois.",
+        "q3": "À quoi sert l'option HTML ?",
+        "a3": "Elle place chaque paragraphe dans des balises p HTML, prêt à coller dans le code d'une page web ou dans un éditeur qui accepte le HTML.",
+        "q4": "Puis-je l'utiliser sans citer de source ?",
+        "a4": "Oui. Le texte de Cicéron est dans le domaine public et le texte est généré dans votre navigateur, sans restriction d'usage."
       }
     },
     "color-converter": {
@@ -1046,6 +1113,54 @@
         "a4": "Non. Tout se fait dans votre navigateur : ni la signature ni le document ne quittent votre appareil, et nous ne conservons pas votre signature."
       }
     },
+    "edit-pdf": {
+      "title": "Modifier un PDF",
+      "description": "Ajoutez du texte, surlignez, dessinez, ajoutez des formes et des images ou masquez des parties d'un PDF dans votre navigateur, sans rien installer ni envoyer.",
+      "action": "Enregistrer le PDF",
+      "about": "Modifier un PDF vous permet d'écrire sur n'importe quelle page (par exemple pour remplir un formulaire sans champs), de surligner des phrases, de dessiner à main levée, d'annoter avec des rectangles, des lignes et des flèches, de placer une image comme un logo ou un tampon, et de masquer des parties avec un cadre blanc. Choisissez la page dans les miniatures, zoomez pour travailler avec précision et annulez ou rétablissez chaque modification. Sur téléphone, tout se fait au doigt. Ce que vous ajoutez est dessiné sur la page et s'affiche de la même façon dans tous les lecteurs et à l'impression. Important : un cadre blanc masque seulement à la vue ; le texte en dessous reste dans le fichier. Pour le supprimer vraiment, cochez « Masquer vraiment » sur le cadre : cette page est alors enregistrée comme une image.",
+      "faq": {
+        "q1": "Puis-je modifier le texte déjà présent dans le PDF ?",
+        "a1": "Pas directement : un PDF enregistre le texte comme des dessins de lettres à des positions fixes, pas comme un document Word. Vous pouvez en revanche masquer l'ancienne partie avec un cadre blanc et écrire le nouveau texte par-dessus.",
+        "q2": "Un cadre blanc efface-t-il l'information ?",
+        "a2": "Non. Le cadre blanc la cache seulement : le texte en dessous peut encore être copié, recherché ou récupéré. Si vous partagez un document contenant des données privées, cochez « Masquer vraiment » : la page devient une image et le texte disparaît du fichier (en contrepartie, le texte de cette page ne peut plus être sélectionné).",
+        "q3": "Quelles polices puis-je utiliser ?",
+        "a3": "Helvetica (normal et gras), Times et Courier, présentes dans tous les lecteurs PDF. Les lettres d'autres alphabets, comme le chinois, et les emoji sont ajoutés sous forme d'image avec les polices de votre appareil.",
+        "q4": "Mon PDF est-il envoyé à un serveur ?",
+        "a4": "Non. Tout se fait dans votre navigateur avec pdf.js et pdf-lib : le document et vos ajouts ne quittent pas votre appareil."
+      }
+    },
+    "fill-pdf-form": {
+      "title": "Remplir un formulaire PDF",
+      "description": "Remplissez les champs d'un formulaire PDF (texte, cases à cocher, choix et listes) dans votre navigateur et enregistrez-le modifiable ou aplati. Gratuit et sans envoi du fichier.",
+      "action": "Enregistrer le PDF",
+      "about": "Remplir un formulaire PDF trouve les champs du document —zones de texte, cases à cocher, boutons radio, listes déroulantes et listes de choix— et vous les présente comme un formulaire classique, classés par page, avec un aperçu de la page qui met en évidence le champ que vous remplissez. À l'enregistrement, vous pouvez le laisser modifiable, pour qu'une autre personne continue de le remplir, ou l'aplatir : les valeurs font alors partie de la page et ne peuvent plus être modifiées, ce que demandent souvent les démarches administratives. Si le PDF n'a pas de champs (un formulaire scanné, par exemple) ou s'il s'agit d'un formulaire XFA, nous vous le disons, et vous pouvez écrire dessus avec Modifier un PDF.",
+      "faq": {
+        "q1": "Que veut dire aplatir le formulaire ?",
+        "a1": "Aplatir intègre ce que vous avez saisi au dessin de la page : le PDF s'affiche de la même façon dans tous les lecteurs et à l'impression, et personne ne peut plus modifier les valeurs. Si vous ne l'aplatissez pas, les champs restent modifiables.",
+        "q2": "On me dit que mon PDF n'a pas de champs. Que faire ?",
+        "a2": "Beaucoup de formulaires ne sont qu'un dessin avec des lignes où écrire, ou un papier scanné. Dans ce cas, utilisez Modifier un PDF : touchez l'endroit où vous voulez écrire et ajoutez le texte par-dessus.",
+        "q3": "Qu'est-ce qu'un formulaire XFA ?",
+        "a3": "C'est un ancien format d'Adobe (LiveCycle) que seul Adobe Acrobat ouvre correctement. Il ne peut pas être rempli dans le navigateur ; si le PDF contient aussi la version standard des champs, nous l'utilisons et retirons la partie XFA pour que tous les lecteurs affichent vos données.",
+        "q4": "Mon formulaire est-il envoyé sur un serveur ?",
+        "a4": "Non. Les champs sont lus et remplis dans votre navigateur avec pdf-lib, et l'aperçu est dessiné par pdf.js : vos données ne quittent pas votre appareil."
+      }
+    },
+    "pdf-to-powerpoint": {
+      "title": "PDF en PowerPoint",
+      "description": "Transformez chaque page d'un PDF en diapositive PowerPoint (PPTX), sous forme d'image de haute qualité. Gratuit, dans votre navigateur et sans envoi du fichier.",
+      "action": "Convertir en PowerPoint",
+      "about": "PDF en PowerPoint crée une présentation PPTX avec une diapositive par page du PDF. Chaque page est enregistrée comme une image nette (150 ou 220 ppp) et la diapositive prend la taille de la première page : un PDF au format paysage donne des diapositives en paysage, un A4 des diapositives A4 ; les pages d'une autre taille sont centrées sans être déformées. C'est pratique pour présenter un rapport ou des diapositives que vous n'avez qu'en PDF, ou pour ajouter vos propres diapositives avant ou après. Important : le texte des diapositives fait partie de l'image et ne peut pas être modifié ; pour changer le texte, convertissez plutôt le PDF en Word.",
+      "faq": {
+        "q1": "Puis-je modifier le texte des diapositives ?",
+        "a1": "Non. Chaque diapositive est une image de la page, elle est donc identique au PDF. Vous pouvez écrire par-dessus avec de nouvelles zones de texte, ajouter des diapositives ou les réorganiser, mais pas changer le texte d'origine. Pour le modifier, convertissez le PDF en Word.",
+        "q2": "Quelle qualité choisir ?",
+        "a2": "Standard (150 ppp) suffit pour projeter et pour la plupart des documents, avec des fichiers plus légers. Haute (220 ppp) convient mieux aux plans, aux très petits caractères ou si vous comptez zoomer.",
+        "q3": "Est-ce compatible avec Google Slides, Keynote et LibreOffice ?",
+        "a3": "Oui. Le fichier est un PPTX standard : il s'ouvre dans PowerPoint, Google Slides, Keynote et LibreOffice Impress.",
+        "q4": "Mon PDF est-il envoyé sur un serveur ?",
+        "a4": "Non. Les pages sont dessinées avec pdf.js et la présentation est assemblée dans votre navigateur : le fichier ne quitte pas votre appareil."
+      }
+    },
     "protect-pdf": {
       "title": "Protéger un PDF par mot de passe",
       "description": "Ajoutez un mot de passe à votre PDF avec un chiffrement AES 256 bits et choisissez s’il peut être imprimé ou copié. Gratuit, dans votre navigateur.",
@@ -1142,6 +1257,22 @@
         "a4": "Oui : la conversion se fait sur notre propre serveur (pas chez un tiers), via une connexion chiffrée, et le fichier est traité en mémoire sans être conservé."
       }
     },
+    "pdf-to-excel": {
+      "title": "PDF en Excel",
+      "description": "Extrayez les tableaux d’un PDF vers Excel (XLSX) ou CSV dans votre navigateur, avec aperçu et vrais nombres, sans envoyer le fichier.",
+      "action": "Convertir en Excel",
+      "about": "Transformez en feuille de calcul les tableaux d’un relevé bancaire, d’une liste de prix, d’une facture ou d’un rapport en PDF. L’outil lit le texte du PDF avec sa position sur la page, reconstitue les lignes d’après la ligne où se trouve chaque texte et les colonnes d’après leur alignement, puis vous montre le tableau détecté avant le téléchargement. Les montants comme 1 234,56 ou 1,234.56 deviennent de vrais nombres que vous pouvez additionner, et les codes commençant par des zéros restent du texte. Obtenez une feuille par page, une par tableau ou tout dans une seule feuille. Cela fonctionne avec les PDF qui contiennent du texte (ceux créés par un logiciel) ; un PDF scanné est une image et nécessite d’abord une reconnaissance de texte (OCR).",
+      "faq": {
+        "q1": "Avec quels PDF cela fonctionne-t-il ?",
+        "a1": "Avec ceux dont le texte est sélectionnable : ceux que produisent une banque, un logiciel de facturation, Word ou Excel avec « Enregistrer au format PDF ». Si vous pouvez sélectionner un mot à la souris en ouvrant le PDF, cela fonctionnera. Un scan ou une photo convertie en PDF n’a pas de texte : passez-le d’abord par « OCR de PDF numérisé » et utilisez le PDF obtenu, en sachant que la précision sera moindre.",
+        "q2": "Pourquoi le tableau n’est-il pas parfait ?",
+        "a2": "Un PDF n’enregistre pas de tableaux, seulement des morceaux de texte avec leur position : les colonnes sont donc déduites de l’alignement. Les cellules sur plusieurs lignes peuvent sortir comme des lignes séparées, et une cellule sur deux colonnes peut tomber dans une seule. Vérifiez l’aperçu avant de télécharger ; si les nombres sortent en texte, choisissez vous-même le séparateur décimal.",
+        "q3": "Comment les nombres à virgule décimale sont-ils reconnus ?",
+        "a3": "Tableau par tableau : si les montants s’écrivent 84,35 ou 1.234,56, la virgule est le séparateur décimal ; s’ils s’écrivent 84.35 ou 1,234.56, c’est le point. L’espace comme séparateur de milliers (1 250,5) est aussi reconnu. Les dates, les pourcentages et les montants avec le symbole de la devise restent du texte, tels qu’ils apparaissent.",
+        "q4": "Mon PDF est-il envoyé ?",
+        "a4": "Non. Le PDF est lu dans votre navigateur avec pdf.js et le classeur est créé sur votre appareil avec SheetJS : rien n’est envoyé à un serveur. PDF jusqu’à 100 Mo."
+      }
+    },
     "spreadsheet-converter": {
       "title": "Convertir un tableur",
       "description": "Convertissez entre Excel (XLSX, XLS), OpenDocument (ODS) et CSV : toutes les feuilles, valeurs et formules, dans votre navigateur.",
@@ -1156,6 +1287,150 @@
         "a3": "Un CSV ne contient qu'un tableau : un CSV est créé par feuille (avec le nom de la feuille dans le fichier), ou seulement celui de la première si vous décochez l'option.",
         "q4": "Y a-t-il une limite de taille ?",
         "a4": "Jusqu'à 50 Mo par fichier et 2 millions de cellules remplies, car tout est traité dans la mémoire de votre navigateur. Vos fichiers ne sont envoyés sur aucun serveur."
+      }
+    },
+    "excel-to-csv": {
+      "title": "Excel en CSV",
+      "description": "Convertissez un fichier Excel (XLSX, XLS ou ODS) en CSV dans votre navigateur : choisissez la feuille, le séparateur et l’UTF-8 avec BOM pour des accents corrects.",
+      "action": "Convertir en CSV",
+      "about": "Transformez une feuille Excel en CSV pour l’importer dans un autre logiciel, une base de données ou un tableur en ligne. Si le classeur contient plusieurs feuilles, choisissez celle à convertir ou obtenez un CSV par feuille. Les nombres gardent toutes leurs décimales (pas arrondis comme à l’écran), les dates sortent telles qu’Excel les affiche et les codes commençant par des zéros, comme 007, sont conservés. Choisissez la virgule, le point-virgule (avec virgule décimale, comme Excel en français) ou la tabulation.",
+      "faq": {
+        "q1": "Quel séparateur choisir ?",
+        "a1": "La virgule si le CSV part vers un autre logiciel ou système (c’est la norme). Le point-virgule si vous l’ouvrez avec Excel en français : chaque valeur reste dans sa colonne et les décimales utilisent la virgule. La tabulation si le système demande du TSV.",
+        "q2": "Pourquoi les accents s’affichent-ils mal dans Excel ?",
+        "a2": "Excel sous Windows ne reconnaît pas l’UTF-8 si le fichier ne l’indique pas. Laissez cochée l’option « UTF-8 avec BOM » : elle ajoute une marque invisible au début et Excel affiche correctement les accents et les autres alphabets.",
+        "q3": "Mon classeur a plusieurs feuilles : que se passe-t-il ?",
+        "a3": "Un CSV ne contient qu’un seul tableau. Avec un seul classeur, choisissez la feuille dans la liste ou « Toutes les feuilles », qui crée un CSV par feuille portant son nom. Avec plusieurs classeurs à la fois, la première feuille de chacun est utilisée, sauf si vous cochez l’option de toutes les feuilles.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. La conversion se fait dans votre navigateur avec SheetJS ; le fichier ne quitte pas votre appareil. Jusqu’à 50 Mo par fichier et 2 millions de cellules remplies."
+      }
+    },
+    "csv-to-excel": {
+      "title": "CSV en Excel",
+      "description": "Convertissez un CSV ou un TSV en Excel (XLSX) dans votre navigateur, avec des nombres et des accents corrects même en point-virgule ou en Windows-1252.",
+      "action": "Convertir en Excel",
+      "about": "Ouvrez comme un fichier Excel le CSV exporté par une banque, une boutique en ligne ou un logiciel de facturation. Le séparateur (virgule, point-virgule, tabulation ou barre verticale) et l’encodage sont détectés, y compris le Windows-1252 souvent utilisé par les CSV enregistrés par Excel sous Windows. Les nombres à virgule décimale d’un CSV en point-virgule deviennent de vrais nombres, et les codes commençant par des zéros, comme 007, restent du texte pour ne pas être perdus.",
+      "faq": {
+        "q1": "Pourquoi ne pas ouvrir le CSV directement dans Excel ?",
+        "a1": "Excel met souvent tout dans une seule colonne quand le séparateur ne correspond pas à vos réglages, affiche mal les accents si le fichier est en UTF-8 sans BOM et supprime les zéros initiaux des codes et des numéros de téléphone. Converti ici, le XLSX a chaque valeur dans sa cellule.",
+        "q2": "Comment les nombres sont-ils reconnus ?",
+        "a2": "Une valeur devient un nombre seulement si elle se relit à l’identique : 3.25 ou, dans un CSV en point-virgule, 3,25 et 1.234,5. Les codes comme 007 et les entiers de plus de 15 chiffres (numéros de carte ou de compte) restent du texte pour qu’Excel ne les arrondisse pas.",
+        "q3": "Et les dates ?",
+        "a3": "Elles restent telles qu’elles figurent dans le CSV, sous forme de texte. Excel peut les convertir avec Données → Convertir si vous en avez besoin comme dates pour calculer.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. Tout se passe dans votre navigateur ; le CSV ne quitte pas votre appareil. Vous pouvez en convertir plusieurs à la fois, jusqu’à 50 Mo chacun."
+      }
+    },
+    "xls-to-xlsx": {
+      "title": "XLS en XLSX",
+      "description": "Convertissez les anciens classeurs Excel (XLS, Excel 97-2003) au format actuel XLSX dans votre navigateur, avec toutes les feuilles et formules.",
+      "action": "Convertir en XLSX",
+      "about": "Le XLS est le format d’Excel 97-2003. Beaucoup de systèmes, de formulaires et d’applications en ligne n’acceptent plus que le XLSX, qui est en plus plus léger. Cet outil copie chaque feuille, les valeurs et les formules du XLS dans un nouveau XLSX, sans rien installer ni envoyer le fichier.",
+      "faq": {
+        "q1": "Qu’est-ce qui est conservé ?",
+        "a1": "Toutes les feuilles avec leur nom, les valeurs (texte, nombres, dates) et les formules. La mise en forme n’est pas conservée : couleurs, bordures, largeurs de colonnes, graphiques et macros.",
+        "q2": "Pourquoi passer du XLS au XLSX ?",
+        "a2": "Le XLSX est le format par défaut depuis Excel 2007 : Excel, LibreOffice, Google Sheets et Numbers l’ouvrent, il accepte plus de lignes (plus d’un million contre 65 536) et il est généralement plus léger car compressé.",
+        "q3": "Cela fonctionne-t-il avec un fichier protégé par mot de passe ?",
+        "a3": "Non. Un XLS chiffré ne peut pas être lu sans son mot de passe ; ouvrez-le dans Excel, retirez la protection et réessayez.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. La conversion se fait dans votre navigateur et le fichier ne quitte pas votre appareil."
+      }
+    },
+    "excel-to-ods": {
+      "title": "Excel en ODS",
+      "description": "Convertissez un Excel (XLSX ou XLS) en ODS, le format de LibreOffice Calc demandé par certaines administrations, dans votre navigateur.",
+      "action": "Convertir en ODS",
+      "about": "L’ODS (OpenDocument) est le format ouvert de LibreOffice et d’OpenOffice, et celui qu’exigent certaines administrations. Cet outil transforme les feuilles, les valeurs et les formules d’un fichier Excel en un ODS valide, sans installer LibreOffice ni envoyer le fichier sur un serveur.",
+      "faq": {
+        "q1": "Les formules sont-elles conservées ?",
+        "a1": "Oui. Les formules sont écrites dans la syntaxe OpenDocument, donc LibreOffice les recalcule à l’ouverture. La mise en forme (couleurs, bordures, largeurs) n’est pas conservée.",
+        "q2": "Puis-je ouvrir l’ODS dans Excel ?",
+        "a2": "Oui, Excel ouvre les fichiers ODS, tout comme Google Sheets et LibreOffice.",
+        "q3": "Et les graphiques et les macros ?",
+        "a3": "Ils ne sont pas copiés : ce sont les données et les formules qui sont converties. Si vous avez besoin des graphiques, enregistrez le fichier en ODS depuis Excel ou LibreOffice.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. Tout est traité dans votre navigateur."
+      }
+    },
+    "ods-to-excel": {
+      "title": "ODS en Excel",
+      "description": "Convertissez des classeurs LibreOffice ou OpenOffice (ODS) en Excel (XLSX) dans votre navigateur, avec toutes les feuilles et formules.",
+      "action": "Convertir en Excel",
+      "about": "Si l’on vous a envoyé un classeur .ods (LibreOffice Calc, OpenOffice) et que vous devez le rendre au format Excel, convertissez-le ici en XLSX en quelques secondes. Toutes les feuilles, les valeurs et les formules sont conservées, et le fichier ne quitte pas votre appareil.",
+      "faq": {
+        "q1": "Qu’est-ce qui est conservé ?",
+        "a1": "Les feuilles avec leur nom, les valeurs (texte, nombres, dates) et les formules. La mise en forme n’est pas conservée : couleurs, bordures, largeurs, graphiques et images.",
+        "q2": "Les formules fonctionnent-elles encore dans Excel ?",
+        "a2": "Oui, les formules courantes (sommes, moyennes, conditions, recherches et opérations) sont écrites dans la syntaxe d’Excel. Une fonction propre à LibreOffice peut afficher une erreur dans Excel.",
+        "q3": "Puis-je convertir plusieurs fichiers à la fois ?",
+        "a3": "Oui. Sélectionnez-les ensemble et téléchargez-les un par un ou tous dans un ZIP.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. La conversion se fait dans votre navigateur."
+      }
+    },
+    "excel-to-json": {
+      "title": "Excel en JSON",
+      "description": "Convertissez une feuille Excel (XLSX, XLS ou ODS) en JSON dans votre navigateur : chaque ligne devient un objet dont les clés sont les en-têtes.",
+      "action": "Convertir en JSON",
+      "about": "Transformez un tableur en JSON pour l’utiliser dans une application, une API ou un script. La première ligne sert d’en-tête et chaque ligne suivante devient un objet avec ces clés ; vous pouvez aussi obtenir les lignes sous forme de listes. Les nombres restent des nombres, les cellules VRAI/FAUX deviennent true/false, les dates sont au format ISO (2024-03-15) et les cellules vides deviennent null. Avec un classeur de plusieurs feuilles, choisissez-en une ou obtenez-les toutes dans un seul objet.",
+      "faq": {
+        "q1": "À quoi ressemble le JSON ?",
+        "a1": "Avec « Objets », vous obtenez une liste comme ['{'\"produit\": \"Café\", \"prix\": 3.25'}', …], la première ligne servant de clés. Avec « Listes », chaque ligne devient une liste de valeurs, la première comprise. Si vous choisissez toutes les feuilles, le résultat est un objet avec une liste par feuille.",
+        "q2": "Comment sortent les dates ?",
+        "a2": "En texte ISO 8601 : 2024-03-15, ou 2024-03-15T10:30:00 si elles ont une heure. C’est le format que comprennent JavaScript, Python et les bases de données.",
+        "q3": "Et les en-têtes vides ou répétés ?",
+        "a3": "Un en-tête vide prend le nom de sa colonne, comme column3, et un en-tête répété reçoit un suffixe, comme nom_2, pour qu’aucune colonne ne soit perdue.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. La conversion se fait dans votre navigateur ; le fichier ne quitte pas votre appareil."
+      }
+    },
+    "json-to-excel": {
+      "title": "JSON en Excel",
+      "description": "Convertissez du JSON (liste d’objets ou de listes) en Excel (XLSX) dans votre navigateur, avec une colonne par clé et de vraies dates et de vrais nombres.",
+      "action": "Convertir en Excel",
+      "about": "Ouvrez dans Excel les données qu’une API ou une application a exportées en JSON. Une liste d’objets devient un tableau avec une colonne par clé (dans l’ordre d’apparition) et une ligne par objet ; une liste de listes est copiée telle quelle. Si le JSON est un objet dont les valeurs sont des listes, chacune va dans sa propre feuille. Les nombres et true/false restent tels quels, les dates ISO (2024-03-15) deviennent des dates Excel et les valeurs imbriquées sont enregistrées en texte JSON.",
+      "faq": {
+        "q1": "Quel JSON est accepté ?",
+        "a1": "Une liste d’objets (['{'\"a\": 1'}', '{'\"a\": 2'}']), une liste de listes ([[\"a\", \"b\"], [1, 2]]), une liste de valeurs, un objet unique (une ligne) ou un objet avec plusieurs listes, comme '{'\"clients\": [...], \"ventes\": [...]'}', qui donne une feuille par liste.",
+        "q2": "Et si les objets n’ont pas tous les mêmes clés ?",
+        "a2": "Une colonne est créée pour chaque clé présente dans au moins un objet ; quand un objet ne l’a pas, la cellule reste vide.",
+        "q3": "Et les objets ou listes imbriqués ?",
+        "a3": "Une cellule ne contient qu’une valeur : les données imbriquées sont donc écrites en texte JSON (par exemple [\"a\",\"b\"]). Pour les aplatir en colonnes, utilisez « JSON en CSV », qui les nomme comme adresse.ville.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. Tout est traité dans votre navigateur. Fichiers jusqu’à 50 Mo."
+      }
+    },
+    "merge-excel": {
+      "title": "Fusionner des fichiers Excel",
+      "description": "Réunissez plusieurs fichiers Excel, ODS ou CSV dans un seul classeur, avec une feuille par fichier ou toutes les lignes dans une seule feuille, dans votre navigateur.",
+      "action": "Fusionner",
+      "about": "Regroupez dans un seul fichier les classeurs Excel de plusieurs mois, agences ou personnes. Chaque feuille de chaque fichier peut devenir une feuille du nouveau classeur (un CSV ou un fichier d’une seule feuille prend le nom du fichier), ou toutes les lignes peuvent être empilées dans une seule feuille, les unes sous les autres, pour les filtrer et les additionner ensemble. En empilant, l’en-tête répété en haut de chaque feuille n’est gardé qu’une fois et, si vous le souhaitez, une première colonne indique de quel fichier vient chaque ligne. Classez les fichiers avant de fusionner : ils sont utilisés dans cet ordre.",
+      "faq": {
+        "q1": "Quelle différence entre les deux façons de fusionner ?",
+        "a1": "« Une feuille pour chaque feuille » copie les feuilles telles quelles dans un nouveau classeur, avec leurs formules. « Tout dans une seule feuille » met les lignes de toutes les feuilles les unes sous les autres : c’est utile quand elles ont toutes les mêmes colonnes, comme les ventes de chaque mois.",
+        "q2": "Les formules sont-elles conservées ?",
+        "a2": "Quand chaque feuille reste une feuille, oui. En empilant, non, car les lignes changent de place et les formules pointeraient vers d’autres cellules : le résultat de chaque formule est gardé comme valeur.",
+        "q3": "Puis-je fusionner les feuilles d’un seul fichier ?",
+        "a3": "Oui : choisissez un seul classeur et « Tout dans une seule feuille » pour empiler toutes ses feuilles en une.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. Tout se fait dans votre navigateur avec SheetJS ; les fichiers ne quittent pas votre appareil. La mise en forme (couleurs, bordures, largeurs) n’est pas conservée."
+      }
+    },
+    "split-excel": {
+      "title": "Séparer les feuilles Excel",
+      "description": "Séparez chaque feuille d’un classeur Excel ou ODS dans son propre fichier (XLSX, ODS ou CSV) et téléchargez-les toutes dans un ZIP, dans votre navigateur.",
+      "action": "Séparer les feuilles",
+      "about": "Quand un classeur a une feuille par mois, par client ou par agence et que vous devez envoyer chacune séparément, cet outil crée un fichier par feuille portant son nom, prêt à être téléchargé un par un ou tous ensemble dans un ZIP. Obtenez-les en Excel (XLSX), OpenDocument (ODS) ou CSV. Les formules à l’intérieur de chaque feuille sont conservées ; celles qui utilisent les données d’une autre feuille sont remplacées par leur résultat, car cette autre feuille ne sera pas dans le fichier.",
+      "faq": {
+        "q1": "Comment les fichiers sont-ils nommés ?",
+        "a1": "Avec le nom du classeur et celui de la feuille, par exemple ventes-Janvier.xlsx. Les caractères interdits dans les noms de fichiers sont remplacés par un tiret bas.",
+        "q2": "Que deviennent les formules qui utilisent d’autres feuilles ?",
+        "a2": "Une formule comme =Résumé!B2 ne fonctionnerait plus dans un fichier d’une seule feuille : son dernier résultat est donc gardé comme valeur. Les autres formules restent des formules.",
+        "q3": "Puis-je séparer plusieurs classeurs à la fois ?",
+        "a3": "Oui. Choisissez plusieurs fichiers et chacun est séparé en ses feuilles ; tout peut être téléchargé dans un ZIP.",
+        "q4": "Mes fichiers sont-ils envoyés ?",
+        "a4": "Non. Le classeur est traité dans votre navigateur et ne quitte pas votre appareil."
       }
     },
     "create-archive": {
@@ -1539,17 +1814,38 @@
       "about": "Saisissez ou collez un texte, ou ouvrez un fichier TXT, Markdown, HTML, PDF avec texte, Word (DOCX), EPUB ou la photo d’un document, et écoutez-le à voix haute. Vous pouvez mettre en pause, revenir à la phrase précédente, passer à la suivante et choisir la vitesse, de 0,5× à 2×. La phrase en cours de lecture est surlignée pour que vous suiviez. La lecture se fait avec les voix de votre appareil ou avec une voix IA plus naturelle (Supertonic 3) qui fonctionne dans votre navigateur et permet de télécharger la lecture en MP3. Le texte est extrait et converti en voix sur votre appareil : le fichier n’est envoyé à aucun serveur.",
       "faq": {
         "q1": "Mon texte est-il envoyé à un serveur ?",
-        "a1": "Non. Le fichier est lu et son texte extrait dans votre navigateur, et la voix IA génère l’audio sur votre appareil : seuls les fichiers du modèle sont téléchargés, depuis Hugging Face, la première fois. Les voix de l’appareil lisent aussi sur votre ordinateur ou téléphone ; seules les voix marquées « en ligne » (par exemple celles de Google ou de Microsoft dans Chrome et Edge) envoient le texte à ce fournisseur pour générer l’audio.",
+        "a1": "Non. Le fichier est lu et son texte extrait dans votre navigateur, et la voix IA génère l’audio sur votre appareil : seuls les fichiers du modèle sont téléchargés, la première fois, depuis notre serveur de modèles ou depuis Hugging Face. Les voix de l’appareil lisent aussi sur votre ordinateur ou téléphone ; seules les voix marquées « en ligne » (par exemple celles de Google ou de Microsoft dans Chrome et Edge) envoient le texte à ce fournisseur pour générer l’audio.",
         "q2": "Quels fichiers puis-je ouvrir ?",
         "a2": "TXT, Markdown, HTML, PDF avec texte, Word (DOCX), EPUB et photos ou numérisations (JPG, PNG, WEBP, TIFF, HEIC…), dont le texte est reconnu par OCR. Jusqu’à 50 000 caractères par lecture ; au-delà, le texte est coupé et nous vous prévenons.",
         "q3": "Dans quelles langues lit-il ?",
         "a3": "Nous détectons la langue du texte (espagnol, anglais, portugais, français ou chinois) et choisissons une voix dans cette langue ; vous pouvez changer la langue et la voix. La voix IA et le téléchargement MP3 sont disponibles en espagnol, anglais, portugais et français ; le chinois est lu avec les voix de l’appareil, qui dépendent de votre système et de votre navigateur.",
         "q4": "Quelle différence entre les voix de l’appareil et la voix IA ?",
-        "a4": "Les voix de l’appareil viennent avec votre système ou navigateur : elles démarrent tout de suite et ne téléchargent rien, mais leur qualité varie et elles ne peuvent pas être enregistrées en fichier. La voix IA (Supertonic 3) est plus naturelle, propose 10 voix et permet de télécharger un MP3, mais la première fois elle télécharge environ 400 Mo (ensuite elle reste enregistrée dans votre navigateur) et génère l’audio avec le processeur de votre appareil : sur un ordinateur, cela prend à peu près la durée de l’audio ; sur un téléphone, nettement plus.",
+        "a4": "Les voix de l’appareil viennent avec votre système ou navigateur : elles démarrent tout de suite et ne téléchargent rien, mais leur qualité varie et elles ne peuvent pas être enregistrées en fichier. La voix IA (Supertonic 3) est plus naturelle, propose 10 voix et permet de télécharger un MP3, mais la première fois elle télécharge le modèle, de 200 à 400 Mo selon le serveur (l’outil affiche la taille avant de commencer ; ensuite elle reste enregistrée dans votre navigateur) et génère l’audio avec le processeur de votre appareil : sur un ordinateur, cela prend à peu près la durée de l’audio ; sur un téléphone, nettement plus. Avant de télécharger, vous pouvez écouter un extrait de chaque voix ; elles utilisent toutes le même modèle, donc le téléchargement est le même pour chacune et n’a lieu qu’une fois.",
         "q5": "Comment télécharger la lecture en MP3 ?",
         "a5": "Choisissez la voix IA et appuyez sur « Télécharger le MP3 ». Il est généré phrase par phrase sur votre appareil, avec une barre de progression et un bouton Annuler, et le fichier porte le titre du document ou les premiers mots du texte. Sur téléphone, le MP3 accepte jusqu’à 3 000 caractères (environ 4 minutes d’audio).",
         "q6": "Puis-je publier l’audio généré avec la voix IA ?",
         "a6": "Oui, mais la licence du modèle (OpenRAIL-M) impose d’indiquer qu’il s’agit d’une voix générée par IA et interdit notamment de l’utiliser pour usurper l’identité de personnes, diffamer, harceler ou diffuser de fausses informations pour nuire à autrui. Les restrictions complètes figurent dans nos Conditions et dans la licence du modèle, accessible à côté du bouton de téléchargement."
+      }
+    },
+    "audio-to-text": {
+      "title": "Transcrire un audio en texte",
+      "description": "Transformez un audio, un mémo vocal ou une vidéo en texte horodaté, à télécharger en TXT, SRT ou VTT. Gratuit, avec une IA dans votre navigateur, sans envoi du fichier.",
+      "searchTerms": "transcription voix en texte speech to text dictée sous-titres automatiques whisper message vocal convertir audio en texte",
+      "action": "Transcrire",
+      "about": "Ouvrez un audio (MP3, WAV, M4A, OGG, FLAC, mémos vocaux…) ou une vidéo (MP4, MOV, MKV, WEBM) et obtenez le texte de ce qui est dit, découpé en phrases avec leur minutage. Vous pouvez corriger le texte dans la page, le copier et le télécharger en TXT, ou en sous-titres SRT et VTT prêts pour une vidéo. La transcription est faite par Whisper, le modèle de reconnaissance vocale d'OpenAI, qui fonctionne dans votre navigateur : l'audio ne quitte pas votre appareil. La première fois, le modèle est téléchargé depuis Hugging Face (43 Mo pour le rapide, 79 Mo pour le précis) et conservé pour les fois suivantes. La langue est détectée automatiquement, ou vous pouvez la choisir parmi près de 100 langues. Jusqu'à 30 minutes d'audio par fichier.",
+      "faq": {
+        "q1": "Mon audio est-il envoyé sur un serveur ?",
+        "a1": "Non. Le fichier est décodé et transcrit dans votre navigateur, avec le processeur de votre appareil. Seul le modèle vocal est téléchargé, depuis notre serveur de modèles ou depuis Hugging Face, la première fois ; il reste ensuite dans votre navigateur.",
+        "q2": "Quel modèle choisir, rapide ou précis ?",
+        "a2": "Le rapide (Whisper tiny, 43 Mo) convient aux audios clairs, avec une seule personne et peu de bruit, et c'est celui à utiliser sur téléphone. Le précis (Whisper base, 79 Mo) se trompe moins avec les accents, le bruit de fond et les mots rares, mais prend environ 1,7 fois plus de temps. Si le résultat du rapide contient beaucoup d'erreurs, essayez le précis.",
+        "q3": "Combien de temps cela prend-il ?",
+        "a3": "Cela dépend de votre appareil et du modèle. Sur un ordinateur récent, le modèle rapide transcrit en général plus vite que la durée de l'audio ; sur un téléphone, cela peut prendre plus longtemps. Pendant le travail, vous voyez la progression et le temps restant estimé, et vous pouvez annuler à tout moment.",
+        "q4": "Puis-je transcrire une vidéo ou un message vocal WhatsApp ?",
+        "a4": "Oui. Pour une vidéo, c'est son son qui est transcrit (MP4, MOV, MKV ou WEBM). Les messages vocaux WhatsApp (.opus ou .ogg), Telegram et les enregistrements de l'iPhone (.m4a) fonctionnent aussi. La limite est de 30 minutes par fichier ; au-delà, découpez-le avec « Couper un audio ».",
+        "q5": "Comment faire des sous-titres pour une vidéo ?",
+        "a5": "Transcrivez la vidéo et téléchargez le fichier SRT ou VTT : chaque phrase a son début et sa fin, en lignes de 42 caractères au plus. Si vous corrigez des mots sans fusionner ni couper de lignes, les sous-titres reprennent votre correction. S'ils sont en avance ou en retard, décalez-les avec « Synchroniser des sous-titres ».",
+        "q6": "La transcription est-elle exacte ?",
+        "a6": "Avec une voix claire, elle reconnaît en général la grande majorité des mots, mais elle peut se tromper sur les noms propres, les chiffres, plusieurs personnes qui parlent en même temps, la musique ou un bruit fort, et elle ne distingue pas les locuteurs. Relisez le texte avant de l'utiliser pour quelque chose d'important."
       }
     }
   },
@@ -1884,7 +2180,7 @@
             "Railway (États-Unis) : serveurs et base de données qui font fonctionner le site.",
             "Resend (États-Unis) : envoie l'e-mail contenant votre lien de connexion.",
             "Google (États-Unis) : connexion avec Google, si vous la choisissez ; et Google AdSense, qui affiche des annonces (voir la section 6).",
-            "Hugging Face (États-Unis) : si vous choisissez la voix IA de « Lire un texte à voix haute », votre navigateur télécharge les fichiers du modèle depuis Hugging Face (une seule fois). Comme pour tout téléchargement, Hugging Face reçoit votre adresse IP et des données techniques du navigateur ; votre texte n’est pas envoyé.",
+            "Hugging Face (États-Unis) : si vous choisissez la voix IA de « Lire un texte à voix haute » ou utilisez « Transcrire un audio en texte », votre navigateur télécharge les fichiers du modèle (une seule fois par modèle) depuis notre stockage sur Cloudflare R2 (Cloudflare, États-Unis) ou, s’il n’est pas disponible, depuis Hugging Face. Comme pour tout téléchargement, celui qui sert le fichier reçoit votre adresse IP et des données techniques du navigateur ; votre texte et votre audio ne sont pas envoyés.",
             "Voix « en ligne » de votre navigateur (par exemple Google dans Chrome ou Microsoft dans Edge) : si vous en choisissez une dans « Lire un texte à voix haute », le navigateur envoie le texte à ce fournisseur pour générer l’audio, selon la politique de confidentialité de ce fournisseur. C’est le navigateur qui les propose, pas nous, et nous les marquons « en ligne » ; les autres voix et la voix IA lisent sur votre appareil."
           ],
           "proItems": [
@@ -1914,7 +2210,7 @@
             "Cookies de session Auth.js : vous maintiennent connecté.",
             "Stockage local du navigateur : mémorise le thème clair ou sombre.",
             "Stockage local du navigateur : dans « Lire un texte à voix haute », la vitesse, le type de voix et la voix choisis.",
-            "Cache du navigateur : les fichiers du modèle de la voix IA (environ 400 Mo), pour ne pas les télécharger de nouveau. Vous pouvez les supprimer en effaçant les données de ce site dans votre navigateur."
+            "Cache du navigateur : les fichiers du modèle de la voix IA (de 200 à 400 Mo), pour ne pas les télécharger de nouveau. Vous pouvez les supprimer en effaçant les données de ce site dans votre navigateur."
           ],
           "proItems": [
             "Cookie de pays : mémorise le pays choisi pour les prix (1 an)."
@@ -2307,11 +2603,51 @@
       "upper": "MAJUSCULES",
       "lower": "minuscules",
       "title": "Casse De Titre",
-      "sentence": "Casse de phrase"
+      "sentence": "Casse de phrase",
+      "alternating": "aLtErNéE",
+      "inverse": "iNVERSER"
     },
     "copy": "Copier le texte",
     "copied": "Copié",
-    "download": "Télécharger .txt"
+    "download": "Télécharger .txt",
+    "textLanguage": "Langue du texte",
+    "smallWords": "Casse De Titre : laisser en minuscules les articles, prépositions et conjonctions courtes",
+    "undo": "Annuler",
+    "countWords": "Compter les mots",
+    "textA": "Texte d'origine",
+    "textB": "Nouveau texte",
+    "compareBy": "Comparer par",
+    "byLine": "Lignes",
+    "byWord": "Mots",
+    "ignoreCase": "Ignorer majuscules et minuscules",
+    "ignoreWhitespace": "Ignorer les espaces en trop",
+    "compare": "Comparer",
+    "swap": "Inverser",
+    "differences": "Différences",
+    "identical": "Les textes sont identiques.",
+    "lineSummary": "{changed, plural, =0 {Aucune ligne modifiée} one {# ligne modifiée} other {# lignes modifiées}}, {added, plural, =0 {aucune ajoutée} one {# ajoutée} other {# ajoutées}} et {removed, plural, =0 {aucune supprimée} one {# supprimée} other {# supprimées}}.",
+    "wordSummary": "{added, plural, =0 {Aucun mot ajouté} one {# mot ajouté} other {# mots ajoutés}} et {removed, plural, =0 {aucun supprimé} one {# supprimé} other {# supprimés}}.",
+    "tooDifferent": "Les textes sont trop différents pour être comparés ligne par ligne. Essayez avec des parties plus courtes.",
+    "removedWord": "supprimé :",
+    "addedWord": "ajouté :",
+    "removedLine": "Ligne supprimée :",
+    "addedLine": "Ligne ajoutée :",
+    "downloadDiff": "Télécharger le .diff",
+    "removeDuplicates": "Supprimer les lignes en double",
+    "trimLines": "Couper les espaces au début et à la fin",
+    "removeEmpty": "Supprimer les lignes vides",
+    "sort": "Trier",
+    "sortNone": "Sans tri",
+    "sortAsc": "A → Z",
+    "sortDesc": "Z → A",
+    "lineResult": "{before, plural, one {# ligne} other {# lignes}} → {after, plural, one {# ligne} other {# lignes}} ({duplicates, plural, one {# doublon supprimé} other {# doublons supprimés}}, {empty, plural, one {# vide} other {# vides}}).",
+    "result": "Résultat",
+    "loremUnit": "Générer",
+    "startWithLorem": "Commencer par « Lorem ipsum dolor sit amet… »",
+    "asHtml": "En paragraphes HTML (balises p)",
+    "generate": "Générer le texte",
+    "regenerate": "En générer un autre",
+    "downloadHtml": "Télécharger le .html"
   },
   "UtilityTools": {
     "copied": "Copié",
@@ -2699,7 +3035,31 @@
     "delimiterSemicolon": "Point-virgule ( ; ) et virgule décimale — Excel en français",
     "allSheets": "Un CSV par feuille (sinon, seulement la première)",
     "bom": "UTF-8 avec BOM (Excel affiche bien les accents)",
-    "note": "Les feuilles, valeurs et formules sont conservées ; la mise en forme (couleurs, bordures, largeurs) ne l'est pas."
+    "note": "Les feuilles, valeurs et formules sont conservées ; la mise en forme (couleurs, bordures, largeurs) ne l'est pas.",
+    "sheet": "Feuille",
+    "sheetOption": "{name} ({rows, plural, one {# ligne} other {# lignes}})",
+    "sheetAll": "Toutes les feuilles (un CSV par feuille)",
+    "sheetAllJson": "Toutes les feuilles (un objet avec une liste par feuille)",
+    "allSheetsJson": "Toutes les feuilles dans un seul JSON (sinon, seulement la première)",
+    "delimiterTab": "Tabulation (TSV)",
+    "jsonShape": "Chaque ligne comme",
+    "jsonObjects": "Objets (la première ligne donne les clés)",
+    "jsonArrays": "Listes de valeurs",
+    "noteCsv": "Les nombres gardent toutes leurs décimales et les dates sortent comme dans la feuille.",
+    "noteJson": "Nombres et true/false tels quels, dates en ISO (2024-03-15) et cellules vides en null.",
+    "mergeMode": "Comment fusionner",
+    "mergeSheets": "Une feuille pour chaque feuille",
+    "mergeStack": "Tout dans une seule feuille, les unes sous les autres",
+    "skipHeader": "Ne garder qu’une fois l’en-tête répété",
+    "sourceColumn": "Ajouter une colonne avec le fichier d’origine",
+    "noteMerge": "Les valeurs et les formules sont conservées ; la mise en forme ne l’est pas.",
+    "noteStack": "Les lignes sont empilées dans l’ordre des fichiers ; les formules deviennent leur résultat.",
+    "mergedSheet": "Fusion",
+    "sourceHeader": "Origine",
+    "mergedFile": "fusion",
+    "splitTarget": "Enregistrer chaque feuille en",
+    "noteSplit": "Un fichier par feuille, portant son nom ; toutes ensemble dans un ZIP.",
+    "sheetLoading": "Lecture des feuilles…"
   },
   "ArchiveTool": {
     "format": "Format",
@@ -3017,10 +3377,13 @@
     "intro": "Fileflect repose sur des logiciels libres et open source. Voici chaque composant tiers qui arrive dans votre navigateur ou tourne sur notre serveur, avec sa version, sa licence et l’endroit où trouver son code.",
     "download": "Télécharger les mentions des tiers (.txt)",
     "downloadHint": "Textes complets des licences, mentions de copyright et fichiers NOTICE de tous les composants.",
+    "sourceCodeHeading": "Code source",
+    "sourceCodeIntro": "Fileflect est un logiciel libre : son code est publié sous la licence GNU AGPL-3.0 ou ultérieure. Vous pouvez le lire, le modifier et le redistribuer selon cette licence. Le nom « Fileflect » et le logo ne sont pas couverts par la licence.",
+    "sourceCodeLink": "Voir le code source de Fileflect",
     "lgplHeading": "Composants sous LGPL",
     "lgplIntro": "Ces composants sont utilisés sous la Licence publique générale limitée GNU (LGPL), sans modification et sous forme de fichiers séparés (modules WebAssembly ou bibliothèques dynamiques) remplaçables par une autre version. Les liens de chacun mènent à son code source exact et aux instructions avec lesquelles il a été compilé.",
     "enginesHeading": "Moteurs et données inclus",
-    "enginesIntro": "Bibliothèques compilées en WebAssembly incluses dans les paquets ci-dessous, notre propre compilation de libarchive, les modèles servis depuis notre domaine et la voix IA de « Lire un texte à voix haute » (code porté du SDK Supertonic, MIT, et le modèle Supertonic 3, que votre navigateur télécharge depuis Hugging Face seulement si vous choisissez cette voix ; sa licence OpenRAIL-M est en lien).",
+    "enginesIntro": "Bibliothèques compilées en WebAssembly incluses dans les paquets ci-dessous, notre propre compilation de libarchive, les modèles servis depuis notre domaine et la voix IA de « Lire un texte à voix haute » (code porté du SDK Supertonic, MIT, et le modèle Supertonic 3, que votre navigateur télécharge depuis Hugging Face, ou une copie aux poids en float16 depuis notre serveur de modèles, seulement si vous choisissez cette voix ; sa licence OpenRAIL-M est en lien).",
     "servicesHeading": "Services du serveur",
     "servicesIntro": "Programmes qui tournent à part sur notre serveur (non distribués avec Fileflect) : ils convertissent les documents bureautiques et stockent les données des comptes.",
     "packagesHeading": "Paquets JavaScript ({count})",
@@ -3097,7 +3460,15 @@
     "aiNoChinese": "La voix IA n’est pas disponible en chinois : le texte est lu avec les voix de l’appareil.",
     "aiVoiceFemale": "Femme {n}",
     "aiVoiceMale": "Homme {n}",
-    "aiConfirm": "La voix IA doit télécharger environ {size} depuis Hugging Face. Seulement la première fois : elle reste enregistrée dans votre navigateur. Votre texte n’est pas envoyé : seuls les fichiers du modèle sont téléchargés.",
+    "aiSamplesTitle": "Écouter les voix IA avant de télécharger",
+    "aiSamplesNote": "Ce sont de courts enregistrements de chaque voix. Toutes les voix utilisent le même modèle : le téléchargement est le même pour chacune (environ {size}) et n’a lieu qu’une fois, quand vous lancez la lecture ou téléchargez le MP3 avec la voix IA.",
+    "aiSamplePlay": "Écouter l’extrait : {voice}",
+    "aiSampleStop": "Arrêter l’extrait : {voice}",
+    "aiSampleError": "Impossible de lire l’extrait. Réessayez.",
+    "aiRecommended": "Recommandée",
+    "aiVoiceChoose": "Choisir",
+    "aiVoiceChosen": "Choisie",
+    "aiConfirm": "La voix IA doit télécharger environ {size} depuis {source, select, own {notre serveur de modèles} other {Hugging Face}}. Seulement la première fois : elle reste enregistrée dans votre navigateur. Votre texte n’est pas envoyé : seuls les fichiers du modèle sont téléchargés.",
     "aiConfirmPhone": "Sur un téléphone, mieux vaut le Wi-Fi ; la génération est plus lente et utilise beaucoup de mémoire.",
     "aiDownload": "Télécharger la voix IA",
     "aiDownloading": "Téléchargement de la voix IA…",
@@ -3110,5 +3481,166 @@
     "aiLicense": "Licence du modèle (OpenRAIL-M)",
     "mp3TooLongMobile": "Sur un téléphone, le MP3 accepte jusqu’à {max} caractères. Raccourcissez le texte ou générez le MP3 sur un ordinateur.",
     "mp3Done": "MP3 prêt : {name}"
+  },
+  "PdfExcelTool": {
+    "reading": "Recherche des tableaux dans le PDF…",
+    "scanned": "Ce PDF n’a pas de texte : il ressemble à une image scannée, et les tableaux sont reconnus à partir du texte. Passez-le d’abord par la reconnaissance de texte (OCR) et revenez avec le PDF obtenu. La précision est moindre : vérifiez les nombres dans l’aperçu.",
+    "scannedLink": "Ouvrir « OCR de PDF numérisé »",
+    "found": "{count, plural, one {# tableau détecté.} other {# tableaux détectés.}}",
+    "noTable": "Aucun tableau détecté : le texte sera copié ligne par ligne.",
+    "previewOf": "Aperçu",
+    "tableOption": "Page {page} : {rows, plural, one {# ligne} other {# lignes}} × {columns, plural, one {# colonne} other {# colonnes}}",
+    "previewCaption": "Tableau détecté à la page {page}",
+    "moreRows": "{count, plural, one {et # ligne de plus} other {et # lignes de plus}}",
+    "grouping": "Feuilles",
+    "groupPage": "Une feuille par page",
+    "groupTable": "Une feuille par tableau",
+    "groupAll": "Tout dans une feuille",
+    "groupPageCsv": "Un CSV par page",
+    "groupTableCsv": "Un CSV par tableau",
+    "groupAllCsv": "Tout dans un CSV",
+    "decimal": "Séparateur décimal des nombres",
+    "decimalAuto": "Détecter",
+    "decimalComma": "Virgule (1 234,56)",
+    "decimalPoint": "Point (1,234.56)",
+    "sheetPage": "Page {n}",
+    "sheetTable": "Tableau {n}",
+    "sheetAll": "Tableaux",
+    "note": "Les colonnes sont déduites de l’alignement du texte : vérifiez l’aperçu avant de télécharger."
+  },
+  "EditPdf": {
+    "toolbar": "Outils de modification",
+    "tools": {
+      "select": "Sélectionner",
+      "text": "Texte",
+      "highlight": "Surligner",
+      "ink": "Dessiner",
+      "rect": "Rectangle",
+      "line": "Ligne",
+      "arrow": "Flèche",
+      "whiteout": "Masquer",
+      "image": "Image"
+    },
+    "hints": {
+      "select": "Touchez un élément pour le sélectionner et faites-le glisser pour le déplacer ; le petit carré dans son coin le redimensionne. Suppr l'efface.",
+      "text": "Touchez la page à l'endroit où écrire et tapez le texte dans la zone ci-dessus.",
+      "highlight": "Faites glisser sur le texte à surligner.",
+      "ink": "Dessinez au doigt ou à la souris.",
+      "rect": "Faites glisser pour dessiner un rectangle.",
+      "line": "Faites glisser pour dessiner une ligne.",
+      "arrow": "Faites glisser depuis le début de la flèche jusqu'à sa pointe.",
+      "whiteout": "Faites glisser sur ce que vous voulez masquer avec un cadre blanc.",
+      "image": "Choisissez une image PNG ou JPG ; elle apparaît au centre de la page et vous pouvez la déplacer et la redimensionner."
+    },
+    "undo": "Annuler",
+    "redo": "Rétablir",
+    "zoomIn": "Zoom avant",
+    "zoomOut": "Zoom arrière",
+    "color": "Couleur",
+    "colors": {
+      "black": "Noir",
+      "red": "Rouge",
+      "blue": "Bleu",
+      "green": "Vert",
+      "orange": "Orange",
+      "yellow": "Jaune"
+    },
+    "otherColor": "Autre couleur",
+    "width": "Épaisseur : {value} pt",
+    "font": "Police",
+    "fonts": {
+      "helvetica": "Helvetica",
+      "helvetica-bold": "Helvetica gras",
+      "times": "Times",
+      "courier": "Courier"
+    },
+    "fontSize": "Taille (pt)",
+    "text": "Texte",
+    "textPlaceholder": "Écrivez ici…",
+    "redact": "Masquer vraiment (transforme cette page en image)",
+    "redactNote": "La page est enregistrée comme une image de haute qualité : ce qui est masqué disparaît du fichier, mais le texte de cette page ne pourra plus être sélectionné ni recherché.",
+    "whiteoutNote": "Un cadre blanc masque à la vue, mais le texte en dessous reste dans le fichier et peut être copié ou recherché. Pour le supprimer, sélectionnez le cadre et cochez « Masquer vraiment ».",
+    "whiteBox": "Cadre blanc",
+    "redactedBox": "Cadre blanc (la page deviendra une image)",
+    "delete": "Supprimer",
+    "hintSelect": "Choisissez un outil ou touchez un élément pour le modifier.",
+    "pages": "Pages",
+    "pageEdited": "modifiée",
+    "surface": "Page {n}, {count, plural, =0 {aucun élément ajouté} one {# élément ajouté} other {# éléments ajoutés}}",
+    "save": "Enregistrer le PDF"
+  },
+  "FillPdfForm": {
+    "reading": "Recherche des champs du formulaire…",
+    "found": "{count, plural, one {Nous avons trouvé # champ.} other {Nous avons trouvé # champs.}}",
+    "hint": "Remplissez-les ici : l'aperçu montre où se trouve chacun d'eux.",
+    "noFields": "Ce PDF n'a pas de champs de formulaire à remplir (il peut s'agir d'un formulaire imprimé puis scanné, ou fait uniquement de lignes). Vous pouvez écrire sur la page avec Modifier un PDF.",
+    "xfaOnly": "Ce PDF est un formulaire XFA (le format d'Adobe LiveCycle) : seul Adobe Acrobat peut remplir ses champs. Vous pouvez aussi écrire sur la page avec Modifier un PDF.",
+    "hybridXfa": "Ce formulaire contient aussi une version XFA, que seul Adobe Acrobat utilise. La version standard des champs (celle qu'affichent Chrome, Firefox, Aperçu et la plupart des lecteurs) sera enregistrée et la partie XFA retirée, pour que personne ne voie d'anciennes données.",
+    "editPdfLink": "Ouvrir Modifier un PDF",
+    "signatureField": "Le formulaire contient un champ de signature numérique : il ne se remplit pas ici.",
+    "signPdfLink": "Pour ajouter une signature dessinée, utilisez Signer un PDF.",
+    "otherFields": "Autres champs",
+    "readOnly": "(lecture seule)",
+    "maxLength": "{count, plural, one {# caractère maximum} other {# caractères maximum}}",
+    "noChoice": "— Aucun —",
+    "clearChoice": "Effacer le choix",
+    "flatten": "Aplatir le formulaire (les valeurs sont figées sur la page et ne peuvent plus être modifiées)",
+    "flattenHint": "Sans aplatissement, le PDF reste un formulaire et peut être rempli ou corrigé à nouveau.",
+    "notFlattened": "Impossible d'aplatir : ces champs contiennent des caractères que la police du formulaire ne sait pas dessiner (par exemple du chinois ou des emoji) : {fields}. Le PDF a été enregistré avec les valeurs, sans aplatissement ; Chrome, Firefox, Acrobat et Aperçu les affichent quand même.",
+    "redrawnByReader": "Ces champs contiennent des caractères que la police du formulaire ne sait pas dessiner (par exemple du chinois ou des emoji) : {fields}. Les valeurs ont été enregistrées et le lecteur PDF les dessine à l'ouverture (Chrome, Firefox, Acrobat et Aperçu le font)."
+  },
+  "PdfPptTool": {
+    "imagesNote": "Chaque diapositive est une image de la page : elle est identique au PDF, mais le texte n'est pas modifiable.",
+    "wordLink": "Besoin de modifier le texte ? Convertissez le PDF en Word.",
+    "quality": "Qualité des images",
+    "standard": "Standard (150 ppp)",
+    "high": "Haute (220 ppp, fichier plus lourd)"
+  },
+  "TranscribeTool": {
+    "whereNote": "Transcription dans votre navigateur avec Whisper : l'audio ne quitte pas votre appareil.",
+    "pickHint": "Audio ou vidéo : MP3, WAV, M4A, OGG, OPUS, FLAC, MP4, MOV, MKV, WEBM… jusqu'à 30 minutes.",
+    "reading": "lecture…",
+    "duration": "durée {time}",
+    "model": "Modèle",
+    "modelFast": "Rapide",
+    "modelPrecise": "Précis (plus lent)",
+    "modelCached": "déjà téléchargé",
+    "downloadNote": "La première fois, {size} sont téléchargés depuis {source, select, own {notre serveur de modèles} other {Hugging Face}} ; le modèle reste ensuite dans ce navigateur.",
+    "cachedNote": "Le modèle est déjà enregistré dans ce navigateur : rien à télécharger.",
+    "language": "Langue de l'audio",
+    "languageAuto": "Détecter automatiquement",
+    "decoding": "Lecture de l'audio…",
+    "downloading": "Téléchargement du modèle ({size})…",
+    "loadingModel": "Chargement du modèle…",
+    "transcribing": "Transcription…",
+    "timeLeft": "Encore environ {time}",
+    "seconds": "{n} s",
+    "minutes": "{n} min",
+    "resultLabel": "Transcription",
+    "resultHint": "Chaque ligne est un sous-titre. Si vous corrigez des mots sans fusionner ni couper de lignes, le SRT et le VTT reprennent votre correction.",
+    "linesChanged": "Vous avez changé le nombre de lignes : le TXT utilise votre version, mais le SRT et le VTT gardent le texte d'origine pour conserver le minutage.",
+    "detected": "Langue détectée : {language}. Si elle est fausse, choisissez-la et transcrivez à nouveau.",
+    "download": "Télécharger {format}",
+    "empty": "Aucun mot n'a été reconnu. Le fichier contient-il de la voix ? Essayez de choisir la langue ou le modèle précis.",
+    "accuracyNote": "La transcription automatique peut contenir des erreurs, surtout avec les noms propres, les chiffres, le bruit ou plusieurs personnes qui parlent : relisez-la avant de l'utiliser.",
+    "syncLink": "Ajuster le minutage des sous-titres",
+    "readLink": "Écouter un texte lu à voix haute"
+  },
+  "Guides": {
+    "home": "Accueil",
+    "indexTitle": "Guides",
+    "indexMetaTitle": "Guides pour convertir et modifier vos fichiers",
+    "indexIntro": "Des explications pas à pas pour des tâches précises sur vos fichiers : quel format choisir, comment faire avec nos outils et à quoi faire attention.",
+    "author": "L’équipe Fileflect",
+    "byline": "Par {author}",
+    "published": "Publié le {date}",
+    "updated": "mis à jour le {date}",
+    "updatedOn": "Mis à jour le {date}",
+    "readingTime": "{minutes} min de lecture",
+    "contents": "Dans ce guide",
+    "toolsTitle": "Outils utilisés dans ce guide",
+    "relatedTitle": "Autres guides",
+    "allGuides": "Tous les guides",
+    "breadcrumb": "Fil d’Ariane"
   }
 }

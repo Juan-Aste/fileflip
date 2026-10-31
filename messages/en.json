@@ -48,7 +48,9 @@
       "conversions": "Popular conversions",
       "company": "Fileflect"
     },
-    "allTools": "All tools"
+    "allTools": "All tools",
+    "guides": "Guides",
+    "source": "Source code"
   },
   "HomePage": {
     "title": "Convert your files without them ever leaving your computer",
@@ -230,6 +232,7 @@
     "noAudioTrack": "This file has no audio track.",
     "audioCodecUnsupported": "Your browser can't read the audio in this file (for example, AAC in some browsers). Try Chrome, Edge or Safari, or another format.",
     "audioTooLong": "The audio is too long: the maximum is 3 hours per file.",
+    "transcribeTooLong": "The audio is too long to transcribe in the browser: the maximum is 30 minutes. Split it into parts with “Trim audio”.",
     "tooManyPages": "This PDF has too many pages to recognize in the browser (100 at most).",
     "pdfAlreadySearchable": "Every page of this PDF already has text: it's searchable without OCR. Use “PDF to text” to extract it.",
     "audioRangeInvalid": "Check the times: the start must come before the end and both must be within the audio.",
@@ -626,6 +629,70 @@
         "a2": "Yes: open a text file (.txt, .md, .csv, .srt…) and it loads into the box. If it comes from Windows with accents in another encoding, that is detected automatically.",
         "q3": "How is the reading time calculated?",
         "a3": "At 200 words per minute, rounded up."
+      }
+    },
+    "case-converter": {
+      "title": "Case converter",
+      "description": "Change text to UPPER CASE, lower case, Title Case, Sentence case or aLtErNaTiNg case instantly, following each language's rules.",
+      "action": "Convert",
+      "about": "Paste text typed with Caps Lock on, a heading in all lower case or a list of names, and change it with one click. Sentence case capitalizes only the first letter of each sentence; Title Case capitalizes every word and, if you leave the option on, keeps short articles, prepositions and conjunctions of the chosen language in lower case (of, the, and, de, la…) except for the first and last word, as most English style guides do. Language-specific rules are respected, such as the dotted capital İ in Turkish and the Dutch IJ. If you don't like the result, Undo brings back the previous text.",
+      "faq": {
+        "q1": "Which style of title case does it use?",
+        "a1": "Major words are capitalized; articles, coordinating conjunctions and prepositions of up to four letters stay in lower case unless they are the first or last word or follow a colon. Turn the option off to capitalize every word.",
+        "q2": "Does it change proper nouns to lower case?",
+        "a2": "Yes: the tool can't tell which words are names, so lower case or Sentence case turns \"London\" into \"london\". Check names after converting.",
+        "q3": "What is the text language for?",
+        "a3": "It chooses which short words stay in lower case in Title Case and applies special rules: in Turkish a lower-case i becomes a dotted İ, and in Dutch \"ijsland\" becomes \"IJsland\".",
+        "q4": "Is my text sent to a server?",
+        "a4": "No. The conversion runs in your browser and the text never leaves your device."
+      }
+    },
+    "compare-text": {
+      "title": "Compare text",
+      "description": "Compare two texts and highlight the differences by line and by word: what was added, removed and changed, in your browser.",
+      "action": "Compare",
+      "about": "Paste the original version on the left and the new one on the right (or open two text files) and see line by line what was removed, in red and struck through, and what was added, in green. In lines that changed only the different words are marked, so you can spot a changed comma or number without reading everything again. You can also compare the whole text word by word regardless of line breaks, ignore case or extra spaces, and download the differences as a .diff file, the format git and review tools read.",
+      "faq": {
+        "q1": "What is the difference between comparing by line and by word?",
+        "a1": "By line suits lists, code, settings or contracts whose paragraphs stay in place: every line is shown with its number. By word joins the whole text and marks the words that differ: better for a rewritten paragraph whose line breaks moved.",
+        "q2": "Can I compare Word or PDF files?",
+        "a2": "Not directly: it compares text. Copy the text of each document and paste it, or extract it first with \"PDF to text\" and then compare it here.",
+        "q3": "What is the .diff file?",
+        "a3": "A patch in unified format: it lists only the changed lines with 3 lines of context. git, code review tools and the patch command read it, and patch can apply the changes to the original text.",
+        "q4": "Are my texts sent to a server?",
+        "a4": "No. The comparison runs in your browser with jsdiff and the texts never leave your device, so you can compare contracts or private documents."
+      }
+    },
+    "remove-duplicate-lines": {
+      "title": "Remove duplicate lines",
+      "description": "Remove repeated lines from a list, drop empty ones, trim spaces and sort alphabetically, instantly and in your browser.",
+      "action": "Clean",
+      "about": "Paste a list of emails, names, keywords or codes and the result appears instantly without the repeated lines: the first occurrence of each one is kept, in the original order. You can ignore case (so \"Ann\" and \"ann\" count as the same), trim the leading and trailing spaces that you can't see but make two lines look different, remove empty lines, and sort A to Z or the other way round using the language's rules: accented letters sort next to their base letter and numbers sort by value (\"item 2\" before \"item 10\"). Below it shows how many lines were removed.",
+      "faq": {
+        "q1": "Which of the repeated lines is kept?",
+        "a1": "The first one, where it appears. If you ignore case, it stays written as in that first occurrence.",
+        "q2": "Why aren't two identical lines detected as duplicates?",
+        "a2": "Usually because of invisible spaces at the start or end, or different capitalization. Keep \"Trim spaces\" on and turn on \"Ignore upper and lower case\".",
+        "q3": "How does it sort accented words?",
+        "a3": "With the alphabetical order of the page's language: \"éclair\" sorts next to \"eclipse\", not at the end, and numbers inside the text are compared by value.",
+        "q4": "Is my list uploaded to a server?",
+        "a4": "No. Everything happens in your browser and the list never leaves your device, so you can clean lists of emails or customers without sharing them."
+      }
+    },
+    "lorem-ipsum": {
+      "title": "Lorem ipsum generator",
+      "description": "Generate Lorem ipsum placeholder text by paragraphs, sentences or words, as plain text or HTML, for mockups and layouts.",
+      "action": "Generate",
+      "about": "Lorem ipsum is the placeholder text designers and printers have used for decades to see how a page looks before the real copy exists: it looks like Latin, so it doesn't distract, but it means nothing. It comes from a passage by Cicero (\"De finibus bonorum et malorum\"), cut and scrambled. Choose how many paragraphs, sentences or words you need, whether it should start with the classic \"Lorem ipsum dolor sit amet…\", and whether you want HTML paragraphs (p tags) to paste into a web page. Each time you generate you get a different text.",
+      "faq": {
+        "q1": "What does Lorem ipsum mean?",
+        "a1": "Nothing: they are Latin words from a text by Cicero, cut and mixed up. \"Dolorem ipsum\" means \"pain itself\", but the placeholder text makes no sense on purpose, so that people look at the design and not the content.",
+        "q2": "How much text can I generate?",
+        "a2": "Up to 100 paragraphs, 500 sentences or 10,000 words at a time.",
+        "q3": "What is the HTML option for?",
+        "a3": "It wraps each paragraph in HTML p tags, ready to paste into a web page's code or an editor that accepts HTML.",
+        "q4": "Can I use it without crediting anyone?",
+        "a4": "Yes. Cicero's text is in the public domain and the text is generated in your browser, with no restrictions on use."
       }
     },
     "color-converter": {
@@ -1046,6 +1113,54 @@
         "a4": "No. Everything happens in your browser: neither the signature nor the document leaves your device, and we don't keep your signature."
       }
     },
+    "edit-pdf": {
+      "title": "Edit PDF",
+      "description": "Add text, highlight, draw, add shapes and images or cover parts of a PDF in your browser, with nothing to install and no upload.",
+      "action": "Save PDF",
+      "about": "Edit PDF lets you write on any page (for example, to fill in a form that has no fields), highlight sentences, draw freehand, mark things with rectangles, lines and arrows, place an image such as a logo or a stamp, and cover parts with a white box. Pick the page from the thumbnails, zoom in to work precisely, and undo or redo any change. On a phone it works with your finger. What you add is drawn on the page, so it looks the same in every viewer and printer. Important: a white box only hides things from view; the text below is still in the file. To really remove it, tick \"Really hide\" on the box and that page is saved as an image.",
+      "faq": {
+        "q1": "Can I change the text that is already in the PDF?",
+        "a1": "Not directly: a PDF stores text as letter shapes at fixed positions, not like a Word document. What you can do is cover the old part with a white box and type the new text on top.",
+        "q2": "Does a white box delete the information?",
+        "a2": "No. The white box only hides it: the text below can still be copied, searched or recovered. If you are sharing a document with private data, tick \"Really hide\": that page becomes an image and the text disappears from the file (in exchange, the text on that page can no longer be selected).",
+        "q3": "Which fonts can I use?",
+        "a3": "Helvetica (regular and bold), Times and Courier, which every PDF reader has. Letters from other scripts, such as Chinese, and emoji are added as an image using your device's fonts.",
+        "q4": "Is my PDF uploaded to a server?",
+        "a4": "No. Everything happens in your browser with pdf.js and pdf-lib: the document and what you add never leave your device."
+      }
+    },
+    "fill-pdf-form": {
+      "title": "Fill PDF Form",
+      "description": "Fill in the fields of a PDF form (text, checkboxes, choices and lists) in your browser and save it editable or flattened. Free and with no upload.",
+      "action": "Save PDF",
+      "about": "Fill PDF Form finds the fields in the document —text boxes, checkboxes, radio buttons, dropdowns and list boxes— and shows them as a normal form, grouped by page, with a preview of the page that highlights the field you are filling in. When saving you can keep it editable, so someone else can keep filling it in, or flatten it: the values become part of the page and can no longer be changed, which is what many official procedures ask for. If the PDF has no fields (a scanned form, for example) or is an XFA form, we tell you, and you can write on it with Edit PDF.",
+      "faq": {
+        "q1": "What does flattening the form mean?",
+        "a1": "Flattening turns what you typed into part of the page's drawing: the PDF looks the same in every viewer and printer, and nobody can change the values afterwards. If you don't flatten it, the fields stay editable.",
+        "q2": "It says my PDF has no fields. What can I do?",
+        "a2": "Many forms are just a drawing with lines to write on, or a scanned paper. In that case use Edit PDF: tap where you want to write and add the text on top.",
+        "q3": "What is an XFA form?",
+        "a3": "It is an old Adobe format (LiveCycle) that only Adobe Acrobat opens properly. It can't be filled in the browser; if the PDF also includes the standard version of the fields, we use it and remove the XFA part so every reader shows your data.",
+        "q4": "Is my form uploaded to a server?",
+        "a4": "No. The fields are read and filled in your browser with pdf-lib, and the preview is drawn by pdf.js: your data never leaves your device."
+      }
+    },
+    "pdf-to-powerpoint": {
+      "title": "PDF to PowerPoint",
+      "description": "Turn every page of a PDF into a PowerPoint (PPTX) slide, as a high-quality image. Free, in your browser and with no upload.",
+      "action": "Convert to PowerPoint",
+      "about": "PDF to PowerPoint creates a PPTX presentation with one slide for each page of the PDF. Every page is saved as a sharp picture (150 or 220 dpi) and the slide takes the size of the first page, so a landscape PDF gives landscape slides and an A4 one gives A4 slides; pages of another size are centered without being stretched. It is handy for presenting a report or a set of slides you only have as a PDF, or for adding your own slides before or after. Important: the text on the slides is part of the picture and can't be edited; to change the text, convert the PDF to Word instead.",
+      "faq": {
+        "q1": "Can I edit the text on the slides?",
+        "a1": "No. Each slide is a picture of the page, so it looks exactly like the PDF. You can type on top with new text boxes, add slides or reorder them, but not change the original text. If you need to edit it, convert the PDF to Word.",
+        "q2": "Which quality should I pick?",
+        "a2": "Standard (150 dpi) is enough for projecting and for most documents, and makes lighter files. High (220 dpi) is better for drawings, very small print or if you will zoom in.",
+        "q3": "Does it work with Google Slides, Keynote and LibreOffice?",
+        "a3": "Yes. The file is a standard PPTX: it opens in PowerPoint, Google Slides, Keynote and LibreOffice Impress.",
+        "q4": "Is my PDF uploaded to a server?",
+        "a4": "No. The pages are drawn with pdf.js and the presentation is built in your browser: the file never leaves your device."
+      }
+    },
     "protect-pdf": {
       "title": "Password protect a PDF",
       "description": "Add a password to your PDF with 256-bit AES encryption and choose whether it can be printed or copied. Free, in your browser.",
@@ -1142,6 +1257,22 @@
         "a4": "Yes: the conversion runs on our own server (not a third-party service), over an encrypted connection, and the file is processed in memory without being stored."
       }
     },
+    "pdf-to-excel": {
+      "title": "PDF to Excel",
+      "description": "Extract the tables of a PDF to Excel (XLSX) or CSV in your browser, with a preview and real numbers, without uploading the file.",
+      "action": "Convert to Excel",
+      "about": "Turn the tables of a bank statement, a price list, an invoice or a report in PDF into a spreadsheet. The tool reads the PDF's text with its position on the page, builds rows from the line each text sits on and columns from how they line up, and shows you the detected table before you download. Amounts such as 1,234.56 or 1.234,56 become real numbers you can add up, and codes with leading zeros stay as text. Get one sheet per page, one per table or everything in a single sheet. It works with PDFs that contain text (the ones a program creates); a scanned PDF is an image and needs text recognition (OCR) first.",
+      "faq": {
+        "q1": "Which PDFs does it work with?",
+        "a1": "Those with selectable text: the ones a bank, an invoicing system, Word or Excel create with “Save as PDF”. If you can select a word with the mouse when you open the PDF, it will work. A scan or a photo turned into a PDF has no text: run it through “OCR scanned PDF” first and use the PDF it gives you back, knowing that accuracy will be lower.",
+        "q2": "Why isn't the table perfect?",
+        "a2": "A PDF does not store tables, only pieces of text and their positions, so columns are worked out from the alignment. Cells with text on several lines may come out as separate rows, and a cell spanning two columns may land in one. Check the preview before downloading; if numbers come out as text, pick the decimal separator yourself.",
+        "q3": "How are numbers with a decimal comma recognized?",
+        "a3": "Per table: if amounts are written like 84.35 or 1,234.56, the point is the decimal separator; if they are written like 84,35 or 1.234,56, it is the comma. A space as thousands separator (1 250,5) is recognized too. Dates, percentages and amounts with a currency symbol stay as text, as they appear.",
+        "q4": "Is my PDF uploaded?",
+        "a4": "No. The PDF is read in your browser with pdf.js and the spreadsheet is built on your device with SheetJS: nothing is sent to any server. PDFs of up to 100 MB are accepted."
+      }
+    },
     "spreadsheet-converter": {
       "title": "Spreadsheet converter",
       "description": "Convert between Excel (XLSX, XLS), OpenDocument (ODS) and CSV: every sheet, value and formula, in your browser.",
@@ -1156,6 +1287,150 @@
         "a3": "A CSV holds one table, so one CSV is made per sheet (with the sheet name in the file name), or only the first sheet's if you uncheck the option.",
         "q4": "Is there a size limit?",
         "a4": "Up to 50 MB per file and 2 million filled cells, because everything is processed in your browser's memory. Your files are not uploaded to any server."
+      }
+    },
+    "excel-to-csv": {
+      "title": "Excel to CSV",
+      "description": "Convert an Excel file (XLSX, XLS or ODS) to CSV in your browser: pick the sheet, the separator and UTF-8 with BOM so accents show correctly.",
+      "action": "Convert to CSV",
+      "about": "Turn an Excel sheet into CSV to load it into another system, a database or an online spreadsheet. If the workbook has several sheets, pick the one to convert or get one CSV per sheet. Numbers keep every decimal (not rounded the way they look on screen), dates come out as Excel shows them and codes with leading zeros, such as 007, are kept. Choose comma, semicolon (with decimal comma, as Excel uses in many European and Latin American languages) or tab.",
+      "faq": {
+        "q1": "Which separator should I choose?",
+        "a1": "Comma if the CSV goes to another program or system (it is the standard). Semicolon if you will open it with Excel set to a language that writes decimals with a comma, such as Spanish, Portuguese, French or German: each value then lands in its own column. Tab if the system asks for TSV.",
+        "q2": "Why do accents look wrong when I open the CSV in Excel?",
+        "a2": "Excel on Windows does not recognize UTF-8 unless the file says so. Keep “UTF-8 with BOM” checked: it adds an invisible mark at the start and Excel shows accents and other alphabets correctly.",
+        "q3": "My workbook has several sheets. What happens?",
+        "a3": "A CSV holds a single table. With one workbook you pick the sheet from the list, or “All sheets”, which creates one CSV per sheet named after it. With several workbooks at once, the first sheet of each is used unless you check the all-sheets option.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. The conversion runs in your browser with SheetJS; the file never leaves your device. Files of up to 50 MB and 2 million filled cells are accepted."
+      }
+    },
+    "csv-to-excel": {
+      "title": "CSV to Excel",
+      "description": "Convert a CSV or TSV file to Excel (XLSX) in your browser, with correct numbers and accents even if it uses semicolons or Windows-1252.",
+      "action": "Convert to Excel",
+      "about": "Open as Excel the CSV exported by a bank, an online store or an invoicing system. The separator (comma, semicolon, tab or pipe) and the encoding are detected, including the Windows-1252 encoding that CSV files saved by Excel on Windows often use. Numbers with a decimal comma in a semicolon CSV become real numbers, and codes with leading zeros, such as 007, stay as text so they are not lost.",
+      "faq": {
+        "q1": "Why not just open the CSV with Excel?",
+        "a1": "Excel often puts everything in one column when the separator does not match your settings, shows accents wrongly if the file is UTF-8 without a BOM, and drops the leading zeros of codes and phone numbers. Converted here, the XLSX has every value in its own cell.",
+        "q2": "How are numbers recognized?",
+        "a2": "A value becomes a number only if it reads back the same: 3.25 or, in a semicolon CSV, 3,25 and 1.234,5. Codes like 007 and integers longer than 15 digits (such as card or bank account numbers) stay as text so Excel does not round them.",
+        "q3": "What about dates?",
+        "a3": "They are kept as they appear in the CSV, as text. Excel can convert them with Data → Text to Columns if you need real dates for calculations.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. Everything happens in your browser; the CSV never leaves your device. You can convert several at once, up to 50 MB each."
+      }
+    },
+    "xls-to-xlsx": {
+      "title": "XLS to XLSX",
+      "description": "Convert old Excel spreadsheets (XLS, Excel 97-2003) to the current XLSX format in your browser, with every sheet and formula.",
+      "action": "Convert to XLSX",
+      "about": "XLS is the Excel 97-2003 format. Many systems, forms and online apps only accept XLSX now, which is also smaller. This tool copies every sheet, value and formula of the XLS into a new XLSX, without installing anything or uploading the file.",
+      "faq": {
+        "q1": "What is kept?",
+        "a1": "Every sheet with its name, the values (text, numbers, dates) and the formulas. Visual formatting is not kept: colors, borders, column widths, charts and macros.",
+        "q2": "Why convert XLS to XLSX?",
+        "a2": "XLSX has been Excel's default format since Excel 2007: Excel, LibreOffice, Google Sheets and Numbers open it, it allows more rows (over a million instead of 65,536) and it is usually smaller because it is compressed.",
+        "q3": "Does it work with password-protected files?",
+        "a3": "No. An encrypted XLS cannot be read without its password; open it in Excel, remove the protection and try again.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. The conversion happens in your browser and the file never leaves your device."
+      }
+    },
+    "excel-to-ods": {
+      "title": "Excel to ODS",
+      "description": "Convert Excel (XLSX or XLS) to ODS, the LibreOffice Calc format that some public bodies ask for, in your browser.",
+      "action": "Convert to ODS",
+      "about": "ODS (OpenDocument) is the open format of LibreOffice and OpenOffice, and the one some public bodies require. This tool turns the sheets, values and formulas of an Excel file into a valid ODS without installing LibreOffice and without uploading the file to any server.",
+      "faq": {
+        "q1": "Are formulas kept?",
+        "a1": "Yes. Formulas are written in OpenDocument syntax, so LibreOffice recalculates them when it opens the file. Visual formatting (colors, borders, widths) is not kept.",
+        "q2": "Can I open the ODS in Excel?",
+        "a2": "Yes, Excel opens ODS files, and so do Google Sheets and LibreOffice.",
+        "q3": "What about charts and macros?",
+        "a3": "They are not copied: the data and formulas are converted. If you need the charts, save the file as ODS from Excel or LibreOffice.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. Everything is processed in your browser."
+      }
+    },
+    "ods-to-excel": {
+      "title": "ODS to Excel",
+      "description": "Convert LibreOffice or OpenOffice spreadsheets (ODS) to Excel (XLSX) in your browser, with every sheet and formula.",
+      "action": "Convert to Excel",
+      "about": "If someone sent you an .ods spreadsheet (LibreOffice Calc, OpenOffice) and you need to hand it in as Excel, convert it to XLSX here in seconds. Every sheet, value and formula is kept, and the file never leaves your device.",
+      "faq": {
+        "q1": "What is kept?",
+        "a1": "The sheets with their names, the values (text, numbers, dates) and the formulas. Visual formatting is not kept: colors, borders, widths, charts and images.",
+        "q2": "Do formulas still work in Excel?",
+        "a2": "Yes, the usual formulas (sums, averages, conditions, lookups and arithmetic) are written in Excel syntax. A function that only exists in LibreOffice may show an error in Excel.",
+        "q3": "Can I convert several files at once?",
+        "a3": "Yes. Pick them together and download them one by one or all in a ZIP.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. The conversion runs in your browser."
+      }
+    },
+    "excel-to-json": {
+      "title": "Excel to JSON",
+      "description": "Convert an Excel sheet (XLSX, XLS or ODS) to JSON in your browser: each row as an object keyed by the headers.",
+      "action": "Convert to JSON",
+      "about": "Turn a spreadsheet into JSON to use it in an app, an API or a script. The first row is taken as the header and every following row becomes an object with those keys; you can also get the rows as lists. Numbers stay numbers, TRUE/FALSE cells become true/false, dates use ISO format (2024-03-15) and empty cells become null. With a multi-sheet workbook, pick one sheet or get them all in a single object.",
+      "faq": {
+        "q1": "What does the JSON look like?",
+        "a1": "With “Objects” you get a list like ['{'\"product\": \"Coffee\", \"price\": 3.25'}', …], using the first row as keys. With “Lists” you get every row as a list of values, the first one included. If you choose all sheets, the result is an object with one list per sheet.",
+        "q2": "How do dates come out?",
+        "a2": "As ISO 8601 text: 2024-03-15, or 2024-03-15T10:30:00 when they have a time. It is the format JavaScript, Python and databases understand.",
+        "q3": "What about empty or repeated headers?",
+        "a3": "An empty header is named after its column, such as column3, and a repeated one gets a suffix, such as name_2, so no column is lost.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. The conversion runs in your browser; the file never leaves your device."
+      }
+    },
+    "json-to-excel": {
+      "title": "JSON to Excel",
+      "description": "Convert JSON (a list of objects or of lists) to Excel (XLSX) in your browser, with one column per key and real dates and numbers.",
+      "action": "Convert to Excel",
+      "about": "Open in Excel the data an API or an app exported as JSON. A list of objects becomes a table with one column per key (in order of appearance) and one row per object; a list of lists is copied as is. If the JSON is an object whose values are lists, each one goes to its own sheet. Numbers and true/false stay as such, ISO dates (2024-03-15) become Excel dates and nested values are stored as JSON text.",
+      "faq": {
+        "q1": "Which JSON is accepted?",
+        "a1": "A list of objects (['{'\"a\": 1'}', '{'\"a\": 2'}']), a list of lists ([[\"a\", \"b\"], [1, 2]]), a list of values, a single object (one row) or an object with several lists, such as '{'\"customers\": [...], \"sales\": [...]'}', which gives one sheet per list.",
+        "q2": "What if the objects do not all have the same keys?",
+        "a2": "A column is created for every key found in any object; where an object lacks it, the cell is left empty.",
+        "q3": "What about nested objects or lists?",
+        "a3": "A cell holds a single value, so nested data is written as JSON text (for example [\"a\",\"b\"]). To flatten it into columns, use “JSON to CSV”, which names them like address.city.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. Everything is processed in your browser. Files of up to 50 MB are accepted."
+      }
+    },
+    "merge-excel": {
+      "title": "Merge Excel files",
+      "description": "Combine several Excel, ODS or CSV files into one workbook, with a sheet per file or every row in a single sheet, in your browser.",
+      "action": "Merge",
+      "about": "Put the Excel files of several months, branches or people into a single file. Make every sheet of every file a sheet of the new workbook (a CSV or a one-sheet file takes the file's name), or stack all the rows in one sheet, one below the other, to filter and add them up together. When stacking, the header repeated at the top of each sheet is kept only once and, if you want, a first column tells which file each row comes from. Order the files before merging: they are used in that order.",
+      "faq": {
+        "q1": "What is the difference between the two ways of merging?",
+        "a1": "“One sheet per sheet” copies the sheets as they are into a new workbook, with their formulas. “All in one sheet” puts the rows of every sheet one under another: use it when they all have the same columns, such as each month's sales.",
+        "q2": "Are formulas kept?",
+        "a2": "When each sheet stays a sheet, yes. When stacking, no, because rows move and formulas would point at other cells: each formula's result is kept as a value.",
+        "q3": "Can I merge the sheets of a single file?",
+        "a3": "Yes: pick one workbook and “All in one sheet” to stack all its sheets into one.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. Everything happens in your browser with SheetJS; the files never leave your device. Visual formatting (colors, borders, widths) is not kept."
+      }
+    },
+    "split-excel": {
+      "title": "Split Excel sheets",
+      "description": "Split every sheet of an Excel or ODS workbook into its own file (XLSX, ODS or CSV) and download them all in a ZIP, in your browser.",
+      "action": "Split sheets",
+      "about": "When a workbook has one sheet per month, customer or branch and you need to send each one separately, this tool creates one file per sheet named after it, ready to download one by one or all together in a ZIP. Get them as Excel (XLSX), OpenDocument (ODS) or CSV. Formulas inside each sheet are kept; those that use data from another sheet are replaced by their result, because that other sheet will not be in the file.",
+      "faq": {
+        "q1": "What are the files called?",
+        "a1": "After the workbook and the sheet, for example sales-January.xlsx. Characters that are not allowed in file names are replaced with an underscore.",
+        "q2": "What happens to formulas that use other sheets?",
+        "a2": "A formula like =Summary!B2 would stop working in a file with a single sheet, so its last result is kept as a value. Other formulas stay formulas.",
+        "q3": "Can I split several workbooks at once?",
+        "a3": "Yes. Pick several files and each one is split into its sheets; everything can be downloaded in a ZIP.",
+        "q4": "Are my files uploaded?",
+        "a4": "No. The workbook is processed in your browser and never leaves your device."
       }
     },
     "create-archive": {
@@ -1539,17 +1814,38 @@
       "about": "Type or paste text, or open a TXT, Markdown, HTML, text PDF, Word (DOCX) or EPUB file or a photo of a document, and listen to it read aloud. You can pause, go back to the previous sentence, skip to the next one and choose the speed, from 0.5× to 2×. The sentence being read is highlighted so you can follow along. It reads with your device's voices or with a more natural AI voice (Supertonic 3) that runs in your browser and lets you download the reading as MP3. The text is extracted and turned into speech on your device: the file is never uploaded to a server.",
       "faq": {
         "q1": "Is my text uploaded to a server?",
-        "a1": "No. The file is read and its text extracted in your browser, and the AI voice generates the audio on your device: the only download is the model files, from Hugging Face, the first time. Device voices also read on your computer or phone; only voices marked \"online\" (such as Google or Microsoft voices in Chrome and Edge) send the text to that provider to generate the audio.",
+        "a1": "No. The file is read and its text extracted in your browser, and the AI voice generates the audio on your device: the only download is the model files, the first time, from our model server or from Hugging Face. Device voices also read on your computer or phone; only voices marked \"online\" (such as Google or Microsoft voices in Chrome and Edge) send the text to that provider to generate the audio.",
         "q2": "Which files can I open?",
         "a2": "TXT, Markdown, HTML, PDFs with text, Word (DOCX), EPUB and photos or scans (JPG, PNG, WEBP, TIFF, HEIC…), whose text is recognized with OCR. Up to 50,000 characters per reading; longer text is cut and we tell you.",
         "q3": "Which languages does it read?",
         "a3": "We detect the language of the text (Spanish, English, Portuguese, French or Chinese) and pick a voice for it; you can change the language and the voice. The AI voice and MP3 download are available in Spanish, English, Portuguese and French; Chinese is read with the device voices, which depend on your system and browser.",
         "q4": "What's the difference between device voices and the AI voice?",
-        "a4": "Device voices come with your system or browser: they start at once and download nothing, but their quality varies and they can't be saved as a file. The AI voice (Supertonic 3) sounds more natural, has 10 voices and can be downloaded as MP3, but the first time it downloads about 400 MB (then it stays saved in your browser) and it generates the audio with your device's processor: on a computer it takes about as long as the audio lasts; on a phone, quite a bit longer.",
+        "a4": "Device voices come with your system or browser: they start at once and download nothing, but their quality varies and they can't be saved as a file. The AI voice (Supertonic 3) sounds more natural, has 10 voices and can be downloaded as MP3, but the first time it downloads the model, 200 to 400 MB depending on the server (the tool shows the size before starting; then it stays saved in your browser) and it generates the audio with your device's processor: on a computer it takes about as long as the audio lasts; on a phone, quite a bit longer. Before downloading you can listen to a sample of each voice; they all use the same model, so the download is the same for any of them and happens only once.",
         "q5": "How do I download the reading as MP3?",
         "a5": "Choose the AI voice and press \"Download MP3\". It is generated sentence by sentence on your device, with a progress bar and a cancel button, and the file is named after the document's title or the first words of the text. On phones the MP3 can have up to 3,000 characters (about 4 minutes of audio).",
         "q6": "Can I publish audio made with the AI voice?",
         "a6": "Yes, but the model's license (OpenRAIL-M) requires saying that it is an AI-generated voice and forbids using it to, among other things, impersonate people, defame, harass or spread false information to harm others. The full restrictions are in our Terms and in the model's license, linked next to the download button."
+      }
+    },
+    "audio-to-text": {
+      "title": "Audio to text (transcription)",
+      "description": "Turn an audio file, voice memo or video into text with timestamps, and download it as TXT, SRT or VTT. Free, AI in your browser, no upload.",
+      "searchTerms": "transcribe transcription speech to text voice to text dictation automatic subtitles captions whisper voice memo",
+      "action": "Transcribe",
+      "about": "Open an audio file (MP3, WAV, M4A, OGG, FLAC, voice memos…) or a video (MP4, MOV, MKV, WEBM) and get the text of what is said, split into sentences with their times. You can correct the text on the page, copy it and download it as TXT, or as SRT and VTT subtitles ready for a video. The transcription is done by Whisper, OpenAI's speech recognition model, running inside your browser: the audio never leaves your device. The first time, the model is downloaded from Hugging Face (43 MB for the fast one, 79 MB for the precise one) and kept for next time. It detects the language automatically, or you can pick it from almost 100 languages. Up to 30 minutes of audio per file.",
+      "faq": {
+        "q1": "Is my audio uploaded to a server?",
+        "a1": "No. The file is decoded and transcribed in your browser, with your device's processor. The only download is the speech model, from our model server or from Hugging Face, the first time you use it; after that it stays in your browser.",
+        "q2": "Which model should I pick, fast or precise?",
+        "a2": "The fast one (Whisper tiny, 43 MB) works for clear audio with one person speaking and little noise, and is the one to use on phones. The precise one (Whisper base, 79 MB) makes fewer mistakes with accents, background noise and unusual words, but takes about 1.7 times as long. If the fast one's result has many errors, try the precise one.",
+        "q3": "How long does it take?",
+        "a3": "It depends on your device and the model. On a recent computer the fast model usually transcribes faster than the audio plays; on a phone it can take longer. While it works you see the progress and the estimated time left, and you can cancel at any moment.",
+        "q4": "Can I transcribe a video or a WhatsApp voice message?",
+        "a4": "Yes. From a video, its sound is transcribed (MP4, MOV, MKV or WEBM). WhatsApp voice messages (.opus or .ogg), Telegram ones and iPhone recordings (.m4a) work too. The limit is 30 minutes per file; if yours is longer, cut it into parts with “Trim audio”.",
+        "q5": "How do I make subtitles for a video?",
+        "a5": "Transcribe the video and download the SRT or VTT file: each sentence has its start and end time, in lines of up to 42 characters. If you correct words in the text without joining or splitting lines, the subtitles use your correction. If they show up early or late, shift them with “Subtitle sync”.",
+        "q6": "How accurate is the transcription?",
+        "a6": "With clear speech it usually gets the vast majority of words right, but it can get names, numbers, overlapping speakers, music or loud noise wrong, and it does not tell speakers apart. Check the text before using it for anything important."
       }
     }
   },
@@ -1884,7 +2180,7 @@
             "Railway (USA): servers and database that run the site.",
             "Resend (USA): sends the email with your sign-in link.",
             "Google (USA): Google sign-in, if you choose it; and Google AdSense, which shows ads (see section 6).",
-            "Hugging Face (USA): if you choose the AI voice of \"Text to speech\", your browser downloads the model files from Hugging Face (once). As with any download, Hugging Face receives your IP address and technical browser data; your text is not sent.",
+            "Hugging Face (USA): if you choose the AI voice of \"Text to speech\" or use \"Audio to text\", your browser downloads the model files (once per model) from our storage on Cloudflare R2 (Cloudflare, USA) or, if it is unavailable, from Hugging Face. As with any download, whoever serves the file receives your IP address and technical browser data; your text and your audio are not sent.",
             "\"Online\" voices of your browser (such as Google in Chrome or Microsoft in Edge): if you choose one of them in \"Text to speech\", the browser sends the text to that provider to generate the audio, under that provider's privacy policy. The browser offers them, not us, and we mark them \"online\"; the other voices and the AI voice read on your device."
           ],
           "proItems": [
@@ -1914,7 +2210,7 @@
             "Auth.js session cookies: keep you signed in.",
             "Browser local storage: remembers the light or dark theme.",
             "Browser local storage: in \"Text to speech\", the speed, kind of voice and voice you chose.",
-            "Browser cache: the AI voice's model files (about 400 MB), so they aren't downloaded again. You can delete them by clearing this site's data in your browser."
+            "Browser cache: the AI voice's model files (200 to 400 MB), so they aren't downloaded again. You can delete them by clearing this site's data in your browser."
           ],
           "proItems": [
             "Country cookie: remembers the country chosen for pricing (1 year)."
@@ -2307,11 +2603,51 @@
       "upper": "UPPER CASE",
       "lower": "lower case",
       "title": "Title Case",
-      "sentence": "Sentence case"
+      "sentence": "Sentence case",
+      "alternating": "aLtErNaTiNg",
+      "inverse": "iNVERSE"
     },
     "copy": "Copy text",
     "copied": "Copied",
-    "download": "Download .txt"
+    "download": "Download .txt",
+    "textLanguage": "Text language",
+    "smallWords": "Title Case: keep short articles, prepositions and conjunctions in lower case",
+    "undo": "Undo",
+    "countWords": "Count words",
+    "textA": "Original text",
+    "textB": "New text",
+    "compareBy": "Compare by",
+    "byLine": "Lines",
+    "byWord": "Words",
+    "ignoreCase": "Ignore upper and lower case",
+    "ignoreWhitespace": "Ignore extra spaces",
+    "compare": "Compare",
+    "swap": "Swap",
+    "differences": "Differences",
+    "identical": "The texts are identical.",
+    "lineSummary": "{changed, plural, =0 {No lines changed} one {# line changed} other {# lines changed}}, {added, plural, =0 {none added} other {# added}} and {removed, plural, =0 {none removed} other {# removed}}.",
+    "wordSummary": "{added, plural, =0 {No words added} one {# word added} other {# words added}} and {removed, plural, =0 {none removed} other {# removed}}.",
+    "tooDifferent": "The texts are too different to compare line by line. Try shorter parts.",
+    "removedWord": "removed:",
+    "addedWord": "added:",
+    "removedLine": "Removed line:",
+    "addedLine": "Added line:",
+    "downloadDiff": "Download .diff",
+    "removeDuplicates": "Remove duplicate lines",
+    "trimLines": "Trim spaces at the start and end",
+    "removeEmpty": "Remove empty lines",
+    "sort": "Sort",
+    "sortNone": "Don't sort",
+    "sortAsc": "A → Z",
+    "sortDesc": "Z → A",
+    "lineResult": "{before, plural, one {# line} other {# lines}} → {after, plural, one {# line} other {# lines}} ({duplicates, plural, one {# duplicate removed} other {# duplicates removed}}, {empty} empty).",
+    "result": "Result",
+    "loremUnit": "Generate",
+    "startWithLorem": "Start with \"Lorem ipsum dolor sit amet…\"",
+    "asHtml": "As HTML paragraphs (p tags)",
+    "generate": "Generate text",
+    "regenerate": "Generate another",
+    "downloadHtml": "Download .html"
   },
   "UtilityTools": {
     "copied": "Copied",
@@ -2699,7 +3035,31 @@
     "delimiterSemicolon": "Semicolon ( ; ) and decimal comma — Excel in Spanish, French…",
     "allSheets": "One CSV per sheet (otherwise only the first)",
     "bom": "UTF-8 with BOM (Excel shows accents correctly)",
-    "note": "Sheets, values and formulas are kept; visual formatting (colors, borders, widths) is not."
+    "note": "Sheets, values and formulas are kept; visual formatting (colors, borders, widths) is not.",
+    "sheet": "Sheet",
+    "sheetOption": "{name} ({rows, plural, one {# row} other {# rows}})",
+    "sheetAll": "All sheets (one CSV per sheet)",
+    "sheetAllJson": "All sheets (one object with a list per sheet)",
+    "allSheetsJson": "All sheets in one JSON (otherwise only the first)",
+    "delimiterTab": "Tab (TSV)",
+    "jsonShape": "Each row as",
+    "jsonObjects": "Objects (the first row gives the keys)",
+    "jsonArrays": "Lists of values",
+    "noteCsv": "Numbers keep every decimal and dates come out as the sheet shows them.",
+    "noteJson": "Numbers and true/false as such, dates in ISO (2024-03-15) and empty cells as null.",
+    "mergeMode": "How to merge",
+    "mergeSheets": "One sheet per sheet",
+    "mergeStack": "All in one sheet, one below the other",
+    "skipHeader": "Keep a repeated header only once",
+    "sourceColumn": "Add a column with the source file",
+    "noteMerge": "Values and formulas are kept; visual formatting is not.",
+    "noteStack": "Rows are stacked in the order of the files; formulas become their results.",
+    "mergedSheet": "Merged",
+    "sourceHeader": "Source",
+    "mergedFile": "merged",
+    "splitTarget": "Save each sheet as",
+    "noteSplit": "One file per sheet, named after it; all of them in a ZIP.",
+    "sheetLoading": "Reading the sheets…"
   },
   "ArchiveTool": {
     "format": "Format",
@@ -3017,10 +3377,13 @@
     "intro": "Fileflect is built on free and open-source software. Here is every third-party component that reaches your browser or runs on our server, with its version, its license and where to find its code.",
     "download": "Download the third-party notices (.txt)",
     "downloadHint": "Full license texts, copyright notices and NOTICE files of every component.",
+    "sourceCodeHeading": "Source code",
+    "sourceCodeIntro": "Fileflect is free software: its code is published under the GNU AGPL-3.0 or later. You can read, modify and redistribute it under that license. The “Fileflect” name and logo are not covered by the license.",
+    "sourceCodeLink": "View Fileflect’s source code",
     "lgplHeading": "LGPL components",
     "lgplIntro": "These components are used under the GNU Lesser General Public License (LGPL), unmodified and as separate files (WebAssembly modules or shared libraries) that can be replaced with another version. The links for each one lead to its exact source code and the instructions it was built with.",
     "enginesHeading": "Bundled engines and data",
-    "enginesIntro": "Libraries compiled to WebAssembly that ship inside the packages below, our own libarchive build, the models we serve from our domain and the AI voice of \"Text to speech\" (code ported from the Supertonic SDK, MIT, and the Supertonic 3 model, which your browser downloads from Hugging Face only if you choose that voice; its OpenRAIL-M license is linked).",
+    "enginesIntro": "Libraries compiled to WebAssembly that ship inside the packages below, our own libarchive build, the models we serve from our domain and the AI voice of \"Text to speech\" (code ported from the Supertonic SDK, MIT, and the Supertonic 3 model, which your browser downloads from Hugging Face, or a copy with float16 weights from our model server, only if you choose that voice; its OpenRAIL-M license is linked).",
     "servicesHeading": "Server services",
     "servicesIntro": "Programs that run separately on our server (not distributed with Fileflect): they convert office documents and store account data.",
     "packagesHeading": "JavaScript packages ({count})",
@@ -3097,7 +3460,15 @@
     "aiNoChinese": "The AI voice isn't available in Chinese: the text is read with the device voices.",
     "aiVoiceFemale": "Female {n}",
     "aiVoiceMale": "Male {n}",
-    "aiConfirm": "The AI voice needs to download about {size} from Hugging Face. Only the first time: it stays saved in your browser. Your text isn't sent: only the model files are downloaded.",
+    "aiSamplesTitle": "Listen to the AI voices before downloading",
+    "aiSamplesNote": "Short recordings of each voice. All voices use the same model: the download is the same for any of them (about {size}) and happens only once, when you play the text or download the MP3 with the AI voice.",
+    "aiSamplePlay": "Play sample: {voice}",
+    "aiSampleStop": "Stop sample: {voice}",
+    "aiSampleError": "The sample couldn't be played. Try again.",
+    "aiRecommended": "Recommended",
+    "aiVoiceChoose": "Choose",
+    "aiVoiceChosen": "Chosen",
+    "aiConfirm": "The AI voice needs to download about {size} from {source, select, own {our model server} other {Hugging Face}}. Only the first time: it stays saved in your browser. Your text isn't sent: only the model files are downloaded.",
     "aiConfirmPhone": "On a phone, Wi-Fi is best; generation is slower and uses a lot of memory.",
     "aiDownload": "Download the AI voice",
     "aiDownloading": "Downloading the AI voice…",
@@ -3110,5 +3481,166 @@
     "aiLicense": "Model license (OpenRAIL-M)",
     "mp3TooLongMobile": "On a phone the MP3 can have up to {max} characters. Shorten the text or make the MP3 on a computer.",
     "mp3Done": "MP3 ready: {name}"
+  },
+  "PdfExcelTool": {
+    "reading": "Looking for tables in the PDF…",
+    "scanned": "This PDF has no text: it looks like a scanned image, and tables are recognized from the text. Run it through text recognition (OCR) first and come back with the PDF it gives you. Accuracy is lower: check the numbers in the preview.",
+    "scannedLink": "Open “OCR scanned PDF”",
+    "found": "{count, plural, one {# table found.} other {# tables found.}}",
+    "noTable": "No table found: the text will be copied line by line.",
+    "previewOf": "Preview",
+    "tableOption": "Page {page}: {rows, plural, one {# row} other {# rows}} × {columns, plural, one {# column} other {# columns}}",
+    "previewCaption": "Table found on page {page}",
+    "moreRows": "{count, plural, one {and # more row} other {and # more rows}}",
+    "grouping": "Sheets",
+    "groupPage": "One sheet per page",
+    "groupTable": "One sheet per table",
+    "groupAll": "Everything in one sheet",
+    "groupPageCsv": "One CSV per page",
+    "groupTableCsv": "One CSV per table",
+    "groupAllCsv": "Everything in one CSV",
+    "decimal": "Decimal separator of the numbers",
+    "decimalAuto": "Detect",
+    "decimalComma": "Comma (1.234,56)",
+    "decimalPoint": "Point (1,234.56)",
+    "sheetPage": "Page {n}",
+    "sheetTable": "Table {n}",
+    "sheetAll": "Tables",
+    "note": "Columns are worked out from how the text lines up: check the preview before downloading."
+  },
+  "EditPdf": {
+    "toolbar": "Editing tools",
+    "tools": {
+      "select": "Select",
+      "text": "Text",
+      "highlight": "Highlight",
+      "ink": "Draw",
+      "rect": "Rectangle",
+      "line": "Line",
+      "arrow": "Arrow",
+      "whiteout": "Cover",
+      "image": "Image"
+    },
+    "hints": {
+      "select": "Tap an item to select it and drag it to move it; the small square in its corner resizes it. Delete removes it.",
+      "text": "Tap the page where you want to write and type the text in the box above.",
+      "highlight": "Drag over the text you want to highlight.",
+      "ink": "Draw with your finger or the mouse.",
+      "rect": "Drag to draw a rectangle.",
+      "line": "Drag to draw a line.",
+      "arrow": "Drag from where the arrow starts to where it points.",
+      "whiteout": "Drag over what you want to cover with a white box.",
+      "image": "Choose a PNG or JPG image; it appears in the middle of the page and you can move and resize it."
+    },
+    "undo": "Undo",
+    "redo": "Redo",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "color": "Color",
+    "colors": {
+      "black": "Black",
+      "red": "Red",
+      "blue": "Blue",
+      "green": "Green",
+      "orange": "Orange",
+      "yellow": "Yellow"
+    },
+    "otherColor": "Other color",
+    "width": "Thickness: {value} pt",
+    "font": "Font",
+    "fonts": {
+      "helvetica": "Helvetica",
+      "helvetica-bold": "Helvetica bold",
+      "times": "Times",
+      "courier": "Courier"
+    },
+    "fontSize": "Size (pt)",
+    "text": "Text",
+    "textPlaceholder": "Type here…",
+    "redact": "Really hide (turns this page into an image)",
+    "redactNote": "The page is saved as a high-quality image: what you covered is gone from the file, but the text on that page can no longer be selected or searched.",
+    "whiteoutNote": "A white box hides things from view, but the text below is still in the file and can be copied or searched. To remove it, select the box and tick \"Really hide\".",
+    "whiteBox": "White box",
+    "redactedBox": "White box (the page will become an image)",
+    "delete": "Delete",
+    "hintSelect": "Choose a tool or tap an item to change it.",
+    "pages": "Pages",
+    "pageEdited": "edited",
+    "surface": "Page {n}, {count, plural, =0 {no items added} one {# item added} other {# items added}}",
+    "save": "Save PDF"
+  },
+  "FillPdfForm": {
+    "reading": "Looking for the form fields…",
+    "found": "{count, plural, one {We found # field.} other {We found # fields.}}",
+    "hint": "Fill them in here: the preview shows where each one is.",
+    "noFields": "This PDF has no form fields to fill in (it may be a printed and scanned form, or one made only of lines). You can write on the page with Edit PDF.",
+    "xfaOnly": "This PDF is an XFA form (Adobe LiveCycle's format): only Adobe Acrobat can fill in its fields. As an alternative, you can write on the page with Edit PDF.",
+    "hybridXfa": "This form also includes an XFA version, which only Adobe Acrobat uses. The standard version of the fields (the one Chrome, Firefox, Preview and most readers show) will be saved and the XFA part removed, so nobody sees old data.",
+    "editPdfLink": "Open Edit PDF",
+    "signatureField": "The form has a digital signature field: it isn't filled in here.",
+    "signPdfLink": "To add a drawn signature, use Sign PDF.",
+    "otherFields": "Other fields",
+    "readOnly": "(read-only)",
+    "maxLength": "{count, plural, one {Up to # character} other {Up to # characters}}",
+    "noChoice": "— None —",
+    "clearChoice": "Clear choice",
+    "flatten": "Flatten the form (the values are fixed on the page and can no longer be edited)",
+    "flattenHint": "Without flattening, the PDF is still a form and can be filled in or corrected again.",
+    "notFlattened": "It couldn't be flattened: these fields have characters the form's font can't draw (for example, Chinese or emoji): {fields}. The PDF was saved with the values, not flattened; Chrome, Firefox, Acrobat and Preview show them anyway.",
+    "redrawnByReader": "These fields have characters the form's font can't draw (for example, Chinese or emoji): {fields}. The values were saved and the PDF reader draws them when opening it (Chrome, Firefox, Acrobat and Preview do)."
+  },
+  "PdfPptTool": {
+    "imagesNote": "Each slide is a picture of the page: it looks just like the PDF, but the text can't be edited.",
+    "wordLink": "Need to edit the text? Convert the PDF to Word.",
+    "quality": "Picture quality",
+    "standard": "Standard (150 dpi)",
+    "high": "High (220 dpi, larger file)"
+  },
+  "TranscribeTool": {
+    "whereNote": "Transcribed in your browser with Whisper: the audio never leaves your device.",
+    "pickHint": "Audio or video: MP3, WAV, M4A, OGG, OPUS, FLAC, MP4, MOV, MKV, WEBM… up to 30 minutes.",
+    "reading": "reading…",
+    "duration": "length {time}",
+    "model": "Model",
+    "modelFast": "Fast",
+    "modelPrecise": "Precise (slower)",
+    "modelCached": "downloaded",
+    "downloadNote": "The first time, {size} are downloaded from {source, select, own {our model server} other {Hugging Face}}; after that the model stays in this browser.",
+    "cachedNote": "The model is already saved in this browser: nothing to download.",
+    "language": "Language of the audio",
+    "languageAuto": "Detect automatically",
+    "decoding": "Reading the audio…",
+    "downloading": "Downloading the model ({size})…",
+    "loadingModel": "Loading the model…",
+    "transcribing": "Transcribing…",
+    "timeLeft": "About {time} left",
+    "seconds": "{n} s",
+    "minutes": "{n} min",
+    "resultLabel": "Transcript",
+    "resultHint": "Each line is one subtitle. If you correct words without joining or splitting lines, the SRT and VTT use your correction.",
+    "linesChanged": "You changed the number of lines: the TXT uses your version, but the SRT and VTT use the original text so the times stay right.",
+    "detected": "Detected language: {language}. If it is wrong, pick it and transcribe again.",
+    "download": "Download {format}",
+    "empty": "No words were recognized. Does the file contain speech? Try picking the language or the precise model.",
+    "accuracyNote": "Automatic transcription can contain mistakes, especially with names, numbers, noise or several people talking: check it before using it.",
+    "syncLink": "Adjust the timing of subtitles",
+    "readLink": "Listen to a text read aloud"
+  },
+  "Guides": {
+    "home": "Home",
+    "indexTitle": "Guides",
+    "indexMetaTitle": "Guides to converting and editing files",
+    "indexIntro": "Step-by-step explanations for specific file tasks: which format to choose, how to do it with our tools and what to watch out for.",
+    "author": "Fileflect Team",
+    "byline": "By {author}",
+    "published": "Published {date}",
+    "updated": "updated {date}",
+    "updatedOn": "Updated {date}",
+    "readingTime": "{minutes} min read",
+    "contents": "In this guide",
+    "toolsTitle": "Tools used in this guide",
+    "relatedTitle": "More guides",
+    "allGuides": "All guides",
+    "breadcrumb": "Breadcrumb"
   }
 }

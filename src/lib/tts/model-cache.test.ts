@@ -88,4 +88,16 @@ describe("AI voice model download", () => {
     };
     await expect(fetchModelFile(f, { store: null, fetchFn: fetchFn as typeof fetch, signal: controller.signal })).rejects.toThrow("jobCancelled");
   });
+
+  it("downloads and caches other models' files under their own URL (Whisper)", async () => {
+    const f = await file();
+    const { map, store } = memoryStore();
+    const url = "https://huggingface.co/onnx-community/whisper-tiny/resolve/abc/onnx/test.onnx";
+    const fetchFn = vi.fn(async () => streamed(content));
+    expect(await fetchModelFile(f, { store, fetchFn, url })).toEqual(content);
+    expect(fetchFn).toHaveBeenCalledWith(url, expect.anything());
+    expect([...map.keys()]).toEqual([url]);
+    expect(await cachedBytes([f], store, () => url)).toBe(f.bytes);
+    expect(await cachedBytes([f], store)).toBe(0);
+  });
 });

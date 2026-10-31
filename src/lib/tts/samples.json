@@ -1,0 +1,322 @@
+[
+  {
+    "lang": "es",
+    "voice": "F1",
+    "path": "/tts-samples/es-F1.mp3",
+    "bytes": 32736,
+    "sha256": "eb7162244457e743250c9ed00c7c269f9995248170743ee622bbdfb684680b4c",
+    "seconds": 8.1
+  },
+  {
+    "lang": "es",
+    "voice": "F2",
+    "path": "/tts-samples/es-F2.mp3",
+    "bytes": 31008,
+    "sha256": "1096fac147d87033e7a0ddc018562a21804a366d7a6ac9e4e70a415602fa3b2f",
+    "seconds": 7.7
+  },
+  {
+    "lang": "es",
+    "voice": "F3",
+    "path": "/tts-samples/es-F3.mp3",
+    "bytes": 33600,
+    "sha256": "11816158ddba17173f0eae8603b85cd6033f08128c73a664499bb25c0b9dc8cf",
+    "seconds": 8.3
+  },
+  {
+    "lang": "es",
+    "voice": "F4",
+    "path": "/tts-samples/es-F4.mp3",
+    "bytes": 28896,
+    "sha256": "7376e65e3ad919b6703e8d052bbb1322a1aca34e1e1b81ee604733b49c198527",
+    "seconds": 7.1
+  },
+  {
+    "lang": "es",
+    "voice": "F5",
+    "path": "/tts-samples/es-F5.mp3",
+    "bytes": 31776,
+    "sha256": "289edb4f88da0d91f94a3ba014dc74c6436a5d9ab30e1861f6f6d0771397dc66",
+    "seconds": 7.8
+  },
+  {
+    "lang": "es",
+    "voice": "M1",
+    "path": "/tts-samples/es-M1.mp3",
+    "bytes": 32640,
+    "sha256": "32bf03307e35fbdbfea617dc3c1624e3bb309017c891c9c3dbe19cda8c926730",
+    "seconds": 8.1
+  },
+  {
+    "lang": "es",
+    "voice": "M2",
+    "path": "/tts-samples/es-M2.mp3",
+    "bytes": 32064,
+    "sha256": "a9bf7d30acf992436182b1941d7300ae4844bcf512b5921f939999e391669aef",
+    "seconds": 7.9
+  },
+  {
+    "lang": "es",
+    "voice": "M3",
+    "path": "/tts-samples/es-M3.mp3",
+    "bytes": 28032,
+    "sha256": "b4f7c058bd8a1b34c1de11b97775cda3a9dc4dc8b379b1d1c42e5c09aa1a3226",
+    "seconds": 6.9
+  },
+  {
+    "lang": "es",
+    "voice": "M4",
+    "path": "/tts-samples/es-M4.mp3",
+    "bytes": 30912,
+    "sha256": "3f507409c9661d50b8e18dbc53e998665148ebe53453fba6be336af7ac2d0a16",
+    "seconds": 7.6
+  },
+  {
+    "lang": "es",
+    "voice": "M5",
+    "path": "/tts-samples/es-M5.mp3",
+    "bytes": 32640,
+    "sha256": "79152480639211d41cd5512c21655c6490d80fd40540338c01fdb862a72123d6",
+    "seconds": 8
+  },
+  {
+    "lang": "en",
+    "voice": "F1",
+    "path": "/tts-samples/en-F1.mp3",
+    "bytes": 31776,
+    "sha256": "a09c17e2a8919882bb29132c61fffccb2dfd043c8686bcc2807138b4596a7827",
+    "seconds": 7.8
+  },
+  {
+    "lang": "en",
+    "voice": "F2",
+    "path": "/tts-samples/en-F2.mp3",
+    "bytes": 30144,
+    "sha256": "99dedab6125cd0ba3af4abfc02ecb02b6f7c8c940450415237100709a25aabc1",
+    "seconds": 7.4
+  },
+  {
+    "lang": "en",
+    "voice": "F3",
+    "path": "/tts-samples/en-F3.mp3",
+    "bytes": 32736,
+    "sha256": "c9373357a976c0dcda63a50cb5a58d3c3d51a67302024f96baeab48f714e0374",
+    "seconds": 8.1
+  },
+  {
+    "lang": "en",
+    "voice": "F4",
+    "path": "/tts-samples/en-F4.mp3",
+    "bytes": 28128,
+    "sha256": "8981cc9350789a5a009836dcea676c43cec2dd795dab5e698740d74737a3d727",
+    "seconds": 6.9
+  },
+  {
+    "lang": "en",
+    "voice": "F5",
+    "path": "/tts-samples/en-F5.mp3",
+    "bytes": 30912,
+    "sha256": "bf9b975f457cb9331a00523f8051188d6347dea13fdc27d982e296fb089c3b36",
+    "seconds": 7.6
+  },
+  {
+    "lang": "en",
+    "voice": "M1",
+    "path": "/tts-samples/en-M1.mp3",
+    "bytes": 31776,
+    "sha256": "9d184dab4ea532bec5b6fccf5939ef016a38d9339dbee6e8d7523ce20c26c863",
+    "seconds": 7.8
+  },
+  {
+    "lang": "en",
+    "voice": "M2",
+    "path": "/tts-samples/en-M2.mp3",
+    "bytes": 31200,
+    "sha256": "d92c2345f34a4c9fdba3d31ef6ff195ff678ab69214caafbeeacb89bcf1fba15",
+    "seconds": 7.7
+  },
+  {
+    "lang": "en",
+    "voice": "M3",
+    "path": "/tts-samples/en-M3.mp3",
+    "bytes": 27264,
+    "sha256": "fbb2f541ab12f4de0f8804f8959f636cc5525c05fd012d00492a1ee6bf6a54e0",
+    "seconds": 6.7
+  },
+  {
+    "lang": "en",
+    "voice": "M4",
+    "path": "/tts-samples/en-M4.mp3",
+    "bytes": 30048,
+    "sha256": "dc2e93a9567317962fd079a7f8424d2011ea39c4910b5a66d03346cca87b56a7",
+    "seconds": 7.4
+  },
+  {
+    "lang": "en",
+    "voice": "M5",
+    "path": "/tts-samples/en-M5.mp3",
+    "bytes": 31680,
+    "sha256": "c73b9d154e0253433cd457207e6f5fda8ed3bf3738cb46f20f4d7b89c471d185",
+    "seconds": 7.8
+  },
+  {
+    "lang": "pt",
+    "voice": "F1",
+    "path": "/tts-samples/pt-F1.mp3",
+    "bytes": 34944,
+    "sha256": "3bdb451d001ea2581ba274d9b0d49e9f6b5626d8b9498409c9612f5116c28c53",
+    "seconds": 8.6
+  },
+  {
+    "lang": "pt",
+    "voice": "F2",
+    "path": "/tts-samples/pt-F2.mp3",
+    "bytes": 33312,
+    "sha256": "cc28042fce914df0b2ef504aef93d15301b82f037ac018af0592a443ce1a72dd",
+    "seconds": 8.2
+  },
+  {
+    "lang": "pt",
+    "voice": "F3",
+    "path": "/tts-samples/pt-F3.mp3",
+    "bytes": 35904,
+    "sha256": "6944d93069dccc5f6b49cc9a07b60fb3a96ab8c0692ed602796e666013cd7f9c",
+    "seconds": 8.9
+  },
+  {
+    "lang": "pt",
+    "voice": "F4",
+    "path": "/tts-samples/pt-F4.mp3",
+    "bytes": 31008,
+    "sha256": "0ed76d08984f73ca28847781ea01ddbc100eb5b72e1b64d1eed5662e0ae8f005",
+    "seconds": 7.7
+  },
+  {
+    "lang": "pt",
+    "voice": "F5",
+    "path": "/tts-samples/pt-F5.mp3",
+    "bytes": 34080,
+    "sha256": "5dba6b1603da8734e06ec4c45bff3583d1d24b3e10b4eed7fae0e951e87ee382",
+    "seconds": 8.4
+  },
+  {
+    "lang": "pt",
+    "voice": "M1",
+    "path": "/tts-samples/pt-M1.mp3",
+    "bytes": 34944,
+    "sha256": "254046c7a6ce61b7cd6ba037eef19fe7082fa40072a0a46e2ceedbd2c2050269",
+    "seconds": 8.6
+  },
+  {
+    "lang": "pt",
+    "voice": "M2",
+    "path": "/tts-samples/pt-M2.mp3",
+    "bytes": 34368,
+    "sha256": "33ceda85ae6402c9129201f463b0f544d1e01248e573352fbc935cfcebdd2a8e",
+    "seconds": 8.5
+  },
+  {
+    "lang": "pt",
+    "voice": "M3",
+    "path": "/tts-samples/pt-M3.mp3",
+    "bytes": 30240,
+    "sha256": "a3252b5b4610ca0515cbf614207f70aa37a7e4819a1e3817d77c54d53c28664d",
+    "seconds": 7.4
+  },
+  {
+    "lang": "pt",
+    "voice": "M4",
+    "path": "/tts-samples/pt-M4.mp3",
+    "bytes": 33216,
+    "sha256": "e3869a2613e4504ea477de3f6aaa83df5195b90d551598c07eb8dd83995542aa",
+    "seconds": 8.2
+  },
+  {
+    "lang": "pt",
+    "voice": "M5",
+    "path": "/tts-samples/pt-M5.mp3",
+    "bytes": 34848,
+    "sha256": "f4b34b84e5cc4baefa451ee6b709ebb1c37cf5fd6966de7ded3787c5e0f73a0e",
+    "seconds": 8.6
+  },
+  {
+    "lang": "fr",
+    "voice": "F1",
+    "path": "/tts-samples/fr-F1.mp3",
+    "bytes": 31392,
+    "sha256": "a850a458a53f99348229c0b79b9d10de784e2592c6ef6cde1dbdf8ae42782416",
+    "seconds": 7.7
+  },
+  {
+    "lang": "fr",
+    "voice": "F2",
+    "path": "/tts-samples/fr-F2.mp3",
+    "bytes": 29664,
+    "sha256": "ac661826f315c15e2d024b15ce32166567140b7ebbcdfb870a971e0ba875cfc1",
+    "seconds": 7.3
+  },
+  {
+    "lang": "fr",
+    "voice": "F3",
+    "path": "/tts-samples/fr-F3.mp3",
+    "bytes": 32256,
+    "sha256": "ffd3ae722208127a32a6f235b97eb2e9cf5272a29ca161d6c4ce93e9ffb88585",
+    "seconds": 8
+  },
+  {
+    "lang": "fr",
+    "voice": "F4",
+    "path": "/tts-samples/fr-F4.mp3",
+    "bytes": 27648,
+    "sha256": "c121cb4b49bd6e693414a3ceb49ce5f4660612496ca0dd78f2ea4bac4fe6b837",
+    "seconds": 6.8
+  },
+  {
+    "lang": "fr",
+    "voice": "F5",
+    "path": "/tts-samples/fr-F5.mp3",
+    "bytes": 30432,
+    "sha256": "4563c31c81378499a683a9bc6bdd33f8a428f8692a9a0d45e99270470b57581f",
+    "seconds": 7.5
+  },
+  {
+    "lang": "fr",
+    "voice": "M1",
+    "path": "/tts-samples/fr-M1.mp3",
+    "bytes": 31392,
+    "sha256": "8bbdbcdac4af2c58b5fb3039f2cd5e388d9c7a5317af2aa7e12437e9fbceec8a",
+    "seconds": 7.7
+  },
+  {
+    "lang": "fr",
+    "voice": "M2",
+    "path": "/tts-samples/fr-M2.mp3",
+    "bytes": 30720,
+    "sha256": "d603f05368bdb88613a0679be3c8d261515163355fffe0e2ee8953de30511f45",
+    "seconds": 7.6
+  },
+  {
+    "lang": "fr",
+    "voice": "M3",
+    "path": "/tts-samples/fr-M3.mp3",
+    "bytes": 26880,
+    "sha256": "0301e74e54f371ebd680c60339c9faba5c44ccd38fb7c86f98d425dd995ddd48",
+    "seconds": 6.6
+  },
+  {
+    "lang": "fr",
+    "voice": "M4",
+    "path": "/tts-samples/fr-M4.mp3",
+    "bytes": 29568,
+    "sha256": "413c7dd51d645edda99640c4b45483200943af548653aecff7b8551962da072b",
+    "seconds": 7.3
+  },
+  {
+    "lang": "fr",
+    "voice": "M5",
+    "path": "/tts-samples/fr-M5.mp3",
+    "bytes": 31296,
+    "sha256": "c7eb61a5d344d1ad1673314317f9388c08650fdbba0de6da3f78d2c023103846",
+    "seconds": 7.7
+  }
+]

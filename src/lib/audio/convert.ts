@@ -91,7 +91,7 @@ export async function assertComplete(track: InputTrack, duration: number) {
 }
 
 /** Opens a file for mediabunny, checking it holds audio this browser can decode; the caller disposes it. */
-async function openAudio(file: Blob) {
+export async function openAudio(file: Blob) {
   // mediabunny has no AIFF demuxer: an AIFF input is rewritten as WAV first.
   const source = isAiff(new Uint8Array(await file.slice(0, 12).arrayBuffer()))
     ? new Blob([aiffToWav(new Uint8Array(await file.arrayBuffer())).wav as Uint8Array<ArrayBuffer>])

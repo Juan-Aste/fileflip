@@ -32,6 +32,7 @@ Solo con proveedores que necesitamos para dar el servicio, y solo lo necesario:
 - **Railway** (EE. UU.): servidores y base de datos donde corre el sitio. **[revisar la región elegida en Railway]**
 - **Resend** (EE. UU.): envía el correo con tu enlace para iniciar sesión.
 - **Google** (EE. UU.): inicio de sesión con Google, si lo eliges; y **Google AdSense**, que muestra anuncios en el plan gratuito (ver punto 6).
+- **Hugging Face** (EE. UU.): si eliges la voz IA de «Leer texto en voz alta» o usas «Transcribir audio a texto», tu navegador descarga de Hugging Face los archivos del modelo (una sola vez por modelo). Recibe tu dirección IP y datos técnicos del navegador, como en cualquier descarga; tu texto y tu audio no se envían.
 - **Mercado Pago** (Argentina y la región): procesa los pagos del plan Pro. Recibe tus datos de pago directamente; nosotros no.
 
 Podemos revelar datos si una ley o una autoridad competente nos lo exige.

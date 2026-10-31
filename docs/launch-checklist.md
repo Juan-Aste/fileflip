@@ -42,6 +42,8 @@ Las `NEXT_PUBLIC_*` se fijan al construir: si se cambian, redesplegar.
 | `NEXT_PUBLIC_ADSENSE_CLIENT` | `ca-pub-1234567890123456` |
 | `NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR` | `1234567890` |
 | `NEXT_PUBLIC_ADSENSE_SLOT_RESULT` | `0987654321` |
+| `NEXT_PUBLIC_MODELS_BASE_URL` | `https://modelos.fileflect.com` (opcional: copia propia de los modelos de IA en Cloudflare R2, [docs/modelos-r2.md](modelos-r2.md); vacía = solo Hugging Face) |
+| `NEXT_PUBLIC_SOURCE_URL` | `https://github.com/Juan-Aste/fileflip` (opcional: solo cuando el repo sea público; muestra «Código fuente» en el footer y en créditos, obligación de la AGPL-3.0 §13; vacía = no aparece) |
 | `RATE_LIMIT_PER_MINUTE` | `20` |
 | `TEMP_FILE_TTL_MINUTES` | `60` |
 
@@ -98,13 +100,31 @@ El código de AdSense va en el `<head>` de **todas** las páginas (portada, herr
 - [ ] *Sitemaps*: enviar `https://fileflect.com/sitemap.xml`.
 - [ ] Inspeccionar `https://fileflect.com/es` y pedir la indexación.
 
+## 9b. Modelos de IA en Cloudflare R2 (opcional, fase 11.4)
+Pasos completos en [`docs/modelos-r2.md`](modelos-r2.md). Sin esto, la voz IA y la transcripción siguen bajando de Hugging Face.
+- [ ] Activar R2 (pide tarjeta) y crear el bucket `fileflect-modelos`.
+- [ ] Conectar el dominio personalizado `modelos.fileflect.com` al bucket (y la regla de caché recomendada).
+- [ ] Política CORS del bucket: `GET`/`HEAD` desde `https://fileflect.com` y `https://www.fileflect.com`.
+- [ ] Token de API de R2 con **Object Read & Write** solo para ese bucket.
+- [ ] Desde tu PC: `node scripts/models/sync-r2.mjs --dry-run` y después con `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` y `R2_BUCKET`.
+- [ ] Railway: `NEXT_PUBLIC_MODELS_BASE_URL=https://modelos.fileflect.com` y redesplegar.
+- [ ] Comprobar: en `/es/leer-texto-en-voz-alta` → Voz IA → Reproducir, el aviso dice «unos 191 MB desde nuestro servidor de modelos».
+
+## 9c. Publicar el código (opcional, fase 11.5)
+Antes: [`docs/escaneo-secretos.md`](escaneo-secretos.md) (sin secretos en el historial) y [`docs/licencia-agpl.md`](licencia-agpl.md) (licencias compatibles con la AGPL-3.0-or-later).
+- [ ] Mergear `dev` en `main` (trae `LICENSE`, el README público y el campo `license`).
+- [ ] GitHub → Settings → General → Danger Zone → Change visibility → Public.
+- [ ] Railway: `NEXT_PUBLIC_SOURCE_URL=https://github.com/Juan-Aste/fileflip` y redesplegar.
+- [ ] Comprobar: el footer y `/es/creditos` muestran «Código fuente» con el enlace al repositorio.
+
 ## 10. Verificar después de publicar
 - [ ] `https://fileflect.com/api/health` → `{"status":"ok","gotenberg":true}`.
 - [ ] `https://fileflect.com/` redirige a `/es` (o al idioma del navegador).
 - [ ] Convertir una imagen (JPG → PNG) y unir dos PDF: todo en el navegador.
 - [ ] DOCX → PDF y Markdown → PDF (usan Gotenberg).
 - [ ] Iniciar sesión con Google y con enlace por email; entrar a `/es/admin` con el correo de `ADMIN_EMAILS`.
-- [ ] Leer en voz alta (`/es/leer-texto-en-voz-alta`): con las voces del dispositivo lee sin descargar nada; con "Voz IA" pide confirmar la descarga (~398 MB desde Hugging Face, no desde Railway) y después lee y descarga MP3. No requiere variables ni archivos públicos nuevos; la CSP no define `connect-src` (si algún día se agrega, incluir `https://huggingface.co` y `https://*.hf.co`, ver [`docs/tts-voz-ia.md`](tts-voz-ia.md)).
+- [ ] Leer en voz alta (`/es/leer-texto-en-voz-alta`): con las voces del dispositivo lee sin descargar nada; con "Voz IA" pide confirmar la descarga (~398 MB desde Hugging Face, o ~200 MB desde `modelos.fileflect.com` si está `NEXT_PUBLIC_MODELS_BASE_URL`; nunca desde Railway) y después lee y descarga MP3. No requiere variables ni archivos públicos nuevos; la CSP no define `connect-src` (si algún día se agrega, incluir `https://huggingface.co` y `https://*.hf.co`, ver [`docs/tts-voz-ia.md`](tts-voz-ia.md)).
+- [ ] Fase 10 (sin variables, servicios ni cambios de CSP nuevos; todo en el navegador): Excel a CSV (`/es/excel-a-csv`) convierte un XLSX; Editar PDF (`/es/editar-pdf`) agrega un texto y guarda; Transcribir audio a texto (`/es/transcribir-audio-a-texto`) descarga el modelo rápido (~43 MB desde Hugging Face, no desde Railway; si algún día se define `connect-src`, incluir `https://huggingface.co` y `https://*.hf.co`) y transcribe una nota de voz; las guías (`/es/guias`, `/en/guides`, `/pt/guias`, `/fr/guides`, `/zh/guides`) cargan con sus capturas (`public/guides/*.webp`) y figuran en `sitemap.xml`.
 - [ ] Con Pro apagado: no hay enlace "Precios" en el header ni en el footer, `/es/pricing` da 404 y `sitemap.xml` no lo incluye. (Cuando se encienda Pro: `/es/pricing` muestra los precios del país y una suscripción de prueba llega como activa por el webhook.)
 - [ ] `/es/terms` y `/es/privacy` muestran "Juan Pablo Aste" y contact@fileflect.com; `/es/contact` muestra contact@fileflect.com y el horario.
 - [ ] En `/es/login`, debajo de los botones, el texto "Al continuar, aceptas los Términos y condiciones y la Política de privacidad…" con los dos enlaces. Pedir un enlace por email: la página pasa a "Revisa tu correo" (B-26) y el correo llega.

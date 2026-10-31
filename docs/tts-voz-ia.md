@@ -22,7 +22,7 @@ Decisión tomada el 2026-10-26 (tarea 8.3a). Código: `src/lib/tts/model.ts`.
 | `voice_styles/{F1…F5,M1…M5}.json` | ~290.000 c/u | (una por voz elegida) |
 | `LICENSE` | 15.007 | `0d944a9110fed9a9602d60e0423a272903e7bd21ab060490774efc77c2275e9f` |
 
-**Descarga total antes de la primera voz: ~398 MB** (más ~0,3 MB por voz). Se pide confirmación al usuario mostrando el tamaño, con barra de progreso, y se guarda en la Cache API del navegador.
+**Descarga total antes de la primera voz: ~398 MB** (~200 MB con la versión fp16 servida desde nuestro almacenamiento, fase 11.3–11.4: `docs/tts-modelo-liviano.md`) (más ~0,3 MB por voz). Se pide confirmación al usuario mostrando el tamaño, con barra de progreso, y se guarda en la Cache API del navegador.
 
 ## Licencia de los pesos: BigScience OpenRAIL-M (18/08/2022)
 
@@ -32,7 +32,7 @@ Leída del archivo `LICENSE` del commit fijado. Conclusiones:
 - **Distribución (punto 4)**: servir los pesos al navegador del usuario cuenta como "Distribution" (incluye "web access"). Obligaciones:
   - 4.a: incluir las **restricciones de uso del Anexo A como cláusula exigible** en el acuerdo que rige el uso (nuestros **Términos y condiciones**, sección de uso aceptable, en los 5 idiomas) y **avisar** a los usuarios de que el modelo está sujeto al punto 5. → tarea 8.4b.
   - 4.b: **dar una copia de la licencia** a quienes reciben el modelo. → enlace al texto de la licencia en la herramienta y en Créditos (8.4b).
-  - 4.c: marcar archivos modificados (no modificamos los pesos).
+  - 4.c: marcar archivos modificados. Desde la fase 11.3 servimos además una copia con los pesos en float16 (`docs/tts-modelo-liviano.md`): Créditos la indica como versión modificada.
   - 4.d: conservar los avisos de copyright y atribución (Créditos y `docs/dependencies.md`).
 - **Punto 5**: debemos exigir a nuestros usuarios que cumplan las restricciones del Anexo A.
 - **Punto 6**: el licenciante no reclama derechos sobre el audio generado; el usuario es responsable de su uso.
@@ -111,3 +111,48 @@ La restricción (e) implica que quien publique el audio debe aclarar que es voz 
 - `tests/e2e/layout-shift.spec.ts`: CLS 0 con fuentes tardías en `/es/leer-texto-en-voz-alta`.
 - Firefox y WebKit (proyectos `@xb`): extracción de los 6 formatos, lectura con pausa/reanudar/detener y axe.
 
+
+## Números, fechas, símbolos, abreviaturas y siglas (fase 11.1)
+
+Supertonic recibe el texto como caracteres (sin fonemas) y no normaliza números: el SDK de referencia tampoco lo hace. Con los dígitos tal cual leía mal "2026", "3,5", "14:30", "15 %" o "US$ 20". Desde la tarea 11.1 `preprocessText` (`src/lib/tts/supertonic.ts`) hace, en el idioma de la frase y **antes** del NFKD y de las etiquetas de idioma:
+
+1. `expandAbbreviations` (`src/lib/tts/normalize.ts`): Sr., Sra., Dra., Ud., etc., pág./págs., p. ej., EE. UU., a. C.; Mr., Dr., e.g., i.e., vs.; Sr., Dra., p. ex., V. Exa.; Mme, M. (antes de un nombre), Dr, c.-à-d., av. J.-C. "p." y "pp." solo antes de un número.
+2. `normalizeNumbers`: enteros y decimales con el separador del idioma (coma decimal y punto de miles en es/pt/fr, al revés en inglés; "3,5" → "tres coma cinco", "3.5" en español → "tres punto cinco"), años (en inglés "twenty twenty-six"), fechas (dd/mm/aaaa, mm/dd en inglés si el primer número ≤ 12, ISO, "1 de mayo" → "primero de mayo"), horas, porcentajes, monedas ($ = pesos en español y dólares en los demás idiomas; US$, USD, €, R$, £; centavos; "de" antes de millones), ordinales (1.º, 1.ª, 1er, 2do, 1st, 1re, 2e), "Nº", números romanos tras palabras como siglo/capítulo/World War y tras nombres propios (Felipe II, Louis XIV, Henry VIII, XXIe siècle), rangos ("10-20" → "diez a veinte"), teléfonos y códigos largos dígito por dígito, unidades comunes, fracciones simples y versiones. El género del sustantivo siguiente se estima por su terminación ("una casa", "doscientas personas", "duas casas", "vingt et une personnes"). Números a palabras propios (`src/lib/tts/numbers.ts`): `n2words` 6.3.0 (MIT) se evaluó y se descartó porque escribe "dieciseis" sin tilde, lee "3,5" como "tres punto cinco" en español y no maneja el género.
+3. `spellAcronyms`: las siglas que no se pueden leer como palabra se deletrean con el nombre de las letras del idioma ("PDF" → "pe de efe", "pê dê efe", "pé dé effe"; en inglés las letras separadas, "P D F", que el modelo lee por su nombre). Las demás palabras en mayúsculas se pasan a minúsculas (ver abajo).
+
+Tests: `numbers.test.ts` y `normalize.test.ts` (unos 200 casos en los 4 idiomas).
+
+### "fecha" leída como "feka"
+
+Revisado el 2026-10-29 con el modelo real y Whisper `base` (script `scripts/tts/engine.mjs`):
+
+- **No es el NFKD ni otra diferencia con el SDK de referencia**: el SDK `supertonic` 1.3.1 hace exactamente los mismos pasos (NFKD, emojis, símbolos, espacios, punto final, `<es>…</es>`); "fecha" no tiene caracteres que el NFKD cambie.
+- **El idioma llega bien**: la herramienta manda el idioma detectado del texto completo (o el que elige el usuario) en cada frase; con `<es>` las 10 voces dicen "fecha" en frases normales ("La fecha de hoy es importante.", "Anotá la fecha en el cuaderno.": Whisper oyó "fecha" en las 20 pruebas).
+- **La causa son las mayúsculas**: "FECHA" (como en un formulario o un encabezado) sale "Feca", "Faker", "Peca" o "Seca" en las cuatro voces probadas; "Fecha" y "fecha" salen bien. El modelo casi no vio palabras en mayúsculas al entrenarse y lee "CH" como /k/. **Arreglo general, sin diccionario**: las palabras en mayúsculas que no son siglas para deletrear se pasan a minúsculas (y un texto todo en mayúsculas, entero). Con eso "FECHA: 28/10/2026" se oye "Fecha, 28 de octubre de 2026".
+- **Limitación del modelo que queda**: con menos pasos de difusión la pronunciación empeora mucho. Con 2 pasos "La fecha de hoy es importante" se oyó "La feca…", "La flita…" o se perdieron palabras; con 3 pasos (los que usa el celular al escuchar, `PHONE_LISTEN_STEPS`) falló 1 de 4 voces; con 5 (PC y MP3) ninguna. También hay variación natural entre voces y tomas: "Fecha" sola con M3 se oyó "Ficha", y "veintiséis" a veces se oye como "veintidós" o "veintiuno". Eso no se corrige con texto.
+
+## Muestras de cada voz (fase 11.2a)
+
+Para que el usuario elija la voz sin descargar el modelo, cada voz (F1–F5, M1–M5) tiene una muestra en cada idioma (es, en, pt, fr) servida como archivo estático del sitio: `public/tts-samples/<idioma>-<voz>.mp3` (40 archivos).
+
+- **Texto**: la misma frase natural por idioma, con un número y una fecha que pasan por la normalización de la tarea 11.1 (`SAMPLE_TEXT` en `src/lib/tts/samples.ts`).
+- **Generación**: `SUPERTONIC_DIR=<archivos fijados> node scripts/tts/samples.mjs` (necesita ffmpeg; solo en desarrollo, nunca en tiempo de ejecución). Usa el pipeline del sitio con sus valores (5 pasos, velocidad 1,05, semilla 1), una frase por pieza con 0,25 s de pausa.
+- **Formato**: MP3 32 kbps, 24 kHz mono, sin etiquetas ID3 (se reproduce en todos los navegadores, también en iPhone viejos sin Ogg Opus). 26–36 KB y 6,6–8,9 s cada uno; límite de 40 KB comprobado por el script y por `samples.test.ts`.
+- **Integridad**: tamaño y SHA-256 de cada archivo en `src/lib/tts/samples.json` (lo escribe el script); `samples.test.ts` comprueba que los archivos coinciden. Si cambia el modelo (tarea 11.3) o el texto, se vuelven a generar.
+- **Licencia**: es audio generado con el modelo; según el punto 6 de la OpenRAIL-M el licenciante no reclama derechos sobre lo generado. La restricción (e) del Anexo A se cumple porque la herramienta dice que son voces generadas por IA.
+
+## Elegir la voz escuchando las muestras (fase 11.2c)
+
+- En el lector, «Escuchar las voces IA antes de descargar» (un `<details>` cerrado, así no mueve la página al cargar) lista las 10 voces del idioma con ▶ (reproduce la muestra estática; se pide recién al tocarlo, nunca al abrir la página), la **Recomendada** del idioma (`RECOMMENDED_VOICE` en `src/lib/tts/recommended.ts`, medida en `docs/tts-wer.md`) y «Elegir». Elegir una voz pasa a la voz IA pero **no descarga nada**: el modelo se descarga, con el aviso de tamaño de siempre, recién al pulsar «Reproducir» o «Descargar MP3».
+- Si el usuario no eligió ninguna voz, se usa la recomendada del idioma del texto (antes, siempre F1). En el selector de voz la recomendada dice «· Recomendada».
+- La herramienta y la FAQ (5 idiomas) aclaran que todas las voces usan el mismo modelo: la descarga es la misma para cualquiera y se hace una sola vez.
+
+## Almacenamiento propio de los modelos (fase 11.4)
+
+- `NEXT_PUBLIC_MODELS_BASE_URL` (opcional, se fija al construir): URL de nuestra copia de los modelos (Cloudflare R2, pasos en `docs/modelos-r2.md`). Código: `src/lib/models/sources.ts`.
+- Estructura, igual a la de Hugging Face: `<base>/<repo>/<commit>/<ruta>`. La voz IA usa la copia **fp16** de los 4 ONNX en `<base>/Supertone/supertonic-3/<commit>-fp16/onnx/…` (~200 MB, `docs/tts-modelo-liviano.md`) y los JSON y las voces en `<base>/Supertone/supertonic-3/<commit>/…`; la transcripción, `<base>/onnx-community/whisper-tiny|whisper-base/<commit>/…`.
+- Cada archivo se verifica con su tamaño y SHA-256 fijados. Si nuestra copia no responde, da error o no coincide, se descarga el original de Hugging Face automáticamente (`fetchModelSources` en `src/lib/tts/model-cache.ts`). Una copia ya guardada en la caché, venga de donde venga, se usa sin descargar nada.
+- La herramienta muestra el tamaño real (200 MB con nuestra copia, 398 MB sin ella) y de dónde se descarga.
+- **CSP**: sigue sin `connect-src`, así que no hace falta cambiarla. Si en el futuro se agrega, incluir el dominio de `NEXT_PUBLIC_MODELS_BASE_URL` además de `https://huggingface.co` y `https://*.hf.co`.
+- **Privacidad**: la política menciona que los archivos pueden venir de Cloudflare (R2) además de Hugging Face.
+- Tests: `tests/model-mirror.test.ts` (dos servidores HTTP locales hacen de bucket y de Hugging Face: usa la URL base; con la URL base caída, un archivo ausente o un SHA-256 distinto vuelve a Hugging Face; no descarga lo que ya está en caché; cancelar no reintenta).

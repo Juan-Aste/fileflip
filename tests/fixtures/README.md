@@ -12,6 +12,10 @@ Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan 
 | `image.svg` | SVG escrito a mano (160×120) |
 | `photo.heic` | HEIC de 120×80 hecho con pillow-heif (fase 1; sharp no codifica HEIC) |
 | `document.pdf`, `document-1page.pdf`, `document-images.pdf` | pdf-lib: 3 páginas de texto, 1 página, y 2 páginas con una foto JPG de 640×480 (para comprimir) |
+| `table-simple.pdf`, `table-pages.pdf`, `table-two.pdf` | `scripts/fixtures/tables.mjs` (pdf-lib, Helvetica, cada celda es un texto propio y los números van alineados a la derecha): lista de precios con título, códigos como 007 y números con punto decimal / extracto de 2 páginas con encabezado repetido, celdas vacías y coma decimal (1.234,56) / dos tablas en una página sin líneas, con espacio como separador de miles (1 250,5) y una celda vacía |
+| `form-sample.pdf`, `form-xfa.pdf` | `scripts/fixtures/forms.mjs` (pdf-lib): formulario AcroForm de 2 páginas con todos los tipos de campo (texto con nombres anidados y descripción, máximo de caracteres, varias líneas con tamaño automático, solo lectura, casilla, opciones, lista desplegable y lista de selección múltiple) / formulario solo XFA (paquete XFA sin campos AcroForm) |
+| `speech-en.ogg`, `speech-es.ogg` | `scripts/fixtures/speech.sh` (voces sintéticas de espeak-ng, Opus 24 kbps, 16 kHz mono): una frase en inglés de 6 s / un texto en español de 34 s, para probar la transcripción en dos ventanas de 30 s |
+| `speech-ai-en.ogg`, `speech-ai-es.ogg`, `speech-ai-en.webm` | `scripts/fixtures/speech-ai.mjs` (nuestra voz IA Supertonic 3 leyendo textos propios; Opus 24 kbps, 16 kHz mono): dos frases en inglés de 7 s (también como video WebM VP8 de 96×64) y seis frases en español de 36 s; voz natural para probar la transcripción en el navegador y medir la velocidad |
 | `scan.pdf` | pdf-lib: una página A4 que solo tiene la imagen de 320×240 (sin capa de texto), como un escaneo |
 | `text.txt`, `table.csv` | UTF-8 con acentos y chino / CSV con una coma entre comillas |
 | `data.json` | 3 registros con objetos y listas anidados, comillas, `null`, salto de línea, chino y un código postal "007" |
