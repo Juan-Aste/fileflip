@@ -117,3 +117,6 @@ Para volver atrás basta con borrar la variable y redesplegar.
 ## Cuando cambie un modelo
 
 Si una tarea futura fija otro commit o archivo (en `src/lib/tts/model.ts` o `src/lib/transcribe/model.ts`), volver a correr el paso 5: sube solo lo nuevo, en otra carpeta (el commit es parte de la ruta), así que los usuarios con la versión vieja en caché no se ven afectados.
+
+## Nota de la fase 12: motor FFmpeg
+El motor FFmpeg WASM de los formatos de video y audio viejos (`@ffmpeg/core` 0.12.10, ~31 MB) **no** va a R2: se copia en `public/ffmpeg/` durante el build y se sirve desde nuestro dominio con caché `immutable` (se descarga solo cuando alguien convierte un AVI, WMV, WMA…). No hay archivos nuevos para subir a R2 en la fase 12. Si el tráfico de Railway lo justificara, se podría sumar a `scripts/models/sync-r2.mjs` más adelante.

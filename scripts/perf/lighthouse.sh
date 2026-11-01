@@ -55,6 +55,10 @@ PAGES=(
   "guides /es/guias"
   "guide /es/guias/como-pasar-tabla-pdf-a-excel"
   "guide-zh /zh/guides/how-to-transcribe-audio-to-text"
+  "tool-convert-video /es/convertir-video"
+  "legacy-avi /es/avi-a-mp4"
+  "legacy-wma-en /en/wma-to-mp3"
+  "credits /es/creditos"
 )
 if [ -n "${PAGES_FILTER:-}" ]; then
   sel=(); for p in "${PAGES[@]}"; do [[ "${p%% *}" =~ $PAGES_FILTER ]] && sel+=("$p"); done; PAGES=("${sel[@]}")

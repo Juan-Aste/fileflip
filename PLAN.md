@@ -527,4 +527,4 @@ Pedida por el dueño el 2026-10-31. El proyecto se distribuye bajo AGPL-3.0-or-l
 - [x] 12.5 (evaluado: no se integra, no llega al 20 % adicional a calidad comparable; ver `docs/pdf-ghostscript-eval.md`) Evaluar Ghostscript WASM (AGPL-3.0) contra el método actual en PDFs escaneados, con fotos y con texto; integrar como "compresión fuerte" solo si reduce ≥ 20 % adicional en PDFs con imágenes sin romper el texto seleccionable; si no, documentar
 
 ### 12.6 Verificación final
-- [ ] 12.6 Lighthouse, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium; créditos con enlaces al código fuente; política de privacidad; `docs/launch-checklist.md`; `docs/modelos-r2.md`
+- [x] 12.6 (hecha 2026-11-01: `docs/perf/2026-11-01-phase12.md`; sin regresión contra `main` en la misma máquina) Lighthouse, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium; créditos con enlaces al código fuente; política de privacidad; `docs/launch-checklist.md`; `docs/modelos-r2.md`

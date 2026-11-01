@@ -98,7 +98,7 @@ test.describe("old formats (FFmpeg WASM fallback)", () => {
     });
   }
 
-  test("WMA and AC-3 → MP3 in the audio converter, both channels intact; AMR (voice note) → MP3", async ({ page }) => {
+  test("WMA and AC-3 → MP3 in the audio converter, both channels intact; AMR (voice note) → MP3", { tag: "@xb" }, async ({ page }) => {
     const wma = make("audio.wma", "audio.wav", ["-c:a", "wmav2", "-b:a", "192k", "-f", "asf"]);
     const ac3 = make("audio.ac3", "audio.wav", ["-c:a", "ac3", "-b:a", "192k"]);
     const note = amr("voice.amr", 150);
@@ -151,7 +151,8 @@ test.describe("old formats (FFmpeg WASM fallback)", () => {
     expect(Math.abs(right! - 660), `right ${right} Hz`).toBeLessThan(15);
   });
 
-  test("the /es/avi-a-mp4 page converts an AVI and links its translations", async ({ page }) => {
+  test("the /es/avi-a-mp4 page converts an AVI and links its translations", { tag: "@xb" }, async ({ page, browserName }) => {
+    test.fixme(browserName === "webkit", "B-04: the H.264 encoder probe crashes Linux WebKit (GStreamer build) on every video page");
     const input = make("viejo.avi", "video.mp4", ["-c:v", "mpeg4", "-q:v", "3", "-c:a", "libmp3lame", "-f", "avi"]);
     await page.goto("/es/avi-a-mp4", { waitUntil: "networkidle" });
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Convertir AVI a MP4");
