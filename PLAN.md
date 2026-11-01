@@ -537,7 +537,7 @@ Lector sin descargas (decisión del dueño 2026-10-31). Nadie va a descargar ~20
 - [x] 13.1 Generar por adelantado las 2–3 oraciones siguientes (worker para Supertonic, en paralelo con límite para la nube), con cola, cancelación al pausar/saltar/cambiar velocidad o voz y sin duplicar trabajo; medir el silencio entre oraciones antes y después (objetivo < 150 ms en PC con Supertonic y con la nube simulada); `docs/tts-pausas.md`; tests
 
 ### 13.2 «Escuchar» con la mejor voz del dispositivo
-- [ ] 13.2 Modo por defecto «Escuchar» con la mejor voz del idioma (heurística documentada: «Natural», «Online», «Neural», «Google», «Premium», «Enhanced»; para es: es-AR, luego es-419/es-US/es-MX, luego es-ES; Natural de es-AR de Edge primero), voces «en línea» marcadas, se puede cambiar; tests con `speechSynthesis` simulado
+- [x] 13.2 (heurística en `docs/tts-voces-dispositivo.md`; el rótulo «Escuchar» llega con el reordenamiento de la 13.4) Modo por defecto «Escuchar» con la mejor voz del idioma (heurística documentada: «Natural», «Online», «Neural», «Google», «Premium», «Enhanced»; para es: es-AR, luego es-419/es-US/es-MX, luego es-ES; Natural de es-AR de Edge primero), voces «en línea» marcadas, se puede cambiar; tests con `speechSynthesis` simulado
 
 ### 13.3 Voz IA en la nube (Google Cloud Text-to-Speech)
 - [ ] 13.3a Backend `POST /api/tts` (Node) detrás de una interfaz de proveedor, clave `GOOGLE_TTS_API_KEY` solo del servidor; sin la variable la opción no aparece; voces WaveNet por idioma (es, pt-BR, fr-FR, en-US, cmn-CN), pedidos ≤ 5000 bytes, solo `text` (sin SSML del usuario), MP3 sin guardarse

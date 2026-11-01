@@ -2189,7 +2189,7 @@
             "Resend (EE. UU.): envía el correo con tu enlace para iniciar sesión.",
             "Google (EE. UU.): inicio de sesión con Google, si lo eliges; y Google AdSense, que muestra anuncios (ver la sección 6).",
             "Hugging Face (EE. UU.): si eliges la voz IA de «Leer texto en voz alta» o usas «Transcribir audio a texto», tu navegador descarga los archivos del modelo (una sola vez por modelo) de nuestro almacenamiento en Cloudflare R2 (Cloudflare, EE. UU.) o, si no está disponible, de Hugging Face. Como en cualquier descarga, el que sirve el archivo recibe tu dirección IP y datos técnicos del navegador; tu texto y tu audio no se envían.",
-            "Voces «en línea» de tu navegador (por ejemplo, Google en Chrome o Microsoft en Edge): si eliges una de ellas en «Leer texto en voz alta», el navegador envía el texto a ese proveedor para generar el audio, según la política de privacidad de ese proveedor. Las ofrece el navegador, no nosotros, y las marcamos como «en línea»; las demás voces y la voz IA leen en tu dispositivo."
+            "Voces «en línea» de tu navegador (por ejemplo, Google en Chrome o Microsoft en Edge): si se usa una de ellas en «Leer texto en voz alta» (el lector la elige primero cuando es la voz más natural disponible; puedes cambiarla por otra), el navegador envía el texto a ese proveedor para generar el audio, según la política de privacidad de ese proveedor. Las ofrece el navegador, no nosotros, y las marcamos como «en línea»; las demás voces y la voz IA leen en tu dispositivo."
           ],
           "proItems": [
             "Mercado Pago (Argentina y la región): procesa los pagos del plan Pro. Recibe tus datos de pago directamente; nosotros no."
@@ -3449,7 +3449,7 @@
     "statusFinished": "Lectura terminada",
     "editText": "Editar texto",
     "shortcut": "Barra espaciadora: pausa y reanuda.",
-    "onlineNote": "Las voces «en línea» envían el texto a su proveedor (Google, Microsoft…) para generar el audio. Las demás leen en tu dispositivo.",
+    "onlineNote": "Las voces «en línea» envían el texto a su proveedor (Google, Microsoft…) para generar el audio. Las demás leen en tu dispositivo: si prefieres que el texto no salga de tu equipo, elige una de ellas (se recuerda).",
     "noSupport": "Tu navegador no puede leer en voz alta con las voces del dispositivo. Prueba con Chrome, Edge, Safari o Firefox actualizados.",
     "noVoices": "No encontramos voces en {language} en tu dispositivo: se usará la voz predeterminada del navegador, que puede pronunciar mal. Puedes instalar voces en la configuración de tu sistema.",
     "speechError": "No se pudo leer con esta voz. Prueba con otra voz o vuelve a intentarlo.",

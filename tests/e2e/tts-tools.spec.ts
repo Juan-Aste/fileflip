@@ -79,8 +79,9 @@ test.describe("tool: text-to-speech", () => {
  * end. `cancel()` interrupts like browsers do. Two Spanish voices (one on the
  * device, one online) and an English one with an Android-style tag.
  */
-async function fakeSpeech(page: Page, { supported = true } = {}) {
-  await page.addInitScript((supported) => {
+type FakeVoice = { name: string; lang: string; voiceURI: string; localService: boolean; default: boolean };
+async function fakeSpeech(page: Page, { supported = true, voiceList }: { supported?: boolean; voiceList?: FakeVoice[] } = {}) {
+  await page.addInitScript(({ supported, voiceList }) => {
     if (!supported) {
       delete (window as { speechSynthesis?: unknown }).speechSynthesis;
       Object.defineProperty(window, "speechSynthesis", { value: undefined, configurable: true });
@@ -89,7 +90,7 @@ async function fakeSpeech(page: Page, { supported = true } = {}) {
     const w = window as unknown as { __tts: { spoken: { text: string; rate: number; voice?: string; lang: string }[]; wordMs: number } };
     // Slow enough that a click lands on the sentence the test just saw, even in WebKit.
     w.__tts = { spoken: [], wordMs: 300 };
-    const voices = [
+    const voices = voiceList ?? [
       { name: "Google español", lang: "es-ES", voiceURI: "google-es", localService: false, default: false },
       { name: "Mónica", lang: "es-ES", voiceURI: "local-es", localService: true, default: true },
       { name: "Samantha", lang: "en_US", voiceURI: "local-en", localService: true, default: false },
@@ -139,7 +140,7 @@ async function fakeSpeech(page: Page, { supported = true } = {}) {
     });
     Object.defineProperty(window, "speechSynthesis", { value: synth, configurable: true });
     Object.defineProperty(window, "SpeechSynthesisUtterance", { value: FakeUtterance, configurable: true });
-  }, supported);
+  }, { supported, voiceList });
 }
 
 const status = (page: Page) => page.locator("main").getByRole("status");
@@ -151,17 +152,17 @@ test.describe("text-to-speech: reading with the device's voices", () => {
     await fakeSpeech(page);
     await page.goto("/es/leer-texto-en-voz-alta", { waitUntil: "networkidle" });
     await textArea(page).fill(SAMPLE);
-    // Device voices first; online ones are marked and explained.
+    // The most natural voice first (Google's online one over a plain device voice); online ones are marked and explained.
     const voice = page.getByLabel("Voz", { exact: true });
-    await expect(voice).toHaveValue("local-es");
-    await expect(voice.locator("option")).toHaveText(["Mónica", "Google español (en línea)"]);
+    await expect(voice).toHaveValue("google-es");
+    await expect(voice.locator("option")).toHaveText(["Google español (en línea)", "Mónica"]);
     await expect(page.getByText(/Las voces «en línea» envían el texto/)).toBeVisible();
     await expect(page.getByText("Frase 1 de 3")).toBeVisible();
 
     await page.getByRole("button", { name: "Reproducir" }).click();
     await expect(page.getByTestId("tts-current")).toHaveText("Primera frase del texto.");
     await expect(page.getByTestId("tts-word")).toHaveText(/^\S+$/);
-    expect((await spoken(page))[0]).toEqual({ text: "Primera frase del texto.", rate: 1, voice: "local-es", lang: "es-ES" });
+    expect((await spoken(page))[0]).toEqual({ text: "Primera frase del texto.", rate: 1, voice: "google-es", lang: "es-ES" });
     await expect(status(page)).toHaveText("Leyendo");
     // On to the next sentence by itself.
     await expect(page.getByTestId("tts-current")).toHaveText("Segunda frase con más palabras para leer.", { timeout: 5000 });
@@ -207,9 +208,9 @@ test.describe("text-to-speech: reading with the device's voices", () => {
 
     // Speed: the current sentence starts again at the new rate.
     await page.getByLabel("Velocidad").selectOption("1.5");
-    await expect.poll(async () => (await spoken(page)).at(-1)).toEqual({ text: "Segunda frase con más palabras para leer.", rate: 1.5, voice: "local-es", lang: "es-ES" });
-    await page.getByLabel("Voz", { exact: true }).selectOption("google-es");
-    await expect.poll(async () => (await spoken(page)).at(-1)?.voice).toBe("google-es");
+    await expect.poll(async () => (await spoken(page)).at(-1)).toEqual({ text: "Segunda frase con más palabras para leer.", rate: 1.5, voice: "google-es", lang: "es-ES" });
+    await page.getByLabel("Voz", { exact: true }).selectOption("local-es");
+    await expect.poll(async () => (await spoken(page)).at(-1)?.voice).toBe("local-es");
 
     // Space bar pauses and resumes when the focus is not on a control.
     await page.locator("h1").click();
@@ -222,7 +223,44 @@ test.describe("text-to-speech: reading with the device's voices", () => {
     await page.reload({ waitUntil: "networkidle" });
     await expect(page.getByLabel("Velocidad")).toHaveValue("1.5");
     await textArea(page).fill(SAMPLE);
-    await expect(page.getByLabel("Voz", { exact: true })).toHaveValue("google-es");
+    await expect(page.getByLabel("Voz", { exact: true })).toHaveValue("local-es");
+  });
+
+  test("picks the most natural voice of the device: Edge's Argentine Natural voices first for Spanish", async ({ page }) => {
+    const voice = (name: string, lang: string, localService: boolean, isDefault = false): FakeVoice => ({ name, lang, voiceURI: name, localService, default: isDefault });
+    await fakeSpeech(page, {
+      voiceList: [
+        voice("Microsoft Helena - Spanish (Spain)", "es-ES", true, true),
+        voice("Microsoft Sabina - Spanish (Mexico)", "es-MX", true),
+        voice("Microsoft Alvaro Online (Natural) - Spanish (Spain)", "es-ES", false),
+        voice("Microsoft Tomas Online (Natural) - Spanish (Argentina)", "es-AR", false),
+        voice("Microsoft Elena Online (Natural) - Spanish (Argentina)", "es-AR", false),
+        voice("Microsoft Zira - English (United States)", "en-US", true),
+        voice("Microsoft Aria Online (Natural) - English (United States)", "en-US", false),
+      ],
+    });
+    await page.goto("/es/leer-texto-en-voz-alta", { waitUntil: "networkidle" });
+    await textArea(page).fill(SAMPLE);
+    const picker = page.getByLabel("Voz", { exact: true });
+    await expect(picker).toHaveValue("Microsoft Elena Online (Natural) - Spanish (Argentina)");
+    await expect(picker.locator("option")).toHaveText([
+      "Microsoft Elena Online (Natural) - Spanish (Argentina) (en línea)",
+      "Microsoft Tomas Online (Natural) - Spanish (Argentina) (en línea)",
+      "Microsoft Alvaro Online (Natural) - Spanish (Spain) (en línea)",
+      "Microsoft Sabina - Spanish (Mexico)",
+      "Microsoft Helena - Spanish (Spain)",
+    ]);
+    await page.getByRole("button", { name: "Reproducir" }).click();
+    await expect.poll(async () => (await spoken(page))[0]?.voice).toBe("Microsoft Elena Online (Natural) - Spanish (Argentina)");
+    await page.getByRole("button", { name: "Detener" }).click();
+    // It can still be changed, and the choice is kept.
+    await picker.selectOption("Microsoft Sabina - Spanish (Mexico)");
+    await page.reload({ waitUntil: "networkidle" });
+    await textArea(page).fill(SAMPLE);
+    await expect(picker).toHaveValue("Microsoft Sabina - Spanish (Mexico)");
+    // English: the Natural voice over the plain one.
+    await textArea(page).fill("The cat is on the table and the dog is in the garden.");
+    await expect(picker).toHaveValue("Microsoft Aria Online (Natural) - English (United States)");
   });
 
   test("English text picks an English voice; no voices or no speech support say so", async ({ page, context }) => {

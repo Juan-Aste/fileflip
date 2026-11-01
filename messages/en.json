@@ -2189,7 +2189,7 @@
             "Resend (USA): sends the email with your sign-in link.",
             "Google (USA): Google sign-in, if you choose it; and Google AdSense, which shows ads (see section 6).",
             "Hugging Face (USA): if you choose the AI voice of \"Text to speech\" or use \"Audio to text\", your browser downloads the model files (once per model) from our storage on Cloudflare R2 (Cloudflare, USA) or, if it is unavailable, from Hugging Face. As with any download, whoever serves the file receives your IP address and technical browser data; your text and your audio are not sent.",
-            "\"Online\" voices of your browser (such as Google in Chrome or Microsoft in Edge): if you choose one of them in \"Text to speech\", the browser sends the text to that provider to generate the audio, under that provider's privacy policy. The browser offers them, not us, and we mark them \"online\"; the other voices and the AI voice read on your device."
+            "\"Online\" voices of your browser (such as Google in Chrome or Microsoft in Edge): if one of them is used in \"Text to speech\" (the reader picks it first when it is the most natural voice available; you can switch to another), the browser sends the text to that provider to generate the audio, under that provider's privacy policy. The browser offers them, not us, and we mark them \"online\"; the other voices and the AI voice read on your device."
           ],
           "proItems": [
             "Mercado Pago (Argentina and the region): processes Pro plan payments. It receives your payment details directly; we don't."
@@ -3449,7 +3449,7 @@
     "statusFinished": "Reading finished",
     "editText": "Edit text",
     "shortcut": "Space bar: pause and resume.",
-    "onlineNote": "\"Online\" voices send the text to their provider (Google, Microsoft…) to generate the audio. The others read on your device.",
+    "onlineNote": "\"Online\" voices send the text to their provider (Google, Microsoft…) to generate the audio. The others read on your device: if you prefer the text not to leave your device, pick one of them (it is remembered).",
     "noSupport": "Your browser can't read aloud with device voices. Try an up-to-date Chrome, Edge, Safari or Firefox.",
     "noVoices": "We found no {language} voices on your device: the browser's default voice will be used and may mispronounce words. You can install voices in your system settings.",
     "speechError": "This voice couldn't read the text. Try another voice or try again.",

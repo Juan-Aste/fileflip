@@ -3852,3 +3852,13 @@ FASE 11 TERMINADA
 - Medido con el modelo real en Chromium (silencio además de la pausa de 0,3 s): antes 8, 2643, 2, 896, 3863 y 1055 ms; después **0 ms** en las 6 transiciones (dos corridas). Con la nube simulada (600–900 ms por pedido, 3 en paralelo): < 150 ms. Detalle en `docs/tts-pausas.md`.
 - Tests: `prefetch.test.ts` (7), `player.test.ts` (5), `parallel.test.ts` (2); e2e `no silence between sentences…` (modelo real).
 - Verificado: lint, typecheck, 1414 unitarios, build; Chromium `tts-ai` (con `TTS_REAL_MODEL=1`: lectura, pausa/reanudar, caché, MP3 en 4 idiomas validados con ffprobe) + `tts-tools`: 42 pasan; Firefox y WebKit `@xb` del lector pasan.
+
+## 2026-11-01 — Fase 13, tarea 13.2 (la mejor voz del dispositivo, por defecto)
+- `src/lib/tts/voices.ts`: las voces del idioma se ordenan de mejor a peor y el lector empieza con la primera (la elegida por el usuario se sigue recordando por idioma). Orden: calidad por el nombre («Natural»/«Neural» > «Premium»/«Enhanced»/«Mejorada» > «Online»/«Google» > resto > voces de fantasía de Apple), región (es: es-AR, luego es-419/es-US/es-MX y Latinoamérica, luego es-ES; pt-BR > pt-PT; en-US > en-GB; fr-FR > fr-CA; zh-CN > zh-TW), predeterminada del navegador, del dispositivo antes que en línea, nombre. En Edge, «Elena» y «Tomás» (Natural, es-AR) quedan primero. Detalle en `docs/tts-voces-dispositivo.md`.
+- Las voces en línea se siguen marcando «(en línea)». Como ahora pueden quedar elegidas por defecto, la política de privacidad («si se usa una de ellas… puedes cambiarla») y la nota del lector («si prefieres que el texto no salga de tu equipo, elige una de las demás») cambian en los 5 idiomas.
+- Tests: `voices.test.ts` (Edge, Chrome, Apple, regiones de cada idioma) y e2e con `speechSynthesis` simulado (voces tipo Edge: Elena primero, se puede cambiar y se recuerda; inglés elige Aria Natural). El test existente del lector pasa a esperar «Google español (en línea)» primero.
+- Verificado: lint, typecheck, 1414 unitarios, build; Chromium `tts-tools` + `legal` + `a11y` (46) y Firefox/WebKit `@xb` del lector y legales pasan.
+
+## 2026-11-01 — Fin de esta ejecución
+- Hechas: 12.5 (Ghostscript: no se integra), 12.6 (verificación final; **FASE 12 TERMINADA**), inicio de la fase 13, 13.1 (sin pausas: 0 ms medidos) y 13.2 (mejor voz del dispositivo). Sigue la 13.3 (voz en la nube), que es grande y queda entera para la próxima ejecución: la suite completa de Chromium de la 12.6 tardó ~45 min en esta máquina.
+- CI de dev: verde al empezar.

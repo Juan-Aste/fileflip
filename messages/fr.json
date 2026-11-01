@@ -2189,7 +2189,7 @@
             "Resend (États-Unis) : envoie l'e-mail contenant votre lien de connexion.",
             "Google (États-Unis) : connexion avec Google, si vous la choisissez ; et Google AdSense, qui affiche des annonces (voir la section 6).",
             "Hugging Face (États-Unis) : si vous choisissez la voix IA de « Lire un texte à voix haute » ou utilisez « Transcrire un audio en texte », votre navigateur télécharge les fichiers du modèle (une seule fois par modèle) depuis notre stockage sur Cloudflare R2 (Cloudflare, États-Unis) ou, s’il n’est pas disponible, depuis Hugging Face. Comme pour tout téléchargement, celui qui sert le fichier reçoit votre adresse IP et des données techniques du navigateur ; votre texte et votre audio ne sont pas envoyés.",
-            "Voix « en ligne » de votre navigateur (par exemple Google dans Chrome ou Microsoft dans Edge) : si vous en choisissez une dans « Lire un texte à voix haute », le navigateur envoie le texte à ce fournisseur pour générer l’audio, selon la politique de confidentialité de ce fournisseur. C’est le navigateur qui les propose, pas nous, et nous les marquons « en ligne » ; les autres voix et la voix IA lisent sur votre appareil."
+            "Voix « en ligne » de votre navigateur (par exemple Google dans Chrome ou Microsoft dans Edge) : si l’une d’elles est utilisée dans « Lire un texte à voix haute » (le lecteur la choisit en premier quand c’est la voix la plus naturelle disponible ; vous pouvez en changer), le navigateur envoie le texte à ce fournisseur pour générer l’audio, selon la politique de confidentialité de ce fournisseur. C’est le navigateur qui les propose, pas nous, et nous les marquons « en ligne » ; les autres voix et la voix IA lisent sur votre appareil."
           ],
           "proItems": [
             "Mercado Pago (Argentine et région) : traite les paiements de l'offre Pro. Il reçoit directement vos données de paiement, pas nous."
@@ -3449,7 +3449,7 @@
     "statusFinished": "Lecture terminée",
     "editText": "Modifier le texte",
     "shortcut": "Barre d'espace : pause et reprise.",
-    "onlineNote": "Les voix « en ligne » envoient le texte à leur fournisseur (Google, Microsoft…) pour générer l'audio. Les autres lisent sur votre appareil.",
+    "onlineNote": "Les voix « en ligne » envoient le texte à leur fournisseur (Google, Microsoft…) pour générer l'audio. Les autres lisent sur votre appareil : si vous préférez que le texte ne quitte pas votre appareil, choisissez-en une (le choix est mémorisé).",
     "noSupport": "Votre navigateur ne peut pas lire à voix haute avec les voix de l'appareil. Essayez Chrome, Edge, Safari ou Firefox à jour.",
     "noVoices": "Aucune voix en {language} sur votre appareil : la voix par défaut du navigateur sera utilisée et peut mal prononcer. Vous pouvez installer des voix dans les réglages du système.",
     "speechError": "Cette voix n'a pas pu lire le texte. Essayez une autre voix ou réessayez.",
