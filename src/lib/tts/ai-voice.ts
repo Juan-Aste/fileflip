@@ -2,14 +2,20 @@ import { createJobPool, type JobOptions } from "@/lib/jobs";
 import { modelsBaseUrl } from "@/lib/models/sources";
 import { bytesToDownload, openModelStore } from "./model-cache";
 import { supertonicFiles, supertonicSources, supertonicVoiceFiles, type SupertonicVoice } from "./model";
+import { aiVoiceWorkers } from "./parallel";
 import type { SupertonicLanguage } from "./supertonic";
 
 // The AI voice from the page: one worker holding the model, started the
 // first time the user picks "AI voice" or "Download MP3" (never on page load).
 // Cancelling the download terminates the worker; cancelling a reading just
-// stops asking for sentences, so the loaded model is kept.
+// stops asking for sentences, so the loaded model is kept. On computers with
+// spare cores two workers generate sentences in parallel (./parallel.ts);
+// `prepare` downloads and loads the model in one of them, the other loads it
+// from the cache with its first sentence.
 
-const pool = createJobPool(() => new Worker(new URL("../../workers/tts.worker.ts", import.meta.url), { type: "module" }));
+const pool = createJobPool(() => new Worker(new URL("../../workers/tts.worker.ts", import.meta.url), { type: "module" }), {
+  concurrency: aiVoiceWorkers(),
+});
 
 /** Bytes still to download before the first sentence (0 when everything is cached). */
 export async function aiVoiceDownloadBytes(voice: SupertonicVoice): Promise<number> {
@@ -32,7 +38,7 @@ export async function speakAiSentence(
   { lang, voice, speed, steps, seed }: { lang: SupertonicLanguage; voice: SupertonicVoice; speed: number; steps?: number; seed?: number },
   job: Omit<JobOptions, "transfer"> = {},
 ): Promise<AiSpeech> {
-  const { pcm, sampleRate } = await pool.run<{ pcm: ArrayBuffer; sampleRate: number }>("speak", { text, lang, voice, speed, steps, seed }, job);
+  const { pcm, sampleRate } = await pool.run<{ pcm: ArrayBuffer; sampleRate: number }>("speak", { text, lang, voice, speed, steps, seed, base: modelsBaseUrl() }, job);
   return { pcm: new Float32Array(pcm), sampleRate };
 }
 

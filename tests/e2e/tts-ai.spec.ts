@@ -225,6 +225,44 @@ test.describe("tool: text-to-speech, AI voice with the real model", () => {
     expect(requests).toEqual([]);
   });
 
+  // Task 13.1 (docs/tts-pausas.md): silence between sentences beyond the 0.3 s
+  // pause that belongs to the text. Each source start is recorded on the audio
+  // clock; the extra silence is start(n + 1) − (start(n) + length of n, pause included).
+  test("no silence between sentences beyond the text's pause", async () => {
+    test.setTimeout(600_000);
+    await page.addInitScript(() => {
+      const w = window as unknown as { __timeline: { startAt: number; duration: number }[] };
+      w.__timeline = [];
+      const start = AudioBufferSourceNode.prototype.start;
+      AudioBufferSourceNode.prototype.start = function (when?: number, ...rest: number[]) {
+        w.__timeline.push({ startAt: Math.max(when ?? 0, this.context.currentTime), duration: this.buffer?.duration ?? 0 });
+        return start.call(this, when, ...rest);
+      };
+    });
+    const text = [
+      "La lectura en voz alta ayuda a revisar un texto antes de enviarlo.",
+      "Se escucha mejor el ritmo de cada frase.",
+      "También aparecen los errores que se pasan por alto al leer en silencio.",
+      "Por eso conviene probarla con un párrafo largo.",
+      "Cada oración se genera mientras suena la anterior.",
+      "Así no debería quedar ningún silencio extra entre una y otra.",
+      "Esta es la última frase de la prueba.",
+    ];
+    await chooseAiVoice(page, "/es/leer-texto-en-voz-alta", text.join(" "));
+    await page.getByRole("button", { name: "Reproducir" }).click();
+    // Run alone (-g), the model may not be downloaded yet.
+    const confirm = page.getByRole("button", { name: "Descargar la voz IA" });
+    await expect(confirm.or(page.getByTestId("tts-current"))).toBeVisible({ timeout: 60_000 });
+    if (await confirm.isVisible()) await confirm.click();
+    await expect(page.getByText("Lectura terminada")).toBeAttached({ timeout: 500_000 });
+    const timeline = await page.evaluate(() => (window as unknown as { __timeline: { startAt: number; duration: number }[] }).__timeline);
+    expect(timeline).toHaveLength(text.length);
+    const gaps = timeline.slice(1).map((s, i) => Math.round((s.startAt - (timeline[i].startAt + timeline[i].duration)) * 1000));
+    test.info().annotations.push({ type: "gaps-ms", description: gaps.join(", ") });
+    console.log(`silence between sentences beyond the pause (ms): ${gaps.join(", ")}`);
+    if (!process.env.TTS_GAPS_BASELINE) expect(Math.max(...gaps)).toBeLessThan(150);
+  });
+
   const samples = [
     { path: "/es/leer-texto-en-voz-alta", text: "Buenos días. Hoy vamos a leer un texto corto en voz alta.", button: "Descargar MP3", name: "Buenos días. Hoy vamos a leer.mp3" },
     { path: "/en/text-to-speech", text: "Good morning. Today we will read a short text out loud.", button: "Download MP3", name: "Good morning. Today we will read.mp3" },

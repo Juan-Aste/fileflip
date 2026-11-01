@@ -3842,3 +3842,13 @@ FASE 11 TERMINADA
 - Lighthouse móvil con AdSense de prueba (mediana de 5, `docs/perf/2026-11-01-phase12.md`): CLS 0, A11y y SEO 100; rendimiento 88–92. La máquina está más lenta que en fases anteriores: `main` medido en la misma sesión da 87–88 en páginas sin cambios. **Sin regresión**; las páginas de video quedan en 88–89 (igual que en `main`). `scripts/perf/lighthouse.sh` suma convertir video, `/es/avi-a-mp4`, `/en/wma-to-mp3` y créditos.
 - Créditos y `npm run licenses` (251 paquetes) pasan; la fase 12 no suma terceros que reciban datos (FFmpeg se sirve desde nuestro dominio), así que la política de privacidad no cambia por la fase 12. `docs/launch-checklist.md`: ítem de la fase 12. `docs/modelos-r2.md`: el motor FFmpeg no va a R2 (no hay archivos nuevos para subir).
 - **FASE 12 TERMINADA** (con dos decisiones del dueño pendientes que no bloquean: quitar fondo/u2netp y, si quiere, el entrenamiento de una voz argentina propia).
+
+## 2026-11-01 — Inicio de la fase 13
+- Fase 13 agregada a `PLAN.md` (decisión del dueño 2026-10-31): sin pausas entre oraciones, «Escuchar» con la mejor voz del dispositivo por defecto, voz IA en la nube (Google Cloud Text-to-Speech) con protección de costos, Supertonic como «Modo privado», reordenar el lector y verificación final.
+
+## 2026-11-01 — Fase 13, tarea 13.1 (sin pausas entre oraciones)
+- `src/lib/tts/prefetch.ts`: cola de generación anticipada (3 oraciones, límite de pedidos en paralelo, sin duplicar, cancelación al saltar o cambiar voz/velocidad/texto). `src/lib/tts/player.ts`: cada oración se programa en el reloj de audio para empezar justo al terminar la anterior. `useQueuedSpeech` (genérico, lo usará la nube) y `useAiSpeech` encima.
+- `src/lib/tts/parallel.ts`: 2 workers de Supertonic en computadoras (≥ 4 núcleos y ≥ 8 GB si se sabe), 1 en celulares. El worker recibe el origen de los modelos en cada frase (el segundo no pasa por `prepare`).
+- Medido con el modelo real en Chromium (silencio además de la pausa de 0,3 s): antes 8, 2643, 2, 896, 3863 y 1055 ms; después **0 ms** en las 6 transiciones (dos corridas). Con la nube simulada (600–900 ms por pedido, 3 en paralelo): < 150 ms. Detalle en `docs/tts-pausas.md`.
+- Tests: `prefetch.test.ts` (7), `player.test.ts` (5), `parallel.test.ts` (2); e2e `no silence between sentences…` (modelo real).
+- Verificado: lint, typecheck, 1414 unitarios, build; Chromium `tts-ai` (con `TTS_REAL_MODEL=1`: lectura, pausa/reanudar, caché, MP3 en 4 idiomas validados con ffprobe) + `tts-tools`: 42 pasan; Firefox y WebKit `@xb` del lector pasan.

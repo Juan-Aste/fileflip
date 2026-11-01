@@ -106,10 +106,13 @@ export interface SpeakArgs {
   speed: number;
   steps?: number;
   seed?: number;
+  /** Model storage, as in `prepare`: a second worker gets its first request without one. */
+  base?: string;
 }
 
 /** One sentence as mono 32-bit float PCM (transferred). */
-async function speak({ text, lang, voice, speed, steps, seed }: SpeakArgs, onProgress: (progress: number) => void) {
+async function speak({ text, lang, voice, speed, steps, seed, base: from }: SpeakArgs, onProgress: (progress: number) => void) {
+  if (from !== undefined) base = from;
   const noop = () => {};
   const [m, style] = await Promise.all([loadModel(noop), loadVoice(voice, noop)]);
   const pcm = await synthesize(m.ort, m.sessions, m.cfg, m.indexer, text, { lang, voice: style, speed, steps, seed, onStep: onProgress });

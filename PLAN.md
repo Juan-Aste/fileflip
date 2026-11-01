@@ -528,3 +528,25 @@ Pedida por el dueño el 2026-10-31. El proyecto se distribuye bajo AGPL-3.0-or-l
 
 ### 12.6 Verificación final
 - [x] 12.6 (hecha 2026-11-01: `docs/perf/2026-11-01-phase12.md`; sin regresión contra `main` en la misma máquina) Lighthouse, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium; créditos con enlaces al código fuente; política de privacidad; `docs/launch-checklist.md`; `docs/modelos-r2.md`
+
+## Fase 13
+
+Lector sin descargas (decisión del dueño 2026-10-31). Nadie va a descargar ~200 MB de una página que no conoce, y entre oración y oración había una pausa mientras se generaba la siguiente. Se combinan: voces del dispositivo por defecto («Escuchar»), voz IA en la nube (Google Cloud Text-to-Speech) y la voz IA del navegador (Supertonic) como «Modo privado» opcional. En orden.
+
+### 13.1 Sin pausas entre oraciones
+- [x] 13.1 Generar por adelantado las 2–3 oraciones siguientes (worker para Supertonic, en paralelo con límite para la nube), con cola, cancelación al pausar/saltar/cambiar velocidad o voz y sin duplicar trabajo; medir el silencio entre oraciones antes y después (objetivo < 150 ms en PC con Supertonic y con la nube simulada); `docs/tts-pausas.md`; tests
+
+### 13.2 «Escuchar» con la mejor voz del dispositivo
+- [ ] 13.2 Modo por defecto «Escuchar» con la mejor voz del idioma (heurística documentada: «Natural», «Online», «Neural», «Google», «Premium», «Enhanced»; para es: es-AR, luego es-419/es-US/es-MX, luego es-ES; Natural de es-AR de Edge primero), voces «en línea» marcadas, se puede cambiar; tests con `speechSynthesis` simulado
+
+### 13.3 Voz IA en la nube (Google Cloud Text-to-Speech)
+- [ ] 13.3a Backend `POST /api/tts` (Node) detrás de una interfaz de proveedor, clave `GOOGLE_TTS_API_KEY` solo del servidor; sin la variable la opción no aparece; voces WaveNet por idioma (es, pt-BR, fr-FR, en-US, cmn-CN), pedidos ≤ 5000 bytes, solo `text` (sin SSML del usuario), MP3 sin guardarse
+- [ ] 13.3b Protección de costos: límites por IP/usuario/día, por minuto y por pedido, tope mensual global `TTS_MONTHLY_CHAR_LIMIT` (3.500.000) contado en MongoDB (solo números); al llegar al tope se desactiva hasta el mes siguiente; uso del mes y del día en el panel de admin; comprobación de Origin/Referer y token firmado de corta duración
+- [ ] 13.3c Lector: «Voz IA (nube)» con lectura progresiva y MP3 armado en el navegador (validado de forma independiente); aviso «Tu texto se envía a Google…»; política de privacidad y FAQ en 5 idiomas; términos de Google Cloud TTS sobre uso comercial del audio documentados
+- [ ] 13.3d `docs/tts-nube.md` (pasos del dueño: proyecto, facturación, API, clave restringida, presupuesto con alertas, variables en Railway), `scripts/tts/cloud-samples.mjs` (muestras y WER con Whisper `base` cuando haya clave), `.env.example`, `docs/launch-checklist.md`; tests con la API simulada (límites, tope, sin clave, la clave nunca llega al navegador ni el texto a los logs)
+
+### 13.4 Reordenar el lector
+- [ ] 13.4 Orden: 1) «Escuchar» (dispositivo, por defecto); 2) «Voz IA» (nube) para escuchar y «Descargar MP3»; 3) «Modo privado» (Supertonic, aviso de ~200 MB, el texto no sale del dispositivo). MP3 por la nube si está; si no, modo privado. Sin nube o con el tope alcanzado, el lector funciona como hoy. Textos y FAQ en 5 idiomas; Lighthouse ≥ 90, CLS 0, axe, Firefox y WebKit
+
+### 13.5 Verificación final
+- [ ] 13.5 Lo mismo que 12.6 para el lector, más revisión de seguridad de `/api/tts` (abuso, tamaños, inyección en SSML)
