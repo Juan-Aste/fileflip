@@ -3829,3 +3829,9 @@ FASE 11 TERMINADA
 
 ## 2026-10-31 — Fin de esta ejecución (fase 12)
 - Hechas: 12.2 (Piper no se integra, decisión del dueño), 12.3 (u2netp revisado: **bloqueante para el dueño**), 12.4a, 12.4b, 12.4c (límite de 5). Siguen: 12.5 (Ghostscript), 12.6 (verificación final), después la fase 13.
+
+## 2026-11-01 — Fase 12, tarea 12.5 (Ghostscript: no se integra)
+- Candado tomado; CI de dev en verde (run de `876b7da`).
+- Evaluado `@okathira/ghostpdl-wasm` 1.1.0 (AGPL-3.0-or-later, GhostPDL 10.06.0, 10,6 MB con gzip) contra nuestro «Comprimir PDF» en 4 PDF generados (escaneado, fotos, mixto, solo texto). Medido con el `gs` de Ubuntu (mismo motor `pdfwrite`; el entorno no permitió ejecutar el WASM descargado). Script: `scripts/pdf/eval-ghostscript.ts`; tabla en `docs/pdf-ghostscript-eval.md`.
+- Resultado: en escaneados y fotos nuestro «strong» queda más chico que Ghostscript `/screen` y con mejor PSNR; en el mixto `/ebook` gana solo 18,9 % (peor calidad) y `/screen` 67 % bajando las fotos a 72 ppp. El texto seleccionable se mantuvo siempre. **No llega al 20 % a calidad comparable → no se integra.** Idea anotada: limitar la resolución efectiva según el tamaño mostrado en la página.
+- Verificado: eslint y typecheck del script nuevo (no cambia código del sitio).
