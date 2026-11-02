@@ -3949,3 +3949,6 @@ FASE 11 TERMINADA
 
 ## 2026-11-02 — FASE 14 TERMINADA
 - «Quitar fondo» ya no usa u2netp: recorte asistido con GrabCut propio (sin modelos ni datos de entrenamiento), misma URL y slugs, textos en 5 idiomas. Ningún modelo de personas pasó la regla estricta (MediaPipe: datos no verificables). No hay modelo para subir a R2. Falta que el dueño mergee `dev` en `main`.
+
+## 2026-11-02 — Inicio de la fase 15
+- El dueño pidió el modo «Personas» automático con MediaPipe Selfie Segmenter y aceptó por escrito (2026-11-02) el riesgo de licencia de sus datos de entrenamiento; la excepción no se extiende a otros modelos. Tareas 15.1–15.3 en `PLAN.md`.

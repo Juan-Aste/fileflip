@@ -566,3 +566,20 @@ Lector sin descargas (decisión del dueño 2026-10-31). Nadie va a descargar ~20
 
 ### 14.3 Verificación final
 - [x] 14.3 (hecha 2026-11-02: sin regresión, 87 en esta máquina igual que antes de la fase 14, CLS 0; `docs/perf/2026-11-02-phase14.md`) Lighthouse móvil ≥ 90 y CLS 0 en la herramienta, detector de clics, axe, Firefox y WebKit, suite de Chromium de las páginas tocadas; créditos, `docs/licencia-agpl.md`, `docs/modelos-r2.md` (si hay modelo nuevo) y `docs/launch-checklist.md`
+
+## Fase 15
+
+Modo «Personas» automático con MediaPipe Selfie Segmenter (pedido del dueño 2026-11-02). **Excepción de licencias aceptada por escrito por el dueño el 2026-11-02** solo para MediaPipe Selfie Segmenter (modelo Apache-2.0; datos de entrenamiento descritos como imágenes con consentimiento de Google, no verificables); no alcanza a Selfie Multiclass ni a otros modelos. En orden.
+
+### 15.1 Modelo y licencia
+- [ ] 15.1 Elegir el modelo «square» o «landscape» (medir calidad en fotos), versión exacta del `.tflite` oficial con sha256; registrar la excepción (dueño, fecha, motivo, riesgo) en `docs/quitar-fondo-eval.md` y `docs/licencia-agpl.md`
+
+### 15.2 Integración
+- [ ] 15.2a Motor: `@mediapipe/tasks-vision` (Apache-2.0, versión exacta); WASM y modelo servidos desde nuestro dominio (copiados en el build y verificados con sha256), nada de CDNs de terceros; carga diferida solo al elegir «Personas»; CSP (WASM) y sin SharedArrayBuffer; `docs/dependencies.md`, `docs/licencia-agpl.md`, créditos y `npm run licenses`
+- [ ] 15.2b Trimapa desde la máscara (zona segura de persona, zona segura de fondo, franja dudosa en el borde) + trazos «mantener»/«quitar», refinado con GrabCut; tests unitarios
+- [ ] 15.2c Interfaz: selector «Personas (automático)» / «Objetos y productos (rectángulo)»; máscara automática al subir la foto; pinceles, deshacer/rehacer, fondos, formatos y descarga como hoy; aviso si no hay una persona clara (sugiere el rectángulo)
+- [ ] 15.2d Textos en 5 idiomas (descripción, «about», FAQ: automático para personas, rectángulo para objetos, la foto no sale del dispositivo, tamaño de la descarga), misma URL y slugs; créditos con MediaPipe (Apache-2.0) y su model card
+
+### 15.3 Tests y verificación
+- [ ] 15.3a e2e con una foto de una persona de licencia verificable (o figura sintética que el modelo detecte): PNG con transparencia, IoU ≥ 0,85 contra una máscara de referencia, sin pedidos a otros orígenes; Firefox y WebKit (`@xb`)
+- [ ] 15.3b Lighthouse móvil ≥ 90 y CLS 0 (comparado con main en la misma sesión si la máquina está lenta), detector de clics, axe, suite de Chromium de las páginas tocadas; docs finales
