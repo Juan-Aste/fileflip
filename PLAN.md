@@ -583,3 +583,17 @@ Modo «Personas» automático con MediaPipe Selfie Segmenter (pedido del dueño 
 ### 15.3 Tests y verificación
 - [x] 15.3a (hecha 2026-11-02: IoU 0,992 en Chromium, Firefox, WebKit, iPhone y Android; respaldo en el hilo principal y aviso sin WebGL) e2e con una foto de una persona de licencia verificable (o figura sintética que el modelo detecte): PNG con transparencia, IoU ≥ 0,85 contra una máscara de referencia, sin pedidos a otros orígenes; Firefox y WebKit (`@xb`)
 - [x] 15.3b (hecha 2026-11-02: Lighthouse móvil 90 y CLS 0 en `/es/quitar-fondo`, main 92 en la misma sesión; 190 tests de Chromium) Lighthouse móvil ≥ 90 y CLS 0 (comparado con main en la misma sesión si la máquina está lenta), detector de clics, axe, suite de Chromium de las páginas tocadas; docs finales
+
+## Fase 16
+
+CI del PR de `dev` a `main` en verde (pedido del dueño 2026-11-02). El job `e2e-browsers` (run 41540432874, commit e6e377c) falló: 20 fallos, 1 flaky, 131 pasan. En orden.
+
+### 16.1 Herramientas del sistema en `e2e-browsers`
+- [ ] 16.1 poppler-utils, patch y ffmpeg disponibles en el job (sin la imagen de Playwright con `--user 1001`, o equivalente); causa de los fallos en 0 ms de `tts-cloud` (ffmpeg u otra cosa del entorno de CI) y arreglo; verificado con `act` o `gh workflow run` sobre `dev`
+
+### 16.2 Fallos que no son de entorno
+- [ ] 16.2a `[iphone] edit-pdf.spec.ts:61`: esperaba «4 elementos agregados» y quedaron 2 tras mano alzada y flecha; averiguar si es un bug real del sitio con gestos táctiles en iPhone (WebKit con touch) o del test; arreglar la causa y cubrirla con un test, sin debilitar lo que verifica
+- [ ] 16.2b `[iphone] sheet-tools.spec.ts:227` (descarga de split-excel) flaky: buscar la causa y estabilizarlo sin agrandar timeouts a ciegas
+
+### 16.3 Verificación
+- [ ] 16.3 Workflow completo (check, e2e-ai-voice, e2e-browsers) en verde sobre el último commit de `dev`; causa y arreglo de cada fallo en PROGRESS.md

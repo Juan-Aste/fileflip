@@ -4004,3 +4004,6 @@ FASE 11 TERMINADA
 - Descarga la primera vez: ~4,1 MB (WASM ~3,9 MB con gzip, ~2,8 MB con Brotli, + modelo 250 KB), todo desde nuestro dominio y solo al abrir una foto en ese modo.
 - Calidad: IoU 0,988 de media en 12 fotos de evaluación; 0,992 en el e2e en Chromium, Firefox, WebKit, iPhone y Android.
 - Falta: mergear `dev` en `main` y revisar la fase 15 en producción (`docs/launch-checklist.md`).
+
+## 2026-11-02 — Inicio de la fase 16
+- CI del PR de `dev` a `main`: `e2e-browsers` (run 41540432874, commit e6e377c) con 20 fallos y 1 flaky. Tareas en PLAN.md (16.1 herramientas del sistema, 16.2a/b fallos de iPhone, 16.3 verificación).
