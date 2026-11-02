@@ -159,6 +159,26 @@ test.describe("keyboard", () => {
     expect(inMain).toBe(true);
   });
 
+  // Anything scrolled to the top edge (an #anchor, scrollIntoView(), or
+  // Playwright's own scrolling in WebKit) must stop below the sticky header,
+  // not under it: on iPhone the download link of a result ended up under the
+  // header and the click hit the header (PROGRESS.md, phase 16).
+  test("content scrolled to the top edge stays below the sticky header", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto(toolPath("split-excel"), { waitUntil: "networkidle" });
+    const targets = page.locator("main h2, main summary");
+    expect(await targets.count()).toBeGreaterThan(3);
+    for (const target of await targets.all()) {
+      await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+      await target.evaluate((el) => el.scrollIntoView());
+      const { top, under } = await target.evaluate((el) => ({
+        top: el.getBoundingClientRect().top,
+        under: document.querySelector("header.sticky")!.getBoundingClientRect().bottom,
+      }));
+      expect(top, `${await target.innerText()} is under the header`).toBeGreaterThanOrEqual(under);
+    }
+  });
+
   for (const id of ["crop-image", "color-converter", "password-generator", "sign-pdf", "trim-video", "id-photo"] as ToolId[]) {
     test(`every focus stop is visible and shows focus: ${id}`, async ({ page }) => {
       test.skip(!(availableTools as readonly string[]).includes(id), "not published");

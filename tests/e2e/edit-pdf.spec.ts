@@ -36,11 +36,22 @@ async function painted(buf: Buffer, page: number, x: number, y: number, color: n
 /** Page points (origin top-left) → screen pixels on the editing surface. */
 async function at(page: Page, x: number, y: number) {
   const surface = page.getByTestId("edit-surface");
-  // The whole page must be on screen for the pointer to reach it.
-  await surface.evaluate((el) => el.scrollIntoView({ block: "center", behavior: "instant" }));
+  // The whole page must be on screen, below the sticky header, for the pointer
+  // to reach it. Centered by hand: in iPhone emulation WebKit's
+  // scrollIntoView({ block: "center" }) overshoots once the page has grown
+  // (the surface ended up under the header and drags hit the header).
+  await surface.evaluate((el) => {
+    const top = document.querySelector("header.sticky")?.getBoundingClientRect().bottom ?? 0;
+    const r = el.getBoundingClientRect();
+    window.scrollBy({ top: r.top + r.height / 2 - (top + window.innerHeight) / 2, behavior: "instant" });
+  });
   const box = (await surface.boundingBox())!;
   const [w, h] = (await surface.getAttribute("viewBox"))!.split(" ").slice(2).map(Number) as [number, number];
-  return { x: box.x + (x / w) * box.width, y: box.y + (y / h) * box.height };
+  const point = { x: box.x + (x / w) * box.width, y: box.y + (y / h) * box.height };
+  // The point really lands on the page being edited, not on something above it.
+  const onPage = await surface.evaluate((el, p) => !!el.parentElement?.contains(document.elementFromPoint(p.x, p.y)), point);
+  expect(onPage, `(${x}, ${y}) of the page is not reachable on screen`).toBe(true);
+  return point;
 }
 async function drag(page: Page, from: [number, number], to: [number, number]) {
   const a = await at(page, ...from);
@@ -94,6 +105,35 @@ test.describe("tool: edit-pdf", () => {
     expect(await painted(out.buf, 2, 425, 500, [211, 47, 47])).toBe(true);
     // Untouched paper stays white.
     expect(await painted(out.buf, 2, 500, 780, [255, 239, 153])).toBe(false);
+  });
+
+  // Real touch input (CDP touch events, so Chromium: the Android project),
+  // not mouse events in a phone viewport: the finger must draw and place an
+  // arrow, the surface (touch-action: none) must not scroll the page instead.
+  test("a finger draws and places an arrow on a phone @xb", async ({ page, browserName }, testInfo) => {
+    test.skip(browserName !== "chromium" || !testInfo.project.use.hasTouch, "real touch events need Chromium's CDP and a touch device");
+    const cdp = await page.context().newCDPSession(page);
+    const swipe = async (from: [number, number], to: [number, number]) => {
+      const a = await at(page, ...from);
+      const b = await at(page, ...to);
+      const scroll = await page.evaluate(() => window.scrollY);
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: a.x, y: a.y }] });
+      for (let i = 1; i <= 5; i++) await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ x: a.x + ((b.x - a.x) * i) / 5, y: a.y + ((b.y - a.y) * i) / 5 }] });
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      expect(await page.evaluate(() => window.scrollY), "the swipe must draw, not scroll").toBe(scroll);
+    };
+    await openWithFiles(page, "/es/editar-pdf", ["document.pdf"]);
+    const surface = page.getByTestId("edit-surface");
+    await fit(page, "Alejar");
+    await tool(page, "Dibujar");
+    await swipe([100, 700], [300, 720]);
+    await expect(surface).toHaveAttribute("aria-label", "Página 1, 1 elemento agregado");
+    await tool(page, "Flecha");
+    await swipe([350, 500], [500, 500]);
+    await expect(surface).toHaveAttribute("aria-label", "Página 1, 2 elementos agregados");
+    const out = fileOf(await runTool(page, "Guardar PDF"));
+    expect(await painted(out.buf, 1, 200, 710, [29, 63, 158])).toBe(true);
+    expect(await painted(out.buf, 1, 425, 500, [211, 47, 47])).toBe(true);
   });
 
   test("a white box only covers, unless the page is really hidden", async ({ page }) => {

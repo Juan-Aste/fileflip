@@ -111,15 +111,13 @@ jobs:
   # site with the Pro plan switched off (pro-switch) and the legal texts (legal),
   # and the AI voice confirmation and failures (tts-ai; its real-model tests
   # need TTS_REAL_MODEL=1).
-  # Runs in Playwright's image (same version as package.json): browsers and
-  # their system libraries come preinstalled, no slow apt step.
+  # Runs on the plain runner, not in Playwright's image: the tests also check
+  # outputs with poppler (pdftotext, pdfinfo, pdftoppm), patch and ffmpeg,
+  # which that image lacks and can't install as its non-root user.
   e2e-browsers:
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-    container:
-      image: mcr.microsoft.com/playwright:v1.56.0-noble
-      options: --user 1001
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -128,6 +126,13 @@ jobs:
           cache: npm
       - name: Install
         run: npm ci
+      # Browsers of the Playwright version in package.json with their system
+      # libraries, xvfb, and the independent validators of the tests.
+      - name: Browsers and system tools
+        run: |
+          npx playwright install --with-deps chromium firefox webkit
+          sudo apt-get install -y -qq --no-install-recommends poppler-utils patch ffmpeg xvfb
+          pdftotext -v && pdfinfo -v && patch --version | head -1 && ffmpeg -version | head -1
       - name: Build
         run: npm run build
       - name: Firefox, WebKit and phone emulation sample
