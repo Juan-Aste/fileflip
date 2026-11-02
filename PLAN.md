@@ -546,7 +546,7 @@ Lector sin descargas (decisión del dueño 2026-10-31). Nadie va a descargar ~20
 - [x] 13.3d `docs/tts-nube.md` (pasos del dueño: proyecto, facturación, API, clave restringida, presupuesto con alertas, variables en Railway), `scripts/tts/cloud-samples.mjs` (muestras y WER con Whisper `base` cuando haya clave), `.env.example`, `docs/launch-checklist.md`; tests con la API simulada (límites, tope, sin clave, la clave nunca llega al navegador ni el texto a los logs)
 
 ### 13.4 Reordenar el lector
-- [ ] 13.4 Orden: 1) «Escuchar» (dispositivo, por defecto); 2) «Voz IA» (nube) para escuchar y «Descargar MP3»; 3) «Modo privado» (Supertonic, aviso de ~200 MB, el texto no sale del dispositivo). MP3 por la nube si está; si no, modo privado. Sin nube o con el tope alcanzado, el lector funciona como hoy. Textos y FAQ en 5 idiomas; Lighthouse ≥ 90, CLS 0, axe, Firefox y WebKit
+- [x] 13.4 Orden: 1) «Escuchar» (dispositivo, por defecto); 2) «Voz IA» (nube) para escuchar y «Descargar MP3»; 3) «Modo privado» (Supertonic, aviso de ~200 MB, el texto no sale del dispositivo). MP3 por la nube si está; si no, modo privado. Sin nube o con el tope alcanzado, el lector funciona como hoy. Textos y FAQ en 5 idiomas; Lighthouse ≥ 90, CLS 0, axe, Firefox y WebKit
 
 ### 13.5 Verificación final
 - [ ] 13.5 Lo mismo que 12.6 para el lector, más revisión de seguridad de `/api/tts` (abuso, tamaños, inyección en SSML)

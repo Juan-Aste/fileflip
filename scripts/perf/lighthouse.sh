@@ -59,6 +59,7 @@ PAGES=(
   "legacy-avi /es/avi-a-mp4"
   "legacy-wma-en /en/wma-to-mp3"
   "credits /es/creditos"
+  "privacy /es/privacy"
 )
 if [ -n "${PAGES_FILTER:-}" ]; then
   sel=(); for p in "${PAGES[@]}"; do [[ "${p%% *}" =~ $PAGES_FILTER ]] && sel+=("$p"); done; PAGES=("${sel[@]}")

@@ -131,15 +131,22 @@ export default function ReadAloudTool() {
     setRate(clampRate(readStored(RATE_KEY) ?? 1));
     const storedEngine = readStored(ENGINE_KEY);
     if (storedEngine === "ai" || storedEngine === "cloud") setEngine(storedEngine);
-    // A small JSON request after the page has loaded: whether the cloud voice is on.
+    // A small JSON request once the page has loaded and is idle: whether the cloud voice is on.
     let live = true;
-    const timer = window.setTimeout(() => {
-      void import("@/lib/tts/cloud-client").then(({ cloudStatus }) => cloudStatus()).then((status) => live && setCloud(status));
-    }, 0);
+    let timer = 0;
+    const ask = () => {
+      timer = window.setTimeout(() => {
+        void import("@/lib/tts/cloud-client").then(({ cloudStatus }) => cloudStatus()).then((status) => live && setCloud(status));
+      }, 0);
+    };
+    const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(ask, { timeout: 2000 }) : ask());
+    if (document.readyState === "complete") idle();
+    else window.addEventListener("load", idle, { once: true });
     const v = readStored(AI_VOICE_KEY);
     if ((supertonicVoices as readonly string[]).includes(v ?? "")) setAiVoice(v as SupertonicVoice);
     return () => {
       live = false;
+      window.removeEventListener("load", idle);
       window.clearTimeout(timer);
     };
   }, []);

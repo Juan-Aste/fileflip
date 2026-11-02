@@ -10,6 +10,7 @@ import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { Page } from "@playwright/test";
+import { axeViolations } from "./axe";
 import { startApp } from "./server/app";
 import { expect, test } from "./support";
 
@@ -162,4 +163,71 @@ test("without GOOGLE_TTS_API_KEY the cloud voice is not offered", async ({ page 
   await expect(page.getByRole("radio", { name: "Voces del dispositivo" })).toBeVisible();
   await expect(page.getByRole("radio", { name: "Voz IA (nube)" })).toHaveCount(0);
   await expect(page.getByTestId("tts-cloud-notice")).toHaveCount(0);
+});
+
+// The same reader in every engine with /api/tts answered by the test (the
+// server path is covered above): the order of the options, reading with the
+// cloud voice, the monthly cap and axe in light and dark.
+test.describe("text-to-speech: the three options (API stubbed)", () => {
+  let tone: Buffer;
+  test.beforeAll(() => {
+    const dir = mkdtempSync(join(tmpdir(), "fileflect-tts-stub-"));
+    const file = join(dir, "tone.mp3");
+    execFileSync("ffmpeg", ["-loglevel", "error", "-y", "-f", "lavfi", "-i", "sine=frequency=330:duration=1", "-ar", "24000", "-ac", "1", "-b:a", "32k", file]);
+    tone = readFileSync(file);
+  });
+
+  async function stubApi(page: Page, available: boolean) {
+    const posts: string[] = [];
+    await page.route("**/api/tts", (route) => {
+      if (route.request().method() === "GET") return route.fulfill({ json: { enabled: true, available, maxChars: 1500, token: "stub" } });
+      posts.push(JSON.parse(route.request().postData() ?? "{}").text);
+      return route.fulfill({ body: tone, contentType: "audio/mpeg" });
+    });
+    return posts;
+  }
+
+  for (const colorScheme of ["light", "dark"] as const) {
+    test(`Listen first, then AI voice (cloud), then private mode; reads with the cloud voice; axe (${colorScheme})`, { tag: "@xb" }, async ({ page, browserName }) => {
+      await page.emulateMedia({ colorScheme });
+      const posts = await stubApi(page, true);
+      await page.goto("/es/leer-texto-en-voz-alta", { waitUntil: "networkidle" });
+      const radios = page.getByRole("radio");
+      await expect(radios).toHaveCount(3);
+      expect(await radios.evaluateAll((els) => els.map((e) => e.closest("label")!.textContent!.trim()))).toEqual([
+        "Escuchar (voces del dispositivo)",
+        "Voz IA (nube)",
+        "Modo privado (voz IA en tu dispositivo)",
+      ]);
+      await expect(radios.first()).toBeChecked();
+      await expect(page.getByTestId("tts-cloud-notice")).toHaveText(/se envía a Google/);
+      await textArea(page).fill("Una frase corta. Otra frase.");
+      // The MP3 uses the cloud voice when it is available.
+      await expect(page.getByText(/El MP3 se genera con la voz IA en la nube/)).toBeVisible();
+      expect(await axeViolations(page)).toEqual([]);
+
+      await page.getByRole("radio", { name: "Voz IA (nube)" }).check();
+      await page.getByRole("button", { name: "Reproducir" }).click();
+      await expect(page.getByTestId("tts-current")).toHaveText("Una frase corta.");
+      expect(await axeViolations(page)).toEqual([]);
+      // Headless Firefox in the test container has no audio output: its
+      // AudioContext clock never advances, so the reading can't end there.
+      if (browserName === "firefox") return;
+      await expect(page.locator("main").getByRole("status")).toHaveText("Lectura terminada", { timeout: 15_000 });
+      expect(posts).toEqual(["Una frase corta.", "Otra frase."]);
+    });
+  }
+
+  test("at the monthly cap the cloud option turns off and the reader works as before", { tag: "@xb" }, async ({ page }) => {
+    const posts = await stubApi(page, false);
+    await page.goto("/es/leer-texto-en-voz-alta", { waitUntil: "networkidle" });
+    await expect(page.getByRole("radio", { name: "Voz IA (nube)" })).toBeDisabled();
+    await expect(page.getByTestId("tts-cloud-notice")).toHaveText(/no está disponible por este mes/);
+    await textArea(page).fill("Una frase corta.");
+    // The MP3 falls back to the private mode (Supertonic), with its license link.
+    await expect(page.getByRole("button", { name: "Descargar MP3" })).toBeEnabled();
+    await expect(page.getByText(/El MP3 se genera con la voz IA \(Supertonic 3\)/)).toBeVisible();
+    await expect(page.getByRole("radio", { name: "Escuchar" })).toBeChecked();
+    expect(posts).toEqual([]);
+  });
 });
