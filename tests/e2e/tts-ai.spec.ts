@@ -44,7 +44,7 @@ function watchModel(page: Page) {
 async function chooseAiVoice(page: Page, path: string, text: string) {
   await page.goto(path, { waitUntil: "networkidle" });
   await page.locator("textarea").fill(text);
-  await page.getByRole("radio", { name: /Voz IA|AI voice|Voix IA/ }).check();
+  await page.getByRole("radio", { name: /Modo privado|Private mode|Mode privé/ }).check();
 }
 
 test.describe("tool: text-to-speech, AI voice", () => {
@@ -60,7 +60,7 @@ test.describe("tool: text-to-speech, AI voice", () => {
     expect(requests).toEqual([]);
     // The choice is remembered.
     await page.reload({ waitUntil: "networkidle" });
-    await expect(page.getByRole("radio", { name: "Voz IA" })).toBeChecked();
+    await expect(page.getByRole("radio", { name: "Modo privado" })).toBeChecked();
   });
 
   test("a failed download says so and the device voices still work", async ({ page, context }) => {
@@ -99,7 +99,7 @@ test.describe("tool: text-to-speech, AI voice", () => {
     expect(response.headers()["content-type"]).toMatch(/audio\/mpeg/);
     // Choosing a voice switches to the AI voice without downloading the model.
     await page.getByRole("button", { name: "Elegir Hombre 2" }).click();
-    await expect(page.getByRole("radio", { name: "Voz IA" })).toBeChecked();
+    await expect(page.getByRole("radio", { name: "Modo privado" })).toBeChecked();
     await expect(page.getByRole("combobox", { name: "Voz" })).toHaveValue("M2");
     await expect(page.getByRole("button", { name: "Elegida" })).toHaveAttribute("aria-pressed", "true");
     expect(requests).toEqual([]);

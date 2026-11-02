@@ -1822,18 +1822,18 @@
       "description": "Cole um texto ou abra um arquivo e ouça com pausa e a velocidade que quiser, ou baixe como MP3 com uma voz IA, no seu navegador.",
       "searchTerms": "TTS texto para voz leitor narrador ler em voz alta voz IA",
       "action": "Ler em voz alta",
-      "about": "Digite ou cole um texto, ou abra um arquivo TXT, Markdown, HTML, PDF com texto, Word (DOCX), EPUB ou a foto de um documento, e ouça em voz alta. Você pode pausar, voltar à frase anterior, pular para a próxima e escolher a velocidade, de 0,5× a 2×. A frase que está sendo lida fica destacada para você acompanhar. Lê com as vozes do seu dispositivo ou com uma voz IA mais natural (Supertonic 3) que funciona no navegador e permite baixar a leitura em MP3. O texto é extraído e convertido em voz no seu dispositivo: o arquivo não é enviado a nenhum servidor.",
+      "about": "Digite ou cole um texto, ou abra um arquivo TXT, Markdown, HTML, PDF com texto, Word (DOCX), EPUB ou a foto de um documento, e ouça em voz alta. Você pode pausar, voltar à frase anterior, pular para a próxima e escolher a velocidade, de 0,5× a 2×. A frase que está sendo lida fica destacada para você acompanhar. Por padrão lê na hora com a melhor voz do seu dispositivo. Quando disponível, a \"Voz IA (nuvem)\" soa mais natural, também em chinês, e permite baixar MP3: o texto é enviado ao Google para gerar a voz e não o guardamos. E o \"Modo privado\" usa uma voz IA (Supertonic 3) que funciona no navegador: o texto não sai do seu dispositivo. O arquivo é sempre lido no navegador: não é enviado a nenhum servidor.",
       "faq": {
         "q1": "Meu texto é enviado a algum servidor?",
-        "a1": "Não. O arquivo é lido e o texto extraído no seu navegador, e a voz IA gera o áudio no seu dispositivo: o único download são os arquivos do modelo, na primeira vez, do nosso servidor de modelos ou do Hugging Face. As vozes do dispositivo também leem no seu aparelho; só as marcadas como \"on-line\" (por exemplo, as do Google ou da Microsoft no Chrome e no Edge) enviam o texto a esse provedor para gerar o áudio.",
+        "a1": "O arquivo não: ele é lido e o texto extraído no seu navegador. O texto depende da voz escolhida. Com \"Ouvir\" (vozes do dispositivo) é lido no seu aparelho; só as vozes marcadas como \"on-line\" (por exemplo, as do Google ou da Microsoft no Chrome e no Edge) enviam o texto a esse provedor. Com \"Voz IA (nuvem)\", cada frase passa pelo nosso servidor até o Google Cloud para gerar o áudio: não guardamos nem registramos o texto nem o áudio, só contamos quantos caracteres são usados. No \"Modo privado\" a voz IA gera o áudio no seu dispositivo e o texto não sai dele: o único download são os arquivos do modelo, na primeira vez.",
         "q2": "Quais arquivos posso abrir?",
         "a2": "TXT, Markdown, HTML, PDF com texto, Word (DOCX), EPUB e fotos ou digitalizações (JPG, PNG, WEBP, TIFF, HEIC…), cujo texto é reconhecido com OCR. Até 50.000 caracteres por leitura; se o texto for maior, ele é cortado e avisamos.",
         "q3": "Em quais idiomas lê?",
-        "a3": "Detectamos o idioma do texto (espanhol, inglês, português, francês ou chinês) e escolhemos a voz nesse idioma; você pode mudar o idioma e a voz. A voz IA e o download em MP3 estão disponíveis em espanhol, inglês, português e francês; o chinês é lido com as vozes do dispositivo, que dependem do seu sistema e navegador.",
-        "q4": "Qual a diferença entre as vozes do dispositivo e a voz IA?",
-        "a4": "As vozes do dispositivo vêm com o sistema ou o navegador: começam na hora e não baixam nada, mas a qualidade varia e não podem ser salvas como arquivo. A voz IA (Supertonic 3) soa mais natural, tem 10 vozes e permite baixar MP3, mas na primeira vez baixa o modelo, de 200 a 400 MB conforme o servidor (a ferramenta mostra o tamanho antes de começar; depois fica salva no navegador) e gera o áudio com o processador do seu aparelho: no computador leva mais ou menos o mesmo tempo que dura o áudio; no celular, bem mais. Antes de baixar, você pode ouvir uma amostra de cada voz; todas usam o mesmo modelo, então o download é o mesmo para qualquer uma e acontece uma só vez.",
+        "a3": "Detectamos o idioma do texto (espanhol, inglês, português, francês ou chinês) e escolhemos a voz nesse idioma; você pode mudar o idioma e a voz. A \"Voz IA (nuvem)\" tem vozes nos cinco idiomas, inclusive chinês. O \"Modo privado\" está disponível em espanhol, inglês, português e francês. As vozes do dispositivo dependem do seu sistema e navegador.",
+        "q4": "Qual a diferença entre \"Ouvir\", \"Voz IA (nuvem)\" e \"Modo privado\"?",
+        "a4": "\"Ouvir\" usa as vozes do sistema ou do navegador: começa na hora e não baixa nada; escolhemos a mais natural que você tiver (por exemplo, as \"Natural\" do Edge), mas a qualidade varia e não podem ser salvas como arquivo. A \"Voz IA (nuvem)\", quando disponível, usa as vozes WaveNet do Google: soa mais natural, começa em um ou dois segundos e permite baixar MP3; tem um limite diário de caracteres e o texto é enviado ao Google. O \"Modo privado\" usa a voz IA Supertonic 3 no navegador: o texto não sai do seu dispositivo, mas na primeira vez baixa o modelo, de 200 a 400 MB conforme o servidor (a ferramenta mostra o tamanho antes de começar; depois fica salvo) e gera o áudio com o processador do seu aparelho, mais devagar no celular. Antes de baixar, você pode ouvir uma amostra de cada voz.",
         "q5": "Como baixo a leitura em MP3?",
-        "a5": "Escolha a voz IA e toque em \"Baixar MP3\". Ele é gerado frase por frase no seu dispositivo, com barra de progresso e opção de cancelar, e o arquivo recebe o título do documento ou as primeiras palavras do texto. No celular o MP3 aceita até 3.000 caracteres (cerca de 4 minutos de áudio).",
+        "a5": "Toque em \"Baixar MP3\". Se a \"Voz IA (nuvem)\" estiver disponível, o MP3 é montado no navegador com as frases que ela devolve; se não, ou se você escolheu o \"Modo privado\", é gerado frase por frase no seu dispositivo com a voz IA Supertonic 3 (no celular, até 3.000 caracteres, cerca de 4 minutos de áudio). Há barra de progresso e opção de cancelar, e o arquivo recebe o título do documento ou as primeiras palavras do texto.",
         "q6": "Posso publicar o áudio gerado com a voz IA?",
         "a6": "Sim, mas a licença do modelo (OpenRAIL-M) exige informar que é uma voz gerada por IA e proíbe usá-lo, entre outras coisas, para se passar por outras pessoas, difamar, assediar ou espalhar informação falsa para prejudicar outros. As restrições completas estão nos nossos Termos e na licença do modelo, com link ao lado do botão de download."
       }
@@ -2125,7 +2125,7 @@
             "Os arquivos processados no nosso servidor são excluídos em no máximo 1 hora. Não olhamos nem guardamos esses arquivos.",
             "Não vendemos seus dados.",
             "Nunca guardamos o nome nem o conteúdo dos seus arquivos.",
-            "\"Ler texto em voz alta\" processa o texto no seu dispositivo, inclusive com a voz IA. Só as vozes do navegador marcadas \"on-line\" enviam o texto ao seu provedor."
+            "\"Ler texto em voz alta\" processa o texto no seu dispositivo com as vozes do dispositivo e o modo privado. Se você escolher \"Voz IA (nuvem)\", o texto é enviado ao Google para gerar a voz e não o guardamos. As vozes do navegador marcadas \"on-line\" também o enviam ao seu provedor."
           ]
         },
         {
@@ -2141,8 +2141,8 @@
             {
               "data": "Texto que você ouve com \"Ler texto em voz alta\"",
               "purpose": "Lê-lo em voz alta ou gerar o MP3",
-              "basis": "—",
-              "retention": "Não o recebemos (processado no seu dispositivo)"
+              "basis": "Seu pedido (só com \"Voz IA (nuvem)\")",
+              "retention": "Não o recebemos, exceto com \"Voz IA (nuvem)\": passa pelo nosso servidor até o Google Cloud e não é guardado nem registrado (só contamos quantos caracteres são usados por dia e por mês)"
             },
             {
               "data": "Arquivos que você processa no nosso servidor (documentos de escritório, PDF para Word, HTML para PDF, PDF/A e, só se o seu navegador não conseguir, algumas imagens)",
@@ -2191,6 +2191,7 @@
             "Railway (EUA): servidores e banco de dados onde o site roda.",
             "Resend (EUA): envia o e-mail com o seu link para entrar.",
             "Google (EUA): login com o Google, se você escolher; e Google AdSense, que exibe anúncios (veja a seção 6).",
+            "Google Cloud (EUA): se você escolher \"Voz IA (nuvem)\" em \"Ler texto em voz alta\" (ou baixar o MP3 com ela), o Google Cloud Text-to-Speech recebe o texto de cada frase, a voz e a velocidade, e devolve o áudio. O pedido sai do nosso servidor, então o Google não recebe seu IP nem sua conta. Nós não guardamos o texto nem o áudio.",
             "Hugging Face (EUA): se você escolher a voz IA de \"Ler texto em voz alta\" ou usar \"Transcrever áudio para texto\", o navegador baixa os arquivos do modelo (uma vez por modelo) do nosso armazenamento no Cloudflare R2 (Cloudflare, EUA) ou, se não estiver disponível, do Hugging Face. Como em qualquer download, quem serve o arquivo recebe seu endereço IP e dados técnicos do navegador; seu texto e seu áudio não são enviados.",
             "Vozes \"on-line\" do navegador (por exemplo, Google no Chrome ou Microsoft no Edge): se uma delas for usada em \"Ler texto em voz alta\" (o leitor a escolhe primeiro quando é a voz mais natural disponível; você pode trocá-la por outra), o navegador envia o texto a esse provedor para gerar o áudio, conforme a política de privacidade dele. Quem as oferece é o navegador, não nós, e as marcamos como \"on-line\"; as demais vozes e a voz IA leem no seu dispositivo."
           ],
@@ -2208,6 +2209,7 @@
           "heading": "Transferências internacionais",
           "body": [
             "Alguns provedores processam dados fora da Argentina, principalmente nos Estados Unidos. Escolhemos provedores com medidas de segurança adequadas.",
+            "Se você usar \"Voz IA (nuvem)\", o texto é enviado ao Google Cloud, que pode processá-lo nos Estados Unidos ou em outros países onde opera.",
             "Ao criar uma conta, você aceita expressamente essas transferências."
           ]
         },
@@ -3467,9 +3469,10 @@
     },
     "noTextInFile": "Não encontramos texto para ler neste arquivo.",
     "engine": "Tipo de voz",
-    "engineDevice": "Vozes do dispositivo",
-    "engineAi": "Voz IA",
-    "engineAiHint": "A voz IA é mais natural e permite baixar MP3. É baixada uma vez (cerca de {size}) e gera o áudio no seu dispositivo.",
+    "engineDevice": "Ouvir (vozes do dispositivo)",
+    "engineAi": "Modo privado (voz IA no seu dispositivo)",
+    "engineCloud": "Voz IA (nuvem)",
+    "engineAiHint": "Modo privado: o texto não sai do seu dispositivo. A voz IA (Supertonic 3) é baixada uma vez (cerca de {size}) e gera o áudio no seu aparelho; também permite baixar MP3.",
     "aiNoChinese": "A voz IA não está disponível em chinês: o texto é lido com as vozes do dispositivo.",
     "aiVoiceFemale": "Mulher {n}",
     "aiVoiceMale": "Homem {n}",
@@ -3493,7 +3496,11 @@
     "mp3NoChinese": "O download em MP3 usa a voz IA, que não está disponível em chinês.",
     "aiLicense": "Licença do modelo (OpenRAIL-M)",
     "mp3TooLongMobile": "No celular o MP3 aceita até {max} caracteres. Encurte o texto ou gere o MP3 em um computador.",
-    "mp3Done": "MP3 pronto: {name}"
+    "mp3Done": "MP3 pronto: {name}",
+    "cloudNotice": "Voz IA (nuvem): seu texto é enviado ao Google para gerar a voz e não o guardamos.",
+    "cloudUnavailable": "A voz IA na nuvem não está disponível neste mês. Você pode usar as vozes do dispositivo ou o modo privado.",
+    "aiNoChineseCloud": "O modo privado não está disponível em chinês: use as vozes do dispositivo ou a voz IA na nuvem.",
+    "mp3HintCloud": "O MP3 é gerado com a voz IA na nuvem (Google Cloud): seu texto é enviado ao Google e não o guardamos. Se publicar o áudio, indique que é uma voz gerada por IA."
   },
   "PdfExcelTool": {
     "reading": "Procurando tabelas no PDF…",

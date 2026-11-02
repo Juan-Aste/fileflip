@@ -279,7 +279,7 @@ test.describe("text-to-speech: reading with the device's voices", () => {
     await other.goto("/es/leer-texto-en-voz-alta", { waitUntil: "networkidle" });
     await other.getByRole("textbox", { name: "Texto para leer" }).fill(SAMPLE);
     // Without device voices the AI voice is offered instead (downloaded only when used).
-    await expect(other.getByRole("radio", { name: "Voz IA" })).toBeChecked();
+    await expect(other.getByRole("radio", { name: "Modo privado" })).toBeChecked();
     await expect(other.getByRole("radio", { name: "Voces del dispositivo" })).toBeDisabled();
     await expect(other.getByRole("button", { name: "Reproducir" })).toBeEnabled();
     // Chinese has no AI voice: nothing can read it.
@@ -315,7 +315,7 @@ test.describe("text-to-speech: accessibility while reading", () => {
       await page.getByRole("button", { name: "Detener" }).click();
       expect(heavy).toEqual([]);
 
-      await page.getByRole("radio", { name: "Voz IA" }).check();
+      await page.getByRole("radio", { name: "Modo privado" }).check();
       await page.getByRole("button", { name: "Reproducir" }).click();
       await expect(page.getByText(/necesita descargar/)).toBeVisible();
       expect(await axeViolations(page)).toEqual([]);

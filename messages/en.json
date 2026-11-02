@@ -1822,18 +1822,18 @@
       "description": "Paste text or open a file and listen to it with pause and the speed you choose, or download it as MP3 with an AI voice, in your browser.",
       "searchTerms": "TTS read aloud reader narrator voice reader speech synthesis AI voice",
       "action": "Read aloud",
-      "about": "Type or paste text, or open a TXT, Markdown, HTML, text PDF, Word (DOCX) or EPUB file or a photo of a document, and listen to it read aloud. You can pause, go back to the previous sentence, skip to the next one and choose the speed, from 0.5× to 2×. The sentence being read is highlighted so you can follow along. It reads with your device's voices or with a more natural AI voice (Supertonic 3) that runs in your browser and lets you download the reading as MP3. The text is extracted and turned into speech on your device: the file is never uploaded to a server.",
+      "about": "Type or paste text, or open a TXT, Markdown, HTML, text PDF, Word (DOCX) or EPUB file or a photo of a document, and listen to it read aloud. You can pause, go back to the previous sentence, skip to the next one and choose the speed, from 0.5× to 2×. The sentence being read is highlighted so you can follow along. By default it reads at once with the best voice on your device. When available, the \"AI voice (cloud)\" sounds more natural, also in Chinese, and lets you download an MP3: the text is sent to Google to generate the voice, and we don't keep it. \"Private mode\" uses an AI voice (Supertonic 3) that runs in your browser: the text never leaves your device. The file is always read in your browser: it is never uploaded to a server.",
       "faq": {
         "q1": "Is my text uploaded to a server?",
-        "a1": "No. The file is read and its text extracted in your browser, and the AI voice generates the audio on your device: the only download is the model files, the first time, from our model server or from Hugging Face. Device voices also read on your computer or phone; only voices marked \"online\" (such as Google or Microsoft voices in Chrome and Edge) send the text to that provider to generate the audio.",
+        "a1": "The file isn't: it is read and its text extracted in your browser. The text depends on the voice you choose. With \"Listen\" (device voices) it is read on your device; only voices marked \"online\" (such as Google or Microsoft voices in Chrome and Edge) send the text to that provider. With \"AI voice (cloud)\", each sentence goes through our server to Google Cloud to generate the audio: we neither store nor log the text or the audio, we only count how many characters are used. In \"Private mode\" the AI voice generates the audio on your device and the text never leaves it: the only download is the model files, the first time.",
         "q2": "Which files can I open?",
         "a2": "TXT, Markdown, HTML, PDFs with text, Word (DOCX), EPUB and photos or scans (JPG, PNG, WEBP, TIFF, HEIC…), whose text is recognized with OCR. Up to 50,000 characters per reading; longer text is cut and we tell you.",
         "q3": "Which languages does it read?",
-        "a3": "We detect the language of the text (Spanish, English, Portuguese, French or Chinese) and pick a voice for it; you can change the language and the voice. The AI voice and MP3 download are available in Spanish, English, Portuguese and French; Chinese is read with the device voices, which depend on your system and browser.",
-        "q4": "What's the difference between device voices and the AI voice?",
-        "a4": "Device voices come with your system or browser: they start at once and download nothing, but their quality varies and they can't be saved as a file. The AI voice (Supertonic 3) sounds more natural, has 10 voices and can be downloaded as MP3, but the first time it downloads the model, 200 to 400 MB depending on the server (the tool shows the size before starting; then it stays saved in your browser) and it generates the audio with your device's processor: on a computer it takes about as long as the audio lasts; on a phone, quite a bit longer. Before downloading you can listen to a sample of each voice; they all use the same model, so the download is the same for any of them and happens only once.",
+        "a3": "We detect the language of the text (Spanish, English, Portuguese, French or Chinese) and pick a voice for it; you can change the language and the voice. The \"AI voice (cloud)\" has voices in all five languages, Chinese included. \"Private mode\" is available in Spanish, English, Portuguese and French. Device voices depend on your system and browser.",
+        "q4": "What's the difference between \"Listen\", \"AI voice (cloud)\" and \"Private mode\"?",
+        "a4": "\"Listen\" uses your system's or browser's voices: it starts at once and downloads nothing; we pick the most natural one you have (such as Edge's \"Natural\" voices), but quality varies and they can't be saved as a file. \"AI voice (cloud)\", when available, uses Google's WaveNet voices: it sounds more natural, starts in a second or two and can make an MP3; it has a daily character limit and the text is sent to Google. \"Private mode\" uses the Supertonic 3 AI voice in your browser: the text never leaves your device, but the first time it downloads the model, 200 to 400 MB depending on the server (the tool shows the size before starting; then it stays saved) and it generates the audio with your device's processor, slower on a phone. Before downloading you can listen to a sample of each voice.",
         "q5": "How do I download the reading as MP3?",
-        "a5": "Choose the AI voice and press \"Download MP3\". It is generated sentence by sentence on your device, with a progress bar and a cancel button, and the file is named after the document's title or the first words of the text. On phones the MP3 can have up to 3,000 characters (about 4 minutes of audio).",
+        "a5": "Press \"Download MP3\". If the \"AI voice (cloud)\" is available, the MP3 is put together in your browser from the sentences it returns; if not, or if you chose \"Private mode\", it is generated sentence by sentence on your device with the Supertonic 3 AI voice (on phones, up to 3,000 characters, about 4 minutes of audio). There is a progress bar and a cancel button, and the file is named after the document's title or the first words of the text.",
         "q6": "Can I publish audio made with the AI voice?",
         "a6": "Yes, but the model's license (OpenRAIL-M) requires saying that it is an AI-generated voice and forbids using it to, among other things, impersonate people, defame, harass or spread false information to harm others. The full restrictions are in our Terms and in the model's license, linked next to the download button."
       }
@@ -2125,7 +2125,7 @@
             "Files that are processed on our server are deleted within 1 hour at most. We don't look at them or keep them.",
             "We don't sell your data.",
             "We never store the name or content of your files.",
-            "\"Text to speech\" processes the text on your device, including with the AI voice. Only browser voices marked \"online\" send the text to their provider."
+            "\"Text to speech\" processes the text on your device with your device's voices and private mode. If you choose \"AI voice (cloud)\", the text is sent to Google to generate the voice, and we don't keep it. Browser voices marked \"online\" also send it to their provider."
           ]
         },
         {
@@ -2141,8 +2141,8 @@
             {
               "data": "Text you listen to with \"Text to speech\"",
               "purpose": "Reading it aloud or making the MP3",
-              "basis": "—",
-              "retention": "We don't receive it (processed on your device)"
+              "basis": "Your request (only with \"AI voice (cloud)\")",
+              "retention": "We don't receive it, except with \"AI voice (cloud)\": it passes through our server to Google Cloud and is neither stored nor logged (we only count how many characters are used per day and per month)"
             },
             {
               "data": "Files you process on our server (office documents, PDF to Word, HTML to PDF, PDF/A and, only when your browser can't do it, some images)",
@@ -2191,6 +2191,7 @@
             "Railway (USA): servers and database that run the site.",
             "Resend (USA): sends the email with your sign-in link.",
             "Google (USA): Google sign-in, if you choose it; and Google AdSense, which shows ads (see section 6).",
+            "Google Cloud (USA): if you choose \"AI voice (cloud)\" in \"Text to speech\" (or download the MP3 with it), Google Cloud Text-to-Speech receives the text of each sentence, the voice and the speed, and returns the audio. The request comes from our server, so Google does not receive your IP or your account. We don't keep the text or the audio.",
             "Hugging Face (USA): if you choose the AI voice of \"Text to speech\" or use \"Audio to text\", your browser downloads the model files (once per model) from our storage on Cloudflare R2 (Cloudflare, USA) or, if it is unavailable, from Hugging Face. As with any download, whoever serves the file receives your IP address and technical browser data; your text and your audio are not sent.",
             "\"Online\" voices of your browser (such as Google in Chrome or Microsoft in Edge): if one of them is used in \"Text to speech\" (the reader picks it first when it is the most natural voice available; you can switch to another), the browser sends the text to that provider to generate the audio, under that provider's privacy policy. The browser offers them, not us, and we mark them \"online\"; the other voices and the AI voice read on your device."
           ],
@@ -2208,6 +2209,7 @@
           "heading": "International transfers",
           "body": [
             "Some providers process data outside Argentina, mainly in the United States. We choose providers with appropriate security measures.",
+            "If you use \"AI voice (cloud)\", the text is sent to Google Cloud, which may process it in the United States or other countries where it operates.",
             "By creating an account, you expressly accept these transfers."
           ]
         },
@@ -3467,9 +3469,10 @@
     },
     "noTextInFile": "We found no text to read in this file.",
     "engine": "Kind of voice",
-    "engineDevice": "Device voices",
-    "engineAi": "AI voice",
-    "engineAiHint": "The AI voice sounds more natural and can be downloaded as MP3. It downloads once (about {size}) and generates the audio on your device.",
+    "engineDevice": "Listen (device voices)",
+    "engineAi": "Private mode (AI voice on your device)",
+    "engineCloud": "AI voice (cloud)",
+    "engineAiHint": "Private mode: the text never leaves your device. The AI voice (Supertonic 3) downloads once (about {size}) and generates the audio on your device; it can also make an MP3.",
     "aiNoChinese": "The AI voice isn't available in Chinese: the text is read with the device voices.",
     "aiVoiceFemale": "Female {n}",
     "aiVoiceMale": "Male {n}",
@@ -3493,7 +3496,11 @@
     "mp3NoChinese": "MP3 download uses the AI voice, which isn't available in Chinese.",
     "aiLicense": "Model license (OpenRAIL-M)",
     "mp3TooLongMobile": "On a phone the MP3 can have up to {max} characters. Shorten the text or make the MP3 on a computer.",
-    "mp3Done": "MP3 ready: {name}"
+    "mp3Done": "MP3 ready: {name}",
+    "cloudNotice": "AI voice (cloud): your text is sent to Google to generate the voice, and we don't keep it.",
+    "cloudUnavailable": "The cloud AI voice is not available for the rest of this month. You can use your device's voices or private mode.",
+    "aiNoChineseCloud": "Private mode is not available in Chinese: use your device's voices or the cloud AI voice.",
+    "mp3HintCloud": "The MP3 is made with the cloud AI voice (Google Cloud): your text is sent to Google, and we don't keep it. If you publish the audio, say that it is an AI-generated voice."
   },
   "PdfExcelTool": {
     "reading": "Looking for tables in the PDF…",

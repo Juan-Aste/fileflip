@@ -542,7 +542,7 @@ Lector sin descargas (decisión del dueño 2026-10-31). Nadie va a descargar ~20
 ### 13.3 Voz IA en la nube (Google Cloud Text-to-Speech)
 - [x] 13.3a Backend `POST /api/tts` (Node) detrás de una interfaz de proveedor, clave `GOOGLE_TTS_API_KEY` solo del servidor; sin la variable la opción no aparece; voces WaveNet por idioma (es, pt-BR, fr-FR, en-US, cmn-CN), pedidos ≤ 5000 bytes, solo `text` (sin SSML del usuario), MP3 sin guardarse
 - [x] 13.3b Protección de costos: límites por IP/usuario/día, por minuto y por pedido, tope mensual global `TTS_MONTHLY_CHAR_LIMIT` (3.500.000) contado en MongoDB (solo números); al llegar al tope se desactiva hasta el mes siguiente; uso del mes y del día en el panel de admin; comprobación de Origin/Referer y token firmado de corta duración
-- [ ] 13.3c Lector: «Voz IA (nube)» con lectura progresiva y MP3 armado en el navegador (validado de forma independiente); aviso «Tu texto se envía a Google…»; política de privacidad y FAQ en 5 idiomas; términos de Google Cloud TTS sobre uso comercial del audio documentados
+- [x] 13.3c Lector: «Voz IA (nube)» con lectura progresiva y MP3 armado en el navegador (validado de forma independiente); aviso «Tu texto se envía a Google…»; política de privacidad y FAQ en 5 idiomas; términos de Google Cloud TTS sobre uso comercial del audio documentados
 - [ ] 13.3d `docs/tts-nube.md` (pasos del dueño: proyecto, facturación, API, clave restringida, presupuesto con alertas, variables en Railway), `scripts/tts/cloud-samples.mjs` (muestras y WER con Whisper `base` cuando haya clave), `.env.example`, `docs/launch-checklist.md`; tests con la API simulada (límites, tope, sin clave, la clave nunca llega al navegador ni el texto a los logs)
 
 ### 13.4 Reordenar el lector
