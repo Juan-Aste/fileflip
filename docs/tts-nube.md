@@ -41,6 +41,23 @@ Por primera vez el chino tiene voz IA y MP3. **La voz recomendada por idioma (y 
 - El panel de admin (`/es/admin`) muestra los caracteres del mes (con el % del tope) y del día.
 - Con 3.500.000 por mes, aunque se agote el tope se queda debajo de los 4 millones gratis. El presupuesto con alertas (paso 4) es la segunda red.
 
+## Revisión de seguridad de `/api/tts` (13.5, 2026-11-02)
+
+| Riesgo | Cómo se cubre | Resultado |
+|---|---|---|
+| Inyección de SSML o de otros campos | Solo se envía `input.text` (Google lo trata como texto plano, nunca `input.ssml`); voz por lista blanca (`cloudVoice`, `Map`, sin búsquedas en objetos), velocidad numérica acotada a 0,5–2, caracteres de control quitados | OK (test «SSML-looking input as plain text») |
+| Cuerpos enormes o sin `Content-Length` | `readJson` corta a 16 KB mientras lee; texto ≤ 1500 caracteres y ≤ 5000 bytes | OK; test nuevo con cuerpo *chunked* de 20 KB → 413 sin llamar a Google |
+| Uso desde otros sitios | `Origin` del propio sitio + `Sec-Fetch-Site`, token HMAC (30 min) | OK. El token se puede reutilizar dentro de esos 30 min: solo prueba «cargó la página»; los límites son la protección real |
+| IP falsificada con `X-Forwarded-For` | `clientIp` usa el **último** valor (el que agrega el proxy de Railway) | OK |
+| Rotar direcciones IPv6 para saltar el límite por IP | **Arreglado en 13.5**: las IPv6 se cuentan por /64 (`ipBucket`); IPv4 mapeadas como IPv4 | Test nuevo |
+| Pedidos en paralelo al abrir el mes | **Arreglado en 13.5**: dos *upsert* simultáneos del documento del mes daban error 11000 y uno se rechazaba como «tope alcanzado» aunque hubiera lugar; ahora se reintenta sin *upsert* (sigue sin poder pasar el tope) | Test nuevo (falla sin el arreglo) |
+| Pasar el tope mensual con pedidos en paralelo | Reserva atómica en MongoDB con `chars ≤ tope − n` | OK (30 pedidos en paralelo, ni uno de más) |
+| MongoDB caído | Se rechaza (falla cerrado) | OK |
+| La clave en el navegador o en logs | Clave en cabecera `X-Goog-Api-Key` (no en la URL), solo en `.next/server`; `check:static` falla si aparece en `.next/static`; errores registrados solo con tipo y código HTTP | OK |
+| El texto en logs | No se registra el texto ni la respuesta de Google (puede repetir el texto: no se lee) | OK (test e2e revisa los logs del servidor) |
+| Muchas cuentas para sumar cupo diario | Las cuentas exigen correo; el tope mensual global limita el costo igual | Aceptado |
+| Un 403 de Google por clave o API mal configurada | Se muestra como «tope alcanzado»; el log del servidor dice `HTTP 403` | Aceptado: el dueño lo ve en los logs de Railway |
+
 ## Privacidad
 
 El texto nunca se guarda ni se registra en nuestro servidor (ni en logs ni en estadísticas): los errores se anotan solo con el tipo y el código HTTP. El lector avisa junto a la opción: «Tu texto se envía a Google para generar la voz y no lo guardamos». La política de privacidad (5 idiomas) suma a Google Cloud como proveedor, qué recibe (el texto de cada frase, la voz y la velocidad; no la IP ni la cuenta del usuario, porque el pedido sale de nuestro servidor) y la transferencia internacional.

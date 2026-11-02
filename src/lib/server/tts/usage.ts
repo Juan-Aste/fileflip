@@ -48,13 +48,18 @@ export class MongoUsageStore implements UsageStore {
   async reserve(chars: number, limit: number, now: Date) {
     if (chars > limit) return false;
     await connectToDatabase();
+    const filter = { _id: monthKey(now), chars: { $lte: limit - chars } };
     try {
       // Matches only while there is room; when the month document exists but
       // is full, the upsert tries to insert a second one and fails (11000).
-      await TtsUsage.updateOne({ _id: monthKey(now), chars: { $lte: limit - chars } }, { $inc: { chars } }, { upsert: true });
+      await TtsUsage.updateOne(filter, { $inc: { chars } }, { upsert: true });
     } catch (error) {
-      if (isDuplicateKey(error)) return false;
-      throw error;
+      if (!isDuplicateKey(error)) throw error;
+      // 11000 also happens when two requests open the month at the same time
+      // and both try to insert it (13.5): the document exists now, so retry
+      // without upsert; it only matches if there is still room.
+      const retry = await TtsUsage.updateOne(filter, { $inc: { chars } });
+      if (retry.modifiedCount !== 1) return false;
     }
     await TtsUsage.updateOne({ _id: dayKey(now) }, { $inc: { chars } }, { upsert: true }).catch(() => {});
     return true;

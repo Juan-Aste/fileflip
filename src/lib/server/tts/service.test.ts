@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { RateLimiter } from "@/lib/server/rate-limit";
 import { DailyQuota, ttsLimits, type TtsLimits } from "./limits";
 import { GoogleTtsProvider, TtsProviderError, ttsProvider, type SynthesisRequest, type TtsProvider } from "./provider";
-import { billedChars, cleanText, ttsStatus, ttsSynthesize, type TtsDeps } from "./service";
+import { billedChars, cleanText, ipBucket, ttsStatus, ttsSynthesize, type TtsDeps } from "./service";
 import { createTtsToken, verifyTtsToken } from "./token";
 import { MemoryUsageStore } from "./usage";
 
@@ -152,6 +152,29 @@ describe("POST /api/tts", () => {
     expect((await ttsSynthesize(post(say("a"), { ip: "5.6.7.8" }), deps)).status).toBe(200);
   });
 
+  it("counts IPv6 addresses by /64, so rotating inside it doesn't reset the limits (13.5)", async () => {
+    const { deps } = setup();
+    expect((await ttsSynthesize(post(say("x".repeat(60)), { ip: "2001:db8:1:2::1" }), deps)).status).toBe(200);
+    expect((await ttsSynthesize(post(say("x".repeat(60)), { ip: "2001:db8:1:2:abcd::99" }), deps)).status).toBe(429);
+    expect((await ttsSynthesize(post(say("x".repeat(60)), { ip: "2001:db8:1:3::1" }), deps)).status).toBe(200);
+  });
+
+  it("refuses bodies over 16 KB before parsing them, also without Content-Length (13.5)", async () => {
+    const { deps, provider } = setup();
+    const huge = JSON.stringify(say("x".repeat(20_000)));
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode(huge));
+        controller.close();
+      },
+    });
+    const headers = { "content-type": "application/json", host: "fileflect.com", origin: SITE, "sec-fetch-site": "same-origin" };
+    const chunked = new Request(`${SITE}/api/tts`, { method: "POST", headers, body: stream, duplex: "half" } as RequestInit);
+    expect((await ttsSynthesize(chunked, deps)).status).toBe(413);
+    expect((await ttsSynthesize(post(huge), deps)).status).toBe(413);
+    expect(provider.calls).toHaveLength(0);
+  });
+
   it("limits characters per day per IP without an account, more with one, and resets the next day", async () => {
     const { deps, setNow } = setup();
     expect((await ttsSynthesize(post(say("x".repeat(60))), deps)).status).toBe(200);
@@ -211,6 +234,16 @@ describe("POST /api/tts", () => {
 });
 
 describe("helpers", () => {
+  it("groups IPv6 by /64 and keeps IPv4 as is", () => {
+    expect(ipBucket("1.2.3.4")).toBe("1.2.3.4");
+    expect(ipBucket("::ffff:1.2.3.4")).toBe("1.2.3.4");
+    expect(ipBucket("2001:DB8:0:0:1:2:3:4")).toBe("2001:db8:0:0::/64");
+    expect(ipBucket("2001:db8::1")).toBe("2001:db8:0:0::/64");
+    expect(ipBucket("[2001:db8:aa:bb::5]:443")).toBe("2001:db8:aa:bb::/64");
+    expect(ipBucket("fe80::1%eth0")).toBe("fe80:0:0:0::/64");
+    expect(ipBucket("unknown")).toBe("unknown");
+  });
+
   it("counts characters like the provider bills them", () => {
     expect(billedChars("año 😀")).toBe(5);
     expect(cleanText(" a\u0000b\nc\t ")).toBe("ab\nc");

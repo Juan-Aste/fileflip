@@ -29,6 +29,24 @@ const noStore = { "Cache-Control": "no-store" };
 /** Characters as the provider bills them (code points). */
 export const billedChars = (text: string) => Array.from(text).length;
 
+/**
+ * Key for the per-IP limits (13.5). An IPv6 user usually gets a whole /64 and
+ * can pick a new address in it at will, so IPv6 addresses count by /64;
+ * IPv4 (also IPv4-mapped IPv6) by address.
+ */
+export function ipBucket(ip: string): string {
+  const value = ip.trim().toLowerCase().replace(/^\[|\](:\d+)?$/g, "").split("%")[0];
+  if (!value.includes(":")) return value;
+  const mapped = value.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/);
+  if (mapped) return mapped[1];
+  const [head, tail = ""] = value.split("::");
+  const left = head ? head.split(":") : [];
+  const right = tail ? tail.split(":") : [];
+  const groups = value.includes("::") ? [...left, ...Array(Math.max(0, 8 - left.length - right.length)).fill("0"), ...right] : left;
+  if (groups.length !== 8 || !groups.every((g) => /^[0-9a-f]{1,4}$/.test(g))) return value;
+  return `${groups.slice(0, 4).map((g) => g.replace(/^0+(?=.)/, "")).join(":")}::/64`;
+}
+
 /** Plain text only: control characters (except line breaks and tabs) are dropped. */
 export function cleanText(text: string): string {
   return text.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/g, "").trim();
@@ -73,7 +91,7 @@ export async function ttsSynthesize(request: Request, deps: TtsDeps): Promise<Re
   // Off without a key: as if the route did not exist.
   if (!deps.provider) return new Response(null, { status: 404, headers: noStore });
   if (!isSameOrigin(request)) return apiError("invalidRequest", noStore);
-  const ip = clientIp(request);
+  const ip = ipBucket(clientIp(request));
   const wait = deps.minute.hit(ip);
   if (wait > 0) return apiError("rateLimited", { ...noStore, "Retry-After": String(Math.ceil(wait / 1000)) });
 

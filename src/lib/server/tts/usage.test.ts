@@ -50,4 +50,14 @@ describe("MongoUsageStore", () => {
     const docs = await mongoose.connection.db!.collection("ttsusages").find().toArray();
     for (const doc of docs) expect(Object.keys(doc).sort()).toEqual(["_id", "chars"]);
   });
+
+  it("does not refuse requests that open the month at the same time (13.5)", async () => {
+    const store = new MongoUsageStore();
+    for (let i = 0; i < 5; i++) {
+      const when = new Date(Date.UTC(2028, i, 3));
+      const results = await Promise.all(Array.from({ length: 8 }, () => store.reserve(10, 1000, when)));
+      expect(results.every(Boolean)).toBe(true);
+      expect((await store.read(when)).month).toBe(80);
+    }
+  });
 });

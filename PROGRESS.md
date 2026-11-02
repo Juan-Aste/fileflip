@@ -3900,3 +3900,15 @@ FASE 11 TERMINADA
 - Hechas: 13.3a, 13.3b, 13.3c, 13.3d y 13.4 (límite de 5). Sigue la 13.5 (verificación final del lector y revisión de seguridad de `/api/tts`), después «FASE 13 TERMINADA».
 - Pendiente del dueño para encender la voz en la nube: `docs/tts-nube.md` (Google Cloud, `GOOGLE_TTS_API_KEY` en Railway, correr `scripts/tts/cloud-samples.mjs`) y confirmar los términos de Google sobre la titularidad del audio. Siguen abiertas las decisiones de la fase 12 (quitar fondo/u2netp).
 - CI de dev: verde en los commits de 13.3a–d; el de 13.4 estaba corriendo al cerrar.
+
+## 2026-11-02 — Fase 13, tarea 13.5 (verificación final del lector y seguridad de `/api/tts`)
+- Revisión de seguridad de `/api/tts` documentada en `docs/tts-nube.md` (tabla de riesgos). Dos arreglos:
+  - **Carrera al abrir el mes**: dos pedidos simultáneos que creaban el documento del mes en MongoDB daban error 11000 y uno se rechazaba como «tope mensual alcanzado» aunque hubiera lugar. Ahora se reintenta sin *upsert* (sigue sin poder pasar el tope). Test nuevo con MongoDB en memoria que fallaba antes del arreglo.
+  - **IPv6**: los límites por IP (por minuto y por día) cuentan las IPv6 por /64 (`ipBucket`), así rotar direcciones dentro del mismo /64 no reinicia el cupo; IPv4 mapeadas cuentan como IPv4.
+  - Sin cambios (ya correcto): solo `input.text` (sin SSML), voz por lista blanca, velocidad acotada, cuerpo ≤ 16 KB cortado al leer (test nuevo con cuerpo *chunked*), `Origin`/`Sec-Fetch-Site` + token firmado, último `X-Forwarded-For`, reserva atómica del tope, falla cerrado sin MongoDB, clave solo en el servidor (`check:static`), texto nunca en logs.
+- Lighthouse móvil con AdSense de prueba: lector es 91, en 92, privacidad 92; CLS 0, A11y y SEO 100 (`docs/perf/2026-11-02-phase13.md`).
+- Verificado: lint, typecheck, 1449 unitarios, build, `check:static`; Chromium `tts-cloud`, `tts-tools`, `tts-ai`, `a11y`, `layout-shift`, `legal`, `security-headers`, `api-limits` (78) y detector de clics (115); Firefox y WebKit `@xb` de lector, nube y legales (14, con navegadores de Playwright 1.56 instalados aparte). Créditos y política de privacidad sin cambios (no hay terceros nuevos).
+
+## 2026-11-02 — FASE 13 TERMINADA
+- Lector: «Escuchar» con la mejor voz del dispositivo por defecto, «Voz IA (nube)» con Google Cloud TTS (apagada hasta que el dueño cargue `GOOGLE_TTS_API_KEY`) y «Modo privado» (Supertonic). Sin pausas entre oraciones (0 ms medidos, `docs/tts-pausas.md`).
+- Pendiente del dueño: `docs/tts-nube.md` (Google Cloud, clave restringida, presupuesto, variables en Railway, `scripts/tts/cloud-samples.mjs`), confirmar los términos de Google sobre el audio, decidir quitar fondo/u2netp (fase 12) y mergear dev en main.
