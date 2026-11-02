@@ -3915,3 +3915,8 @@ FASE 11 TERMINADA
 
 ## 2026-11-02 — Inicio de la fase 14
 - El dueño decidió reemplazar el u2netp de «Quitar fondo» (datos de entrenamiento DUTS-TR/ImageNet, no cumplen la regla estricta). Tareas 14.1–14.3 en `PLAN.md`: verificar candidatos (MediaPipe, otros con datos comerciales, recorte asistido GrabCut), nueva herramienta con recorte asistido, quitar u2netp y verificación final.
+
+## 2026-11-02 — Fase 14, tarea 14.1 (verificación de candidatos)
+- Leídas completas las model cards oficiales de MediaPipe Selfie Segmenter y Selfie Multiclass: Apache-2.0, pero los datos solo se describen como imágenes «including consented images» de una app de RA (Selfie) o «thousands of samples» (Multiclass); no se puede verificar el origen de todas las imágenes, que el consentimiento cubra el uso comercial ni el modelo de partida → **descartados** por la regla estricta.
+- También descartados: RMBG-1.4/2.0 (no comerciales), S3OD (datos sintéticos generados con FLUX [dev] y DINOv3), modelos con COCO (imágenes Flickr con licencias NC) y no se encontró ninguno entrenado solo con Open Images sin partir de ImageNet. SAM, DIS5K, DUTS, P3M, AIM-500 descartados de entrada.
+- Decisión: la herramienta usa **solo recorte asistido** con GrabCut implementado en TypeScript (sin datos de entrenamiento, sin descargas). La 14.2d (modo «Personas») queda sin modelo salvo que el dueño acepte MediaPipe explícitamente. Tabla y enlaces en `docs/quitar-fondo-eval.md`.
