@@ -2,6 +2,7 @@
 import type { FormatId } from "@/config/formats";
 import { applyMask, downscale, MAX_PIXELS, segment, workSize, type Background } from "@/lib/bg-remove/cutout";
 import type { Rect, Stroke } from "@/lib/bg-remove/grabcut";
+import { segmentPerson } from "@/lib/bg-remove/people";
 import { ConversionError } from "@/lib/convert-error";
 import { encoders } from "@/lib/image/codecs";
 import { decodeImage } from "@/lib/image/decode";
@@ -43,6 +44,12 @@ async function cut({ work, workWidth, workHeight, rect, strokes }: { work: Array
   return { result: { mask: mask.buffer }, transfer: [mask.buffer as ArrayBuffer] };
 }
 
+/** "People" mode: person probability from MediaPipe (0–255, work size) and strokes → soft mask. */
+async function cutPerson({ work, workWidth, workHeight, prob, strokes }: { work: ArrayBuffer; workWidth: number; workHeight: number; prob: ArrayBuffer; strokes: Stroke[] }) {
+  const mask = segmentPerson(new Uint8ClampedArray(work), workWidth, workHeight, new Uint8Array(prob), strokes);
+  return { result: { mask: mask.buffer }, transfer: [mask.buffer as ArrayBuffer] };
+}
+
 /** The full-size result: PNG with transparency, or JPG/WEBP over a color. */
 async function exportImage(
   { input, from, mask, maskWidth, maskHeight, background, to, quality }: {
@@ -69,4 +76,4 @@ async function exportImage(
   return { result: { buffer, width: image.width, height: image.height }, transfer: [buffer] };
 }
 
-exposeHandlers({ prepare, cut, exportImage });
+exposeHandlers({ prepare, cut, cutPerson, exportImage });

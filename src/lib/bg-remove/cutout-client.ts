@@ -14,6 +14,10 @@ export const preparePhoto = (input: Blob, from: FormatId, job: JobOptions = {}) 
 export const cutPhoto = (p: Prepared, rect: Rect, strokes: readonly Stroke[], job: JobOptions = {}) =>
   pool.run<{ mask: ArrayBuffer }>("cut", { work: p.work, workWidth: p.workWidth, workHeight: p.workHeight, rect, strokes }, job);
 
+/** "People" mode: the cut starts from the person probability (0–255, work size) instead of a rectangle. */
+export const cutPerson = (p: Prepared, prob: Uint8Array, strokes: readonly Stroke[], job: JobOptions = {}) =>
+  pool.run<{ mask: ArrayBuffer }>("cutPerson", { work: p.work, workWidth: p.workWidth, workHeight: p.workHeight, prob: prob.buffer, strokes }, job);
+
 export const exportPhoto = (
   input: Blob,
   from: FormatId,

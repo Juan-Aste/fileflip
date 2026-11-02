@@ -576,7 +576,7 @@ Modo «Personas» automático con MediaPipe Selfie Segmenter (pedido del dueño 
 
 ### 15.2 Integración
 - [x] 15.2a (hecha 2026-11-02: `@mediapipe/tasks-vision` 1.1.1, WASM ES-module SIMD en `/mediapipe/`, modelo en `/models/`, worker `people`) Motor: `@mediapipe/tasks-vision` (Apache-2.0, versión exacta); WASM y modelo servidos desde nuestro dominio (copiados en el build y verificados con sha256), nada de CDNs de terceros; carga diferida solo al elegir «Personas»; CSP (WASM) y sin SharedArrayBuffer; `docs/dependencies.md`, `docs/licencia-agpl.md`, créditos y `npm run licenses`
-- [ ] 15.2b Trimapa desde la máscara (zona segura de persona, zona segura de fondo, franja dudosa en el borde) + trazos «mantener»/«quitar», refinado con GrabCut; tests unitarios
+- [x] 15.2b (hecha 2026-11-02: `src/lib/bg-remove/people.ts`, franja dudosa ±4 % del lado mayor, 10 tests) Trimapa desde la máscara (zona segura de persona, zona segura de fondo, franja dudosa en el borde) + trazos «mantener»/«quitar», refinado con GrabCut; tests unitarios
 - [ ] 15.2c Interfaz: selector «Personas (automático)» / «Objetos y productos (rectángulo)»; máscara automática al subir la foto; pinceles, deshacer/rehacer, fondos, formatos y descarga como hoy; aviso si no hay una persona clara (sugiere el rectángulo)
 - [ ] 15.2d Textos en 5 idiomas (descripción, «about», FAQ: automático para personas, rectángulo para objetos, la foto no sale del dispositivo, tamaño de la descarga), misma URL y slugs; créditos con MediaPipe (Apache-2.0) y su model card
 
