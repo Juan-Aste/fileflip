@@ -3940,3 +3940,12 @@ FASE 11 TERMINADA
 
 ## 2026-11-02 — Fin de esta ejecución
 - Hechas: 14.1, 14.2a, 14.2b, 14.2c y 14.2d (límite de 5). Sigue la 14.3 (Lighthouse, detector de clics, axe, Firefox/WebKit y suite de Chromium de las páginas tocadas; créditos y docs), después «FASE 14 TERMINADA».
+
+## 2026-11-02 — Fase 14, tarea 14.3 (verificación final)
+- Lighthouse móvil con AdSense de prueba (`docs/perf/2026-11-02-phase14.md`): `/es/quitar-fondo` **87** con la fase 14 y **87–88** con el build justo antes de ella (`6a97055`), medidos en la misma sesión; la página de control `/es/recortar-imagen` (mismo código en ambos) varía 86–90 y `main` da 88–90. **Sin regresión**: mismos 20 scripts al cargar, la interfaz nueva suma ~6 KB diferidos y el motor y el worker solo bajan al elegir una foto. **CLS 0**, A11y y SEO 100. La máquina está más lenta que en fases anteriores: confirmar el ≥ 90 en producción después del merge (`docs/launch-checklist.md`).
+- Chromium `bg-tools`, `clickable` (detector de clics, todas las páginas y tamaños), `a11y` (axe), `layout-shift`, `search`, `search-locale-states`, `guides`, `image-tools`, `legal`: **257 pasan**. `@xb` de quitar fondo y de imágenes en Firefox, WebKit, iPhone y Android: **8 pasan**.
+- `npm run licenses` sin cambios (créditos y `third-party-notices.txt` sin U²-Net); `check:static` y `check:adsense` bien. `docs/licencia-agpl.md` ya describe el recorte propio; `docs/modelos-r2.md` sin cambios (no hay modelo nuevo); `docs/launch-checklist.md` suma medir Lighthouse en producción.
+- Verificado: lint, typecheck, 1449 unitarios, build.
+
+## 2026-11-02 — FASE 14 TERMINADA
+- «Quitar fondo» ya no usa u2netp: recorte asistido con GrabCut propio (sin modelos ni datos de entrenamiento), misma URL y slugs, textos en 5 idiomas. Ningún modelo de personas pasó la regla estricta (MediaPipe: datos no verificables). No hay modelo para subir a R2. Falta que el dueño mergee `dev` en `main`.

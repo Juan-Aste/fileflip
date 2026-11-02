@@ -565,4 +565,4 @@ Lector sin descargas (decisión del dueño 2026-10-31). Nadie va a descargar ~20
 - [x] 14.2d (resuelta sin modelo: 14.1 no encontró un modelo de personas verificable; la página dice que el recorte es asistido) Modo «Personas» automático solo si 14.1 encuentra un modelo limpio (carga diferida, aviso de tamaño, R2/Hugging Face, sha256, Cache API, test con imagen sintética o de licencia verificada); si no, se marca como resuelta sin modelo
 
 ### 14.3 Verificación final
-- [ ] 14.3 Lighthouse móvil ≥ 90 y CLS 0 en la herramienta, detector de clics, axe, Firefox y WebKit, suite de Chromium de las páginas tocadas; créditos, `docs/licencia-agpl.md`, `docs/modelos-r2.md` (si hay modelo nuevo) y `docs/launch-checklist.md`
+- [x] 14.3 (hecha 2026-11-02: sin regresión, 87 en esta máquina igual que antes de la fase 14, CLS 0; `docs/perf/2026-11-02-phase14.md`) Lighthouse móvil ≥ 90 y CLS 0 en la herramienta, detector de clics, axe, Firefox y WebKit, suite de Chromium de las páginas tocadas; créditos, `docs/licencia-agpl.md`, `docs/modelos-r2.md` (si hay modelo nuevo) y `docs/launch-checklist.md`
