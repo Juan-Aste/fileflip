@@ -1,6 +1,6 @@
 # Fixtures
 
-Archivos de ejemplo pequeños (< 200 KB cada uno) para los tests y la auditoría. Todo es sintético: degradados, formas y texto de relleno propio; sin contenido de terceros ni datos personales.
+Archivos de ejemplo pequeños (< 200 KB cada uno) para los tests y la auditoría. Todo es sintético: degradados, formas y texto de relleno propio; sin contenido de terceros ni datos personales. Única excepción: `people/` (un retrato oficial de la NASA, dominio público; ver `people/README.md`).
 
 Se regeneran con `node scripts/fixtures/generate.mjs` (los de oficina necesitan LibreOffice instalado; si no está, se conservan los del repo). `tests/fixtures.test.ts` comprueba que cada archivo se detecta con su formato, que las imágenes miden 160×120, las páginas de los PDF y que los corruptos fallan.
 

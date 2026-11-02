@@ -3952,3 +3952,8 @@ FASE 11 TERMINADA
 
 ## 2026-11-02 — Inicio de la fase 15
 - El dueño pidió el modo «Personas» automático con MediaPipe Selfie Segmenter y aceptó por escrito (2026-11-02) el riesgo de licencia de sus datos de entrenamiento; la excepción no se extiende a otros modelos. Tareas 15.1–15.3 en `PLAN.md`.
+
+## 2026-11-02 — Fase 15, tarea 15.1 (modelo y licencia)
+- Excepción del dueño (2026-11-02, por escrito) registrada en `docs/quitar-fondo-eval.md` y `docs/licencia-agpl.md`: quién, fecha, motivo, riesgo y alcance (solo Selfie Segmenter; no Multiclass ni otros modelos).
+- Modelo elegido: **«square»** (`selfie_segmenter.tflite` float16, versión 1, 249 537 B, sha256 `191ac952…6658b`; `latest` es el mismo archivo). Medido en Chromium con `@mediapipe/tasks-vision` 1.1.1 (CPU) sobre 12 fotos con máscara exacta: IoU media **0,986** (mín. 0,981) contra 0,983 (mín. 0,976) de «landscape»; ~30 ms por foto. Con el refinado GrabCut desde el trimapa: 0,988.
+- Fotos de prueba: retratos oficiales de la NASA en estudio (dominio público, obra del gobierno de EE. UU.); `scripts/bg/people-fixtures.mjs` arma la máscara de referencia desde el fondo blanco (sin modelos) y pega la persona sobre rayas y degradé con ruido. En el repo solo queda `tests/fixtures/people/person.jpg` (51 KB) + su máscara, con el origen en su README.

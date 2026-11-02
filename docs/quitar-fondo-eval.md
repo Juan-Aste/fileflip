@@ -82,3 +82,39 @@ Búsquedas hechas: model cards oficiales de MediaPipe (descargadas y leídas com
 - **Calidad medida** (fotos generadas con máscara exacta, `grabcut.test.ts`): IoU 0,991 fondo liso, 0,992 fondo de rayas y ondas, 0,980 colores planos en JPEG con el rectángulo por defecto; etiqueta del color de la pared 0,822 → 0,991 con un trazo «mantener»; segundo objeto dentro del rectángulo quitado con un trazo «quitar» (0,991). En el navegador (e2e, rayas + etiqueta, JPEG): IoU ≥ 0,9 en Chromium, Firefox, WebKit, iPhone y Android emulados.
 - **Ajuste**: con fondos planos (gráficos, JPEG sin ruido) la covarianza de la mezcla queda casi singular y los píxeles del borde parecían «imposibles» para el fondo: quedaba un halo (IoU 0,86). Se suma una varianza mínima de 36 (≈ 6 niveles) a cada color → 0,98.
 - Límites: el corte es por color; sujetos del mismo color que el fondo, sombras fuertes o pelo suelto necesitan más trazos y los bordes finos quedan suavizados (la FAQ lo dice).
+
+## Fase 15 — Modo «Personas» con MediaPipe Selfie Segmenter (tarea 15.1, 2026-11-02)
+
+### Excepción de licencia aceptada por el dueño
+
+| Qué | Detalle |
+|---|---|
+| Quién y cuándo | **El dueño del proyecto, por escrito, el 2026-11-02** (pedido de la fase 15) |
+| Qué se acepta | Usar **MediaPipe Selfie Segmenter** (Google), aunque no cumple la regla estricta de la 14.1 |
+| Motivo | Quitar el fondo de fotos de personas en forma automática (lo más pedido en esta herramienta), sin enviar la foto a ningún servidor; ningún modelo de personas cumple la regla estricta (tabla de la 14.1) |
+| Licencia del modelo | Apache-2.0 ([model card](https://storage.googleapis.com/mediapipe-assets/Model%20Card%20MediaPipe%20Selfie%20Segmentation.pdf)); permite el uso comercial |
+| Riesgo aceptado | Los datos de entrenamiento se describen solo como imágenes «including consented images of people» tomadas por Google con una app de RA; no se puede verificar el origen de todas, que el consentimiento cubra el uso comercial ni con qué pesos se inició el entrenamiento. Si apareciera un reclamo sobre esos datos, el modo «Personas» se puede quitar sin tocar el resto (el recorte con rectángulo no usa modelos) |
+| Alcance | **Solo** Selfie Segmenter (square/landscape, float16, versión 1). **No** se extiende a Selfie Multiclass, a otros modelos de MediaPipe ni a ningún otro modelo: para ellos sigue la regla estricta |
+
+### Modelo elegido: «square» (`selfie_segmenter.tflite`, float16, versión 1)
+
+| Modelo | URL oficial (versión fija) | Tamaño | sha256 |
+|---|---|---|---|
+| **square** (256 × 256) — elegido | `https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter/float16/1/selfie_segmenter.tflite` | 249 537 B | `191ac9529ae506ee0beefa6b2c945a172dab9d07d1e802a290a4e4038226658b` |
+| landscape (144 × 256) | `https://storage.googleapis.com/mediapipe-models/image_segmenter/selfie_segmenter_landscape/float16/1/selfie_segmenter_landscape.tflite` | 250 177 B | `490e9ea734313e0de10fa0cd9e3c6133e36ea4db2b7a49bde9ef019f72796b8e` |
+
+La ruta `latest` de cada uno da hoy el mismo archivo (mismo sha256) que la versión `1`; no hay versión 2. Se sirve la copia del repo (`public/models/`), nunca desde Google en tiempo de ejecución.
+
+**Cómo se midió**: 12 fotos con máscara de referencia exacta hechas por `scripts/bg/people-fixtures.mjs` a partir de 4 retratos oficiales de la NASA en estudio con fondo blanco (dominio público; origen en `tests/fixtures/people/README.md`). La máscara de referencia sale del fondo blanco (todo lo que no está conectado al fondo es la persona), sin ningún modelo; cada retrato se recorta a medio cuerpo (encuadre tipo selfie, 512 px de ancho) y se usa sobre el fondo blanco original, sobre rayas de dos colores y sobre un degradé con ruido. `@mediapipe/tasks-vision` 1.1.1 en Chromium sin GPU (delegado CPU), IoU de la máscara a 0,5:
+
+| | square | landscape |
+|---|---|---|
+| IoU media (12 fotos) | **0,986** | 0,983 |
+| IoU mínima | 0,981 | 0,976 |
+| Tiempo por foto (CPU, sin la primera) | ~30 ms | ~22 ms |
+
+«square» gana en las 12 fotos (o empata en 1): las fotos de la herramienta son retratos o cuadradas, y «landscape» está pensado para videollamadas 16:9. La diferencia de tiempo no se nota (el recorte posterior tarda más).
+
+**Refinado con GrabCut** (máscara a 480 px de lado mayor → trimapa: persona segura, fondo seguro y una franja dudosa de ±4 % del lado mayor en el borde → GrabCut con los colores de la foto): IoU media **0,988** (0,984–0,991), contra 0,986 de la máscara sola; ~0,3 s por foto en Node. Mejora sobre todo con fondos con textura (degradé con ruido: 0,980 → 0,990).
+
+Limitaciones: el set es de retratos de estudio (ropa lisa, pelo corto o recogido); en fotos con pelo suelto, varias personas u objetos en la mano el modelo puede fallar más, y para eso quedan los pinceles. El modelo no sirve para objetos ni mascotas: para eso, el modo rectángulo.

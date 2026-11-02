@@ -572,7 +572,7 @@ Lector sin descargas (decisión del dueño 2026-10-31). Nadie va a descargar ~20
 Modo «Personas» automático con MediaPipe Selfie Segmenter (pedido del dueño 2026-11-02). **Excepción de licencias aceptada por escrito por el dueño el 2026-11-02** solo para MediaPipe Selfie Segmenter (modelo Apache-2.0; datos de entrenamiento descritos como imágenes con consentimiento de Google, no verificables); no alcanza a Selfie Multiclass ni a otros modelos. En orden.
 
 ### 15.1 Modelo y licencia
-- [ ] 15.1 Elegir el modelo «square» o «landscape» (medir calidad en fotos), versión exacta del `.tflite` oficial con sha256; registrar la excepción (dueño, fecha, motivo, riesgo) en `docs/quitar-fondo-eval.md` y `docs/licencia-agpl.md`
+- [x] 15.1 (hecha 2026-11-02: «square» float16 v1, IoU media 0,986 contra 0,983 de «landscape»; excepción registrada) Elegir el modelo «square» o «landscape» (medir calidad en fotos), versión exacta del `.tflite` oficial con sha256; registrar la excepción (dueño, fecha, motivo, riesgo) en `docs/quitar-fondo-eval.md` y `docs/licencia-agpl.md`
 
 ### 15.2 Integración
 - [ ] 15.2a Motor: `@mediapipe/tasks-vision` (Apache-2.0, versión exacta); WASM y modelo servidos desde nuestro dominio (copiados en el build y verificados con sha256), nada de CDNs de terceros; carga diferida solo al elegir «Personas»; CSP (WASM) y sin SharedArrayBuffer; `docs/dependencies.md`, `docs/licencia-agpl.md`, créditos y `npm run licenses`
