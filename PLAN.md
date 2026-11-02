@@ -589,11 +589,11 @@ Modo «Personas» automático con MediaPipe Selfie Segmenter (pedido del dueño 
 CI del PR de `dev` a `main` en verde (pedido del dueño 2026-11-02). El job `e2e-browsers` (run 41540432874, commit e6e377c) falló: 20 fallos, 1 flaky, 131 pasan. En orden.
 
 ### 16.1 Herramientas del sistema en `e2e-browsers`
-- [ ] 16.1 poppler-utils, patch y ffmpeg disponibles en el job (sin la imagen de Playwright con `--user 1001`, o equivalente); causa de los fallos en 0 ms de `tts-cloud` (ffmpeg u otra cosa del entorno de CI) y arreglo; verificado con `act` o `gh workflow run` sobre `dev`
+- [x] 16.1 (hecha 2026-11-02: el job corre en `ubuntu-latest` con `playwright install --with-deps` y apt; `tts-cloud` fallaba por ffmpeg en su `beforeAll`) poppler-utils, patch y ffmpeg disponibles en el job (sin la imagen de Playwright con `--user 1001`, o equivalente); causa de los fallos en 0 ms de `tts-cloud` (ffmpeg u otra cosa del entorno de CI) y arreglo; verificado con `act` o `gh workflow run` sobre `dev`
 
 ### 16.2 Fallos que no son de entorno
-- [ ] 16.2a `[iphone] edit-pdf.spec.ts:61`: esperaba «4 elementos agregados» y quedaron 2 tras mano alzada y flecha; averiguar si es un bug real del sitio con gestos táctiles en iPhone (WebKit con touch) o del test; arreglar la causa y cubrirla con un test, sin debilitar lo que verifica
-- [ ] 16.2b `[iphone] sheet-tools.spec.ts:227` (descarga de split-excel) flaky: buscar la causa y estabilizarlo sin agrandar timeouts a ciegas
+- [x] 16.2a (hecha 2026-11-02: era del test, no del sitio; test táctil real nuevo) `[iphone] edit-pdf.spec.ts:61`: esperaba «4 elementos agregados» y quedaron 2 tras mano alzada y flecha; averiguar si es un bug real del sitio con gestos táctiles en iPhone (WebKit con touch) o del test; arreglar la causa y cubrirla con un test, sin debilitar lo que verifica
+- [x] 16.2b (hecha 2026-11-02: el enlace quedaba bajo la cabecera fija; `scroll-padding-top`, 90/90 bajo carga) `[iphone] sheet-tools.spec.ts:227` (descarga de split-excel) flaky: buscar la causa y estabilizarlo sin agrandar timeouts a ciegas
 
 ### 16.3 Verificación
 - [ ] 16.3 Workflow completo (check, e2e-ai-voice, e2e-browsers) en verde sobre el último commit de `dev`; causa y arreglo de cada fallo en PROGRESS.md
