@@ -3983,3 +3983,7 @@ FASE 11 TERMINADA
 ## 2026-11-02 — Fase 15, tarea 15.2d (textos y créditos)
 - Descripción, «about» y FAQ de «Quitar fondo» en los 5 idiomas, misma URL y slugs: dos modos (automático para personas con MediaPipe Selfie Segmenter + GrabCut en el borde; rectángulo para objetos, productos y mascotas, sin modelo), la foto no sale del dispositivo, descarga única de ~4 MB desde Fileflect solo en el modo «Personas», por qué el automático es solo para personas (la ficha del modelo dice que se entrenó con fotos de personas que dieron su consentimiento), formatos y límites. Textos nuevos de la interfaz (15.2c) también en los 5 idiomas.
 - Créditos: MediaPipe Selfie Segmenter (Apache-2.0, enlace a su model card) y `@mediapipe/tasks-vision` (Apache-2.0) vía `npm run licenses`.
+
+## 2026-11-02 — Fin de esta ejecución
+- Hechas: 15.1, 15.2a, 15.2b, 15.2c y 15.2d (límite de 5). Sigue la 15.3a (instalar Firefox/WebKit de Playwright 1.56 y correr los `@xb` del modo «Personas»; el test ya existe y pasa en Chromium con IoU 0,992) y la 15.3b (Lighthouse móvil y CLS de `/es/quitar-fondo` comparado con `main` en la misma sesión, axe y docs finales), después «FASE 15 TERMINADA».
+- CI de dev: verde hasta 4e78f4c (15.2b); el de 2c562b8 (15.2c/d) estaba por empezar al cerrar. Nada para subir a R2: el modelo (250 KB) y el motor se sirven desde nuestro dominio.
