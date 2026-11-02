@@ -3912,3 +3912,6 @@ FASE 11 TERMINADA
 ## 2026-11-02 — FASE 13 TERMINADA
 - Lector: «Escuchar» con la mejor voz del dispositivo por defecto, «Voz IA (nube)» con Google Cloud TTS (apagada hasta que el dueño cargue `GOOGLE_TTS_API_KEY`) y «Modo privado» (Supertonic). Sin pausas entre oraciones (0 ms medidos, `docs/tts-pausas.md`).
 - Pendiente del dueño: `docs/tts-nube.md` (Google Cloud, clave restringida, presupuesto, variables en Railway, `scripts/tts/cloud-samples.mjs`), confirmar los términos de Google sobre el audio, decidir quitar fondo/u2netp (fase 12) y mergear dev en main.
+
+## 2026-11-02 — Inicio de la fase 14
+- El dueño decidió reemplazar el u2netp de «Quitar fondo» (datos de entrenamiento DUTS-TR/ImageNet, no cumplen la regla estricta). Tareas 14.1–14.3 en `PLAN.md`: verificar candidatos (MediaPipe, otros con datos comerciales, recorte asistido GrabCut), nueva herramienta con recorte asistido, quitar u2netp y verificación final.

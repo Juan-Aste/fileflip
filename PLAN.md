@@ -550,3 +550,19 @@ Lector sin descargas (decisión del dueño 2026-10-31). Nadie va a descargar ~20
 
 ### 13.5 Verificación final
 - [x] 13.5 Lo mismo que 12.6 para el lector, más revisión de seguridad de `/api/tts` (abuso, tamaños, inyección en SSML)
+
+## Fase 14
+
+«Quitar fondo» con alternativas limpias (decisión del dueño 2026-11-02). El u2netp actual se entrenó con DUTS-TR (sin licencia de uso; imágenes de ImageNet, solo investigación) y no cumple la regla estricta de licencias, que también alcanza a los datos de entrenamiento: se reemplaza. Contexto en `docs/quitar-fondo-eval.md`. En orden.
+
+### 14.1 Verificación de candidatos
+- [ ] 14.1 MediaPipe Selfie Segmenter / Multiclass (licencia del modelo y de los datos según su model card: quién recolectó las imágenes, consentimiento, uso comercial), otros modelos con datos verificablemente comerciales (Open Images V7, COCO con cuidado, sintéticos), descartando SAM/SA-1B, DIS5K, DUTS, ImageNet, P3M, AIM-500 y datasets «solo investigación»; recorte asistido sin modelo (GrabCut). Tabla, enlaces y decisión en `docs/quitar-fondo-eval.md`
+
+### 14.2 Nueva herramienta «Quitar fondo»
+- [ ] 14.2a Motor de recorte asistido (GrabCut propio o build mínimo de OpenCV.js) en un worker: rectángulo + trazos «mantener»/«quitar», refinado y suavizado del borde; tests con fotos generadas (fondo liso y con textura, máscara conocida): IoU ≥ 0,9 en los casos simples
+- [ ] 14.2b Interfaz: rectángulo, resultado al instante, pinceles «mantener»/«quitar», deshacer/rehacer, táctil, teclado e instrucciones claras; vista previa sobre cuadros, blanco o color; salida PNG transparente y JPG/WEBP con fondo al tamaño original (PNG validado de forma independiente); e2e (rectángulo → corrección → descarga) en Chromium, Firefox y WebKit
+- [ ] 14.2c Quitar u2netp del sitio (deja de descargarse, se borra `public/bg/u2netp.onnx`, créditos, `docs/dependencies.md`, `docs/licencia-agpl.md`, avisos), misma URL y slugs; textos, FAQ y metadatos en 5 idiomas con lo que hace ahora (sin prometer «automático» si no hay modelo de personas); guías y otras páginas que mencionen el quitado automático
+- [ ] 14.2d Modo «Personas» automático solo si 14.1 encuentra un modelo limpio (carga diferida, aviso de tamaño, R2/Hugging Face, sha256, Cache API, test con imagen sintética o de licencia verificada); si no, se marca como resuelta sin modelo
+
+### 14.3 Verificación final
+- [ ] 14.3 Lighthouse móvil ≥ 90 y CLS 0 en la herramienta, detector de clics, axe, Firefox y WebKit, suite de Chromium de las páginas tocadas; créditos, `docs/licencia-agpl.md`, `docs/modelos-r2.md` (si hay modelo nuevo) y `docs/launch-checklist.md`
