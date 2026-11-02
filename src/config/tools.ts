@@ -835,11 +835,11 @@ export const tools: Record<ToolId, ToolInfo> = {
     id: "remove-background",
     category: "image",
     inputs: ["jpg", "png", "webp", "avif", "gif", "bmp"],
-    outputs: ["png", "jpg"],
+    outputs: ["png", "jpg", "webp"],
     engine: "browser",
-    // U²-Net small (u2netp, Apache-2.0) on onnxruntime-web (WASM, one thread); mask applied by our own code.
-    libraries: ["onnxruntime-web", "u2netp", "canvas"],
-    limits: { files: "multiple", timeoutMs: 3 * MINUTE, maxFileBytes: 30 * 1024 * 1024 },
+    // Assisted cutout: our own GrabCut (no model, no training data) in a worker; @jsquash encoders for the download.
+    libraries: ["own GrabCut", "@jsquash/png", "@jsquash/jpeg", "@jsquash/webp"],
+    limits: { files: "single", timeoutMs: 3 * MINUTE, maxFileBytes: 30 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "quitar-fondo", en: "remove-background", pt: "remover-fundo", fr: "supprimer-arriere-plan", zh: "remove-background" },
   },

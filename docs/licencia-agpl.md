@@ -42,7 +42,7 @@ Condiciones que hay que seguir cumpliendo:
 | MozJPEG | IJG AND BSD-3-Clause AND Zlib | Sí (la FSF lista la IJG como compatible) |
 | libarchive (build propio) | BSD-2-Clause, Zlib, bzip2-1.0.6, 0BSD | Sí |
 | oxipng, google/woff2 + Brotli, Gotenberg | MIT | Sí |
-| qpdf, Tesseract + Leptonica, modelos tessdata_best, U²-Net (u2netp) | Apache-2.0 (+ BSD-2) | Sí |
+| qpdf, Tesseract + Leptonica, modelos tessdata_best | Apache-2.0 (+ BSD-2) | Sí |
 | Código de inferencia de Supertonic (portado) | MIT | Sí (se mantiene el aviso de copyright) |
 | Whisper `tiny` y `base` | MIT | Sí |
 | LibreOffice (dentro de Gotenberg, servicio aparte) | MPL-2.0 | Sí; además es un programa separado que se usa por HTTP, no se combina con nuestro código |
@@ -57,6 +57,8 @@ Condiciones que hay que seguir cumpliendo:
 - **Capturas de las guías y de docs** (`public/guides/`, `docs/screenshots/`): capturas de nuestro propio sitio.
 - **Muestras de voz** (`public/tts-samples/`): salida del modelo Supertonic 3 con frases propias. La OpenRAIL-M no reclama derechos sobre la salida (art. 6); se mantiene la indicación de que es voz generada por IA.
 - **Textos de licencias** (`public/licenses/`, `scripts/licenses/texts/`): textos oficiales, se distribuyen sin cambios.
+
+- **Recorte de «Quitar fondo»** (`src/lib/bg-remove/`, fase 14): GrabCut y flujo máximo Boykov–Kolmogorov escritos por nosotros a partir de los artículos (sin copiar código de OpenCV); no usa modelos ni datos de entrenamiento. El modelo u2netp (Apache-2.0, pero entrenado con DUTS-TR/ImageNet, solo investigación) se quitó del sitio el 2026-11-02 (ver `docs/quitar-fondo-eval.md`).
 
 ## Casos dudosos (revisados)
 

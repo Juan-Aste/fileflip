@@ -560,8 +560,8 @@ Lector sin descargas (decisión del dueño 2026-10-31). Nadie va a descargar ~20
 
 ### 14.2 Nueva herramienta «Quitar fondo»
 - [x] 14.2a Motor de recorte asistido (GrabCut propio o build mínimo de OpenCV.js) en un worker: rectángulo + trazos «mantener»/«quitar», refinado y suavizado del borde; tests con fotos generadas (fondo liso y con textura, máscara conocida): IoU ≥ 0,9 en los casos simples
-- [ ] 14.2b Interfaz: rectángulo, resultado al instante, pinceles «mantener»/«quitar», deshacer/rehacer, táctil, teclado e instrucciones claras; vista previa sobre cuadros, blanco o color; salida PNG transparente y JPG/WEBP con fondo al tamaño original (PNG validado de forma independiente); e2e (rectángulo → corrección → descarga) en Chromium, Firefox y WebKit
-- [ ] 14.2c Quitar u2netp del sitio (deja de descargarse, se borra `public/bg/u2netp.onnx`, créditos, `docs/dependencies.md`, `docs/licencia-agpl.md`, avisos), misma URL y slugs; textos, FAQ y metadatos en 5 idiomas con lo que hace ahora (sin prometer «automático» si no hay modelo de personas); guías y otras páginas que mencionen el quitado automático
+- [x] 14.2b Interfaz: rectángulo, resultado al instante, pinceles «mantener»/«quitar», deshacer/rehacer, táctil, teclado e instrucciones claras; vista previa sobre cuadros, blanco o color; salida PNG transparente y JPG/WEBP con fondo al tamaño original (PNG validado de forma independiente); e2e (rectángulo → corrección → descarga) en Chromium, Firefox y WebKit
+- [x] 14.2c Quitar u2netp del sitio (deja de descargarse, se borra `public/bg/u2netp.onnx`, créditos, `docs/dependencies.md`, `docs/licencia-agpl.md`, avisos), misma URL y slugs; textos, FAQ y metadatos en 5 idiomas con lo que hace ahora (sin prometer «automático» si no hay modelo de personas); guías y otras páginas que mencionen el quitado automático
 - [ ] 14.2d Modo «Personas» automático solo si 14.1 encuentra un modelo limpio (carga diferida, aviso de tamaño, R2/Hugging Face, sha256, Cache API, test con imagen sintética o de licencia verificada); si no, se marca como resuelta sin modelo
 
 ### 14.3 Verificación final

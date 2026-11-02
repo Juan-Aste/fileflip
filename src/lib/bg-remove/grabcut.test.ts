@@ -4,6 +4,7 @@
 import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 import { applyMask, downscale, iou, segment, workSize } from "./cutout";
+import { initialRect } from "./edit";
 import { BGD, buildTrimap, FGD, grabCut, PR_FGD, type Rect, type Stroke } from "./grabcut";
 import { Graph } from "./maxflow";
 
@@ -163,6 +164,15 @@ describe("grabCut", () => {
     const s = scene(W, H, textured, product, 11);
     const { alpha } = await cut(s, RECT);
     expect(iou(alpha, s.ref)).toBeGreaterThanOrEqual(0.9);
+  }, 60_000);
+
+  it("flat colors from a JPEG (no sensor noise), default rectangle: no halo of background, IoU ≥ 0.95", async () => {
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="100%" height="100%" fill="#8fc7a0"/><ellipse cx="320" cy="220" rx="150" ry="120" fill="red"/></svg>`;
+    const { data } = await sharp(await sharp(Buffer.from(svg)).jpeg({ quality: 80 }).toBuffer()).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    const ref = new Uint8Array(W * H);
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) ref[y * W + x] = ((x + 0.5 - 320) / 150) ** 2 + ((y + 0.5 - 220) / 120) ** 2 <= 1 ? 255 : 0;
+    const { alpha } = await cut({ rgba: new Uint8ClampedArray(data), ref, width: W, height: H }, initialRect({ width: W, height: H }));
+    expect(iou(alpha, ref)).toBeGreaterThanOrEqual(0.95);
   }, 60_000);
 
   it("a 'keep' stroke brings back a part colored like the background", async () => {

@@ -366,16 +366,6 @@ export const embedded = [
   },
   // Data files served from our domain.
   {
-    id: "u2netp",
-    name: "U²-Net (u2netp model, ONNX by rembg)",
-    version: "u2netp.onnx",
-    license: "Apache-2.0",
-    where: ["browser"],
-    homepage: "https://github.com/xuebinqin/U-2-Net",
-    licenseText: "Apache-2.0",
-    kind: "data",
-  },
-  {
     id: "tessdata",
     name: "Tesseract language models (tessdata_best)",
     version: "4.0.0_best_int",

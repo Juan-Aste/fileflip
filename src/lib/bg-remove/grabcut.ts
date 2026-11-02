@@ -18,6 +18,8 @@ export const PR_FGD = 3;
 const K = 5;
 const GAMMA = 50;
 const LAMBDA = 9 * GAMMA;
+/** Added to each color variance (≈ 6 levels of noise). */
+const MIN_VARIANCE = 36;
 
 /** Mixture of K Gaussians over RGB (0–255). */
 class GMM {
@@ -106,8 +108,10 @@ class GMM {
       const c = k * 9;
       for (let a = 0; a < 3; a++)
         for (let e = 0; e < 3; e++) this.cov[c + a * 3 + e] = this.prods[c + a * 3 + e]! / n - this.mean[m + a]! * this.mean[m + e]!;
-      // Flat colors give a singular covariance: add a little white noise.
-      if (det(this.cov, c) <= 1e-6) for (let a = 0; a < 3; a++) this.cov[c + a * 4] += 0.01;
+      // Flat colors (graphics, clean backgrounds) give a near-singular covariance
+      // and then a pixel 1–2 levels off (anti-aliasing, JPEG) looks impossible:
+      // floor the variance at a few levels, like sensor noise.
+      for (let a = 0; a < 3; a++) this.cov[c + a * 4] += MIN_VARIANCE;
       const d = det(this.cov, c);
       invert(this.cov, c, d, this.inv);
       this.norm[k] = 1 / Math.sqrt(d);
