@@ -596,4 +596,4 @@ CI del PR de `dev` a `main` en verde (pedido del dueño 2026-11-02). El job `e2e
 - [x] 16.2b (hecha 2026-11-02: el enlace quedaba bajo la cabecera fija; `scroll-padding-top`, 90/90 bajo carga) `[iphone] sheet-tools.spec.ts:227` (descarga de split-excel) flaky: buscar la causa y estabilizarlo sin agrandar timeouts a ciegas
 
 ### 16.3 Verificación
-- [ ] 16.3 Workflow completo (check, e2e-ai-voice, e2e-browsers) en verde sobre el último commit de `dev`; causa y arreglo de cada fallo en PROGRESS.md
+- [x] 16.3 (hecha 2026-11-02: run 41546952860 sobre 9fef622 en verde) Workflow completo (check, e2e-ai-voice, e2e-browsers) en verde sobre el último commit de `dev`; causa y arreglo de cada fallo en PROGRESS.md
