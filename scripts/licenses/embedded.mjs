@@ -365,6 +365,18 @@ export const embedded = [
     kind: "engine",
   },
   // Data files served from our domain.
+  // Background removal, "people" mode (phase 15): used under the owner's written
+  // exception of 2026-11-02 (training data not verifiable; docs/licencia-agpl.md).
+  {
+    id: "mediapipe-selfie-segmenter",
+    name: "MediaPipe Selfie Segmenter model, square, float16, version 1 (Google; model card: https://storage.googleapis.com/mediapipe-assets/Model%20Card%20MediaPipe%20Selfie%20Segmentation.pdf)",
+    version: "1 (float16)",
+    license: "Apache-2.0",
+    where: ["browser"],
+    homepage: "https://ai.google.dev/edge/mediapipe/solutions/vision/image_segmenter#selfie-model",
+    licenseText: "Apache-2.0",
+    kind: "data",
+  },
   {
     id: "tessdata",
     name: "Tesseract language models (tessdata_best)",

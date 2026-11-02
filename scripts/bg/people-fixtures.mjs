@@ -12,7 +12,7 @@
 //
 // Without --all only the e2e fixture is written (small, kept in the repo).
 import { createHash } from "node:crypto";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import sharp from "sharp";
 

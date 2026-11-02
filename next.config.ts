@@ -41,6 +41,9 @@ const nextConfig: NextConfig = {
       { source: "/ocr/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
       // Same for the FFmpeg WASM build (src/lib/legacy-media/assets.ts).
       { source: "/ffmpeg/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
+      // And for MediaPipe and its model (src/lib/bg-remove/people-assets.ts): versioned names.
+      { source: "/mediapipe/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
+      { source: "/models/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }] },
     ];
   },
   webpack(config, { webpack }) {

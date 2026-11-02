@@ -42,7 +42,7 @@ Condiciones que hay que seguir cumpliendo:
 | MozJPEG | IJG AND BSD-3-Clause AND Zlib | Sí (la FSF lista la IJG como compatible) |
 | libarchive (build propio) | BSD-2-Clause, Zlib, bzip2-1.0.6, 0BSD | Sí |
 | oxipng, google/woff2 + Brotli, Gotenberg | MIT | Sí |
-| qpdf, Tesseract + Leptonica, modelos tessdata_best | Apache-2.0 (+ BSD-2) | Sí |
+| qpdf, Tesseract + Leptonica, modelos tessdata_best, `@mediapipe/tasks-vision` y el modelo MediaPipe Selfie Segmenter (excepción del dueño, ver abajo) | Apache-2.0 (+ BSD-2) | Sí |
 | Código de inferencia de Supertonic (portado) | MIT | Sí (se mantiene el aviso de copyright) |
 | Whisper `tiny` y `base` | MIT | Sí |
 | LibreOffice (dentro de Gotenberg, servicio aparte) | MPL-2.0 | Sí; además es un programa separado que se usa por HTTP, no se combina con nuestro código |
