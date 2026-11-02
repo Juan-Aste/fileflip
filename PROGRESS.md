@@ -3934,3 +3934,9 @@ FASE 11 TERMINADA
 - Textos en 5 idiomas, misma URL y slugs: descripción, «about» y FAQ dicen que es un recorte asistido (no automático), por qué no hay modelo, formatos y límites; textos de la interfaz nuevos. Las guías solo enlazan «quitar el fondo» sin prometer automático: sin cambios.
 - Tests e2e `bg-tools.spec.ts` (foto generada con rayas y una etiqueta del color del fondo): rectángulo por campos → la etiqueta falta → trazo «mantener» la recupera → trazo «quitar» + deshacer/rehacer → PNG leído con sharp (800 × 600, alfa, IoU ≥ 0,9 contra la referencia), sin pedidos a otros orígenes ni al servidor, axe; en español: rectángulo con teclado + Ctrl+Z, axe en oscuro, JPG blanco, WEBP azul, foto dañada.
 - Verificado: lint, typecheck, 1449 unitarios, build; Chromium `bg-tools`, `search`, `guides`, `layout-shift`, `a11y`, `image-tools` (129); `@xb` en Firefox, WebKit, iPhone y Android (4). WebKit no entrega eventos de mouse fuera de la ventana: el test desplaza la vista previa antes de pintar.
+
+## 2026-11-02 — Fase 14, tarea 14.2d (modo «Personas»)
+- Resuelta sin modelo: ningún candidato pasó la verificación de la 14.1 (MediaPipe Selfie/Multiclass: datos de entrenamiento no verificables). La herramienta usa solo el recorte asistido y la página y la FAQ lo dicen («¿Por qué no es automático?»). No hay modelo nuevo para subir a R2. Si el dueño decidiera aceptar MediaPipe Selfie Segmenter explícitamente, se agregaría como modo opcional.
+
+## 2026-11-02 — Fin de esta ejecución
+- Hechas: 14.1, 14.2a, 14.2b, 14.2c y 14.2d (límite de 5). Sigue la 14.3 (Lighthouse, detector de clics, axe, Firefox/WebKit y suite de Chromium de las páginas tocadas; créditos y docs), después «FASE 14 TERMINADA».
