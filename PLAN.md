@@ -582,4 +582,4 @@ Modo «Personas» automático con MediaPipe Selfie Segmenter (pedido del dueño 
 
 ### 15.3 Tests y verificación
 - [x] 15.3a (hecha 2026-11-02: IoU 0,992 en Chromium, Firefox, WebKit, iPhone y Android; respaldo en el hilo principal y aviso sin WebGL) e2e con una foto de una persona de licencia verificable (o figura sintética que el modelo detecte): PNG con transparencia, IoU ≥ 0,85 contra una máscara de referencia, sin pedidos a otros orígenes; Firefox y WebKit (`@xb`)
-- [ ] 15.3b Lighthouse móvil ≥ 90 y CLS 0 (comparado con main en la misma sesión si la máquina está lenta), detector de clics, axe, suite de Chromium de las páginas tocadas; docs finales
+- [x] 15.3b (hecha 2026-11-02: Lighthouse móvil 90 y CLS 0 en `/es/quitar-fondo`, main 92 en la misma sesión; 190 tests de Chromium) Lighthouse móvil ≥ 90 y CLS 0 (comparado con main en la misma sesión si la máquina está lenta), detector de clics, axe, suite de Chromium de las páginas tocadas; docs finales

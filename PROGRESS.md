@@ -3993,3 +3993,14 @@ FASE 11 TERMINADA
 - Arreglo: `src/lib/bg-remove/people-engine.ts` (carga y verificación del modelo + segmentación, compartidos) y `people-client.ts` elige: worker si un `OffscreenCanvas` tiene WebGL; si no, **respaldo en el hilo principal** con un `<canvas>` (una pasada corta sobre la copia de ≤ 480 px); sin WebGL en absoluto, no descarga nada y avisa «El modo automático necesita WebGL…» (texto nuevo en los 5 idiomas) con el botón para pasar al rectángulo.
 - e2e `@xb` «people mode»: detecta el WebGL del navegador; con WebGL exige PNG con alfa, **IoU ≥ 0,85** (da **0,992** en Chromium, Firefox, WebKit, iPhone y Android), > 20 % transparente y todos los pedidos al mismo origen; sin WebGL exige el aviso, ningún pedido de MediaPipe y axe limpio. En el CI el paso de Firefox/WebKit corre con `xvfb-run` para que Firefox tenga WebGL (la imagen de Playwright trae xvfb).
 - Verificado: lint, typecheck, 1460 unitarios, build; `bg-tools` en los 5 proyectos (12 pasan; Firefox sin pantalla toma la rama «sin WebGL») y los `people` con xvfb en Firefox, WebKit e iPhone (IoU 0,992).
+
+## 2026-11-02 — Fase 15, tarea 15.3b (Lighthouse, CLS, clics, axe y docs)
+- Lighthouse móvil con AdSense de prueba (`docs/perf/2026-11-02-phase15.md`), `dev` y `main` servidos a la vez y medidos alternados: `/es/quitar-fondo` **90 y 90** (main 92 y 92); la página de control `/es/recortar-imagen`, igual en ambos builds, da 92/90 contra 93/93, así que la diferencia no es del modo «Personas». **CLS 0**, A11y y SEO 100. Nada de MediaPipe al cargar la página (JS 438 KB contra 433 KB).
+- Chromium: `bg-tools`, `a11y`, `layout-shift`, `clickable` (todas las páginas y tamaños), `image-tools` y `legal`: **190 pasan**. `check:static` y `npm run licenses` bien.
+- Docs: `docs/quitar-fondo-eval.md` (navegadores y WebGL), `docs/launch-checklist.md` (qué revisar de la fase 15 en producción). Nada para subir a R2.
+
+## 2026-11-02 — FASE 15 TERMINADA
+- Modo «Personas (automático)» por defecto en «Quitar fondo»: MediaPipe Selfie Segmenter «square» float16 v1 (excepción de licencia aceptada por el dueño el 2026-11-02, solo este modelo) + trimapa y GrabCut en el borde; pinceles, deshacer/rehacer, fondos y formatos como antes; aviso y paso al rectángulo si no hay persona clara o falta WebGL.
+- Descarga la primera vez: ~4,1 MB (WASM ~3,9 MB con gzip, ~2,8 MB con Brotli, + modelo 250 KB), todo desde nuestro dominio y solo al abrir una foto en ese modo.
+- Calidad: IoU 0,988 de media en 12 fotos de evaluación; 0,992 en el e2e en Chromium, Firefox, WebKit, iPhone y Android.
+- Falta: mergear `dev` en `main` y revisar la fase 15 en producción (`docs/launch-checklist.md`).

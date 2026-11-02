@@ -118,3 +118,15 @@ La ruta `latest` de cada uno da hoy el mismo archivo (mismo sha256) que la versi
 **Refinado con GrabCut** (máscara a 480 px de lado mayor → trimapa: persona segura, fondo seguro y una franja dudosa de ±4 % del lado mayor en el borde → GrabCut con los colores de la foto): IoU media **0,988** (0,984–0,991), contra 0,986 de la máscara sola; ~0,3 s por foto en Node. Mejora sobre todo con fondos con textura (degradé con ruido: 0,980 → 0,990).
 
 Limitaciones: el set es de retratos de estudio (ropa lisa, pelo corto o recogido); en fotos con pelo suelto, varias personas u objetos en la mano el modelo puede fallar más, y para eso quedan los pinceles. El modelo no sirve para objetos ni mascotas: para eso, el modo rectángulo.
+
+### Navegadores y WebGL (tarea 15.3a)
+
+MediaPipe sube siempre la imagen por **WebGL**, aun con el delegado CPU. Por eso `people-client.ts` elige al abrir la foto:
+
+| Caso | Dónde corre | Ejemplos |
+|---|---|---|
+| WebGL en `OffscreenCanvas` | worker (`people.worker.ts`), sin trabar la página | Chrome, Edge, Firefox, Safari 17+ |
+| WebGL solo en `<canvas>` | hilo principal (una pasada de ~30 ms sobre la copia de ≤ 480 px) | Safari 16, WebKitGTK |
+| Sin WebGL (desactivado) | no corre: no se descarga nada y se avisa «El modo automático necesita WebGL…» con el botón para pasar al rectángulo | navegadores con WebGL apagado, Firefox sin pantalla |
+
+Con la foto de prueba de la NASA el resultado es el mismo en todos los motores: **IoU 0,992** en Chromium, Firefox, WebKit, iPhone (WebKit) y Android (Chromium) emulados. En el CI el paso de Firefox/WebKit corre con `xvfb-run` para que Firefox tenga WebGL.
