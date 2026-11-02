@@ -1,4 +1,5 @@
 import type { Locale } from "@/i18n/routing";
+import samples from "./cloud-samples.json";
 
 // Cloud voices (task 13.3, Google Cloud Text-to-Speech). Client-safe: only
 // public voice names, never anything about the server's key. WaveNet voices
@@ -42,7 +43,11 @@ export const cloudVoices: Record<Locale, CloudVoice[]> = {
   ],
 };
 
-const byId = new Map(Object.values(cloudVoices).flat().map((v) => [v.id, v]));
+const byId = new Map(
+  Object.values(cloudVoices)
+    .flat()
+    .map((v) => [v.id, v]),
+);
 
 export function cloudVoice(id: unknown): CloudVoice | undefined {
   return typeof id === "string" ? byId.get(id) : undefined;
@@ -56,3 +61,22 @@ export const CLOUD_MAX_CHARS = 1500;
 /** Speed range accepted by the API (speakingRate 0.25–4); the reader uses 0.5–2. */
 export const CLOUD_MIN_RATE = 0.5;
 export const CLOUD_MAX_RATE = 2;
+
+// Which voices have a recorded sample and which one is understood best, per
+// language (scripts/tts/cloud-samples.mjs, run by the owner with the key).
+// Until then no sample is shown and the catalog order is kept.
+
+const withSample = new Set<string>(samples.voices);
+const recommended = samples.recommended as Partial<Record<Locale, string>>;
+
+/** The language's voices, the recommended one first. */
+export function cloudVoicesFor(lang: Locale): CloudVoice[] {
+  const best = recommended[lang];
+  return [...cloudVoices[lang]].sort((a, b) => Number(b.id === best) - Number(a.id === best));
+}
+
+/** Voice with the lowest WER for the language, once measured. */
+export const cloudRecommended = (lang: Locale) => recommended[lang];
+
+/** Static sample of a voice, or null while there is none. */
+export const cloudSamplePath = (id: string) => (withSample.has(id) ? `/tts-samples/cloud/${id}.mp3` : null);

@@ -21,7 +21,7 @@ import ProgressBar from "../ProgressBar";
 import ToolAlert from "../ToolAlert";
 import { useAiSpeech } from "./useAiSpeech";
 import { useCloudSpeech } from "./useCloudSpeech";
-import { cloudVoices } from "@/lib/tts/cloud-voices";
+import { cloudRecommended, cloudSamplePath, cloudVoices, cloudVoicesFor } from "@/lib/tts/cloud-voices";
 import type { CloudStatus } from "@/lib/tts/cloud-client";
 import { AiVoicePicker } from "./AiVoicePicker";
 import { RECOMMENDED_VOICE } from "@/lib/tts/recommended";
@@ -161,7 +161,7 @@ export default function ReadAloudTool() {
   const cloudListed = cloud?.enabled === true;
   // Configured and under the site's monthly cap.
   const cloudOn = cloudListed && cloud?.available !== false;
-  const cloudChoices = cloudVoices[language];
+  const cloudChoices = useMemo(() => cloudVoicesFor(language), [language]);
   useEffect(() => {
     const stored = readStored(cloudVoiceKey(language));
     setCloudVoice(cloudVoices[language].some((v) => v.id === stored) ? stored : null);
@@ -622,7 +622,8 @@ export default function ReadAloudTool() {
             >
               {cloudChoices.map((v) => (
                 <option key={v.id} value={v.id}>
-                  {cloudVoiceName(v, cloudChoices, locale, t)}
+                  {cloudVoiceName(v, cloudVoices[language], locale, t)}
+                  {cloudRecommended(language) === v.id ? ` · ${t("aiRecommended")}` : ""}
                 </option>
               ))}
             </select>
@@ -664,6 +665,12 @@ export default function ReadAloudTool() {
                 </option>
               ))}
             </select>
+          )}
+          {useCloud && cloudSamplePath(cloudVoiceId) && (
+            <CloudSample
+              src={cloudSamplePath(cloudVoiceId)!}
+              label={t("aiSamplePlay", { voice: cloudVoiceName(cloudChoices.find((v) => v.id === cloudVoiceId)!, cloudVoices[language], locale, t) })}
+            />
           )}
         </div>
         <div className="flex flex-col gap-1 text-sm font-medium">
@@ -827,6 +834,26 @@ export default function ReadAloudTool() {
         {mp3Notice && <p className="text-sm text-muted">{mp3Notice}</p>}
       </div>
     </div>
+  );
+}
+
+/** Plays a cloud voice's static sample (fetched only when pressed). */
+function CloudSample({ src, label }: { src: string; label: string }) {
+  const audio = useRef<HTMLAudioElement | null>(null);
+  useEffect(() => () => audio.current?.pause(), [src]);
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        audio.current?.pause();
+        audio.current = new Audio(src);
+        void audio.current.play().catch(() => {});
+      }}
+      className="inline-flex items-center gap-1 self-start rounded-lg px-2 py-1 text-xs font-semibold text-brand hover:bg-brand-soft"
+    >
+      <Play aria-hidden="true" className="h-3 w-3" />
+      {label}
+    </button>
   );
 }
 

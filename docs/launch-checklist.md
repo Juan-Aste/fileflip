@@ -44,6 +44,8 @@ Las `NEXT_PUBLIC_*` se fijan al construir: si se cambian, redesplegar.
 | `NEXT_PUBLIC_ADSENSE_SLOT_RESULT` | `0987654321` |
 | `NEXT_PUBLIC_MODELS_BASE_URL` | `https://modelos.fileflect.com` (opcional: copia propia de los modelos de IA en Cloudflare R2, [docs/modelos-r2.md](modelos-r2.md); vacía = solo Hugging Face) |
 | `NEXT_PUBLIC_SOURCE_URL` | `https://github.com/Juan-Aste/fileflip` (opcional: solo cuando el repo sea público; muestra «Código fuente» en el footer y en créditos, obligación de la AGPL-3.0 §13; vacía = no aparece) |
+| `GOOGLE_TTS_API_KEY` | (opcional, fase 13: clave de Google Cloud Text-to-Speech restringida a esa API, [docs/tts-nube.md](tts-nube.md); vacía = no hay «Voz IA (nube)». **Solo del servidor**, nunca `NEXT_PUBLIC_`) |
+| `TTS_MONTHLY_CHAR_LIMIT` | `3500000` (opcional: tope mensual global de la voz en la nube; también `TTS_DAILY_CHARS_ANON`=20000, `TTS_DAILY_CHARS_USER`=100000, `TTS_REQUESTS_PER_MINUTE`=60) |
 | `RATE_LIMIT_PER_MINUTE` | `20` |
 | `TEMP_FILE_TTL_MINUTES` | `60` |
 
@@ -116,6 +118,13 @@ Antes: [`docs/escaneo-secretos.md`](escaneo-secretos.md) (sin secretos en el his
 - [ ] GitHub → Settings → General → Danger Zone → Change visibility → Public.
 - [ ] Railway: `NEXT_PUBLIC_SOURCE_URL=https://github.com/Juan-Aste/fileflip` y redesplegar.
 - [ ] Comprobar: el footer y `/es/creditos` muestran «Código fuente» con el enlace al repositorio.
+
+## 9d. Voz IA en la nube (opcional, fase 13.3)
+Pasos detallados en [`docs/tts-nube.md`](tts-nube.md).
+- [ ] Google Cloud: proyecto, facturación, «Cloud Text-to-Speech API» habilitada, presupuesto de US$5 con avisos al 50/90/100 %, clave de API restringida solo a esa API.
+- [ ] Railway: `GOOGLE_TTS_API_KEY` (y opcionalmente `TTS_MONTHLY_CHAR_LIMIT`); `AUTH_SECRET` y `MONGODB_URI` definidas.
+- [ ] Correr `GOOGLE_TTS_API_KEY=… node scripts/tts/cloud-samples.mjs` (con `--wer` y `WHISPER_DIR` para medir) y subir `public/tts-samples/cloud/`, `src/lib/tts/cloud-samples.json` (y `docs/tts-wer/cloud.json`) a `dev`.
+- [ ] Comprobar: en `/es/leer-texto-en-voz-alta` aparece «Voz IA (nube)» con el aviso de Google, lee sin pausas y «Descargar MP3» funciona (también en `/zh/text-to-speech`); `/es/admin` muestra el uso del mes y del día.
 
 ## 10. Verificar después de publicar
 - [ ] `https://fileflect.com/api/health` → `{"status":"ok","gotenberg":true}`.
