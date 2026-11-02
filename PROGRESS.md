@@ -3895,3 +3895,8 @@ FASE 11 TERMINADA
 - Tests nuevos `@xb` en `tts-cloud.spec.ts` con la API respondida por el test: orden de las tres opciones, «Escuchar» por defecto, lectura con la voz en la nube, axe en claro y oscuro, y el tope mensual (opción deshabilitada con aviso, MP3 por el modo privado). En Firefox headless del contenedor el reloj de `AudioContext` no avanza (no hay salida de audio): ahí se comprueba hasta que empieza la lectura.
 - Lighthouse móvil con AdSense de prueba (`docs/perf/2026-11-02-phase13.md`): lector es 91, en 88 (rango de la fase 12), privacidad 92, portada 93; CLS 0, A11y y SEO 100. Las páginas `/zh` dan ~69 en este contenedor, también las que no cambiaron (pintado de texto CJK): no es regresión; medir en producción. `scripts/perf/lighthouse.sh` suma `/es/privacy`.
 - Verificado: lint, typecheck, unitarios, build, `check:static`; Chromium `tts-cloud`, `tts-tools`, `tts-ai`, `a11y`, `layout-shift`, `legal` (67) y detector de clics (114); Firefox y WebKit `@xb` de lector, nube y legales (16). Un fallo de WebKit en el test de axe del lector (botón «Reproducir» deshabilitado) no se repitió en tres corridas más: inestable bajo carga.
+
+## 2026-11-02 — Fin de esta ejecución
+- Hechas: 13.3a, 13.3b, 13.3c, 13.3d y 13.4 (límite de 5). Sigue la 13.5 (verificación final del lector y revisión de seguridad de `/api/tts`), después «FASE 13 TERMINADA».
+- Pendiente del dueño para encender la voz en la nube: `docs/tts-nube.md` (Google Cloud, `GOOGLE_TTS_API_KEY` en Railway, correr `scripts/tts/cloud-samples.mjs`) y confirmar los términos de Google sobre la titularidad del audio. Siguen abiertas las decisiones de la fase 12 (quitar fondo/u2netp).
+- CI de dev: verde en los commits de 13.3a–d; el de 13.4 estaba corriendo al cerrar.
