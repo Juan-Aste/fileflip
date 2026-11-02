@@ -189,7 +189,21 @@ test.describe("tool: remove-background", () => {
     await expect(page.getByText(/Automatic mode for photos of people/)).toBeVisible();
     const assets: string[] = [];
     page.on("request", (r) => /mediapipe|\/models\//.test(r.url()) && assets.push(new URL(r.url()).pathname));
+    // MediaPipe needs WebGL (in a worker, or on the main thread as a fallback).
+    // Headless Firefox without a display has none: the page must say so and
+    // download nothing (CI runs this step under xvfb, which gives it WebGL).
+    const webgl = await page.evaluate(() => {
+      const has = (c: HTMLCanvasElement | OffscreenCanvas) => !!(c.getContext("webgl2") ?? c.getContext("webgl"));
+      return typeof OffscreenCanvas !== "undefined" && has(new OffscreenCanvas(1, 1)) ? "worker" : has(document.createElement("canvas")) ? "main" : "none";
+    });
+    test.info().annotations.push({ type: "webgl", description: webgl });
     await page.locator('input[type="file"]').setInputFiles(fixturePath("people/person.jpg"));
+    if (webgl === "none") {
+      await expect(page.getByText(/The automatic mode needs WebGL/)).toBeVisible({ timeout: 30_000 });
+      expect(assets).toEqual([]);
+      expect(await axeViolations(page)).toEqual([]);
+      return;
+    }
     const ready = /Cutout ready/;
     await keptPercent(page, ready);
     expect(assets.some((a) => a.endsWith(".wasm"))).toBe(true);

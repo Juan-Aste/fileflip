@@ -3384,6 +3384,7 @@
     "notePeople": "人像照片的自动模式：选择照片后，AI 模型（MediaPipe）会找到人物并去除背景，之后可用画笔修正。首次使用会从 Fileflect 下载约 {size} MB；照片不会离开你的设备。物品、产品或宠物请使用矩形模式。",
     "findingPerson": "正在寻找人物…（首次使用会下载约 {size} MB）",
     "peopleFailed": "无法加载自动模式（可能已离线）。",
+    "peopleNoWebgl": "自动模式需要 WebGL，但此浏览器已关闭或不支持 WebGL。",
     "noPerson": "这张照片中没有找到清晰的人物。自动模式仅适用于人像。",
     "useRect": "改用矩形模式",
     "peopleStep1": "人物会自动抠出。请查看结果。",

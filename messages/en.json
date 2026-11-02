@@ -3384,6 +3384,7 @@
     "notePeople": "Automatic mode for photos of people: when you choose the photo, an AI model (MediaPipe) finds the person and removes the background; then you can fix it with brushes. The first time, about {size} MB are downloaded from Fileflect; your photo never leaves your device. For objects, products or pets, use the rectangle mode.",
     "findingPerson": "Finding the person… (about {size} MB are downloaded the first time)",
     "peopleFailed": "The automatic mode could not be loaded (offline?).",
+    "peopleNoWebgl": "The automatic mode needs WebGL, which is turned off or unavailable in this browser.",
     "noPerson": "We couldn't find a clear person in this photo. The automatic mode only works with people.",
     "useRect": "Use the rectangle mode",
     "peopleStep1": "The person is cut out automatically. Check the result.",

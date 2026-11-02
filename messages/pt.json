@@ -3384,6 +3384,7 @@
     "notePeople": "Modo automático para fotos de pessoas: ao escolher a foto, um modelo de inteligência artificial (MediaPipe) encontra a pessoa e remove o fundo; depois você pode corrigir com pincéis. Na primeira vez são baixados cerca de {size} MB do Fileflect; a foto não sai do seu dispositivo. Para objetos, produtos ou animais, use o modo retângulo.",
     "findingPerson": "Procurando a pessoa… (na primeira vez são baixados cerca de {size} MB)",
     "peopleFailed": "Não foi possível carregar o modo automático (sem conexão?).",
+    "peopleNoWebgl": "O modo automático precisa de WebGL, que está desativado ou indisponível neste navegador.",
     "noPerson": "Não encontramos uma pessoa clara nesta foto. O modo automático é só para pessoas.",
     "useRect": "Usar o modo retângulo",
     "peopleStep1": "A pessoa é recortada sozinha. Veja o resultado.",

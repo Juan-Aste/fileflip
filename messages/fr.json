@@ -3384,6 +3384,7 @@
     "notePeople": "Mode automatique pour les photos de personnes : dès que vous choisissez la photo, un modèle d’intelligence artificielle (MediaPipe) trouve la personne et supprime l’arrière-plan ; vous pouvez ensuite corriger avec des pinceaux. La première fois, environ {size} Mo sont téléchargés depuis Fileflect ; la photo ne quitte pas votre appareil. Pour les objets, produits ou animaux, utilisez le mode rectangle.",
     "findingPerson": "Recherche de la personne… (environ {size} Mo téléchargés la première fois)",
     "peopleFailed": "Impossible de charger le mode automatique (hors ligne ?).",
+    "peopleNoWebgl": "Le mode automatique a besoin de WebGL, désactivé ou indisponible dans ce navigateur.",
     "noPerson": "Aucune personne nette n’a été trouvée sur cette photo. Le mode automatique ne fonctionne qu’avec des personnes.",
     "useRect": "Utiliser le mode rectangle",
     "peopleStep1": "La personne est détourée automatiquement. Vérifiez le résultat.",

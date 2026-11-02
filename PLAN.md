@@ -581,5 +581,5 @@ Modo «Personas» automático con MediaPipe Selfie Segmenter (pedido del dueño 
 - [x] 15.2d (hecha 2026-11-02) Textos en 5 idiomas (descripción, «about», FAQ: automático para personas, rectángulo para objetos, la foto no sale del dispositivo, tamaño de la descarga), misma URL y slugs; créditos con MediaPipe (Apache-2.0) y su model card
 
 ### 15.3 Tests y verificación
-- [ ] 15.3a e2e con una foto de una persona de licencia verificable (o figura sintética que el modelo detecte): PNG con transparencia, IoU ≥ 0,85 contra una máscara de referencia, sin pedidos a otros orígenes; Firefox y WebKit (`@xb`)
+- [x] 15.3a (hecha 2026-11-02: IoU 0,992 en Chromium, Firefox, WebKit, iPhone y Android; respaldo en el hilo principal y aviso sin WebGL) e2e con una foto de una persona de licencia verificable (o figura sintética que el modelo detecte): PNG con transparencia, IoU ≥ 0,85 contra una máscara de referencia, sin pedidos a otros orígenes; Firefox y WebKit (`@xb`)
 - [ ] 15.3b Lighthouse móvil ≥ 90 y CLS 0 (comparado con main en la misma sesión si la máquina está lenta), detector de clics, axe, suite de Chromium de las páginas tocadas; docs finales

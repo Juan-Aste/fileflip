@@ -35,7 +35,7 @@ const brushShare: Record<BrushSize, number> = { small: 0.012, medium: 0.025, lar
 
 type Photo = { status: "loading" } | { status: "error"; code: ApiErrorCode } | { status: "ready"; from: FormatId; prepared: Prepared; url: string };
 /** The person probability of the current photo (people mode). */
-type Person = { status: "loading" } | { status: "error" } | { status: "ready"; prob: Uint8Array; found: boolean };
+type Person = { status: "loading" } | { status: "error"; noWebgl: boolean } | { status: "ready"; prob: Uint8Array; found: boolean };
 /** What the "people" mode downloads the first time, in MB (WASM gzip-compressed + model). */
 const PEOPLE_DOWNLOAD_MB = Math.round(((MEDIAPIPE_WASM_BYTES * 0.3 + SELFIE_MODEL_BYTES) / 1e6) * 10) / 10;
 
@@ -111,7 +111,7 @@ export default function RemoveBackgroundTool() {
         const data = new Uint8Array(prob);
         setPerson({ status: "ready", prob: data, found: hasPerson(data) });
       })
-      .catch(() => !abort.signal.aborted && setPerson({ status: "error" }));
+      .catch((error) => !abort.signal.aborted && setPerson({ status: "error", noWebgl: error instanceof Error && error.name === "NoWebglError" }));
     return () => abort.abort();
   }, [ready, method]);
 
@@ -233,7 +233,7 @@ export default function RemoveBackgroundTool() {
               {method === "people" && person?.status === "loading" && <p className="text-sm text-muted">{t("findingPerson", { size: PEOPLE_DOWNLOAD_MB })}</p>}
               {method === "people" && (person?.status === "error" || (person?.status === "ready" && !person.found)) && (
                 <ToolAlert>
-                  {t(person.status === "error" ? "peopleFailed" : "noPerson")}{" "}
+                  {t(person.status === "error" ? (person.noWebgl ? "peopleNoWebgl" : "peopleFailed") : "noPerson")}{" "}
                   <button type="button" className="font-medium underline" onClick={() => chooseMethod("rect")}>
                     {t("useRect")}
                   </button>
