@@ -72,6 +72,28 @@ export function personShare(prob: Uint8Array): number {
 }
 
 /**
+ * Mean probability (0–1) over the pixels seen as person. With a real person
+ * the model is sure (0.99 on the test portraits); on an object it sometimes
+ * marks a patch with low confidence (0.76 on the test product photo).
+ */
+export function personConfidence(prob: Uint8Array): number {
+  let sum = 0;
+  let count = 0;
+  for (let i = 0; i < prob.length; i++)
+    if (prob[i]! >= 128) {
+      sum += prob[i]!;
+      count++;
+    }
+  return count === 0 ? 0 : sum / count / 255;
+}
+
+/** Mean confidence under which the photo has no clear person. */
+export const MIN_PERSON_CONFIDENCE = 0.85;
+
+/** Whether the model found a clear person: a big enough area, seen with confidence. */
+export const hasPerson = (prob: Uint8Array) => personShare(prob) >= MIN_PERSON_SHARE && personConfidence(prob) >= MIN_PERSON_CONFIDENCE;
+
+/**
  * Person probability (0–255, work size) → GrabCut trimap: sure person more
  * than `band` pixels inside the edge, sure background more than `band`
  * pixels outside it, and "probably" (person or background, as the model

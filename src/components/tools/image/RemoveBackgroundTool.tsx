@@ -7,10 +7,12 @@ import { buttonSecondary } from "@/components/ui/styles";
 import { formats, formatFromExtension, type FormatId } from "@/config/formats";
 import { tools } from "@/config/tools";
 import type { ApiErrorCode } from "@/lib/api-errors";
-import { cutPhoto, exportPhoto, preparePhoto, type Prepared } from "@/lib/bg-remove/cutout-client";
+import { cutPerson, cutPhoto, exportPhoto, preparePhoto, type Prepared } from "@/lib/bg-remove/cutout-client";
 import { parseHexColor, type Background } from "@/lib/bg-remove/cutout";
 import { initialRect, scaleEdit, type Edit } from "@/lib/bg-remove/edit";
 import type { Stroke } from "@/lib/bg-remove/grabcut";
+import { hasPerson } from "@/lib/bg-remove/people";
+import { MEDIAPIPE_WASM_BYTES, SELFIE_MODEL_BYTES } from "@/lib/bg-remove/people-assets";
 import { ConversionError, errorCode } from "@/lib/convert-error";
 import { trackTool } from "@/lib/stats-client";
 import ChoiceGroup from "../ChoiceGroup";
@@ -24,17 +26,25 @@ const extensions = info.inputs.flatMap((f) => formats[f].extensions);
 
 type BackgroundKind = "transparent" | "white" | "color";
 type Output = "png" | "webp" | "jpg";
-type Mode = "rect" | "keep" | "remove";
+/** "people": MediaPipe finds the person; "rect": the user frames the subject (GrabCut only). */
+type Method = "people" | "rect";
+type Mode = "rect" | "view" | "keep" | "remove";
 type BrushSize = "small" | "medium" | "large";
 /** Brush radius as a share of the photo's longest side. */
 const brushShare: Record<BrushSize, number> = { small: 0.012, medium: 0.025, large: 0.05 };
 
 type Photo = { status: "loading" } | { status: "error"; code: ApiErrorCode } | { status: "ready"; from: FormatId; prepared: Prepared; url: string };
+/** The person probability of the current photo (people mode). */
+type Person = { status: "loading" } | { status: "error" } | { status: "ready"; prob: Uint8Array; found: boolean };
+/** What the "people" mode downloads the first time, in MB (WASM gzip-compressed + model). */
+const PEOPLE_DOWNLOAD_MB = Math.round(((MEDIAPIPE_WASM_BYTES * 0.3 + SELFIE_MODEL_BYTES) / 1e6) * 10) / 10;
 
 /**
- * Assisted cutout: the user frames the subject with a rectangle and fixes the
- * result with "keep" and "remove" brushes. GrabCut (our own code, no model)
- * runs in a worker on a reduced copy; the download is made at full size.
+ * Two ways to cut: "people" (MediaPipe Selfie Segmenter finds the person and
+ * its mask seeds GrabCut) or "rect" (the user frames the subject with a
+ * rectangle). Both are fixed with "keep" and "remove" brushes. GrabCut (our
+ * own code) runs in a worker on a reduced copy; the download is made at full
+ * size. MediaPipe is only downloaded when a photo is opened in "people" mode.
  */
 export default function RemoveBackgroundTool() {
   const t = useTranslations("RemoveBackgroundTool");
@@ -46,7 +56,9 @@ export default function RemoveBackgroundTool() {
   const [photo, setPhoto] = useState<Photo | null>(null);
   const [history, setHistory] = useState<{ edits: Edit[]; index: number }>({ edits: [], index: 0 });
   const [mask, setMask] = useState<{ edit: Edit; data: Uint8Array } | null>(null);
-  const [mode, setMode] = useState<Mode>("rect");
+  const [method, setMethod] = useState<Method>("people");
+  const [person, setPerson] = useState<Person | null>(null);
+  const [mode, setMode] = useState<Mode>("view");
   const [brush, setBrush] = useState<BrushSize>("medium");
   const [kind, setKind] = useState<BackgroundKind>("transparent");
   const [color, setColor] = useState("#4f8ff7");
@@ -67,7 +79,6 @@ export default function RemoveBackgroundTool() {
     setPhoto({ status: "loading" });
     setMask(null);
     setHistory({ edits: [], index: 0 });
-    setMode("rect");
     const from = formatFromExtension(file.name);
     (from && info.inputs.includes(from)
       ? preparePhoto(file, from, { signal: abort.signal, timeoutMs: info.limits.timeoutMs })
@@ -87,13 +98,33 @@ export default function RemoveBackgroundTool() {
     };
   }, [file]);
 
+  // People mode: find the person once per photo (the first time also downloads MediaPipe).
+  useEffect(() => {
+    setPerson(null);
+    if (!ready || method !== "people") return;
+    const abort = new AbortController();
+    setPerson({ status: "loading" });
+    import("@/lib/bg-remove/people-client")
+      .then(({ findPerson }) => findPerson(ready.prepared, { signal: abort.signal, timeoutMs: info.limits.timeoutMs }))
+      .then(({ prob }) => {
+        if (abort.signal.aborted) return;
+        const data = new Uint8Array(prob);
+        setPerson({ status: "ready", prob: data, found: hasPerson(data) });
+      })
+      .catch(() => !abort.signal.aborted && setPerson({ status: "error" }));
+    return () => abort.abort();
+  }, [ready, method]);
+
+  const prob = method === "people" && person?.status === "ready" ? person.prob : null;
+
   // Each change of the marks recomputes the cut (only the latest one when they come fast).
   useEffect(() => {
     if (!ready || !edit) return;
+    if (method === "people" && !prob) return;
     const abort = new AbortController();
     const timer = setTimeout(() => {
       const work = scaleEdit(edit, ready.prepared.workWidth / ready.prepared.width);
-      cutPhoto(ready.prepared, work.rect, work.strokes, { signal: abort.signal })
+      (prob ? cutPerson(ready.prepared, prob, work.strokes, { signal: abort.signal }) : cutPhoto(ready.prepared, work.rect, work.strokes, { signal: abort.signal }))
         .then(({ mask: data }) => !abort.signal.aborted && setMask({ edit, data: new Uint8Array(data) }))
         .catch(() => undefined);
     }, 120);
@@ -101,7 +132,16 @@ export default function RemoveBackgroundTool() {
       clearTimeout(timer);
       abort.abort();
     };
-  }, [ready, edit]);
+  }, [ready, edit, method, prob]);
+
+  /** Switching between "people" and "rectangle" starts the marks over. */
+  function chooseMethod(next: Method) {
+    if (next === method) return;
+    setMethod(next);
+    setMode(next === "rect" ? "rect" : "view");
+    setMask(null);
+    if (ready) setHistory({ edits: [{ rect: initialRect(ready.prepared), strokes: [] }], index: 0 });
+  }
 
   const commit = useCallback((next: Edit, coalesce = false) => {
     setHistory(({ edits, index }) => {
@@ -134,7 +174,7 @@ export default function RemoveBackgroundTool() {
 
   const background: Background =
     kind === "transparent" ? { kind: "transparent" } : { kind: "color", rgb: kind === "white" ? [255, 255, 255] : parseHexColor(color) };
-  const upToDate = !!mask && mask.edit === edit;
+  const upToDate = !!mask && mask.edit === edit && (method === "rect" || !!prob);
 
   function chooseOutput(next: Output) {
     setOutput(next);
@@ -167,21 +207,41 @@ export default function RemoveBackgroundTool() {
   const kept = mask ? Math.round((mask.data.reduce((a, v) => a + v, 0) / (255 * mask.data.length)) * 100) : null;
 
   return (
-    <ToolShell
+    <div className="flex flex-col gap-4">
+      {/* Chosen before the photo: the "people" mode downloads MediaPipe only when a photo is opened in it. */}
+      <ChoiceGroup
+        legend={t("method")}
+        value={method}
+        onChange={chooseMethod}
+        options={[
+          { value: "people", label: t("methodPeople") },
+          { value: "rect", label: t("methodRect") },
+        ]}
+      />
+      <p className="text-sm text-muted">{method === "people" ? t("notePeople", { size: PEOPLE_DOWNLOAD_MB }) : t("note")}</p>
+      <ToolShell
       input={{ kind: "files", extensions, multiple: false, maxFileBytes: info.limits.maxFileBytes, ready: !!ready && upToDate }}
       actionLabel={tt("action")}
       onFilesChange={(files) => setFile(files[0] ?? null)}
       process={(_, { signal, onProgress }) => process(signal, onProgress)}
       options={
         <div className="flex flex-col gap-4">
-          {!file && <p className="text-sm text-muted">{t("note")}</p>}
           {photo?.status === "loading" && <p className="text-sm text-muted">{t("loading")}</p>}
           {photo?.status === "error" && <ToolAlert>{te(photo.code)}</ToolAlert>}
           {ready && edit && (
             <div className="flex flex-col gap-4" onKeyDown={shortcuts}>
+              {method === "people" && person?.status === "loading" && <p className="text-sm text-muted">{t("findingPerson", { size: PEOPLE_DOWNLOAD_MB })}</p>}
+              {method === "people" && (person?.status === "error" || (person?.status === "ready" && !person.found)) && (
+                <ToolAlert>
+                  {t(person.status === "error" ? "peopleFailed" : "noPerson")}{" "}
+                  <button type="button" className="font-medium underline" onClick={() => chooseMethod("rect")}>
+                    {t("useRect")}
+                  </button>
+                </ToolAlert>
+              )}
               <ol id={helpId} className="list-decimal space-y-1 pl-5 text-sm text-muted">
-                <li>{t("step1")}</li>
-                <li>{t("step2")}</li>
+                <li>{t(method === "people" ? "peopleStep1" : "step1")}</li>
+                <li>{t(method === "people" ? "peopleStep2" : "step2")}</li>
                 <li>{t("step3")}</li>
               </ol>
               <div className="flex flex-wrap items-end gap-4">
@@ -190,12 +250,12 @@ export default function RemoveBackgroundTool() {
                   value={mode}
                   onChange={setMode}
                   options={[
-                    { value: "rect", label: t("modeRect") },
-                    { value: "keep", label: t("modeKeep") },
-                    { value: "remove", label: t("modeRemove") },
+                    method === "rect" ? { value: "rect" as const, label: t("modeRect") } : { value: "view" as const, label: t("modeView") },
+                    { value: "keep" as const, label: t("modeKeep") },
+                    { value: "remove" as const, label: t("modeRemove") },
                   ]}
                 />
-                {mode !== "rect" && (
+                {(mode === "keep" || mode === "remove") && (
                   <ChoiceGroup
                     legend={t("brushSize")}
                     value={brush}
@@ -238,11 +298,11 @@ export default function RemoveBackgroundTool() {
                     mask={mask?.data ?? null}
                     strokes={edit.strokes}
                     background={kind === "transparent" ? null : background.kind === "color" ? background.rgb : null}
-                    brush={mode === "rect" ? null : { kind: mode, radius: brushShare[brush] * Math.max(ready.prepared.width, ready.prepared.height) }}
+                    brush={mode === "keep" || mode === "remove" ? { kind: mode, radius: brushShare[brush] * Math.max(ready.prepared.width, ready.prepared.height) } : null}
                     onStroke={(stroke) => commit({ ...edit, strokes: [...edit.strokes, stroke] })}
                     label={t("previewLabel")}
                   />
-                  {mode !== "rect" && <p className="text-sm text-muted">{t("brushHint")}</p>}
+                  {(mode === "keep" || mode === "remove") && <p className="text-sm text-muted">{t("brushHint")}</p>}
                 </div>
               </div>
               <p className="text-sm font-medium" role="status" aria-live="polite">
@@ -291,7 +351,8 @@ export default function RemoveBackgroundTool() {
           {ready && output === "jpg" && <p className="text-sm text-muted">{t("jpgNoAlpha")}</p>}
         </div>
       }
-    />
+      />
+    </div>
   );
 }
 

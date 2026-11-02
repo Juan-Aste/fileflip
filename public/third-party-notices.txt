@@ -18069,9 +18069,9 @@ Used unmodified under the LGPL-2.1-or-later, as a separate, replaceable file (WA
 
 
 ==============================================================================
-MediaPipe Selfie Segmenter model, square, float16, version 1 (Google; model card: https://storage.googleapis.com/mediapipe-assets/Model%20Card%20MediaPipe%20Selfie%20Segmentation.pdf) 1 (float16)
+MediaPipe Selfie Segmenter model, square, float16, version 1 (Google; the link is its model card) 1 (float16)
 License: Apache-2.0
-Project: https://ai.google.dev/edge/mediapipe/solutions/vision/image_segmenter#selfie-model
+Project: https://storage.googleapis.com/mediapipe-assets/Model%20Card%20MediaPipe%20Selfie%20Segmentation.pdf
 ==============================================================================
 
 Apache License

@@ -828,20 +828,20 @@
     },
     "remove-background": {
       "title": "Remove image background",
-      "description": "Remove a photo's background by framing the subject with a rectangle and touching up with brushes. Transparent PNG, JPG or WEBP over a color, no upload.",
+      "description": "Remove the background from photos of people automatically, or of objects by drawing a rectangle, then touch up with brushes. Transparent PNG, JPG or WEBP, no upload.",
       "action": "Remove background",
-      "about": "Cuts the subject out of a photo (a product, an object, a person, a pet) and removes the background with your help: you enclose the subject in a rectangle, see the result at once and fix it with a “keep” brush and a “remove” brush. It is not automatic: it uses GrabCut, a classic method that tells the subject's colors from the background's within the photo itself, with no AI trained on other people's photos. Everything happens on your device and no model is downloaded. You get a PNG or WEBP with a transparent background, or a JPG or WEBP over white or the color you choose, the same size as the original.",
+      "about": "Removes a photo's background in two ways. In “People (automatic)” mode, an AI model (Google's MediaPipe Selfie Segmenter) finds the person as soon as you choose the photo, and a classic method (GrabCut) refines the edge using the photo's own colors. In “Objects and products (rectangle)” mode, for products, objects or pets, you enclose the subject in a rectangle and GrabCut tells its colors from the background's, with no model at all. Either way you see the result at once and fix it with a “keep” brush and a “remove” brush. Everything happens on your device: the photo is not uploaded. You get a PNG or WEBP with a transparent background, or a JPG or WEBP over white or the color you choose, the same size as the original.",
       "faq": {
-        "q1": "Which photos does it work best with?",
-        "a1": "When the subject's colors differ from the background: a product on a table or a plain wall, an object on a background of another shade. With backgrounds the same color as the subject, strong shadows or loose hair you'll need more brush touch-ups, and very fine edges (hair, fur, branches) come out softened.",
+        "q1": "Which mode should I choose?",
+        "a1": "“People (automatic)” for portraits, selfies and photos of one or more people: the cutout is done for you, and sometimes hair, hands or something the person holds need a touch-up. “Objects and products (rectangle)” for everything else (a product on a table, an object, a pet): the automatic model only recognizes people. The rectangle works best when the subject's colors differ from the background.",
         "q2": "Are my photos uploaded?",
-        "a2": "No. The photo is processed in your browser and no AI model is downloaded. Neither the photo nor the result leaves your device.",
-        "q3": "Why isn't it automatic?",
-        "a3": "Models that remove backgrounds on their own are trained on thousands of other people's photos, and we found none whose training photos clearly allow commercial use. We prefer an honest assisted cutout: you show what the subject is and the method does the rest. For a product or an object, the rectangle and a couple of strokes are usually enough.",
+        "a2": "No. The photo is processed in your browser and neither it nor the result leaves your device. The “People” mode downloads MediaPipe's engine and model once, from Fileflect (about 4 MB; then they stay in the browser cache); the rectangle mode downloads nothing.",
+        "q3": "Why is the automatic mode only for people?",
+        "a3": "Models that remove the background from anything are trained on thousands of other people's photos, and we found none whose training photos clearly allow commercial use. For people we use MediaPipe Selfie Segmenter, which Google publishes under the Apache-2.0 license and which, according to its model card, was trained on photos of people who gave their consent. For objects we prefer an honest assisted cutout: you show the subject with the rectangle and the method does the rest.",
         "q4": "Which format should I download?",
         "a4": "With a transparent background, PNG (most compatible) or WEBP (smaller). Over white or a color, JPG or WEBP. The photo keeps its original size. JPG cannot store transparency: if you pick it, the background will be white or the chosen color.",
         "q5": "Are there limits?",
-        "a5": "One photo at a time, up to 30 MB and 40 megapixels, in JPG, PNG, WEBP, AVIF, GIF (first frame) or BMP. The cutout is worked out on a copy 480 pixels on its longest side so it answers instantly, then applied at the original size with a softened edge: it is not a pixel-by-pixel manual cutout."
+        "a5": "One photo at a time, up to 30 MB and 40 megapixels, in JPG, PNG, WEBP, AVIF, GIF (first frame) or BMP. The cutout is worked out on a copy 480 pixels on its longest side so it answers instantly, then applied at the original size with a softened edge: loose hair and very fine edges come out softened, not cut strand by strand."
       }
     },
     "scan-document": {
@@ -3377,7 +3377,18 @@
     "brushHint": "Paint with your finger or mouse over the preview: green keeps, red removes. Removed parts show faintly so you can bring them back.",
     "jpgNoAlpha": "JPG cannot store transparency: the background will be white or the chosen color. For transparency, use PNG or WEBP.",
     "done": "Background removed ({pixels} px).",
-    "suffix": "no-background"
+    "suffix": "no-background",
+    "method": "Mode",
+    "methodPeople": "People (automatic)",
+    "methodRect": "Objects and products (rectangle)",
+    "notePeople": "Automatic mode for photos of people: when you choose the photo, an AI model (MediaPipe) finds the person and removes the background; then you can fix it with brushes. The first time, about {size} MB are downloaded from Fileflect; your photo never leaves your device. For objects, products or pets, use the rectangle mode.",
+    "findingPerson": "Finding the person… (about {size} MB are downloaded the first time)",
+    "peopleFailed": "The automatic mode could not be loaded (offline?).",
+    "noPerson": "We couldn't find a clear person in this photo. The automatic mode only works with people.",
+    "useRect": "Use the rectangle mode",
+    "peopleStep1": "The person is cut out automatically. Check the result.",
+    "peopleStep2": "If some background is left, choose “Brush: remove” and paint over it; if part of the person is missing (hair, hands, something they hold), choose “Brush: keep” and paint over it.",
+    "modeView": "View"
   },
   "ScanDocumentTool": {
     "mode": "Mode",

@@ -828,20 +828,20 @@
     },
     "remove-background": {
       "title": "Remover fundo de imagem",
-      "description": "Remova o fundo de uma foto marcando o assunto com um retângulo e retocando com pincéis. PNG transparente, JPG ou WEBP sobre uma cor, sem enviar a foto.",
+      "description": "Remova o fundo de fotos de pessoas no automático, ou de objetos marcando um retângulo, e retoque com pincéis. PNG transparente, JPG ou WEBP, sem enviar a foto.",
       "action": "Remover fundo",
-      "about": "Recorta o assunto de uma foto (um produto, um objeto, uma pessoa, um animal) e remove o fundo com a sua ajuda: você envolve o assunto num retângulo, vê o resultado na hora e corrige com um pincel para «manter» e outro para «remover». Não é automático: usa o GrabCut, um método clássico que separa as cores do assunto e do fundo dentro da própria foto, sem inteligência artificial treinada com fotos de outras pessoas. Tudo acontece no seu dispositivo e nenhum modelo é baixado. Você baixa um PNG ou WEBP com fundo transparente, ou um JPG ou WEBP sobre branco ou a cor que escolher, do mesmo tamanho do original.",
+      "about": "Remove o fundo de uma foto de duas maneiras. No modo «Pessoas (automático)», um modelo de inteligência artificial (MediaPipe Selfie Segmenter, do Google) encontra a pessoa assim que você escolhe a foto, e um método clássico (GrabCut) ajusta a borda com as cores da própria foto. No modo «Objetos e produtos (retângulo)», para produtos, objetos ou animais, você envolve o objeto num retângulo e o GrabCut separa as cores dele das do fundo, sem nenhum modelo. Nos dois você vê o resultado na hora e corrige com um pincel para «manter» e outro para «remover». Tudo acontece no seu dispositivo: a foto não é enviada. Você baixa um PNG ou WEBP com fundo transparente, ou um JPG ou WEBP sobre branco ou a cor que escolher, do mesmo tamanho do original.",
       "faq": {
-        "q1": "Com que fotos funciona melhor?",
-        "a1": "Quando as cores do assunto se distinguem do fundo: um produto sobre uma mesa ou uma parede lisa, um objeto sobre um fundo de outro tom. Com fundos da mesma cor do assunto, sombras fortes ou cabelo solto é preciso retocar mais com os pincéis, e as bordas muito finas (cabelo, pelos, galhos) ficam suavizadas.",
+        "q1": "Qual modo escolho?",
+        "a1": "«Pessoas (automático)» para retratos, selfies e fotos de uma ou mais pessoas: o recorte sai sozinho e às vezes é preciso retocar o cabelo, as mãos ou algo que a pessoa segura. «Objetos e produtos (retângulo)» para todo o resto (um produto sobre a mesa, um objeto, um animal): o modelo automático só reconhece pessoas. O retângulo funciona melhor quando o objeto se distingue do fundo pela cor.",
         "q2": "Minhas fotos são enviadas para a internet?",
-        "a2": "Não. A foto é processada no seu navegador e nenhum modelo de inteligência artificial é baixado. Nem a foto nem o resultado saem do seu dispositivo.",
-        "q3": "Por que não é automático?",
-        "a3": "Os modelos que removem o fundo sozinhos são treinados com milhares de fotos de terceiros, e não encontramos nenhum cujas fotos de treinamento permitam claramente o uso comercial. Preferimos um recorte assistido honesto: você indica o que é o assunto e o método faz o resto. Para um produto ou um objeto, normalmente bastam o retângulo e alguns traços.",
-        "q4": "Que formato devo baixar?",
-        "a4": "Com fundo transparente, PNG (o mais compatível) ou WEBP (mais leve). Com fundo branco ou de cor, JPG ou WEBP. A foto mantém o tamanho original. JPG não guarda transparência: se escolhê-lo, o fundo será branco ou da cor escolhida.",
+        "a2": "Não. A foto é processada no seu navegador e nem ela nem o resultado saem do seu dispositivo. O modo «Pessoas» baixa uma única vez, do Fileflect, o motor e o modelo do MediaPipe (cerca de 4 MB; depois ficam no cache do navegador); o modo retângulo não baixa nada.",
+        "q3": "Por que o modo automático é só para pessoas?",
+        "a3": "Os modelos que removem o fundo de qualquer coisa são treinados com milhares de fotos de terceiros, e não encontramos nenhum cujas fotos de treino permitam claramente o uso comercial. Para pessoas usamos o MediaPipe Selfie Segmenter, que o Google publica sob a licença Apache-2.0 e que, segundo a ficha do modelo, foi treinado com fotos de pessoas que deram consentimento. Para objetos preferimos um recorte assistido honesto: você indica o objeto com o retângulo e o método faz o resto.",
+        "q4": "Qual formato baixo?",
+        "a4": "Com fundo transparente, PNG (o mais compatível) ou WEBP (mais leve). Com fundo branco ou de cor, JPG ou WEBP. A foto mantém o tamanho original. JPG não guarda transparência: se escolher, o fundo será branco ou da cor escolhida.",
         "q5": "Há limites?",
-        "a5": "Uma foto por vez, até 30 MB e 40 megapixels, em JPG, PNG, WEBP, AVIF, GIF (primeiro quadro) ou BMP. O recorte é calculado sobre uma cópia de 480 pixels no lado maior para responder na hora e é aplicado no tamanho original com a borda suavizada: não é um recorte manual pixel por pixel."
+        "a5": "Uma foto por vez, até 30 MB e 40 megapixels, em JPG, PNG, WEBP, AVIF, GIF (primeiro quadro) ou BMP. O recorte é calculado numa cópia de 480 pixels no lado maior para responder na hora e aplicado no tamanho original com a borda suavizada: cabelo solto e bordas muito finas ficam suavizados, não recortados fio a fio."
       }
     },
     "scan-document": {
@@ -3377,7 +3377,18 @@
     "brushHint": "Pinte com o dedo ou o mouse sobre a prévia: verde mantém, vermelho remove. O que foi removido aparece apagado para você poder recuperar.",
     "jpgNoAlpha": "JPG não guarda transparência: o fundo será branco ou da cor escolhida. Para transparência, use PNG ou WEBP.",
     "done": "Fundo removido ({pixels} px).",
-    "suffix": "sem-fundo"
+    "suffix": "sem-fundo",
+    "method": "Modo",
+    "methodPeople": "Pessoas (automático)",
+    "methodRect": "Objetos e produtos (retângulo)",
+    "notePeople": "Modo automático para fotos de pessoas: ao escolher a foto, um modelo de inteligência artificial (MediaPipe) encontra a pessoa e remove o fundo; depois você pode corrigir com pincéis. Na primeira vez são baixados cerca de {size} MB do Fileflect; a foto não sai do seu dispositivo. Para objetos, produtos ou animais, use o modo retângulo.",
+    "findingPerson": "Procurando a pessoa… (na primeira vez são baixados cerca de {size} MB)",
+    "peopleFailed": "Não foi possível carregar o modo automático (sem conexão?).",
+    "noPerson": "Não encontramos uma pessoa clara nesta foto. O modo automático é só para pessoas.",
+    "useRect": "Usar o modo retângulo",
+    "peopleStep1": "A pessoa é recortada sozinha. Veja o resultado.",
+    "peopleStep2": "Se sobrou fundo, escolha «Pincel: remover» e pinte por cima; se faltou parte da pessoa (cabelo, mãos, algo que ela segura), escolha «Pincel: manter» e pinte por cima.",
+    "modeView": "Ver"
   },
   "ScanDocumentTool": {
     "mode": "Modo",

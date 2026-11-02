@@ -11,11 +11,6 @@ import { exposeHandlers } from "@/lib/worker-rpc";
 
 type Segmenter = import("@mediapipe/tasks-vision").ImageSegmenter;
 
-// The Tasks loader runs `import(url)` for its WASM glue when `importScripts`
-// is missing (module workers). Webpack would rewrite that import, so give it
-// the browser's own through the hook the loader checks first.
-(self as unknown as { import: (url: string) => Promise<unknown> }).import = (url) => import(/* webpackIgnore: true */ url);
-
 let segmenter: Promise<Segmenter> | null = null;
 
 async function sha256Hex(data: Uint8Array): Promise<string> {
@@ -24,13 +19,15 @@ async function sha256Hex(data: Uint8Array): Promise<string> {
 }
 
 async function load(): Promise<Segmenter> {
-  const [{ ImageSegmenter }, response] = await Promise.all([import("@mediapipe/tasks-vision"), fetch(mediapipeAssets.model)]);
+  const [{ FilesetResolver, ImageSegmenter }, response] = await Promise.all([import("@mediapipe/tasks-vision"), fetch(mediapipeAssets.model)]);
   if (!response.ok) throw new ConversionError("serviceUnavailable");
   const model = new Uint8Array(await response.arrayBuffer());
   if (model.byteLength !== SELFIE_MODEL_BYTES || (await sha256Hex(model)) !== SELFIE_MODEL_SHA256) throw new ConversionError("serviceUnavailable");
-  const origin = self.location.origin;
+  // Webpack runs this worker as a classic one: MediaPipe loads its glue with
+  // importScripts and picks the SIMD or no-SIMD build itself.
+  const fileset = await FilesetResolver.forVisionTasks(self.location.origin + mediapipeAssets.base);
   return ImageSegmenter.createFromOptions(
-    { wasmLoaderPath: origin + mediapipeAssets.loader, wasmBinaryPath: origin + mediapipeAssets.wasm },
+    fileset,
     {
       baseOptions: { modelAssetBuffer: model, delegate: "CPU" },
       runningMode: "IMAGE",

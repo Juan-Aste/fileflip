@@ -1,4 +1,4 @@
-// "Remove background" (assisted cutout, GrabCut in a worker, no model): a
+// "Remove background", rectangle mode (assisted cutout, GrabCut in a worker, no model): a
 // synthetic photo whose right answer we know (a product drawn as SVG over
 // stripes, rendered by sharp, with a label the color of the stripes), the
 // user's rectangle, "keep" and "remove" strokes, undo/redo, and the download read back
@@ -64,7 +64,8 @@ async function paint(page: Page, points: [number, number][]) {
 }
 
 /** Clicks a pill of a ChoiceGroup (the radio itself is visually hidden). */
-const pick = (page: Page, label: string) => page.locator("label").filter({ hasText: new RegExp(`^${label}$`) }).click();
+const pick = (page: Page, label: string) =>
+  page.locator("label").filter({ hasText: new RegExp(`^${label.replace(/[()]/g, "\\$&")}$`) }).click();
 
 async function setRect(page: Page, rect: Record<string, number>) {
   for (const [label, value] of Object.entries(rect)) {
@@ -80,6 +81,7 @@ test.describe("tool: remove-background", () => {
     const origins = new Set<string>();
     page.on("request", (r) => origins.add(new URL(r.url()).origin));
     await page.goto("/en/remove-background", { waitUntil: "networkidle" });
+    await pick(page, "Objects and products (rectangle)");
     await page.locator('input[type="file"]').setInputFiles({ name: "product.jpg", mimeType: "image/jpeg", buffer: await productPhoto() });
     const ready = /Cutout ready/;
     await keptPercent(page, ready);
@@ -137,6 +139,7 @@ test.describe("tool: remove-background", () => {
     test.setTimeout(120_000);
     await page.emulateMedia({ colorScheme: "dark" });
     await page.goto("/es/quitar-fondo", { waitUntil: "networkidle" });
+    await pick(page, "Objetos y productos (rectángulo)");
     await page.locator('input[type="file"]').setInputFiles({ name: "producto.jpg", mimeType: "image/jpeg", buffer: await productPhoto() });
     const ready = /Recorte listo/;
     const first = await keptPercent(page, ready);
@@ -174,5 +177,59 @@ test.describe("tool: remove-background", () => {
     await page.getByRole("button", { name: "Empezar de nuevo" }).click();
     await page.locator('input[type="file"]').setInputFiles(fixturePath("corrupt/truncated.jpg"));
     await expect(page.locator("main")).toContainText("dañado o incompleto", { timeout: 20_000 });
+  });
+
+  test("@xb people mode: the person is found automatically → transparent PNG that matches the reference, from our domain only", async ({ page }) => {
+    test.setTimeout(180_000);
+    const origins = new Set<string>();
+    page.on("request", (r) => origins.add(new URL(r.url()).origin));
+    await page.goto("/en/remove-background", { waitUntil: "networkidle" });
+    // Nothing of MediaPipe is downloaded before a photo is opened in "people" mode.
+    expect([...origins]).toEqual([new URL(page.url()).origin]);
+    await expect(page.getByText(/Automatic mode for photos of people/)).toBeVisible();
+    const assets: string[] = [];
+    page.on("request", (r) => /mediapipe|\/models\//.test(r.url()) && assets.push(new URL(r.url()).pathname));
+    await page.locator('input[type="file"]').setInputFiles(fixturePath("people/person.jpg"));
+    const ready = /Cutout ready/;
+    await keptPercent(page, ready);
+    expect(assets.some((a) => a.endsWith(".wasm"))).toBe(true);
+    expect(assets.some((a) => a.endsWith(".tflite"))).toBe(true);
+    await expect(page.getByText(/couldn't find a clear person/)).toHaveCount(0);
+    expect(await axeViolations(page)).toEqual([]);
+
+    const out = fileOf(await runTool(page, "Remove background"));
+    expect(out.name).toBe("person-no-background.png");
+    const ref = await sharp(fixturePath("people/person-mask.png")).extractChannel(0).raw().toBuffer({ resolveWithObject: true });
+    const meta = await sharp(out.buf).metadata();
+    expect([meta.format, meta.width, meta.height, meta.hasAlpha]).toEqual(["png", ref.info.width, ref.info.height, true]);
+    const { at } = await alphaOf(out.buf);
+    let inter = 0;
+    let union = 0;
+    let transparent = 0;
+    for (let y = 0; y < ref.info.height; y++)
+      for (let x = 0; x < ref.info.width; x++) {
+        const a = at(x, y) >= 128;
+        const b = ref.data[y * ref.info.width + x]! >= 128;
+        if (a && b) inter++;
+        if (a || b) union++;
+        if (at(x, y) === 0) transparent++;
+      }
+    const score = inter / union;
+    console.log(`people mode IoU ${score.toFixed(3)}`);
+    expect(score, "IoU against the reference").toBeGreaterThanOrEqual(0.85);
+    expect(transparent / (ref.info.width * ref.info.height), "share of fully transparent pixels").toBeGreaterThan(0.2);
+    expect([...origins]).toEqual([new URL(page.url()).origin]);
+  });
+
+  test("people mode without a person: warns and offers the rectangle mode", async ({ page }) => {
+    test.setTimeout(120_000);
+    await page.goto("/es/quitar-fondo", { waitUntil: "networkidle" });
+    await page.locator('input[type="file"]').setInputFiles({ name: "producto.jpg", mimeType: "image/jpeg", buffer: await productPhoto() });
+    await expect(page.getByText(/No encontramos una persona clara/)).toBeVisible({ timeout: 60_000 });
+    expect(await axeViolations(page)).toEqual([]);
+    await page.getByRole("button", { name: "Usar el modo rectángulo" }).click();
+    await expect(page.getByRole("radio", { name: "Objetos y productos (rectángulo)" })).toBeChecked();
+    await expect(page.getByRole("group", { name: /Área de recorte/ })).toBeVisible();
+    await keptPercent(page, /Recorte listo/);
   });
 });

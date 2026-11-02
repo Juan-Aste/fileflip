@@ -369,11 +369,11 @@ export const embedded = [
   // exception of 2026-11-02 (training data not verifiable; docs/licencia-agpl.md).
   {
     id: "mediapipe-selfie-segmenter",
-    name: "MediaPipe Selfie Segmenter model, square, float16, version 1 (Google; model card: https://storage.googleapis.com/mediapipe-assets/Model%20Card%20MediaPipe%20Selfie%20Segmentation.pdf)",
+    name: "MediaPipe Selfie Segmenter model, square, float16, version 1 (Google; the link is its model card)",
     version: "1 (float16)",
     license: "Apache-2.0",
     where: ["browser"],
-    homepage: "https://ai.google.dev/edge/mediapipe/solutions/vision/image_segmenter#selfie-model",
+    homepage: "https://storage.googleapis.com/mediapipe-assets/Model%20Card%20MediaPipe%20Selfie%20Segmentation.pdf",
     licenseText: "Apache-2.0",
     kind: "data",
   },

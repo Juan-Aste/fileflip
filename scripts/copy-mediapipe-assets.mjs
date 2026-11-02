@@ -1,5 +1,5 @@
 // Copies the MediaPipe Tasks Vision WASM engine (@mediapipe/tasks-vision,
-// Apache-2.0; ES-module SIMD build, single-threaded) from node_modules into
+// Apache-2.0; classic-script SIMD and no-SIMD builds, single-threaded) from node_modules into
 // public/mediapipe so it is served from our own domain, and checks the
 // Selfie Segmenter model kept in public/models. Runs before `next build` and
 // `next dev` (npm pre-scripts); public/mediapipe is not committed.
@@ -23,10 +23,12 @@ const installed = JSON.parse(readFileSync(join(pkg, "package.json"), "utf8")).ve
 if (installed !== version) fail(`@mediapipe/tasks-vision ${installed} is installed but people-assets.ts says ${version}`);
 const out = join(root, "public/mediapipe", `tasks-vision-${version}`);
 mkdirSync(out, { recursive: true });
-for (const [file, hash] of [["vision_wasm_module_internal.js", "MEDIAPIPE_JS_SHA256"], ["vision_wasm_module_internal.wasm", "MEDIAPIPE_WASM_SHA256"]]) {
+const files = [...assets.matchAll(/"(vision_wasm_[a-z_]+\.(?:js|wasm))": "([0-9a-f]{64})"/g)];
+if (files.length !== 4) fail("expected 4 files in MEDIAPIPE_FILES");
+for (const [, file, hash] of files) {
   const from = join(pkg, "wasm", file);
   const actual = sha256(from);
-  if (actual !== constant(hash)) fail(`${file} has sha256 ${actual}, expected ${constant(hash)}`);
+  if (actual !== hash) fail(`${file} has sha256 ${actual}, expected ${hash}`);
   copyFileSync(from, join(out, file));
 }
 const model = join(root, "public/models/selfie_segmenter-float16-v1.tflite");

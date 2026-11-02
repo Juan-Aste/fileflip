@@ -6,7 +6,7 @@ import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 import { downscale, iou, workSize } from "./cutout";
 import { BGD, FGD, PR_BGD, PR_FGD } from "./grabcut";
-import { bandWidth, edgeDistance, MIN_PERSON_SHARE, personShare, segmentPerson, trimapFromMask } from "./people";
+import { bandWidth, edgeDistance, hasPerson, MIN_PERSON_SHARE, personConfidence, personShare, segmentPerson, trimapFromMask } from "./people";
 
 const W = 160;
 const H = 120;
@@ -84,6 +84,17 @@ describe("trimapFromMask", () => {
     expect(trimapFromMask(empty, W, H).every((v) => v === BGD)).toBe(true);
     expect(personShare(empty)).toBeLessThan(MIN_PERSON_SHARE);
     expect(personShare(prob)).toBeGreaterThan(0.2);
+  });
+
+  it("tells a clear person from a faint patch", () => {
+    expect(hasPerson(prob)).toBe(true);
+    expect(personConfidence(prob)).toBe(1);
+    // 4 % of the photo at 0.75 (like the model on a product photo): not a person.
+    const faint = new Uint8Array(W * H);
+    faint.fill(191, 0, Math.round(W * H * 0.04));
+    expect(personShare(faint)).toBeGreaterThan(MIN_PERSON_SHARE);
+    expect(hasPerson(faint)).toBe(false);
+    expect(hasPerson(new Uint8Array(W * H))).toBe(false);
   });
 
   it("refuses a mask of the wrong size", () => {

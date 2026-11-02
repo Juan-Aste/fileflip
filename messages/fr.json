@@ -828,20 +828,20 @@
     },
     "remove-background": {
       "title": "Supprimer l'arrière-plan d'une image",
-      "description": "Supprimez le fond d'une photo en encadrant le sujet d'un rectangle et en retouchant au pinceau. PNG transparent, JPG ou WEBP sur une couleur, sans envoi.",
+      "description": "Supprimez l’arrière-plan des photos de personnes automatiquement, ou d’objets avec un rectangle, puis retouchez au pinceau. PNG transparent, JPG ou WEBP, sans envoi.",
       "action": "Supprimer l'arrière-plan",
-      "about": "Détoure le sujet d'une photo (un produit, un objet, une personne, un animal) et supprime le fond avec votre aide : vous entourez le sujet d'un rectangle, voyez le résultat aussitôt et le corrigez avec un pinceau « garder » et un pinceau « supprimer ». Ce n'est pas automatique : l'outil utilise GrabCut, une méthode classique qui distingue les couleurs du sujet de celles du fond dans la photo elle-même, sans intelligence artificielle entraînée sur les photos d'autres personnes. Tout se passe sur votre appareil et aucun modèle n'est téléchargé. Vous obtenez un PNG ou WEBP à fond transparent, ou un JPG ou WEBP sur blanc ou la couleur de votre choix, à la taille d'origine.",
+      "about": "Supprime l’arrière-plan d’une photo de deux façons. En mode « Personnes (automatique) », un modèle d’intelligence artificielle (MediaPipe Selfie Segmenter, de Google) trouve la personne dès que vous choisissez la photo, et une méthode classique (GrabCut) affine le contour avec les couleurs de la photo. En mode « Objets et produits (rectangle) », pour les produits, objets ou animaux, vous entourez le sujet d’un rectangle et GrabCut sépare ses couleurs de celles du fond, sans aucun modèle. Dans les deux cas, vous voyez le résultat tout de suite et le corrigez avec un pinceau « garder » et un pinceau « supprimer ». Tout se passe sur votre appareil : la photo n’est pas envoyée. Vous téléchargez un PNG ou WEBP à fond transparent, ou un JPG ou WEBP sur blanc ou la couleur de votre choix, à la taille d’origine.",
       "faq": {
-        "q1": "Avec quelles photos fonctionne-t-il le mieux ?",
-        "a1": "Quand les couleurs du sujet se distinguent du fond : un produit sur une table ou un mur uni, un objet sur un fond d'une autre teinte. Avec un fond de la même couleur que le sujet, des ombres marquées ou des cheveux libres, il faut davantage retoucher au pinceau, et les contours très fins (cheveux, pelage, branches) sont adoucis.",
+        "q1": "Quel mode choisir ?",
+        "a1": "« Personnes (automatique) » pour les portraits, selfies et photos d’une ou plusieurs personnes : le détourage se fait tout seul, et il faut parfois retoucher les cheveux, les mains ou un objet tenu. « Objets et produits (rectangle) » pour tout le reste (un produit sur une table, un objet, un animal) : le modèle automatique ne reconnaît que les personnes. Le rectangle marche mieux quand les couleurs du sujet diffèrent de celles du fond.",
         "q2": "Mes photos sont-elles envoyées sur Internet ?",
-        "a2": "Non. La photo est traitée dans votre navigateur et aucun modèle d'intelligence artificielle n'est téléchargé. Ni la photo ni le résultat ne quittent votre appareil.",
-        "q3": "Pourquoi ce n'est pas automatique ?",
-        "a3": "Les modèles qui suppriment le fond tout seuls sont entraînés sur des milliers de photos de tiers, et nous n'en avons trouvé aucun dont les photos d'entraînement autorisent clairement l'usage commercial. Nous préférons un détourage assisté honnête : vous indiquez le sujet et la méthode fait le reste. Pour un produit ou un objet, le rectangle et quelques traits suffisent en général.",
+        "a2": "Non. La photo est traitée dans votre navigateur et ni elle ni le résultat ne quittent votre appareil. Le mode « Personnes » télécharge une seule fois, depuis Fileflect, le moteur et le modèle MediaPipe (environ 4 Mo ; ils restent ensuite dans le cache du navigateur) ; le mode rectangle ne télécharge rien.",
+        "q3": "Pourquoi le mode automatique est-il réservé aux personnes ?",
+        "a3": "Les modèles qui suppriment l’arrière-plan de n’importe quoi sont entraînés sur des milliers de photos d’autrui, et nous n’en avons trouvé aucun dont les photos d’entraînement autorisent clairement l’usage commercial. Pour les personnes, nous utilisons MediaPipe Selfie Segmenter, que Google publie sous licence Apache-2.0 et qui, selon sa fiche, a été entraîné avec des photos de personnes ayant donné leur consentement. Pour les objets, nous préférons un détourage assisté honnête : vous indiquez le sujet avec le rectangle et la méthode fait le reste.",
         "q4": "Quel format télécharger ?",
-        "a4": "Avec un fond transparent, PNG (le plus compatible) ou WEBP (plus léger). Sur blanc ou une couleur, JPG ou WEBP. La photo garde sa taille d'origine. Le JPG ne gère pas la transparence : si vous le choisissez, le fond sera blanc ou de la couleur choisie.",
+        "a4": "Avec un fond transparent, PNG (le plus compatible) ou WEBP (plus léger). Sur blanc ou une couleur, JPG ou WEBP. La photo garde sa taille d’origine. Le JPG ne gère pas la transparence : si vous le choisissez, le fond sera blanc ou de la couleur choisie.",
         "q5": "Y a-t-il des limites ?",
-        "a5": "Une photo à la fois, jusqu'à 30 Mo et 40 mégapixels, en JPG, PNG, WEBP, AVIF, GIF (première image) ou BMP. Le détourage est calculé sur une copie de 480 pixels de grand côté pour répondre aussitôt, puis appliqué à la taille d'origine avec un contour adouci : ce n'est pas un détourage manuel pixel par pixel."
+        "a5": "Une photo à la fois, jusqu’à 30 Mo et 40 mégapixels, en JPG, PNG, WEBP, AVIF, GIF (première image) ou BMP. Le détourage est calculé sur une copie de 480 pixels sur le grand côté pour répondre instantanément, puis appliqué à la taille d’origine avec un bord adouci : les cheveux libres et les contours très fins sont adoucis, pas détourés mèche par mèche."
       }
     },
     "scan-document": {
@@ -3377,7 +3377,18 @@
     "brushHint": "Peignez au doigt ou à la souris sur l'aperçu : le vert garde, le rouge supprime. Les parties supprimées restent visibles en transparence pour pouvoir les récupérer.",
     "jpgNoAlpha": "Le JPG ne gère pas la transparence : le fond sera blanc ou de la couleur choisie. Pour la transparence, utilisez PNG ou WEBP.",
     "done": "Arrière-plan supprimé ({pixels} px).",
-    "suffix": "sans-fond"
+    "suffix": "sans-fond",
+    "method": "Mode",
+    "methodPeople": "Personnes (automatique)",
+    "methodRect": "Objets et produits (rectangle)",
+    "notePeople": "Mode automatique pour les photos de personnes : dès que vous choisissez la photo, un modèle d’intelligence artificielle (MediaPipe) trouve la personne et supprime l’arrière-plan ; vous pouvez ensuite corriger avec des pinceaux. La première fois, environ {size} Mo sont téléchargés depuis Fileflect ; la photo ne quitte pas votre appareil. Pour les objets, produits ou animaux, utilisez le mode rectangle.",
+    "findingPerson": "Recherche de la personne… (environ {size} Mo téléchargés la première fois)",
+    "peopleFailed": "Impossible de charger le mode automatique (hors ligne ?).",
+    "noPerson": "Aucune personne nette n’a été trouvée sur cette photo. Le mode automatique ne fonctionne qu’avec des personnes.",
+    "useRect": "Utiliser le mode rectangle",
+    "peopleStep1": "La personne est détourée automatiquement. Vérifiez le résultat.",
+    "peopleStep2": "S’il reste de l’arrière-plan, choisissez « Pinceau : supprimer » et peignez dessus ; s’il manque une partie de la personne (cheveux, mains, un objet tenu), choisissez « Pinceau : garder » et peignez dessus.",
+    "modeView": "Voir"
   },
   "ScanDocumentTool": {
     "mode": "Mode",
