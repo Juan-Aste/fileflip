@@ -252,7 +252,10 @@
     "modelXmlTooLarge": "Este archivo 3MF o COLLADA es demasiado grande para leerlo en el navegador: el máximo es de 100 MB de XML (descomprimido).",
     "modelFbxVersion": "Este FBX es de una versión anterior a la 7.0 (2011), que no podemos leer. Vuelve a exportarlo como FBX 7.x (binario o ASCII).",
     "dxfEmpty": "Este DXF no tiene nada visible que dibujar en el espacio modelo: puede estar vacío, tener todas las capas apagadas o usar solo entidades que no dibujamos.",
-    "dxfTooComplex": "Este DXF es demasiado complejo para dibujarlo en el navegador: supera los 5 millones de puntos, anida bloques más de 16 niveles (o un bloque se inserta a sí mismo) o repite un bloque más de 10 000 veces."
+    "dxfTooComplex": "Este DXF es demasiado complejo para dibujarlo en el navegador: supera los 5 millones de puntos, anida bloques más de 16 niveles (o un bloque se inserta a sí mismo) o repite un bloque más de 10 000 veces.",
+    "ttsDailyLimit": "Llegaste al límite diario de la voz IA en la nube. Puedes seguir con las voces del dispositivo o con el modo privado.",
+    "ttsMonthlyLimit": "La voz IA en la nube no está disponible por este mes. Puedes seguir con las voces del dispositivo o con el modo privado.",
+    "ttsTokenExpired": "La página estuvo abierta mucho tiempo. Vuelve a intentarlo."
   },
   "Tools": {
     "merge-pdf": {

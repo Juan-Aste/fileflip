@@ -87,6 +87,10 @@ export const apiErrorCodes = [
   "jobTimedOut",
   // Client-side only: a 0-byte file picked in a tool that needs content.
   "emptyFile",
+  // Cloud voice of the reader (/api/tts): daily limit of this IP or account, monthly cap of the site, expired page token.
+  "ttsDailyLimit",
+  "ttsMonthlyLimit",
+  "ttsTokenExpired",
 ] as const;
 
 export type ApiErrorCode = (typeof apiErrorCodes)[number];
@@ -152,6 +156,9 @@ const status: Record<ApiErrorCode, number> = {
   jobCancelled: 400,
   jobTimedOut: 408,
   emptyFile: 422,
+  ttsDailyLimit: 429,
+  ttsMonthlyLimit: 503,
+  ttsTokenExpired: 403,
 };
 
 export function apiError(code: ApiErrorCode, headers?: HeadersInit) {

@@ -3862,3 +3862,13 @@ FASE 11 TERMINADA
 ## 2026-11-01 — Fin de esta ejecución
 - Hechas: 12.5 (Ghostscript: no se integra), 12.6 (verificación final; **FASE 12 TERMINADA**), inicio de la fase 13, 13.1 (sin pausas: 0 ms medidos) y 13.2 (mejor voz del dispositivo). Sigue la 13.3 (voz en la nube), que es grande y queda entera para la próxima ejecución: la suite completa de Chromium de la 12.6 tardó ~45 min en esta máquina.
 - CI de dev: verde al empezar.
+
+## 2026-11-02 — Fase 13, tareas 13.3a y 13.3b (backend de la voz en la nube y protección de costos)
+- Candado tomado; CI de dev en verde al empezar (run de `c201302`).
+- `POST /api/tts` y `GET /api/tts` (Node, `src/app/api/tts/route.ts`, lógica en `src/lib/server/tts/service.ts`). Interfaz `TtsProvider` con `GoogleTtsProvider` (`texts:synthesize`, clave en la cabecera `X-Goog-Api-Key`, no en la URL; solo `input.text`, nunca SSML; MP3 a 24 kHz). Sin `GOOGLE_TTS_API_KEY` el GET responde `{enabled:false}` y el POST 404. `GOOGLE_TTS_ENDPOINT` solo para tests (servidor falso).
+- Voces (`src/lib/tts/cloud-voices.ts`, 3 WaveNet por idioma): es-US-A/B y es-ES-C, en-US-F/D/H, pt-BR-A/B/C, fr-FR-A/B/C, cmn-CN-A/B/D. Recomendación final cuando el dueño corra las muestras (13.3d).
+- Pedidos: ≤ 1500 caracteres y ≤ 5000 bytes, cuerpo ≤ 16 KB, velocidad 0,5–2, caracteres de control quitados. El texto no se guarda ni se registra: los errores se anotan solo con el tipo y el código HTTP.
+- Protección de costos (`limits.ts`, `usage.ts`, `token.ts`, `same-origin.ts`): 60 pedidos/min por IP (`TTS_REQUESTS_PER_MINUTE`), 20.000 caracteres/día por IP sin cuenta y 100.000 por cuenta (`TTS_DAILY_CHARS_ANON`/`_USER`, en memoria), tope mensual global `TTS_MONTHLY_CHAR_LIMIT` (3.500.000) en MongoDB (`TtsUsage`: solo `_id` "m:AAAA-MM"/"d:AAAA-MM-DD" y `chars`), reservado de forma atómica antes de llamar a Google y devuelto si falla; si no se puede leer el contador, se rechaza. Origin/Sec-Fetch-Site del propio sitio y token firmado (HMAC con `AUTH_SECRET`, 30 min) que da el GET. Errores nuevos `ttsDailyLimit`, `ttsMonthlyLimit`, `ttsTokenExpired` en 5 idiomas.
+- Panel de admin: sección «Voz IA en la nube» con caracteres del mes (y % del tope) y del día.
+- Tests: `service.test.ts` (17: sin clave, origen, token, voces/tamaños, SSML como texto, límites por minuto/día/cuenta, tope mensual que vuelve el mes siguiente, devolución al fallar, el texto no aparece en logs, sin contador → rechaza), `usage.test.ts` (memoria y MongoDB, 30 pedidos en paralelo no pasan el tope, solo números guardados), `same-origin.test.ts`. Prueba manual con `next start` y un Google falso: MP3 válido (ffprobe), otro origen rechazado.
+- Verificado: lint, typecheck, 1436 unitarios, build.

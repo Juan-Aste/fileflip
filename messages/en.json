@@ -252,7 +252,10 @@
     "modelXmlTooLarge": "This 3MF or COLLADA file is too large to read in the browser: the maximum is 100 MB of XML (uncompressed).",
     "modelFbxVersion": "This FBX is older than version 7.0 (2011), which we can't read. Export it again as FBX 7.x (binary or ASCII).",
     "dxfEmpty": "This DXF has nothing visible to draw in model space: it may be empty, have every layer turned off or use only entities we don't draw.",
-    "dxfTooComplex": "This DXF is too complex to draw in the browser: it goes over 5 million points, nests blocks more than 16 levels deep (or a block inserts itself) or repeats a block more than 10,000 times."
+    "dxfTooComplex": "This DXF is too complex to draw in the browser: it goes over 5 million points, nests blocks more than 16 levels deep (or a block inserts itself) or repeats a block more than 10,000 times.",
+    "ttsDailyLimit": "You reached today's limit for the cloud AI voice. You can keep going with your device's voices or private mode.",
+    "ttsMonthlyLimit": "The cloud AI voice is not available for the rest of this month. You can keep going with your device's voices or private mode.",
+    "ttsTokenExpired": "The page was open for a long time. Please try again."
   },
   "Tools": {
     "merge-pdf": {
