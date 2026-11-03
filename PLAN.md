@@ -597,3 +597,14 @@ CI del PR de `dev` a `main` en verde (pedido del dueño 2026-11-02). El job `e2e
 
 ### 16.3 Verificación
 - [x] 16.3 (hecha 2026-11-02: run 41546952860 sobre 9fef622 en verde) Workflow completo (check, e2e-ai-voice, e2e-browsers) en verde sobre el último commit de `dev`; causa y arreglo de cada fallo en PROGRESS.md
+
+## Fase 17
+
+Herramienta nueva «Mejorar foto» en la categoría Imágenes (pedido del dueño 2026-11-03), con dos modos: Automático (filtros clásicos, sin IA) y Ampliar con IA (x2 y x4, Real-ESRGAN compacto en ONNX con ONNX Runtime Web). **Excepción de licencias aprobada por el dueño el 2026-11-03** para Real-ESRGAN (datos de entrenamiento DIV2K/Flickr2K), solo para «Mejorar foto». Sin COOP/COEP (WASM en un hilo). En orden.
+
+- [ ] 17.1 Modo Automático (sin IA): nitidez, niveles y contraste automáticos, reducción de ruido suave y corrección de color. Todo en el navegador, con filtros clásicos y sin modelos entrenados.
+- [ ] 17.2 Modo Ampliar con IA (x2 y x4): modelo compacto de Real-ESRGAN (`realesr-general-x4v3` o equivalente compacto del proyecto oficial xinntao/Real-ESRGAN) en ONNX con ONNX Runtime Web; WebGPU si está disponible y WASM si no; tiles con solapamiento, progreso y cancelar; límite de megapíxeles en la config (uno para todos, preparado para diferenciar); modelo servido desde el sitio, carga diferida y en caché; `docs/` con origen, conversión y hash del ONNX.
+- [ ] 17.3 Interfaz: comparador antes/después con deslizador; aviso de que el modo IA puede tardar en equipos lentos; textos en los 5 idiomas; accesibilidad (axe) y todo tocable en el celular.
+- [ ] 17.4 Licencias: Real-ESRGAN y ONNX Runtime Web en créditos, `docs/dependencies.md` y `npm run licenses`; excepción anotada en PROGRESS.md.
+- [ ] 17.5 Tests: salida x2/x4; nitidez (varianza del laplaciano) mayor que bicúbico; camino WASM en CI con imagen chica; cancelación; límite de tamaño; modo Automático produce un archivo válido y distinto del original; validadores independientes.
+- [ ] 17.6 Verificación: CI completo en verde sobre el último commit de dev, Lighthouse móvil de la página nueva sin bajar del rango del sitio, resumen en PROGRESS.md y «FASE 17 TERMINADA».

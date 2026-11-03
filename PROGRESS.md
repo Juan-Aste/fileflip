@@ -4021,3 +4021,6 @@ Run 41540432874 (e6e377c), job `e2e-browsers`: 20 fallos y 1 flaky. Causas y arr
 
 ## 2026-11-02 — FASE 16 TERMINADA
 - CI del PR de `dev` a `main` en verde. Causas: faltaban poppler, patch y ffmpeg en el job (18 fallos, incluido `tts-cloud` por ffmpeg en su `beforeAll`); en iPhone, `edit-pdf` era un problema del test (desplazamiento de WebKit, no del dibujo táctil) y `split-excel` era el enlace tapado por la cabecera fija (arreglado en el sitio con `scroll-padding-top`).
+
+## 2026-11-03 — Inicio de la fase 17
+- Herramienta nueva «Mejorar foto» (Imágenes) pedida por el dueño el 2026-11-03: modo Automático con filtros clásicos y modo Ampliar con IA (x2/x4) con Real-ESRGAN compacto en ONNX Runtime Web. Tareas 17.1 a 17.6 en PLAN.md.
