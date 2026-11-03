@@ -4064,3 +4064,6 @@ Run 41540432874 (e6e377c), job `e2e-browsers`: 20 fallos y 1 flaky. Causas y arr
 - Resumen de la fase: herramienta «Mejorar foto» (Imágenes) con dos modos. **Automático**: corrección de color por canal, niveles, medios tonos, reducción de ruido bilateral según el ruido medido y máscara de enfoque, todo con filtros clásicos en un Web Worker. **Ampliar con IA ×2/×4**: Real-ESRGAN `realesr-general-x4v3` convertido a ONNX (4,9 MB, servido desde el sitio, verificado por sha256, en la Cache API), ONNX Runtime Web con WebGPU o WASM de un hilo, tiles con 24 px de contexto (sin uniones visibles), progreso, cancelar y límite de 1 MP. Comparador antes/después accesible, textos en 5 idiomas, licencias y excepción documentadas, tests unitarios con el modelo real y e2e en 5 navegadores.
 
 FASE 17 TERMINADA
+
+## 2026-11-03 — Inicio de la fase 18
+- Pedido del dueño del 2026-11-03: detectar y quitar el fondo transparente falso (damero dibujado), zoom y pincel preciso en Quitar fondo, y herramienta nueva «Redondear imagen». Tareas 18.1 a 18.4 en PLAN.md.
