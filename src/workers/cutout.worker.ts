@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 import type { FormatId } from "@/config/formats";
-import { applyMask, downscale, MAX_PIXELS, segment, workSize, type Background } from "@/lib/bg-remove/cutout";
+import { applyMask, downscale, MAX_PIXELS, segment, viewSize, workSize, type Background } from "@/lib/bg-remove/cutout";
+import type { PaintStroke } from "@/lib/bg-remove/paint";
 import type { Rect, Stroke } from "@/lib/bg-remove/grabcut";
 import { segmentPerson } from "@/lib/bg-remove/people";
 import { ConversionError } from "@/lib/convert-error";
@@ -27,14 +28,25 @@ async function decode(input: Blob, from: FormatId) {
   return image;
 }
 
-/** The photo → its size and the reduced copy GrabCut works on. */
+/** The photo → its size, the reduced copy GrabCut works on and a larger one for the zoomable editor. */
 async function prepare({ input, from }: { input: Blob; from: FormatId }) {
   const image = await decode(input, from);
   const ws = workSize(image.width, image.height);
   const work = downscale(image.data, image.width, image.height, ws.width, ws.height);
+  const vs = viewSize(image.width, image.height);
+  const view = downscale(image.data, image.width, image.height, vs.width, vs.height);
   return {
-    result: { width: image.width, height: image.height, workWidth: ws.width, workHeight: ws.height, work: work.buffer },
-    transfer: [work.buffer as ArrayBuffer],
+    result: {
+      width: image.width,
+      height: image.height,
+      workWidth: ws.width,
+      workHeight: ws.height,
+      work: work.buffer,
+      viewWidth: vs.width,
+      viewHeight: vs.height,
+      view: view.buffer,
+    },
+    transfer: [work.buffer as ArrayBuffer, view.buffer as ArrayBuffer],
   };
 }
 
@@ -52,8 +64,10 @@ async function cutPerson({ work, workWidth, workHeight, prob, strokes }: { work:
 
 /** The full-size result: PNG with transparency, or JPG/WEBP over a color. */
 async function exportImage(
-  { input, from, mask, maskWidth, maskHeight, background, to, quality }: {
+  { input, from, mask, maskWidth, maskHeight, background, to, quality, paint = [] }: {
     input: Blob;
+    /** "Erase"/"restore" strokes in original pixels, applied over the cut. */
+    paint?: PaintStroke[];
     from: FormatId;
     mask: ArrayBuffer;
     maskWidth: number;
@@ -67,7 +81,7 @@ async function exportImage(
   const image = await decode(input, from);
   onProgress(0.3);
   const data = new Uint8ClampedArray(image.data);
-  applyMask(data, image.width, image.height, new Uint8Array(mask), maskWidth, maskHeight, to === "png" ? background : background.kind === "color" ? background : { kind: "color", rgb: [255, 255, 255] });
+  applyMask(data, image.width, image.height, new Uint8Array(mask), maskWidth, maskHeight, to === "png" ? background : background.kind === "color" ? background : { kind: "color", rgb: [255, 255, 255] }, paint);
   onProgress(0.6);
   const encode = encoders[to];
   if (!encode) throw new Error(`No encoder for ${to}`);

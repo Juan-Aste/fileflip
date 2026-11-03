@@ -3,11 +3,20 @@
 // alpha or over a solid color. Pure functions; the worker does the I/O.
 
 import { buildTrimap, grabCut, type Rect, type Stroke } from "./grabcut";
+import { applyPaint, type PaintStroke } from "./paint";
 
 /** Longest side of the copy GrabCut works on: big enough for clean edges, small enough to answer at once. */
 export const WORK_SIDE = 480;
 /** Photos above this are refused: the RGBA copy alone would take ~160 MB. */
 export const MAX_PIXELS = 40_000_000;
+
+/** The editor's copy: sharp enough to zoom in on, small enough to repaint parts of it at once. */
+export const VIEW_MAX_PIXELS = 3_000_000;
+
+export function viewSize(width: number, height: number) {
+  const scale = Math.min(1, Math.sqrt(VIEW_MAX_PIXELS / (width * height)));
+  return { width: Math.max(1, Math.round(width * scale)), height: Math.max(1, Math.round(height * scale)) };
+}
 
 export function workSize(width: number, height: number, side = WORK_SIDE) {
   const scale = Math.min(1, side / Math.max(width, height));
@@ -95,9 +104,24 @@ export const sharpenAlpha = (v: number) => Math.min(255, Math.max(0, Math.round(
 export type Background = { kind: "transparent" } | { kind: "color"; rgb: [number, number, number] };
 
 /**
- * Applies the soft mask (mw × mh) to the full-size photo in place: as alpha
- * (kept where the photo was already transparent) or blended over a solid
- * color, opaque.
+ * Alpha of a width × height plane showing the photo, from the soft mask
+ * (mw × mh) and the photo's own alpha there (`own`, 255 when opaque).
+ */
+export function cutAlpha(mask: Uint8Array, mw: number, mh: number, width: number, height: number, own: (p: number) => number): Uint8Array {
+  if (mask.length !== mw * mh) throw new Error("Wrong mask size");
+  const alpha = new Uint8Array(width * height);
+  for (let y = 0; y < height; y++)
+    for (let x = 0; x < width; x++) {
+      const p = y * width + x;
+      alpha[p] = Math.round((sharpenAlpha(sample(mask, mw, mh, x, y, width, height)) * own(p)) / 255);
+    }
+  return alpha;
+}
+
+/**
+ * Applies the soft mask (mw × mh) and the "erase"/"restore" strokes to the
+ * full-size photo in place: as alpha (kept where the photo was already
+ * transparent) or blended over a solid color, opaque.
  */
 export function applyMask(
   rgba: Uint8ClampedArray,
@@ -107,21 +131,21 @@ export function applyMask(
   mw: number,
   mh: number,
   background: Background,
+  paint: readonly PaintStroke[] = [],
 ) {
   if (rgba.length !== width * height * 4) throw new Error("Wrong image size");
-  if (mask.length !== mw * mh) throw new Error("Wrong mask size");
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const i = (y * width + x) * 4;
-      const alpha = (sharpenAlpha(sample(mask, mw, mh, x, y, width, height)) * rgba[i + 3]!) / 255;
-      if (background.kind === "transparent") {
-        rgba[i + 3] = alpha;
-        continue;
-      }
-      const a = alpha / 255;
-      for (let c = 0; c < 3; c++) rgba[i + c] = rgba[i + c]! * a + background.rgb[c]! * (1 - a);
-      rgba[i + 3] = 255;
+  const own = (p: number) => rgba[p * 4 + 3]!;
+  const alpha = cutAlpha(mask, mw, mh, width, height, own);
+  if (paint.length) applyPaint(alpha, own, width, height, 1, paint);
+  for (let p = 0; p < alpha.length; p++) {
+    const i = p * 4;
+    if (background.kind === "transparent") {
+      rgba[i + 3] = alpha[p]!;
+      continue;
     }
+    const a = alpha[p]! / 255;
+    for (let c = 0; c < 3; c++) rgba[i + c] = rgba[i + c]! * a + background.rgb[c]! * (1 - a);
+    rgba[i + 3] = 255;
   }
 }
 
