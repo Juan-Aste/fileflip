@@ -9,7 +9,7 @@ const SERVER_ONLY = ["Tools", "Legal"];
  */
 export const TOOL_ONLY = [
   "ArchiveTool", "AudioTool", "CompressVideoTool", "DataTools", "DxfConverterTool", "EbookTool", "EditPdf", "FillPdfForm",
-  "ExtractAudioTool", "FontTools", "IdPhotoTool", "ImageTools", "JoinVideosTool", "LithophaneTool",
+  "ExtractAudioTool", "FontTools", "IdPhotoTool", "EnhancePhotoTool", "ImageTools", "JoinVideosTool", "LithophaneTool",
   "MarkupTools", "ModelConverterTool", "ModelViewer", "OcrTool", "PdfExcelTool", "PdfPptTool", "PdfTools", "PdfaTool", "QrTools",
   "ReadAloudTool", "RemoveBackgroundTool", "TranscribeTool", "ScanDocumentTool", "SheetTool", "SignPdf", "SubtitleTools",
   "TextTools", "TrimVideoTool", "UtilityTools", "VideoSpeedTool", "VideoToGifTool", "VideoTool",

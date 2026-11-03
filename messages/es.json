@@ -245,6 +245,7 @@
     "legacyAudioTooLong": "Este formato antiguo se convierte con un motor más lento: el máximo es de 1 hora de audio por archivo.",
     "videoRangeInvalid": "Revisa los tiempos: el inicio debe ser anterior al fin y ambos deben estar dentro del video.",
     "gifTooManyFrames": "El GIF tendría demasiados cuadros: acorta el tramo o baja los cuadros por segundo.",
+    "imageTooLarge": "La imagen tiene demasiados píxeles para esta herramienta: achicala o recortala primero.",
     "modelEmpty": "Este modelo no tiene caras (triángulos) que convertir: puede estar vacío o ser una nube de puntos.",
     "modelTooLarge": "El modelo es demasiado grande: el máximo es de 3 millones de triángulos.",
     "modelExternalFiles": "Este glTF usa archivos aparte (.bin o texturas) que no se subieron. Conviértelo primero a GLB (un solo archivo) en tu programa 3D, o usa un .gltf con todo incluido.",
@@ -842,6 +843,26 @@
         "a4": "Con fondo transparente, PNG (el más compatible) o WEBP (más liviano). Con fondo blanco o de color, JPG o WEBP. La foto conserva su tamaño original. JPG no guarda transparencia: si lo eliges, el fondo será blanco o del color elegido.",
         "q5": "¿Hay límites?",
         "a5": "Una foto por vez, hasta 30 MB y 40 megapíxeles, en JPG, PNG, WEBP, AVIF, GIF (primer cuadro) o BMP. El recorte se calcula sobre una copia de 480 píxeles de lado mayor para responder al instante y se aplica al tamaño original con el borde suavizado: el pelo suelto y los bordes muy finos quedan suavizados, no recortados pelo por pelo."
+      }
+    },
+    "enhance-photo": {
+      "title": "Mejorar foto",
+      "description": "Mejora una foto en el navegador: corrección automática de niveles, color, ruido y nitidez, o ampliación ×2 y ×4 con IA (Real-ESRGAN). Sin subirla a ningún servidor.",
+      "action": "Mejorar foto",
+      "about": "Dale vida a una foto apagada o agrandá una imagen chica sin que se vea pixelada. El modo Automático mide la foto y aplica, con la intensidad justa, los ajustes que harías a mano en un editor: corrección de color (quita el tono amarillo, azul o desteñido), niveles y contraste, medios tonos, una reducción de ruido suave que respeta los bordes y enfoque; son filtros clásicos, sin IA, y una foto que ya está bien cambia poco. El modo Ampliar con IA duplica o cuadruplica el ancho y el alto con Real-ESRGAN, una red neuronal que reconstruye bordes y texturas en lugar de solo estirar los píxeles. Un comparador con deslizador muestra el antes y el después. Todo pasa en tu dispositivo: la foto no se sube a ningún servidor.",
+      "faq": {
+        "q1": "¿Qué diferencia hay entre los dos modos?",
+        "a1": "El Automático corrige la foto sin cambiar su tamaño: color, niveles, contraste, ruido y nitidez, con filtros clásicos (sin IA), en un instante. Ampliar con IA agranda la foto ×2 o ×4 con una red neuronal (Real-ESRGAN) que inventa detalle plausible en bordes y texturas; sirve para fotos chicas, recortes o imágenes descargadas en baja resolución, y tarda más.",
+        "q2": "¿Qué hace exactamente el modo Automático?",
+        "a2": "Cinco pasos, en orden: corrección de color (acerca entre sí los puntos negro y blanco de cada canal, lo que quita la dominante de la luz o de una copia desteñida), niveles (estira el rango de la foto, con un límite para no forzar fotos oscuras o claras a propósito), medios tonos (aclara u oscurece un poco el promedio), reducción de ruido (solo si mide ruido, y cuidando los bordes) y enfoque (máscara de enfoque sobre la luminancia, sin halos de color).",
+        "q3": "¿Por qué la ampliación con IA puede tardar?",
+        "a3": "La red hace unos 2,5 millones de operaciones por cada píxel de la foto, y corre en tu dispositivo. Con WebGPU (Chrome y Edge recientes en computadoras con placa de video compatible) tarda segundos; sin WebGPU usa la CPU en un solo hilo y una foto de 1 megapíxel puede tardar uno o varios minutos, más en celulares. Se ve el progreso y podés cancelar cuando quieras.",
+        "q4": "¿Se sube mi foto? ¿Qué se descarga?",
+        "a4": "La foto no sale de tu dispositivo. La primera vez que ampliás con IA, el navegador descarga el modelo (4,9 MB) y el motor ONNX Runtime desde Fileflect, no desde servidores de terceros; quedan guardados en el navegador para las próximas veces. El modo Automático no descarga nada extra.",
+        "q5": "¿Puede inventar detalles que no estaban?",
+        "a5": "Sí: la IA reconstruye bordes y texturas que se parecen a los reales, pero no recupera información perdida. Sirve para que una imagen chica se vea nítida en grande, no para leer una patente o identificar una cara. No retoca ni cambia rostros.",
+        "q6": "¿En qué formato descargo el resultado y cuál es el límite?",
+        "a6": "En el mismo formato si la foto es JPG, PNG o WEBP; las demás (HEIC del iPhone, AVIF, TIFF, BMP, GIF) en JPG, o en PNG si tienen transparencia, que se conserva. Una foto por vez, de hasta 50 MB: hasta 24 megapíxeles en el modo Automático y hasta 1 megapíxel de entrada al ampliar con IA (×4 da hasta 16 megapíxeles)."
       }
     },
     "scan-document": {
@@ -1926,7 +1947,11 @@
     "cannotDeleteAll": "No se pueden eliminar todas las páginas: deja al menos una.",
     "extractOutput": "Resultado",
     "extractSingle": "Un solo PDF con esas páginas",
-    "extractEach": "Un PDF por página (ZIP)"
+    "extractEach": "Un PDF por página (ZIP)",
+    "before": "Antes",
+    "after": "Después",
+    "compare": "Comparar antes y después",
+    "compareValue": "{before} % antes, {after} % después"
   },
   "DataTools": {
     "delimiter": "Separador",
@@ -3346,6 +3371,27 @@
     "lowResolution": "La zona elegida tiene poca resolución: puede imprimirse borrosa. Usa una foto más grande o más cercana.",
     "doneSheet": "Hoja de 10 × 15 cm con {copies} copias y líneas de corte.",
     "sheetSuffix": "hoja-10x15"
+  },
+  "EnhancePhotoTool": {
+    "mode": "Modo",
+    "modes": {
+      "auto": "Automático (sin IA)",
+      "ai": "Ampliar con IA"
+    },
+    "autoHint": "Corrige niveles, contraste y color, reduce el ruido y da nitidez con filtros clásicos. El tamaño no cambia.",
+    "factor": "Ampliación",
+    "factors": {
+      "2": "×2 (doble de ancho y alto)",
+      "4": "×4 (cuádruple)"
+    },
+    "aiHint": "Agranda la foto con Real-ESRGAN, una red neuronal que reconstruye bordes y texturas. Acepta fotos de hasta {max} MP. La primera vez descarga el modelo (4,9 MB) desde Fileflect; después queda guardado en el navegador.",
+    "aiSlow": "Corre en tu dispositivo: con WebGPU tarda segundos, pero en equipos sin WebGPU o en celulares puede tardar varios minutos. Podés cancelar cuando quieras.",
+    "loading": "Abriendo la foto…",
+    "size": "Foto de {pixels} px ({mp} MP).",
+    "tooBig": "La foto tiene {mp} megapíxeles y este modo acepta hasta {max}. Achicala o recortala primero.",
+    "doneAuto": "Foto mejorada ({pixels} px).",
+    "doneAi": "Foto ampliada ×{factor} ({pixels} px) con IA en {seconds} s ({backend}).",
+    "suffix": "mejorada"
   },
   "RemoveBackgroundTool": {
     "background": "Fondo",

@@ -245,6 +245,7 @@
     "legacyAudioTooLong": "Ce format ancien est converti avec un moteur plus lent : le maximum est de 1 heure d'audio par fichier.",
     "videoRangeInvalid": "Vérifiez les temps : le début doit précéder la fin et les deux doivent être dans la vidéo.",
     "gifTooManyFrames": "Le GIF aurait trop d'images : raccourcissez l'extrait ou baissez le nombre d'images par seconde.",
+    "imageTooLarge": "L'image a trop de pixels pour cet outil : réduisez-la ou recadrez-la d'abord.",
     "modelEmpty": "Ce modèle n'a pas de faces (triangles) à convertir : il est peut-être vide ou c'est un nuage de points.",
     "modelTooLarge": "Le modèle est trop grand : le maximum est de 3 millions de triangles.",
     "modelExternalFiles": "Ce glTF utilise des fichiers séparés (.bin ou textures) qui n'ont pas été envoyés. Convertissez-le d'abord en GLB (un seul fichier) dans votre logiciel 3D, ou utilisez un .gltf qui contient tout.",
@@ -842,6 +843,26 @@
         "a4": "Avec un fond transparent, PNG (le plus compatible) ou WEBP (plus léger). Sur blanc ou une couleur, JPG ou WEBP. La photo garde sa taille d’origine. Le JPG ne gère pas la transparence : si vous le choisissez, le fond sera blanc ou de la couleur choisie.",
         "q5": "Y a-t-il des limites ?",
         "a5": "Une photo à la fois, jusqu’à 30 Mo et 40 mégapixels, en JPG, PNG, WEBP, AVIF, GIF (première image) ou BMP. Le détourage est calculé sur une copie de 480 pixels sur le grand côté pour répondre instantanément, puis appliqué à la taille d’origine avec un bord adouci : les cheveux libres et les contours très fins sont adoucis, pas détourés mèche par mèche."
+      }
+    },
+    "enhance-photo": {
+      "title": "Améliorer une photo",
+      "description": "Améliorez une photo dans le navigateur : correction automatique des niveaux, couleurs, bruit et netteté, ou agrandissement ×2 et ×4 par IA (Real-ESRGAN). Sans envoi sur un serveur.",
+      "action": "Améliorer la photo",
+      "about": "Redonnez vie à une photo terne ou agrandissez une petite image sans effet de pixels. Le mode Automatique mesure la photo et applique, avec la juste intensité, les réglages que vous feriez à la main dans un éditeur : correction des couleurs (retire une teinte jaune, bleue ou délavée), niveaux et contraste, tons moyens, une réduction du bruit douce qui respecte les contours et une accentuation ; ce sont des filtres classiques, sans IA, et une photo déjà réussie change peu. Le mode Agrandir avec l'IA double ou quadruple la largeur et la hauteur avec Real-ESRGAN, un réseau de neurones qui reconstruit contours et textures au lieu d'étirer les pixels. Un curseur compare l'avant et l'après. Tout se passe sur votre appareil : la photo n'est envoyée sur aucun serveur.",
+      "faq": {
+        "q1": "Quelle différence entre les deux modes ?",
+        "a1": "L'Automatique corrige la photo sans changer sa taille : couleurs, niveaux, contraste, bruit et netteté, avec des filtres classiques (sans IA), en un instant. Agrandir avec l'IA agrandit la photo ×2 ou ×4 avec un réseau de neurones (Real-ESRGAN) qui crée un détail plausible sur les contours et les textures ; idéal pour les petites photos, les recadrages ou les images téléchargées en basse résolution, mais plus long.",
+        "q2": "Que fait exactement le mode Automatique ?",
+        "a2": "Cinq étapes, dans l'ordre : correction des couleurs (rapproche les points noir et blanc de chaque canal, ce qui retire la dominante de la lumière ou d'un tirage délavé), niveaux (étire la plage de la photo, avec une limite pour ne pas forcer une photo sombre ou claire volontairement), tons moyens (éclaircit ou assombrit un peu la moyenne), réduction du bruit (seulement si du bruit est mesuré, en préservant les contours) et netteté (masque flou sur la luminance, sans halos colorés).",
+        "q3": "Pourquoi l'agrandissement par IA peut-il être long ?",
+        "a3": "Le réseau fait environ 2,5 millions d'opérations par pixel de la photo, et il tourne sur votre appareil. Avec WebGPU (Chrome et Edge récents sur un ordinateur avec une carte graphique compatible), quelques secondes suffisent ; sans WebGPU, le processeur travaille sur un seul fil et une photo de 1 mégapixel peut prendre une ou plusieurs minutes, davantage sur téléphone. La progression s'affiche et vous pouvez annuler à tout moment.",
+        "q4": "Ma photo est-elle envoyée ? Que télécharge-t-on ?",
+        "a4": "La photo ne quitte pas votre appareil. La première fois que vous agrandissez avec l'IA, le navigateur télécharge le modèle (4,9 Mo) et le moteur ONNX Runtime depuis Fileflect, pas depuis des serveurs tiers ; ils restent enregistrés dans le navigateur pour les fois suivantes. Le mode Automatique ne télécharge rien de plus.",
+        "q5": "Peut-il inventer des détails absents ?",
+        "a5": "Oui : l'IA reconstruit des contours et des textures qui ressemblent aux vrais, mais ne récupère pas l'information perdue. Elle rend une petite image nette en grand ; elle ne sert pas à lire une plaque d'immatriculation ni à identifier un visage. Elle ne retouche pas les visages.",
+        "q6": "Dans quel format est le résultat et quelle est la limite ?",
+        "a6": "Dans le même format si la photo est en JPG, PNG ou WEBP ; les autres (HEIC d'iPhone, AVIF, TIFF, BMP, GIF) en JPG, ou en PNG si elles ont de la transparence, qui est conservée. Une photo à la fois, jusqu'à 50 Mo : jusqu'à 24 mégapixels en mode Automatique et jusqu'à 1 mégapixel en entrée pour l'agrandissement par IA (×4 donne jusqu'à 16 mégapixels)."
       }
     },
     "scan-document": {
@@ -1926,7 +1947,11 @@
     "cannotDeleteAll": "Impossible de supprimer toutes les pages : gardez-en au moins une.",
     "extractOutput": "Résultat",
     "extractSingle": "Un seul PDF avec ces pages",
-    "extractEach": "Un PDF par page (ZIP)"
+    "extractEach": "Un PDF par page (ZIP)",
+    "before": "Avant",
+    "after": "Après",
+    "compare": "Comparer avant et après",
+    "compareValue": "{before} % avant, {after} % après"
   },
   "DataTools": {
     "delimiter": "Séparateur",
@@ -3346,6 +3371,27 @@
     "lowResolution": "La zone choisie a une faible résolution : l'impression peut être floue. Utilisez une photo plus grande ou prise de plus près.",
     "doneSheet": "Planche 10 × 15 cm avec {copies} copies et traits de coupe.",
     "sheetSuffix": "planche-10x15"
+  },
+  "EnhancePhotoTool": {
+    "mode": "Mode",
+    "modes": {
+      "auto": "Automatique (sans IA)",
+      "ai": "Agrandir avec l'IA"
+    },
+    "autoHint": "Corrige niveaux, contraste et couleurs, réduit le bruit et renforce la netteté avec des filtres classiques. La taille ne change pas.",
+    "factor": "Agrandissement",
+    "factors": {
+      "2": "×2 (double largeur et hauteur)",
+      "4": "×4 (quadruple)"
+    },
+    "aiHint": "Agrandit la photo avec Real-ESRGAN, un réseau de neurones qui reconstruit contours et textures. Accepte les photos jusqu'à {max} Mpx. La première fois, le modèle (4,9 Mo) est téléchargé depuis Fileflect ; ensuite il reste enregistré dans le navigateur.",
+    "aiSlow": "Le traitement se fait sur votre appareil : avec WebGPU il prend quelques secondes, mais sans WebGPU ou sur un téléphone il peut durer plusieurs minutes. Vous pouvez annuler à tout moment.",
+    "loading": "Ouverture de la photo…",
+    "size": "Photo de {pixels} px ({mp} Mpx).",
+    "tooBig": "La photo fait {mp} mégapixels et ce mode accepte jusqu'à {max}. Réduisez-la ou recadrez-la d'abord.",
+    "doneAuto": "Photo améliorée ({pixels} px).",
+    "doneAi": "Photo agrandie ×{factor} ({pixels} px) par l'IA en {seconds} s ({backend}).",
+    "suffix": "amelioree"
   },
   "RemoveBackgroundTool": {
     "background": "Arrière-plan",

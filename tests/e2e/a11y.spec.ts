@@ -60,6 +60,7 @@ const sample: ToolId[] = [
   "crop-image",
   "id-photo",
   "remove-background",
+  "enhance-photo",
   "subtitle-converter",
   "extract-archive",
   "trim-video",

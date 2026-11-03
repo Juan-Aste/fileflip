@@ -245,6 +245,7 @@
     "legacyAudioTooLong": "This older format is converted with a slower engine: the maximum is 1 hour of audio per file.",
     "videoRangeInvalid": "Check the times: the start must come before the end and both must be inside the video.",
     "gifTooManyFrames": "The GIF would have too many frames: shorten the clip or lower the frames per second.",
+    "imageTooLarge": "The image has too many pixels for this tool: make it smaller or crop it first.",
     "modelEmpty": "This model has no faces (triangles) to convert: it may be empty or a point cloud.",
     "modelTooLarge": "The model is too large: the maximum is 3 million triangles.",
     "modelExternalFiles": "This glTF uses separate files (.bin or textures) that weren't uploaded. Convert it to GLB (a single file) in your 3D software first, or use a .gltf with everything embedded.",
@@ -842,6 +843,26 @@
         "a4": "With a transparent background, PNG (most compatible) or WEBP (smaller). Over white or a color, JPG or WEBP. The photo keeps its original size. JPG cannot store transparency: if you pick it, the background will be white or the chosen color.",
         "q5": "Are there limits?",
         "a5": "One photo at a time, up to 30 MB and 40 megapixels, in JPG, PNG, WEBP, AVIF, GIF (first frame) or BMP. The cutout is worked out on a copy 480 pixels on its longest side so it answers instantly, then applied at the original size with a softened edge: loose hair and very fine edges come out softened, not cut strand by strand."
+      }
+    },
+    "enhance-photo": {
+      "title": "Enhance photo",
+      "description": "Enhance a photo in your browser: automatic levels, color, noise and sharpness correction, or ×2 and ×4 AI upscaling (Real-ESRGAN). Nothing is uploaded.",
+      "action": "Enhance photo",
+      "about": "Bring a dull photo to life or enlarge a small image without it looking pixelated. Automatic mode measures the photo and applies, at just the right strength, the adjustments you would make by hand in an editor: color correction (removes a yellow, blue or faded tint), levels and contrast, midtones, a gentle noise reduction that keeps edges, and sharpening; these are classic filters, no AI, and a photo that is already good changes little. Upscale with AI doubles or quadruples the width and height with Real-ESRGAN, a neural network that rebuilds edges and textures instead of just stretching pixels. A slider compares before and after. Everything happens on your device: the photo isn't uploaded to any server.",
+      "faq": {
+        "q1": "What's the difference between the two modes?",
+        "a1": "Automatic fixes the photo without changing its size: color, levels, contrast, noise and sharpness, with classic filters (no AI), in an instant. Upscale with AI enlarges the photo ×2 or ×4 with a neural network (Real-ESRGAN) that creates plausible detail on edges and textures; it's for small photos, crops or images downloaded at low resolution, and takes longer.",
+        "q2": "What exactly does Automatic mode do?",
+        "a2": "Five steps, in order: color correction (brings each channel's black and white points closer together, which removes the cast of the light or of a faded print), levels (stretches the photo's range, with a limit so photos that are dark or bright on purpose are not forced), midtones (lightens or darkens the average a little), noise reduction (only when it measures noise, keeping edges) and sharpening (an unsharp mask on the luminance, without color halos).",
+        "q3": "Why can AI upscaling take a while?",
+        "a3": "The network does about 2.5 million operations for every pixel of the photo, and it runs on your device. With WebGPU (recent Chrome and Edge on computers with a supported graphics card) it takes seconds; without WebGPU it uses the CPU on one thread and a 1-megapixel photo can take one or several minutes, longer on phones. You see the progress and can cancel at any time.",
+        "q4": "Is my photo uploaded? What gets downloaded?",
+        "a4": "The photo never leaves your device. The first time you upscale with AI, your browser downloads the model (4.9 MB) and the ONNX Runtime engine from Fileflect, not from third-party servers; they stay saved in the browser for next time. Automatic mode downloads nothing extra.",
+        "q5": "Can it invent details that weren't there?",
+        "a5": "Yes: the AI rebuilds edges and textures that look like the real ones, but it can't recover lost information. It makes a small image look sharp when enlarged; it isn't for reading a license plate or identifying a face. It doesn't retouch or change faces.",
+        "q6": "What format is the result, and what's the limit?",
+        "a6": "The same format if the photo is JPG, PNG or WEBP; others (iPhone HEIC, AVIF, TIFF, BMP, GIF) as JPG, or PNG if they have transparency, which is kept. One photo at a time, up to 50 MB: up to 24 megapixels in Automatic mode and up to 1 megapixel of input for AI upscaling (×4 gives up to 16 megapixels)."
       }
     },
     "scan-document": {
@@ -1926,7 +1947,11 @@
     "cannotDeleteAll": "You can't delete every page: keep at least one.",
     "extractOutput": "Result",
     "extractSingle": "One PDF with those pages",
-    "extractEach": "One PDF per page (ZIP)"
+    "extractEach": "One PDF per page (ZIP)",
+    "before": "Before",
+    "after": "After",
+    "compare": "Compare before and after",
+    "compareValue": "{before}% before, {after}% after"
   },
   "DataTools": {
     "delimiter": "Delimiter",
@@ -3346,6 +3371,27 @@
     "lowResolution": "The framed area has low resolution: it may print blurry. Use a bigger or closer photo.",
     "doneSheet": "4 × 6 in (10 × 15 cm) sheet with {copies} copies and cutting lines.",
     "sheetSuffix": "sheet-4x6"
+  },
+  "EnhancePhotoTool": {
+    "mode": "Mode",
+    "modes": {
+      "auto": "Automatic (no AI)",
+      "ai": "Upscale with AI"
+    },
+    "autoHint": "Fixes levels, contrast and color, reduces noise and sharpens with classic filters. The size stays the same.",
+    "factor": "Enlargement",
+    "factors": {
+      "2": "×2 (double width and height)",
+      "4": "×4 (four times)"
+    },
+    "aiHint": "Enlarges the photo with Real-ESRGAN, a neural network that rebuilds edges and textures. Takes photos up to {max} MP. The first time it downloads the model (4.9 MB) from Fileflect; after that it stays saved in your browser.",
+    "aiSlow": "It runs on your device: with WebGPU it takes seconds, but on computers without WebGPU or on phones it can take several minutes. You can cancel at any time.",
+    "loading": "Opening the photo…",
+    "size": "{pixels} px photo ({mp} MP).",
+    "tooBig": "The photo has {mp} megapixels and this mode takes up to {max}. Make it smaller or crop it first.",
+    "doneAuto": "Photo enhanced ({pixels} px).",
+    "doneAi": "Photo upscaled ×{factor} ({pixels} px) with AI in {seconds} s ({backend}).",
+    "suffix": "enhanced"
   },
   "RemoveBackgroundTool": {
     "background": "Background",

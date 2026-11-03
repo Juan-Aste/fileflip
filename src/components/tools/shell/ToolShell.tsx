@@ -19,6 +19,7 @@ import { zipBlobs } from "@/lib/zip";
 import PrimaryButton from "../PrimaryButton";
 import ProgressBar from "../ProgressBar";
 import ToolAlert from "../ToolAlert";
+import BeforeAfter from "./BeforeAfter";
 import {
   checkInputs,
   initialShellState,
@@ -135,6 +136,11 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
     () => (state.status === "done" ? state.outputs.map((o) => (o.kind === "file" ? urls.create(o.blob) : "")) : []),
     [state, urls],
   );
+  // The "before" picture of a single image result that offers a comparison.
+  const beforeLink = useMemo(() => {
+    const only = state.status === "done" && state.outputs.length === 1 ? state.outputs[0]! : null;
+    return only?.kind === "file" && only.compare ? urls.create(only.compare.before) : null;
+  }, [state, urls]);
 
   function pick(picked: File[]) {
     if (input.kind !== "files") return;
@@ -238,7 +244,10 @@ export default function ToolShell({ input, actionLabel, options, process, zipNam
               </p>
             ) : null,
           )}
-          {state.outputs.length === 1 && state.outputs[0]!.kind === "file" && state.outputs[0]!.blob.type.startsWith("image/") && (
+          {beforeLink && state.outputs[0]!.kind === "file" && (
+            <BeforeAfter before={beforeLink} after={links[0]!} alt={state.outputs[0]!.name} pixelated={state.outputs[0]!.compare?.pixelated} />
+          )}
+          {!beforeLink && state.outputs.length === 1 && state.outputs[0]!.kind === "file" && state.outputs[0]!.blob.type.startsWith("image/") && (
             // eslint-disable-next-line @next/next/no-img-element -- a local object URL, not an optimizable asset
             <img
               src={links[0]}
