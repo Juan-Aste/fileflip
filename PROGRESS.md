@@ -4058,3 +4058,9 @@ Run 41540432874 (e6e377c), job `e2e-browsers`: 20 fallos y 1 flaky. Causas y arr
 ## 2026-11-03 — Fin de esta ejecución
 - Hechas: 17.1, 17.2, 17.3, 17.4 y 17.5 (límite de 5 por ejecución). Falta la **17.6** (verificación final y «FASE 17 TERMINADA»).
 - Para la 17.6 ya está: workflow completo lanzado a mano (`gh workflow run ci.yml --ref dev`), run 41729789666 sobre 3ae097b (último commit con código): **check, e2e-ai-voice y e2e-browsers en verde**, sin flaky; los `@xb` de `enhance-tools` pasan en Firefox, WebKit, iPhone y Android con WASM (×4 de 64 × 79 en 13,3 / 4,6 / 5,2 / 1,7 s). Lighthouse móvil de `/es/mejorar-foto`: 93, CLS 0 (`docs/perf/2026-11-03-phase17.md`). Queda escribir el resumen de la fase y confirmar el CI sobre el último commit de `dev`.
+
+## 2026-11-03 — Fase 17, tarea 17.6 (verificación) — FASE 17 TERMINADA
+- CI completo en verde sobre el último commit con código de `dev` (run 41729789666 sobre 3ae097b: check, e2e-ai-voice y e2e-browsers; los commits posteriores solo tocan `.agent-lock` y documentación, y el push de este commit vuelve a correr el CI). Lighthouse móvil de `/es/mejorar-foto`: 93, CLS 0, dentro del rango del sitio (`docs/perf/2026-11-03-phase17.md`).
+- Resumen de la fase: herramienta «Mejorar foto» (Imágenes) con dos modos. **Automático**: corrección de color por canal, niveles, medios tonos, reducción de ruido bilateral según el ruido medido y máscara de enfoque, todo con filtros clásicos en un Web Worker. **Ampliar con IA ×2/×4**: Real-ESRGAN `realesr-general-x4v3` convertido a ONNX (4,9 MB, servido desde el sitio, verificado por sha256, en la Cache API), ONNX Runtime Web con WebGPU o WASM de un hilo, tiles con 24 px de contexto (sin uniones visibles), progreso, cancelar y límite de 1 MP. Comparador antes/después accesible, textos en 5 idiomas, licencias y excepción documentadas, tests unitarios con el modelo real y e2e en 5 navegadores.
+
+FASE 17 TERMINADA
