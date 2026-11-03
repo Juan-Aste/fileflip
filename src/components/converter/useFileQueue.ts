@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   findConversion,
+  formats,
   outputFilename,
   type FormatId,
 } from "@/config/formats";
@@ -14,6 +15,7 @@ import { convertFile, type ConvertOptions } from "@/lib/convert";
 import { ConversionError, errorCode } from "@/lib/convert-error";
 import { detectFileFormat } from "@/lib/detect";
 import { reportConversion } from "@/lib/stats-client";
+import { FAKE_BG_DETECT_MAX_BYTES, fakeBgInputs, type FakeBgOutput } from "@/lib/image/fake-bg-shared";
 
 export type JobState =
   | { status: "working"; progress: number }
@@ -32,6 +34,8 @@ export interface QueuedFile {
   /** undefined while detecting, null when unsupported. */
   format: FormatId | null | undefined;
   job?: JobState;
+  /** After the check: "none", "found" (a drawn checkerboard background) or "fixed" (turned into real transparency). */
+  fake?: "none" | "found" | "fixed";
 }
 
 let nextId = 0;
@@ -54,6 +58,17 @@ export function useFileQueue() {
     setItems((prev) => prev.map((p) => (p.id === id ? { ...p, ...patch } : p)));
   }, []);
 
+  /** Looks for a drawn checkerboard background (in a worker loaded only now). */
+  const checkFake = useCallback(
+    (id: string, file: File, format: FormatId) => {
+      import("@/lib/image/fake-bg-client")
+        .then(({ detectFakeBackground }) => detectFakeBackground(file, format))
+        .then(({ found }) => update(id, { fake: found ? "found" : "none" }))
+        .catch(() => undefined);
+    },
+    [update],
+  );
+
   const add = useCallback(
     (files: Iterable<File>) => {
       const added = [...files].map((file) => ({
@@ -65,10 +80,13 @@ export function useFileQueue() {
       for (const item of added) {
         detectFileFormat(item.file)
           .catch(() => null)
-          .then((format) => update(item.id, { format }));
+          .then((format) => {
+            update(item.id, { format });
+            if (format && fakeBgInputs.includes(format) && item.file.size <= FAKE_BG_DETECT_MAX_BYTES) checkFake(item.id, item.file, format);
+          });
       }
     },
-    [update],
+    [update, checkFake],
   );
 
   const remove = useCallback((id: string) => {
@@ -171,5 +189,28 @@ export function useFileQueue() {
     [update, plan],
   );
 
-  return { items, add, remove, clear, convertAll };
+  /** Turns the drawn checkerboard of one file into real transparency (PNG, WEBP or AVIF). */
+  const removeFake = useCallback(
+    async (id: string, to: FakeBgOutput) => {
+      const item = itemsRef.current.find((i) => i.id === id);
+      if (!item?.format) return;
+      revoke(item);
+      update(id, { job: { status: "working", progress: 0 } });
+      const start = performance.now();
+      try {
+        const { removeFakeBackground } = await import("@/lib/image/fake-bg-client");
+        const { buffer } = await removeFakeBackground(item.file, item.format, to, {
+          onProgress: (progress) => update(id, { job: { status: "working", progress } }),
+        });
+        const blob = new Blob([buffer], { type: formats[to].mime });
+        reportConversion({ from: item.format, to, size: item.file.size, outputSize: blob.size, success: true, durationMs: Math.round(performance.now() - start) });
+        update(id, { fake: "fixed", job: { status: "done", blob, url: URL.createObjectURL(blob), name: outputFilename(item.file.name, to), engine: "browser" } });
+      } catch (error) {
+        update(id, { job: { status: "error", code: errorCode(error) } });
+      }
+    },
+    [update],
+  );
+
+  return { items, add, remove, clear, convertAll, removeFake };
 }

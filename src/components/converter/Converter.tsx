@@ -13,6 +13,7 @@ import {
   lossyFormats,
   type ImageOptions,
 } from "@/lib/image/options";
+import { fakeBgOutput } from "@/lib/image/fake-bg-shared";
 import Dropzone from "./Dropzone";
 import ProcessingBadge from "./ProcessingBadge";
 import { queueSummary } from "./queue-summary";
@@ -40,7 +41,7 @@ interface Props {
 
 export default function Converter({ from, to, options }: Props = {}) {
   const t = useTranslations("Converter");
-  const { items, add, remove, clear, convertAll } = useFileQueue();
+  const { items, add, remove, clear, convertAll, removeFake } = useFileQueue();
   const [target, setTarget] = useState<FormatId | null>(to ?? null);
   const [imageOptions, setImageOptions] = useState<ImageOptions>({
     quality: DEFAULT_QUALITY,
@@ -128,6 +129,8 @@ export default function Converter({ from, to, options }: Props = {}) {
                 key={item.id}
                 item={item}
                 onRemove={() => remove(item.id)}
+                picked={selected?.to}
+                onRemoveFake={() => removeFake(item.id, fakeBgOutput(selected?.to))}
               />
             ))}
           </ul>

@@ -167,6 +167,12 @@
     "statusDoneHint": "Téléchargez chaque fichier avec son bouton.",
     "larger": "{percent} de plus"
   },
+  "FakeTransparency": {
+    "title": "Cette image a un faux fond transparent (il est dessiné)",
+    "help": "Le damier gris et blanc fait partie des pixels, c’est pourquoi la conversion le conserve. « Supprimer le faux fond » le transforme en vraie transparence et fournit un {to}.",
+    "noAlpha": "{format} ne gère pas la transparence : pour la conserver, le résultat sans fond est fourni en PNG.",
+    "action": "Supprimer le faux fond"
+  },
   "ImageOptions": {
     "title": "Options",
     "quality": "Qualité",

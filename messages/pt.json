@@ -167,6 +167,12 @@
     "statusDoneHint": "Baixe cada arquivo pelo seu botão.",
     "larger": "{percent} maior"
   },
+  "FakeTransparency": {
+    "title": "Esta imagem tem um fundo transparente falso (está desenhado)",
+    "help": "O quadriculado cinza e branco faz parte dos pixels, por isso é mantido ao converter. «Remover fundo falso» o transforma em transparência real e entrega um {to}.",
+    "noAlpha": "{format} não suporta transparência: para mantê-la, o resultado sem fundo é entregue em PNG.",
+    "action": "Remover fundo falso"
+  },
   "ImageOptions": {
     "title": "Opções",
     "quality": "Qualidade",

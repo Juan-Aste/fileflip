@@ -167,6 +167,12 @@
     "statusDoneHint": "Download each file with its button.",
     "larger": "{percent} larger"
   },
+  "FakeTransparency": {
+    "title": "This image has a fake transparent background (it is drawn)",
+    "help": "The grey and white checkerboard is part of the pixels, so converting keeps it. “Remove fake background” turns it into real transparency and gives you a {to}.",
+    "noAlpha": "{format} does not support transparency: to keep it, the result without background is delivered as PNG.",
+    "action": "Remove fake background"
+  },
   "ImageOptions": {
     "title": "Options",
     "quality": "Quality",

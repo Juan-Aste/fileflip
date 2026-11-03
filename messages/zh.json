@@ -167,6 +167,12 @@
     "statusDoneHint": "点击每个文件的按钮即可下载。",
     "larger": "增大 {percent}"
   },
+  "FakeTransparency": {
+    "title": "这张图片的透明背景是假的（是画上去的）",
+    "help": "灰白棋盘格是像素的一部分，所以转换时会保留下来。“去除假背景”会把它变成真正的透明，并输出 {to}。",
+    "noAlpha": "{format} 不支持透明：为了保留透明，去除背景后的结果以 PNG 格式提供。",
+    "action": "去除假背景"
+  },
   "ImageOptions": {
     "title": "选项",
     "quality": "质量",

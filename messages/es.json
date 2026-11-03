@@ -167,6 +167,12 @@
     "statusDoneHint": "Descarga cada archivo con su botón.",
     "larger": "{percent} más"
   },
+  "FakeTransparency": {
+    "title": "Esta imagen tiene un fondo transparente falso (está dibujado)",
+    "help": "El cuadriculado gris y blanco forma parte de los píxeles, por eso se conserva al convertir. «Quitar fondo falso» lo convierte en transparencia real y entrega un {to}.",
+    "noAlpha": "{format} no admite transparencia: para conservarla, el resultado sin fondo se entrega en PNG.",
+    "action": "Quitar fondo falso"
+  },
   "ImageOptions": {
     "title": "Opciones",
     "quality": "Calidad",

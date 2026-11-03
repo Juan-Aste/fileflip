@@ -19,10 +19,14 @@ import { formatBytes, formatPercent } from "@/lib/format";
 import type { QueuedFile } from "./useFileQueue";
 import { previewSource } from "./preview";
 import { buttonPrimarySmall } from "@/components/ui/styles";
+import FakeBgNotice from "./FakeBgNotice";
 
 interface Props {
   item: QueuedFile;
   onRemove: () => void;
+  /** The output format picked for the queue (for the fake-transparency notice). */
+  picked?: FormatId;
+  onRemoveFake?: () => void;
 }
 
 /** Object URL for the original file's thumbnail, freed when no longer shown. */
@@ -75,7 +79,7 @@ function FormatTag({ format }: { format: FormatId | null | undefined }) {
   );
 }
 
-export default function FileRow({ item, onRemove }: Props) {
+export default function FileRow({ item, onRemove, picked, onRemoveFake }: Props) {
   const t = useTranslations("Converter");
   const tc = useTranslations("Common");
   const te = useTranslations("ApiErrors");
@@ -145,7 +149,8 @@ export default function FileRow({ item, onRemove }: Props) {
 
   return (
     <li
-      className={`relative flex flex-col gap-3 rounded-xl border p-3 transition-colors duration-200 sm:flex-row sm:items-center ${
+      data-fake={item.fake}
+      className={`relative flex flex-col gap-3 rounded-xl border p-3 transition-colors duration-200 sm:flex-row sm:flex-wrap sm:items-center ${
         failed
           ? "border-danger/30 bg-danger-soft/60"
           : job?.status === "done"
@@ -205,6 +210,11 @@ export default function FileRow({ item, onRemove }: Props) {
       >
         <X aria-hidden="true" className="h-4 w-4" />
       </button>
+      {item.fake === "found" && onRemoveFake && (
+        <div className="sm:basis-full">
+          <FakeBgNotice picked={picked} onFix={onRemoveFake} busy={job?.status === "working"} />
+        </div>
+      )}
     </li>
   );
 }

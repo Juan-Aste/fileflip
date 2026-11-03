@@ -20,6 +20,10 @@ import ToolAlert from "../ToolAlert";
 import ToolShell from "../shell/ToolShell";
 import { renameExtension, type ShellOutput } from "../shell/state";
 import CropEditor from "./CropEditor";
+import FakeBgNotice from "@/components/converter/FakeBgNotice";
+import { fakeBgOutput } from "@/lib/image/fake-bg-shared";
+import { buttonPrimarySmall } from "@/components/ui/styles";
+import { Download } from "lucide-react";
 
 const info = tools["remove-background"];
 const extensions = info.inputs.flatMap((f) => formats[f].extensions);
@@ -50,6 +54,7 @@ export default function RemoveBackgroundTool() {
   const t = useTranslations("RemoveBackgroundTool");
   const tt = useTranslations("Tools.remove-background");
   const te = useTranslations("ApiErrors");
+  const tc = useTranslations("Common");
   const colorId = useId();
   const helpId = useId();
   const [file, setFile] = useState<File | null>(null);
@@ -64,6 +69,10 @@ export default function RemoveBackgroundTool() {
   const [color, setColor] = useState("#4f8ff7");
   const [output, setOutput] = useState<Output>("png");
   const lastRectChange = useRef(0);
+  /** The drawn checkerboard background of the photo, if it has one, and its fix. */
+  const [fake, setFake] = useState<
+    null | { status: "none" | "found" | "working" } | { status: "done"; url: string; name: string } | { status: "error"; code: ApiErrorCode }
+  >(null);
 
   const edit = history.edits[history.index] ?? null;
   const ready = photo?.status === "ready" ? photo : null;
@@ -97,6 +106,37 @@ export default function RemoveBackgroundTool() {
       if (url) URL.revokeObjectURL(url);
     };
   }, [file]);
+
+  // A drawn checkerboard background (checked in its own worker, loaded only now).
+  useEffect(() => {
+    setFake(null);
+    const from = file && formatFromExtension(file.name);
+    if (!file || !from || !info.inputs.includes(from)) return;
+    const abort = new AbortController();
+    import("@/lib/image/fake-bg-client")
+      .then(({ detectFakeBackground }) => detectFakeBackground(file, from, { signal: abort.signal }))
+      .then(({ found }) => !abort.signal.aborted && setFake(found ? { status: "found" } : { status: "none" }))
+      .catch(() => undefined);
+    return () => abort.abort();
+  }, [file]);
+  useEffect(() => () => {
+    if (fake?.status === "done") URL.revokeObjectURL(fake.url);
+  }, [fake]);
+
+  async function fixFake() {
+    const from = file && formatFromExtension(file.name);
+    if (!file || !from) return;
+    const to = fakeBgOutput(output);
+    setFake({ status: "working" });
+    try {
+      const { removeFakeBackground } = await import("@/lib/image/fake-bg-client");
+      const { buffer } = await trackTool("remove-background", { from, to, files: [file] }, () => removeFakeBackground(file, from, to), (o) => o.buffer.byteLength);
+      const url = URL.createObjectURL(new Blob([buffer], { type: formats[to].mime }));
+      setFake({ status: "done", url, name: renameExtension(file.name, to).replace(new RegExp(`\\.${to}$`), `-${t("suffix")}.${to}`) });
+    } catch (error) {
+      setFake({ status: "error", code: errorCode(error) });
+    }
+  }
 
   // People mode: find the person once per photo (the first time also downloads MediaPipe).
   useEffect(() => {
@@ -207,7 +247,7 @@ export default function RemoveBackgroundTool() {
   const kept = mask ? Math.round((mask.data.reduce((a, v) => a + v, 0) / (255 * mask.data.length)) * 100) : null;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" data-fake={fake?.status}>
       {/* Chosen before the photo: the "people" mode downloads MediaPipe only when a photo is opened in it. */}
       <ChoiceGroup
         legend={t("method")}
@@ -228,6 +268,18 @@ export default function RemoveBackgroundTool() {
         <div className="flex flex-col gap-4">
           {photo?.status === "loading" && <p className="text-sm text-muted">{t("loading")}</p>}
           {photo?.status === "error" && <ToolAlert>{te(photo.code)}</ToolAlert>}
+          {(fake?.status === "found" || fake?.status === "working") && <FakeBgNotice picked={output} onFix={fixFake} busy={fake.status === "working"} />}
+          {fake?.status === "error" && <ToolAlert>{te(fake.code)}</ToolAlert>}
+          {fake?.status === "done" && (
+            <p role="status" className="flex flex-wrap items-center gap-2 text-sm">
+              <a href={fake.url} download={fake.name} className={`${buttonPrimarySmall} min-h-11 sm:min-h-0`} data-testid="fake-bg-download">
+                <Download aria-hidden="true" className="h-4 w-4" />
+                {tc("download")}
+                <span className="sr-only"> {fake.name}</span>
+              </a>
+              <span className="text-muted">{fake.name}</span>
+            </p>
+          )}
           {ready && edit && (
             <div className="flex flex-col gap-4" onKeyDown={shortcuts}>
               {method === "people" && person?.status === "loading" && <p className="text-sm text-muted">{t("findingPerson", { size: PEOPLE_DOWNLOAD_MB })}</p>}
