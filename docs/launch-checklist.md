@@ -44,6 +44,8 @@ Las `NEXT_PUBLIC_*` se fijan al construir: si se cambian, redesplegar.
 | `NEXT_PUBLIC_ADSENSE_SLOT_RESULT` | `0987654321` |
 | `NEXT_PUBLIC_MODELS_BASE_URL` | `https://modelos.fileflect.com` (opcional: copia propia de los modelos de IA en Cloudflare R2, [docs/modelos-r2.md](modelos-r2.md); vacía = solo Hugging Face) |
 | `NEXT_PUBLIC_SOURCE_URL` | `https://github.com/Juan-Aste/fileflip` (opcional: solo cuando el repo sea público; muestra «Código fuente» en el footer y en créditos, obligación de la AGPL-3.0 §13; vacía = no aparece) |
+| `GOOGLE_TTS_API_KEY` | (opcional, fase 13: clave de Google Cloud Text-to-Speech restringida a esa API, [docs/tts-nube.md](tts-nube.md); vacía = no hay «Voz IA (nube)». **Solo del servidor**, nunca `NEXT_PUBLIC_`) |
+| `TTS_MONTHLY_CHAR_LIMIT` | `3500000` (opcional: tope mensual global de la voz en la nube; también `TTS_DAILY_CHARS_ANON`=20000, `TTS_DAILY_CHARS_USER`=100000, `TTS_REQUESTS_PER_MINUTE`=60) |
 | `RATE_LIMIT_PER_MINUTE` | `20` |
 | `TEMP_FILE_TTL_MINUTES` | `60` |
 
@@ -117,6 +119,13 @@ Antes: [`docs/escaneo-secretos.md`](escaneo-secretos.md) (sin secretos en el his
 - [ ] Railway: `NEXT_PUBLIC_SOURCE_URL=https://github.com/Juan-Aste/fileflip` y redesplegar.
 - [ ] Comprobar: el footer y `/es/creditos` muestran «Código fuente» con el enlace al repositorio.
 
+## 9d. Voz IA en la nube (opcional, fase 13.3)
+Pasos detallados en [`docs/tts-nube.md`](tts-nube.md).
+- [ ] Google Cloud: proyecto, facturación, «Cloud Text-to-Speech API» habilitada, presupuesto de US$5 con avisos al 50/90/100 %, clave de API restringida solo a esa API.
+- [ ] Railway: `GOOGLE_TTS_API_KEY` (y opcionalmente `TTS_MONTHLY_CHAR_LIMIT`); `AUTH_SECRET` y `MONGODB_URI` definidas.
+- [ ] Correr `GOOGLE_TTS_API_KEY=… node scripts/tts/cloud-samples.mjs` (con `--wer` y `WHISPER_DIR` para medir) y subir `public/tts-samples/cloud/`, `src/lib/tts/cloud-samples.json` (y `docs/tts-wer/cloud.json`) a `dev`.
+- [ ] Comprobar: en `/es/leer-texto-en-voz-alta` aparece «Voz IA (nube)» con el aviso de Google, lee sin pausas y «Descargar MP3» funciona (también en `/zh/text-to-speech`); `/es/admin` muestra el uso del mes y del día.
+
 ## 10. Verificar después de publicar
 - [ ] `https://fileflect.com/api/health` → `{"status":"ok","gotenberg":true}`.
 - [ ] `https://fileflect.com/` redirige a `/es` (o al idioma del navegador).
@@ -125,6 +134,9 @@ Antes: [`docs/escaneo-secretos.md`](escaneo-secretos.md) (sin secretos en el his
 - [ ] Iniciar sesión con Google y con enlace por email; entrar a `/es/admin` con el correo de `ADMIN_EMAILS`.
 - [ ] Leer en voz alta (`/es/leer-texto-en-voz-alta`): con las voces del dispositivo lee sin descargar nada; con "Voz IA" pide confirmar la descarga (~398 MB desde Hugging Face, o ~200 MB desde `modelos.fileflect.com` si está `NEXT_PUBLIC_MODELS_BASE_URL`; nunca desde Railway) y después lee y descarga MP3. No requiere variables ni archivos públicos nuevos; la CSP no define `connect-src` (si algún día se agrega, incluir `https://huggingface.co` y `https://*.hf.co`, ver [`docs/tts-voz-ia.md`](tts-voz-ia.md)).
 - [ ] Fase 10 (sin variables, servicios ni cambios de CSP nuevos; todo en el navegador): Excel a CSV (`/es/excel-a-csv`) convierte un XLSX; Editar PDF (`/es/editar-pdf`) agrega un texto y guarda; Transcribir audio a texto (`/es/transcribir-audio-a-texto`) descarga el modelo rápido (~43 MB desde Hugging Face, no desde Railway; si algún día se define `connect-src`, incluir `https://huggingface.co` y `https://*.hf.co`) y transcribe una nota de voz; las guías (`/es/guias`, `/en/guides`, `/pt/guias`, `/fr/guides`, `/zh/guides`) cargan con sus capturas (`public/guides/*.webp`) y figuran en `sitemap.xml`.
+- [ ] Fase 12 (sin variables ni servicios nuevos): Convertir video (`/es/convertir-video`) pasa un AVI o WMV a MP4 y `/es/avi-a-mp4` carga; la primera vez descarga el motor FFmpeg (`/ffmpeg/core-0.12.10/ffmpeg-core.wasm`, ~31 MB, **desde nuestro dominio**, con `Cache-Control: public, max-age=31536000, immutable`; si se define `connect-src`/`script-src` en la CSP debe seguir permitido `'self'` con `wasm-unsafe-eval`). Convertir audio pasa un WMA o AMR a MP3. `/es/creditos` lista los componentes GPL/LGPL de FFmpeg con enlace a su código fuente. Quitar fondo: resuelto en la fase 14 (u2netp reemplazado por recorte asistido). Comprimir PDF no cambia (Ghostscript evaluado y descartado, [`docs/pdf-ghostscript-eval.md`](pdf-ghostscript-eval.md)).
+- [ ] Fase 14 (sin variables ni servicios nuevos, sin modelos para subir a R2): `/es/quitar-fondo` abre una foto, muestra el rectángulo y el resultado al instante, los pinceles «mantener»/«quitar» y deshacer/rehacer funcionan (también con el dedo en un celular) y descarga PNG transparente, JPG y WEBP del tamaño original. La página no hace ningún pedido a `/bg/` (u2netp ya no existe) y `/es/creditos` ya no lista U²-Net. Medir Lighthouse móvil de `/es/quitar-fondo` en producción (en el contenedor dio 87, igual que antes de la fase 14 y que páginas sin cambios; `docs/perf/2026-11-02-phase14.md`).
+- [ ] Fase 15 (sin variables ni servicios nuevos, nada para subir a R2): en `/es/quitar-fondo`, modo «Personas (automático)» por defecto: al abrir un retrato el recorte aparece solo y los pinceles lo corrigen; la primera vez se descargan `/mediapipe/tasks-vision-1.1.1/vision_wasm_internal.{js,wasm}` (~3,9 MB con gzip) y `/models/selfie_segmenter-float16-v1.tflite` (250 KB) **desde nuestro dominio**, con caché `immutable`, y nada de MediaPipe al cargar la página. Con una foto de un producto avisa «No encontramos una persona clara» y el botón pasa al rectángulo. Probar en un iPhone (Safari) y en Android. `/es/creditos` lista MediaPipe Selfie Segmenter y `@mediapipe/tasks-vision` (Apache-2.0). Medir Lighthouse móvil de `/es/quitar-fondo` en producción (en el contenedor dio 90; `docs/perf/2026-11-02-phase15.md`).
 - [ ] Con Pro apagado: no hay enlace "Precios" en el header ni en el footer, `/es/pricing` da 404 y `sitemap.xml` no lo incluye. (Cuando se encienda Pro: `/es/pricing` muestra los precios del país y una suscripción de prueba llega como activa por el webhook.)
 - [ ] `/es/terms` y `/es/privacy` muestran "Juan Pablo Aste" y contact@fileflect.com; `/es/contact` muestra contact@fileflect.com y el horario.
 - [ ] En `/es/login`, debajo de los botones, el texto "Al continuar, aceptas los Términos y condiciones y la Política de privacidad…" con los dos enlaces. Pedir un enlace por email: la página pasa a "Revisa tu correo" (B-26) y el correo llega.

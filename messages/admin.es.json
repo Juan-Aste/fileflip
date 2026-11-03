@@ -91,6 +91,16 @@
         "topError": "Error más frecuente",
         "several": "Varias (según el par)"
       }
+    },
+    "tts": {
+      "title": "Voz IA en la nube (Google)",
+      "month": "Caracteres este mes",
+      "monthDetail": "Tope mensual {limit} ({percent} usado). Al llegar se desactiva hasta el mes siguiente.",
+      "day": "Caracteres hoy",
+      "utc": "Mes y día en UTC.",
+      "memoryOnly": "Sin MongoDB: contado solo en la memoria de esta instancia.",
+      "disabled": "Desactivada: falta GOOGLE_TTS_API_KEY en el servidor (docs/tts-nube.md).",
+      "error": "No se pudo leer el uso de la voz en la nube."
     }
   }
 }

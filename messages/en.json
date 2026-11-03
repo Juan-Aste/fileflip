@@ -241,6 +241,8 @@
     "videoCodecUnsupported": "Your browser can't read the video in this file (for example, H.264 or HEVC in some browsers). Try Chrome, Edge or Safari, or choose a format that doesn't need to re-encode it.",
     "videoEncoderUnsupported": "Your browser can't create video in this format (MOV needs H.264). Try Chrome, Edge or Safari, or choose MP4, WebM or MKV.",
     "videoTooLong": "The video is too long: the maximum is 2 hours per file.",
+    "legacyVideoTooLong": "This older format is converted with a slower engine: the maximum is 20 minutes of video per file.",
+    "legacyAudioTooLong": "This older format is converted with a slower engine: the maximum is 1 hour of audio per file.",
     "videoRangeInvalid": "Check the times: the start must come before the end and both must be inside the video.",
     "gifTooManyFrames": "The GIF would have too many frames: shorten the clip or lower the frames per second.",
     "modelEmpty": "This model has no faces (triangles) to convert: it may be empty or a point cloud.",
@@ -250,7 +252,10 @@
     "modelXmlTooLarge": "This 3MF or COLLADA file is too large to read in the browser: the maximum is 100 MB of XML (uncompressed).",
     "modelFbxVersion": "This FBX is older than version 7.0 (2011), which we can't read. Export it again as FBX 7.x (binary or ASCII).",
     "dxfEmpty": "This DXF has nothing visible to draw in model space: it may be empty, have every layer turned off or use only entities we don't draw.",
-    "dxfTooComplex": "This DXF is too complex to draw in the browser: it goes over 5 million points, nests blocks more than 16 levels deep (or a block inserts itself) or repeats a block more than 10,000 times."
+    "dxfTooComplex": "This DXF is too complex to draw in the browser: it goes over 5 million points, nests blocks more than 16 levels deep (or a block inserts itself) or repeats a block more than 10,000 times.",
+    "ttsDailyLimit": "You reached today's limit for the cloud AI voice. You can keep going with your device's voices or private mode.",
+    "ttsMonthlyLimit": "The cloud AI voice is not available for the rest of this month. You can keep going with your device's voices or private mode.",
+    "ttsTokenExpired": "The page was open for a long time. Please try again."
   },
   "Tools": {
     "merge-pdf": {
@@ -823,20 +828,20 @@
     },
     "remove-background": {
       "title": "Remove image background",
-      "description": "Remove the background from photos of people, products or pets and download a transparent PNG or a version over a color.",
+      "description": "Remove the background from photos of people automatically, or of objects by drawing a rectangle, then touch up with brushes. Transparent PNG, JPG or WEBP, no upload.",
       "action": "Remove background",
-      "about": "Separates the main subject of the photo (a person, a product, a pet, an object) and removes the background: download a PNG with a transparent background for slides, online stores or designs, or a JPG over white or the color you pick. It uses a small AI model (U²-Net) that runs on your device: the photo isn't uploaded to any server. You can process several photos at once.",
+      "about": "Removes a photo's background in two ways. In “People (automatic)” mode, an AI model (Google's MediaPipe Selfie Segmenter) finds the person as soon as you choose the photo, and a classic method (GrabCut) refines the edge using the photo's own colors. In “Objects and products (rectangle)” mode, for products, objects or pets, you enclose the subject in a rectangle and GrabCut tells its colors from the background's, with no model at all. Either way you see the result at once and fix it with a “keep” brush and a “remove” brush. Everything happens on your device: the photo is not uploaded. You get a PNG or WEBP with a transparent background, or a JPG or WEBP over white or the color you choose, the same size as the original.",
       "faq": {
-        "q1": "Which photos work best?",
-        "a1": "Photos with a clear main subject that stands out from the background: a portrait, a product on a table, a pet, an object. With very busy backgrounds, several subjects of the same size or a subject filling almost the whole photo, the result can be imprecise. Very fine edges (loose hair, fur, branches) come out softened.",
+        "q1": "Which mode should I choose?",
+        "a1": "“People (automatic)” for portraits, selfies and photos of one or more people: the cutout is done for you, and sometimes hair, hands or something the person holds need a touch-up. “Objects and products (rectangle)” for everything else (a product on a table, an object, a pet): the automatic model only recognizes people. The rectangle works best when the subject's colors differ from the background.",
         "q2": "Are my photos uploaded?",
-        "a2": "No. The model is downloaded once from our site (about 19 MB, less compressed) and then everything happens in your browser. Neither the photo nor the result leaves your device.",
-        "q3": "Which format do I get?",
-        "a3": "With a transparent background, PNG (the common format that keeps transparency everywhere). With a white or colored background, JPG, lighter and accepted anywhere. The photo keeps its original size.",
-        "q4": "Can I use it for an ID photo?",
-        "a4": "Yes: remove the background with the white option (or light blue, with a color) and then use the ID photo maker to crop it to the document size. Always check the requirements: some offices don't accept edited photos.",
+        "a2": "No. The photo is processed in your browser and neither it nor the result leaves your device. The “People” mode downloads MediaPipe's engine and model once, from Fileflect (about 4 MB; then they stay in the browser cache); the rectangle mode downloads nothing.",
+        "q3": "Why is the automatic mode only for people?",
+        "a3": "Models that remove the background from anything are trained on thousands of other people's photos, and we found none whose training photos clearly allow commercial use. For people we use MediaPipe Selfie Segmenter, which Google publishes under the Apache-2.0 license and which, according to its model card, was trained on photos of people who gave their consent. For objects we prefer an honest assisted cutout: you show the subject with the rectangle and the method does the rest.",
+        "q4": "Which format should I download?",
+        "a4": "With a transparent background, PNG (most compatible) or WEBP (smaller). Over white or a color, JPG or WEBP. The photo keeps its original size. JPG cannot store transparency: if you pick it, the background will be white or the chosen color.",
         "q5": "Are there limits?",
-        "a5": "Up to 30 MB and 40 megapixels per photo, in JPG, PNG, WEBP, AVIF, GIF (first frame) or BMP, and up to 3 minutes per photo. The model looks at the image at 320 × 320 and the cutout is scaled to the original size, so the edges are soft: it isn't a pixel-precise manual cutout."
+        "a5": "One photo at a time, up to 30 MB and 40 megapixels, in JPG, PNG, WEBP, AVIF, GIF (first frame) or BMP. The cutout is worked out on a copy 480 pixels on its longest side so it answers instantly, then applied at the original size with a softened edge: loose hair and very fine edges come out softened, not cut strand by strand."
       }
     },
     "scan-document": {
@@ -1548,7 +1553,7 @@
     },
     "audio-converter": {
       "title": "Audio Converter",
-      "description": "Convert audio between MP3, WAV, FLAC, OGG, M4A and AIFF in your browser, without uploading your files.",
+      "description": "Convert audio between MP3, WAV, FLAC, OGG, M4A and AIFF (and read WMA, AMR or AC3), in your browser without uploading your files.",
       "action": "Convert audio",
       "about": "Convert songs, voice notes, podcasts and recordings between the most used formats: MP3 to play anywhere, lossless WAV, FLAC or AIFF to edit or archive, OGG (Opus) for the web and M4A (AAC) for Apple devices. Reads MP3, WAV, FLAC, OGG, Opus, M4A, AAC, WebM and AIFF, and you can choose the quality. The conversion happens on your device: files aren't uploaded to any server.",
       "faq": {
@@ -1562,7 +1567,9 @@
         "a4": "Up to 200 MB per file on the free plan (500 MB with Pro) and 3 hours long, because the result is built in your browser's memory. Only the main audio track is kept; if the file is a video, the picture is ignored.",
         "a4NoPro": "Up to 200 MB per file and 3 hours long, because the result is built in your browser's memory. Only the main audio track is kept; if the file is a video, the picture is ignored.",
         "q5": "What is AIFF and when should I use it?",
-        "a5": "AIFF is Apple's lossless format, the Mac counterpart of WAV used by Logic or GarageBand. Uncompressed AIFF and AIFF-C (8, 16, 24 and 32-bit) are read and AIFF is written in 16 bits; compressed AIFF-C files (μ-law, for example) aren't supported."
+        "a5": "AIFF is Apple's lossless format, the Mac counterpart of WAV used by Logic or GarageBand. Uncompressed AIFF and AIFF-C (8, 16, 24 and 32-bit) are read and AIFF is written in 16 bits; compressed AIFF-C files (μ-law, for example) aren't supported.",
+        "q6": "Does it read WMA, AMR (voice notes) or AC3?",
+        "a6": "Yes. Those formats are read with an FFmpeg engine that is downloaded the first time (about 31 MB, from our domain), only when you need it. It's useful for old Windows Media songs (WMA), voice notes and recordings from older phones (AMR), and the AC3 sound of DVDs (mixed down to stereo). With these formats the maximum is 1 hour of audio per file. Everything happens on your device."
       }
     },
     "trim-audio": {
@@ -1635,7 +1642,7 @@
     },
     "video-converter": {
       "title": "Video Converter",
-      "description": "Convert videos between MP4, MOV, MKV and WebM in your browser, without uploading your files.",
+      "description": "Convert videos between MP4, MOV, MKV and WebM, plus old AVI, WMV, FLV, MPG or 3GP files, in your browser without uploading them.",
       "action": "Convert video",
       "about": "Change the format of your videos between MP4 (the one every phone, TV and social network plays), MOV (iPhone and Mac), MKV and WebM (the web's format). If the video already uses a codec the chosen format accepts, it is copied without re-encoding: it takes seconds and loses no quality. Otherwise it is re-encoded at high quality with your browser's codec. The sound goes along with the picture. Everything happens on your device: videos aren't uploaded to any server.",
       "faq": {
@@ -1646,8 +1653,10 @@
         "q3": "Why did my MP4 come out in VP9 or AV1?",
         "a3": "Some browsers (such as Chromium or Firefox on Linux) have no H.264 encoder. Then the MP4 is made with VP9 or AV1, which play in Chrome, Edge, Firefox and Android but maybe not on iPhone. For H.264 use Chrome, Edge or Safari; you'll see a notice when it's missing.",
         "q4": "Is there a limit?",
-        "a4": "Up to 200 MB per file on the free plan (500 MB with Pro) and 2 hours long, because the video is built in your browser's memory. The main video and audio tracks are kept; embedded subtitles aren't copied. AVI, WMV and FLV can't be read yet.",
-        "a4NoPro": "Up to 200 MB per file and 2 hours long, because the video is built in your browser's memory. The main video and audio tracks are kept; embedded subtitles aren't copied. AVI, WMV and FLV can't be read yet."
+        "a4": "Up to 200 MB per file on the free plan (500 MB with Pro) and 2 hours long, because the video is built in your browser's memory. The main video and audio tracks are kept; embedded subtitles aren't copied. Older formats (AVI, WMV, FLV…) have their own limits: see the next question.",
+        "a4NoPro": "Up to 200 MB per file and 2 hours long, because the video is built in your browser's memory. The main video and audio tracks are kept; embedded subtitles aren't copied. Older formats (AVI, WMV, FLV…) have their own limits: see the next question.",
+        "q5": "Can I convert AVI, WMV, FLV, MPG, VOB, 3GP or RM?",
+        "a5": "Yes. Your browser can't read those older formats, so the first time an FFmpeg engine is downloaded (about 31 MB, from our domain); it turns the video into an intermediate format and then the normal conversion follows. It's slower than with MP4 and allows up to 20 minutes of video per file. It works with videos from old cameras, DVDs (VOB), old phones (3GP) and downloads from years ago (AVI, WMV, FLV, RealMedia). Everything happens on your device."
       }
     },
     "extract-audio": {
@@ -1664,7 +1673,9 @@
         "a3": "Only from files you already have on your device and have the right to use. This tool doesn't download videos from the internet.",
         "q4": "Is there a limit?",
         "a4": "Up to 200 MB per video on the free plan (500 MB with Pro) and 3 hours of audio. The main audio track is extracted. Converting the AAC audio of an MP4 to another format needs a browser that reads AAC (Chrome, Edge or Safari); “Original” works in all of them.",
-        "a4NoPro": "Up to 200 MB per video and 3 hours of audio. The main audio track is extracted. Converting the AAC audio of an MP4 to another format needs a browser that reads AAC (Chrome, Edge or Safari); “Original” works in all of them."
+        "a4NoPro": "Up to 200 MB per video and 3 hours of audio. The main audio track is extracted. Converting the AAC audio of an MP4 to another format needs a browser that reads AAC (Chrome, Edge or Safari); “Original” works in all of them.",
+        "q5": "Does it work with AVI, WMV, FLV, MPG or VOB videos?",
+        "a5": "Yes: those older formats are read with an FFmpeg engine that is downloaded the first time (about 31 MB), and the sound is saved in the format you choose (“Original” gives MP3). The maximum is 1 hour of audio per file. Everything happens on your device."
       }
     },
     "compress-video": {
@@ -1811,18 +1822,18 @@
       "description": "Paste text or open a file and listen to it with pause and the speed you choose, or download it as MP3 with an AI voice, in your browser.",
       "searchTerms": "TTS read aloud reader narrator voice reader speech synthesis AI voice",
       "action": "Read aloud",
-      "about": "Type or paste text, or open a TXT, Markdown, HTML, text PDF, Word (DOCX) or EPUB file or a photo of a document, and listen to it read aloud. You can pause, go back to the previous sentence, skip to the next one and choose the speed, from 0.5× to 2×. The sentence being read is highlighted so you can follow along. It reads with your device's voices or with a more natural AI voice (Supertonic 3) that runs in your browser and lets you download the reading as MP3. The text is extracted and turned into speech on your device: the file is never uploaded to a server.",
+      "about": "Type or paste text, or open a TXT, Markdown, HTML, text PDF, Word (DOCX) or EPUB file or a photo of a document, and listen to it read aloud. You can pause, go back to the previous sentence, skip to the next one and choose the speed, from 0.5× to 2×. The sentence being read is highlighted so you can follow along. By default it reads at once with the best voice on your device. When available, the \"AI voice (cloud)\" sounds more natural, also in Chinese, and lets you download an MP3: the text is sent to Google to generate the voice, and we don't keep it. \"Private mode\" uses an AI voice (Supertonic 3) that runs in your browser: the text never leaves your device. The file is always read in your browser: it is never uploaded to a server.",
       "faq": {
         "q1": "Is my text uploaded to a server?",
-        "a1": "No. The file is read and its text extracted in your browser, and the AI voice generates the audio on your device: the only download is the model files, the first time, from our model server or from Hugging Face. Device voices also read on your computer or phone; only voices marked \"online\" (such as Google or Microsoft voices in Chrome and Edge) send the text to that provider to generate the audio.",
+        "a1": "The file isn't: it is read and its text extracted in your browser. The text depends on the voice you choose. With \"Listen\" (device voices) it is read on your device; only voices marked \"online\" (such as Google or Microsoft voices in Chrome and Edge) send the text to that provider. With \"AI voice (cloud)\", each sentence goes through our server to Google Cloud to generate the audio: we neither store nor log the text or the audio, we only count how many characters are used. In \"Private mode\" the AI voice generates the audio on your device and the text never leaves it: the only download is the model files, the first time.",
         "q2": "Which files can I open?",
         "a2": "TXT, Markdown, HTML, PDFs with text, Word (DOCX), EPUB and photos or scans (JPG, PNG, WEBP, TIFF, HEIC…), whose text is recognized with OCR. Up to 50,000 characters per reading; longer text is cut and we tell you.",
         "q3": "Which languages does it read?",
-        "a3": "We detect the language of the text (Spanish, English, Portuguese, French or Chinese) and pick a voice for it; you can change the language and the voice. The AI voice and MP3 download are available in Spanish, English, Portuguese and French; Chinese is read with the device voices, which depend on your system and browser.",
-        "q4": "What's the difference between device voices and the AI voice?",
-        "a4": "Device voices come with your system or browser: they start at once and download nothing, but their quality varies and they can't be saved as a file. The AI voice (Supertonic 3) sounds more natural, has 10 voices and can be downloaded as MP3, but the first time it downloads the model, 200 to 400 MB depending on the server (the tool shows the size before starting; then it stays saved in your browser) and it generates the audio with your device's processor: on a computer it takes about as long as the audio lasts; on a phone, quite a bit longer. Before downloading you can listen to a sample of each voice; they all use the same model, so the download is the same for any of them and happens only once.",
+        "a3": "We detect the language of the text (Spanish, English, Portuguese, French or Chinese) and pick a voice for it; you can change the language and the voice. The \"AI voice (cloud)\" has voices in all five languages, Chinese included. \"Private mode\" is available in Spanish, English, Portuguese and French. Device voices depend on your system and browser.",
+        "q4": "What's the difference between \"Listen\", \"AI voice (cloud)\" and \"Private mode\"?",
+        "a4": "\"Listen\" uses your system's or browser's voices: it starts at once and downloads nothing; we pick the most natural one you have (such as Edge's \"Natural\" voices), but quality varies and they can't be saved as a file. \"AI voice (cloud)\", when available, uses Google's WaveNet voices: it sounds more natural, starts in a second or two and can make an MP3; it has a daily character limit and the text is sent to Google. \"Private mode\" uses the Supertonic 3 AI voice in your browser: the text never leaves your device, but the first time it downloads the model, 200 to 400 MB depending on the server (the tool shows the size before starting; then it stays saved) and it generates the audio with your device's processor, slower on a phone. Before downloading you can listen to a sample of each voice.",
         "q5": "How do I download the reading as MP3?",
-        "a5": "Choose the AI voice and press \"Download MP3\". It is generated sentence by sentence on your device, with a progress bar and a cancel button, and the file is named after the document's title or the first words of the text. On phones the MP3 can have up to 3,000 characters (about 4 minutes of audio).",
+        "a5": "Press \"Download MP3\". If the \"AI voice (cloud)\" is available, the MP3 is put together in your browser from the sentences it returns; if not, or if you chose \"Private mode\", it is generated sentence by sentence on your device with the Supertonic 3 AI voice (on phones, up to 3,000 characters, about 4 minutes of audio). There is a progress bar and a cancel button, and the file is named after the document's title or the first words of the text.",
         "q6": "Can I publish audio made with the AI voice?",
         "a6": "Yes, but the model's license (OpenRAIL-M) requires saying that it is an AI-generated voice and forbids using it to, among other things, impersonate people, defame, harass or spread false information to harm others. The full restrictions are in our Terms and in the model's license, linked next to the download button."
       }
@@ -2114,7 +2125,7 @@
             "Files that are processed on our server are deleted within 1 hour at most. We don't look at them or keep them.",
             "We don't sell your data.",
             "We never store the name or content of your files.",
-            "\"Text to speech\" processes the text on your device, including with the AI voice. Only browser voices marked \"online\" send the text to their provider."
+            "\"Text to speech\" processes the text on your device with your device's voices and private mode. If you choose \"AI voice (cloud)\", the text is sent to Google to generate the voice, and we don't keep it. Browser voices marked \"online\" also send it to their provider."
           ]
         },
         {
@@ -2130,8 +2141,8 @@
             {
               "data": "Text you listen to with \"Text to speech\"",
               "purpose": "Reading it aloud or making the MP3",
-              "basis": "—",
-              "retention": "We don't receive it (processed on your device)"
+              "basis": "Your request (only with \"AI voice (cloud)\")",
+              "retention": "We don't receive it, except with \"AI voice (cloud)\": it passes through our server to Google Cloud and is neither stored nor logged (we only count how many characters are used per day and per month)"
             },
             {
               "data": "Files you process on our server (office documents, PDF to Word, HTML to PDF, PDF/A and, only when your browser can't do it, some images)",
@@ -2180,8 +2191,9 @@
             "Railway (USA): servers and database that run the site.",
             "Resend (USA): sends the email with your sign-in link.",
             "Google (USA): Google sign-in, if you choose it; and Google AdSense, which shows ads (see section 6).",
+            "Google Cloud (USA): if you choose \"AI voice (cloud)\" in \"Text to speech\" (or download the MP3 with it), Google Cloud Text-to-Speech receives the text of each sentence, the voice and the speed, and returns the audio. The request comes from our server, so Google does not receive your IP or your account. We don't keep the text or the audio.",
             "Hugging Face (USA): if you choose the AI voice of \"Text to speech\" or use \"Audio to text\", your browser downloads the model files (once per model) from our storage on Cloudflare R2 (Cloudflare, USA) or, if it is unavailable, from Hugging Face. As with any download, whoever serves the file receives your IP address and technical browser data; your text and your audio are not sent.",
-            "\"Online\" voices of your browser (such as Google in Chrome or Microsoft in Edge): if you choose one of them in \"Text to speech\", the browser sends the text to that provider to generate the audio, under that provider's privacy policy. The browser offers them, not us, and we mark them \"online\"; the other voices and the AI voice read on your device."
+            "\"Online\" voices of your browser (such as Google in Chrome or Microsoft in Edge): if one of them is used in \"Text to speech\" (the reader picks it first when it is the most natural voice available; you can switch to another), the browser sends the text to that provider to generate the audio, under that provider's privacy policy. The browser offers them, not us, and we mark them \"online\"; the other voices and the AI voice read on your device."
           ],
           "proItems": [
             "Mercado Pago (Argentina and the region): processes Pro plan payments. It receives your payment details directly; we don't."
@@ -2197,6 +2209,7 @@
           "heading": "International transfers",
           "body": [
             "Some providers process data outside Argentina, mainly in the United States. We choose providers with appropriate security measures.",
+            "If you use \"AI voice (cloud)\", the text is sent to Google Cloud, which may process it in the United States or other countries where it operates.",
             "By creating an account, you expressly accept these transfers."
           ]
         },
@@ -3336,13 +3349,47 @@
   },
   "RemoveBackgroundTool": {
     "background": "Background",
-    "transparent": "Transparent (PNG)",
-    "white": "White (JPG)",
-    "color": "Color (JPG)",
+    "transparent": "Transparent",
+    "white": "White",
+    "color": "Color",
     "colorLabel": "Background color",
-    "note": "The first time, the model is downloaded from our site (about {size} MB); after that it doesn't need our servers. Works best with a clear main subject.",
+    "format": "Format",
+    "note": "Assisted cutout: you frame the subject with a rectangle and fix it with brushes. It runs on your device, with no model to download and no upload. It is not automatic; it works best when the subject's colors differ from the background.",
+    "loading": "Preparing the photo…",
+    "cutting": "Working out the cutout…",
+    "status": "Cutout ready: {percent}% of the photo is kept.",
+    "step1": "Adjust the rectangle so it encloses the subject with a little margin (drag it or its corners; with the keyboard, arrows and Shift + arrows). Everything outside it is removed.",
+    "step2": "Check the result. If some background is left, pick “Brush: remove” and paint over it; if part of the subject was lost, pick “Brush: keep” and paint over it.",
+    "step3": "Choose the background (transparent, white or a color) and the format, then download. The photo keeps its original size.",
+    "mode": "Tool",
+    "modeRect": "Rectangle",
+    "modeKeep": "Brush: keep",
+    "modeRemove": "Brush: remove",
+    "brushSize": "Brush size",
+    "brushSmall": "Small",
+    "brushMedium": "Medium",
+    "brushLarge": "Large",
+    "undo": "Undo",
+    "redo": "Redo",
+    "original": "Original photo",
+    "result": "Result",
+    "previewLabel": "Cutout preview",
+    "brushHint": "Paint with your finger or mouse over the preview: green keeps, red removes. Removed parts show faintly so you can bring them back.",
+    "jpgNoAlpha": "JPG cannot store transparency: the background will be white or the chosen color. For transparency, use PNG or WEBP.",
     "done": "Background removed ({pixels} px).",
-    "suffix": "no-background"
+    "suffix": "no-background",
+    "method": "Mode",
+    "methodPeople": "People (automatic)",
+    "methodRect": "Objects and products (rectangle)",
+    "notePeople": "Automatic mode for photos of people: when you choose the photo, an AI model (MediaPipe) finds the person and removes the background; then you can fix it with brushes. The first time, about {size} MB are downloaded from Fileflect; your photo never leaves your device. For objects, products or pets, use the rectangle mode.",
+    "findingPerson": "Finding the person… (about {size} MB are downloaded the first time)",
+    "peopleFailed": "The automatic mode could not be loaded (offline?).",
+    "peopleNoWebgl": "The automatic mode needs WebGL, which is turned off or unavailable in this browser.",
+    "noPerson": "We couldn't find a clear person in this photo. The automatic mode only works with people.",
+    "useRect": "Use the rectangle mode",
+    "peopleStep1": "The person is cut out automatically. Check the result.",
+    "peopleStep2": "If some background is left, choose “Brush: remove” and paint over it; if part of the person is missing (hair, hands, something they hold), choose “Brush: keep” and paint over it.",
+    "modeView": "View"
   },
   "ScanDocumentTool": {
     "mode": "Mode",
@@ -3382,6 +3429,8 @@
     "sourceCodeLink": "View Fileflect’s source code",
     "lgplHeading": "LGPL components",
     "lgplIntro": "These components are used under the GNU Lesser General Public License (LGPL), unmodified and as separate files (WebAssembly modules or shared libraries) that can be replaced with another version. The links for each one lead to its exact source code and the instructions it was built with.",
+    "gplHeading": "GPL and AGPL components",
+    "gplIntro": "These components are used under the GNU General Public License (GPL) or the GNU Affero General Public License (AGPL). Fileflect as a whole is distributed under the AGPL-3.0 or later. Each one links the exact source code of the version we use and how it is built.",
     "enginesHeading": "Bundled engines and data",
     "enginesIntro": "Libraries compiled to WebAssembly that ship inside the packages below, our own libarchive build, the models we serve from our domain and the AI voice of \"Text to speech\" (code ported from the Supertonic SDK, MIT, and the Supertonic 3 model, which your browser downloads from Hugging Face, or a copy with float16 weights from our model server, only if you choose that voice; its OpenRAIL-M license is linked).",
     "servicesHeading": "Server services",
@@ -3439,7 +3488,7 @@
     "statusFinished": "Reading finished",
     "editText": "Edit text",
     "shortcut": "Space bar: pause and resume.",
-    "onlineNote": "\"Online\" voices send the text to their provider (Google, Microsoft…) to generate the audio. The others read on your device.",
+    "onlineNote": "\"Online\" voices send the text to their provider (Google, Microsoft…) to generate the audio. The others read on your device: if you prefer the text not to leave your device, pick one of them (it is remembered).",
     "noSupport": "Your browser can't read aloud with device voices. Try an up-to-date Chrome, Edge, Safari or Firefox.",
     "noVoices": "We found no {language} voices on your device: the browser's default voice will be used and may mispronounce words. You can install voices in your system settings.",
     "speechError": "This voice couldn't read the text. Try another voice or try again.",
@@ -3454,9 +3503,10 @@
     },
     "noTextInFile": "We found no text to read in this file.",
     "engine": "Kind of voice",
-    "engineDevice": "Device voices",
-    "engineAi": "AI voice",
-    "engineAiHint": "The AI voice sounds more natural and can be downloaded as MP3. It downloads once (about {size}) and generates the audio on your device.",
+    "engineDevice": "Listen (device voices)",
+    "engineAi": "Private mode (AI voice on your device)",
+    "engineCloud": "AI voice (cloud)",
+    "engineAiHint": "Private mode: the text never leaves your device. The AI voice (Supertonic 3) downloads once (about {size}) and generates the audio on your device; it can also make an MP3.",
     "aiNoChinese": "The AI voice isn't available in Chinese: the text is read with the device voices.",
     "aiVoiceFemale": "Female {n}",
     "aiVoiceMale": "Male {n}",
@@ -3480,7 +3530,11 @@
     "mp3NoChinese": "MP3 download uses the AI voice, which isn't available in Chinese.",
     "aiLicense": "Model license (OpenRAIL-M)",
     "mp3TooLongMobile": "On a phone the MP3 can have up to {max} characters. Shorten the text or make the MP3 on a computer.",
-    "mp3Done": "MP3 ready: {name}"
+    "mp3Done": "MP3 ready: {name}",
+    "cloudNotice": "AI voice (cloud): your text is sent to Google to generate the voice, and we don't keep it.",
+    "cloudUnavailable": "The cloud AI voice is not available for the rest of this month. You can use your device's voices or private mode.",
+    "aiNoChineseCloud": "Private mode is not available in Chinese: use your device's voices or the cloud AI voice.",
+    "mp3HintCloud": "The MP3 is made with the cloud AI voice (Google Cloud): your text is sent to Google, and we don't keep it. If you publish the audio, say that it is an AI-generated voice."
   },
   "PdfExcelTool": {
     "reading": "Looking for tables in the PDF…",

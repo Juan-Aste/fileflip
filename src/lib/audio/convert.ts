@@ -25,6 +25,7 @@ import {
   type AudioCodec,
 } from "mediabunny";
 import { ConversionError, InputFileError } from "@/lib/convert-error";
+import { legacyFallback, splitProgress, type LegacyHooks } from "@/lib/legacy-media/fallback";
 import { aiffToWav, isAiff, wavToAiff } from "./aiff";
 import { audioPlan, MAX_AUDIO_SECONDS, type AudioOptions } from "./options";
 import { createLevelMeter, normalizeGain, toDb, type NormalizeMode } from "./normalize";
@@ -90,8 +91,22 @@ export async function assertComplete(track: InputTrack, duration: number) {
   if (!last || duration <= 0) throw new ConversionError("fileDamaged");
 }
 
-/** Opens a file for mediabunny, checking it holds audio this browser can decode; the caller disposes it. */
-export async function openAudio(file: Blob) {
+/**
+ * Opens a file for mediabunny, checking it holds audio this browser can decode; the caller disposes it.
+ * Old formats mediabunny or the browser can't read (WMA, AMR, AC-3, the sound of AVI/WMV/FLV/MPG…)
+ * are first rewritten as WAV by the FFmpeg WASM fallback (src/lib/legacy-media).
+ */
+export async function openAudio(file: Blob, hooks?: LegacyHooks) {
+  try {
+    return await openAudioDirect(file);
+  } catch (error) {
+    const rewritten = await legacyFallback(file, "audio", error, hooks);
+    if (!rewritten) throw error;
+    return openAudioDirect(rewritten);
+  }
+}
+
+async function openAudioDirect(file: Blob) {
   // mediabunny has no AIFF demuxer: an AIFF input is rewritten as WAV first.
   const source = isAiff(new Uint8Array(await file.slice(0, 12).arrayBuffer()))
     ? new Blob([aiffToWav(new Uint8Array(await file.arrayBuffer())).wav as Uint8Array<ArrayBuffer>])
@@ -123,8 +138,8 @@ export async function openAudio(file: Blob) {
 }
 
 /** Duration in seconds of an audio file, with the same checks as a conversion. */
-export async function probeAudio(file: Blob): Promise<{ duration: number }> {
-  const { input, duration } = await openAudio(file);
+export async function probeAudio(file: Blob, hooks?: LegacyHooks): Promise<{ duration: number }> {
+  const { input, duration } = await openAudio(file, hooks);
   input.dispose();
   return { duration };
 }
@@ -183,11 +198,13 @@ function applyGain(sample: AudioSample, gainAt: (t: number) => number): AudioSam
 export async function convertAudio(
   file: Blob,
   options: AudioOptions,
-  { signal, onProgress, edit = {} }: { signal?: AbortSignal; onProgress?: (progress: number) => void; edit?: AudioEdit } = {},
+  { signal, onProgress: report, edit = {} }: { signal?: AbortSignal; onProgress?: (progress: number) => void; edit?: AudioEdit } = {},
 ): Promise<AudioResult> {
   const plan = audioPlan(options);
   await ensureEncoder(plan.codec);
-  const { input, track, duration } = await openAudio(file);
+  const progress = splitProgress(report);
+  const onProgress = progress.rest;
+  const { input, track, duration } = await openAudio(file, { signal, onProgress: progress.legacy });
   try {
     if (edit.trim && !validRange(edit.trim, duration)) throw new ConversionError("audioRangeInvalid");
     const trim = edit.trim && { start: edit.trim.start, end: Math.min(edit.trim.end, duration) };

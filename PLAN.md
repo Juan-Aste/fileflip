@@ -499,3 +499,101 @@ Pedida por el dueño el 2026-10-28: la voz IA lee mal números, fechas y símbol
 
 ### 11.6 Verificación final
 - [x] 11.6 Lighthouse móvil ≥ 90 y CLS 0 en el lector y la transcripción, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium, `docs/launch-checklist.md` con `NEXT_PUBLIC_MODELS_BASE_URL` y `NEXT_PUBLIC_SOURCE_URL`
+
+## Fase 12
+
+Pedida por el dueño el 2026-10-31. El proyecto se distribuye bajo AGPL-3.0-or-later con el código público, así que se aceptan componentes GPL-3.0 y AGPL-3.0 (y GPL-2.0-or-later, que puede usarse bajo la GPL-3.0). Siguen prohibidos GPL-2.0-only, licencias no comerciales y SSPL. Cada modelo o voz se revisa por separado (y su dataset). Los componentes (A)GPL enlazan su código fuente exacto en créditos. En orden.
+
+### 12.1 Habilitar GPL/AGPL en las reglas del proyecto
+- [x] 12.1 `chooseLicense`, `tests/licenses.test.ts` y `npm run licenses` aceptan GPL-3.0(-or-later), AGPL-3.0(-or-later) y GPL-2.0-or-later, y rechazan GPL-2.0-only, no comerciales y SSPL; los componentes (A)GPL deben tener enlace a su código fuente; política en `docs/dependencies.md` y README
+
+### 12.2 Piper: voces IA con mejor español (incluida voz argentina)
+- [x] 12.2a Inventario de voces Piper (es_AR, es_MX, es_ES, pt_BR, pt_PT, fr, en, zh) con licencia de cada MODEL_CARD y dataset; calidad medium/high; descartar no comerciales o sin licencia clara (`docs/tts-piper.md`)
+- [x] 12.2b (resuelta: el dueño decidió el 2026-10-31 no integrar Piper ni espeak-ng; voz IA de calidad en la nube, fase 13) Motor Piper en el navegador: VITS ONNX con el onnxruntime-web existente + espeak-ng en WASM (GPL-3.0), versiones y sha256 fijos, carga diferida; tests unitarios
+- [x] 12.2c (resuelta: no se integra Piper, decisión del dueño 2026-10-31) WER con Whisper `base` (~10 frases por idioma, normalización de 11.1) de cada voz Piper candidata contra la mejor de Supertonic; tabla en `docs/`; muestras estáticas por voz
+- [x] 12.2d (resuelta: no se integra Piper, decisión del dueño 2026-10-31) Lector: "Voz IA" con voces de ambos motores agrupadas por idioma, ▶ muestra, tamaño de descarga propio, "Recomendada" por menor WER (es_AR si empata o está a ≤ 1 punto); voz zh si hay una compatible y buena
+- [x] 12.2e (resuelta: no se integra Piper, decisión del dueño 2026-10-31) Descarga R2/Hugging Face con sha256 y Cache API; voces en `scripts/models/sync-r2.mjs`; MP3 y lectura progresiva con ambos motores; tests (MP3 validado de forma independiente por idioma)
+
+### 12.3 Quitar fondo mejorado
+- [x] 12.3a (resuelta: el dueño descartó @imgly/DIS5K el 2026-10-31; se revisó el u2netp actual: DUTS-TR/ImageNet no cumple la regla estricta → decisión del dueño, ver `docs/quitar-fondo-eval.md`) Set propio de fotos de prueba con máscaras de referencia; comparar @imgly/background-removal (y licencia de sus modelos) u otra opción compatible contra u2netp (IoU y tiempo en PC y celular simulado); documentar
+- [x] 12.3b (resuelta: no se integra @imgly; alternativas A–D para u2netp en `docs/quitar-fondo-eval.md`, esperan al dueño) Si gana: integrarlo con carga diferida, aviso de tamaño, R2/Hugging Face, u2netp como opción "rápida"; tests
+
+### 12.4 Formatos de video y audio viejos
+- [x] 12.4a ffmpeg.wasm de un solo hilo (sin SharedArrayBuffer) como respaldo de mediabunny/WebCodecs: AVI, WMV, FLV, MPG, 3GP, VOB, RM si es viable, WMA, AMR, AC3, APE → MP4/WebM/MP3; límites de tamaño y duración; licencia y código fuente del build; tests con archivos generados
+- [x] 12.4b Herramientas de video/audio existentes y sus páginas (formatos nuevos en FAQ y conversión) en 5 idiomas
+- [x] 12.4c Páginas de conversión nuevas (avi-a-mp4, wmv-a-mp4, flv-a-mp4, mpg-a-mp4, wma-a-mp3, amr-a-mp3…) en 5 idiomas; tests
+
+### 12.5 Comprimir PDF más fuerte (opcional según resultados)
+- [x] 12.5 (evaluado: no se integra, no llega al 20 % adicional a calidad comparable; ver `docs/pdf-ghostscript-eval.md`) Evaluar Ghostscript WASM (AGPL-3.0) contra el método actual en PDFs escaneados, con fotos y con texto; integrar como "compresión fuerte" solo si reduce ≥ 20 % adicional en PDFs con imágenes sin romper el texto seleccionable; si no, documentar
+
+### 12.6 Verificación final
+- [x] 12.6 (hecha 2026-11-01: `docs/perf/2026-11-01-phase12.md`; sin regresión contra `main` en la misma máquina) Lighthouse, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium; créditos con enlaces al código fuente; política de privacidad; `docs/launch-checklist.md`; `docs/modelos-r2.md`
+
+## Fase 13
+
+Lector sin descargas (decisión del dueño 2026-10-31). Nadie va a descargar ~200 MB de una página que no conoce, y entre oración y oración había una pausa mientras se generaba la siguiente. Se combinan: voces del dispositivo por defecto («Escuchar»), voz IA en la nube (Google Cloud Text-to-Speech) y la voz IA del navegador (Supertonic) como «Modo privado» opcional. En orden.
+
+### 13.1 Sin pausas entre oraciones
+- [x] 13.1 Generar por adelantado las 2–3 oraciones siguientes (worker para Supertonic, en paralelo con límite para la nube), con cola, cancelación al pausar/saltar/cambiar velocidad o voz y sin duplicar trabajo; medir el silencio entre oraciones antes y después (objetivo < 150 ms en PC con Supertonic y con la nube simulada); `docs/tts-pausas.md`; tests
+
+### 13.2 «Escuchar» con la mejor voz del dispositivo
+- [x] 13.2 (heurística en `docs/tts-voces-dispositivo.md`; el rótulo «Escuchar» llega con el reordenamiento de la 13.4) Modo por defecto «Escuchar» con la mejor voz del idioma (heurística documentada: «Natural», «Online», «Neural», «Google», «Premium», «Enhanced»; para es: es-AR, luego es-419/es-US/es-MX, luego es-ES; Natural de es-AR de Edge primero), voces «en línea» marcadas, se puede cambiar; tests con `speechSynthesis` simulado
+
+### 13.3 Voz IA en la nube (Google Cloud Text-to-Speech)
+- [x] 13.3a Backend `POST /api/tts` (Node) detrás de una interfaz de proveedor, clave `GOOGLE_TTS_API_KEY` solo del servidor; sin la variable la opción no aparece; voces WaveNet por idioma (es, pt-BR, fr-FR, en-US, cmn-CN), pedidos ≤ 5000 bytes, solo `text` (sin SSML del usuario), MP3 sin guardarse
+- [x] 13.3b Protección de costos: límites por IP/usuario/día, por minuto y por pedido, tope mensual global `TTS_MONTHLY_CHAR_LIMIT` (3.500.000) contado en MongoDB (solo números); al llegar al tope se desactiva hasta el mes siguiente; uso del mes y del día en el panel de admin; comprobación de Origin/Referer y token firmado de corta duración
+- [x] 13.3c Lector: «Voz IA (nube)» con lectura progresiva y MP3 armado en el navegador (validado de forma independiente); aviso «Tu texto se envía a Google…»; política de privacidad y FAQ en 5 idiomas; términos de Google Cloud TTS sobre uso comercial del audio documentados
+- [x] 13.3d `docs/tts-nube.md` (pasos del dueño: proyecto, facturación, API, clave restringida, presupuesto con alertas, variables en Railway), `scripts/tts/cloud-samples.mjs` (muestras y WER con Whisper `base` cuando haya clave), `.env.example`, `docs/launch-checklist.md`; tests con la API simulada (límites, tope, sin clave, la clave nunca llega al navegador ni el texto a los logs)
+
+### 13.4 Reordenar el lector
+- [x] 13.4 Orden: 1) «Escuchar» (dispositivo, por defecto); 2) «Voz IA» (nube) para escuchar y «Descargar MP3»; 3) «Modo privado» (Supertonic, aviso de ~200 MB, el texto no sale del dispositivo). MP3 por la nube si está; si no, modo privado. Sin nube o con el tope alcanzado, el lector funciona como hoy. Textos y FAQ en 5 idiomas; Lighthouse ≥ 90, CLS 0, axe, Firefox y WebKit
+
+### 13.5 Verificación final
+- [x] 13.5 Lo mismo que 12.6 para el lector, más revisión de seguridad de `/api/tts` (abuso, tamaños, inyección en SSML)
+
+## Fase 14
+
+«Quitar fondo» con alternativas limpias (decisión del dueño 2026-11-02). El u2netp actual se entrenó con DUTS-TR (sin licencia de uso; imágenes de ImageNet, solo investigación) y no cumple la regla estricta de licencias, que también alcanza a los datos de entrenamiento: se reemplaza. Contexto en `docs/quitar-fondo-eval.md`. En orden.
+
+### 14.1 Verificación de candidatos
+- [x] 14.1 (hecha 2026-11-02: ningún modelo cumple; MediaPipe no verificable → solo recorte asistido GrabCut propio) MediaPipe Selfie Segmenter / Multiclass (licencia del modelo y de los datos según su model card: quién recolectó las imágenes, consentimiento, uso comercial), otros modelos con datos verificablemente comerciales (Open Images V7, COCO con cuidado, sintéticos), descartando SAM/SA-1B, DIS5K, DUTS, ImageNet, P3M, AIM-500 y datasets «solo investigación»; recorte asistido sin modelo (GrabCut). Tabla, enlaces y decisión en `docs/quitar-fondo-eval.md`
+
+### 14.2 Nueva herramienta «Quitar fondo»
+- [x] 14.2a Motor de recorte asistido (GrabCut propio o build mínimo de OpenCV.js) en un worker: rectángulo + trazos «mantener»/«quitar», refinado y suavizado del borde; tests con fotos generadas (fondo liso y con textura, máscara conocida): IoU ≥ 0,9 en los casos simples
+- [x] 14.2b Interfaz: rectángulo, resultado al instante, pinceles «mantener»/«quitar», deshacer/rehacer, táctil, teclado e instrucciones claras; vista previa sobre cuadros, blanco o color; salida PNG transparente y JPG/WEBP con fondo al tamaño original (PNG validado de forma independiente); e2e (rectángulo → corrección → descarga) en Chromium, Firefox y WebKit
+- [x] 14.2c Quitar u2netp del sitio (deja de descargarse, se borra `public/bg/u2netp.onnx`, créditos, `docs/dependencies.md`, `docs/licencia-agpl.md`, avisos), misma URL y slugs; textos, FAQ y metadatos en 5 idiomas con lo que hace ahora (sin prometer «automático» si no hay modelo de personas); guías y otras páginas que mencionen el quitado automático
+- [x] 14.2d (resuelta sin modelo: 14.1 no encontró un modelo de personas verificable; la página dice que el recorte es asistido) Modo «Personas» automático solo si 14.1 encuentra un modelo limpio (carga diferida, aviso de tamaño, R2/Hugging Face, sha256, Cache API, test con imagen sintética o de licencia verificada); si no, se marca como resuelta sin modelo
+
+### 14.3 Verificación final
+- [x] 14.3 (hecha 2026-11-02: sin regresión, 87 en esta máquina igual que antes de la fase 14, CLS 0; `docs/perf/2026-11-02-phase14.md`) Lighthouse móvil ≥ 90 y CLS 0 en la herramienta, detector de clics, axe, Firefox y WebKit, suite de Chromium de las páginas tocadas; créditos, `docs/licencia-agpl.md`, `docs/modelos-r2.md` (si hay modelo nuevo) y `docs/launch-checklist.md`
+
+## Fase 15
+
+Modo «Personas» automático con MediaPipe Selfie Segmenter (pedido del dueño 2026-11-02). **Excepción de licencias aceptada por escrito por el dueño el 2026-11-02** solo para MediaPipe Selfie Segmenter (modelo Apache-2.0; datos de entrenamiento descritos como imágenes con consentimiento de Google, no verificables); no alcanza a Selfie Multiclass ni a otros modelos. En orden.
+
+### 15.1 Modelo y licencia
+- [x] 15.1 (hecha 2026-11-02: «square» float16 v1, IoU media 0,986 contra 0,983 de «landscape»; excepción registrada) Elegir el modelo «square» o «landscape» (medir calidad en fotos), versión exacta del `.tflite` oficial con sha256; registrar la excepción (dueño, fecha, motivo, riesgo) en `docs/quitar-fondo-eval.md` y `docs/licencia-agpl.md`
+
+### 15.2 Integración
+- [x] 15.2a (hecha 2026-11-02: `@mediapipe/tasks-vision` 1.1.1, WASM ES-module SIMD en `/mediapipe/`, modelo en `/models/`, worker `people`) Motor: `@mediapipe/tasks-vision` (Apache-2.0, versión exacta); WASM y modelo servidos desde nuestro dominio (copiados en el build y verificados con sha256), nada de CDNs de terceros; carga diferida solo al elegir «Personas»; CSP (WASM) y sin SharedArrayBuffer; `docs/dependencies.md`, `docs/licencia-agpl.md`, créditos y `npm run licenses`
+- [x] 15.2b (hecha 2026-11-02: `src/lib/bg-remove/people.ts`, franja dudosa ±4 % del lado mayor, 10 tests) Trimapa desde la máscara (zona segura de persona, zona segura de fondo, franja dudosa en el borde) + trazos «mantener»/«quitar», refinado con GrabCut; tests unitarios
+- [x] 15.2c (hecha 2026-11-02: selector antes de la foto, «Personas» por defecto; IoU 0,992 en Chromium) Interfaz: selector «Personas (automático)» / «Objetos y productos (rectángulo)»; máscara automática al subir la foto; pinceles, deshacer/rehacer, fondos, formatos y descarga como hoy; aviso si no hay una persona clara (sugiere el rectángulo)
+- [x] 15.2d (hecha 2026-11-02) Textos en 5 idiomas (descripción, «about», FAQ: automático para personas, rectángulo para objetos, la foto no sale del dispositivo, tamaño de la descarga), misma URL y slugs; créditos con MediaPipe (Apache-2.0) y su model card
+
+### 15.3 Tests y verificación
+- [x] 15.3a (hecha 2026-11-02: IoU 0,992 en Chromium, Firefox, WebKit, iPhone y Android; respaldo en el hilo principal y aviso sin WebGL) e2e con una foto de una persona de licencia verificable (o figura sintética que el modelo detecte): PNG con transparencia, IoU ≥ 0,85 contra una máscara de referencia, sin pedidos a otros orígenes; Firefox y WebKit (`@xb`)
+- [x] 15.3b (hecha 2026-11-02: Lighthouse móvil 90 y CLS 0 en `/es/quitar-fondo`, main 92 en la misma sesión; 190 tests de Chromium) Lighthouse móvil ≥ 90 y CLS 0 (comparado con main en la misma sesión si la máquina está lenta), detector de clics, axe, suite de Chromium de las páginas tocadas; docs finales
+
+## Fase 16
+
+CI del PR de `dev` a `main` en verde (pedido del dueño 2026-11-02). El job `e2e-browsers` (run 41540432874, commit e6e377c) falló: 20 fallos, 1 flaky, 131 pasan. En orden.
+
+### 16.1 Herramientas del sistema en `e2e-browsers`
+- [x] 16.1 (hecha 2026-11-02: el job corre en `ubuntu-latest` con `playwright install --with-deps` y apt; `tts-cloud` fallaba por ffmpeg en su `beforeAll`) poppler-utils, patch y ffmpeg disponibles en el job (sin la imagen de Playwright con `--user 1001`, o equivalente); causa de los fallos en 0 ms de `tts-cloud` (ffmpeg u otra cosa del entorno de CI) y arreglo; verificado con `act` o `gh workflow run` sobre `dev`
+
+### 16.2 Fallos que no son de entorno
+- [x] 16.2a (hecha 2026-11-02: era del test, no del sitio; test táctil real nuevo) `[iphone] edit-pdf.spec.ts:61`: esperaba «4 elementos agregados» y quedaron 2 tras mano alzada y flecha; averiguar si es un bug real del sitio con gestos táctiles en iPhone (WebKit con touch) o del test; arreglar la causa y cubrirla con un test, sin debilitar lo que verifica
+- [x] 16.2b (hecha 2026-11-02: el enlace quedaba bajo la cabecera fija; `scroll-padding-top`, 90/90 bajo carga) `[iphone] sheet-tools.spec.ts:227` (descarga de split-excel) flaky: buscar la causa y estabilizarlo sin agrandar timeouts a ciegas
+
+### 16.3 Verificación
+- [x] 16.3 (hecha 2026-11-02: run 41546952860 sobre 9fef622 en verde) Workflow completo (check, e2e-ai-voice, e2e-browsers) en verde sobre el último commit de `dev`; causa y arreglo de cada fallo en PROGRESS.md

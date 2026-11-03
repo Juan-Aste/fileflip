@@ -31,10 +31,15 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      # Unit tests read our archives back with independent tools: Python's
-      # zipfile (ZIP, UTF-8 names) and GNU tar. Fail early if one is missing.
+      # Unit tests check our outputs with independent tools: Python's zipfile
+      # (ZIP, UTF-8 names), GNU tar, ffmpeg (audio, subtitles) and poppler
+      # (pdftotext, pdfinfo, pdftoppm, pdfimages). The Ubuntu 26 runner image
+      # no longer ships ffmpeg or poppler, so they are installed here.
       - name: System tools
-        run: python3 --version && tar --version | head -1
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends ffmpeg poppler-utils python3-openpyxl
+          python3 --version && tar --version | head -1 && ffmpeg -version | head -1 && pdftotext -v
       - name: Install
         run: npm ci
       - name: Lint
@@ -71,7 +76,7 @@ jobs:
       - name: Install
         run: npm ci
       - name: Chromium and ffmpeg
-        run: npx playwright install --with-deps chromium && sudo apt-get install -y --no-install-recommends ffmpeg
+        run: npx playwright install --with-deps chromium && sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends ffmpeg
       - name: Build
         run: npm run build
       - name: Browser profile with the AI voice model
@@ -106,15 +111,13 @@ jobs:
   # site with the Pro plan switched off (pro-switch) and the legal texts (legal),
   # and the AI voice confirmation and failures (tts-ai; its real-model tests
   # need TTS_REAL_MODEL=1).
-  # Runs in Playwright's image (same version as package.json): browsers and
-  # their system libraries come preinstalled, no slow apt step.
+  # Runs on the plain runner, not in Playwright's image: the tests also check
+  # outputs with poppler (pdftotext, pdfinfo, pdftoppm), patch and ffmpeg,
+  # which that image lacks and can't install as its non-root user.
   e2e-browsers:
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-    container:
-      image: mcr.microsoft.com/playwright:v1.56.0-noble
-      options: --user 1001
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -123,10 +126,18 @@ jobs:
           cache: npm
       - name: Install
         run: npm ci
+      # Browsers of the Playwright version in package.json with their system
+      # libraries, xvfb, and the independent validators of the tests.
+      - name: Browsers and system tools
+        run: |
+          npx playwright install --with-deps chromium firefox webkit
+          sudo apt-get install -y -qq --no-install-recommends poppler-utils patch ffmpeg xvfb
+          pdftotext -v && pdfinfo -v && patch --version | head -1 && ffmpeg -version | head -1
       - name: Build
         run: npm run build
       - name: Firefox, WebKit and phone emulation sample
-        run: npx playwright test --project firefox --project webkit --project iphone --project android
+        # xvfb gives headless Firefox WebGL, which MediaPipe needs (people mode of bg-tools).
+        run: xvfb-run -a npx playwright test --project firefox --project webkit --project iphone --project android
       - name: Edge-case fixtures (big photos, 500-page PDF, passwords, odd names)
         run: node scripts/fixtures/edge.mjs > /dev/null
       - name: Chromium click, missing-API, failure-state and edge-file checks

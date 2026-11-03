@@ -20,13 +20,14 @@ import { whisperDownloadBytes, whisperLanguageCodes, whisperModels, type Whisper
 import { correctedSegments, transcriptFile, transcriptMime, transcriptName, transcriptText, type TranscriptFormat } from "@/lib/transcribe/output";
 import type { Segment } from "@/lib/transcribe/whisper";
 import ChoiceGroup from "../ChoiceGroup";
+import { VIDEO_EXTENSIONS } from "../video/shared";
 import ProgressBar from "../ProgressBar";
 import ToolAlert from "../ToolAlert";
 import { AUDIO_EXTENSIONS } from "./shared";
 
 const tool = tools["audio-to-text"];
 /** Audio files, plus the video containers mediabunny reads (their sound is transcribed). */
-const EXTENSIONS = [...AUDIO_EXTENSIONS, "mp4", "m4v", "mov", "mkv"];
+const EXTENSIONS = [...AUDIO_EXTENSIONS, ...VIDEO_EXTENSIONS];
 const ACCEPT = ["audio/*", "video/*", ...EXTENSIONS.map((e) => `.${e}`)].join(",");
 /** The site's languages first in the list, then the rest by name. */
 const SITE_LANGUAGES = ["es", "en", "pt", "fr", "zh"];

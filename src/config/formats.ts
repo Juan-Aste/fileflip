@@ -67,7 +67,18 @@ export type FormatId =
   | "dxf"
   | "mp4"
   | "mov"
-  | "mkv";
+  | "mkv"
+  // Old formats, read only through the FFmpeg WASM fallback (src/lib/legacy-media).
+  | "avi"
+  | "wmv"
+  | "flv"
+  | "mpg"
+  | "vob"
+  | "3gp"
+  | "rm"
+  | "wma"
+  | "amr"
+  | "ac3";
 
 /** "data" formats are only read and written by the data tools, not the converter. */
 export type FormatCategory = "image" | "pdf" | "document" | "data";
@@ -138,6 +149,16 @@ export const formats: Record<FormatId, FormatInfo> = {
   mp4: { id: "mp4", label: "MP4", mime: "video/mp4", extensions: ["mp4", "m4v"], category: "data" },
   mov: { id: "mov", label: "MOV", mime: "video/quicktime", extensions: ["mov", "qt"], category: "data" },
   mkv: { id: "mkv", label: "MKV", mime: "video/x-matroska", extensions: ["mkv"], category: "data" },
+  avi: { id: "avi", label: "AVI", mime: "video/x-msvideo", extensions: ["avi"], category: "data" },
+  wmv: { id: "wmv", label: "WMV", mime: "video/x-ms-wmv", extensions: ["wmv", "asf"], category: "data" },
+  flv: { id: "flv", label: "FLV", mime: "video/x-flv", extensions: ["flv"], category: "data" },
+  mpg: { id: "mpg", label: "MPG", mime: "video/mpeg", extensions: ["mpg", "mpeg", "m1v", "m2v"], category: "data" },
+  vob: { id: "vob", label: "VOB", mime: "video/dvd", extensions: ["vob"], category: "data" },
+  "3gp": { id: "3gp", label: "3GP", mime: "video/3gpp", extensions: ["3gp", "3g2"], category: "data" },
+  rm: { id: "rm", label: "RM", mime: "application/vnd.rn-realmedia", extensions: ["rm", "rmvb"], category: "data" },
+  wma: { id: "wma", label: "WMA", mime: "audio/x-ms-wma", extensions: ["wma"], category: "data" },
+  amr: { id: "amr", label: "AMR", mime: "audio/amr", extensions: ["amr", "awb"], category: "data" },
+  ac3: { id: "ac3", label: "AC3", mime: "audio/ac3", extensions: ["ac3"], category: "data" },
   webm: { id: "webm", label: "WEBM", mime: "audio/webm", extensions: ["webm", "weba"], category: "data" },
   aiff: { id: "aiff", label: "AIFF", mime: "audio/aiff", extensions: ["aiff", "aif", "aifc"], category: "data" },
   stl: { id: "stl", label: "STL", mime: "model/stl", extensions: ["stl"], category: "data" },

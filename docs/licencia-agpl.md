@@ -42,20 +42,24 @@ Condiciones que hay que seguir cumpliendo:
 | MozJPEG | IJG AND BSD-3-Clause AND Zlib | Sí (la FSF lista la IJG como compatible) |
 | libarchive (build propio) | BSD-2-Clause, Zlib, bzip2-1.0.6, 0BSD | Sí |
 | oxipng, google/woff2 + Brotli, Gotenberg | MIT | Sí |
-| qpdf, Tesseract + Leptonica, modelos tessdata_best, U²-Net (u2netp) | Apache-2.0 (+ BSD-2) | Sí |
+| qpdf, Tesseract + Leptonica, modelos tessdata_best, `@mediapipe/tasks-vision` y el modelo MediaPipe Selfie Segmenter (excepción del dueño, ver abajo) | Apache-2.0 (+ BSD-2) | Sí |
 | Código de inferencia de Supertonic (portado) | MIT | Sí (se mantiene el aviso de copyright) |
 | Whisper `tiny` y `base` | MIT | Sí |
 | LibreOffice (dentro de Gotenberg, servicio aparte) | MPL-2.0 | Sí; además es un programa separado que se usa por HTTP, no se combina con nuestro código |
 | Supertonic 3 (pesos del modelo) | BigScience OpenRAIL-M | Ver casos dudosos |
 | MongoDB Server | SSPL-1.0 | No se distribuye; ver casos dudosos |
+| FFmpeg n5.1.4 con `--enable-gpl` (`@ffmpeg/core` 0.12.10), con x264 y x265 | GPL-2.0-or-later | Sí: se usa bajo la GPL-3.0 (el «or later» lo permite), compatible con la AGPL-3.0; código fuente exacto y build enlazados en créditos (tarea 12.4a). LAME y FriBidi del mismo build: LGPL; el resto BSD/MIT/ISC/Zlib/FTL/WTFPL |
 
 ## Recursos propios versionados
 
 - **Logo e íconos** (`public/logo.svg`, `public/icon-*.png`, `src/app/icon.svg`, `src/app/apple-icon.png`): propios. Quedan fuera de la AGPL como marca (aclarado en el README). Los íconos de la interfaz son de lucide-react (ISC).
-- **Fixtures de tests** (`tests/fixtures/`): sintéticos o generados por nuestros scripts (ver `tests/fixtures/README.md`); sin contenido de terceros ni datos personales. Los audios `speech-*.ogg` se generaron con espeak-ng (GPL-3.0) y los `speech-ai-*` con Supertonic: la salida de un programa no queda cubierta por la licencia del programa, así que son datos propios.
+- **Fixtures de tests** (`tests/fixtures/`): sintéticos o generados por nuestros scripts (ver `tests/fixtures/README.md`); sin contenido de terceros ni datos personales, salvo `tests/fixtures/people/` (retrato oficial de la NASA, dominio público como obra del gobierno de EE. UU.; origen en su README). Los audios `speech-*.ogg` se generaron con espeak-ng (GPL-3.0) y los `speech-ai-*` con Supertonic: la salida de un programa no queda cubierta por la licencia del programa, así que son datos propios.
 - **Capturas de las guías y de docs** (`public/guides/`, `docs/screenshots/`): capturas de nuestro propio sitio.
 - **Muestras de voz** (`public/tts-samples/`): salida del modelo Supertonic 3 con frases propias. La OpenRAIL-M no reclama derechos sobre la salida (art. 6); se mantiene la indicación de que es voz generada por IA.
 - **Textos de licencias** (`public/licenses/`, `scripts/licenses/texts/`): textos oficiales, se distribuyen sin cambios.
+
+- **Recorte de «Quitar fondo»** (`src/lib/bg-remove/`, fase 14): GrabCut y flujo máximo Boykov–Kolmogorov escritos por nosotros a partir de los artículos (sin copiar código de OpenCV); no usa modelos ni datos de entrenamiento. El modelo u2netp (Apache-2.0, pero entrenado con DUTS-TR/ImageNet, solo investigación) se quitó del sitio el 2026-11-02 (ver `docs/quitar-fondo-eval.md`).
+- **Modo «Personas» de «Quitar fondo»** (fase 15): usa **MediaPipe Selfie Segmenter** (modelo «square», float16, versión 1; Apache-2.0, Google) con `@mediapipe/tasks-vision` (Apache-2.0). **Excepción aceptada por el dueño, por escrito, el 2026-11-02**: la regla estricta pide que también los datos de entrenamiento permitan el uso comercial, y los de este modelo solo se describen como imágenes con consentimiento recolectadas por Google, sin poder verificarlo. Motivo: quitar el fondo de fotos de personas en forma automática y en el dispositivo; ningún modelo de personas cumple la regla. Riesgo: un reclamo sobre los datos de entrenamiento; si pasa, se quita el modo sin tocar el resto. La excepción **no** alcanza a Selfie Multiclass ni a otros modelos. Apache-2.0 es compatible con la AGPL-3.0; el modelo (archivo `.tflite`, datos) y el motor WASM se distribuyen como archivos aparte con su licencia y aviso en créditos. Detalle en `docs/quitar-fondo-eval.md`.
 
 ## Casos dudosos (revisados)
 
@@ -78,4 +82,4 @@ Se ejecutan como programas separados en la máquina de desarrollo (Docker o el s
 
 ## Cambios que habilita la fase 12
 
-Con el proyecto bajo AGPL-3.0-or-later se podrán agregar dependencias GPL-2.0-or-later, GPL-3.0 y AGPL-3.0 (por ejemplo `@ffmpeg/core` o `@imgly/background-removal`). Hoy `chooseLicense` (`scripts/licenses/production.mjs`) las rechaza a propósito; en la fase 12 habrá que permitir esas licencias en `tests/licenses.test.ts` y seguir rechazando GPL-2.0-only (incompatible con la GPLv3/AGPLv3), las no comerciales y la SSPL distribuida.
+Con el proyecto bajo AGPL-3.0-or-later se pueden agregar dependencias GPL-2.0-or-later, GPL-3.0 y AGPL-3.0 (por ejemplo `@ffmpeg/core` o `@imgly/background-removal`). **Hecho en la tarea 12.1 (2026-10-31)**: `chooseLicense` (`scripts/licenses/production.mjs`) acepta esas licencias (`COMPATIBLE_COPYLEFT`) y rechaza GPL-2.0-only, GPL-1.0, las no comerciales, SSPL y BUSL (`FORBIDDEN_LICENSE`); `npm run licenses` y `tests/licenses.test.ts` exigen que cada componente GPL/AGPL tenga una entrada `gpl: true` en `scripts/licenses/embedded.mjs` con su código fuente exacto y cómo se compila, que se muestra en la página de créditos («Componentes bajo GPL y AGPL»). Texto de la AGPL-3.0 en `/licenses/AGPL-3.0.txt`.

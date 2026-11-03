@@ -5,15 +5,19 @@
 // sharp-libvips) and docs/dependencies.md. `npm run licenses` copies them into
 // the credits data; tests/licenses.test.ts checks they stay consistent.
 //
-// LGPL entries must give the license text, the exact source of the version
+// LGPL entries (`lgpl: true`) and GPL/AGPL ones (`gpl: true`, phase 12)
+// must give the license text, the exact source of the version
 // used and how it was built: `source` is that exact source (exactSource:
 // false when the build does not record it), `build` the build scripts or
 // instructions.
 
 const MB = "https://github.com/Vanilagy/mediabunny/tree/v1.62.0/packages";
 const SHARP_LIBVIPS = "https://github.com/lovell/sharp-libvips/tree/v1.3.4";
+// @ffmpeg/core 0.12.10 was published from the v12.15 tag of ffmpeg.wasm (commit 71aa99d); its
+// Dockerfile pins every library below (docs/formatos-viejos.md).
+const FFWASM = "https://github.com/ffmpegwasm/ffmpeg.wasm/tree/v12.15";
 
-/** @typedef {{ id: string, name: string, version: string, license: string, holder?: string, licenseUrl?: string, lgpl?: boolean, partOf?: string, where: ("browser"|"server")[], homepage: string, source?: string, exactSource?: boolean, build?: string, licenseText: string, kind: "engine"|"data"|"service" }} Embedded */
+/** @typedef {{ id: string, name: string, version: string, license: string, holder?: string, licenseUrl?: string, lgpl?: boolean, gpl?: boolean, partOf?: string, where: ("browser"|"server")[], homepage: string, source?: string, exactSource?: boolean, build?: string, licenseText: string, kind: "engine"|"data"|"service" }} Embedded */
 
 /** @type {Embedded[]} */
 export const embedded = [
@@ -284,14 +288,92 @@ export const embedded = [
     licenseText: "MIT",
     kind: "data",
   },
-  // Data files served from our domain.
+  // The FFmpeg WASM fallback for old video and audio formats (src/lib/legacy-media, phase 12).
   {
-    id: "u2netp",
-    name: "U²-Net (u2netp model, ONNX by rembg)",
-    version: "u2netp.onnx",
+    id: "ffmpeg-wasm-core",
+    name: "FFmpeg (ffmpeg.wasm single-threaded core, with --enable-gpl)",
+    version: "@ffmpeg/core 0.12.10 (FFmpeg n5.1.4)",
+    license: "GPL-2.0-or-later",
+    gpl: true,
+    partOf: "@ffmpeg/core",
+    where: ["browser"],
+    homepage: "https://github.com/ffmpegwasm/ffmpeg.wasm",
+    source: "https://github.com/FFmpeg/FFmpeg/tree/n5.1.4",
+    exactSource: true,
+    build: `${FFWASM}/Dockerfile`,
+    licenseText: "GPL-2.0",
+    kind: "engine",
+  },
+  {
+    id: "x264-wasm",
+    name: "x264 (in the ffmpeg.wasm core; not used by Fileflect's commands)",
+    version: "branch 4-cores of ffmpegwasm/x264",
+    license: "GPL-2.0-or-later",
+    gpl: true,
+    partOf: "@ffmpeg/core",
+    where: ["browser"],
+    homepage: "https://www.videolan.org/developers/x264.html",
+    source: "https://github.com/ffmpegwasm/x264/tree/4-cores",
+    exactSource: false,
+    build: `${FFWASM}/Dockerfile`,
+    licenseText: "GPL-2.0",
+    kind: "engine",
+  },
+  {
+    id: "x265-wasm",
+    name: "x265 (in the ffmpeg.wasm core; not used by Fileflect's commands)",
+    version: "branch 3.4 of ffmpegwasm/x265",
+    license: "GPL-2.0-or-later",
+    gpl: true,
+    partOf: "@ffmpeg/core",
+    where: ["browser"],
+    homepage: "https://www.videolan.org/developers/x265.html",
+    source: "https://github.com/ffmpegwasm/x265/tree/3.4",
+    exactSource: false,
+    build: `${FFWASM}/Dockerfile`,
+    licenseText: "GPL-2.0",
+    kind: "engine",
+  },
+  {
+    id: "lame-wasm",
+    name: "LAME (in the ffmpeg.wasm core)",
+    version: "branch master of ffmpegwasm/lame",
+    license: "LGPL-2.0-or-later",
+    lgpl: true,
+    partOf: "@ffmpeg/core",
+    where: ["browser"],
+    homepage: "https://lame.sourceforge.io",
+    source: "https://github.com/ffmpegwasm/lame/tree/master",
+    exactSource: false,
+    build: `${FFWASM}/Dockerfile`,
+    licenseText: "LGPL-2.0",
+    kind: "engine",
+  },
+  {
+    id: "fribidi-wasm",
+    name: "GNU FriBidi (in the ffmpeg.wasm core)",
+    version: "1.0.9",
+    license: "LGPL-2.1-or-later",
+    lgpl: true,
+    partOf: "@ffmpeg/core",
+    where: ["browser"],
+    homepage: "https://github.com/fribidi/fribidi",
+    source: "https://github.com/fribidi/fribidi/tree/v1.0.9",
+    exactSource: true,
+    build: `${FFWASM}/Dockerfile`,
+    licenseText: "LGPL-2.1",
+    kind: "engine",
+  },
+  // Data files served from our domain.
+  // Background removal, "people" mode (phase 15): used under the owner's written
+  // exception of 2026-11-02 (training data not verifiable; docs/licencia-agpl.md).
+  {
+    id: "mediapipe-selfie-segmenter",
+    name: "MediaPipe Selfie Segmenter model, square, float16, version 1 (Google; the link is its model card)",
+    version: "1 (float16)",
     license: "Apache-2.0",
     where: ["browser"],
-    homepage: "https://github.com/xuebinqin/U-2-Net",
+    homepage: "https://storage.googleapis.com/mediapipe-assets/Model%20Card%20MediaPipe%20Selfie%20Segmentation.pdf",
     licenseText: "Apache-2.0",
     kind: "data",
   },
@@ -351,4 +433,4 @@ export const embedded = [
 ];
 
 /** License texts copied to public/licenses/ for the credits page. */
-export const LICENSE_TEXTS = ["LGPL-2.0", "LGPL-2.1", "LGPL-3.0", "GPL-3.0", "MPL-2.0", "Apache-2.0", "BigScience-OpenRAIL-M"];
+export const LICENSE_TEXTS = ["LGPL-2.0", "LGPL-2.1", "LGPL-3.0", "GPL-3.0", "AGPL-3.0", "MPL-2.0", "Apache-2.0", "BigScience-OpenRAIL-M"];

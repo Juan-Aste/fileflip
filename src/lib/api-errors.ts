@@ -62,6 +62,9 @@ export const apiErrorCodes = [
   "videoCodecUnsupported",
   "videoEncoderUnsupported",
   "videoTooLong",
+  // An old format read with the slower FFmpeg WASM fallback (src/lib/legacy-media), over its own limit.
+  "legacyVideoTooLong",
+  "legacyAudioTooLong",
   "videoRangeInvalid",
   "modelEmpty",
   "modelTooLarge",
@@ -84,6 +87,10 @@ export const apiErrorCodes = [
   "jobTimedOut",
   // Client-side only: a 0-byte file picked in a tool that needs content.
   "emptyFile",
+  // Cloud voice of the reader (/api/tts): daily limit of this IP or account, monthly cap of the site, expired page token.
+  "ttsDailyLimit",
+  "ttsMonthlyLimit",
+  "ttsTokenExpired",
 ] as const;
 
 export type ApiErrorCode = (typeof apiErrorCodes)[number];
@@ -128,6 +135,8 @@ const status: Record<ApiErrorCode, number> = {
   videoCodecUnsupported: 415,
   videoEncoderUnsupported: 415,
   videoTooLong: 413,
+  legacyVideoTooLong: 413,
+  legacyAudioTooLong: 413,
   videoRangeInvalid: 422,
   modelEmpty: 422,
   modelTooLarge: 413,
@@ -147,6 +156,9 @@ const status: Record<ApiErrorCode, number> = {
   jobCancelled: 400,
   jobTimedOut: 408,
   emptyFile: 422,
+  ttsDailyLimit: 429,
+  ttsMonthlyLimit: 503,
+  ttsTokenExpired: 403,
 };
 
 export function apiError(code: ApiErrorCode, headers?: HeadersInit) {

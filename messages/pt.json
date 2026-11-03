@@ -241,6 +241,8 @@
     "videoCodecUnsupported": "Seu navegador não consegue ler o vídeo deste arquivo (por exemplo, H.264 ou HEVC em alguns navegadores). Tente o Chrome, o Edge ou o Safari, ou escolha um formato que não precise recomprimi-lo.",
     "videoEncoderUnsupported": "Seu navegador não consegue criar vídeo neste formato (MOV precisa de H.264). Tente o Chrome, o Edge ou o Safari, ou escolha MP4, WebM ou MKV.",
     "videoTooLong": "O vídeo é longo demais: o máximo é de 2 horas por arquivo.",
+    "legacyVideoTooLong": "Este formato antigo é convertido com um motor mais lento: o máximo é de 20 minutos de vídeo por arquivo.",
+    "legacyAudioTooLong": "Este formato antigo é convertido com um motor mais lento: o máximo é de 1 hora de áudio por arquivo.",
     "videoRangeInvalid": "Confira os tempos: o início deve vir antes do fim e ambos devem estar dentro do vídeo.",
     "gifTooManyFrames": "O GIF teria quadros demais: encurte o trecho ou diminua os quadros por segundo.",
     "modelEmpty": "Este modelo não tem faces (triângulos) para converter: pode estar vazio ou ser uma nuvem de pontos.",
@@ -250,7 +252,10 @@
     "modelXmlTooLarge": "Este arquivo 3MF ou COLLADA é grande demais para ler no navegador: o máximo é de 100 MB de XML (descompactado).",
     "modelFbxVersion": "Este FBX é de uma versão anterior à 7.0 (2011), que não conseguimos ler. Exporte-o novamente como FBX 7.x (binário ou ASCII).",
     "dxfEmpty": "Este DXF não tem nada visível para desenhar no espaço do modelo: pode estar vazio, ter todas as camadas desligadas ou usar só entidades que não desenhamos.",
-    "dxfTooComplex": "Este DXF é complexo demais para desenhar no navegador: passa de 5 milhões de pontos, aninha blocos em mais de 16 níveis (ou um bloco insere a si mesmo) ou repete um bloco mais de 10 000 vezes."
+    "dxfTooComplex": "Este DXF é complexo demais para desenhar no navegador: passa de 5 milhões de pontos, aninha blocos em mais de 16 níveis (ou um bloco insere a si mesmo) ou repete um bloco mais de 10 000 vezes.",
+    "ttsDailyLimit": "Você atingiu o limite diário da voz IA na nuvem. Você pode continuar com as vozes do dispositivo ou com o modo privado.",
+    "ttsMonthlyLimit": "A voz IA na nuvem não está disponível neste mês. Você pode continuar com as vozes do dispositivo ou com o modo privado.",
+    "ttsTokenExpired": "A página ficou aberta por muito tempo. Tente de novo."
   },
   "Tools": {
     "merge-pdf": {
@@ -823,20 +828,20 @@
     },
     "remove-background": {
       "title": "Remover fundo de imagem",
-      "description": "Remova o fundo de fotos de pessoas, produtos ou animais e baixe em PNG transparente ou sobre uma cor.",
+      "description": "Remova o fundo de fotos de pessoas no automático, ou de objetos marcando um retângulo, e retoque com pincéis. PNG transparente, JPG ou WEBP, sem enviar a foto.",
       "action": "Remover fundo",
-      "about": "Separa o assunto principal da foto (uma pessoa, um produto, um animal, um objeto) e elimina o fundo: baixe um PNG com fundo transparente para apresentações, lojas virtuais ou designs, ou um JPG sobre branco ou a cor que escolher. Usa um pequeno modelo de inteligência artificial (U²-Net) que roda no seu dispositivo: a foto não é enviada a nenhum servidor. Você pode processar várias fotos de uma vez.",
+      "about": "Remove o fundo de uma foto de duas maneiras. No modo «Pessoas (automático)», um modelo de inteligência artificial (MediaPipe Selfie Segmenter, do Google) encontra a pessoa assim que você escolhe a foto, e um método clássico (GrabCut) ajusta a borda com as cores da própria foto. No modo «Objetos e produtos (retângulo)», para produtos, objetos ou animais, você envolve o objeto num retângulo e o GrabCut separa as cores dele das do fundo, sem nenhum modelo. Nos dois você vê o resultado na hora e corrige com um pincel para «manter» e outro para «remover». Tudo acontece no seu dispositivo: a foto não é enviada. Você baixa um PNG ou WEBP com fundo transparente, ou um JPG ou WEBP sobre branco ou a cor que escolher, do mesmo tamanho do original.",
       "faq": {
-        "q1": "Com quais fotos funciona melhor?",
-        "a1": "Com um assunto principal claro que se destaque do fundo: um retrato, um produto sobre a mesa, um animal, um objeto. Com fundos muito carregados, vários assuntos do mesmo tamanho ou um assunto que ocupa quase toda a foto, o resultado pode ser impreciso. Bordas muito finas (cabelo solto, pelos, galhos) ficam suavizadas.",
+        "q1": "Qual modo escolho?",
+        "a1": "«Pessoas (automático)» para retratos, selfies e fotos de uma ou mais pessoas: o recorte sai sozinho e às vezes é preciso retocar o cabelo, as mãos ou algo que a pessoa segura. «Objetos e produtos (retângulo)» para todo o resto (um produto sobre a mesa, um objeto, um animal): o modelo automático só reconhece pessoas. O retângulo funciona melhor quando o objeto se distingue do fundo pela cor.",
         "q2": "Minhas fotos são enviadas para a internet?",
-        "a2": "Não. O modelo é baixado uma única vez do nosso site (cerca de 19 MB, menos comprimido) e depois tudo acontece no seu navegador. Nem a foto nem o resultado saem do seu dispositivo.",
-        "q3": "Qual formato eu baixo?",
-        "a3": "Com fundo transparente, PNG (o formato comum que mantém a transparência em qualquer lugar). Com fundo branco ou colorido, JPG, mais leve e aceito em qualquer site. A foto mantém o tamanho original.",
-        "q4": "Serve para foto 3x4?",
-        "a4": "Sim: remova o fundo com a opção branco (ou azul-claro, com uma cor) e depois use a ferramenta Foto 3x4 para cortá-la no tamanho do documento. Confira sempre os requisitos: alguns órgãos não aceitam fotos editadas.",
+        "a2": "Não. A foto é processada no seu navegador e nem ela nem o resultado saem do seu dispositivo. O modo «Pessoas» baixa uma única vez, do Fileflect, o motor e o modelo do MediaPipe (cerca de 4 MB; depois ficam no cache do navegador); o modo retângulo não baixa nada.",
+        "q3": "Por que o modo automático é só para pessoas?",
+        "a3": "Os modelos que removem o fundo de qualquer coisa são treinados com milhares de fotos de terceiros, e não encontramos nenhum cujas fotos de treino permitam claramente o uso comercial. Para pessoas usamos o MediaPipe Selfie Segmenter, que o Google publica sob a licença Apache-2.0 e que, segundo a ficha do modelo, foi treinado com fotos de pessoas que deram consentimento. Para objetos preferimos um recorte assistido honesto: você indica o objeto com o retângulo e o método faz o resto.",
+        "q4": "Qual formato baixo?",
+        "a4": "Com fundo transparente, PNG (o mais compatível) ou WEBP (mais leve). Com fundo branco ou de cor, JPG ou WEBP. A foto mantém o tamanho original. JPG não guarda transparência: se escolher, o fundo será branco ou da cor escolhida.",
         "q5": "Há limites?",
-        "a5": "Até 30 MB e 40 megapixels por foto, em JPG, PNG, WEBP, AVIF, GIF (primeiro quadro) ou BMP, e até 3 minutos por foto. O modelo analisa a imagem em 320 × 320 e o recorte é ampliado para o tamanho original, por isso as bordas ficam suaves: não é um recorte manual pixel a pixel."
+        "a5": "Uma foto por vez, até 30 MB e 40 megapixels, em JPG, PNG, WEBP, AVIF, GIF (primeiro quadro) ou BMP. O recorte é calculado numa cópia de 480 pixels no lado maior para responder na hora e aplicado no tamanho original com a borda suavizada: cabelo solto e bordas muito finas ficam suavizados, não recortados fio a fio."
       }
     },
     "scan-document": {
@@ -1548,7 +1553,7 @@
     },
     "audio-converter": {
       "title": "Converter áudio",
-      "description": "Converta áudio entre MP3, WAV, FLAC, OGG, M4A e AIFF no seu navegador, sem enviar seus arquivos.",
+      "description": "Converta áudio entre MP3, WAV, FLAC, OGG, M4A e AIFF (e leia WMA, AMR ou AC3), no seu navegador e sem enviar seus arquivos.",
       "action": "Converter áudio",
       "about": "Converta músicas, mensagens de voz, podcasts e gravações entre os formatos mais usados: MP3 para tocar em qualquer lugar, WAV, FLAC ou AIFF sem perda para editar ou arquivar, OGG (Opus) para a web e M4A (AAC) para aparelhos Apple. Lê MP3, WAV, FLAC, OGG, Opus, M4A, AAC, WebM e AIFF, e você pode escolher a qualidade. A conversão acontece no seu dispositivo: os arquivos não são enviados a nenhum servidor.",
       "faq": {
@@ -1562,7 +1567,9 @@
         "a4": "Até 200 MB por arquivo no plano gratuito (500 MB com o Pro) e 3 horas de duração, porque o resultado é montado na memória do seu navegador. Só a faixa de áudio principal é mantida; se o arquivo for um vídeo, a imagem é ignorada.",
         "a4NoPro": "Até 200 MB por arquivo e 3 horas de duração, porque o resultado é montado na memória do seu navegador. Só a faixa de áudio principal é mantida; se o arquivo for um vídeo, a imagem é ignorada.",
         "q5": "O que é AIFF e quando usar?",
-        "a5": "AIFF é o formato sem perda da Apple, o equivalente do WAV no Mac, no Logic ou no GarageBand. São lidos AIFF e AIFF-C sem compressão (8, 16, 24 e 32 bits) e o AIFF é gravado em 16 bits; AIFF-C comprimidos (μ-law, por exemplo) não são aceitos."
+        "a5": "AIFF é o formato sem perda da Apple, o equivalente do WAV no Mac, no Logic ou no GarageBand. São lidos AIFF e AIFF-C sem compressão (8, 16, 24 e 32 bits) e o AIFF é gravado em 16 bits; AIFF-C comprimidos (μ-law, por exemplo) não são aceitos.",
+        "q6": "Lê WMA, AMR (mensagens de voz) ou AC3?",
+        "a6": "Sim. Esses formatos são lidos com um motor FFmpeg baixado na primeira vez (cerca de 31 MB, do nosso domínio), só quando você precisa. Serve para músicas antigas do Windows Media (WMA), mensagens de voz e gravações de celulares antigos (AMR) e o som AC3 de DVDs (mixado para estéreo). Com esses formatos o máximo é 1 hora de áudio por arquivo. Tudo acontece no seu dispositivo."
       }
     },
     "trim-audio": {
@@ -1635,7 +1642,7 @@
     },
     "video-converter": {
       "title": "Converter vídeo",
-      "description": "Converta vídeos entre MP4, MOV, MKV e WebM no seu navegador, sem enviar seus arquivos.",
+      "description": "Converta vídeos entre MP4, MOV, MKV e WebM, e também AVI, WMV, FLV, MPG ou 3GP antigos, no seu navegador e sem enviar seus arquivos.",
       "action": "Converter vídeo",
       "about": "Mude o formato dos seus vídeos entre MP4 (o que qualquer celular, TV ou rede social reproduz), MOV (o do iPhone e do Mac), MKV e WebM (o da web). Se o vídeo já usa um codec aceito pelo formato escolhido, ele é copiado sem recomprimir: leva segundos e não perde qualidade. Se não, é codificado de novo em alta qualidade com o codec do seu navegador. O som vai junto com a imagem. Tudo acontece no seu dispositivo: os vídeos não são enviados a nenhum servidor.",
       "faq": {
@@ -1646,8 +1653,10 @@
         "q3": "Por que meu MP4 saiu em VP9 ou AV1?",
         "a3": "Alguns navegadores (como o Chromium ou o Firefox no Linux) não têm codificador H.264. Nesse caso o MP4 é criado com VP9 ou AV1, que tocam no Chrome, Edge, Firefox e Android, mas talvez não no iPhone. Para H.264 use o Chrome, o Edge ou o Safari; você verá um aviso quando faltar.",
         "q4": "Existe algum limite?",
-        "a4": "Até 200 MB por arquivo no plano grátis (500 MB com Pro) e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. AVI, WMV e FLV ainda não podem ser lidos.",
-        "a4NoPro": "Até 200 MB por arquivo e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. AVI, WMV e FLV ainda não podem ser lidos."
+        "a4": "Até 200 MB por arquivo no plano grátis (500 MB com Pro) e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. Os formatos antigos (AVI, WMV, FLV…) têm limites próprios: veja a próxima pergunta.",
+        "a4NoPro": "Até 200 MB por arquivo e 2 horas de duração, porque o vídeo é montado na memória do navegador. As faixas principais de vídeo e de áudio são mantidas; legendas embutidas não são copiadas. Os formatos antigos (AVI, WMV, FLV…) têm limites próprios: veja a próxima pergunta.",
+        "q5": "Posso converter AVI, WMV, FLV, MPG, VOB, 3GP ou RM?",
+        "a5": "Sim. Seu navegador não lê esses formatos antigos, então na primeira vez é baixado um motor FFmpeg (cerca de 31 MB, do nosso domínio) que passa o vídeo para um formato intermediário e depois segue a conversão normal. É mais lento que com MP4 e aceita no máximo 20 minutos de vídeo por arquivo. Funciona com vídeos de câmeras antigas, DVD (VOB), celulares antigos (3GP) e downloads de anos atrás (AVI, WMV, FLV, RealMedia). Tudo acontece no seu dispositivo."
       }
     },
     "extract-audio": {
@@ -1664,7 +1673,9 @@
         "a3": "Só de arquivos que você já tem no seu dispositivo e tem direito de usar. Esta ferramenta não baixa vídeos da internet.",
         "q4": "Existe algum limite?",
         "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro) e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos.",
-        "a4NoPro": "Até 200 MB por vídeo e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos."
+        "a4NoPro": "Até 200 MB por vídeo e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos.",
+        "q5": "Funciona com vídeos AVI, WMV, FLV, MPG ou VOB?",
+        "a5": "Sim: esses formatos antigos são lidos com um motor FFmpeg baixado na primeira vez (cerca de 31 MB), e o som é salvo no formato que você escolher (com «Original» sai em MP3). O máximo é 1 hora de áudio por arquivo. Tudo acontece no seu dispositivo."
       }
     },
     "compress-video": {
@@ -1811,18 +1822,18 @@
       "description": "Cole um texto ou abra um arquivo e ouça com pausa e a velocidade que quiser, ou baixe como MP3 com uma voz IA, no seu navegador.",
       "searchTerms": "TTS texto para voz leitor narrador ler em voz alta voz IA",
       "action": "Ler em voz alta",
-      "about": "Digite ou cole um texto, ou abra um arquivo TXT, Markdown, HTML, PDF com texto, Word (DOCX), EPUB ou a foto de um documento, e ouça em voz alta. Você pode pausar, voltar à frase anterior, pular para a próxima e escolher a velocidade, de 0,5× a 2×. A frase que está sendo lida fica destacada para você acompanhar. Lê com as vozes do seu dispositivo ou com uma voz IA mais natural (Supertonic 3) que funciona no navegador e permite baixar a leitura em MP3. O texto é extraído e convertido em voz no seu dispositivo: o arquivo não é enviado a nenhum servidor.",
+      "about": "Digite ou cole um texto, ou abra um arquivo TXT, Markdown, HTML, PDF com texto, Word (DOCX), EPUB ou a foto de um documento, e ouça em voz alta. Você pode pausar, voltar à frase anterior, pular para a próxima e escolher a velocidade, de 0,5× a 2×. A frase que está sendo lida fica destacada para você acompanhar. Por padrão lê na hora com a melhor voz do seu dispositivo. Quando disponível, a \"Voz IA (nuvem)\" soa mais natural, também em chinês, e permite baixar MP3: o texto é enviado ao Google para gerar a voz e não o guardamos. E o \"Modo privado\" usa uma voz IA (Supertonic 3) que funciona no navegador: o texto não sai do seu dispositivo. O arquivo é sempre lido no navegador: não é enviado a nenhum servidor.",
       "faq": {
         "q1": "Meu texto é enviado a algum servidor?",
-        "a1": "Não. O arquivo é lido e o texto extraído no seu navegador, e a voz IA gera o áudio no seu dispositivo: o único download são os arquivos do modelo, na primeira vez, do nosso servidor de modelos ou do Hugging Face. As vozes do dispositivo também leem no seu aparelho; só as marcadas como \"on-line\" (por exemplo, as do Google ou da Microsoft no Chrome e no Edge) enviam o texto a esse provedor para gerar o áudio.",
+        "a1": "O arquivo não: ele é lido e o texto extraído no seu navegador. O texto depende da voz escolhida. Com \"Ouvir\" (vozes do dispositivo) é lido no seu aparelho; só as vozes marcadas como \"on-line\" (por exemplo, as do Google ou da Microsoft no Chrome e no Edge) enviam o texto a esse provedor. Com \"Voz IA (nuvem)\", cada frase passa pelo nosso servidor até o Google Cloud para gerar o áudio: não guardamos nem registramos o texto nem o áudio, só contamos quantos caracteres são usados. No \"Modo privado\" a voz IA gera o áudio no seu dispositivo e o texto não sai dele: o único download são os arquivos do modelo, na primeira vez.",
         "q2": "Quais arquivos posso abrir?",
         "a2": "TXT, Markdown, HTML, PDF com texto, Word (DOCX), EPUB e fotos ou digitalizações (JPG, PNG, WEBP, TIFF, HEIC…), cujo texto é reconhecido com OCR. Até 50.000 caracteres por leitura; se o texto for maior, ele é cortado e avisamos.",
         "q3": "Em quais idiomas lê?",
-        "a3": "Detectamos o idioma do texto (espanhol, inglês, português, francês ou chinês) e escolhemos a voz nesse idioma; você pode mudar o idioma e a voz. A voz IA e o download em MP3 estão disponíveis em espanhol, inglês, português e francês; o chinês é lido com as vozes do dispositivo, que dependem do seu sistema e navegador.",
-        "q4": "Qual a diferença entre as vozes do dispositivo e a voz IA?",
-        "a4": "As vozes do dispositivo vêm com o sistema ou o navegador: começam na hora e não baixam nada, mas a qualidade varia e não podem ser salvas como arquivo. A voz IA (Supertonic 3) soa mais natural, tem 10 vozes e permite baixar MP3, mas na primeira vez baixa o modelo, de 200 a 400 MB conforme o servidor (a ferramenta mostra o tamanho antes de começar; depois fica salva no navegador) e gera o áudio com o processador do seu aparelho: no computador leva mais ou menos o mesmo tempo que dura o áudio; no celular, bem mais. Antes de baixar, você pode ouvir uma amostra de cada voz; todas usam o mesmo modelo, então o download é o mesmo para qualquer uma e acontece uma só vez.",
+        "a3": "Detectamos o idioma do texto (espanhol, inglês, português, francês ou chinês) e escolhemos a voz nesse idioma; você pode mudar o idioma e a voz. A \"Voz IA (nuvem)\" tem vozes nos cinco idiomas, inclusive chinês. O \"Modo privado\" está disponível em espanhol, inglês, português e francês. As vozes do dispositivo dependem do seu sistema e navegador.",
+        "q4": "Qual a diferença entre \"Ouvir\", \"Voz IA (nuvem)\" e \"Modo privado\"?",
+        "a4": "\"Ouvir\" usa as vozes do sistema ou do navegador: começa na hora e não baixa nada; escolhemos a mais natural que você tiver (por exemplo, as \"Natural\" do Edge), mas a qualidade varia e não podem ser salvas como arquivo. A \"Voz IA (nuvem)\", quando disponível, usa as vozes WaveNet do Google: soa mais natural, começa em um ou dois segundos e permite baixar MP3; tem um limite diário de caracteres e o texto é enviado ao Google. O \"Modo privado\" usa a voz IA Supertonic 3 no navegador: o texto não sai do seu dispositivo, mas na primeira vez baixa o modelo, de 200 a 400 MB conforme o servidor (a ferramenta mostra o tamanho antes de começar; depois fica salvo) e gera o áudio com o processador do seu aparelho, mais devagar no celular. Antes de baixar, você pode ouvir uma amostra de cada voz.",
         "q5": "Como baixo a leitura em MP3?",
-        "a5": "Escolha a voz IA e toque em \"Baixar MP3\". Ele é gerado frase por frase no seu dispositivo, com barra de progresso e opção de cancelar, e o arquivo recebe o título do documento ou as primeiras palavras do texto. No celular o MP3 aceita até 3.000 caracteres (cerca de 4 minutos de áudio).",
+        "a5": "Toque em \"Baixar MP3\". Se a \"Voz IA (nuvem)\" estiver disponível, o MP3 é montado no navegador com as frases que ela devolve; se não, ou se você escolheu o \"Modo privado\", é gerado frase por frase no seu dispositivo com a voz IA Supertonic 3 (no celular, até 3.000 caracteres, cerca de 4 minutos de áudio). Há barra de progresso e opção de cancelar, e o arquivo recebe o título do documento ou as primeiras palavras do texto.",
         "q6": "Posso publicar o áudio gerado com a voz IA?",
         "a6": "Sim, mas a licença do modelo (OpenRAIL-M) exige informar que é uma voz gerada por IA e proíbe usá-lo, entre outras coisas, para se passar por outras pessoas, difamar, assediar ou espalhar informação falsa para prejudicar outros. As restrições completas estão nos nossos Termos e na licença do modelo, com link ao lado do botão de download."
       }
@@ -2114,7 +2125,7 @@
             "Os arquivos processados no nosso servidor são excluídos em no máximo 1 hora. Não olhamos nem guardamos esses arquivos.",
             "Não vendemos seus dados.",
             "Nunca guardamos o nome nem o conteúdo dos seus arquivos.",
-            "\"Ler texto em voz alta\" processa o texto no seu dispositivo, inclusive com a voz IA. Só as vozes do navegador marcadas \"on-line\" enviam o texto ao seu provedor."
+            "\"Ler texto em voz alta\" processa o texto no seu dispositivo com as vozes do dispositivo e o modo privado. Se você escolher \"Voz IA (nuvem)\", o texto é enviado ao Google para gerar a voz e não o guardamos. As vozes do navegador marcadas \"on-line\" também o enviam ao seu provedor."
           ]
         },
         {
@@ -2130,8 +2141,8 @@
             {
               "data": "Texto que você ouve com \"Ler texto em voz alta\"",
               "purpose": "Lê-lo em voz alta ou gerar o MP3",
-              "basis": "—",
-              "retention": "Não o recebemos (processado no seu dispositivo)"
+              "basis": "Seu pedido (só com \"Voz IA (nuvem)\")",
+              "retention": "Não o recebemos, exceto com \"Voz IA (nuvem)\": passa pelo nosso servidor até o Google Cloud e não é guardado nem registrado (só contamos quantos caracteres são usados por dia e por mês)"
             },
             {
               "data": "Arquivos que você processa no nosso servidor (documentos de escritório, PDF para Word, HTML para PDF, PDF/A e, só se o seu navegador não conseguir, algumas imagens)",
@@ -2180,8 +2191,9 @@
             "Railway (EUA): servidores e banco de dados onde o site roda.",
             "Resend (EUA): envia o e-mail com o seu link para entrar.",
             "Google (EUA): login com o Google, se você escolher; e Google AdSense, que exibe anúncios (veja a seção 6).",
+            "Google Cloud (EUA): se você escolher \"Voz IA (nuvem)\" em \"Ler texto em voz alta\" (ou baixar o MP3 com ela), o Google Cloud Text-to-Speech recebe o texto de cada frase, a voz e a velocidade, e devolve o áudio. O pedido sai do nosso servidor, então o Google não recebe seu IP nem sua conta. Nós não guardamos o texto nem o áudio.",
             "Hugging Face (EUA): se você escolher a voz IA de \"Ler texto em voz alta\" ou usar \"Transcrever áudio para texto\", o navegador baixa os arquivos do modelo (uma vez por modelo) do nosso armazenamento no Cloudflare R2 (Cloudflare, EUA) ou, se não estiver disponível, do Hugging Face. Como em qualquer download, quem serve o arquivo recebe seu endereço IP e dados técnicos do navegador; seu texto e seu áudio não são enviados.",
-            "Vozes \"on-line\" do navegador (por exemplo, Google no Chrome ou Microsoft no Edge): se você escolher uma delas em \"Ler texto em voz alta\", o navegador envia o texto a esse provedor para gerar o áudio, conforme a política de privacidade dele. Quem as oferece é o navegador, não nós, e as marcamos como \"on-line\"; as demais vozes e a voz IA leem no seu dispositivo."
+            "Vozes \"on-line\" do navegador (por exemplo, Google no Chrome ou Microsoft no Edge): se uma delas for usada em \"Ler texto em voz alta\" (o leitor a escolhe primeiro quando é a voz mais natural disponível; você pode trocá-la por outra), o navegador envia o texto a esse provedor para gerar o áudio, conforme a política de privacidade dele. Quem as oferece é o navegador, não nós, e as marcamos como \"on-line\"; as demais vozes e a voz IA leem no seu dispositivo."
           ],
           "proItems": [
             "Mercado Pago (Argentina e região): processa os pagamentos do plano Pro. Recebe seus dados de pagamento diretamente; nós não."
@@ -2197,6 +2209,7 @@
           "heading": "Transferências internacionais",
           "body": [
             "Alguns provedores processam dados fora da Argentina, principalmente nos Estados Unidos. Escolhemos provedores com medidas de segurança adequadas.",
+            "Se você usar \"Voz IA (nuvem)\", o texto é enviado ao Google Cloud, que pode processá-lo nos Estados Unidos ou em outros países onde opera.",
             "Ao criar uma conta, você aceita expressamente essas transferências."
           ]
         },
@@ -3336,13 +3349,47 @@
   },
   "RemoveBackgroundTool": {
     "background": "Fundo",
-    "transparent": "Transparente (PNG)",
-    "white": "Branco (JPG)",
-    "color": "Cor (JPG)",
+    "transparent": "Transparente",
+    "white": "Branco",
+    "color": "Cor",
     "colorLabel": "Cor do fundo",
-    "note": "Na primeira vez o modelo é baixado do nosso site (cerca de {size} MB); depois não precisa dos nossos servidores. Funciona melhor com um assunto principal claro.",
+    "format": "Formato",
+    "note": "Recorte assistido: você marca o assunto com um retângulo e corrige com pincéis. Funciona no seu dispositivo, sem baixar modelos nem enviar a foto. Não é automático; funciona melhor quando as cores do assunto se distinguem do fundo.",
+    "loading": "Preparando a foto…",
+    "cutting": "Calculando o recorte…",
+    "status": "Recorte pronto: {percent} % da foto é mantido.",
+    "step1": "Ajuste o retângulo para que envolva o assunto com uma pequena margem (arraste-o ou os cantos; pelo teclado, setas e Shift + setas). Tudo o que ficar fora é removido.",
+    "step2": "Veja o resultado. Se sobrou fundo, escolha «Pincel: remover» e pinte por cima; se parte do assunto sumiu, escolha «Pincel: manter» e pinte por cima.",
+    "step3": "Escolha o fundo (transparente, branco ou uma cor) e o formato e baixe. A foto mantém o tamanho original.",
+    "mode": "Ferramenta",
+    "modeRect": "Retângulo",
+    "modeKeep": "Pincel: manter",
+    "modeRemove": "Pincel: remover",
+    "brushSize": "Tamanho do pincel",
+    "brushSmall": "Pequeno",
+    "brushMedium": "Médio",
+    "brushLarge": "Grande",
+    "undo": "Desfazer",
+    "redo": "Refazer",
+    "original": "Foto original",
+    "result": "Resultado",
+    "previewLabel": "Prévia do recorte",
+    "brushHint": "Pinte com o dedo ou o mouse sobre a prévia: verde mantém, vermelho remove. O que foi removido aparece apagado para você poder recuperar.",
+    "jpgNoAlpha": "JPG não guarda transparência: o fundo será branco ou da cor escolhida. Para transparência, use PNG ou WEBP.",
     "done": "Fundo removido ({pixels} px).",
-    "suffix": "sem-fundo"
+    "suffix": "sem-fundo",
+    "method": "Modo",
+    "methodPeople": "Pessoas (automático)",
+    "methodRect": "Objetos e produtos (retângulo)",
+    "notePeople": "Modo automático para fotos de pessoas: ao escolher a foto, um modelo de inteligência artificial (MediaPipe) encontra a pessoa e remove o fundo; depois você pode corrigir com pincéis. Na primeira vez são baixados cerca de {size} MB do Fileflect; a foto não sai do seu dispositivo. Para objetos, produtos ou animais, use o modo retângulo.",
+    "findingPerson": "Procurando a pessoa… (na primeira vez são baixados cerca de {size} MB)",
+    "peopleFailed": "Não foi possível carregar o modo automático (sem conexão?).",
+    "peopleNoWebgl": "O modo automático precisa de WebGL, que está desativado ou indisponível neste navegador.",
+    "noPerson": "Não encontramos uma pessoa clara nesta foto. O modo automático é só para pessoas.",
+    "useRect": "Usar o modo retângulo",
+    "peopleStep1": "A pessoa é recortada sozinha. Veja o resultado.",
+    "peopleStep2": "Se sobrou fundo, escolha «Pincel: remover» e pinte por cima; se faltou parte da pessoa (cabelo, mãos, algo que ela segura), escolha «Pincel: manter» e pinte por cima.",
+    "modeView": "Ver"
   },
   "ScanDocumentTool": {
     "mode": "Modo",
@@ -3382,6 +3429,8 @@
     "sourceCodeLink": "Ver o código-fonte do Fileflect",
     "lgplHeading": "Componentes sob LGPL",
     "lgplIntro": "Estes componentes são usados sob a Licença Pública Geral Menor GNU (LGPL), sem modificações e como arquivos separados (módulos WebAssembly ou bibliotecas dinâmicas) que podem ser substituídos por outra versão. Os links de cada um levam ao código-fonte exato e às instruções com que foi compilado.",
+    "gplHeading": "Componentes sob GPL e AGPL",
+    "gplIntro": "Estes componentes são usados sob a Licença Pública Geral GNU (GPL) ou a Licença Pública Geral Affero GNU (AGPL). O Fileflect como um todo é distribuído sob a AGPL-3.0 ou posterior. Em cada um você encontra o código-fonte exato da versão que usamos e como ele é compilado.",
     "enginesHeading": "Motores e dados incluídos",
     "enginesIntro": "Bibliotecas compiladas para WebAssembly que vêm dentro dos pacotes abaixo, a nossa própria compilação do libarchive, os modelos que servimos do nosso domínio e a voz IA de \"Ler texto em voz alta\" (código portado do SDK do Supertonic, MIT, e o modelo Supertonic 3, que o seu navegador baixa do Hugging Face, ou uma cópia com os pesos em float16 do nosso servidor de modelos, só se você escolher essa voz; a licença OpenRAIL-M tem link).",
     "servicesHeading": "Serviços do servidor",
@@ -3439,7 +3488,7 @@
     "statusFinished": "Leitura concluída",
     "editText": "Editar texto",
     "shortcut": "Barra de espaço: pausa e continua.",
-    "onlineNote": "As vozes «online» enviam o texto ao provedor (Google, Microsoft…) para gerar o áudio. As outras leem no seu dispositivo.",
+    "onlineNote": "As vozes «online» enviam o texto ao provedor (Google, Microsoft…) para gerar o áudio. As outras leem no seu dispositivo: se preferir que o texto não saia do seu aparelho, escolha uma delas (fica salva).",
     "noSupport": "Seu navegador não consegue ler em voz alta com as vozes do dispositivo. Tente um Chrome, Edge, Safari ou Firefox atualizado.",
     "noVoices": "Não encontramos vozes em {language} no seu dispositivo: será usada a voz padrão do navegador, que pode pronunciar mal. Você pode instalar vozes nas configurações do sistema.",
     "speechError": "Não foi possível ler com esta voz. Tente outra voz ou tente de novo.",
@@ -3454,9 +3503,10 @@
     },
     "noTextInFile": "Não encontramos texto para ler neste arquivo.",
     "engine": "Tipo de voz",
-    "engineDevice": "Vozes do dispositivo",
-    "engineAi": "Voz IA",
-    "engineAiHint": "A voz IA é mais natural e permite baixar MP3. É baixada uma vez (cerca de {size}) e gera o áudio no seu dispositivo.",
+    "engineDevice": "Ouvir (vozes do dispositivo)",
+    "engineAi": "Modo privado (voz IA no seu dispositivo)",
+    "engineCloud": "Voz IA (nuvem)",
+    "engineAiHint": "Modo privado: o texto não sai do seu dispositivo. A voz IA (Supertonic 3) é baixada uma vez (cerca de {size}) e gera o áudio no seu aparelho; também permite baixar MP3.",
     "aiNoChinese": "A voz IA não está disponível em chinês: o texto é lido com as vozes do dispositivo.",
     "aiVoiceFemale": "Mulher {n}",
     "aiVoiceMale": "Homem {n}",
@@ -3480,7 +3530,11 @@
     "mp3NoChinese": "O download em MP3 usa a voz IA, que não está disponível em chinês.",
     "aiLicense": "Licença do modelo (OpenRAIL-M)",
     "mp3TooLongMobile": "No celular o MP3 aceita até {max} caracteres. Encurte o texto ou gere o MP3 em um computador.",
-    "mp3Done": "MP3 pronto: {name}"
+    "mp3Done": "MP3 pronto: {name}",
+    "cloudNotice": "Voz IA (nuvem): seu texto é enviado ao Google para gerar a voz e não o guardamos.",
+    "cloudUnavailable": "A voz IA na nuvem não está disponível neste mês. Você pode usar as vozes do dispositivo ou o modo privado.",
+    "aiNoChineseCloud": "O modo privado não está disponível em chinês: use as vozes do dispositivo ou a voz IA na nuvem.",
+    "mp3HintCloud": "O MP3 é gerado com a voz IA na nuvem (Google Cloud): seu texto é enviado ao Google e não o guardamos. Se publicar o áudio, indique que é uma voz gerada por IA."
   },
   "PdfExcelTool": {
     "reading": "Procurando tabelas no PDF…",

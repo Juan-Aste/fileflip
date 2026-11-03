@@ -3,6 +3,7 @@ import type { ToolId } from "@/config/tools";
 import type { ImageOptions } from "@/lib/image/options";
 import type { Locale } from "@/i18n/routing";
 import { faqPageJsonLd } from "@/lib/faq";
+import { legacyConversionPages } from "./legacy-conversions";
 
 // Long-tail landing pages for concrete searches ("HEIC a JPG desde iPhone",
 // "comprimir PDF para AFIP"...). Each one reuses an existing tool, adds
@@ -30,7 +31,7 @@ export interface LongtailPage {
   translations?: Partial<Record<Locale, string>>;
 }
 
-export const longtailPages: LongtailPage[] = [
+const handwritten: LongtailPage[] = [
   {
     id: "heic-jpg-iphone-es",
     locale: "es",
@@ -333,6 +334,9 @@ export const longtailPages: LongtailPage[] = [
     ],
   },
 ];
+
+/** Hand-written pages plus the conversion pages of old video and audio formats. */
+export const longtailPages: LongtailPage[] = [...handwritten, ...legacyConversionPages];
 
 export function longtailFromSlug(locale: Locale, slug: string): LongtailPage | undefined {
   return longtailPages.find((p) => p.locale === locale && p.slug === slug);

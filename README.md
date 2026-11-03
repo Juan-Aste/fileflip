@@ -67,6 +67,10 @@ El código de Fileflect es software libre bajo la [GNU Affero General Public Lic
 
 Las dependencias y modelos de terceros conservan sus propias licencias (ver la página de créditos del sitio, `public/third-party-notices.txt` y [`docs/licencia-agpl.md`](docs/licencia-agpl.md)). En particular, el modelo de voz Supertonic 3 se distribuye bajo BigScience OpenRAIL-M, con restricciones de uso.
 
+#### Licencias de terceros aceptadas
+
+Se aceptan licencias permisivas y LGPL/MPL, y también GPL-3.0, AGPL-3.0 y GPL-2.0-or-later, compatibles con la AGPL-3.0-or-later del proyecto. Los componentes GPL/AGPL enlazan en la página de créditos el código fuente exacto de la versión usada y cómo se compila. No se aceptan GPL-2.0-only, licencias no comerciales (CC-BY-NC, etc.) ni SSPL; cada modelo o voz se revisa por separado. La regla está en [`docs/dependencies.md`](docs/dependencies.md) y la aplica `npm run licenses`.
+
 **La marca «Fileflect», el nombre y el logo no se licencian bajo la AGPL.** Si publicas un fork, usa otro nombre y otro logo.
 
 ## English
@@ -116,5 +120,9 @@ They are all listed in [`.env.example`](.env.example) with comments (the variabl
 Fileflect's code is free software under the [GNU Affero General Public License v3.0 or later](LICENSE) (AGPL-3.0-or-later). If you offer a modified version to other people over a network, the AGPL requires you to offer them its source code.
 
 Third-party dependencies and models keep their own licenses (see the site's credits page, `public/third-party-notices.txt` and [`docs/licencia-agpl.md`](docs/licencia-agpl.md)). In particular, the Supertonic 3 voice model is distributed under BigScience OpenRAIL-M, which has use restrictions.
+
+#### Accepted third-party licenses
+
+Permissive, LGPL and MPL licenses are accepted, and so are GPL-3.0, AGPL-3.0 and GPL-2.0-or-later, which are compatible with the project's AGPL-3.0-or-later. GPL/AGPL components link, on the credits page, the exact source code of the version used and how it is built. GPL-2.0-only, non-commercial licenses (CC-BY-NC, etc.) and the SSPL are not accepted; each model or voice is reviewed on its own. The rule lives in [`docs/dependencies.md`](docs/dependencies.md) and `npm run licenses` enforces it.
 
 **The "Fileflect" trademark, name and logo are not licensed under the AGPL.** If you publish a fork, use a different name and logo.

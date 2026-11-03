@@ -2,12 +2,14 @@ import { setRequestLocale } from "next-intl/server";
 import Charts from "@/components/admin/Charts";
 import PeriodSelector from "@/components/admin/PeriodSelector";
 import SummaryCards from "@/components/admin/SummaryCards";
+import TtsUsageCards from "@/components/admin/TtsUsageCards";
 import { formatDate } from "@/lib/format";
 import { dayKey, resolvePeriod } from "@/lib/admin/period";
 import type { CsvTableId } from "@/lib/admin/csv";
 import { requireAdminPage } from "@/lib/admin/access";
 import { adminTranslator } from "@/lib/admin/messages";
 import { adminStats, type AdminStats } from "@/lib/admin/stats";
+import { ttsUsageSummary } from "@/lib/admin/tts";
 
 // Depends on the visitor's session.
 export const dynamic = "force-dynamic";
@@ -29,6 +31,7 @@ export default async function AdminPage({ params, searchParams }: Props) {
   // Layouts and pages render in parallel: check here too.
   const session = await requireAdminPage();
   const t = adminTranslator();
+  const ttsUsage = await ttsUsageSummary();
   let stats: AdminStats | null = null;
   let failed = false;
   if (process.env.MONGODB_URI) {
@@ -60,6 +63,7 @@ export default async function AdminPage({ params, searchParams }: Props) {
         </p>
       )}
       {stats && <SummaryCards stats={stats} />}
+      <TtsUsageCards usage={ttsUsage} />
       {stats && <Charts stats={stats} csvHref={csvHref} />}
     </div>
   );

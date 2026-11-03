@@ -1,9 +1,10 @@
 import type { FormatId } from "@/config/formats";
 import { audioTargets, type AudioTarget } from "@/lib/audio/options";
 import { ConversionError } from "@/lib/convert-error";
+import { LEGACY_AUDIO_EXTENSIONS } from "@/lib/legacy-media/options";
 
-/** Extensions the audio tools accept; the engine still checks the content. */
-export const AUDIO_EXTENSIONS = ["mp3", "wav", "wave", "flac", "ogg", "oga", "opus", "m4a", "aac", "webm", "weba", "aiff", "aif", "aifc"];
+/** Extensions the audio tools accept (old formats go through the FFmpeg WASM fallback); the engine still checks the content. */
+export const AUDIO_EXTENSIONS = ["mp3", "wav", "wave", "flac", "ogg", "oga", "opus", "m4a", "aac", "webm", "weba", "aiff", "aif", "aifc", ...LEGACY_AUDIO_EXTENSIONS];
 
 /** Runs one file with the tool's time limit; cancelling or the limit stops the conversion. */
 export async function withTimeLimit<T>(timeoutMs: number, signal: AbortSignal | undefined, run: (signal: AbortSignal) => Promise<T>): Promise<T> {

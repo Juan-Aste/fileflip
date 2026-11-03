@@ -4,9 +4,9 @@
   "private": true,
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "predev": "node scripts/copy-ocr-assets.mjs",
+    "predev": "node scripts/copy-ocr-assets.mjs && node scripts/copy-ffmpeg-assets.mjs && node scripts/copy-mediapipe-assets.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/copy-ocr-assets.mjs",
+    "prebuild": "node scripts/copy-ocr-assets.mjs && node scripts/copy-ffmpeg-assets.mjs && node scripts/copy-mediapipe-assets.mjs",
     "build": "next build",
     "analyze": "ANALYZE=true next build",
     "check:static": "node scripts/check-static.mjs",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.3",
+    "@ffmpeg/core": "0.12.10",
     "@fontsource-variable/bricolage-grotesque": "5.3.0",
     "@fontsource-variable/figtree": "5.3.0",
     "@fontsource/bricolage-grotesque": "5.3.0",
@@ -32,6 +33,7 @@
     "@mediabunny/aac-encoder": "1.62.0",
     "@mediabunny/flac-encoder": "1.62.0",
     "@mediabunny/mp3-encoder": "1.62.0",
+    "@mediapipe/tasks-vision": "1.1.1",
     "@neslinesli93/qpdf-wasm": "0.3.0",
     "@tesseract.js-data/chi_sim": "1.0.0",
     "@tesseract.js-data/eng": "1.0.0",

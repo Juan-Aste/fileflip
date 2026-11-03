@@ -20,6 +20,9 @@ import { clampRate, defaultVoice, SPEECH_RATES, speechLang, voicesFor } from "@/
 import ProgressBar from "../ProgressBar";
 import ToolAlert from "../ToolAlert";
 import { useAiSpeech } from "./useAiSpeech";
+import { useCloudSpeech } from "./useCloudSpeech";
+import { cloudRecommended, cloudSamplePath, cloudVoices, cloudVoicesFor } from "@/lib/tts/cloud-voices";
+import type { CloudStatus } from "@/lib/tts/cloud-client";
 import { AiVoicePicker } from "./AiVoicePicker";
 import { RECOMMENDED_VOICE } from "@/lib/tts/recommended";
 import { useDeviceSpeech, useSpeechVoices } from "./useDeviceSpeech";
@@ -27,6 +30,9 @@ import { useDeviceSpeech, useSpeechVoices } from "./useDeviceSpeech";
 const RATE_KEY = "fileflect.tts.rate";
 const ENGINE_KEY = "fileflect.tts.engine";
 const AI_VOICE_KEY = "fileflect.tts.aiVoice";
+const cloudVoiceKey = (language: TtsLanguage) => `fileflect.tts.cloudVoice.${language}`;
+type Engine = "device" | "cloud" | "ai";
+const engines = ["device", "cloud", "ai"] as const;
 /** Slowest AI voice speed: the model does not speak slower than 0.7. */
 const AI_MIN_RATE = 0.75;
 /**
@@ -60,7 +66,15 @@ function store(key: string, value: string) {
   }
 }
 
-const sourceFormat: Record<TextSourceKind, FormatId> = { txt: "txt", md: "md", html: "html", docx: "docx", epub: "epub", pdf: "pdf", image: "png" };
+const sourceFormat: Record<TextSourceKind, FormatId> = {
+  txt: "txt",
+  md: "md",
+  html: "html",
+  docx: "docx",
+  epub: "epub",
+  pdf: "pdf",
+  image: "png",
+};
 
 /** Pastes, types or opens a text and reads it aloud with the device's voices. */
 export default function ReadAloudTool() {
@@ -80,14 +94,20 @@ export default function ReadAloudTool() {
   const [source, setSource] = useState<FormatId>("txt");
   const [language, setLanguage] = useState<TtsLanguage>(pageLanguage);
   const [languageChosen, setLanguageChosen] = useState(false);
-  const [loading, setLoading] = useState<{ progress: number; controller: AbortController } | null>(null);
+  const [loading, setLoading] = useState<{
+    progress: number;
+    controller: AbortController;
+  } | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
   const [rate, setRate] = useState(1);
   const [voiceURI, setVoiceURI] = useState<string | null>(null);
   const [title, setTitle] = useState<string | undefined>(undefined);
-  const [engine, setEngine] = useState<"device" | "ai">("device");
+  const [engine, setEngine] = useState<Engine>("device");
+  // Cloud voice (/api/tts): null until the server answers; off without GOOGLE_TTS_API_KEY.
+  const [cloud, setCloud] = useState<CloudStatus | null>(null);
+  const [cloudVoicePicked, setCloudVoice] = useState<string | null>(null);
   // The voice the user picked; until then, the recommended one for the language.
   const [aiVoicePicked, setAiVoice] = useState<SupertonicVoice | null>(null);
   // Set once the model is loaded; a ref, since the download continues in the closure that started it.
@@ -97,7 +117,11 @@ export default function ReadAloudTool() {
     { phase: "confirm"; bytes: number; action: "play" | "mp3" } | { phase: "loading"; progress: number; controller: AbortController } | null
   >(null);
   const [aiError, setAiError] = useState<string | null>(null);
-  const [mp3, setMp3] = useState<{ done: number; total: number; controller: AbortController } | null>(null);
+  const [mp3, setMp3] = useState<{
+    done: number;
+    total: number;
+    controller: AbortController;
+  } | null>(null);
   const [mp3Notice, setMp3Notice] = useState<string | null>(null);
   const [phone, setPhone] = useState(false);
   const reported = useRef(false);
@@ -105,9 +129,26 @@ export default function ReadAloudTool() {
   useEffect(() => {
     setPhone(isPhone());
     setRate(clampRate(readStored(RATE_KEY) ?? 1));
-    if (readStored(ENGINE_KEY) === "ai") setEngine("ai");
+    const storedEngine = readStored(ENGINE_KEY);
+    if (storedEngine === "ai" || storedEngine === "cloud") setEngine(storedEngine);
+    // A small JSON request once the page has loaded and is idle: whether the cloud voice is on.
+    let live = true;
+    let timer = 0;
+    const ask = () => {
+      timer = window.setTimeout(() => {
+        void import("@/lib/tts/cloud-client").then(({ cloudStatus }) => cloudStatus()).then((status) => live && setCloud(status));
+      }, 0);
+    };
+    const idle = () => (window.requestIdleCallback ? window.requestIdleCallback(ask, { timeout: 2000 }) : ask());
+    if (document.readyState === "complete") idle();
+    else window.addEventListener("load", idle, { once: true });
     const v = readStored(AI_VOICE_KEY);
     if ((supertonicVoices as readonly string[]).includes(v ?? "")) setAiVoice(v as SupertonicVoice);
+    return () => {
+      live = false;
+      window.removeEventListener("load", idle);
+      window.clearTimeout(timer);
+    };
   }, []);
 
   const deferredText = useDeferredValue(text);
@@ -124,21 +165,54 @@ export default function ReadAloudTool() {
 
   const aiLanguage = isAiLanguage(language) ? language : null;
   const aiVoice = aiVoicePicked ?? RECOMMENDED_VOICE[aiLanguage ?? "es"];
-  // Without device voices the AI voice is the only way to listen.
-  const useAi = aiLanguage !== null && (engine === "ai" || device.supported === false);
+  const cloudListed = cloud?.enabled === true;
+  // Configured and under the site's monthly cap.
+  const cloudOn = cloudListed && cloud?.available !== false;
+  const cloudChoices = useMemo(() => cloudVoicesFor(language), [language]);
+  useEffect(() => {
+    const stored = readStored(cloudVoiceKey(language));
+    setCloudVoice(cloudVoices[language].some((v) => v.id === stored) ? stored : null);
+  }, [language]);
+  const cloudVoiceId = cloudChoices.find((v) => v.id === cloudVoicePicked)?.id ?? cloudChoices[0]!.id;
+  // The engine asked for, when it can be used; without device voices, the cloud or the private mode.
+  const wanted: Engine = (engine === "cloud" && !cloudOn) || (engine === "ai" && !aiLanguage) ? "device" : engine;
+  const active: Engine = wanted === "device" && device.supported === false ? (cloudOn ? "cloud" : aiLanguage ? "ai" : "device") : wanted;
+  const useAi = active === "ai";
+  const useCloud = active === "cloud";
   const aiRate = Math.max(AI_MIN_RATE, rate);
-  const deviceSpeech = useDeviceSpeech({ sentences, voice, lang: speechLang[language], rate });
-  const aiSpeech = useAiSpeech({ sentences, lang: aiLanguage ?? "en", voice: aiVoice, rate: aiRate, steps: phone ? PHONE_LISTEN_STEPS : DEFAULT_STEPS });
-  const speech = useAi ? aiSpeech : deviceSpeech;
+  const deviceSpeech = useDeviceSpeech({
+    sentences,
+    voice,
+    lang: speechLang[language],
+    rate,
+  });
+  const aiSpeech = useAiSpeech({
+    sentences,
+    lang: aiLanguage ?? "en",
+    voice: aiVoice,
+    rate: aiRate,
+    steps: phone ? PHONE_LISTEN_STEPS : DEFAULT_STEPS,
+  });
+  const cloudSpeech = useCloudSpeech({ sentences, voice: cloudVoiceId, rate });
+  const speech = useCloud ? cloudSpeech : useAi ? aiSpeech : deviceSpeech;
+  // The MP3 uses the cloud voice when it is on, unless the user chose the private mode.
+  const mp3Cloud = cloudOn && !useAi;
+  const mp3Possible = mp3Cloud || aiLanguage !== null;
   const busy = mp3 !== null || aiPrep?.phase === "loading";
   const reading = speech.status !== "idle";
 
-  // Switching the kind of voice stops the reading of the other one.
+  // Switching the kind of voice stops the reading of the others.
   useEffect(() => {
-    if (useAi) deviceSpeech.stop();
-    else aiSpeech.stop();
+    if (active !== "device") deviceSpeech.stop();
+    if (active !== "ai") aiSpeech.stop();
+    if (active !== "cloud") cloudSpeech.stop();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [useAi]);
+  }, [active]);
+
+  // The monthly cap was reached while reading: the cloud option turns off.
+  useEffect(() => {
+    if (cloudSpeech.errorCode === "ttsMonthlyLimit") setCloud((c) => (c ? { ...c, available: false } : c));
+  }, [cloudSpeech.errorCode]);
 
   async function open(file: File | undefined) {
     if (!file) return;
@@ -165,7 +239,12 @@ export default function ReadAloudTool() {
       setLanguageChosen(false);
       reported.current = false;
       setNotice(
-        cut ? t("truncated", { count: result.text.length.toLocaleString(locale), max: TTS_MAX_CHARS.toLocaleString(locale) }) : t("loadedFrom", { name: file.name }),
+        cut
+          ? t("truncated", {
+              count: result.text.length.toLocaleString(locale),
+              max: TTS_MAX_CHARS.toLocaleString(locale),
+            })
+          : t("loadedFrom", { name: file.name }),
       );
     } catch (error) {
       if (!controller.signal.aborted) setLoadError(te(errorCode(error)));
@@ -205,6 +284,7 @@ export default function ReadAloudTool() {
   }
 
   async function downloadMp3() {
+    if (mp3Cloud) return downloadCloudMp3();
     if (!aiLanguage || sentences.length === 0) return;
     if (phone && text.length > AI_MP3_MAX_CHARS_MOBILE) return setAiError(t("mp3TooLongMobile", { max: number(AI_MP3_MAX_CHARS_MOBILE) }));
     if (!aiReady.current) return withAiVoice("mp3");
@@ -219,7 +299,11 @@ export default function ReadAloudTool() {
       let writer: Awaited<ReturnType<typeof createMp3Writer>> | null = null;
       for (let i = 0; i < list.length; i++) {
         // Cancelling waits for the sentence in progress: the loaded model is kept.
-        const audio = await speakAiSentence(list[i]!.text, { lang: aiLanguage, voice: aiVoice, speed: modelSpeed(aiRate) });
+        const audio = await speakAiSentence(list[i]!.text, {
+          lang: aiLanguage,
+          voice: aiVoice,
+          speed: modelSpeed(aiRate),
+        });
         if (controller.signal.aborted) return;
         writer ??= await createMp3Writer(audio.sampleRate);
         await writer.add(audio.pcm);
@@ -230,9 +314,64 @@ export default function ReadAloudTool() {
       const name = mp3FileName(text, title);
       saveBlob(new Blob([data as Uint8Array<ArrayBuffer>], { type: "audio/mpeg" }), name);
       setMp3Notice(t("mp3Done", { name }));
-      reportConversion({ tool: "text-to-speech", from: source, to: "mp3", size: new Blob([text]).size, success: true });
+      reportConversion({
+        tool: "text-to-speech",
+        from: source,
+        to: "mp3",
+        size: new Blob([text]).size,
+        success: true,
+      });
     } catch (error) {
       if (!controller.signal.aborted) setAiError(te(errorCode(error)));
+    } finally {
+      setMp3((m) => (m?.controller === controller ? null : m));
+    }
+  }
+
+  /** MP3 with the cloud voice: sentences fetched three at a time, decoded and encoded again in order. */
+  async function downloadCloudMp3() {
+    if (sentences.length === 0) return;
+    speech.stop();
+    setAiError(null);
+    setMp3Notice(null);
+    const controller = new AbortController();
+    const list = sentences;
+    const voiceId = cloudVoiceId;
+    setMp3({ done: 0, total: list.length, controller });
+    try {
+      const [{ speakCloudSentence, inOrder }, { createMp3Writer, mp3FileName }] = await Promise.all([
+        import("@/lib/tts/cloud-client"),
+        import("@/lib/tts/mp3"),
+      ]);
+      let writer: Awaited<ReturnType<typeof createMp3Writer>> | null = null;
+      await inOrder(
+        list.length,
+        3,
+        (i) => speakCloudSentence(list[i]!.text, { voice: voiceId, rate }, controller.signal),
+        async (audio, i) => {
+          if (controller.signal.aborted) throw new DOMException("Aborted", "AbortError");
+          writer ??= await createMp3Writer(audio.sampleRate);
+          if (audio.pcm.length) await writer.add(audio.pcm);
+          setMp3((m) => (m?.controller === controller ? { ...m, done: i + 1 } : m));
+        },
+      );
+      if (!writer) return;
+      const data = await (writer as Awaited<ReturnType<typeof createMp3Writer>>).finish();
+      const name = mp3FileName(text, title);
+      saveBlob(new Blob([data as Uint8Array<ArrayBuffer>], { type: "audio/mpeg" }), name);
+      setMp3Notice(t("mp3Done", { name }));
+      reportConversion({
+        tool: "text-to-speech",
+        from: source,
+        to: "mp3",
+        size: new Blob([text]).size,
+        success: true,
+      });
+    } catch (error) {
+      if (controller.signal.aborted) return;
+      const code = errorCode(error);
+      if (code === "ttsMonthlyLimit") setCloud((c) => (c ? { ...c, available: false } : c));
+      setAiError(te(code));
     } finally {
       setMp3((m) => (m?.controller === controller ? null : m));
     }
@@ -248,10 +387,17 @@ export default function ReadAloudTool() {
       aiSpeech.unlock();
       if (!aiReady.current) return void withAiVoice("play");
     }
+    if (useCloud) cloudSpeech.unlock();
     startPlaying();
     if (!reported.current) {
       reported.current = true;
-      reportConversion({ tool: "text-to-speech", from: source, to: "txt", size: new Blob([text]).size, success: true });
+      reportConversion({
+        tool: "text-to-speech",
+        from: source,
+        to: "txt",
+        size: new Blob([text]).size,
+        success: true,
+      });
     }
   }
 
@@ -277,7 +423,7 @@ export default function ReadAloudTool() {
   const number = (n: number) => n.toLocaleString(locale);
   const statusText =
     speech.status === "playing" ? t("statusPlaying") : speech.status === "paused" ? t("statusPaused") : speech.finished ? t("statusFinished") : "";
-  const noSupport = device.supported === false && !useAi;
+  const noSupport = device.supported === false && active === "device";
   const noVoices = device.supported && device.ready && voices.length === 0;
 
   return (
@@ -368,7 +514,12 @@ export default function ReadAloudTool() {
           </div>
         )}
         <p className={`text-xs tabular-nums ${text.length >= TTS_MAX_CHARS ? "text-danger" : "text-muted"}`}>
-          {text.length >= TTS_MAX_CHARS ? t("limitReached", { max: number(TTS_MAX_CHARS) }) : t("count", { count: number(text.length), max: number(TTS_MAX_CHARS) })}
+          {text.length >= TTS_MAX_CHARS
+            ? t("limitReached", { max: number(TTS_MAX_CHARS) })
+            : t("count", {
+                count: number(text.length),
+                max: number(TTS_MAX_CHARS),
+              })}
         </p>
         {notice && <p className="text-sm text-muted">{notice}</p>}
       </div>
@@ -386,33 +537,47 @@ export default function ReadAloudTool() {
       <fieldset className="flex flex-col gap-2">
         <legend className="mb-1 text-sm font-medium">{t("engine")}</legend>
         <div className="flex flex-wrap gap-2" role="presentation">
-          {(["device", "ai"] as const).map((kind) => {
-            const disabled = reading || busy || (kind === "ai" && !aiLanguage) || (kind === "device" && device.supported === false);
-            const checked = (kind === "ai") === useAi;
-            return (
-              <label
-                key={kind}
-                className={`inline-flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold ${checked ? "border-brand bg-brand-soft text-brand" : "border-border-strong bg-surface"} ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
-              >
-                <input
-                  type="radio"
-                  name={engineId}
-                  value={kind}
-                  checked={checked}
-                  disabled={disabled}
-                  onChange={() => {
-                    setEngine(kind);
-                    store(ENGINE_KEY, kind);
-                  }}
-                  className="accent-brand-solid"
-                />
-                {kind === "ai" ? t("engineAi") : t("engineDevice")}
-              </label>
-            );
-          })}
+          {engines
+            .filter((kind) => kind !== "cloud" || cloudListed)
+            .map((kind) => {
+              const disabled =
+                reading || busy || (kind === "ai" && !aiLanguage) || (kind === "cloud" && !cloudOn) || (kind === "device" && device.supported === false);
+              const checked = kind === active;
+              return (
+                <label
+                  key={kind}
+                  className={`inline-flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2 text-sm font-semibold ${checked ? "border-brand bg-brand-soft text-brand" : "border-border-strong bg-surface"} ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
+                >
+                  <input
+                    type="radio"
+                    name={engineId}
+                    value={kind}
+                    checked={checked}
+                    disabled={disabled}
+                    onChange={() => {
+                      setEngine(kind);
+                      store(ENGINE_KEY, kind);
+                    }}
+                    className="accent-brand-solid"
+                  />
+                  {kind === "ai" ? t("engineAi") : kind === "cloud" ? t("engineCloud") : t("engineDevice")}
+                </label>
+              );
+            })}
         </div>
+        {cloudListed && (
+          <p className="text-xs text-muted" data-testid="tts-cloud-notice">
+            {cloudOn ? t("cloudNotice") : t("cloudUnavailable")}
+          </p>
+        )}
         <p className="text-xs text-muted">
-          {aiLanguage ? t("engineAiHint", { size: formatBytes(supertonicDownloadBytes(modelsBaseUrl()), locale as Locale) }) : t("aiNoChinese")}
+          {aiLanguage
+            ? t("engineAiHint", {
+                size: formatBytes(supertonicDownloadBytes(modelsBaseUrl()), locale as Locale),
+              })
+            : cloudOn
+              ? t("aiNoChineseCloud")
+              : t("aiNoChinese")}
         </p>
       </fieldset>
       {aiLanguage && (
@@ -452,7 +617,24 @@ export default function ReadAloudTool() {
         </div>
         <div className="flex flex-col gap-1 text-sm font-medium">
           <label htmlFor={voiceId}>{t("voice")}</label>
-          {useAi ? (
+          {useCloud ? (
+            <select
+              id={voiceId}
+              value={cloudVoiceId}
+              onChange={(e) => {
+                setCloudVoice(e.target.value);
+                store(cloudVoiceKey(language), e.target.value);
+              }}
+              className={`h-10 ${field}`}
+            >
+              {cloudChoices.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {cloudVoiceName(v, cloudVoices[language], locale, t)}
+                  {cloudRecommended(language) === v.id ? ` · ${t("aiRecommended")}` : ""}
+                </option>
+              ))}
+            </select>
+          ) : useAi ? (
             <select
               id={voiceId}
               value={aiVoice}
@@ -465,7 +647,9 @@ export default function ReadAloudTool() {
             >
               {supertonicVoices.map((v) => (
                 <option key={v} value={v}>
-                  {t(v.startsWith("F") ? "aiVoiceFemale" : "aiVoiceMale", { n: v.slice(1) })}
+                  {t(v.startsWith("F") ? "aiVoiceFemale" : "aiVoiceMale", {
+                    n: v.slice(1),
+                  })}
                   {aiLanguage && RECOMMENDED_VOICE[aiLanguage] === v ? ` · ${t("aiRecommended")}` : ""}
                 </option>
               ))}
@@ -488,6 +672,12 @@ export default function ReadAloudTool() {
                 </option>
               ))}
             </select>
+          )}
+          {useCloud && cloudSamplePath(cloudVoiceId) && (
+            <CloudSample
+              src={cloudSamplePath(cloudVoiceId)!}
+              label={t("aiSamplePlay", { voice: cloudVoiceName(cloudChoices.find((v) => v.id === cloudVoiceId)!, cloudVoices[language], locale, t) })}
+            />
           )}
         </div>
         <div className="flex flex-col gap-1 text-sm font-medium">
@@ -513,12 +703,17 @@ export default function ReadAloudTool() {
 
       {noSupport && <ToolAlert>{t("noSupport")}</ToolAlert>}
       {!useAi && !noSupport && noVoices && <p className="text-sm text-muted">{t("noVoices", { language: languageName(language) })}</p>}
-      {speech.failed && <ToolAlert>{useAi ? t("aiSpeechError") : t("speechError")}</ToolAlert>}
+      {speech.failed && <ToolAlert>{useCloud ? te(cloudSpeech.errorCode ?? "serviceUnavailable") : useAi ? t("aiSpeechError") : t("speechError")}</ToolAlert>}
       {!useAi && voices.some((v) => !v.localService) && <p className="text-xs text-muted">{t("onlineNote")}</p>}
 
       {aiPrep?.phase === "confirm" && (
         <div role="group" aria-label={t("engineAi")} className="flex flex-col gap-3 rounded-xl border border-border-strong bg-surface p-4 text-sm">
-          <p>{t("aiConfirm", { size: formatBytes(aiPrep.bytes, locale as Locale), source: modelsBaseUrl() ? "own" : "hub" })}</p>
+          <p>
+            {t("aiConfirm", {
+              size: formatBytes(aiPrep.bytes, locale as Locale),
+              source: modelsBaseUrl() ? "own" : "hub",
+            })}
+          </p>
           {phone && <p className="text-muted">{t("aiConfirmPhone")}</p>}
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => void prepareAi(aiPrep.action)} className={buttonPrimary}>
@@ -550,7 +745,14 @@ export default function ReadAloudTool() {
           <button type="button" onClick={speech.stop} disabled={!reading} aria-label={t("stop")} title={t("stop")} className={iconButton}>
             <Square aria-hidden="true" className="h-5 w-5" />
           </button>
-          <button type="button" onClick={() => speech.seek(speech.index - 1)} disabled={!reading || speech.index === 0} aria-label={t("previous")} title={t("previous")} className={iconButton}>
+          <button
+            type="button"
+            onClick={() => speech.seek(speech.index - 1)}
+            disabled={!reading || speech.index === 0}
+            aria-label={t("previous")}
+            title={t("previous")}
+            className={iconButton}
+          >
             <SkipBack aria-hidden="true" className="h-5 w-5" />
           </button>
           <button
@@ -565,7 +767,9 @@ export default function ReadAloudTool() {
           </button>
           <p className="ml-auto text-xs text-muted">{t("shortcut")}</p>
         </div>
-        {useAi && speech.status === "playing" && aiSpeech.waiting && <p className="text-sm text-muted">{t("aiGenerating")}</p>}
+        {(useAi || useCloud) && speech.status === "playing" && (useCloud ? cloudSpeech : aiSpeech).waiting && (
+          <p className="text-sm text-muted">{t("aiGenerating")}</p>
+        )}
         {sentences.length > 0 && (
           <div className="flex items-center gap-3">
             <input
@@ -575,11 +779,19 @@ export default function ReadAloudTool() {
               step={1}
               value={Math.min(speech.index + 1, sentences.length)}
               aria-label={t("sentence")}
-              aria-valuetext={t("progress", { current: speech.index + 1, total: sentences.length })}
+              aria-valuetext={t("progress", {
+                current: speech.index + 1,
+                total: sentences.length,
+              })}
               onChange={(e) => speech.seek(Number(e.target.value) - 1)}
               className="flex-1 accent-brand-solid"
             />
-            <span className="shrink-0 text-xs tabular-nums text-muted">{t("progress", { current: number(speech.index + 1), total: number(sentences.length) })}</span>
+            <span className="shrink-0 text-xs tabular-nums text-muted">
+              {t("progress", {
+                current: number(speech.index + 1),
+                total: number(sentences.length),
+              })}
+            </span>
           </div>
         )}
         {!text.trim() && <p className="text-sm text-muted">{t("emptyText")}</p>}
@@ -591,7 +803,13 @@ export default function ReadAloudTool() {
       <div className="flex flex-col gap-2 border-t border-border pt-4">
         {mp3 ? (
           <div className="flex flex-col gap-2">
-            <ProgressBar value={mp3.done / Math.max(1, mp3.total)} label={t("mp3Generating", { current: number(Math.min(mp3.done + 1, mp3.total)), total: number(mp3.total) })} />
+            <ProgressBar
+              value={mp3.done / Math.max(1, mp3.total)}
+              label={t("mp3Generating", {
+                current: number(Math.min(mp3.done + 1, mp3.total)),
+                total: number(mp3.total),
+              })}
+            />
             <button type="button" onClick={() => mp3.controller.abort()} className={`self-start ${buttonSecondary}`}>
               {t("cancel")}
             </button>
@@ -600,33 +818,88 @@ export default function ReadAloudTool() {
           <button
             type="button"
             onClick={() => {
-              aiSpeech.unlock();
+              if (!mp3Cloud) aiSpeech.unlock();
               void downloadMp3();
             }}
-            disabled={!aiLanguage || sentences.length === 0 || busy || aiPrep !== null}
+            disabled={!mp3Possible || sentences.length === 0 || busy || aiPrep !== null}
             className={`self-start ${buttonSecondary}`}
           >
             <Download aria-hidden="true" className="h-5 w-5" />
             {t("downloadMp3")}
           </button>
         )}
-        <p className="text-xs text-muted">
-          {aiLanguage ? t("mp3Hint") : t("mp3NoChinese")}{" "}
-          <a href={LICENSE_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-brand underline">
-            {t("aiLicense")}
-          </a>
-        </p>
+        {mp3Cloud ? (
+          <p className="text-xs text-muted">{t("mp3HintCloud")}</p>
+        ) : (
+          <p className="text-xs text-muted">
+            {aiLanguage ? t("mp3Hint") : t("mp3NoChinese")}{" "}
+            <a href={LICENSE_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-brand underline">
+              {t("aiLicense")}
+            </a>
+          </p>
+        )}
         {mp3Notice && <p className="text-sm text-muted">{mp3Notice}</p>}
       </div>
     </div>
   );
 }
 
+/** Plays a cloud voice's static sample (fetched only when pressed). */
+function CloudSample({ src, label }: { src: string; label: string }) {
+  const audio = useRef<HTMLAudioElement | null>(null);
+  useEffect(() => () => audio.current?.pause(), [src]);
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        audio.current?.pause();
+        audio.current = new Audio(src);
+        void audio.current.play().catch(() => {});
+      }}
+      className="inline-flex items-center gap-1 self-start rounded-lg px-2 py-1 text-xs font-semibold text-brand hover:bg-brand-soft"
+    >
+      <Play aria-hidden="true" className="h-3 w-3" />
+      {label}
+    </button>
+  );
+}
+
+/** "Woman 1 · United States": numbered per gender, with the accent's region. */
+function cloudVoiceName(
+  voice: (typeof cloudVoices)[TtsLanguage][number],
+  all: readonly (typeof cloudVoices)[TtsLanguage][number][],
+  locale: string,
+  t: (key: "aiVoiceFemale" | "aiVoiceMale", values: { n: number }) => string,
+): string {
+  const n = all.filter((v) => v.gender === voice.gender).indexOf(voice) + 1;
+  const name = t(voice.gender === "female" ? "aiVoiceFemale" : "aiVoiceMale", {
+    n,
+  });
+  const region = voice.languageCode.split("-")[1];
+  let regionName: string | undefined;
+  try {
+    regionName = region ? new Intl.DisplayNames([locale], { type: "region" }).of(region) : undefined;
+  } catch {
+    regionName = region;
+  }
+  return regionName ? `${name} · ${regionName}` : name;
+}
+
 const iconButton =
   "inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border-strong bg-surface text-foreground hover:border-brand hover:text-brand disabled:cursor-not-allowed disabled:opacity-50";
 
 /** The text while it is read: the sentence highlighted (and its word, when known), kept in view. */
-function ReadingView({ text, sentence, word, label }: { text: string; sentence?: { start: number; end: number }; word: { start: number; end: number } | null; label: string }) {
+function ReadingView({
+  text,
+  sentence,
+  word,
+  label,
+}: {
+  text: string;
+  sentence?: { start: number; end: number };
+  word: { start: number; end: number } | null;
+  label: string;
+}) {
   const box = useRef<HTMLDivElement>(null);
   const mark = useRef<HTMLElement>(null);
 
@@ -637,14 +910,24 @@ function ReadingView({ text, sentence, word, label }: { text: string; sentence?:
     const top = el.offsetTop - container.offsetTop;
     if (top < container.scrollTop || top + el.offsetHeight > container.scrollTop + container.clientHeight) {
       const smooth = !window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-      container.scrollTo({ top: Math.max(0, top - container.clientHeight / 3), behavior: smooth ? "smooth" : "auto" });
+      container.scrollTo({
+        top: Math.max(0, top - container.clientHeight / 3),
+        behavior: smooth ? "smooth" : "auto",
+      });
     }
   }, [sentence]);
 
   if (!sentence) return null;
   const inWord = word && word.start >= sentence.start && word.end <= sentence.end ? word : null;
   return (
-    <div ref={box} role="region" aria-label={label} tabIndex={0} data-testid="tts-reading" className={`h-72 overflow-y-auto whitespace-pre-wrap py-2 leading-relaxed ${field}`}>
+    <div
+      ref={box}
+      role="region"
+      aria-label={label}
+      tabIndex={0}
+      data-testid="tts-reading"
+      className={`h-72 overflow-y-auto whitespace-pre-wrap py-2 leading-relaxed ${field}`}
+    >
       {text.slice(0, sentence.start)}
       <mark ref={mark} data-testid="tts-current" className="rounded bg-brand-soft px-0.5 text-foreground">
         {inWord ? (

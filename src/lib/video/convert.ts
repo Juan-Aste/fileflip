@@ -27,6 +27,7 @@ import {
   type VideoCodec,
 } from "mediabunny";
 import { ConversionError, InputFileError } from "@/lib/convert-error";
+import { isLegacyFile, legacyFallback, splitProgress, type LegacyHooks } from "@/lib/legacy-media/fallback";
 import { assertComplete, ensureEncoder, planarData } from "@/lib/audio/convert";
 import { validRange, type TrimRange } from "@/lib/audio/time";
 import { encodersFor, JOIN_AUDIO_RATE, MAX_JOIN_SHORT_SIDE, MAX_VIDEO_SECONDS, scaledSize, SPEED_AUDIO_RATE, speedFrameRate, videoPlan, type VideoQuality, type VideoSpeed, type VideoTarget } from "./options";
@@ -58,8 +59,8 @@ export interface VideoEdit {
 }
 
 /** Duration in seconds of a video, with the same checks as a conversion. */
-export async function probeVideo(file: Blob): Promise<{ duration: number }> {
-  const { input, duration } = await openVideo(file);
+export async function probeVideo(file: Blob, hooks?: LegacyHooks): Promise<{ duration: number }> {
+  const { input, duration } = await openVideo(file, hooks);
   input.dispose();
   return { duration };
 }
@@ -76,8 +77,22 @@ export interface VideoResult {
   height: number;
 }
 
-/** Opens a file for mediabunny, checking it holds video this browser can read; the caller disposes it. */
-export async function openVideo(file: Blob) {
+/**
+ * Opens a file for mediabunny, checking it holds video this browser can read; the caller disposes it.
+ * Old formats mediabunny can't read (AVI, WMV, FLV, MPG, VOB, 3GP, RM…) are first rewritten as
+ * WebM by the FFmpeg WASM fallback (src/lib/legacy-media), which takes `hooks` (cancel, progress).
+ */
+export async function openVideo(file: Blob, hooks?: LegacyHooks) {
+  try {
+    return await openVideoDirect(file);
+  } catch (error) {
+    const rewritten = await legacyFallback(file, "video", error, hooks);
+    if (!rewritten) throw error;
+    return openVideoDirect(rewritten);
+  }
+}
+
+async function openVideoDirect(file: Blob) {
   const input = new Input({ source: new BlobSource(file), formats: ALL_FORMATS });
   try {
     try {
@@ -89,6 +104,8 @@ export async function openVideo(file: Blob) {
       throw new ConversionError("fileDamaged");
     });
     if (!video) throw new ConversionError("noVideoTrack");
+    // A codec mediabunny doesn't know (H.263 or MPEG-4 Part 2 in 3GP, MPEG-2 in a transport stream, AMR sound…).
+    if (video.codec === null || (audio && audio.codec === null && (await isLegacyFile(file)))) throw new ConversionError("videoCodecUnsupported");
     const duration = await input.computeDuration().catch(() => {
       throw new ConversionError("fileDamaged");
     });
@@ -115,7 +132,8 @@ export async function convertVideo(
   target: VideoTarget,
   { signal, onProgress, edit }: { signal?: AbortSignal; onProgress?: (progress: number) => void; edit?: VideoEdit } = {},
 ): Promise<VideoResult> {
-  const { input, video, audio, duration } = await openVideo(file);
+  const progress = splitProgress(onProgress);
+  const { input, video, audio, duration } = await openVideo(file, { signal, onProgress: progress.legacy });
   try {
     const { width, height } = scaledSize(video.displayWidth, video.displayHeight, edit?.maxShortSide);
     const speed = edit?.speed;
@@ -181,7 +199,7 @@ export async function convertVideo(
       if (dropped.track === keepAudio && plan.audio) throw new ConversionError("audioCodecUnsupported");
     }
     if (!conversion.isValid) throw new ConversionError("videoCodecUnsupported");
-    conversion.onProgress = (progress) => onProgress?.(progress);
+    conversion.onProgress = (p) => progress.rest(p);
     const abort = () => void conversion.cancel();
     signal?.addEventListener("abort", abort, { once: true });
     try {

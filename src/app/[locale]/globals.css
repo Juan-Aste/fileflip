@@ -126,6 +126,12 @@
   }
 }
 
+/* Whatever the browser scrolls into view (keyboard focus, #anchors, find in
+   page) stops below the sticky header (h-16) instead of hidden under it. */
+html {
+  scroll-padding-top: 5rem;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;

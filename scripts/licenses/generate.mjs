@@ -7,7 +7,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { embedded, LICENSE_TEXTS } from "./embedded.mjs";
-import { chooseLicense, documentedDependencies, productionPackages } from "./production.mjs";
+import { chooseLicense, documentedDependencies, isStrongCopyleft, productionPackages } from "./production.mjs";
 
 const root = new URL("../../", import.meta.url).pathname;
 const read = (path) => readFileSync(join(root, path), "utf8");
@@ -56,7 +56,7 @@ function canonicalText(license, author = "") {
   if (ids.some((id) => id.startsWith("LGPL-3.0"))) ids.push("GPL-3.0");
   return ids
     .map((id) => {
-      const file = join(root, "scripts/licenses/texts", `${id.replace(/-(only|or-later)$/, "")}${/^L?GPL/.test(id) ? "-only" : ""}.txt`);
+      const file = join(root, "scripts/licenses/texts", `${id.replace(/-(only|or-later)$/, "")}${/^[LA]?GPL/.test(id) ? "-only" : ""}.txt`);
       if (!existsSync(file)) throw new Error(`No canonical text for ${id} in scripts/licenses/texts/`);
       const text = readFileSync(file, "utf8").trimEnd();
       return author ? text.replace(/^Copyright \(c\) <year> <[^>]+>\.?$/im, `Copyright (c) ${author}`) : text;
@@ -115,10 +115,27 @@ const embeddedNotices = embedded.map((e) => {
   if (e.build) header.push(`Build: ${e.build}`);
   const lgpl = e.lgpl
     ? `Used unmodified under the ${e.license}, as a separate, replaceable file (WASM module or shared library). License text: /licenses/${e.licenseText}.txt`
-    : "";
+    : e.gpl
+      ? `Used under the ${e.license}; Fileflect as a whole is distributed under the AGPL-3.0-or-later. The exact source code of this version and how it is built are linked above. License text: /licenses/${e.licenseText}.txt`
+      : "";
   const text = e.kind === "service" ? "Runs as a separate service; not distributed with Fileflect." : lgpl || canonicalText(e.licenseText, e.holder ?? `the ${e.name} authors`);
   return `${"=".repeat(78)}\n${header.join("\n")}\n${"=".repeat(78)}\n\n${text}\n`;
 });
+
+// GPL/AGPL components must link their exact source code and build (phase 12).
+const gplEntries = embedded.filter((e) => e.gpl);
+for (const c of credits) {
+  if (!c.license.split(/\s+AND\s+/).some(isStrongCopyleft)) continue;
+  if (!gplEntries.some((e) => e.partOf === c.name || e.id === c.name)) {
+    problems.push(`${c.name}@${c.version}: ${c.license} needs a \`gpl: true\` entry with its source in scripts/licenses/embedded.mjs`);
+  }
+}
+for (const e of embedded) {
+  if (e.kind === "service") continue;
+  const strong = e.license.split(/\s+(AND|OR)\s+/).some(isStrongCopyleft) && !e.license.split(/\s+OR\s+/).some((o) => !o.split(/\s+AND\s+/).some(isStrongCopyleft));
+  if (strong && !e.gpl) problems.push(`${e.id}: ${e.license} must be marked \`gpl: true\``);
+  if ((e.gpl || e.lgpl) && (!/^https:\/\//.test(e.source ?? "") || !e.build)) problems.push(`${e.id}: copyleft component without source/build links`);
+}
 
 if (problems.length) {
   console.error(`Licenses: ${problems.length} problem(s):\n- ${problems.join("\n- ")}`);
