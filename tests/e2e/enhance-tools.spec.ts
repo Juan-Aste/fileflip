@@ -208,4 +208,17 @@ test.describe("tool: enhance-photo", () => {
     await expect(toolAlert(page)).toHaveCount(0);
     await expect(action).toBeEnabled();
   });
+
+  test("found with Ctrl+K and listed in the images category", async ({ page }) => {
+    await page.goto("/es/herramientas-de-imagen", { waitUntil: "networkidle" });
+    await expect(page.locator('main a[href="/es/mejorar-foto"]').first()).toBeVisible();
+    await page.keyboard.press("Control+k");
+    const box = page.getByRole("combobox", { name: "Buscar herramientas" });
+    await box.fill("mejorar foto");
+    const option = page.getByRole("listbox", { name: "Buscar herramientas" }).getByRole("option").first();
+    await expect(option).toContainText("Mejorar foto");
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/es\/mejorar-foto$/);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Mejorar foto");
+  });
 });
