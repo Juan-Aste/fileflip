@@ -46,6 +46,7 @@ const components: Record<ToolId, React.ComponentType> = {
   "id-photo": dynamic(() => import("./image/IdPhotoTool")),
   "remove-background": dynamic(() => import("./image/RemoveBackgroundTool")),
   "enhance-photo": dynamic(() => import("./image/EnhancePhotoTool")),
+  "round-image": dynamic(() => import("./image/RoundImageTool")),
   "scan-document": dynamic(() => import("./image/ScanDocumentTool")),
   "watermark-image": dynamic(() => import("./image/OverlayImageTool").then((m) => m.WatermarkImageTool)),
   "add-text-to-image": dynamic(() => import("./image/OverlayImageTool").then((m) => m.AddTextToImageTool)),

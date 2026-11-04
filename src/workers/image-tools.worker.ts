@@ -29,6 +29,7 @@ import { isDamagedImage } from "@/lib/image/integrity";
 import { DEFAULT_QUALITY } from "@/lib/image/options";
 import type { RawImage } from "@/lib/image/pixels";
 import { quantizedPng } from "@/lib/image/png-indexed";
+import { roundImage, type RoundFill, type RoundSpec } from "@/lib/image/round";
 import { planResize, type ResizeRequest } from "@/lib/image/resize-plan";
 import {
   MalformedImageError,
@@ -241,6 +242,27 @@ async function transform({ input, from, to, rotate, flipH, flipV }: TransformArg
   const buffer = await encode(out, to, KEEP_QUALITY);
   onProgress(1);
   return { result: { buffer, width, height }, transfer: [buffer] };
+}
+
+export interface RoundArgs {
+  input: Blob;
+  from: FormatId;
+  to: "png" | "webp" | "avif" | "jpg";
+  spec: RoundSpec;
+  fill: RoundFill;
+}
+
+/** Rounded corners or a circle/ellipse; outside transparent or a solid color. */
+async function round({ input, from, to, spec, fill }: RoundArgs, onProgress: (progress: number) => void) {
+  // JPG has no alpha: callers switch to PNG, but never write a JPG with a black outside.
+  if (to === "jpg" && fill.kind === "transparent") throw new ConversionError("invalidRequest");
+  const image = await decode(await input.arrayBuffer(), from);
+  onProgress(0.3);
+  const out = roundImage(image, spec, fill);
+  onProgress(0.6);
+  const buffer = await encode(out, to, KEEP_QUALITY);
+  onProgress(1);
+  return { result: { buffer, width: out.width, height: out.height }, transfer: [buffer] };
 }
 
 export interface StripArgs {
@@ -554,4 +576,4 @@ async function scan({ pages, mode, paper }: ScanArgs, onProgress: (progress: num
   return { result: { buffer, pages: pages.length }, transfer: [buffer] };
 }
 
-exposeHandlers({ compress, resize, transform, strip, preview, crop, overlay, favicon, idPhoto, scan });
+exposeHandlers({ compress, resize, transform, round, strip, preview, crop, overlay, favicon, idPhoto, scan });

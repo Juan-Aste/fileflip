@@ -871,6 +871,22 @@
         "a6": "Dans le même format si la photo est en JPG, PNG ou WEBP ; les autres (HEIC d'iPhone, AVIF, TIFF, BMP, GIF) en JPG, ou en PNG si elles ont de la transparence, qui est conservée. Une photo à la fois, jusqu'à 50 Mo : jusqu'à 24 mégapixels en mode Automatique et jusqu'à 1 mégapixel en entrée pour l'agrandissement par IA (×4 donne jusqu'à 16 mégapixels)."
       }
     },
+    "round-image": {
+      "title": "Arrondir une image",
+      "description": "Arrondissez les coins d’une image ou découpez-la en cercle, avec un fond transparent ou coloré. Par lots, dans votre navigateur.",
+      "action": "Arrondir les images",
+      "about": "Arrondir une image donne des coins arrondis à vos photos, logos et captures d’écran, ou les découpe en cercle pour les photos de profil et avatars. Choisissez le rayon en pixels ou en pourcentage du côté le plus court et, si vous le souhaitez, arrondissez seulement certains coins. En mode cercle, un carré centré est pris, que vous pouvez déplacer pour cadrer, ou une ellipse si vous préférez garder les proportions d’origine. L’extérieur peut être transparent (PNG, WEBP ou AVIF) ou d’une couleur de votre choix (n’importe quel format, JPG compris). Le bord est lissé pour ne pas paraître crénelé, vous voyez le résultat en direct et vous pouvez traiter plusieurs images à la fois. Tout se passe dans votre navigateur : les images ne sont envoyées à aucun serveur.",
+      "faq": {
+        "q1": "Comment faire une photo de profil ronde ?",
+        "a1": "Choisissez « Cercle » : un carré centré de la taille du côté le plus court est pris. Si le visage n’est pas au milieu, faites glisser l’aperçu ou utilisez « Cadrage » pour le déplacer. Téléchargez en PNG pour que l’extérieur soit transparent.",
+        "q2": "Pourquoi pas de transparence en JPG ?",
+        "a2": "Le format JPG ne stocke pas la transparence. Si vous choisissez un extérieur transparent avec JPG, l’image est enregistrée en PNG et nous vous le signalons ; pour utiliser JPG, choisissez une couleur pour l’extérieur.",
+        "q3": "Y a-t-il une perte de qualité ?",
+        "a3": "L’intérieur reste identique à l’original, pixel par pixel. Le PNG ne perd rien ; WEBP, AVIF et JPG sont enregistrés en haute qualité (92). Seuls les coins ou le bord du cercle changent, et ils sont lissés.",
+        "q4": "Puis-je arrondir seulement certains coins ?",
+        "a4": "Oui : dans « Coins arrondis », cochez ceux que vous voulez (en haut à gauche, en haut à droite, en bas à gauche, en bas à droite). Le rayon peut être en pixels ou en pourcentage du côté le plus court (jusqu’à 50 %, ce qui transforme une image carrée en cercle)."
+      }
+    },
     "scan-document": {
       "title": "Scanner un document",
       "description": "Transformez des photos de documents prises au téléphone en PDF scanné : la perspective est redressée, le papier devient blanc et le texte noir.",
@@ -2932,7 +2948,31 @@
     "svgByWidth": "Largeur exacte",
     "svgWidthInvalid": "Saisissez une largeur entière entre 1 et {max} px.",
     "svgHint": "1× utilise la taille déclarée dans le SVG (1024 px s'il n'en déclare aucune). En JPG, les zones transparentes deviennent blanches.",
-    "svgSize": "{name} : {size} px"
+    "svgSize": "{name} : {size} px",
+    "roundShape": "Forme",
+    "roundCorners": "Coins arrondis",
+    "roundCircle": "Cercle",
+    "roundRadius": "Rayon",
+    "roundUnit": "Unité",
+    "roundUnitPercent": "% du côté court",
+    "roundWhichCorners": "Coins",
+    "round_tl": "En haut à gauche",
+    "round_tr": "En haut à droite",
+    "round_bl": "En bas à gauche",
+    "round_br": "En bas à droite",
+    "roundEllipse": "Garder les proportions (ellipse au lieu d’un cercle)",
+    "roundFocus": "Cadrage",
+    "roundOutside": "Extérieur",
+    "roundTransparent": "Transparent",
+    "roundColor": "Couleur",
+    "roundColorLabel": "Couleur de l’extérieur",
+    "roundFormat": "Format",
+    "roundJpgSwitched": "Le JPG ne gère pas la transparence : l’image sera enregistrée en PNG. Pour utiliser le JPG, choisissez une couleur pour l’extérieur.",
+    "roundPreview": "Aperçu de la première image.",
+    "roundPreviewDrag": "Aperçu de la première image : faites-le glisser pour déplacer le cadrage.",
+    "roundPreviewLabel": "Aperçu de l’image arrondie",
+    "roundDone": "{name} : {size} px.",
+    "roundSuffix": "arrondie"
   },
   "SubtitleTools": {
     "paste": "Ou collez vos sous-titres",

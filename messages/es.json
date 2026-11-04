@@ -871,6 +871,22 @@
         "a6": "En el mismo formato si la foto es JPG, PNG o WEBP; las demás (HEIC del iPhone, AVIF, TIFF, BMP, GIF) en JPG, o en PNG si tienen transparencia, que se conserva. Una foto por vez, de hasta 50 MB: hasta 24 megapíxeles en el modo Automático y hasta 1 megapíxel de entrada al ampliar con IA (×4 da hasta 16 megapíxeles)."
       }
     },
+    "round-image": {
+      "title": "Redondear imagen",
+      "description": "Redondea las esquinas de una imagen o recórtala en círculo, con fondo transparente o de color. En lotes y en tu navegador.",
+      "action": "Redondear imágenes",
+      "about": "Redondear imagen le da esquinas redondeadas a tus fotos, logos y capturas, o las recorta en círculo para fotos de perfil y avatares. Elige el radio en píxeles o en porcentaje del lado más corto y, si quieres, redondea solo algunas esquinas. En modo círculo se toma un cuadrado centrado que puedes mover para encuadrar, o una elipse si prefieres mantener la proporción original. Lo que queda afuera puede ser transparente (PNG, WEBP o AVIF) o de un color a elección (cualquier formato, también JPG). El borde se suaviza para que no se vea dentado, ves el resultado en vivo y puedes procesar varias imágenes a la vez. Todo pasa en tu navegador: las imágenes no se suben a ningún servidor.",
+      "faq": {
+        "q1": "¿Cómo hago una foto de perfil redonda?",
+        "a1": "Elige «Círculo»: se toma un cuadrado centrado del tamaño del lado más corto. Si la cara no queda al centro, arrastra la vista previa o usa «Encuadre» para moverlo. Descarga en PNG para que lo de afuera sea transparente.",
+        "q2": "¿Por qué no puedo tener transparencia en JPG?",
+        "a2": "El formato JPG no guarda transparencia. Si eliges fondo transparente con JPG, la imagen se guarda en PNG y te lo avisamos; para usar JPG, elige un color para lo de afuera.",
+        "q3": "¿Se pierde calidad?",
+        "a3": "El interior queda idéntico al original, píxel por píxel. PNG no pierde nada; WEBP, AVIF y JPG se guardan con calidad alta (92). Solo cambian las esquinas o el borde del círculo, que se suavizan.",
+        "q4": "¿Puedo redondear solo algunas esquinas?",
+        "a4": "Sí: en «Esquinas redondeadas» marca las que quieras (arriba a la izquierda, arriba a la derecha, abajo a la izquierda, abajo a la derecha). El radio puede ir en píxeles o en porcentaje del lado más corto (hasta 50 %, que en una imagen cuadrada da un círculo)."
+      }
+    },
     "scan-document": {
       "title": "Escanear documento",
       "description": "Convierte fotos de documentos hechas con el celular en un PDF escaneado: endereza la perspectiva y deja el papel blanco y el texto negro.",
@@ -2932,7 +2948,31 @@
     "svgByWidth": "Ancho exacto",
     "svgWidthInvalid": "Escribe un ancho entero entre 1 y {max} px.",
     "svgHint": "1× usa el tamaño declarado en el SVG (1024 px si no declara ninguno). En JPG las zonas transparentes quedan blancas.",
-    "svgSize": "{name}: {size} px"
+    "svgSize": "{name}: {size} px",
+    "roundShape": "Forma",
+    "roundCorners": "Esquinas redondeadas",
+    "roundCircle": "Círculo",
+    "roundRadius": "Radio",
+    "roundUnit": "Unidad",
+    "roundUnitPercent": "% del lado menor",
+    "roundWhichCorners": "Esquinas",
+    "round_tl": "Arriba a la izquierda",
+    "round_tr": "Arriba a la derecha",
+    "round_bl": "Abajo a la izquierda",
+    "round_br": "Abajo a la derecha",
+    "roundEllipse": "Mantener la proporción (elipse en lugar de círculo)",
+    "roundFocus": "Encuadre",
+    "roundOutside": "Afuera",
+    "roundTransparent": "Transparente",
+    "roundColor": "Color",
+    "roundColorLabel": "Color de afuera",
+    "roundFormat": "Formato",
+    "roundJpgSwitched": "JPG no admite transparencia: se guardará en PNG. Para usar JPG, elige un color para lo de afuera.",
+    "roundPreview": "Vista previa de la primera imagen.",
+    "roundPreviewDrag": "Vista previa de la primera imagen: arrástrala para mover el encuadre.",
+    "roundPreviewLabel": "Vista previa de la imagen redondeada",
+    "roundDone": "{name}: {size} px.",
+    "roundSuffix": "redondeada"
   },
   "SubtitleTools": {
     "paste": "O pega tus subtítulos",

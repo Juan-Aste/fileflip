@@ -871,6 +871,22 @@
         "a6": "No mesmo formato se a foto for JPG, PNG ou WEBP; as outras (HEIC do iPhone, AVIF, TIFF, BMP, GIF) em JPG, ou em PNG se tiverem transparência, que é mantida. Uma foto por vez, de até 50 MB: até 24 megapixels no modo Automático e até 1 megapixel de entrada ao ampliar com IA (×4 dá até 16 megapixels)."
       }
     },
+    "round-image": {
+      "title": "Arredondar imagem",
+      "description": "Arredonde os cantos de uma imagem ou recorte-a em círculo, com fundo transparente ou colorido. Em lotes e no seu navegador.",
+      "action": "Arredondar imagens",
+      "about": "Arredondar imagem dá cantos arredondados às suas fotos, logos e capturas de tela, ou as recorta em círculo para fotos de perfil e avatares. Escolha o raio em pixels ou em porcentagem do lado menor e, se quiser, arredonde só alguns cantos. No modo círculo é usado um quadrado centralizado que você pode mover para enquadrar, ou uma elipse se preferir manter a proporção original. O que fica de fora pode ser transparente (PNG, WEBP ou AVIF) ou de uma cor à sua escolha (qualquer formato, inclusive JPG). A borda é suavizada para não ficar serrilhada, você vê o resultado ao vivo e pode processar várias imagens de uma vez. Tudo acontece no seu navegador: as imagens não são enviadas a nenhum servidor.",
+      "faq": {
+        "q1": "Como faço uma foto de perfil redonda?",
+        "a1": "Escolha «Círculo»: é usado um quadrado centralizado do tamanho do lado menor. Se o rosto não ficar no centro, arraste a prévia ou use «Enquadramento» para movê-lo. Baixe em PNG para que o lado de fora fique transparente.",
+        "q2": "Por que não posso ter transparência em JPG?",
+        "a2": "O formato JPG não guarda transparência. Se você escolher fundo transparente com JPG, a imagem é salva em PNG e avisamos; para usar JPG, escolha uma cor para o lado de fora.",
+        "q3": "Perde qualidade?",
+        "a3": "O interior fica idêntico ao original, pixel por pixel. PNG não perde nada; WEBP, AVIF e JPG são salvos com qualidade alta (92). Só mudam os cantos ou a borda do círculo, que são suavizados.",
+        "q4": "Posso arredondar só alguns cantos?",
+        "a4": "Sim: em «Cantos arredondados» marque os que quiser (superior esquerdo, superior direito, inferior esquerdo, inferior direito). O raio pode ser em pixels ou em porcentagem do lado menor (até 50 %, que numa imagem quadrada vira um círculo)."
+      }
+    },
     "scan-document": {
       "title": "Escanear documento",
       "description": "Transforme fotos de documentos tiradas com o celular em um PDF escaneado: endireita a perspectiva e deixa o papel branco e o texto preto.",
@@ -2932,7 +2948,31 @@
     "svgByWidth": "Largura exata",
     "svgWidthInvalid": "Digite uma largura inteira entre 1 e {max} px.",
     "svgHint": "1× usa o tamanho declarado no SVG (1024 px se não declarar nenhum). Em JPG, as áreas transparentes ficam brancas.",
-    "svgSize": "{name}: {size} px"
+    "svgSize": "{name}: {size} px",
+    "roundShape": "Forma",
+    "roundCorners": "Cantos arredondados",
+    "roundCircle": "Círculo",
+    "roundRadius": "Raio",
+    "roundUnit": "Unidade",
+    "roundUnitPercent": "% do lado menor",
+    "roundWhichCorners": "Cantos",
+    "round_tl": "Superior esquerdo",
+    "round_tr": "Superior direito",
+    "round_bl": "Inferior esquerdo",
+    "round_br": "Inferior direito",
+    "roundEllipse": "Manter a proporção (elipse em vez de círculo)",
+    "roundFocus": "Enquadramento",
+    "roundOutside": "Lado de fora",
+    "roundTransparent": "Transparente",
+    "roundColor": "Cor",
+    "roundColorLabel": "Cor de fora",
+    "roundFormat": "Formato",
+    "roundJpgSwitched": "JPG não suporta transparência: será salvo em PNG. Para usar JPG, escolha uma cor para o lado de fora.",
+    "roundPreview": "Prévia da primeira imagem.",
+    "roundPreviewDrag": "Prévia da primeira imagem: arraste para mover o enquadramento.",
+    "roundPreviewLabel": "Prévia da imagem arredondada",
+    "roundDone": "{name}: {size} px.",
+    "roundSuffix": "arredondada"
   },
   "SubtitleTools": {
     "paste": "Ou cole suas legendas",

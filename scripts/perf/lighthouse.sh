@@ -43,6 +43,7 @@ PAGES=(
   "tool-scan /es/escanear-documento"
   "tool-bg /es/quitar-fondo"
   "tool-enhance /es/mejorar-foto"
+  "tool-round /es/redondear-imagen"
   "tool-tts /es/leer-texto-en-voz-alta"
   "tool-tts-en /en/text-to-speech"
   "tool-tts-zh /zh/text-to-speech"

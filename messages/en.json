@@ -871,6 +871,22 @@
         "a6": "The same format if the photo is JPG, PNG or WEBP; others (iPhone HEIC, AVIF, TIFF, BMP, GIF) as JPG, or PNG if they have transparency, which is kept. One photo at a time, up to 50 MB: up to 24 megapixels in Automatic mode and up to 1 megapixel of input for AI upscaling (×4 gives up to 16 megapixels)."
       }
     },
+    "round-image": {
+      "title": "Round image",
+      "description": "Round the corners of an image or crop it into a circle, with a transparent or colored background. In batches, in your browser.",
+      "action": "Round images",
+      "about": "Round image gives your photos, logos and screenshots rounded corners, or crops them into a circle for profile pictures and avatars. Pick the radius in pixels or as a percentage of the shorter side and, if you like, round only some corners. In circle mode a centered square is taken, which you can move to frame it, or an ellipse if you prefer to keep the original proportions. What is left outside can be transparent (PNG, WEBP or AVIF) or a color of your choice (any format, JPG too). The edge is smoothed so it does not look jagged, you see the result live and you can process several images at once. Everything happens in your browser: your images are not uploaded to any server.",
+      "faq": {
+        "q1": "How do I make a round profile picture?",
+        "a1": "Choose “Circle”: a centered square as large as the shorter side is taken. If the face is not in the middle, drag the preview or use “Framing” to move it. Download as PNG so the outside is transparent.",
+        "q2": "Why can't I have transparency in JPG?",
+        "a2": "The JPG format does not store transparency. If you choose a transparent outside with JPG, the image is saved as PNG and we tell you; to use JPG, pick a color for the outside.",
+        "q3": "Is quality lost?",
+        "a3": "The inside stays identical to the original, pixel by pixel. PNG loses nothing; WEBP, AVIF and JPG are saved at high quality (92). Only the corners or the edge of the circle change, and they are smoothed.",
+        "q4": "Can I round only some corners?",
+        "a4": "Yes: in “Rounded corners” tick the ones you want (top left, top right, bottom left, bottom right). The radius can be in pixels or a percentage of the shorter side (up to 50%, which turns a square image into a circle)."
+      }
+    },
     "scan-document": {
       "title": "Scan document",
       "description": "Turn phone photos of documents into a scanned PDF: straightens the perspective and makes the paper white and the text black.",
@@ -2932,7 +2948,31 @@
     "svgByWidth": "Exact width",
     "svgWidthInvalid": "Enter a whole width between 1 and {max} px.",
     "svgHint": "1× uses the size declared in the SVG (1024 px if it declares none). In JPG, transparent areas become white.",
-    "svgSize": "{name}: {size} px"
+    "svgSize": "{name}: {size} px",
+    "roundShape": "Shape",
+    "roundCorners": "Rounded corners",
+    "roundCircle": "Circle",
+    "roundRadius": "Radius",
+    "roundUnit": "Unit",
+    "roundUnitPercent": "% of shorter side",
+    "roundWhichCorners": "Corners",
+    "round_tl": "Top left",
+    "round_tr": "Top right",
+    "round_bl": "Bottom left",
+    "round_br": "Bottom right",
+    "roundEllipse": "Keep proportions (ellipse instead of circle)",
+    "roundFocus": "Framing",
+    "roundOutside": "Outside",
+    "roundTransparent": "Transparent",
+    "roundColor": "Color",
+    "roundColorLabel": "Outside color",
+    "roundFormat": "Format",
+    "roundJpgSwitched": "JPG does not support transparency: it will be saved as PNG. To use JPG, pick a color for the outside.",
+    "roundPreview": "Preview of the first image.",
+    "roundPreviewDrag": "Preview of the first image: drag it to move the framing.",
+    "roundPreviewLabel": "Preview of the rounded image",
+    "roundDone": "{name}: {size} px.",
+    "roundSuffix": "rounded"
   },
   "SubtitleTools": {
     "paste": "Or paste your subtitles",

@@ -84,6 +84,7 @@ export const toolIds = [
   "id-photo",
   "remove-background",
   "enhance-photo",
+  "round-image",
   "scan-document",
   "watermark-image",
   "add-text-to-image",
@@ -857,6 +858,19 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 20 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "mejorar-foto", en: "enhance-photo", pt: "melhorar-foto", fr: "ameliorer-photo", zh: "enhance-photo" },
+  },
+  "round-image": {
+    id: "round-image",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "heic"],
+    outputs: ["png", "webp", "avif", "jpg"],
+    engine: "browser",
+    // Own antialiased shape (src/lib/image/round.ts) in the image-tools worker.
+    libraries: ["own rounded-corner and circle mask", "@jsquash/png", "@jsquash/webp", "@jsquash/avif", "@jsquash/jpeg", "libheif-js", "utif2"],
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "redondear-imagen", en: "round-image", pt: "arredondar-imagem", fr: "arrondir-image", zh: "round-image" },
+    related: ["crop-image", "remove-background", "resize-image"],
   },
 
   "watermark-image": {

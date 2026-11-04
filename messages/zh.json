@@ -871,6 +871,22 @@
         "a6": "JPG、PNG 或 WEBP 照片保持原格式；其他格式（iPhone 的 HEIC、AVIF、TIFF、BMP、GIF）保存为 JPG，有透明区域则保存为 PNG 并保留透明。每次一张，最大 50 MB：“自动”模式最多 2400 万像素，AI 放大的输入最多 100 万像素（×4 最多得到 1600 万像素）。"
       }
     },
+    "round-image": {
+      "title": "图片圆角",
+      "description": "为图片添加圆角或裁剪成圆形，背景可透明或填充颜色。支持批量处理，在浏览器中完成。",
+      "action": "处理图片",
+      "about": "图片圆角可以为照片、标志和截图添加圆角，或裁剪成圆形用作头像。半径可以按像素或按短边的百分比设置，也可以只圆化部分角。圆形模式会取一个居中的正方形，你可以移动它来调整取景；如果想保留原始比例，也可以选择椭圆。外部区域可以是透明的（PNG、WEBP 或 AVIF），也可以填充你选择的颜色（任何格式，包括 JPG）。边缘经过平滑处理，不会出现锯齿；结果实时预览，并且可以一次处理多张图片。一切都在你的浏览器中完成：图片不会上传到任何服务器。",
+      "faq": {
+        "q1": "如何制作圆形头像？",
+        "a1": "选择“圆形”：会取一个边长等于短边的居中正方形。如果脸不在中间，拖动预览或使用“取景”来移动它。下载为 PNG，外部区域就是透明的。",
+        "q2": "为什么 JPG 不能透明？",
+        "a2": "JPG 格式不保存透明度。如果你在 JPG 下选择透明背景，图片会保存为 PNG，我们会提示你；要使用 JPG，请为外部选择一种颜色。",
+        "q3": "会损失画质吗？",
+        "a3": "内部与原图逐像素完全相同。PNG 无损；WEBP、AVIF 和 JPG 以高质量（92）保存。只有角或圆形边缘会改变，并经过平滑处理。",
+        "q4": "可以只圆化部分角吗？",
+        "a4": "可以：在“圆角”中勾选需要的角（左上、右上、左下、右下）。半径可以按像素或短边的百分比设置（最多 50%，方形图片会变成圆形）。"
+      }
+    },
     "scan-document": {
       "title": "扫描文档",
       "description": "把手机拍摄的文档照片转换为扫描版 PDF：校正透视，让纸张变白、文字变黑。",
@@ -2932,7 +2948,31 @@
     "svgByWidth": "指定宽度",
     "svgWidthInvalid": "请输入 1 到 {max} 像素之间的整数宽度。",
     "svgHint": "1× 使用 SVG 中声明的尺寸（未声明时为 1024 像素）。JPG 中透明区域会变成白色。",
-    "svgSize": "{name}：{size} 像素"
+    "svgSize": "{name}：{size} 像素",
+    "roundShape": "形状",
+    "roundCorners": "圆角",
+    "roundCircle": "圆形",
+    "roundRadius": "半径",
+    "roundUnit": "单位",
+    "roundUnitPercent": "短边的 %",
+    "roundWhichCorners": "角",
+    "round_tl": "左上",
+    "round_tr": "右上",
+    "round_bl": "左下",
+    "round_br": "右下",
+    "roundEllipse": "保持比例（椭圆而不是圆形）",
+    "roundFocus": "取景",
+    "roundOutside": "外部",
+    "roundTransparent": "透明",
+    "roundColor": "颜色",
+    "roundColorLabel": "外部颜色",
+    "roundFormat": "格式",
+    "roundJpgSwitched": "JPG 不支持透明：将保存为 PNG。要使用 JPG，请为外部选择一种颜色。",
+    "roundPreview": "第一张图片的预览。",
+    "roundPreviewDrag": "第一张图片的预览：拖动可移动取景。",
+    "roundPreviewLabel": "圆角图片预览",
+    "roundDone": "{name}：{size} px。",
+    "roundSuffix": "rounded"
   },
   "SubtitleTools": {
     "paste": "或粘贴字幕内容",
