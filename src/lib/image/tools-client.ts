@@ -12,6 +12,7 @@ import type {
   PreviewResult,
   ResizeArgs,
   ResizeResult,
+  RoundArgs,
   ScanArgs,
   StripArgs,
   StripResult,
@@ -33,6 +34,9 @@ export const resizeImageFile = (args: ResizeArgs, job: JobOptions = {}) =>
 
 export const transformImageFile = (args: TransformArgs, job: JobOptions = {}) =>
   pool.run<{ buffer: ArrayBuffer; width: number; height: number }>("transform", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });
+
+export const roundImageFile = (args: RoundArgs, job: JobOptions = {}) =>
+  pool.run<{ buffer: ArrayBuffer; width: number; height: number }>("round", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });
 
 export const stripImageMetadata = (args: StripArgs, job: JobOptions = {}) =>
   pool.run<StripResult>("strip", args, { timeoutMs: IMAGE_TOOL_TIMEOUT_MS, ...job });

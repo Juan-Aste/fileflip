@@ -3286,6 +3286,19 @@
       "kind": "data"
     },
     {
+      "id": "real-esrgan",
+      "name": "Real-ESRGAN realesr-general-x4v3 model (xinntao/Real-ESRGAN), converted to ONNX",
+      "version": "v0.2.5.0",
+      "license": "BSD-3-Clause",
+      "holder": "2021, Xintao Wang",
+      "where": [
+        "browser"
+      ],
+      "homepage": "https://github.com/xinntao/Real-ESRGAN",
+      "licenseText": "BSD-3-Clause",
+      "kind": "data"
+    },
+    {
       "id": "tessdata",
       "name": "Tesseract language models (tessdata_best)",
       "version": "4.0.0_best_int",

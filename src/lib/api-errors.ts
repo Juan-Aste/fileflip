@@ -75,6 +75,8 @@ export const apiErrorCodes = [
   "dxfEmpty",
   "dxfTooComplex",
   "gifTooManyFrames",
+  // "Enhance photo": more megapixels than the mode accepts (src/config/limits.ts).
+  "imageTooLarge",
   "signInRequired",
   "paymentsUnavailable",
   // Client-side only: the device can't run it and the server can't either.
@@ -147,6 +149,7 @@ const status: Record<ApiErrorCode, number> = {
   dxfEmpty: 422,
   dxfTooComplex: 413,
   gifTooManyFrames: 413,
+  imageTooLarge: 413,
   tooManyPages: 413,
   pdfAlreadySearchable: 422,
   signInRequired: 401,

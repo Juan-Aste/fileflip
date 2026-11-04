@@ -1,4 +1,6 @@
 import {
+  SquareRoundCorner,
+  WandSparkles,
   FilePenLine,
   ClipboardPenLine,
   Presentation,
@@ -124,6 +126,8 @@ const icons: Record<ToolId, LucideIcon> = {
   "crop-image": Crop,
   "id-photo": SquareUser,
   "remove-background": Eraser,
+  "enhance-photo": WandSparkles,
+  "round-image": SquareRoundCorner,
   "scan-document": FileScan,
   "watermark-image": Stamp,
   "add-text-to-image": Type,

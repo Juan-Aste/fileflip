@@ -167,6 +167,12 @@
     "statusDoneHint": "点击每个文件的按钮即可下载。",
     "larger": "增大 {percent}"
   },
+  "FakeTransparency": {
+    "title": "这张图片的透明背景是假的（是画上去的）",
+    "help": "灰白棋盘格是像素的一部分，所以转换时会保留下来。“去除假背景”会把它变成真正的透明，并输出 {to}。",
+    "noAlpha": "{format} 不支持透明：为了保留透明，去除背景后的结果以 PNG 格式提供。",
+    "action": "去除假背景"
+  },
   "ImageOptions": {
     "title": "选项",
     "quality": "质量",
@@ -245,6 +251,7 @@
     "legacyAudioTooLong": "这种旧格式使用较慢的引擎转换：每个文件最长 1 小时音频。",
     "videoRangeInvalid": "请检查时间：开始时间必须早于结束时间，且都在视频范围内。",
     "gifTooManyFrames": "GIF 的帧数过多：请缩短片段或降低每秒帧数。",
+    "imageTooLarge": "图片像素太多，此工具无法处理：请先缩小或裁剪。",
     "modelEmpty": "此模型没有可转换的面（三角形）：可能是空模型或点云。",
     "modelTooLarge": "模型太大：最多 300 万个三角形。",
     "modelExternalFiles": "此 glTF 使用了未上传的独立文件（.bin 或贴图）。请先在 3D 软件中将其转换为 GLB（单个文件），或使用内嵌所有数据的 .gltf。",
@@ -842,6 +849,42 @@
         "a4": "透明背景选 PNG（兼容性最好）或 WEBP（更小）。白色或彩色背景选 JPG 或 WEBP。照片保持原始尺寸。JPG 不支持透明：选择 JPG 时，背景会是白色或所选颜色。",
         "q5": "有什么限制吗？",
         "a5": "一次一张照片，最大 30 MB、4000 万像素，支持 JPG、PNG、WEBP、AVIF、GIF（第一帧）或 BMP。抠图在长边 480 像素的副本上计算以便即时响应，再以柔化的边缘应用到原始尺寸：散开的头发和很细的边缘会被柔化，而不是逐根抠出。"
+      }
+    },
+    "enhance-photo": {
+      "title": "照片增强",
+      "description": "在浏览器中增强照片：自动校正色阶、色彩、噪点和清晰度，或用 AI（Real-ESRGAN）放大 ×2 和 ×4。无需上传。",
+      "action": "增强照片",
+      "about": "让暗淡的照片焕然一新，或把小图放大而不出现马赛克。“自动”模式先测量照片，再以恰当的强度做你在编辑器里会手动做的调整：色彩校正（去除偏黄、偏蓝或褪色）、色阶与对比度、中间调、保留边缘的轻度降噪和锐化；全是经典滤镜，不用 AI，本来就好的照片变化很小。“AI 放大”用 Real-ESRGAN 神经网络把宽高放大两倍或四倍，重建边缘和纹理，而不只是拉伸像素。滑块可对比前后效果。一切都在你的设备上完成，照片不会上传到任何服务器。",
+      "faq": {
+        "q1": "两种模式有什么区别？",
+        "a1": "“自动”在不改变尺寸的情况下校正照片：色彩、色阶、对比度、噪点和清晰度，用经典滤镜（无 AI），瞬间完成。“AI 放大”用神经网络（Real-ESRGAN）把照片放大 ×2 或 ×4，在边缘和纹理上生成合理的细节；适合小图、裁剪图或低分辨率下载的图片，耗时更长。",
+        "q2": "“自动”模式具体做了什么？",
+        "a2": "按顺序五步：色彩校正（让各通道的黑点和白点彼此靠近，去除光线或褪色照片的偏色）、色阶（拉伸照片范围，并设上限，不会强行改变刻意偏暗或偏亮的照片）、中间调（略微提亮或压暗平均亮度）、降噪（只在测得噪点时进行，并保留边缘）和锐化（对亮度做 USM 锐化，无彩色光晕）。",
+        "q3": "为什么 AI 放大可能比较慢？",
+        "a3": "该网络对照片的每个像素要做约 250 万次运算，而且在你的设备上运行。有 WebGPU（较新的 Chrome、Edge，配合兼容显卡）时只需几秒；没有 WebGPU 时用 CPU 单线程运行，100 万像素的照片可能需要一到几分钟，手机上更久。可以看到进度，并随时取消。",
+        "q4": "我的照片会上传吗？会下载什么？",
+        "a4": "照片不会离开你的设备。首次使用 AI 放大时，浏览器会从 Fileflect（而非第三方服务器）下载模型（4.9 MB）和 ONNX Runtime 引擎，并保存在浏览器中供下次使用。“自动”模式不会额外下载任何东西。",
+        "q5": "它会编造原本没有的细节吗？",
+        "a5": "会：AI 重建的边缘和纹理看起来像真的，但无法恢复丢失的信息。它能让小图放大后清晰，但不能用来识别车牌或人脸。它不会修饰或改变人脸。",
+        "q6": "结果是什么格式？有什么限制？",
+        "a6": "JPG、PNG 或 WEBP 照片保持原格式；其他格式（iPhone 的 HEIC、AVIF、TIFF、BMP、GIF）保存为 JPG，有透明区域则保存为 PNG 并保留透明。每次一张，最大 50 MB：“自动”模式最多 2400 万像素，AI 放大的输入最多 100 万像素（×4 最多得到 1600 万像素）。"
+      }
+    },
+    "round-image": {
+      "title": "图片圆角",
+      "description": "为图片添加圆角或裁剪成圆形，背景可透明或填充颜色。支持批量处理，在浏览器中完成。",
+      "action": "处理图片",
+      "about": "图片圆角可以为照片、标志和截图添加圆角，或裁剪成圆形用作头像。半径可以按像素或按短边的百分比设置，也可以只圆化部分角。圆形模式会取一个居中的正方形，你可以移动它来调整取景；如果想保留原始比例，也可以选择椭圆。外部区域可以是透明的（PNG、WEBP 或 AVIF），也可以填充你选择的颜色（任何格式，包括 JPG）。边缘经过平滑处理，不会出现锯齿；结果实时预览，并且可以一次处理多张图片。一切都在你的浏览器中完成：图片不会上传到任何服务器。",
+      "faq": {
+        "q1": "如何制作圆形头像？",
+        "a1": "选择“圆形”：会取一个边长等于短边的居中正方形。如果脸不在中间，拖动预览或使用“取景”来移动它。下载为 PNG，外部区域就是透明的。",
+        "q2": "为什么 JPG 不能透明？",
+        "a2": "JPG 格式不保存透明度。如果你在 JPG 下选择透明背景，图片会保存为 PNG，我们会提示你；要使用 JPG，请为外部选择一种颜色。",
+        "q3": "会损失画质吗？",
+        "a3": "内部与原图逐像素完全相同。PNG 无损；WEBP、AVIF 和 JPG 以高质量（92）保存。只有角或圆形边缘会改变，并经过平滑处理。",
+        "q4": "可以只圆化部分角吗？",
+        "a4": "可以：在“圆角”中勾选需要的角（左上、右上、左下、右下）。半径可以按像素或短边的百分比设置（最多 50%，方形图片会变成圆形）。"
       }
     },
     "scan-document": {
@@ -1926,7 +1969,11 @@
     "cannotDeleteAll": "不能删除所有页面：请至少保留一页。",
     "extractOutput": "结果",
     "extractSingle": "所选页面合成一个 PDF",
-    "extractEach": "每页一个 PDF（ZIP）"
+    "extractEach": "每页一个 PDF（ZIP）",
+    "before": "之前",
+    "after": "之后",
+    "compare": "对比前后效果",
+    "compareValue": "之前 {before}%，之后 {after}%"
   },
   "DataTools": {
     "delimiter": "分隔符",
@@ -2901,7 +2948,31 @@
     "svgByWidth": "指定宽度",
     "svgWidthInvalid": "请输入 1 到 {max} 像素之间的整数宽度。",
     "svgHint": "1× 使用 SVG 中声明的尺寸（未声明时为 1024 像素）。JPG 中透明区域会变成白色。",
-    "svgSize": "{name}：{size} 像素"
+    "svgSize": "{name}：{size} 像素",
+    "roundShape": "形状",
+    "roundCorners": "圆角",
+    "roundCircle": "圆形",
+    "roundRadius": "半径",
+    "roundUnit": "单位",
+    "roundUnitPercent": "短边的 %",
+    "roundWhichCorners": "角",
+    "round_tl": "左上",
+    "round_tr": "右上",
+    "round_bl": "左下",
+    "round_br": "右下",
+    "roundEllipse": "保持比例（椭圆而不是圆形）",
+    "roundFocus": "取景",
+    "roundOutside": "外部",
+    "roundTransparent": "透明",
+    "roundColor": "颜色",
+    "roundColorLabel": "外部颜色",
+    "roundFormat": "格式",
+    "roundJpgSwitched": "JPG 不支持透明：将保存为 PNG。要使用 JPG，请为外部选择一种颜色。",
+    "roundPreview": "第一张图片的预览。",
+    "roundPreviewDrag": "第一张图片的预览：拖动可移动取景。",
+    "roundPreviewLabel": "圆角图片预览",
+    "roundDone": "{name}：{size} px。",
+    "roundSuffix": "rounded"
   },
   "SubtitleTools": {
     "paste": "或粘贴字幕内容",
@@ -3347,6 +3418,27 @@
     "doneSheet": "10 × 15 cm 排版，含 {copies} 张照片和裁切线。",
     "sheetSuffix": "paiban-10x15"
   },
+  "EnhancePhotoTool": {
+    "mode": "模式",
+    "modes": {
+      "auto": "自动（无 AI）",
+      "ai": "AI 放大"
+    },
+    "autoHint": "用经典滤镜校正色阶、对比度和色彩，降噪并锐化。尺寸不变。",
+    "factor": "放大倍数",
+    "factors": {
+      "2": "×2（宽高各两倍）",
+      "4": "×4（四倍）"
+    },
+    "aiHint": "使用 Real-ESRGAN 神经网络放大照片，重建边缘和纹理。支持最大 {max} MP 的照片。首次使用时会从 Fileflect 下载模型（4.9 MB），之后保存在浏览器中。",
+    "aiSlow": "在你的设备上运行：有 WebGPU 时只需几秒，但在没有 WebGPU 的电脑或手机上可能需要几分钟。你可以随时取消。",
+    "loading": "正在打开照片…",
+    "size": "照片 {pixels} 像素（{mp} MP）。",
+    "tooBig": "这张照片有 {mp} 百万像素，此模式最多接受 {max}。请先缩小或裁剪。",
+    "doneAuto": "照片已增强（{pixels} 像素）。",
+    "doneAi": "照片已用 AI 放大 ×{factor}（{pixels} 像素），用时 {seconds} 秒（{backend}）。",
+    "suffix": "enhanced"
+  },
   "RemoveBackgroundTool": {
     "background": "背景",
     "transparent": "透明",
@@ -3366,9 +3458,6 @@
     "modeKeep": "画笔：保留",
     "modeRemove": "画笔：去除",
     "brushSize": "画笔大小",
-    "brushSmall": "小",
-    "brushMedium": "中",
-    "brushLarge": "大",
     "undo": "撤销",
     "redo": "重做",
     "original": "原始照片",
@@ -3389,7 +3478,24 @@
     "useRect": "改用矩形模式",
     "peopleStep1": "人物会自动抠出。请查看结果。",
     "peopleStep2": "如果留下了背景，选择“画笔：去除”并涂抹；如果人物缺了部分（头发、手、手里拿的东西），选择“画笔：保留”并涂抹。",
-    "modeView": "查看"
+    "modeView": "查看",
+    "brushEdge": "画笔边缘",
+    "edgeSoft": "柔和",
+    "edgeHard": "清晰",
+    "modeErase": "橡皮擦",
+    "modeRestore": "恢复",
+    "modeHand": "抓手（移动）",
+    "viewOn": "背景显示",
+    "viewResult": "所选背景",
+    "viewChecker": "棋盘格",
+    "viewBlack": "黑色",
+    "viewMagenta": "品红",
+    "paintHint": "橡皮擦和“恢复”只改变你涂抹的像素（不会重新计算抠图）：适合清理角落和缝隙里的残留。放大后可以精确操作。快捷键：[ 和 ] 调整大小。",
+    "zoomHint": "缩放：鼠标滚轮、双指捏合或按钮。移动画面：按住空格键拖动、使用“抓手”或双指滑动（单指用来涂抹）。",
+    "zoom": "缩放",
+    "zoomIn": "放大",
+    "zoomOut": "缩小",
+    "zoomFit": "适应屏幕"
   },
   "ScanDocumentTool": {
     "mode": "模式",

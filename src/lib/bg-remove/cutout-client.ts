@@ -2,11 +2,23 @@ import type { FormatId } from "@/config/formats";
 import { createJobPool, type JobOptions } from "@/lib/jobs";
 import type { Background } from "./cutout";
 import type { Rect, Stroke } from "./grabcut";
+import type { PaintStroke } from "./paint";
 
 // One worker, started when the first photo is opened.
 const pool = createJobPool(() => new Worker(new URL("../../workers/cutout.worker.ts", import.meta.url), { type: "module" }));
 
-export type Prepared = { width: number; height: number; workWidth: number; workHeight: number; work: ArrayBuffer };
+export type Prepared = {
+  width: number;
+  height: number;
+  /** Reduced copy GrabCut works on (RGBA). */
+  workWidth: number;
+  workHeight: number;
+  work: ArrayBuffer;
+  /** Larger copy shown in the zoomable editor (RGBA, up to VIEW_MAX_PIXELS). */
+  viewWidth: number;
+  viewHeight: number;
+  view: ArrayBuffer;
+};
 
 export const preparePhoto = (input: Blob, from: FormatId, job: JobOptions = {}) => pool.run<Prepared>("prepare", { input, from }, job);
 
@@ -25,10 +37,11 @@ export const exportPhoto = (
   p: Prepared,
   background: Background,
   to: "png" | "jpg" | "webp",
+  paint: readonly PaintStroke[],
   job: JobOptions = {},
 ) =>
   pool.run<{ buffer: ArrayBuffer; width: number; height: number }>(
     "exportImage",
-    { input, from, mask: mask.buffer, maskWidth: p.workWidth, maskHeight: p.workHeight, background, to, quality: 90 },
+    { input, from, mask: mask.buffer, maskWidth: p.workWidth, maskHeight: p.workHeight, background, to, quality: 90, paint },
     job,
   );

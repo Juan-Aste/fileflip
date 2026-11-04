@@ -67,6 +67,8 @@ export type ShellOutput =
       preview?: string;
       /** A verdict shown with the result, e.g. whether a checksum matches. */
       message?: { ok: boolean; text: string };
+      /** An image result shown as a before/after comparison with this picture of the input. */
+      compare?: { before: Blob; pixelated?: boolean };
     }
   | { kind: "error"; name: string; code: ApiErrorCode; position?: ErrorPosition };
 

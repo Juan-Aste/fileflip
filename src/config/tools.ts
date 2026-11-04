@@ -83,6 +83,8 @@ export const toolIds = [
   "crop-image",
   "id-photo",
   "remove-background",
+  "enhance-photo",
+  "round-image",
   "scan-document",
   "watermark-image",
   "add-text-to-image",
@@ -842,6 +844,33 @@ export const tools: Record<ToolId, ToolInfo> = {
     limits: { files: "single", timeoutMs: 3 * MINUTE, maxFileBytes: 30 * 1024 * 1024 },
     status: "verified",
     slugs: { es: "quitar-fondo", en: "remove-background", pt: "remover-fundo", fr: "supprimer-arriere-plan", zh: "remove-background" },
+  },
+  "enhance-photo": {
+    id: "enhance-photo",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "heic"],
+    outputs: ["jpg", "png", "webp"],
+    engine: "browser",
+    // Automatic mode: our own classic filters (no model). AI mode: Real-ESRGAN realesr-general-x4v3 (BSD-3-Clause;
+    // training-data exception of 2026-11-03) with onnxruntime-web, WebGPU or single-threaded WASM.
+    // Megapixel caps per mode in limits.ts (enhanceLimits); a 1 MP photo can take minutes on a phone without WebGPU.
+    libraries: ["own levels, denoise and sharpen filters", "Real-ESRGAN realesr-general-x4v3 (BSD-3-Clause)", "onnxruntime-web", "@jsquash/jpeg", "@jsquash/png", "@jsquash/webp", "libheif-js", "utif2"],
+    limits: { files: "single", timeoutMs: 20 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "mejorar-foto", en: "enhance-photo", pt: "melhorar-foto", fr: "ameliorer-photo", zh: "enhance-photo" },
+  },
+  "round-image": {
+    id: "round-image",
+    category: "image",
+    inputs: ["jpg", "png", "webp", "avif", "gif", "bmp", "tiff", "heic"],
+    outputs: ["png", "webp", "avif", "jpg"],
+    engine: "browser",
+    // Own antialiased shape (src/lib/image/round.ts) in the image-tools worker.
+    libraries: ["own rounded-corner and circle mask", "@jsquash/png", "@jsquash/webp", "@jsquash/avif", "@jsquash/jpeg", "libheif-js", "utif2"],
+    limits: { files: "multiple", timeoutMs: 5 * MINUTE, maxFileBytes: 50 * 1024 * 1024 },
+    status: "verified",
+    slugs: { es: "redondear-imagen", en: "round-image", pt: "arredondar-imagem", fr: "arrondir-image", zh: "round-image" },
+    related: ["crop-image", "remove-background", "resize-image"],
   },
 
   "watermark-image": {

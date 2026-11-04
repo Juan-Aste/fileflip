@@ -47,3 +47,22 @@ export function checkLimits(
   if (sizes.some((s) => s > maxFile)) return "fileTooLarge";
   return null;
 }
+
+/**
+ * "Enhance photo" (phase 17): input size in megapixels, per plan. Pro is
+ * hidden for now (PRO_ENABLED=false), so both plans get the same values; they
+ * are kept per plan so Pro can get more later by changing one number.
+ * - auto: classic filters hold the photo as float planes (~40 bytes a pixel).
+ * - upscale: Real-ESRGAN costs ~2.5 MFLOP per input pixel (2.5 TFLOP at
+ *   1 MP): seconds with WebGPU, a minute or more with single-threaded WASM
+ *   on a laptop and several on a phone; the x4 result is 16 MP.
+ */
+export interface EnhanceLimits {
+  autoMaxMegapixels: number;
+  upscaleMaxMegapixels: number;
+}
+
+export const enhanceLimits: Record<Plan, EnhanceLimits> = {
+  free: { autoMaxMegapixels: 24, upscaleMaxMegapixels: 1 },
+  pro: { autoMaxMegapixels: 24, upscaleMaxMegapixels: 1 },
+};

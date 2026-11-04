@@ -167,6 +167,12 @@
     "statusDoneHint": "Baixe cada arquivo pelo seu botão.",
     "larger": "{percent} maior"
   },
+  "FakeTransparency": {
+    "title": "Esta imagem tem um fundo transparente falso (está desenhado)",
+    "help": "O quadriculado cinza e branco faz parte dos pixels, por isso é mantido ao converter. «Remover fundo falso» o transforma em transparência real e entrega um {to}.",
+    "noAlpha": "{format} não suporta transparência: para mantê-la, o resultado sem fundo é entregue em PNG.",
+    "action": "Remover fundo falso"
+  },
   "ImageOptions": {
     "title": "Opções",
     "quality": "Qualidade",
@@ -245,6 +251,7 @@
     "legacyAudioTooLong": "Este formato antigo é convertido com um motor mais lento: o máximo é de 1 hora de áudio por arquivo.",
     "videoRangeInvalid": "Confira os tempos: o início deve vir antes do fim e ambos devem estar dentro do vídeo.",
     "gifTooManyFrames": "O GIF teria quadros demais: encurte o trecho ou diminua os quadros por segundo.",
+    "imageTooLarge": "A imagem tem pixels demais para esta ferramenta: reduza ou corte primeiro.",
     "modelEmpty": "Este modelo não tem faces (triângulos) para converter: pode estar vazio ou ser uma nuvem de pontos.",
     "modelTooLarge": "O modelo é grande demais: o máximo é de 3 milhões de triângulos.",
     "modelExternalFiles": "Este glTF usa arquivos separados (.bin ou texturas) que não foram enviados. Converta-o antes para GLB (um único arquivo) no seu programa 3D, ou use um .gltf com tudo incluído.",
@@ -842,6 +849,42 @@
         "a4": "Com fundo transparente, PNG (o mais compatível) ou WEBP (mais leve). Com fundo branco ou de cor, JPG ou WEBP. A foto mantém o tamanho original. JPG não guarda transparência: se escolher, o fundo será branco ou da cor escolhida.",
         "q5": "Há limites?",
         "a5": "Uma foto por vez, até 30 MB e 40 megapixels, em JPG, PNG, WEBP, AVIF, GIF (primeiro quadro) ou BMP. O recorte é calculado numa cópia de 480 pixels no lado maior para responder na hora e aplicado no tamanho original com a borda suavizada: cabelo solto e bordas muito finas ficam suavizados, não recortados fio a fio."
+      }
+    },
+    "enhance-photo": {
+      "title": "Melhorar foto",
+      "description": "Melhore uma foto no navegador: correção automática de níveis, cor, ruído e nitidez, ou ampliação ×2 e ×4 com IA (Real-ESRGAN). Sem enviar para nenhum servidor.",
+      "action": "Melhorar foto",
+      "about": "Dê vida a uma foto apagada ou aumente uma imagem pequena sem que fique pixelada. O modo Automático mede a foto e aplica, na intensidade certa, os ajustes que você faria à mão em um editor: correção de cor (tira o tom amarelo, azul ou desbotado), níveis e contraste, meios-tons, uma redução de ruído suave que respeita as bordas e nitidez; são filtros clássicos, sem IA, e uma foto que já está boa muda pouco. O modo Ampliar com IA dobra ou quadruplica a largura e a altura com o Real-ESRGAN, uma rede neural que reconstrói bordas e texturas em vez de só esticar os pixels. Um comparador com controle deslizante mostra o antes e o depois. Tudo acontece no seu dispositivo: a foto não é enviada a nenhum servidor.",
+      "faq": {
+        "q1": "Qual a diferença entre os dois modos?",
+        "a1": "O Automático corrige a foto sem mudar o tamanho: cor, níveis, contraste, ruído e nitidez, com filtros clássicos (sem IA), num instante. Ampliar com IA aumenta a foto ×2 ou ×4 com uma rede neural (Real-ESRGAN) que cria detalhes plausíveis em bordas e texturas; serve para fotos pequenas, recortes ou imagens baixadas em baixa resolução, e demora mais.",
+        "q2": "O que o modo Automático faz exatamente?",
+        "a2": "Cinco passos, em ordem: correção de cor (aproxima os pontos preto e branco de cada canal, o que tira a dominante da luz ou de uma cópia desbotada), níveis (estica a faixa da foto, com um limite para não forçar fotos escuras ou claras de propósito), meios-tons (clareia ou escurece um pouco a média), redução de ruído (só quando mede ruído, preservando as bordas) e nitidez (máscara de nitidez na luminância, sem halos de cor).",
+        "q3": "Por que a ampliação com IA pode demorar?",
+        "a3": "A rede faz cerca de 2,5 milhões de operações por pixel da foto, e roda no seu dispositivo. Com WebGPU (Chrome e Edge recentes em computadores com placa de vídeo compatível) leva segundos; sem WebGPU usa a CPU em uma só thread e uma foto de 1 megapixel pode levar um ou vários minutos, mais em celulares. O progresso aparece e você pode cancelar quando quiser.",
+        "q4": "Minha foto é enviada? O que é baixado?",
+        "a4": "A foto não sai do seu dispositivo. Na primeira vez que você amplia com IA, o navegador baixa o modelo (4,9 MB) e o motor ONNX Runtime do Fileflect, não de servidores de terceiros; eles ficam salvos no navegador para as próximas vezes. O modo Automático não baixa nada extra.",
+        "q5": "Pode inventar detalhes que não existiam?",
+        "a5": "Sim: a IA reconstrói bordas e texturas parecidas com as reais, mas não recupera informação perdida. Serve para uma imagem pequena ficar nítida em tamanho grande, não para ler uma placa ou identificar um rosto. Não retoca nem muda rostos.",
+        "q6": "Em que formato baixo o resultado e qual é o limite?",
+        "a6": "No mesmo formato se a foto for JPG, PNG ou WEBP; as outras (HEIC do iPhone, AVIF, TIFF, BMP, GIF) em JPG, ou em PNG se tiverem transparência, que é mantida. Uma foto por vez, de até 50 MB: até 24 megapixels no modo Automático e até 1 megapixel de entrada ao ampliar com IA (×4 dá até 16 megapixels)."
+      }
+    },
+    "round-image": {
+      "title": "Arredondar imagem",
+      "description": "Arredonde os cantos de uma imagem ou recorte-a em círculo, com fundo transparente ou colorido. Em lotes e no seu navegador.",
+      "action": "Arredondar imagens",
+      "about": "Arredondar imagem dá cantos arredondados às suas fotos, logos e capturas de tela, ou as recorta em círculo para fotos de perfil e avatares. Escolha o raio em pixels ou em porcentagem do lado menor e, se quiser, arredonde só alguns cantos. No modo círculo é usado um quadrado centralizado que você pode mover para enquadrar, ou uma elipse se preferir manter a proporção original. O que fica de fora pode ser transparente (PNG, WEBP ou AVIF) ou de uma cor à sua escolha (qualquer formato, inclusive JPG). A borda é suavizada para não ficar serrilhada, você vê o resultado ao vivo e pode processar várias imagens de uma vez. Tudo acontece no seu navegador: as imagens não são enviadas a nenhum servidor.",
+      "faq": {
+        "q1": "Como faço uma foto de perfil redonda?",
+        "a1": "Escolha «Círculo»: é usado um quadrado centralizado do tamanho do lado menor. Se o rosto não ficar no centro, arraste a prévia ou use «Enquadramento» para movê-lo. Baixe em PNG para que o lado de fora fique transparente.",
+        "q2": "Por que não posso ter transparência em JPG?",
+        "a2": "O formato JPG não guarda transparência. Se você escolher fundo transparente com JPG, a imagem é salva em PNG e avisamos; para usar JPG, escolha uma cor para o lado de fora.",
+        "q3": "Perde qualidade?",
+        "a3": "O interior fica idêntico ao original, pixel por pixel. PNG não perde nada; WEBP, AVIF e JPG são salvos com qualidade alta (92). Só mudam os cantos ou a borda do círculo, que são suavizados.",
+        "q4": "Posso arredondar só alguns cantos?",
+        "a4": "Sim: em «Cantos arredondados» marque os que quiser (superior esquerdo, superior direito, inferior esquerdo, inferior direito). O raio pode ser em pixels ou em porcentagem do lado menor (até 50 %, que numa imagem quadrada vira um círculo)."
       }
     },
     "scan-document": {
@@ -1926,7 +1969,11 @@
     "cannotDeleteAll": "Não é possível excluir todas as páginas: deixe pelo menos uma.",
     "extractOutput": "Resultado",
     "extractSingle": "Um só PDF com essas páginas",
-    "extractEach": "Um PDF por página (ZIP)"
+    "extractEach": "Um PDF por página (ZIP)",
+    "before": "Antes",
+    "after": "Depois",
+    "compare": "Comparar antes e depois",
+    "compareValue": "{before}% antes, {after}% depois"
   },
   "DataTools": {
     "delimiter": "Separador",
@@ -2901,7 +2948,31 @@
     "svgByWidth": "Largura exata",
     "svgWidthInvalid": "Digite uma largura inteira entre 1 e {max} px.",
     "svgHint": "1× usa o tamanho declarado no SVG (1024 px se não declarar nenhum). Em JPG, as áreas transparentes ficam brancas.",
-    "svgSize": "{name}: {size} px"
+    "svgSize": "{name}: {size} px",
+    "roundShape": "Forma",
+    "roundCorners": "Cantos arredondados",
+    "roundCircle": "Círculo",
+    "roundRadius": "Raio",
+    "roundUnit": "Unidade",
+    "roundUnitPercent": "% do lado menor",
+    "roundWhichCorners": "Cantos",
+    "round_tl": "Superior esquerdo",
+    "round_tr": "Superior direito",
+    "round_bl": "Inferior esquerdo",
+    "round_br": "Inferior direito",
+    "roundEllipse": "Manter a proporção (elipse em vez de círculo)",
+    "roundFocus": "Enquadramento",
+    "roundOutside": "Lado de fora",
+    "roundTransparent": "Transparente",
+    "roundColor": "Cor",
+    "roundColorLabel": "Cor de fora",
+    "roundFormat": "Formato",
+    "roundJpgSwitched": "JPG não suporta transparência: será salvo em PNG. Para usar JPG, escolha uma cor para o lado de fora.",
+    "roundPreview": "Prévia da primeira imagem.",
+    "roundPreviewDrag": "Prévia da primeira imagem: arraste para mover o enquadramento.",
+    "roundPreviewLabel": "Prévia da imagem arredondada",
+    "roundDone": "{name}: {size} px.",
+    "roundSuffix": "arredondada"
   },
   "SubtitleTools": {
     "paste": "Ou cole suas legendas",
@@ -3347,6 +3418,27 @@
     "doneSheet": "Folha 10 × 15 cm com {copies} cópias e linhas de corte.",
     "sheetSuffix": "folha-10x15"
   },
+  "EnhancePhotoTool": {
+    "mode": "Modo",
+    "modes": {
+      "auto": "Automático (sem IA)",
+      "ai": "Ampliar com IA"
+    },
+    "autoHint": "Corrige níveis, contraste e cor, reduz o ruído e dá nitidez com filtros clássicos. O tamanho não muda.",
+    "factor": "Ampliação",
+    "factors": {
+      "2": "×2 (dobro de largura e altura)",
+      "4": "×4 (quádruplo)"
+    },
+    "aiHint": "Aumenta a foto com o Real-ESRGAN, uma rede neural que reconstrói bordas e texturas. Aceita fotos de até {max} MP. Na primeira vez baixa o modelo (4,9 MB) do Fileflect; depois ele fica salvo no navegador.",
+    "aiSlow": "Roda no seu dispositivo: com WebGPU leva segundos, mas em computadores sem WebGPU ou em celulares pode levar vários minutos. Você pode cancelar quando quiser.",
+    "loading": "Abrindo a foto…",
+    "size": "Foto de {pixels} px ({mp} MP).",
+    "tooBig": "A foto tem {mp} megapixels e este modo aceita até {max}. Reduza ou corte primeiro.",
+    "doneAuto": "Foto melhorada ({pixels} px).",
+    "doneAi": "Foto ampliada ×{factor} ({pixels} px) com IA em {seconds} s ({backend}).",
+    "suffix": "melhorada"
+  },
   "RemoveBackgroundTool": {
     "background": "Fundo",
     "transparent": "Transparente",
@@ -3366,9 +3458,6 @@
     "modeKeep": "Pincel: manter",
     "modeRemove": "Pincel: remover",
     "brushSize": "Tamanho do pincel",
-    "brushSmall": "Pequeno",
-    "brushMedium": "Médio",
-    "brushLarge": "Grande",
     "undo": "Desfazer",
     "redo": "Refazer",
     "original": "Foto original",
@@ -3389,7 +3478,24 @@
     "useRect": "Usar o modo retângulo",
     "peopleStep1": "A pessoa é recortada sozinha. Veja o resultado.",
     "peopleStep2": "Se sobrou fundo, escolha «Pincel: remover» e pinte por cima; se faltou parte da pessoa (cabelo, mãos, algo que ela segura), escolha «Pincel: manter» e pinte por cima.",
-    "modeView": "Ver"
+    "modeView": "Ver",
+    "brushEdge": "Borda do pincel",
+    "edgeSoft": "Suave",
+    "edgeHard": "Dura",
+    "modeErase": "Borracha",
+    "modeRestore": "Restaurar",
+    "modeHand": "Mão (mover)",
+    "viewOn": "Ver sobre",
+    "viewResult": "Fundo escolhido",
+    "viewChecker": "Xadrez",
+    "viewBlack": "Preto",
+    "viewMagenta": "Magenta",
+    "paintHint": "A borracha e «Restaurar» mudam exatamente os pixels que você pinta (sem recalcular o recorte): ideais para restos em cantos e recantos. Aproxime com o zoom para trabalhar com precisão. Atalhos: [ e ] mudam o tamanho.",
+    "zoomHint": "Zoom: roda do mouse, pinça com dois dedos ou os botões. Para se mover: segure a barra de espaço e arraste, use «Mão» ou deslize com dois dedos (um dedo pinta).",
+    "zoom": "Zoom",
+    "zoomIn": "Aproximar",
+    "zoomOut": "Afastar",
+    "zoomFit": "Ajustar"
   },
   "ScanDocumentTool": {
     "mode": "Modo",

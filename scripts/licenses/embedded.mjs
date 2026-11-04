@@ -377,6 +377,20 @@ export const embedded = [
     licenseText: "Apache-2.0",
     kind: "data",
   },
+  // "Enhance photo", AI mode (phase 17): converted to ONNX from the official
+  // release file (scripts/enhance/convert-realesrgan.py, docs/mejorar-foto-modelo.md).
+  // Training data (DIV2K, Flickr2K, OST) under the owner's exception of 2026-11-03.
+  {
+    id: "real-esrgan",
+    name: "Real-ESRGAN realesr-general-x4v3 model (xinntao/Real-ESRGAN), converted to ONNX",
+    version: "v0.2.5.0",
+    license: "BSD-3-Clause",
+    holder: "2021, Xintao Wang",
+    where: ["browser"],
+    homepage: "https://github.com/xinntao/Real-ESRGAN",
+    licenseText: "BSD-3-Clause",
+    kind: "data",
+  },
   {
     id: "tessdata",
     name: "Tesseract language models (tessdata_best)",

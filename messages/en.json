@@ -167,6 +167,12 @@
     "statusDoneHint": "Download each file with its button.",
     "larger": "{percent} larger"
   },
+  "FakeTransparency": {
+    "title": "This image has a fake transparent background (it is drawn)",
+    "help": "The grey and white checkerboard is part of the pixels, so converting keeps it. “Remove fake background” turns it into real transparency and gives you a {to}.",
+    "noAlpha": "{format} does not support transparency: to keep it, the result without background is delivered as PNG.",
+    "action": "Remove fake background"
+  },
   "ImageOptions": {
     "title": "Options",
     "quality": "Quality",
@@ -245,6 +251,7 @@
     "legacyAudioTooLong": "This older format is converted with a slower engine: the maximum is 1 hour of audio per file.",
     "videoRangeInvalid": "Check the times: the start must come before the end and both must be inside the video.",
     "gifTooManyFrames": "The GIF would have too many frames: shorten the clip or lower the frames per second.",
+    "imageTooLarge": "The image has too many pixels for this tool: make it smaller or crop it first.",
     "modelEmpty": "This model has no faces (triangles) to convert: it may be empty or a point cloud.",
     "modelTooLarge": "The model is too large: the maximum is 3 million triangles.",
     "modelExternalFiles": "This glTF uses separate files (.bin or textures) that weren't uploaded. Convert it to GLB (a single file) in your 3D software first, or use a .gltf with everything embedded.",
@@ -842,6 +849,42 @@
         "a4": "With a transparent background, PNG (most compatible) or WEBP (smaller). Over white or a color, JPG or WEBP. The photo keeps its original size. JPG cannot store transparency: if you pick it, the background will be white or the chosen color.",
         "q5": "Are there limits?",
         "a5": "One photo at a time, up to 30 MB and 40 megapixels, in JPG, PNG, WEBP, AVIF, GIF (first frame) or BMP. The cutout is worked out on a copy 480 pixels on its longest side so it answers instantly, then applied at the original size with a softened edge: loose hair and very fine edges come out softened, not cut strand by strand."
+      }
+    },
+    "enhance-photo": {
+      "title": "Enhance photo",
+      "description": "Enhance a photo in your browser: automatic levels, color, noise and sharpness correction, or ×2 and ×4 AI upscaling (Real-ESRGAN). Nothing is uploaded.",
+      "action": "Enhance photo",
+      "about": "Bring a dull photo to life or enlarge a small image without it looking pixelated. Automatic mode measures the photo and applies, at just the right strength, the adjustments you would make by hand in an editor: color correction (removes a yellow, blue or faded tint), levels and contrast, midtones, a gentle noise reduction that keeps edges, and sharpening; these are classic filters, no AI, and a photo that is already good changes little. Upscale with AI doubles or quadruples the width and height with Real-ESRGAN, a neural network that rebuilds edges and textures instead of just stretching pixels. A slider compares before and after. Everything happens on your device: the photo isn't uploaded to any server.",
+      "faq": {
+        "q1": "What's the difference between the two modes?",
+        "a1": "Automatic fixes the photo without changing its size: color, levels, contrast, noise and sharpness, with classic filters (no AI), in an instant. Upscale with AI enlarges the photo ×2 or ×4 with a neural network (Real-ESRGAN) that creates plausible detail on edges and textures; it's for small photos, crops or images downloaded at low resolution, and takes longer.",
+        "q2": "What exactly does Automatic mode do?",
+        "a2": "Five steps, in order: color correction (brings each channel's black and white points closer together, which removes the cast of the light or of a faded print), levels (stretches the photo's range, with a limit so photos that are dark or bright on purpose are not forced), midtones (lightens or darkens the average a little), noise reduction (only when it measures noise, keeping edges) and sharpening (an unsharp mask on the luminance, without color halos).",
+        "q3": "Why can AI upscaling take a while?",
+        "a3": "The network does about 2.5 million operations for every pixel of the photo, and it runs on your device. With WebGPU (recent Chrome and Edge on computers with a supported graphics card) it takes seconds; without WebGPU it uses the CPU on one thread and a 1-megapixel photo can take one or several minutes, longer on phones. You see the progress and can cancel at any time.",
+        "q4": "Is my photo uploaded? What gets downloaded?",
+        "a4": "The photo never leaves your device. The first time you upscale with AI, your browser downloads the model (4.9 MB) and the ONNX Runtime engine from Fileflect, not from third-party servers; they stay saved in the browser for next time. Automatic mode downloads nothing extra.",
+        "q5": "Can it invent details that weren't there?",
+        "a5": "Yes: the AI rebuilds edges and textures that look like the real ones, but it can't recover lost information. It makes a small image look sharp when enlarged; it isn't for reading a license plate or identifying a face. It doesn't retouch or change faces.",
+        "q6": "What format is the result, and what's the limit?",
+        "a6": "The same format if the photo is JPG, PNG or WEBP; others (iPhone HEIC, AVIF, TIFF, BMP, GIF) as JPG, or PNG if they have transparency, which is kept. One photo at a time, up to 50 MB: up to 24 megapixels in Automatic mode and up to 1 megapixel of input for AI upscaling (×4 gives up to 16 megapixels)."
+      }
+    },
+    "round-image": {
+      "title": "Round image",
+      "description": "Round the corners of an image or crop it into a circle, with a transparent or colored background. In batches, in your browser.",
+      "action": "Round images",
+      "about": "Round image gives your photos, logos and screenshots rounded corners, or crops them into a circle for profile pictures and avatars. Pick the radius in pixels or as a percentage of the shorter side and, if you like, round only some corners. In circle mode a centered square is taken, which you can move to frame it, or an ellipse if you prefer to keep the original proportions. What is left outside can be transparent (PNG, WEBP or AVIF) or a color of your choice (any format, JPG too). The edge is smoothed so it does not look jagged, you see the result live and you can process several images at once. Everything happens in your browser: your images are not uploaded to any server.",
+      "faq": {
+        "q1": "How do I make a round profile picture?",
+        "a1": "Choose “Circle”: a centered square as large as the shorter side is taken. If the face is not in the middle, drag the preview or use “Framing” to move it. Download as PNG so the outside is transparent.",
+        "q2": "Why can't I have transparency in JPG?",
+        "a2": "The JPG format does not store transparency. If you choose a transparent outside with JPG, the image is saved as PNG and we tell you; to use JPG, pick a color for the outside.",
+        "q3": "Is quality lost?",
+        "a3": "The inside stays identical to the original, pixel by pixel. PNG loses nothing; WEBP, AVIF and JPG are saved at high quality (92). Only the corners or the edge of the circle change, and they are smoothed.",
+        "q4": "Can I round only some corners?",
+        "a4": "Yes: in “Rounded corners” tick the ones you want (top left, top right, bottom left, bottom right). The radius can be in pixels or a percentage of the shorter side (up to 50%, which turns a square image into a circle)."
       }
     },
     "scan-document": {
@@ -1926,7 +1969,11 @@
     "cannotDeleteAll": "You can't delete every page: keep at least one.",
     "extractOutput": "Result",
     "extractSingle": "One PDF with those pages",
-    "extractEach": "One PDF per page (ZIP)"
+    "extractEach": "One PDF per page (ZIP)",
+    "before": "Before",
+    "after": "After",
+    "compare": "Compare before and after",
+    "compareValue": "{before}% before, {after}% after"
   },
   "DataTools": {
     "delimiter": "Delimiter",
@@ -2901,7 +2948,31 @@
     "svgByWidth": "Exact width",
     "svgWidthInvalid": "Enter a whole width between 1 and {max} px.",
     "svgHint": "1× uses the size declared in the SVG (1024 px if it declares none). In JPG, transparent areas become white.",
-    "svgSize": "{name}: {size} px"
+    "svgSize": "{name}: {size} px",
+    "roundShape": "Shape",
+    "roundCorners": "Rounded corners",
+    "roundCircle": "Circle",
+    "roundRadius": "Radius",
+    "roundUnit": "Unit",
+    "roundUnitPercent": "% of shorter side",
+    "roundWhichCorners": "Corners",
+    "round_tl": "Top left",
+    "round_tr": "Top right",
+    "round_bl": "Bottom left",
+    "round_br": "Bottom right",
+    "roundEllipse": "Keep proportions (ellipse instead of circle)",
+    "roundFocus": "Framing",
+    "roundOutside": "Outside",
+    "roundTransparent": "Transparent",
+    "roundColor": "Color",
+    "roundColorLabel": "Outside color",
+    "roundFormat": "Format",
+    "roundJpgSwitched": "JPG does not support transparency: it will be saved as PNG. To use JPG, pick a color for the outside.",
+    "roundPreview": "Preview of the first image.",
+    "roundPreviewDrag": "Preview of the first image: drag it to move the framing.",
+    "roundPreviewLabel": "Preview of the rounded image",
+    "roundDone": "{name}: {size} px.",
+    "roundSuffix": "rounded"
   },
   "SubtitleTools": {
     "paste": "Or paste your subtitles",
@@ -3347,6 +3418,27 @@
     "doneSheet": "4 × 6 in (10 × 15 cm) sheet with {copies} copies and cutting lines.",
     "sheetSuffix": "sheet-4x6"
   },
+  "EnhancePhotoTool": {
+    "mode": "Mode",
+    "modes": {
+      "auto": "Automatic (no AI)",
+      "ai": "Upscale with AI"
+    },
+    "autoHint": "Fixes levels, contrast and color, reduces noise and sharpens with classic filters. The size stays the same.",
+    "factor": "Enlargement",
+    "factors": {
+      "2": "×2 (double width and height)",
+      "4": "×4 (four times)"
+    },
+    "aiHint": "Enlarges the photo with Real-ESRGAN, a neural network that rebuilds edges and textures. Takes photos up to {max} MP. The first time it downloads the model (4.9 MB) from Fileflect; after that it stays saved in your browser.",
+    "aiSlow": "It runs on your device: with WebGPU it takes seconds, but on computers without WebGPU or on phones it can take several minutes. You can cancel at any time.",
+    "loading": "Opening the photo…",
+    "size": "{pixels} px photo ({mp} MP).",
+    "tooBig": "The photo has {mp} megapixels and this mode takes up to {max}. Make it smaller or crop it first.",
+    "doneAuto": "Photo enhanced ({pixels} px).",
+    "doneAi": "Photo upscaled ×{factor} ({pixels} px) with AI in {seconds} s ({backend}).",
+    "suffix": "enhanced"
+  },
   "RemoveBackgroundTool": {
     "background": "Background",
     "transparent": "Transparent",
@@ -3366,9 +3458,6 @@
     "modeKeep": "Brush: keep",
     "modeRemove": "Brush: remove",
     "brushSize": "Brush size",
-    "brushSmall": "Small",
-    "brushMedium": "Medium",
-    "brushLarge": "Large",
     "undo": "Undo",
     "redo": "Redo",
     "original": "Original photo",
@@ -3389,7 +3478,24 @@
     "useRect": "Use the rectangle mode",
     "peopleStep1": "The person is cut out automatically. Check the result.",
     "peopleStep2": "If some background is left, choose “Brush: remove” and paint over it; if part of the person is missing (hair, hands, something they hold), choose “Brush: keep” and paint over it.",
-    "modeView": "View"
+    "modeView": "View",
+    "brushEdge": "Brush edge",
+    "edgeSoft": "Soft",
+    "edgeHard": "Hard",
+    "modeErase": "Eraser",
+    "modeRestore": "Restore",
+    "modeHand": "Hand (move)",
+    "viewOn": "View on",
+    "viewResult": "Chosen background",
+    "viewChecker": "Checkerboard",
+    "viewBlack": "Black",
+    "viewMagenta": "Magenta",
+    "paintHint": "The eraser and “Restore” change exactly the pixels you paint (the cutout is not recomputed): ideal for leftovers in corners and nooks. Zoom in to work precisely. Shortcuts: [ and ] change the size.",
+    "zoomHint": "Zoom: mouse wheel, two-finger pinch or the buttons. To move around: hold the space bar and drag, use “Hand” or slide with two fingers (one finger paints).",
+    "zoom": "Zoom",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "zoomFit": "Fit"
   },
   "ScanDocumentTool": {
     "mode": "Mode",

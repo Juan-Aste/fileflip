@@ -34,6 +34,18 @@ async function alphaOf(buf: Buffer) {
   return { info, at: (x: number, y: number) => data[(y * info.width + x) * 4 + 3]!, rgb: (x: number, y: number) => [...data.subarray((y * info.width + x) * 4, (y * info.width + x) * 4 + 3)] };
 }
 
+/** A touch pointer as the browser sends it (pointerType "touch") to the editor; WebKit has no touch API in Playwright. */
+const touchPointer = (page: Page, type: string, id: number, [x, y]: [number, number]) =>
+  page.getByTestId("cutout-editor").evaluate(
+    (c, a) => c.dispatchEvent(new PointerEvent(a.type, { pointerId: a.id, pointerType: "touch", isPrimary: a.id === 1, clientX: a.x, clientY: a.y, button: 0, buttons: a.type === "pointerup" ? 0 : 1, bubbles: true, cancelable: true })),
+    { type, id, x, y },
+  );
+
+/** The alpha channel of a download, row by row. */
+async function alphaPlane(buf: Buffer): Promise<Uint8Array> {
+  return new Uint8Array(await sharp(buf).ensureAlpha().extractChannel(3).raw().toBuffer());
+}
+
 /** Percentage shown in the status line once the cutout is up to date. */
 async function keptPercent(page: Page, ready: RegExp): Promise<number> {
   const status = page.getByRole("status").filter({ hasText: ready });
@@ -51,16 +63,28 @@ const previewAlpha = (page: Page, x: number, y: number) =>
     [x, y, W] as const,
   );
 
-/** Paints a stroke on the preview, in photo pixels. */
+/** Screen position of a photo pixel in the zoomable editor (from its current zoom and pan). */
+async function toClient(page: Page, x: number, y: number): Promise<[number, number]> {
+  const editor = page.getByTestId("cutout-editor");
+  const box = (await editor.boundingBox())!;
+  const [zoom, px, py] = await editor.evaluate((c) => [Number(c.dataset.zoom), Number(c.dataset.panX), Number(c.dataset.panY)]);
+  return [box.x + px! + x * zoom!, box.y + py! + y * zoom!];
+}
+
+/** Paints a stroke on the editor with the mouse, in photo pixels. */
 async function paint(page: Page, points: [number, number][]) {
   // WebKit drops mouse events outside the viewport.
-  await page.getByTestId("cutout-preview").scrollIntoViewIfNeeded();
-  const box = (await page.getByTestId("cutout-preview").boundingBox())!;
-  const client = ([x, y]: [number, number]) => [box.x + (x / W) * box.width, box.y + (y / H) * box.height] as const;
-  await page.mouse.move(...client(points[0]!));
+  await page.getByTestId("cutout-editor").scrollIntoViewIfNeeded();
+  await page.mouse.move(...(await toClient(page, ...points[0]!)));
   await page.mouse.down();
-  for (const p of points.slice(1)) await page.mouse.move(...client(p), { steps: 4 });
+  for (const p of points.slice(1)) await page.mouse.move(...(await toClient(page, ...p)), { steps: 4 });
   await page.mouse.up();
+}
+
+/** Sets the brush radius (photo pixels) on the logarithmic size slider. */
+async function brushSize(page: Page, radius: number, maxRadius: number) {
+  await page.getByLabel(/^(Brush size|Tamaño del pincel)/).fill(String(Math.round((Math.log(radius) / Math.log(maxRadius)) * 1000)));
+  await expect(page.getByText(new RegExp(`(Brush size|Tamaño del pincel): ${radius} px`))).toBeVisible();
 }
 
 /** Clicks a pill of a ChoiceGroup (the radio itself is visually hidden). */
@@ -92,7 +116,7 @@ test.describe("tool: remove-background", () => {
 
     // "Keep" over the label brings it back.
     await pick(page, "Brush: keep");
-    await pick(page, "Large");
+    await brushSize(page, 40, 200);
     await paint(page, [[LABEL.x + 20, label[1]], [LABEL.x + LABEL.width - 20, label[1]]]);
     await expect.poll(() => previewAlpha(page, ...label), { timeout: 30_000 }).toBe(255);
     await keptPercent(page, ready);
@@ -100,7 +124,7 @@ test.describe("tool: remove-background", () => {
     // "Remove" on the ball takes that part out; undo and redo follow. Checked
     // with the rectangle tool, where the preview has no stroke marks or faint copy.
     await pick(page, "Brush: remove");
-    await pick(page, "Small");
+    await brushSize(page, 10, 200);
     await paint(page, [[380, 200], [420, 200]]);
     await pick(page, "Rectangle");
     await expect.poll(() => previewAlpha(page, 400, 200), { timeout: 30_000 }).toBe(0);
@@ -245,5 +269,138 @@ test.describe("tool: remove-background", () => {
     await expect(page.getByRole("radio", { name: "Objetos y productos (rectángulo)" })).toBeChecked();
     await expect(page.getByRole("group", { name: /Área de recorte/ })).toBeVisible();
     await keptPercent(page, /Recorte listo/);
+  });
+
+  test("@xb zoom into a corner, restore exactly there with a hard brush, undo: only those pixels change in the download", async ({ page }) => {
+    test.setTimeout(150_000);
+    await page.goto("/es/quitar-fondo", { waitUntil: "networkidle" });
+    await pick(page, "Objetos y productos (rectángulo)");
+    await page.locator('input[type="file"]').setInputFiles({ name: "producto.jpg", mimeType: "image/jpeg", buffer: await productPhoto() });
+    const ready = /Recorte listo/;
+    await keptPercent(page, ready);
+    const before = await alphaPlane(fileOf(await runTool(page, "Quitar fondo")).buf);
+    await page.getByRole("button", { name: "Empezar de nuevo" }).click();
+    await page.locator('input[type="file"]').setInputFiles({ name: "producto.jpg", mimeType: "image/jpeg", buffer: await productPhoto() });
+    await keptPercent(page, ready);
+
+    // Zoom in on the top-left corner: Ctrl + wheel where the pointer is (buttons on touch screens).
+    const editor = page.getByTestId("cutout-editor");
+    await editor.scrollIntoViewIfNeeded();
+    if (test.info().project.use.hasTouch) for (let i = 0; i < 6; i++) await page.getByRole("button", { name: "Acercar" }).click();
+    else {
+      await page.mouse.move(...(await toClient(page, 30, 30)));
+      for (let i = 0; i < 8; i++) await page.mouse.wheel(0, -240);
+    }
+    await expect.poll(async () => Number(await editor.getAttribute("data-zoom"))).toBeGreaterThanOrEqual(3);
+    // Move to the corner: space + drag on a desktop, the hand tool on a touch screen (the view stops at the photo's edge).
+    const touchScreen = !!test.info().project.use.hasTouch;
+    if (touchScreen) await pick(page, "Mano (mover)");
+    const box = (await editor.boundingBox())!;
+    const atCorner = async () => Number(await editor.getAttribute("data-pan-x")) === 0 && Number(await editor.getAttribute("data-pan-y")) === 0;
+    for (let i = 0; i < 12 && !(await atCorner()); i++) {
+      const from: [number, number] = [box.x + 10, box.y + 10];
+      const to: [number, number] = [box.x + box.width - 10, box.y + box.height - 10];
+      if (touchScreen) {
+        await touchPointer(page, "pointerdown", 7, from);
+        for (let k = 1; k <= 5; k++) await touchPointer(page, "pointermove", 7, [from[0] + ((to[0] - from[0]) * k) / 5, from[1] + ((to[1] - from[1]) * k) / 5]);
+        await touchPointer(page, "pointerup", 7, to);
+        continue;
+      }
+      await page.mouse.move(...from);
+      await page.keyboard.down("Space");
+      await page.mouse.down();
+      await page.mouse.move(...to, { steps: 5 });
+      await page.mouse.up();
+      await page.keyboard.up("Space");
+    }
+    // Panning painted nothing.
+    await expect(page.getByRole("button", { name: "Deshacer" })).toBeDisabled();
+    const [cx, cy] = await toClient(page, 30, 30);
+    const eb = (await editor.boundingBox())!;
+    expect(cx > eb.x && cx < eb.x + eb.width && cy > eb.y && cy < eb.y + eb.height, "the corner is on screen").toBe(true);
+
+    await pick(page, "Restaurar");
+    await pick(page, "Duro");
+    await brushSize(page, 6, 200);
+    await paint(page, [[20, 30], [50, 30]]);
+    await expect.poll(() => previewAlpha(page, 35, 30)).toBe(255);
+    expect(await previewAlpha(page, 35, 50)).toBe(0);
+    expect(await axeViolations(page)).toEqual([]);
+    // Undo and redo the stroke.
+    await page.getByRole("button", { name: "Deshacer" }).click();
+    await expect.poll(() => previewAlpha(page, 35, 30)).toBe(0);
+    await page.getByRole("button", { name: "Rehacer" }).click();
+    await expect.poll(() => previewAlpha(page, 35, 30)).toBe(255);
+
+    const after = await alphaPlane(fileOf(await runTool(page, "Quitar fondo")).buf);
+    // Within ~1 px of the brush (the pointer maps to photo pixels at this zoom), nothing else.
+    const distance = (x: number, y: number) => {
+      const t = Math.max(0, Math.min(1, (x + 0.5 - 20) / 30));
+      return Math.hypot(x + 0.5 - (20 + 30 * t), y + 0.5 - 30);
+    };
+    let changed = 0;
+    for (let y = 0; y < H; y++)
+      for (let x = 0; x < W; x++) {
+        const d = distance(x, y);
+        const a = after[y * W + x]!;
+        const b = before[y * W + x]!;
+        if (a !== b) {
+          changed++;
+          expect(d, `pixel ${x},${y} changed`).toBeLessThanOrEqual(6 + 1.5);
+        }
+        if (d <= 6 - 1.5) expect(a, `pixel ${x},${y} restored`).toBe(255);
+      }
+    expect(changed).toBeGreaterThan(300);
+
+
+  });
+
+  test("@xb touch: one finger paints, two fingers zoom and pan without painting, undo", async ({ page }) => {
+    test.setTimeout(120_000);
+    await page.goto("/es/quitar-fondo", { waitUntil: "networkidle" });
+    await pick(page, "Objetos y productos (rectángulo)");
+    await page.locator('input[type="file"]').setInputFiles({ name: "producto.jpg", mimeType: "image/jpeg", buffer: await productPhoto() });
+    await keptPercent(page, /Recorte listo/);
+    await pick(page, "Borrador");
+    await pick(page, "Duro");
+    await brushSize(page, 12, 200);
+    const editor = page.getByTestId("cutout-editor");
+    await editor.scrollIntoViewIfNeeded();
+    const touch = (type: string, id: number, at: [number, number]) => touchPointer(page, type, id, at);
+    const ball = await toClient(page, 400, 260);
+    expect(await previewAlpha(page, 400, 260)).toBe(255);
+
+    // Two fingers: the first one lands, then the second, and they spread apart.
+    const zoom0 = Number(await editor.getAttribute("data-zoom"));
+    await touch("pointerdown", 1, [ball[0] - 10, ball[1]]);
+    await touch("pointerdown", 2, [ball[0] + 10, ball[1]]);
+    for (let i = 1; i <= 5; i++) {
+      await touch("pointermove", 1, [ball[0] - 10 - i * 15, ball[1] + i * 3]);
+      await touch("pointermove", 2, [ball[0] + 10 + i * 15, ball[1] + i * 3]);
+    }
+    await touch("pointerup", 1, [ball[0] - 85, ball[1] + 15]);
+    await touch("pointerup", 2, [ball[0] + 85, ball[1] + 15]);
+    await expect.poll(async () => Number(await editor.getAttribute("data-zoom"))).toBeGreaterThan(zoom0 * 2);
+    expect(await previewAlpha(page, 400, 260), "the pinch must not paint").toBe(255);
+    await expect(page.getByRole("button", { name: "Deshacer" })).toBeDisabled();
+
+    // One finger paints.
+    const start = await toClient(page, 380, 260);
+    const end = await toClient(page, 420, 260);
+    await touch("pointerdown", 3, start);
+    for (let i = 1; i <= 5; i++) await touch("pointermove", 3, [start[0] + ((end[0] - start[0]) * i) / 5, start[1]]);
+    await touch("pointerup", 3, end);
+    await expect.poll(() => previewAlpha(page, 400, 260)).toBe(0);
+    expect(await previewAlpha(page, 400, 300)).toBe(255);
+    expect(await axeViolations(page)).toEqual([]);
+
+    await page.getByRole("button", { name: "Deshacer" }).click();
+    await expect.poll(() => previewAlpha(page, 400, 260)).toBe(255);
+    await page.getByRole("button", { name: "Rehacer" }).click();
+    await expect.poll(() => previewAlpha(page, 400, 260)).toBe(0);
+    const out = fileOf(await runTool(page, "Quitar fondo"));
+    const { at } = await alphaOf(out.buf);
+    expect(at(400, 260)).toBe(0);
+    expect(at(400, 300)).toBe(255);
   });
 });
