@@ -96,11 +96,15 @@ test.describe("fake transparency", () => {
 
   test("@xb remove background: notice and fix → PNG with real transparency", async ({ page }) => {
     await page.goto("/es/quitar-fondo", { waitUntil: "networkidle" });
+    // Rectangle mode: the cut is ready quickly, so axe sees a settled page (not the action button enabling mid-check).
+    await page.locator("label").filter({ hasText: /^Objetos y productos \(rectángulo\)$/ }).click();
     await page.locator('input[type="file"]').first().setInputFiles({ name: "logo.jpg", mimeType: "image/jpeg", buffer: await checkerJpeg(LOGO, 60) });
     const root = page.locator("[data-fake]");
     await expect(root).toHaveAttribute("data-fake", "found", { timeout: 20_000 });
     const notice = page.getByTestId("fake-bg-notice");
     await expect(notice).toContainText("fondo transparente falso");
+    await expect(page.getByRole("status").filter({ hasText: /Recorte listo/ })).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole("button", { name: "Quitar fondo", exact: true })).toBeEnabled();
     expect(await axeViolations(page)).toEqual([]);
     await notice.getByRole("button", { name: "Quitar fondo falso" }).click();
     const result = await waitForResult(page, page.getByTestId("fake-bg-download"), page.locator("[data-fake=error]"), 60_000);
