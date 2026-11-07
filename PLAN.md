@@ -629,7 +629,9 @@ Calidad para Google y AdSense (pedido del dueño el 2026-11-07; en la tarea prog
 
 ### 19.2 (pedida como 17.2) Menos páginas de plantilla en el índice
 - [x] 19.2a (hecha 2026-11-07: `src/config/indexing.ts`, `docs/seo/indexacion.md`; 38 conversiones indexadas por idioma, 59 + 4 herramientas + 6 categorías en noindex) Criterio documentado y lista de conversiones indexadas (30–60 por idioma) en `docs/seo/indexacion.md`; el resto con `noindex, follow`, fuera del sitemap y canonical a sí mismas. Revisar también herramientas y categorías casi iguales.
-- [ ] 19.2b Contenido propio para las conversiones indexadas (cuándo conviene, diferencias entre formatos, qué se pierde, límites, pasos y FAQ específicos) en 5 idiomas.
+- [ ] 19.2b1 Contenido propio (cuándo conviene, diferencias entre formatos, qué se pierde y qué no, límites de la herramienta, pasos y FAQ específicos; 5 idiomas, sin relleno) para las 10 conversiones de documentos de oficina indexadas (PDF → Word, Word/DOC/Excel/XLS/PowerPoint/PPT/ODT/RTF/TXT → PDF), con un test que exija ese contenido en cada conversión indexada del grupo.
+- [ ] 19.2b2 Ídem para las 11 de fotos e imágenes ↔ PDF (HEIC → JPG/PNG/PDF, WEBP → JPG/PNG, AVIF → JPG/PNG, JPG/PNG → PDF, PDF → JPG/PNG).
+- [ ] 19.2b3 Ídem para las 17 restantes (formatos de imagen comunes, íconos y SVG); el test pasa a exigirlo en las 38.
 - [ ] 19.2c Revisión de traducciones de páginas indexadas en pt, fr, en y zh (≥ 10 por idioma).
 - [ ] 19.2d Tests: el sitemap solo lista indexables; las noindex tienen la meta correcta; ninguna indexable es noindex por error.
 

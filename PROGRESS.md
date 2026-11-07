@@ -4112,3 +4112,6 @@ FASE 18 TERMINADA
 - Las herramientas que son conversiones con demanda (extraer audio = MP4 → MP3, video → GIF, CSV ↔ Excel, PDF → Excel/PowerPoint, JSON ↔ CSV/YAML) y las long tail de formatos viejos siguen indexadas.
 - Tests: `src/config/indexing.test.ts` (30–60 pares existentes y sin repetir; el sitemap lista exactamente las conversiones, herramientas y categorías indexables), `categories.test.ts` actualizado, y en `seo-urls.spec.ts`: ninguna URL del sitemap es noindex y una muestra de noindex (conversiones, herramientas, categorías en 5 idiomas) tiene `noindex, follow`, canonical propia, 200 y no está en el sitemap. Lint, typecheck, unitarios, build y en Chromium `seo-urls`, `a11y`, `layout-shift`, `guides`, `search`, `converter`, `pro-switch`, `environments` (213) pasan.
 - Falta (19.2b): texto propio para cada una de las 38 conversiones indexadas.
+
+## 2026-11-07 — Fin de la ejecución
+- Hechas en esta ejecución: 19.1a, 19.1b, 19.1c y 19.2a. La 19.2b (texto propio para 38 conversiones en 5 idiomas) se dividió en 19.2b1, 19.2b2 y 19.2b3 por tamaño; queda para la próxima ejecución, junto con el resto de la fase.
