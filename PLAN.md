@@ -617,3 +617,29 @@ Fondo transparente falso, zoom y precisión en Quitar fondo, y herramienta nueva
 - [x] 18.2 (hecha 2026-11-03: `BgEditor.tsx` con copia de vista de hasta 3 MP repintada por regiones; `src/lib/bg-remove/paint.ts`; 2 tests nuevos `@xb` en `bg-tools.spec.ts`) Zoom y precisión en el editor de Quitar fondo: zoom (rueda, pellizco, +/−, ajustar, 100 %) hasta 800 % con desplazamiento (barra espaciadora o mano; dos dedos en celular), pincel en coordenadas de la imagen con vista previa circular, tamaño con control y atajos [ ], modos borrar y restaurar, borde suave o duro, deshacer/rehacer, vista con damero o color de contraste, repintado parcial. Tests de navegador en escritorio y celular (zoom, pintar una esquina y verificar en el archivo que solo esos píxeles cambiaron de alfa, dos dedos no pintan, deshacer).
 - [x] 18.3 (hecha 2026-11-04: `src/lib/image/round.ts` en el worker de herramientas de imagen, `RoundImageTool.tsx`, `/es/redondear-imagen`; `round.test.ts` y `round-tools.spec.ts`) Herramienta nueva «Redondear imagen» (Imágenes): esquinas redondeadas (radio en px o % del lado menor, solo algunas esquinas) y círculo (recorte cuadrado centrado con encuadre movible; elipse si se mantiene la proporción); afuera transparente (PNG/WebP/AVIF) o un color (cualquier formato; transparente + JPG → PNG con aviso); antialiasing, vista previa en vivo y lotes. 5 idiomas, SEO y buscador. Tests (esquina alfa 0 o el color exacto, centro idéntico, dimensiones, alfa intermedio en el borde, JPG + color).
 - [x] 18.4 (hecha 2026-11-04: workflow completo en verde sobre el último commit de dev, ver PROGRESS.md; Lighthouse móvil 96, CLS 0; `docs/perf/2026-11-04-phase18.md`) Verificación: CI completo en verde sobre el último commit de dev, auditoría de accesibilidad y de «todo lo visible se puede tocar» en las pantallas nuevas o cambiadas, Lighthouse móvil de la página nueva sin bajar del rango del sitio, resumen en PROGRESS.md y «FASE 18 TERMINADA».
+
+## Fase 19
+
+Calidad para Google y AdSense (pedido del dueño el 2026-11-07; en la tarea programada figura como «FASE 17», pero ese número ya estaba usado por «Mejorar foto», así que aquí es la **Fase 19**). AdSense rechazó el sitio el 2026-11-07 por «Contenido de poco valor». Datos de Search Console en `docs/seo/gsc-2026-11-07/` (ver su README). En orden.
+
+### 19.1 (pedida como 17.1) Arreglar los 404
+- [ ] 19.1a Encontrar la causa de los 404 (selector de idioma, `hreflang`/`alternates`, enlaces internos, sitemap, canonical, middleware, páginas viejas) y arreglarla: que ningún enlace, `hreflang` ni sitemap genere un slug de otro idioma bajo un prefijo. Si el selector de idioma lleva a 404, arreglarlo con prioridad.
+- [ ] 19.1b Middleware: cualquier slug conocido de cualquier idioma bajo cualquier prefijo (o sin prefijo, detectando el idioma del slug) redirige con 301 a la página equivalente con el slug correcto del idioma pedido; lo desconocido sigue dando 404 real.
+- [ ] 19.1c Tests: todas las URLs de `404.csv` y `redireccion.csv` contra `next start` responden 301/308 a una URL que da 200, en una sola redirección; todos los `hreflang`, enlaces del selector de idioma y URLs del sitemap dan 200 sin redirigir.
+
+### 19.2 (pedida como 17.2) Menos páginas de plantilla en el índice
+- [ ] 19.2a Criterio documentado y lista de conversiones indexadas (30–60 por idioma) en `docs/seo/indexacion.md`; el resto con `noindex, follow`, fuera del sitemap y canonical a sí mismas. Revisar también herramientas y categorías casi iguales.
+- [ ] 19.2b Contenido propio para las conversiones indexadas (cuándo conviene, diferencias entre formatos, qué se pierde, límites, pasos y FAQ específicos) en 5 idiomas.
+- [ ] 19.2c Revisión de traducciones de páginas indexadas en pt, fr, en y zh (≥ 10 por idioma).
+- [ ] 19.2d Tests: el sitemap solo lista indexables; las noindex tienen la meta correcta; ninguna indexable es noindex por error.
+
+### 19.3 (pedida como 17.3) Confianza: «Quiénes somos»
+- [ ] 19.3 Página «Quiénes somos»/«About» en 5 idiomas, enlazada desde el footer, con schema Organization/AboutPage (quién está detrás, por qué existe, privacidad, código abierto si `NEXT_PUBLIC_SOURCE_URL`, financiación con anuncios, contacto contact@fileflect.com).
+
+### 19.4 (pedida como 17.4) Guías
+- [ ] 19.4a 3 guías nuevas (reglas de la fase 10E: pasos verificados, capturas reales con Playwright, 800–1500 palabras, es + 4 idiomas).
+- [ ] 19.4b 3 guías nuevas más.
+- [ ] 19.4c `docs/seo/plan-editorial.md` con 12 guías más; `lastmod` correcto de las guías en el sitemap; cada herramienta enlaza a su guía.
+
+### 19.5 (pedida como 17.5) Verificación final
+- [ ] 19.5 Lighthouse, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium, test de URLs de Search Console, y `docs/launch-checklist.md` con los pasos del dueño en Search Console después del merge. «FASE 19 TERMINADA».

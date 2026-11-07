@@ -4095,3 +4095,6 @@ FASE 17 TERMINADA
 - Resumen de la fase: (1) **fondo transparente falso**: detección del damero dibujado (grilla ajustada en los bordes + relleno desde los bordes con el color esperado, tolerante a JPG) y conversión a transparencia real sin halo, con aviso y botón en el conversor y en Quitar fondo; (2) **Quitar fondo**: editor con zoom hasta 800 %, desplazamiento con espacio, mano o dos dedos, pinceles Borrador/Restaurar exactos con borde suave o duro, tamaño con deslizador y [ ], vista sobre damero/negro/magenta y repintado parcial; (3) **Redondear imagen**: herramienta nueva con esquinas (px o %, algunas esquinas), círculo con encuadre o elipse, afuera transparente o de color, antialiasing, vista previa en vivo y lotes. Sin modelos de IA nuevos.
 
 FASE 18 TERMINADA
+
+## 2026-11-07 — Inicio de la fase 19 (pedida como «fase 17»: calidad para Google y AdSense)
+- Pedido del dueño del 2026-11-07 tras el rechazo de AdSense por «Contenido de poco valor». La tarea programada la llama «FASE 17», pero los números 17 y 18 ya estaban usados (Mejorar foto; fondo falso/Redondear imagen), así que en PLAN.md queda como **Fase 19** con la equivalencia anotada en cada bloque. Tareas 19.1a a 19.5.
