@@ -628,7 +628,7 @@ Calidad para Google y AdSense (pedido del dueño el 2026-11-07; en la tarea prog
 - [x] 19.1c (hecha 2026-11-07: `tests/e2e/seo-urls.spec.ts` y `known-pages.test.ts`) Tests: todas las URLs de `404.csv` y `redireccion.csv` contra `next start` responden 301/308 a una URL que da 200, en una sola redirección; todos los `hreflang`, enlaces del selector de idioma y URLs del sitemap dan 200 sin redirigir.
 
 ### 19.2 (pedida como 17.2) Menos páginas de plantilla en el índice
-- [ ] 19.2a Criterio documentado y lista de conversiones indexadas (30–60 por idioma) en `docs/seo/indexacion.md`; el resto con `noindex, follow`, fuera del sitemap y canonical a sí mismas. Revisar también herramientas y categorías casi iguales.
+- [x] 19.2a (hecha 2026-11-07: `src/config/indexing.ts`, `docs/seo/indexacion.md`; 38 conversiones indexadas por idioma, 59 + 4 herramientas + 6 categorías en noindex) Criterio documentado y lista de conversiones indexadas (30–60 por idioma) en `docs/seo/indexacion.md`; el resto con `noindex, follow`, fuera del sitemap y canonical a sí mismas. Revisar también herramientas y categorías casi iguales.
 - [ ] 19.2b Contenido propio para las conversiones indexadas (cuándo conviene, diferencias entre formatos, qué se pierde, límites, pasos y FAQ específicos) en 5 idiomas.
 - [ ] 19.2c Revisión de traducciones de páginas indexadas en pt, fr, en y zh (≥ 10 por idioma).
 - [ ] 19.2d Tests: el sitemap solo lista indexables; las noindex tienen la meta correcta; ninguna indexable es noindex por error.

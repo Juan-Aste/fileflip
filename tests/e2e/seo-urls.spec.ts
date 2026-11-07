@@ -86,6 +86,7 @@ test.describe("Search Console URLs", () => {
         return;
       }
       const html = await res.text();
+      if (/<meta name="robots" content="[^"]*noindex/.test(html)) problems.push(`sitemap ${path} is noindex`);
       for (const m of html.matchAll(/<link rel="alternate" hrefLang="[^"]+" href="([^"]+)"/gi)) alternates.add(toPath(m[1]));
       for (const m of html.matchAll(/<link rel="canonical" href="([^"]+)"/gi)) alternates.add(toPath(m[1]));
       for (const m of html.matchAll(/<a [^>]*href="(\/[^"#?]*)/g)) linked.add(m[1]);
@@ -97,5 +98,19 @@ test.describe("Search Console URLs", () => {
       if (status !== 200 && !/\/(account|login)$/.test(path)) problems.push(`${alternates.has(path) ? "hreflang" : "link"} ${path} → ${status}`);
     });
     expect(problems).toEqual([]);
+  });
+
+  test("pages out of the index say noindex, follow and are their own canonical", async ({ request }) => {
+    const xml = await (await request.get("/sitemap.xml")).text();
+    // Sample of noindex pages (docs/seo/indexacion.md): template conversions, near-copy tools, tiny categories.
+    const noindex = ["/es/gif-a-bmp", "/en/ico-to-tiff", "/pt/webp-para-avif", "/fr/heic-en-ico", "/zh/csv-to-pdf", "/es/json-a-toml", "/en/ods-to-excel", "/en/cad-tools", "/fr/outils-polices"];
+    for (const path of noindex) {
+      const res = await request.get(path, { maxRedirects: 0 });
+      expect(res.status(), path).toBe(200);
+      const html = await res.text();
+      expect(html, path).toMatch(/<meta name="robots" content="noindex, follow"\/>/);
+      expect(toPath(html.match(/<link rel="canonical" href="([^"]+)"/)?.[1] ?? ""), path).toBe(path);
+      expect(xml, path).not.toContain(`${path}<`);
+    }
   });
 });

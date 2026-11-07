@@ -27,6 +27,7 @@ import {
   relatedConversions,
 } from "@/config/conversion-pages";
 import { creditsSlugs } from "@/config/credits";
+import { isIndexedCategory, isIndexedConversion, isIndexedTool, noindexFollow } from "@/config/indexing";
 import { formats, type Conversion } from "@/config/formats";
 import {
   availableTools,
@@ -165,6 +166,7 @@ export async function generateMetadata({
       title: `${t("categoryTitle", { category: name })} — Fileflect`,
       description: t(`categories.${page.category}.description`),
       alternates,
+      ...(isIndexedCategory(page.category) ? {} : { robots: noindexFollow }),
     };
   }
   if (page.kind === "tool") {
@@ -176,6 +178,7 @@ export async function generateMetadata({
       title: `${t("title")} — Fileflect`,
       description: t("description"),
       alternates,
+      ...(isIndexedTool(page.tool.id) ? {} : { robots: noindexFollow }),
     };
   }
   const t = await getTranslations({
@@ -190,6 +193,7 @@ export async function generateMetadata({
     title: `${t("metaTitle", names)} — Fileflect`,
     description: t("description", names),
     alternates,
+    ...(isIndexedConversion(page.conversion) ? {} : { robots: noindexFollow }),
   };
 }
 
