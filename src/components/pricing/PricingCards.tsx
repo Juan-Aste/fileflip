@@ -81,7 +81,7 @@ export default function PricingCards({ region, signedIn, isPro, paymentsAvailabl
             <span className="font-display text-5xl font-extrabold tracking-tight">
               {formatCurrency(price[period], price.currency, locale)}
             </span>
-            <span className="text-muted">{period === "monthly" ? t("perMonth") : t("perYear")}</span>
+            <span className="text-muted">/{period === "monthly" ? t("perMonth") : t("perYear")}</span>
           </p>
           <ul className="flex flex-1 flex-col gap-3 text-sm">
             <Feature>{t("features.noAds")}</Feature>
