@@ -633,7 +633,7 @@ Calidad para Google y AdSense (pedido del dueño el 2026-11-07; en la tarea prog
 - [x] 19.2b2 (hecha 2026-11-08: 11 entradas más en `src/content/conversions/`) Ídem para las 11 de fotos e imágenes ↔ PDF (HEIC → JPG/PNG/PDF, WEBP → JPG/PNG, AVIF → JPG/PNG, JPG/PNG → PDF, PDF → JPG/PNG).
 - [x] 19.2b3 (hecha 2026-11-08: las 38 tienen texto propio; `conversions.test.ts` las exige todas) Ídem para las 17 restantes (formatos de imagen comunes, íconos y SVG); el test pasa a exigirlo en las 38.
 - [x] 19.2c (hecha 2026-11-08: 14 páginas por idioma revisadas; ver PROGRESS.md) Revisión de traducciones de páginas indexadas en pt, fr, en y zh (≥ 10 por idioma).
-- [ ] 19.2d Tests: el sitemap solo lista indexables; las noindex tienen la meta correcta; ninguna indexable es noindex por error.
+- [x] 19.2d (hecha 2026-11-08: prueba exhaustiva en `seo-urls.spec.ts`) Tests: el sitemap solo lista indexables; las noindex tienen la meta correcta; ninguna indexable es noindex por error.
 
 ### 19.3 (pedida como 17.3) Confianza: «Quiénes somos»
 - [ ] 19.3 Página «Quiénes somos»/«About» en 5 idiomas, enlazada desde el footer, con schema Organization/AboutPage (quién está detrás, por qué existe, privacidad, código abierto si `NEXT_PUBLIC_SOURCE_URL`, financiación con anuncios, contacto contact@fileflect.com).

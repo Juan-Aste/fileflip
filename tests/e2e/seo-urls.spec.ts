@@ -7,6 +7,11 @@
 // 200 without a redirect.
 import { readFileSync } from "node:fs";
 import type { APIRequestContext } from "@playwright/test";
+import { categorySlug, publishedCategories } from "../../src/config/categories";
+import { conversionPages, conversionSlug } from "../../src/config/conversion-pages";
+import { isIndexedCategory, isIndexedConversion, isIndexedTool } from "../../src/config/indexing";
+import { availableTools, tools } from "../../src/config/tools";
+import type { Locale } from "../../src/i18n/routing";
 import { expect, test } from "./support";
 
 const locales = ["es", "en", "pt", "fr", "zh"];
@@ -112,5 +117,38 @@ test.describe("Search Console URLs", () => {
       expect(toPath(html.match(/<link rel="canonical" href="([^"]+)"/)?.[1] ?? ""), path).toBe(path);
       expect(xml, path).not.toContain(`${path}<`);
     }
+  });
+
+  test("every conversion, tool and category page has the robots meta its indexing rule says", async ({ request }) => {
+    // Exhaustive (phase 19.2d): no indexable page is noindex by mistake, and
+    // every noindex page says "noindex, follow", is its own canonical and is
+    // out of the sitemap. Rules in src/config/indexing.ts.
+    const xml = await (await request.get("/sitemap.xml")).text();
+    const inSitemap = new Set([...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => toPath(m[1])));
+    const pages = (locales as Locale[]).flatMap((locale) => [
+      ...conversionPages.map((c) => ({ path: `/${locale}/${conversionSlug(c, locale)}`, indexed: isIndexedConversion(c) })),
+      ...availableTools.map((id) => ({ path: `/${locale}/${tools[id].slugs[locale]}`, indexed: isIndexedTool(id) })),
+      ...publishedCategories.map((c) => ({ path: `/${locale}/${categorySlug(c, locale)}`, indexed: isIndexedCategory(c) })),
+    ]);
+    // A tool page and a conversion page never share a URL, so each path is checked once.
+    const unique = [...new Map(pages.map((p) => [p.path, p])).values()];
+    const problems: string[] = [];
+    await pool(unique, async ({ path, indexed }) => {
+      const res = await request.get(encodeURI(path), { maxRedirects: 0 });
+      if (res.status() !== 200) return void problems.push(`${path} → ${res.status()}`);
+      const html = await res.text();
+      const robots = html.match(/<meta name="robots" content="([^"]*)"/)?.[1];
+      const canonical = toPath(html.match(/<link rel="canonical" href="([^"]+)"/)?.[1] ?? "");
+      if (canonical !== encodeURI(path)) problems.push(`${path}: canonical ${canonical}`);
+      if (indexed) {
+        if (robots?.includes("noindex")) problems.push(`${path}: indexable but ${robots}`);
+        if (!inSitemap.has(encodeURI(path))) problems.push(`${path}: indexable but not in the sitemap`);
+      } else {
+        if (robots !== "noindex, follow") problems.push(`${path}: should be "noindex, follow", is ${robots}`);
+        if (inSitemap.has(encodeURI(path))) problems.push(`${path}: noindex but in the sitemap`);
+      }
+    });
+    expect(unique.length).toBeGreaterThan(900);
+    expect(problems).toEqual([]);
   });
 });

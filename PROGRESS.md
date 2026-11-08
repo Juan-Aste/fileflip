@@ -4142,3 +4142,12 @@ FASE 18 TERMINADA
   - **fr**: espacio fino/insecable antes de `: ; ? !` y dentro de « » y apóstrofo ’ en `fr.json`, las guías y los títulos de `guides/meta.ts`; títulos de categoría «Outils Données», «Outils Livres numériques»… → «Outils pour les données», «Outils pour les livres numériques» (el `select` ahora usa el id de la categoría, `id`, que se pasa en los 5 idiomas para que el test de placeholders siga exigiendo los mismos argumentos); «Tout voir dans PDF» → «Voir toute la catégorie PDF»; «nom propre» → «nom unique»; «Par L’équipe» → «Par l’équipe»; «internet» → «Internet».
   - **zh**: «实用工具工具» → «实用工具»; espacios entre latín y chino («PDF 工具»); «查看PDF的全部内容» → «查看全部 PDF 工具»; nombres de herramienta entre “ ”; «输入 分:秒» → «按“分:秒”的格式输入».
 - Tests: lint, typecheck, 1748 unitarios (incluido el de placeholders iguales en los 5 idiomas), build; suite completa de Chromium sobre esta rama: 767 pasan y 1 timeout de `search-locale-states` por carga (pasa al repetirlo junto con `search`, `guides`, `a11y`, `seo-urls`, `conversion-content`: 105; y después del último cambio `a11y`, `search`, `seo-urls`, `layout-shift`: 51).
+
+## 2026-11-08 — Fase 19, tarea 19.2d (tests de indexación)
+- Ya existían (19.2a): `indexing.test.ts` (el sitemap lista exactamente las conversiones, herramientas y categorías indexables) y en `seo-urls.spec.ts` «ninguna URL del sitemap es noindex» más una muestra de páginas noindex.
+- Nuevo en `seo-urls.spec.ts`, contra `next start`: recorre **todas** las páginas de conversión, herramienta y categoría en los 5 idiomas (más de 900 URLs) y comprueba, según las reglas de `src/config/indexing.ts`, que cada indexable responde 200, no tiene `noindex`, es su propia canonical y está en el sitemap; y que cada no indexable responde 200 con `noindex, follow` exacto, canonical propia y fuera del sitemap. Pasa en 19 s. Lint, typecheck y los 5 tests de `seo-urls` en Chromium pasan.
+
+## 2026-11-08 — Fin de la ejecución
+- Hechas: 19.2b1, 19.2b2, 19.2b3 (las 38 conversiones indexadas tienen texto propio en 5 idiomas), 19.2c (revisión de traducciones) y 19.2d (tests de indexación). Límite de 5 por ejecución.
+- Falta: 19.3 («Quiénes somos»), 19.4a/b/c (guías y plan editorial) y 19.5 (verificación final y `docs/launch-checklist.md`).
+- Para Firefox/WebKit en local hizo falta `npx playwright install firefox webkit` y `npx playwright install-deps webkit` (la imagen solo trae Chromium para esta versión).
