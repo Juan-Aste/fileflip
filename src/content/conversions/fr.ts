@@ -937,4 +937,680 @@ export const fr: ConversionContentMap = {
       },
     ],
   },
+
+  // Common image formats, icons and SVG (19.2b3). Facts: everything runs in the
+  // browser; quality 82 by default for JPG/WEBP/AVIF; re-encoding drops
+  // metadata; transparency → white in JPG; animated GIF → first frame;
+  // multi-page TIFF → first page only (TIFF → PDF too); ICO output: 16, 32, 48,
+  // 64, 128 and 256 px (only those not larger than the image), centered square
+  // with transparent padding; ICO → PNG: the browser decodes the icon (usually
+  // picks the largest image); SVG: drawn by the browser at its
+  // width/height/viewBox size (1024 px if none), enlarging it loses no
+  // sharpness, external images and fonts are not loaded; SVG → PDF: the SVG is
+  // drawn as a PNG image inside the PDF (not vector).
+  "jpg>png": {
+    when: [
+      "Convertir un JPG en PNG est utile quand vous allez retoucher l’image plusieurs fois (recadrer, ajouter du texte, faire des retouches) sans que chaque enregistrement ajoute de nouvelles pertes, ou quand un service exige explicitement du PNG, comme certaines plateformes de design ou boutiques en ligne.",
+      "Si vous voulez un fond transparent, la conversion en PNG ne suffit pas : le JPG n’a pas de transparence à conserver. Pour cela, utilisez Supprimer l’arrière-plan d’une image, qui fournit un PNG au fond détouré.",
+    ],
+    differences: [
+      "Le JPG compresse avec perte : il supprime des détails presque invisibles à l’œil pour que les photos restent légères. Le PNG compresse sans perte : il conserve chaque pixel à l’identique et gère la transparence, mais il donne des fichiers bien plus lourds pour les photos.",
+      "Convertir un JPG en PNG ne récupère pas la qualité déjà perdue par le JPG ; cela évite seulement d’en perdre davantage par la suite.",
+    ],
+    kept: [
+      "L’image exactement telle qu’elle apparaît dans le JPG, pixel par pixel.",
+      "La résolution et les couleurs.",
+      "L’orientation de la photo.",
+    ],
+    lost: [
+      "Rien n’est perdu sur l’image, mais le fichier est en général 3 à 10 fois plus lourd.",
+      "Les données EXIF (date, appareil, GPS) ne passent pas dans le PNG.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les images, et accepte les lots avec téléchargement en ZIP.",
+    ],
+    steps: [
+      "Choisissez les JPG (ou faites-les glisser).",
+      "Laissez PNG comme format de sortie ; si vous n’avez pas besoin de la taille d’origine, réduisez la largeur pour alléger les fichiers.",
+      "Cliquez sur Convertir et téléchargez les PNG ou le ZIP.",
+    ],
+    faq: [
+      {
+        q: "La qualité s’améliore-t-elle en passant du JPG au PNG ?",
+        a: "Non. Le PNG conserve exactement ce que contenait le JPG, défauts de compression compris. Ce que vous gagnez, c’est que les retouches suivantes n’ajoutent pas de perte.",
+      },
+      {
+        q: "Le PNG aura-t-il un fond transparent ?",
+        a: "Non, car le JPG n’a pas de transparence. Pour détourer le fond, utilisez Supprimer l’arrière-plan d’une image.",
+      },
+      {
+        q: "Pourquoi le PNG est-il tellement plus lourd ?",
+        a: "Parce qu’il ne supprime aucune information. Sur les photos, cela se voit beaucoup ; sur les captures d’écran ou les graphiques simples, l’écart est plus faible.",
+      },
+    ],
+  },
+
+  "png>jpg": {
+    when: [
+      "Convertir un PNG en JPG est le moyen le plus simple d’alléger des photos et des captures trop lourdes : pour les envoyer par e-mail, les déposer dans un formulaire avec une taille limite ou les publier sur un site. Une photo enregistrée en PNG peut descendre au dixième de son poids en JPG sans différence visible.",
+      "Ce n’est pas conseillé si l’image a de la transparence (un logo, une icône) ou beaucoup de texte fin : dans ce cas, mieux vaut la garder en PNG ou la convertir en WEBP.",
+    ],
+    differences: [
+      "Le PNG conserve chaque pixel à l’identique et gère la transparence ; il est idéal pour les graphiques, les captures et les logos. Le JPG supprime des détails imperceptibles pour rester léger et convient très bien aux photos, mais il ne gère pas la transparence et laisse de petites taches autour des contours nets, comme ceux des lettres.",
+    ],
+    kept: [
+      "La résolution et l’aspect général de l’image.",
+      "Les couleurs, avec une perte invisible à la qualité par défaut (82).",
+    ],
+    lost: [
+      "La transparence : les zones transparentes deviennent blanches.",
+      "Un peu de netteté sur les contours très marqués, comme les petits textes ou les traits fins.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les images. Vous pouvez régler la qualité et la taille, et en convertir beaucoup à la fois.",
+    ],
+    steps: [
+      "Choisissez les PNG.",
+      "Laissez JPG comme format de sortie. Avec une qualité de 75 à 85, les photos ont le même aspect et sont beaucoup plus légères ; pour des captures avec du texte, montez à 90.",
+      "Cliquez sur Convertir et téléchargez les images ou le ZIP.",
+    ],
+    faq: [
+      {
+        q: "Quelle qualité choisir ?",
+        a: "Pour les photos, une valeur entre 75 et 85 offre un bon équilibre. Pour les captures d’écran avec du texte, 90 ou plus, ou gardez-les simplement en PNG.",
+      },
+      {
+        q: "Que devient le fond transparent ?",
+        a: "Le JPG ne le gère pas, il devient donc blanc. Si vous devez le conserver tout en allégeant le fichier, convertissez en WEBP.",
+      },
+      {
+        q: "Mes images sont-elles envoyées sur un serveur ?",
+        a: "Non, tout est traité dans votre navigateur.",
+      },
+    ],
+  },
+
+  "jpg>webp": {
+    when: [
+      "Convertir un JPG en WEBP est la conversion type pour qu’un site web se charge plus vite : à qualité visuelle égale, les photos sont environ 25 à 35 % plus légères, ce qui améliore le temps de chargement et les indicateurs de Google. C’est aussi un moyen de gagner de la place sur les boutiques en ligne, les blogs et les catalogues.",
+      "Pour envoyer des photos par message, les imprimer ou les déposer sur d’anciens systèmes, mieux vaut rester en JPG : certains logiciels n’ouvrent toujours pas le WEBP.",
+    ],
+    differences: [
+      "Le WEBP est plus moderne et compresse mieux que le JPG ; il gère en plus la transparence et l’animation. Tous les navigateurs actuels l’affichent, mais tous les logiciels de bureau et systèmes de dépôt de fichiers ne l’acceptent pas.",
+    ],
+    kept: ["La résolution et l’aspect de la photo.", "L’orientation."],
+    lost: [
+      "Le WEBP compresse lui aussi avec perte : à très basse qualité, des taches apparaissent. À la qualité par défaut (82), on ne le distingue pas du JPG.",
+      "Les données EXIF ne passent pas dans le WEBP.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les photos, par lots et avec téléchargement en ZIP.",
+    ],
+    steps: [
+      "Choisissez les JPG.",
+      "Laissez WEBP comme format de sortie. Si elles sont destinées à un site web, réduisez aussi la largeur à la taille maximale d’affichage (par exemple 1 600 px).",
+      "Cliquez sur Convertir et téléchargez les WEBP ou le ZIP.",
+    ],
+    faq: [
+      {
+        q: "Un WEBP est-il beaucoup plus léger ?",
+        a: "Cela dépend de la photo, mais à qualité visuelle égale, il est en général environ 25 à 35 % plus léger que le JPG. Réduire aussi les dimensions en pixels reste ce qui fait gagner le plus.",
+      },
+      {
+        q: "WordPress et les boutiques en ligne acceptent-ils le WEBP ?",
+        a: "La plupart des plateformes actuelles, oui. Si l’une d’elles ne l’accepte pas, déposez le JPG.",
+      },
+      {
+        q: "WEBP ou AVIF pour mon site ?",
+        a: "L’AVIF compresse encore mieux, mais il est plus long à générer. Le WEBP est l’option la plus compatible et la plus rapide ; l’AVIF est intéressant si vous voulez le poids le plus faible possible.",
+      },
+    ],
+  },
+
+  "png>webp": {
+    when: [
+      "Convertir un PNG en WEBP permet d’alléger les images d’un site web sans perdre la transparence : logos, icônes, produits détourés, captures et illustrations. C’est l’une des conversions qui font gagner le plus de poids sur une page.",
+    ],
+    differences: [
+      "Le PNG est sans perte et devient lourd avec les grandes images ou les photos. Le WEBP gère aussi la transparence, mais il compresse avec perte (qualité réglable), et le résultat ne pèse souvent qu’une fraction du PNG.",
+    ],
+    kept: [
+      "La transparence, avec des contours doux.",
+      "La résolution et l’aspect de l’image.",
+    ],
+    lost: [
+      "À basse qualité, des taches peuvent apparaître autour des textes et des traits fins. Pour des graphiques avec beaucoup de texte, choisissez une qualité élevée (90 ou plus).",
+      "Les métadonnées du PNG ne passent pas dans le WEBP.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les images. La qualité s’applique de la même façon à tout le lot.",
+    ],
+    steps: [
+      "Choisissez les PNG.",
+      "Laissez WEBP comme format de sortie et réglez la qualité : 82 pour les photos et les produits, 90 ou plus pour les graphiques avec du texte.",
+      "Cliquez sur Convertir et téléchargez les WEBP ou le ZIP.",
+    ],
+    faq: [
+      {
+        q: "Le fond transparent est-il conservé ?",
+        a: "Oui, le WEBP gère la transparence et la conserve.",
+      },
+      {
+        q: "Combien vais-je gagner ?",
+        a: "Pour des photos et des produits enregistrés en PNG, le WEBP est souvent plusieurs fois plus léger. Pour de petites icônes ou des graphiques très simples, l’écart est plus faible.",
+      },
+      {
+        q: "Mes images sont-elles envoyées sur un serveur ?",
+        a: "Non, tout est traité dans votre navigateur.",
+      },
+    ],
+  },
+
+  "jpg>avif": {
+    when: [
+      "Convertir un JPG en AVIF est intéressant quand vous voulez le poids le plus faible possible pour les photos d’un site web, d’une boutique ou d’une galerie : l’AVIF atteint en général la même qualité visuelle avec un poids nettement inférieur à celui du JPG et du WEBP.",
+      "Ne l’utilisez pas pour partager par message ou pour déposer sur des systèmes qui ne le connaissent pas : beaucoup de logiciels n’ouvrent toujours pas l’AVIF.",
+    ],
+    differences: [
+      "L’AVIF utilise le codec vidéo AV1 pour compresser les images. Il est plus efficace que le JPG et le WEBP, gère la transparence et le HDR, et les navigateurs actuels l’affichent. En contrepartie, créer un AVIF demande plus de calcul que créer un JPG.",
+    ],
+    kept: ["La résolution et l’aspect de la photo.", "L’orientation."],
+    lost: [
+      "L’AVIF compresse avec perte ; à très basse qualité, l’image paraît « délavée » dans les zones de texture fine. À la qualité par défaut, cela ne se voit pas.",
+      "Les données EXIF ne passent pas dans l’AVIF.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, avec un encodeur intégré à la page. Elle est plus lente que vers le JPG ou le WEBP : quelques secondes par grande photo, davantage sur un téléphone.",
+    ],
+    steps: [
+      "Choisissez les JPG.",
+      "Laissez AVIF comme format de sortie et, si elles sont destinées au web, réduisez la largeur à leur taille d’affichage.",
+      "Cliquez sur Convertir et patientez : chaque photo prend un peu plus de temps qu’avec les autres formats.",
+      "Téléchargez les AVIF ou le ZIP.",
+    ],
+    faq: [
+      {
+        q: "Pourquoi est-ce plus long que la conversion en WEBP ?",
+        a: "Parce que l’encodage AVIF demande beaucoup plus de calcul. C’est justement cet effort qui permet d’obtenir un fichier plus léger.",
+      },
+      {
+        q: "Tous les navigateurs affichent-ils l’AVIF ?",
+        a: "Les versions actuelles de Chrome, Edge, Firefox et Safari, oui. Si votre public utilise des appareils très anciens, proposez aussi un JPG ou un WEBP de secours.",
+      },
+      {
+        q: "Mes photos sont-elles envoyées sur un serveur ?",
+        a: "Non, l’AVIF est généré dans votre navigateur.",
+      },
+    ],
+  },
+
+  "gif>png": {
+    when: [
+      "Convertir un GIF en PNG permet d’extraire une image fixe d’un GIF (par exemple un vieux logo, une icône ou une image d’animation) pour la retoucher ou l’utiliser dans des documents sans la limite de 256 couleurs du GIF.",
+    ],
+    differences: [
+      "Le GIF gère l’animation, mais seulement 256 couleurs par image et une transparence en tout ou rien. Le PNG est une image fixe avec des millions de couleurs et une transparence aux contours doux. Pour les graphiques et les logos, le PNG est le remplaçant moderne du GIF fixe.",
+    ],
+    kept: ["Les couleurs exactes du GIF et sa transparence.", "La résolution."],
+    lost: [
+      "L’animation : si le GIF est animé, seule la première image est convertie.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les fichiers. Elle produit toujours une image fixe, même si le GIF est animé.",
+    ],
+    steps: [
+      "Choisissez les GIF.",
+      "Laissez PNG comme format de sortie.",
+      "Cliquez sur Convertir et téléchargez les PNG.",
+    ],
+    faq: [
+      {
+        q: "Que devient l’animation ?",
+        a: "Seule la première image est convertie : le PNG est une image fixe.",
+      },
+      {
+        q: "La transparence est-elle conservée ?",
+        a: "Oui. Les zones transparentes du GIF restent transparentes dans le PNG.",
+      },
+      {
+        q: "La qualité s’améliore-t-elle ?",
+        a: "Non : le PNG conserve exactement les couleurs du GIF. Ce que vous gagnez, c’est de pouvoir le retoucher sans la limite de 256 couleurs.",
+      },
+    ],
+  },
+
+  "gif>jpg": {
+    when: [
+      "Convertir un GIF en JPG est utile quand un site ou un formulaire n’accepte pas le GIF et que vous devez quand même déposer l’image, ou pour enregistrer la première image d’un GIF comme photo fixe.",
+    ],
+    differences: [
+      "Le GIF est un format limité à 256 couleurs, avec animation et transparence simple. Le JPG est une image fixe avec des millions de couleurs et une compression avec perte, accepté partout, mais sans transparence.",
+    ],
+    kept: [
+      "La résolution de la première image.",
+      "Ses couleurs : un GIF en a 256 au maximum, et le JPG les reproduit sans difficulté.",
+    ],
+    lost: [
+      "L’animation : seule la première image est conservée.",
+      "La transparence, qui devient blanche.",
+      "Un peu de netteté sur les contours des dessins et des textes, à cause de la compression JPG.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les fichiers. Si le GIF est un dessin ou un logo avec de la transparence, convertissez-le en PNG plutôt qu’en JPG.",
+    ],
+    steps: [
+      "Choisissez les GIF.",
+      "Laissez JPG comme format de sortie ; pour des dessins aux contours nets, montez la qualité à 90.",
+      "Cliquez sur Convertir et téléchargez les JPG.",
+    ],
+    faq: [
+      {
+        q: "Puis-je choisir quelle image du GIF est convertie ?",
+        a: "Non, c’est toujours la première image qui est utilisée.",
+      },
+      {
+        q: "JPG ou PNG pour un GIF ?",
+        a: "PNG pour les logos, les dessins ou les images avec de la transparence ; JPG seulement si le site l’exige ou si le GIF est une photo.",
+      },
+      {
+        q: "Mes fichiers sont-ils envoyés sur un serveur ?",
+        a: "Non, la conversion se fait dans votre navigateur.",
+      },
+    ],
+  },
+
+  "bmp>jpg": {
+    when: [
+      "Les BMP proviennent de captures de vieux logiciels Windows, de scanners, de machines industrielles et d’appareils médicaux. Ils sont très lourds parce qu’ils ne sont pas compressés. Les convertir en JPG les rend prêts à être envoyés par e-mail ou déposés n’importe où, pour une fraction du poids.",
+    ],
+    differences: [
+      "Le BMP enregistre l’image sans compression (ou avec une compression minime) : une photo de 12 mégapixels peut dépasser 30 Mo. Le JPG compresse avec perte et ramène cette même photo à quelques Mo, compatible avec tout.",
+    ],
+    kept: [
+      "La résolution et l’aspect de l’image.",
+      "Les couleurs, avec une perte invisible à la qualité par défaut.",
+    ],
+    lost: [
+      "Un peu de netteté sur les textes et les traits fins, à cause de la compression ; pour des captures avec du texte, préférez le PNG.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les images, par lots.",
+    ],
+    steps: [
+      "Choisissez les BMP.",
+      "Laissez JPG comme format de sortie et réglez la qualité si vous le souhaitez.",
+      "Cliquez sur Convertir et téléchargez les JPG ou le ZIP.",
+    ],
+    faq: [
+      {
+        q: "Le fichier est-il beaucoup plus léger ?",
+        a: "Énormément : un BMP non compressé descend en général à moins du dixième de son poids en JPG.",
+      },
+      {
+        q: "BMP en JPG ou en PNG ?",
+        a: "JPG pour les photos ; PNG pour les captures d’écran, les plans ou les images avec du texte, car il ne perd rien et réduit aussi fortement le poids du BMP.",
+      },
+      {
+        q: "Mes images sont-elles envoyées sur un serveur ?",
+        a: "Non, tout est traité dans votre navigateur.",
+      },
+    ],
+  },
+
+  "bmp>png": {
+    when: [
+      "Convertir un BMP en PNG est idéal pour les captures d’écran, les schémas, les images de scanners ou d’appareils techniques qui enregistrent en BMP : le PNG est bien plus léger et conserve l’image strictement identique, sans la perte du JPG.",
+    ],
+    differences: [
+      "Les deux formats conservent chaque pixel à l’identique, mais le BMP ne compresse presque pas, alors que le PNG compresse (sans perte). Le résultat : la même image dans un fichier plusieurs fois plus petit, compatible avec le web, les documents et les logiciels de design.",
+    ],
+    kept: [
+      "L’image exacte, pixel par pixel.",
+      "La résolution et les couleurs.",
+    ],
+    lost: [
+      "Rien sur l’image. Seuls le format et le poids du fichier changent.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les fichiers, par lots.",
+    ],
+    steps: [
+      "Choisissez les BMP.",
+      "Laissez PNG comme format de sortie.",
+      "Cliquez sur Convertir et téléchargez les PNG ou le ZIP.",
+    ],
+    faq: [
+      {
+        q: "Perd-on de la qualité ?",
+        a: "Non. Le PNG compresse sans perte : l’image est donc identique.",
+      },
+      {
+        q: "Pourquoi le BMP était-il si lourd ?",
+        a: "Parce qu’il enregistre chaque pixel sans compression. Le PNG tire parti des zones répétées pour stocker la même chose dans moins d’espace.",
+      },
+      {
+        q: "Mes images sont-elles envoyées sur un serveur ?",
+        a: "Non, tout est traité dans votre navigateur.",
+      },
+    ],
+  },
+
+  "tiff>jpg": {
+    when: [
+      "Les TIFF proviennent de scanners, d’appareils photo professionnels, d’imprimeries et d’archives photo. Ils sont excellents pour l’archivage ou l’impression, mais ils sont lourds et presque aucun navigateur ni réseau social ne les affiche. Les convertir en JPG les rend prêts à être partagés ou publiés.",
+    ],
+    differences: [
+      "Le TIFF est un format d’archivage professionnel : il enregistre souvent l’image sans perte, en haute résolution et parfois avec plusieurs pages dans un même fichier. Le JPG compresse avec perte pour rester léger et s’ouvre sur n’importe quel appareil.",
+    ],
+    kept: [
+      "La résolution de l’image.",
+      "Les couleurs, avec une perte invisible à la qualité par défaut.",
+    ],
+    lost: [
+      "Si le TIFF a plusieurs pages (par exemple un fax ou une numérisation de plusieurs feuilles), seule la première est convertie.",
+      "La transparence et les calques, s’il y en a.",
+      "Les métadonnées du fichier.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur. Seul Safari lit le TIFF nativement ; dans les autres navigateurs, un décodeur intégré à la page est utilisé. Certains TIFF peu courants (par exemple en 16 bits par canal ou avec des compressions inhabituelles) peuvent ne pas s’ouvrir.",
+    ],
+    steps: [
+      "Choisissez les TIFF.",
+      "Laissez JPG comme format de sortie ; si les images sont énormes, réduisez la largeur pour les partager.",
+      "Cliquez sur Convertir et téléchargez les JPG ou le ZIP.",
+    ],
+    faq: [
+      {
+        q: "Mon TIFF a plusieurs pages : sont-elles toutes converties ?",
+        a: "Non, seulement la première. Si vous avez besoin de toutes, mieux vaut numériser à nouveau chaque page séparément ou enregistrer le document en PDF depuis le logiciel du scanner.",
+      },
+      {
+        q: "Perd-on de la qualité ?",
+        a: "Un peu, à cause de la compression JPG, mais à la qualité par défaut cela ne se voit pas à l’écran. Pour imprimer, montez la qualité à 90 à 95.",
+      },
+      {
+        q: "Mes images sont-elles envoyées sur un serveur ?",
+        a: "Non, tout est traité dans votre navigateur.",
+      },
+    ],
+  },
+
+  "tiff>pdf": {
+    when: [
+      "Convertir un TIFF en PDF permet de remettre une numérisation ou une image d’archive sous forme de document : pour la joindre à une démarche, l’envoyer par e-mail ou la ranger avec d’autres PDF.",
+    ],
+    differences: [
+      "Le TIFF est un format d’image professionnel très utilisé par les scanners ; le PDF est le format universel des documents. À la conversion, l’image est placée sur une page de même taille, sans marges.",
+    ],
+    kept: [
+      "L’image de la première page, avec sa résolution.",
+      "Une qualité élevée : l’image est enregistrée en JPG de qualité 92 dans le PDF.",
+    ],
+    lost: [
+      "Seule la première page d’un TIFF de plusieurs pages est convertie.",
+      "Le texte de l’image ne peut être ni recherché ni sélectionné ; pour cela, passez le PDF dans « OCR de PDF numérisé ».",
+      "La transparence, s’il y en a.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les fichiers. Certains TIFF peu courants peuvent ne pas s’ouvrir. Pour réunir plusieurs images dans un PDF, utilisez Images en PDF.",
+    ],
+    steps: [
+      "Choisissez le TIFF.",
+      "Laissez PDF comme format de sortie et cliquez sur Convertir.",
+      "Téléchargez le PDF et, s’il est trop lourd, passez-le dans Compresser un PDF.",
+    ],
+    faq: [
+      {
+        q: "Toutes les pages du TIFF sont-elles converties ?",
+        a: "Non, seulement la première. Pour les documents de plusieurs feuilles, numérisez directement en PDF ou réunissez les pages sous forme d’images avec Images en PDF.",
+      },
+      {
+        q: "Le texte du PDF est-il recherchable ?",
+        a: "Non, il contient une image. Utilisez « OCR de PDF numérisé » pour y ajouter le texte reconnu.",
+      },
+      {
+        q: "Mes fichiers sont-ils envoyés sur un serveur ?",
+        a: "Non, la conversion se fait dans votre navigateur.",
+      },
+    ],
+  },
+
+  "png>ico": {
+    when: [
+      "Convertir un PNG en ICO, c’est ce qu’il vous faut pour créer le favicon d’un site web (l’icône de l’onglet du navigateur) ou une icône de programme ou de raccourci sous Windows. Si vous avez votre logo en PNG sur fond transparent, c’est le meilleur point de départ.",
+    ],
+    differences: [
+      "Un PNG est une seule image. Un ICO est un conteneur qui regroupe plusieurs versions de la même icône en différentes tailles, pour que Windows et les navigateurs utilisent la plus adaptée à chaque endroit (onglet, barre des tâches, bureau).",
+    ],
+    kept: [
+      "La transparence du PNG.",
+      "Le dessin complet, centré dans un carré si l’image n’est pas carrée.",
+      "Les tailles 16, 32, 48, 64, 128 et 256 px dans un même fichier (uniquement celles qui ne dépassent pas la taille de votre image).",
+    ],
+    lost: [
+      "Aux petites tailles (16 et 32 px), les détails fins et les textes deviennent illisibles : c’est une limite de la taille, pas du format. Une icône simple fonctionne mieux.",
+      "Si l’image n’est pas carrée, des bandes transparentes apparaissent sur les côtés ou en haut et en bas.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les images. Pour obtenir aussi les PNG du favicon (comme apple-touch-icon) et le code HTML, utilisez le « Générateur de favicon ».",
+    ],
+    steps: [
+      "Préparez un PNG carré d’au moins 256 × 256 px, idéalement sur fond transparent.",
+      "Choisissez-le et laissez ICO comme format de sortie.",
+      "Cliquez sur Convertir et téléchargez le fichier .ico.",
+      "Pour un site web, déposez-le à la racine sous le nom favicon.ico.",
+    ],
+    faq: [
+      {
+        q: "Quelle taille d’image me faut-il ?",
+        a: "L’idéal est une image carrée de 256 × 256 px ou plus. Avec une image plus petite, l’ICO ne contient que les tailles qui ne la dépassent pas.",
+      },
+      {
+        q: "La transparence est-elle conservée ?",
+        a: "Oui, chaque taille est enregistrée en PNG 32 bits dans l’ICO.",
+      },
+      {
+        q: "Cela fonctionne-t-il comme icône Windows ?",
+        a: "Oui. Ce format (avec des images PNG à l’intérieur) est compatible avec Windows Vista et les versions ultérieures, ainsi qu’avec tous les navigateurs actuels.",
+      },
+    ],
+  },
+
+  "jpg>ico": {
+    when: [
+      "Convertir un JPG en ICO permet de créer un favicon ou une icône Windows à partir d’une photo ou d’un logo que vous n’avez qu’en JPG, par exemple une photo de profil ou le logo qu’on vous a envoyé par message.",
+      "Si vous avez le logo en PNG sur fond transparent, utilisez plutôt celui-ci : le résultat est bien plus joli sur les onglets sombres.",
+    ],
+    differences: [
+      "Le JPG est une photo sans transparence ; l’ICO est un conteneur d’icônes en plusieurs tailles. À la conversion, l’image est réduite à chaque taille standard et enregistrée dans l’ICO.",
+    ],
+    kept: [
+      "L’image complète, centrée dans un carré.",
+      "Les tailles de 16 à 256 px dans un même fichier.",
+    ],
+    lost: [
+      "Le JPG n’a pas de transparence : le fond de la photo reste donc tel quel ; si l’image n’est pas carrée, les bandes ajoutées sont transparentes.",
+      "En 16 et 32 px, une photo se réduit à très peu de pixels et perd ses détails. Recadrez d’abord la partie importante (un visage, l’initiale du logo).",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les images.",
+    ],
+    steps: [
+      "Si nécessaire, recadrez l’image en carré avec Recadrer une image, en ne gardant que l’essentiel.",
+      "Choisissez le JPG et laissez ICO comme format de sortie.",
+      "Cliquez sur Convertir et téléchargez le fichier .ico.",
+    ],
+    faq: [
+      {
+        q: "Puis-je d’abord supprimer le fond ?",
+        a: "Oui. Passez le JPG dans Supprimer l’arrière-plan d’une image, téléchargez le PNG et convertissez-le en ICO : l’icône aura un fond transparent.",
+      },
+      {
+        q: "Pourquoi mon icône est-elle floue dans l’onglet ?",
+        a: "Parce qu’en 16 px, il n’y a presque pas de place pour les détails. Un dessin simple ou une grande lettre rendent bien mieux qu’une photo.",
+      },
+      {
+        q: "Mes images sont-elles envoyées sur un serveur ?",
+        a: "Non, tout est traité dans votre navigateur.",
+      },
+    ],
+  },
+
+  "ico>png": {
+    when: [
+      "Convertir un ICO en PNG permet de récupérer l’image d’un favicon ou d’une icône Windows pour l’utiliser ailleurs : dans une présentation, un document, une maquette, ou pour créer une nouvelle icône à partir de l’ancienne.",
+    ],
+    differences: [
+      "Un ICO contient une ou plusieurs versions d’une icône en différentes tailles. Un PNG est une seule image, que n’importe quel logiciel ouvre et modifie.",
+    ],
+    kept: ["La transparence de l’icône.", "Les couleurs exactes."],
+    lost: [
+      "Vous obtenez une seule image : le navigateur choisit l’une des versions de l’icône (en général la plus grande). Les autres ne sont pas exportées.",
+      "Une icône qui ne contient que du 16 ou du 32 px ne gagne pas en détail : si vous l’agrandissez ensuite, elle sera pixélisée.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les fichiers. Les ICO très anciens aux formats de couleur peu courants peuvent ne pas s’ouvrir dans tous les navigateurs.",
+    ],
+    steps: [
+      "Choisissez le fichier .ico.",
+      "Laissez PNG comme format de sortie.",
+      "Cliquez sur Convertir et téléchargez le PNG.",
+    ],
+    faq: [
+      {
+        q: "Quelle sera la taille du PNG ?",
+        a: "Celle de la version de l’icône utilisée par le navigateur, en général la plus grande que contient le fichier (jusqu’à 256 × 256 px).",
+      },
+      {
+        q: "Puis-je l’agrandir ?",
+        a: "Vous pouvez le faire avec Redimensionner une image, mais une icône de quelques pixels paraîtra pixélisée ou floue une fois agrandie.",
+      },
+      {
+        q: "Mes fichiers sont-ils envoyés sur un serveur ?",
+        a: "Non, la conversion se fait dans votre navigateur.",
+      },
+    ],
+  },
+
+  "svg>png": {
+    when: [
+      "Convertir un SVG en PNG est nécessaire quand vous avez un logo ou une illustration vectorielle à utiliser là où le SVG n’est pas accepté : réseaux sociaux, présentations, documents Word, messageries ou plateformes qui demandent une image classique.",
+    ],
+    differences: [
+      "Un SVG est un dessin décrit par des formes et des textes, il reste donc net à n’importe quelle taille. Un PNG est une image en pixels de taille fixe. À la conversion, le SVG est « dessiné » à la taille que vous choisissez, et cette taille devient sa netteté maximale.",
+    ],
+    kept: [
+      "La transparence du fond.",
+      "Les formes, les couleurs et les dégradés, tels que le navigateur les dessine.",
+      "Une netteté parfaite à la taille choisie : vous pouvez demander un grand PNG sans qu’il soit flou.",
+    ],
+    lost: [
+      "La mise à l’échelle : le PNG ne peut plus être agrandi sans perdre en netteté.",
+      "Les images ou polices que le SVG charge depuis Internet ne sont pas incluses ; les textes dont la police n’est pas installée utilisent une police du système.",
+      "Les animations et le code du SVG.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur. La taille provient de la largeur, de la hauteur ou du viewBox du SVG ; s’il n’en a aucun, 1 024 px sont utilisés. Si le texte du logo s’affiche dans une autre police, vectorisez-le dans votre logiciel de design avant l’export.",
+    ],
+    steps: [
+      "Choisissez le SVG.",
+      "Laissez PNG comme format de sortie et choisissez la taille : par exemple 1 000 px de large pour les réseaux sociaux, ou le double de la taille d’affichage.",
+      "Cliquez sur Convertir et téléchargez le PNG.",
+    ],
+    faq: [
+      {
+        q: "Quelle taille de PNG choisir ?",
+        a: "Celle dont vous avez besoin : comme le SVG est vectoriel, l’agrandir ne fait pas perdre de qualité. Pour les écrans haute densité, choisissez le double de la taille d’affichage.",
+      },
+      {
+        q: "Le texte du logo s’affiche dans une autre police : pourquoi ?",
+        a: "Parce que le SVG utilise une police qui n’est ni incluse dans le fichier ni installée sur votre appareil. Dans votre logiciel de design, vectorisez le texte (conversion en contours) et exportez à nouveau le SVG.",
+      },
+      {
+        q: "Le fond transparent est-il conservé ?",
+        a: "Oui, le PNG conserve la transparence.",
+      },
+    ],
+  },
+
+  "svg>jpg": {
+    when: [
+      "Convertir un SVG en JPG est utile quand un site ou un service n’accepte que le JPG et que vous avez un logo, un graphique ou une illustration en SVG : formulaires, profils, plateformes publicitaires ou impressions rapides.",
+      "Si la destination accepte le PNG, c’est la meilleure option : il conserve la transparence et les contours restent plus nets.",
+    ],
+    differences: [
+      "Le SVG est un dessin vectoriel qui reste net à n’importe quelle taille ; le JPG est une image en pixels compressée avec perte, conçue pour les photos et sans transparence.",
+    ],
+    kept: [
+      "Les formes et les couleurs, telles que le navigateur les dessine.",
+      "La netteté à la taille que vous choisissez.",
+    ],
+    lost: [
+      "La transparence : le fond devient blanc.",
+      "Un peu de netteté sur les contours et les textes, à cause de la compression JPG ; montez la qualité à 90 pour les logos.",
+      "Les images ou polices externes que charge le SVG, ainsi que ses animations.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur. La taille provient de la largeur, de la hauteur ou du viewBox du SVG (1 024 px s’il n’en a aucun).",
+    ],
+    steps: [
+      "Choisissez le SVG.",
+      "Laissez JPG comme format de sortie, montez la qualité à 90 et choisissez la taille en pixels.",
+      "Cliquez sur Convertir et téléchargez le JPG.",
+    ],
+    faq: [
+      {
+        q: "Puis-je choisir une autre couleur de fond que le blanc ?",
+        a: "Avec cette conversion, le fond transparent devient blanc. Si vous avez besoin d’une autre couleur, modifiez-la dans le SVG lui-même (avec un logiciel de design) avant de convertir, ou convertissez en PNG si la destination l’accepte.",
+      },
+      {
+        q: "JPG ou PNG pour un logo ?",
+        a: "PNG presque toujours : il conserve la transparence et les contours nets. JPG seulement si on vous l’impose.",
+      },
+      {
+        q: "Mes fichiers sont-ils envoyés sur un serveur ?",
+        a: "Non, la conversion se fait dans votre navigateur.",
+      },
+    ],
+  },
+
+  "svg>pdf": {
+    when: [
+      "Convertir un SVG en PDF est utile pour envoyer un graphique, un plan ou une illustration sous forme de document, pour le joindre à un rapport ou pour qu’une personne sans logiciel de design puisse l’ouvrir et l’imprimer.",
+    ],
+    differences: [
+      "Le SVG est un format vectoriel pour le web ; le PDF est un format de document qui peut lui aussi contenir des vecteurs. Avec cette conversion, toutefois, le SVG est dessiné sous forme d’image (PNG) sur une page de même taille.",
+    ],
+    kept: [
+      "L’aspect du dessin, avec ses couleurs et ses formes, à la taille du SVG.",
+      "La transparence, qui apparaît sur fond blanc dans le PDF.",
+    ],
+    lost: [
+      "Le PDF n’est pas vectoriel : si vous zoomez beaucoup ou l’imprimez en grand format, les pixels se voient. Si vous avez besoin d’un PDF vectoriel (pour un imprimeur, par exemple), exportez-le depuis votre logiciel de design.",
+      "Le texte du SVG ne peut pas être sélectionné dans le PDF.",
+      "Les images et polices externes du SVG.",
+    ],
+    limits: [
+      "La conversion se fait dans votre navigateur, sans envoyer les fichiers. La page a la taille du SVG (1 024 px s’il n’en définit pas) ; pour plus de résolution, convertissez d’abord en PNG en grande taille, puis transformez ce PNG en PDF.",
+    ],
+    steps: [
+      "Choisissez le SVG.",
+      "Laissez PDF comme format de sortie et cliquez sur Convertir.",
+      "Téléchargez le PDF et vérifiez-le en zoomant à la taille à laquelle il sera utilisé.",
+    ],
+    faq: [
+      {
+        q: "Le PDF conserve-t-il les vecteurs ?",
+        a: "Non : le dessin est enregistré comme image dans le PDF. Cela suffit pour des documents à l’écran ou une impression classique ; pour un imprimeur, exportez un PDF vectoriel depuis le logiciel de design.",
+      },
+      {
+        q: "Comment obtenir plus de résolution ?",
+        a: "Convertissez le SVG en PNG en choisissant une grande taille (par exemple 3 000 px), puis transformez ce PNG en PDF.",
+      },
+      {
+        q: "Mes fichiers sont-ils envoyés sur un serveur ?",
+        a: "Non, la conversion se fait dans votre navigateur.",
+      },
+    ],
+  },
 };

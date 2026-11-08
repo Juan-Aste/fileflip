@@ -25,4 +25,6 @@ export interface ConversionContent {
 
 export type ConversionKey = `${FormatId}>${FormatId}`;
 
-export type ConversionContentMap = Partial<Record<ConversionKey, ConversionContent>>;
+export type ConversionContentMap = Partial<
+  Record<ConversionKey, ConversionContent>
+>;
