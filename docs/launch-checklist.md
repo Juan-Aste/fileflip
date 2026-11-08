@@ -102,6 +102,17 @@ El código de AdSense va en el `<head>` de **todas** las páginas (portada, herr
 - [ ] *Sitemaps*: enviar `https://fileflect.com/sitemap.xml`.
 - [ ] Inspeccionar `https://fileflect.com/es` y pedir la indexación.
 
+## 9a. Search Console después de mergear la fase 19 (calidad para Google y AdSense)
+Hacer **después** de mergear `dev` en `main` y de que Railway termine el deploy. Antes, comprobar en producción: `https://fileflect.com/es/jpg-to-pdf` responde 301 a `/es/jpg-a-pdf`, `https://fileflect.com/csv-to-pdf` responde 301 a `/en/csv-to-pdf`, `https://fileflect.com/es/about` carga y `https://fileflect.com/es/bmp-a-gif` tiene `<meta name="robots" content="noindex, follow">` (Ver código fuente).
+
+- [ ] *Sitemaps*: volver a enviar `https://fileflect.com/sitemap.xml` (ahora tiene unas 345 URLs menos: las páginas de plantilla pasaron a `noindex`; y suma «Quiénes somos» y las 6 guías nuevas en 5 idiomas).
+- [ ] *Indexación → Páginas*, motivo **«No encontrada (404)»**: abrir el detalle y pulsar **Validar corrección**. Las 339 URLs del informe del 2026-11-07 ahora redirigen (301) a la página correcta; Google tarda días o semanas en volver a rastrearlas. Las 9 URLs de precios (`/mes`, `/mo`, `/yr`, `/ano`, `/an`, `/mês`, `/mois`, `/月`, `/年`) siguen dando 404 a propósito (no son páginas y ya no aparecen en el HTML).
+- [ ] Si aparece el motivo **«Página con redirección»** para esas mismas URLs, es lo esperado: no hay que hacer nada.
+- [ ] *Inspección de URLs* → **Solicitar indexación** de: `https://fileflect.com/es`, `https://fileflect.com/es/about`, `https://fileflect.com/es/guias` (y, si sobra cupo diario, `/en`, `/en/about`, `/en/guides` y las guías nuevas en español: `/es/guias/como-editar-un-pdf-gratis`, `/es/guias/como-rellenar-un-formulario-pdf`, `/es/guias/como-quitar-fondo-foto`, `/es/guias/convertir-videos-viejos-a-mp4`, `/es/guias/como-comparar-dos-textos`, `/es/guias/como-hacer-foto-carnet-con-el-celular`).
+- [ ] En unas semanas, *Indexación → Páginas* debería mostrar las conversiones de plantilla como **«Excluida por la etiqueta noindex»**: es lo buscado (siguen funcionando para quien llegue, pero no cuentan como contenido de poco valor).
+- [ ] **AdSense**: no volver a pedir la revisión enseguida. Esperar unas semanas a que Google rastree de nuevo (que el informe de 404 baje y aparezcan impresiones en *Rendimiento*) y recién entonces pedirla.
+- [ ] Seguir publicando guías de a 1–2 por semana según [`docs/seo/plan-editorial.md`](seo/plan-editorial.md) y pedir la indexación de cada una.
+
 ## 9b. Modelos de IA en Cloudflare R2 (opcional, fase 11.4)
 Pasos completos en [`docs/modelos-r2.md`](modelos-r2.md). Sin esto, la voz IA y la transcripción siguen bajando de Hugging Face.
 - [ ] Activar R2 (pide tarjeta) y crear el bucket `fileflect-modelos`.

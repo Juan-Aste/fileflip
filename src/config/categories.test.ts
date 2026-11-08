@@ -45,12 +45,13 @@ describe("catalog categories", () => {
     expect(translatePathname("/tools", "en", "es")).toBe("/herramientas");
   });
 
-  it("are in the sitemap in every language", () => {
+  it("are in the sitemap in every language (one- or two-tool categories are noindex, see indexing.ts)", () => {
     const urls = sitemapEntries("https://x.test").map((e) => e.url);
     expect(urls).toContain("https://x.test/es/herramientas");
     expect(urls).toContain("https://x.test/en/pdf-tools");
     expect(urls).toContain("https://x.test/zh/document-tools");
-    expect(urls).toContain("https://x.test/en/3d-tools");
-    expect(urls).toContain("https://x.test/en/cad-tools");
+    expect(urls).toContain("https://x.test/fr/outils-audio");
+    expect(urls).not.toContain("https://x.test/en/3d-tools");
+    expect(urls).not.toContain("https://x.test/en/cad-tools");
   });
 });

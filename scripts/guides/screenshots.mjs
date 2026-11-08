@@ -9,10 +9,11 @@
 // CHROME_PATH to the Playwright Chromium preinstalled in the cloud environment.
 // Without names, every shot is taken again. Sample files are generated on the
 // fly (nothing personal).
+import { execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, PDFHexString, PDFName, rgb } from "pdf-lib";
 import { chromium } from "playwright-core";
 import sharp from "sharp";
 
@@ -188,6 +189,456 @@ async function photoContractPdf(browser, locale) {
   return file;
 }
 
+/** A product photo drawn as SVG (a ceramic mug on a wooden table against a wall), nothing personal. */
+async function productPhoto() {
+  const file = join(work, "taza.jpg");
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900">` +
+    `<defs>` +
+    `<linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9b9a6"/><stop offset="1" stop-color="#b3a28d"/></linearGradient>` +
+    `<linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5a35"/><stop offset="1" stop-color="#6b4226"/></linearGradient>` +
+    `<linearGradient id="mug" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#14706b"/><stop offset="0.35" stop-color="#2bb3a8"/><stop offset="1" stop-color="#0c4f4b"/></linearGradient>` +
+    `<radialGradient id="shadow"><stop offset="0" stop-color="#000" stop-opacity="0.35"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>` +
+    `</defs>` +
+    `<rect width="1200" height="620" fill="url(#wall)"/><rect y="620" width="1200" height="280" fill="url(#wood)"/>` +
+    Array.from({ length: 9 }, (_, i) => `<path d="M0 ${650 + i * 28} C 300 ${640 + i * 28}, 800 ${662 + i * 28}, 1200 ${648 + i * 28}" stroke="#5a3820" stroke-opacity="0.35" stroke-width="2" fill="none"/>`).join("") +
+    `<ellipse cx="590" cy="735" rx="230" ry="34" fill="url(#shadow)"/>` +
+    `<path d="M745 360 C 880 360, 880 600, 745 600" stroke="#106662" stroke-width="44" fill="none"/>` +
+    `<path d="M430 300 L770 300 L755 700 Q 600 740 445 700 Z" fill="url(#mug)"/>` +
+    `<ellipse cx="600" cy="300" rx="170" ry="34" fill="#0c4f4b"/><ellipse cx="600" cy="300" rx="150" ry="24" fill="#3a2414"/>` +
+    `<rect x="520" y="430" width="160" height="110" rx="14" fill="#f4efe6"/><circle cx="600" cy="485" r="30" fill="#e2683c"/>` +
+    `</svg>`;
+  writeFileSync(file, await sharp(Buffer.from(svg)).jpeg({ quality: 90 }).toBuffer());
+  return file;
+}
+
+/** Clicks a pill of a ChoiceGroup by its exact text (the radio itself is visually hidden). */
+const pill = (page, text) =>
+  page.locator("label").filter({ hasText: new RegExp(`^${text.replace(/[()]/g, "\\$&")}$`) }).first().click();
+
+/** "Remove background" in rectangle mode with the product photo, once the cut is ready. */
+async function removeBackgroundProduct(page, l) {
+  await open(page, l, toolSlug("remove-background", l));
+  await pill(page, msg(l, "RemoveBackgroundTool.methodRect"));
+  await pick(page, l, [await productPhoto()]);
+  const ready = msg(l, "RemoveBackgroundTool.status").split("{percent}")[0].trim();
+  await page.getByRole("status").filter({ hasText: ready }).first().waitFor({ timeout: 60_000 });
+}
+
+// Two versions of a short contract (line by line) and of a school paragraph
+// (word by word), in each language, with visible differences.
+const compareSamples = {
+  es: {
+    contractA:
+      "Cláusula 1. El prestador entregará el sitio web el 15 de marzo.\nCláusula 2. El cliente pagará 1.200 dólares en dos cuotas.\nCláusula 3. Cualquier cambio deberá acordarse por escrito.\nCláusula 4. El contrato podrá rescindirse con 30 días de aviso.",
+    contractB:
+      "Cláusula 1. El prestador entregará el sitio web el 30 de marzo.\nCláusula 2. El cliente pagará 1.500 dólares en tres cuotas.\nCláusula 3. Cualquier cambio deberá acordarse por escrito.\nCláusula 4. El contrato podrá rescindirse con 60 días de aviso.\nCláusula 5. El prestador mantendrá el sitio durante seis meses.",
+    essayA:
+      "La fotosíntesis es el proceso por el cual las plantas transforman la luz del sol en energía química. Ocurre principalmente en las hojas, dentro de los cloroplastos.",
+    essayB:
+      "La fotosíntesis es el proceso mediante el cual las plantas, las algas y algunas bacterias transforman la luz del sol en energía química. Ocurre sobre todo en las hojas, dentro de los cloroplastos, y libera oxígeno.",
+  },
+  en: {
+    contractA:
+      "Clause 1. The provider will deliver the website on March 15.\nClause 2. The client will pay 1,200 dollars in two installments.\nClause 3. Any change must be agreed in writing.\nClause 4. Either party may terminate with 30 days' notice.",
+    contractB:
+      "Clause 1. The provider will deliver the website on March 30.\nClause 2. The client will pay 1,500 dollars in three installments.\nClause 3. Any change must be agreed in writing.\nClause 4. Either party may terminate with 60 days' notice.\nClause 5. The provider will maintain the site for six months.",
+    essayA:
+      "Photosynthesis is the process by which plants turn sunlight into chemical energy. It takes place mainly in the leaves, inside the chloroplasts.",
+    essayB:
+      "Photosynthesis is the process through which plants, algae and some bacteria turn sunlight into chemical energy. It takes place mostly in the leaves, inside the chloroplasts, and releases oxygen.",
+  },
+  pt: {
+    contractA:
+      "Cláusula 1. O prestador entregará o site em 15 de março.\nCláusula 2. O cliente pagará 1.200 reais em duas parcelas.\nCláusula 3. Qualquer alteração deverá ser combinada por escrito.\nCláusula 4. O contrato poderá ser rescindido com 30 dias de aviso.",
+    contractB:
+      "Cláusula 1. O prestador entregará o site em 30 de março.\nCláusula 2. O cliente pagará 1.500 reais em três parcelas.\nCláusula 3. Qualquer alteração deverá ser combinada por escrito.\nCláusula 4. O contrato poderá ser rescindido com 60 dias de aviso.\nCláusula 5. O prestador fará a manutenção do site durante seis meses.",
+    essayA:
+      "A fotossíntese é o processo pelo qual as plantas transformam a luz do sol em energia química. Ela ocorre principalmente nas folhas, dentro dos cloroplastos.",
+    essayB:
+      "A fotossíntese é o processo por meio do qual as plantas, as algas e algumas bactérias transformam a luz do sol em energia química. Ela ocorre sobretudo nas folhas, dentro dos cloroplastos, e libera oxigênio.",
+  },
+  fr: {
+    contractA:
+      "Article 1. Le prestataire livrera le site web le 15 mars.\nArticle 2. Le client paiera 1 200 euros en deux versements.\nArticle 3. Toute modification devra être convenue par écrit.\nArticle 4. Le contrat pourra être résilié avec un préavis de 30 jours.",
+    contractB:
+      "Article 1. Le prestataire livrera le site web le 30 mars.\nArticle 2. Le client paiera 1 500 euros en trois versements.\nArticle 3. Toute modification devra être convenue par écrit.\nArticle 4. Le contrat pourra être résilié avec un préavis de 60 jours.\nArticle 5. Le prestataire assurera la maintenance du site pendant six mois.",
+    essayA:
+      "La photosynthèse est le processus par lequel les plantes transforment la lumière du soleil en énergie chimique. Elle a lieu principalement dans les feuilles, à l’intérieur des chloroplastes.",
+    essayB:
+      "La photosynthèse est le processus grâce auquel les plantes, les algues et certaines bactéries transforment la lumière du soleil en énergie chimique. Elle a lieu surtout dans les feuilles, à l’intérieur des chloroplastes, et libère de l’oxygène.",
+  },
+  zh: {
+    contractA:
+      "第一条 服务方应于 3 月 15 日交付网站。\n第二条 客户分两期支付 1200 元。\n第三条 任何变更均须以书面形式约定。\n第四条 任何一方可提前 30 天通知解除合同。",
+    contractB:
+      "第一条 服务方应于 3 月 30 日交付网站。\n第二条 客户分三期支付 1500 元。\n第三条 任何变更均须以书面形式约定。\n第四条 任何一方可提前 60 天通知解除合同。\n第五条 服务方负责网站六个月的维护。",
+    essayA: "光合作用是植物把阳光转化为化学能的过程。它主要发生在叶片的叶绿体中。",
+    essayB: "光合作用是植物、藻类和部分细菌把阳光转化为化学能的过程。它大多发生在叶片的叶绿体中，并释放氧气。",
+  },
+};
+
+/** Fills both boxes of Compare text, picks the mode and compares. */
+async function compareTexts(page, l, a, b, mode) {
+  await open(page, l, toolSlug("compare-text", l));
+  await mark(page);
+  await page.getByRole("textbox", { name: msg(l, "TextTools.textA"), exact: true }).fill(a);
+  await page.getByRole("textbox", { name: msg(l, "TextTools.textB"), exact: true }).fill(b);
+  await label(page, msg(l, mode === "line" ? "TextTools.byLine" : "TextTools.byWord")).click();
+  await page.getByRole("button", { name: msg(l, "TextTools.compare"), exact: true }).click();
+  await page.getByRole("heading", { name: msg(l, "TextTools.differences") }).waitFor();
+  return toolBlock(page);
+}
+
+/**
+ * An illustrated, made-up portrait (no real person) for the ID photo shots:
+ * 1200 × 1600 JPEG, head and eyes where the 3.5 × 4.5 cm framing guide expects them.
+ */
+async function portraitJpg(locale) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef2f5"/><stop offset="1" stop-color="#dde3e8"/></linearGradient>
+    <radialGradient id="skin" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#e9b996"/><stop offset="1" stop-color="#c98f6b"/></radialGradient>
+    <linearGradient id="sweater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d5a80"/><stop offset="1" stop-color="#2b4162"/></linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#wall)"/>
+  <path d="M120 1600 C140 1430 300 1360 480 1330 L720 1330 C900 1360 1060 1430 1080 1600 Z" fill="url(#sweater)"/>
+  <path d="M500 1140 L700 1140 L715 1350 C660 1400 540 1400 485 1350 Z" fill="#c08564"/>
+  <path d="M485 1335 C540 1395 660 1395 715 1335 L760 1345 C700 1430 500 1430 440 1345 Z" fill="#2b4162"/>
+  <ellipse cx="600" cy="640" rx="345" ry="430" fill="#3b2a20"/>
+  <ellipse cx="292" cy="830" rx="42" ry="80" fill="#cf9572"/>
+  <ellipse cx="908" cy="830" rx="42" ry="80" fill="#cf9572"/>
+  <ellipse cx="600" cy="860" rx="305" ry="465" fill="url(#skin)"/>
+  <path d="M300 640 C320 380 480 300 620 310 C780 320 900 420 905 640 C860 470 760 420 600 430 C460 440 360 500 300 640 Z" fill="#3b2a20"/>
+  <path d="M420 628 C455 610 515 610 545 624" stroke="#3b2a20" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M655 624 C685 610 745 610 780 628" stroke="#3b2a20" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <ellipse cx="482" cy="690" rx="44" ry="22" fill="#fbfbf8"/>
+  <ellipse cx="718" cy="690" rx="44" ry="22" fill="#fbfbf8"/>
+  <circle cx="482" cy="690" r="17" fill="#4a3426"/>
+  <circle cx="718" cy="690" r="17" fill="#4a3426"/>
+  <circle cx="488" cy="684" r="5" fill="#fff"/>
+  <circle cx="724" cy="684" r="5" fill="#fff"/>
+  <path d="M600 720 C592 800 575 860 570 900 C585 918 615 918 632 905" stroke="#a8714f" stroke-width="9" fill="none" stroke-linecap="round"/>
+  <path d="M525 1030 C565 1042 635 1042 675 1030" stroke="#9c5a4a" stroke-width="12" fill="none" stroke-linecap="round"/>
+</svg>`;
+  const file = join(work, `${{ es: "retrato", en: "portrait", pt: "retrato", fr: "portrait", zh: "portrait" }[locale]}.jpg`);
+  writeFileSync(file, await sharp(Buffer.from(svg)).jpeg({ quality: 90 }).toBuffer());
+  return file;
+}
+
+// Sample enrollment form with real AcroForm fields, in each language.
+// File names in each language (pinyin for Chinese: Playwright's setInputFiles drops files whose path is not ASCII).
+const formFileName = { es: "ficha-inscripcion.pdf", en: "enrollment-form.pdf", pt: "ficha-inscricao.pdf", fr: "fiche-inscription.pdf", zh: "baomingbiao.pdf" };
+const formSamples = {
+  es: {
+    title: "Ficha de inscripción — Taller de fotografía",
+    intro: "Completa esta ficha y envíala por correo antes del inicio del taller. Los datos solo se usan para organizar los grupos.",
+    name: "Nombre y apellido",
+    birth: "Fecha de nacimiento (dd/mm/aaaa)",
+    email: "Correo electrónico",
+    shift: "Turno",
+    shifts: ["Mañana", "Tarde", "Noche"],
+    level: "Nivel",
+    levels: ["Inicial", "Intermedio", "Avanzado"],
+    comments: "Comentarios",
+    rules: "Acepto el reglamento del taller",
+    news: "Quiero recibir novedades por correo",
+    sign: "Firma",
+    values: { name: "Laura Gómez", birth: "14/03/1990", email: "laura.gomez@example.com", shift: "Tarde", level: "Intermedio" },
+  },
+  en: {
+    title: "Enrollment form — Photography workshop",
+    intro: "Fill in this form and email it back before the workshop starts. Your details are only used to organize the groups.",
+    name: "Full name",
+    birth: "Date of birth (MM/DD/YYYY)",
+    email: "Email address",
+    shift: "Session",
+    shifts: ["Morning", "Afternoon", "Evening"],
+    level: "Level",
+    levels: ["Beginner", "Intermediate", "Advanced"],
+    comments: "Comments",
+    rules: "I accept the workshop rules",
+    news: "Send me news by email",
+    sign: "Signature",
+    values: { name: "Laura Green", birth: "03/14/1990", email: "laura.green@example.com", shift: "Afternoon", level: "Intermediate" },
+  },
+  pt: {
+    title: "Ficha de inscrição — Oficina de fotografia",
+    intro: "Preencha esta ficha e envie por e-mail antes do início da oficina. Os dados são usados apenas para organizar as turmas.",
+    name: "Nome completo",
+    birth: "Data de nascimento (dd/mm/aaaa)",
+    email: "E-mail",
+    shift: "Turno",
+    shifts: ["Manhã", "Tarde", "Noite"],
+    level: "Nível",
+    levels: ["Iniciante", "Intermediário", "Avançado"],
+    comments: "Comentários",
+    rules: "Aceito o regulamento da oficina",
+    news: "Quero receber novidades por e-mail",
+    sign: "Assinatura",
+    values: { name: "Laura Souza", birth: "14/03/1990", email: "laura.souza@example.com", shift: "Tarde", level: "Intermediário" },
+  },
+  fr: {
+    title: "Fiche d’inscription — Atelier photo",
+    intro: "Remplissez cette fiche et renvoyez-la par e-mail avant le début de l’atelier. Vos données servent uniquement à organiser les groupes.",
+    name: "Nom et prénom",
+    birth: "Date de naissance (jj/mm/aaaa)",
+    email: "Adresse e-mail",
+    shift: "Créneau",
+    shifts: ["Matin", "Après-midi", "Soir"],
+    level: "Niveau",
+    levels: ["Débutant", "Intermédiaire", "Avancé"],
+    comments: "Commentaires",
+    rules: "J’accepte le règlement de l’atelier",
+    news: "Je souhaite recevoir les actualités par e-mail",
+    sign: "Signature",
+    values: { name: "Laura Martin", birth: "14/03/1990", email: "laura.martin@example.com", shift: "Après-midi", level: "Intermédiaire" },
+  },
+  zh: {
+    title: "报名表 — 摄影工作坊",
+    intro: "请在工作坊开始前填写本表并通过邮件发回。所填信息仅用于分组。",
+    name: "姓名",
+    birth: "出生日期（年-月-日）",
+    email: "电子邮箱",
+    shift: "时段",
+    shifts: ["上午", "下午", "晚上"],
+    level: "水平",
+    levels: ["入门", "中级", "高级"],
+    comments: "备注",
+    rules: "我同意工作坊的规定",
+    news: "通过邮件接收活动通知",
+    sign: "签名",
+    values: { name: "李明", birth: "1990-03-14", email: "li.ming@example.com", shift: "下午", level: "中级" },
+  },
+};
+
+/**
+ * A one-page form (A4) with real AcroForm fields: text (one with a length limit,
+ * one multiline), radio buttons, a dropdown and checkboxes. The page is drawn
+ * from HTML (any script) and the fields are added with pdf-lib, each with a
+ * tooltip (/TU) in the sample's language, which the tool shows as its label.
+ */
+async function enrollmentFormPdf(browser, locale) {
+  const s = formSamples[locale];
+  const page = await browser.newPage();
+  // Positions in CSS px of a 794 × 1122 page (1 px = 0.75 pt).
+  const text = (left, top, content, style = "") => `<div style="position:absolute;left:${left}px;top:${top}px;${style}">${content}</div>`;
+  const parts = [
+    text(96, 80, s.title, "font-size:24px;font-weight:bold"),
+    text(96, 126, s.intro, "width:602px;color:#444"),
+    text(96, 204, s.name),
+    text(96, 274, s.birth),
+    text(350, 274, s.email),
+    text(96, 344, s.shift),
+    ...s.shifts.map((o, i) => text(122 + i * 150, 372, o)),
+    text(96, 414, s.level),
+    text(96, 484, s.comments),
+    text(122, 620, s.rules),
+    text(122, 652, s.news),
+    `<div style="position:absolute;left:455px;top:880px;width:240px;border-top:1px solid #222;text-align:center;font-size:13px;padding-top:6px">${s.sign}</div>`,
+  ];
+  await page.setContent(`<body style="margin:0;font:15px/1.5 sans-serif;color:#222"><div style="position:relative;width:794px;height:1122px">${parts.join("")}</div></body>`);
+  const doc = await PDFDocument.load(await page.pdf({ width: "794px", height: "1122px", printBackground: true }));
+  await page.close();
+  const pdfPage = doc.getPage(0);
+  const form = doc.getForm();
+  const H = pdfPage.getHeight();
+  // A box in CSS px → pdf-lib options in points (origin bottom-left).
+  const at = (left, top, width, height) => ({ x: left * 0.75, y: H - (top + height) * 0.75, width: width * 0.75, height: height * 0.75, borderColor: rgb(0.55, 0.55, 0.6), borderWidth: 1 });
+  const tip = (field, label) => field.acroField.dict.set(PDFName.of("TU"), PDFHexString.fromText(label));
+  const name = form.createTextField("alumno.nombre");
+  name.addToPage(pdfPage, at(96, 230, 602, 28));
+  tip(name, s.name);
+  const birth = form.createTextField("alumno.fecha_nacimiento");
+  birth.setMaxLength(10);
+  birth.addToPage(pdfPage, at(96, 300, 200, 28));
+  tip(birth, s.birth);
+  const email = form.createTextField("alumno.correo");
+  email.addToPage(pdfPage, at(350, 300, 348, 28));
+  tip(email, s.email);
+  const shift = form.createRadioGroup("turno");
+  s.shifts.forEach((o, i) => shift.addOptionToPage(o, pdfPage, at(100 + i * 150, 374, 16, 16)));
+  tip(shift, s.shift);
+  const level = form.createDropdown("nivel");
+  level.addOptions(s.levels);
+  level.addToPage(pdfPage, at(96, 440, 240, 28));
+  tip(level, s.level);
+  const comments = form.createTextField("comentarios");
+  comments.enableMultiline();
+  comments.addToPage(pdfPage, at(96, 510, 602, 84));
+  tip(comments, s.comments);
+  for (const [id, label, top] of [["reglamento", s.rules, 622], ["novedades", s.news, 654]]) {
+    const box = form.createCheckBox(id);
+    box.addToPage(pdfPage, at(98, top, 16, 16));
+    tip(box, label);
+  }
+  const file = join(work, formFileName[locale]);
+  writeFileSync(file, await doc.save());
+  return file;
+}
+
+/** Old home videos' names in each language: an AVI from a camera, a WMV from Windows Movie Maker, a 3GP from an old phone. */
+const oldVideoNames = {
+  es: ["cumpleanos-2006.avi", "boda-2003.wmv", "celular-2008.3gp"],
+  en: ["birthday-2006.avi", "wedding-2003.wmv", "phone-2008.3gp"],
+  pt: ["aniversario-2006.avi", "casamento-2003.wmv", "celular-2008.3gp"],
+  fr: ["anniversaire-2006.avi", "mariage-2003.wmv", "portable-2008.3gp"],
+  zh: ["生日-2006.avi", "婚礼-2003.wmv", "手机-2008.3gp"],
+};
+
+/** Short videos in old formats (Xvid + MP3 in AVI, WMV 8 + WMA, H.263 + AAC in 3GP), made with the system's ffmpeg like the legacy-media tests. */
+function oldVideos(locale) {
+  const codecs = [
+    ["-s", "640x480", "-c:v", "mpeg4", "-vtag", "xvid", "-q:v", "4", "-c:a", "libmp3lame"],
+    ["-s", "640x480", "-c:v", "wmv2", "-b:v", "1500k", "-c:a", "wmav2"],
+    ["-s", "176x144", "-c:v", "h263", "-c:a", "aac", "-ar", "8000", "-ac", "1"],
+  ];
+  const mimeTypes = ["video/x-msvideo", "video/x-ms-wmv", "video/3gpp"];
+  return oldVideoNames[locale].map((name, i) => {
+    // An ASCII path on disk (Playwright doesn't pick files whose path has Chinese characters); the page gets `name`.
+    const file = join(work, `old-${locale}-${i}${name.slice(name.lastIndexOf("."))}`);
+    const source = ["-f", "lavfi", "-i", "testsrc2=size=640x480:rate=25:duration=12", "-f", "lavfi", "-i", "sine=frequency=440:duration=12"];
+    execFileSync("ffmpeg", ["-v", "error", "-y", ...source, ...codecs[i], file]);
+    return { name, mimeType: mimeTypes[i], buffer: readFileSync(file) };
+  });
+}
+
+// Edit PDF: a one-page notice for neighbors (A4, 794 × 1122 px) with its key lines at known positions.
+const noticeSamples = {
+  es: {
+    title: "Reunión de vecinos",
+    intro: "Se convoca a todos los vecinos del edificio a la reunión ordinaria para tratar los temas de mantenimiento y el presupuesto del próximo año.",
+    date: "Fecha: jueves 12 de noviembre",
+    time: ["Hora:", "19:00"],
+    newTime: "20:30",
+    note: "Nuevo horario",
+    place: "Lugar: salón del primer piso",
+    agendaTitle: "Orden del día",
+    agenda: ["Pintura de la entrada y del hall", "Cambio de la bomba de agua", "Presupuesto de gastos comunes", "Varios"],
+    contact: "Consultas: administración, tel. 555 0134",
+  },
+  en: {
+    title: "Residents’ meeting",
+    intro: "All residents of the building are invited to the regular meeting to discuss maintenance work and next year’s budget.",
+    date: "Date: Thursday, November 12",
+    time: ["Time:", "7:00 PM"],
+    newTime: "8:30 PM",
+    note: "New time",
+    place: "Place: first-floor common room",
+    agendaTitle: "Agenda",
+    agenda: ["Painting the entrance and the lobby", "Replacing the water pump", "Service charge budget", "Any other business"],
+    contact: "Questions: building office, tel. 555 0134",
+  },
+  pt: {
+    title: "Reunião de condomínio",
+    intro: "Ficam convocados todos os moradores do prédio para a reunião ordinária, para tratar da manutenção e do orçamento do próximo ano.",
+    date: "Data: quinta-feira, 12 de novembro",
+    time: ["Horário:", "19h00"],
+    newTime: "20h30",
+    note: "Novo horário",
+    place: "Local: salão do primeiro andar",
+    agendaTitle: "Pauta",
+    agenda: ["Pintura da entrada e do hall", "Troca da bomba d’água", "Orçamento das despesas comuns", "Assuntos gerais"],
+    contact: "Dúvidas: administração, tel. 555 0134",
+  },
+  fr: {
+    title: "Réunion des copropriétaires",
+    intro: "Tous les résidents de l’immeuble sont invités à la réunion ordinaire pour traiter des travaux d’entretien et du budget de l’année prochaine.",
+    date: "Date : jeudi 12 novembre",
+    time: ["Heure :", "19 h 00"],
+    newTime: "20 h 30",
+    note: "Nouvel horaire",
+    place: "Lieu : salle du premier étage",
+    agendaTitle: "Ordre du jour",
+    agenda: ["Peinture de l’entrée et du hall", "Remplacement de la pompe à eau", "Budget des charges communes", "Questions diverses"],
+    contact: "Renseignements : syndic, tél. 555 0134",
+  },
+  zh: {
+    title: "业主大会通知",
+    intro: "兹定于下列时间召开本楼业主例会，讨论楼宇维修事项及明年的费用预算，请各位业主准时参加。",
+    date: "日期：11 月 12 日（星期四）",
+    time: ["时间：", "19:00"],
+    newTime: "20:30",
+    note: "时间已更改",
+    place: "地点：一楼活动室",
+    agendaTitle: "会议议程",
+    agenda: ["粉刷大门和大堂", "更换水泵", "公共费用预算", "其他事项"],
+    contact: "咨询：物业管理处，电话 555 0134",
+  },
+};
+
+/** Where things are on the notice, in px of the 794 × 1122 page. */
+const notice = { date: { x: 96, y: 300, w: 300 }, time: { x: 96, value: 175, y: 340 }, contact: { x: 96, y: 610, w: 330 } };
+
+async function noticePdf(browser, locale) {
+  const s = noticeSamples[locale];
+  const page = await browser.newPage();
+  const at = (x, y, html, extra = "") => `<div style="position:absolute;left:${x}px;top:${y}px;${extra}">${html}</div>`;
+  const agenda = s.agenda.map((a, i) => `<p style="margin:0 0 6px">${i + 1}. ${a}</p>`).join("");
+  await page.setContent(
+    `<body style="margin:0;font:15px/24px sans-serif;color:#222"><div style="position:relative;width:794px;height:1122px">` +
+      at(96, 90, `<h1 style="margin:0;font-size:26px;line-height:32px">${s.title}</h1>`) +
+      at(96, 150, `<p style="margin:0;width:600px">${s.intro}</p>`) +
+      at(notice.date.x, notice.date.y, s.date) +
+      at(notice.time.x, notice.time.y, s.time[0]) +
+      at(notice.time.value, notice.time.y, s.time[1]) +
+      at(96, 380, s.place) +
+      at(96, 440, `<h2 style="margin:0 0 10px;font-size:17px">${s.agendaTitle}</h2>${agenda}`) +
+      at(notice.contact.x, notice.contact.y, s.contact) +
+      `</div></body>`,
+  );
+  const file = join(work, `notice-${locale}.pdf`);
+  writeFileSync(file, await page.pdf({ width: "794px", height: "1122px", printBackground: true }));
+  await page.close();
+  return file;
+}
+
+/** Opens the notice in Edit PDF, with the page at the top of the viewport; returns a px → screen point mapper. */
+async function openEditor(page, l, browser) {
+  await open(page, l, toolSlug("edit-pdf", l));
+  await pick(page, l, [await noticePdf(browser, l)]);
+  const surface = page.getByTestId("edit-surface");
+  await surface.waitFor();
+  // The rendered page image, not the "loading" placeholder.
+  await page.waitForFunction(() => document.querySelector('[data-testid="edit-surface"]')?.previousElementSibling?.tagName === "IMG");
+  // Measured each time: the options above the page change height with the tool, and
+  // clicking them may scroll. Points out of view (or under the sticky header) are scrolled to.
+  const point = async (x, y) => {
+    const box = await surface.boundingBox();
+    return [box.x + (x / 794) * box.width, box.y + (y / 1122) * box.height];
+  };
+  return async (x, y) => {
+    const [px, py] = await point(x, y);
+    if (py > 120 && py < 860) return [px, py];
+    await page.evaluate((dy) => window.scrollBy(0, dy), py - 450);
+    await page.waitForTimeout(100);
+    return point(x, y);
+  };
+}
+
+async function editTool(page, l, id) {
+  await page.getByRole("button", { name: msg(l, `EditPdf.tools.${id}`), exact: true }).click();
+  // Let the options above the page settle: the page moves with them.
+  await page.waitForTimeout(250);
+}
+async function editDrag(page, at, from, to) {
+  const [x1, y1] = await at(...from);
+  const [x2, y2] = await at(...to);
+  await page.mouse.move(x1, y1);
+  await page.mouse.down();
+  for (let i = 1; i <= 8; i++) await page.mouse.move(x1 + ((x2 - x1) * i) / 8, y1 + ((y2 - y1) * i) / 8);
+  await page.mouse.up();
+}
+async function editText(page, l, at, [x, y], text, { size, color, font = "helvetica" }) {
+  await editTool(page, l, "text");
+  await page.getByLabel(msg(l, "EditPdf.font")).selectOption(font);
+  await page.getByLabel(msg(l, "EditPdf.fontSize")).fill(String(size));
+  await page.getByRole("button", { name: msg(l, `EditPdf.colors.${color}`), exact: true }).click();
+  await page.waitForTimeout(250);
+  await page.mouse.click(...(await at(x, y)));
+  await page.locator("textarea").fill(text);
+}
+
 // name → steps that leave the page ready for the shot in a language; returns the element to capture.
 const shots = {
   "pdf-a-word-convertir": async (page, l) => {
@@ -277,6 +728,98 @@ const shots = {
     await label(page, msg(l, "ToolUi.levelRecommended")).click();
     await page.getByRole("button", { name: msg(l, "Tools.compress-pdf.action"), exact: true }).click();
     await page.locator("main a[download]").first().waitFor({ timeout: 120_000 });
+    return toolBlock(page);
+  },
+  "quitar-fondo-producto": async (page, l) => {
+    await removeBackgroundProduct(page, l);
+    // The transparent result, seen on the checkerboard.
+    await pill(page, msg(l, "RemoveBackgroundTool.viewChecker"));
+    await page.waitForTimeout(400);
+    return toolBlock(page);
+  },
+  "quitar-fondo-blanco": async (page, l) => {
+    await removeBackgroundProduct(page, l);
+    // White background and JPG, as most online shops ask.
+    await pill(page, msg(l, "RemoveBackgroundTool.white"));
+    await pill(page, "JPG");
+    await page.waitForTimeout(400);
+    return toolBlock(page);
+  },
+  "comparar-textos-lineas": (page, l) => compareTexts(page, l, compareSamples[l].contractA, compareSamples[l].contractB, "line"),
+  "comparar-textos-palabras": (page, l) => compareTexts(page, l, compareSamples[l].essayA, compareSamples[l].essayB, "word"),
+  "foto-carnet-encuadrar": async (page, l) => {
+    await open(page, l, toolSlug("id-photo", l));
+    await pick(page, l, [await portraitJpg(l)]);
+    await page.getByText(msg(l, "IdPhotoTool.frameHint")).waitFor({ timeout: 30_000 });
+    return toolBlock(page);
+  },
+  "foto-carnet-resultado": async (page, l) => {
+    await open(page, l, toolSlug("id-photo", l));
+    await pick(page, l, [await portraitJpg(l)]);
+    await page.getByText(msg(l, "IdPhotoTool.frameHint")).waitFor({ timeout: 30_000 });
+    await page.getByRole("button", { name: msg(l, "Tools.id-photo.action"), exact: true }).click();
+    // The result message itself ("… 8 copies …"), not the same words in the page's About text.
+    const [before, after] = msg(l, "IdPhotoTool.doneSheet").split("{copies}");
+    const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    await page.getByText(new RegExp(`^${escape(before)}\\d+${escape(after)}$`)).waitFor({ timeout: 60_000 });
+    return toolBlock(page);
+  },
+  "rellenar-formulario-campos": async (page, l, browser) => {
+    const s = formSamples[l];
+    // Wide enough for the fields and the preview side by side.
+    await page.setViewportSize({ width: 1100, height: 900 });
+    await open(page, l, toolSlug("fill-pdf-form", l));
+    await pick(page, l, [await enrollmentFormPdf(browser, l)]);
+    await page.getByTestId("form-preview").locator("img").waitFor({ timeout: 30_000 });
+    await page.getByLabel(s.birth, { exact: true }).fill(s.values.birth);
+    await page.getByLabel(s.email, { exact: true }).fill(s.values.email);
+    await page.getByLabel(s.values.shift, { exact: true }).check();
+    await page.getByLabel(s.level, { exact: true }).selectOption(s.values.level);
+    await page.getByLabel(s.rules, { exact: true }).check();
+    // The field being filled is highlighted in the preview.
+    await page.getByLabel(s.name, { exact: true }).fill(s.values.name);
+    return toolBlock(page);
+  },
+  "rellenar-formulario-sin-campos": async (page, l) => {
+    await open(page, l, toolSlug("fill-pdf-form", l));
+    await pick(page, l, [join(fixtures, "document.pdf")]);
+    await page.getByText(msg(l, "FillPdfForm.editPdfLink")).waitFor({ timeout: 30_000 });
+    return toolBlock(page);
+  },
+  "video-viejo-mp4-elegir": async (page, l) => {
+    await open(page, l, toolSlug("video-converter", l));
+    await pick(page, l, oldVideos(l));
+    return toolBlock(page);
+  },
+  "video-viejo-mp4-resultado": async (page, l) => {
+    await open(page, l, toolSlug("video-converter", l));
+    await pick(page, l, oldVideos(l));
+    await page.getByRole("button", { name: msg(l, "Tools.video-converter.action"), exact: true }).click();
+    await page.getByRole("button", { name: msg(l, "Converter.downloadAll").replace("{count}", "3") }).waitFor({ timeout: 300_000 });
+    return toolBlock(page);
+  },
+  "editar-pdf-texto": async (page, l, browser) => {
+    const at = await openEditor(page, l, browser);
+    const { date, time } = notice;
+    await editTool(page, l, "highlight");
+    await editDrag(page, at, [date.x - 4, date.y], [date.x + date.w, date.y + 24]);
+    await editTool(page, l, "arrow");
+    await editDrag(page, at, [400, time.y + 12], [time.value + 92, time.y + 12]);
+    await editText(page, l, at, [410, time.y + 4], noticeSamples[l].note, { size: 12, color: "red", font: "helvetica-bold" });
+    // The old time covered with a white box and the new one written on top.
+    await editTool(page, l, "whiteout");
+    await editDrag(page, at, [time.value - 4, time.y + 1], [time.value + 80, time.y + 23]);
+    await editText(page, l, at, [time.value, time.y + 5], noticeSamples[l].newTime, { size: 11, color: "black" });
+    return toolBlock(page);
+  },
+  "editar-pdf-tapar": async (page, l, browser) => {
+    const at = await openEditor(page, l, browser);
+    const { contact } = notice;
+    await editTool(page, l, "whiteout");
+    await editDrag(page, at, [contact.x - 4, contact.y - 2], [contact.x + contact.w + 120, contact.y + 26]);
+    await editTool(page, l, "select");
+    await page.mouse.click(...(await at(contact.x + 20, contact.y + 12)));
+    await label(page, msg(l, "EditPdf.redact")).click();
     return toolBlock(page);
   },
 };

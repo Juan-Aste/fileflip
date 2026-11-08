@@ -1,5 +1,5 @@
 const body = `
-If you have an iPhone, your photos are almost certainly in HEIC format. You don't notice on the phone, but it shows up as soon as you move them to a Windows computer, upload them to a web form or try to send them to someone without an Apple device: the file won't open, there's no thumbnail, or the site says «unsupported format». This guide explains what HEIC is, how to convert the photos to JPG without installing anything and how to avoid the problem on the iPhone itself.
+If you have an iPhone, your photos are almost certainly in HEIC format. You don't notice on the phone, but it shows up as soon as you move them to a Windows computer, upload them to a web form or try to send them to someone without an Apple device: the file won't open, there's no thumbnail, or the site says “unsupported format”. This guide explains what HEIC is, how to convert the photos to JPG without installing anything and how to avoid the problem on the iPhone itself.
 
 ## What HEIC is and why the iPhone uses it
 
@@ -10,7 +10,7 @@ The problem is compatibility. JPG has been opened by every program, browser, soc
 ## How to convert HEIC photos to JPG
 
 1. Open [HEIC to JPG](conv:heic-jpg) and drag the photos in, or tap to choose them. You can pick many at once.
-2. Check that **JPG** is selected under «Convert to».
+2. Check that **JPG** is selected under “Convert to”.
 3. If you want them smaller, open **Options** and lower the quality or the size. Otherwise, keep the defaults.
 4. Press **Convert** and download each photo, or all of them together with **Download all as ZIP**.
 
@@ -22,7 +22,7 @@ The photo keeps its orientation: if you took it upright, the JPG is upright too,
 
 ## From your phone or from a computer
 
-**On the iPhone**: open the page in Safari, tap the box to choose files and then «Photo Library». When it's done, download the JPG; Safari saves it in the Files app, in the Downloads folder, from where you can send it or save it to Photos.
+**On the iPhone**: open the page in Safari, tap the box to choose files and then “Photo Library”. When it's done, download the JPG; Safari saves it in the Files app, in the Downloads folder, from where you can send it or save it to Photos.
 
 **On a Windows computer**: first copy the photos from the iPhone to the computer (by cable, through the cloud or by email). Then drag them all onto the converter at once. If there are many, the ZIP saves you downloading them one by one.
 
@@ -34,7 +34,7 @@ The photo keeps its orientation: if you took it upright, the JPG is upright too,
 
 If what you want is to remove the location from photos that are already JPGs, [Remove EXIF metadata](tool:remove-exif) does it without converting them again.
 
-**The JPG is larger than the HEIC.** That's normal: HEIC compresses better. At the default quality, the JPG can be noticeably larger than the original. If the form asks for a maximum size (for example, «under 500 KB»), use [Compress image](tool:compress-image) afterwards, which lets you set that exact size.
+**The JPG is larger than the HEIC.** That's normal: HEIC compresses better. At the default quality, the JPG can be noticeably larger than the original. If the form asks for a maximum size (for example, “under 500 KB”), use [Compress image](tool:compress-image) afterwards, which lets you set that exact size.
 
 **Live Photos are a photo plus a short video.** Converting a Live Photo gives you only the still photo. The motion is lost, just as when you email it as a normal photo.
 

@@ -50,7 +50,8 @@
     },
     "allTools": "All tools",
     "guides": "Guides",
-    "source": "Source code"
+    "source": "Source code",
+    "about": "About"
   },
   "HomePage": {
     "title": "Convert your files without them ever leaving your computer",
@@ -1178,10 +1179,10 @@
       }
     },
     "fill-pdf-form": {
-      "title": "Fill PDF Form",
+      "title": "Fill PDF form",
       "description": "Fill in the fields of a PDF form (text, checkboxes, choices and lists) in your browser and save it editable or flattened. Free and with no upload.",
       "action": "Save PDF",
-      "about": "Fill PDF Form finds the fields in the document —text boxes, checkboxes, radio buttons, dropdowns and list boxes— and shows them as a normal form, grouped by page, with a preview of the page that highlights the field you are filling in. When saving you can keep it editable, so someone else can keep filling it in, or flatten it: the values become part of the page and can no longer be changed, which is what many official procedures ask for. If the PDF has no fields (a scanned form, for example) or is an XFA form, we tell you, and you can write on it with Edit PDF.",
+      "about": "Fill PDF form finds the fields in the document —text boxes, checkboxes, radio buttons, dropdowns and list boxes— and shows them as a normal form, grouped by page, with a preview of the page that highlights the field you are filling in. When saving you can keep it editable, so someone else can keep filling it in, or flatten it: the values become part of the page and can no longer be changed, which is what many official procedures ask for. If the PDF has no fields (a scanned form, for example) or is an XFA form, we tell you, and you can write on it with Edit PDF.",
       "faq": {
         "q1": "What does flattening the form mean?",
         "a1": "Flattening turns what you typed into part of the page's drawing: the PDF looks the same in every viewer and printer, and nobody can change the values afterwards. If you don't flatten it, the fields stay editable.",
@@ -1546,7 +1547,7 @@
       }
     },
     "epub-converter": {
-      "title": "EPUB Converter",
+      "title": "EPUB converter",
       "description": "Convert EPUB books into one HTML page or plain text (TXT), with images and a table of contents. In your browser.",
       "action": "Convert book",
       "about": "Turn an EPUB ebook into a single HTML file that opens in any browser, with the cover, a table of contents, the chapters in order and the images included, or into plain text (.txt) to read it on any device, search it or copy from it. Works with DRM-free EPUB 2 and EPUB 3 books. Links between chapters keep working inside the page. The book is opened on your device: it isn't uploaded to any server.",
@@ -1595,7 +1596,7 @@
       }
     },
     "audio-converter": {
-      "title": "Audio Converter",
+      "title": "Audio converter",
       "description": "Convert audio between MP3, WAV, FLAC, OGG, M4A and AIFF (and read WMA, AMR or AC3), in your browser without uploading your files.",
       "action": "Convert audio",
       "about": "Convert songs, voice notes, podcasts and recordings between the most used formats: MP3 to play anywhere, lossless WAV, FLAC or AIFF to edit or archive, OGG (Opus) for the web and M4A (AAC) for Apple devices. Reads MP3, WAV, FLAC, OGG, Opus, M4A, AAC, WebM and AIFF, and you can choose the quality. The conversion happens on your device: files aren't uploaded to any server.",
@@ -1684,7 +1685,7 @@
       }
     },
     "video-converter": {
-      "title": "Video Converter",
+      "title": "Video converter",
       "description": "Convert videos between MP4, MOV, MKV and WebM, plus old AVI, WMV, FLV, MPG or 3GP files, in your browser without uploading them.",
       "action": "Convert video",
       "about": "Change the format of your videos between MP4 (the one every phone, TV and social network plays), MOV (iPhone and Mac), MKV and WebM (the web's format). If the video already uses a codec the chosen format accepts, it is copied without re-encoding: it takes seconds and loses no quality. Otherwise it is re-encoded at high quality with your browser's codec. The sound goes along with the picture. Everything happens on your device: videos aren't uploaded to any server.",
@@ -1703,7 +1704,7 @@
       }
     },
     "extract-audio": {
-      "title": "Extract Audio from Video",
+      "title": "Extract audio from video",
       "description": "Take the sound out of an MP4, MOV, MKV or WebM video and save it as M4A, MP3, WAV, FLAC or OGG, in your browser.",
       "action": "Extract audio",
       "about": "Keep only the sound of a video: the music of a clip, the talk of a recorded class or the audio of a WhatsApp video. With “Original” the track is copied as it is, without re-encoding: it takes seconds and keeps the exact quality (a phone video gives an M4A with AAC). If you prefer another format, pick MP3, WAV, FLAC, OGG (Opus), M4A (AAC) or AIFF and the quality. It accepts MP4, MOV, MKV and WebM, several at once. Everything happens on your device: videos aren't uploaded to any server.",
@@ -1722,7 +1723,7 @@
       }
     },
     "compress-video": {
-      "title": "Compress Video",
+      "title": "Compress video",
       "description": "Make your MP4, MOV, MKV or WebM videos smaller by lowering their quality or resolution, in your browser.",
       "action": "Compress video",
       "about": "Shrink videos to send them on WhatsApp or by email, upload them to a form or free up space on your phone. Choose the quality (high, medium or low) and, if you want, a lower resolution: taking a 1080p video down to 720p usually cuts the size a lot without showing on a phone screen. Vertical videos are handled too. The result comes out as MP4 (the most compatible) or WebM and we show how much smaller it got. Everything happens on your device: videos aren't uploaded to any server.",
@@ -1739,7 +1740,7 @@
       }
     },
     "trim-video": {
-      "title": "Trim Video",
+      "title": "Trim video",
       "description": "Cut an MP4, MOV, MKV or WebM video and keep the part you want, in your browser.",
       "action": "Trim video",
       "about": "Keep only the moment that matters: the goal, the greeting or a part of a recorded meeting. Play the video, mark the start and end with “Use current position” (or type the times) and download the clip in the same format. Exact mode cuts at the precise frame by re-encoding the video; fast mode copies without re-encoding, in seconds and losslessly, starting at the key frame before the start. Everything happens on your device: the video isn't uploaded to any server.",
@@ -1749,10 +1750,10 @@
         "q2": "How do I find the right moment?",
         "a2": "Play the video and pause where you want; “Use current position” copies that time into the field. You can also type minutes:seconds, for example 1:23.5.",
         "q3": "Can I remove a part in the middle?",
-        "a3": "For now one clip is kept at a time. To remove something in the middle, trim both parts and join them with “Join videos”.",
+        "a3": "For now, you can keep only one clip at a time. To remove something in the middle, trim both parts and join them with “Join videos”.",
         "q4": "Is there a limit?",
-        "a4": "One video at a time, up to 200 MB on the free plan (500 MB with Pro) and 2 hours long. If your browser can't play the file (for example MKV or H.264 in some), you can still type the times.",
-        "a4NoPro": "One video at a time, up to 200 MB and 2 hours long. If your browser can't play the file (for example MKV or H.264 in some), you can still type the times."
+        "a4": "One video at a time, up to 200 MB on the free plan (500 MB with Pro) and 2 hours long. If your browser can't play the file (for example, MKV, or H.264 in some browsers), you can still type the times.",
+        "a4NoPro": "One video at a time, up to 200 MB and 2 hours long. If your browser can't play the file (for example, MKV, or H.264 in some browsers), you can still type the times."
       }
     },
     "video-to-gif": {
@@ -2088,8 +2089,8 @@
     "monthly": "Monthly",
     "yearly": "Yearly",
     "save": "Save {percent}",
-    "perMonth": "/mo",
-    "perYear": "/yr",
+    "perMonth": "mo",
+    "perYear": "yr",
     "free": "Free",
     "freePrice": "$0",
     "freeCta": "Start converting",
@@ -2141,7 +2142,13 @@
     "privacyServer": "Documents are converted on our server with LibreOffice over an encrypted connection, and automatically deleted within 1 hour.",
     "relatedTitle": "Other conversions",
     "linkLabel": "{from} to {to}",
-    "toolsTitle": "More tools for your {from} and {to} files"
+    "toolsTitle": "More tools for your {from} and {to} files",
+    "whenTitle": "When to convert {from} to {to}",
+    "differencesTitle": "{from} vs. {to}: how they differ",
+    "keptTitle": "What is kept",
+    "lostTitle": "What is lost or may change",
+    "limitsTitle": "Limits of the tool",
+    "faqTitle": "Frequently asked questions"
   },
   "Longtail": {
     "faqTitle": "Frequently asked questions"
@@ -2512,7 +2519,7 @@
     "toolCount": "{count, plural, one {# tool} other {# tools}}",
     "conversionCount": "{count, plural, one {# conversion} other {# conversions}}",
     "seeCategory": "See everything in {category}",
-    "categoryTitle": "{category} tools",
+    "categoryTitle": "{id, select, other {{category} tools}}",
     "categories": {
       "image": {
         "name": "Images",
@@ -2594,7 +2601,7 @@
     }
   },
   "ToolPage": {
-    "aboutTitle": "What {tool} does",
+    "aboutTitle": "About {tool}",
     "limitsTitle": "Limits",
     "limitSingle": "One file at a time, up to {size}.",
     "limitMultiple": "Up to {count} files at a time, up to {size} each.",
@@ -3800,7 +3807,62 @@
     "contents": "In this guide",
     "toolsTitle": "Tools used in this guide",
     "relatedTitle": "More guides",
+    "pageGuidesTitle": "Step-by-step guides",
     "allGuides": "All guides",
     "breadcrumb": "Breadcrumb"
+  },
+  "About": {
+    "title": "About Fileflect",
+    "description": "Who makes Fileflect, why it exists, how it protects your files, how it is funded and how to get in touch.",
+    "intro": "Fileflect is a set of free tools for converting and editing files in your browser. This page explains who is behind it and how it works.",
+    "links": {
+      "privacy": "Read the privacy policy",
+      "credits": "See the credits",
+      "source": "View the source code",
+      "contact": "Go to the contact page"
+    },
+    "sections": {
+      "who": {
+        "heading": "Who is behind it",
+        "body": [
+          "Fileflect is built and maintained by Juan Pablo Aste, from Vicente López, in the province of Buenos Aires, Argentina. It is an independent project, not part of a larger company.",
+          "The tools, texts and guides on the site are written and tested here. If something doesn't work the way you expected, the person reading the emails is the same one who can fix it."
+        ]
+      },
+      "why": {
+        "heading": "Why it exists",
+        "body": [
+          "Turning a PDF into Word, an iPhone photo into a JPG or merging two documents are everyday tasks. Many sites that do them ask you to upload private files to an unknown server, create an account or accept a watermark on the result.",
+          "Fileflect was made to handle those tasks without the hassle: no required sign-up, no watermarks and, whenever possible, without your file ever leaving your device."
+        ]
+      },
+      "privacy": {
+        "heading": "How we look after your files",
+        "body": [
+          "Most tools process the file in your own browser, with code that is downloaded to your device: the file is not sent to any server.",
+          "Some conversions need programs that can't run in a browser (for example, Word, Excel or PowerPoint to PDF). In those cases the file is sent encrypted to our server, processed and deleted within 1 hour at most. We don't look at your files, we don't keep their names or contents, and we don't sell data.",
+          "The full details are in the privacy policy."
+        ]
+      },
+      "source": {
+        "heading": "Open source",
+        "body": [
+          "Fileflect's code is free software, licensed under AGPL-3.0-or-later, so anyone can check how files are handled. It also relies on open-source components by other authors, listed with their licenses on the credits page."
+        ]
+      },
+      "funding": {
+        "heading": "How it is funded",
+        "body": [
+          "Fileflect is free and is paid for by Google AdSense ads shown on its pages. The ads have no access to the files you process.",
+          "We don't use Google Analytics or social media pixels."
+        ]
+      },
+      "contact": {
+        "heading": "Contact",
+        "body": [
+          "If you found a bug, want to request a new format or have a question, write to us at {email}. We reply Monday to Friday."
+        ]
+      }
+    }
   }
 }

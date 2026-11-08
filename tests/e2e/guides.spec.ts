@@ -2,7 +2,9 @@
 // structured data and screenshots in every language they are published in;
 // every link works; the language switcher keeps the guide; axe in light and dark.
 import { readFileSync } from "node:fs";
-import { guideLocales, guidePath, guides, guidesFor, guidesSlugs } from "../../src/content/guides/meta";
+import { conversionPages, conversionSlug } from "../../src/config/conversion-pages";
+import { availableTools, tools } from "../../src/config/tools";
+import { guideLocales, guidePath, guides, guidesFor, guidesForPage, guidesSlugs } from "../../src/content/guides/meta";
 import { locales, type Locale } from "../../src/i18n/routing";
 import { axeViolations } from "./axe";
 import { expect, test } from "./support";
@@ -60,6 +62,23 @@ for (const l of guideLocales) {
     });
   }
 }
+
+test("every tool and conversion page with a guide links to it, and the others show no guides block", async ({ request }) => {
+  test.setTimeout(180_000);
+  for (const l of guideLocales) {
+    const title = labels(l).Guides.pageGuidesTitle;
+    const pages = [
+      ...availableTools.map((id) => ({ path: `/${l}/${tools[id].slugs[l]}`, guides: guidesForPage(l, { tool: id }) })),
+      ...conversionPages.map((c) => ({ path: `/${l}/${conversionSlug(c, l)}`, guides: guidesForPage(l, { conversion: `${c.from}-${c.to}` }) })),
+    ];
+    for (const p of pages) {
+      const html = await (await request.get(p.path)).text();
+      expect(html.includes(`id="guides"`), `${p.path} guides block`).toBe(p.guides.length > 0);
+      if (p.guides.length) expect(html, p.path).toContain(title.replace(/&/g, "&amp;"));
+      for (const g of p.guides) expect(html, `${p.path} → ${g.id}`).toContain(`href="${articlePath(g.id, l)}"`);
+    }
+  }
+});
 
 test("languages without guides have no index", async ({ request }) => {
   for (const l of locales.filter((l) => !guideLocales.includes(l))) {

@@ -1,9 +1,9 @@
 const body = `
-A CSV file looks like a spreadsheet, opens in Excel and has rows and columns. But it isn't an Excel file, and many of the surprises it brings («everything ended up in one column», «names with accents show up as strange symbols», «the leading zeros of my codes disappeared») come from that difference. This guide explains what each format is, when to use one or the other, and how to open a CSV without breaking the data.
+A CSV file looks like a spreadsheet, opens in Excel and has rows and columns. But it isn't an Excel file, and many of the surprises it brings (“everything ended up in one column”, “names with accents show up as strange symbols”, “the leading zeros of my codes disappeared”) come from that difference. This guide explains what each format is, when to use one or the other, and how to open a CSV without breaking the data.
 
 ## What a CSV is and what an Excel file is
 
-A **CSV** («comma-separated values») is a plain text file. Each line is a row and the values in each row are separated by a character, usually a comma. If you open it in Notepad, you see something like this:
+A **CSV** (“comma-separated values”) is a plain text file. Each line is a row and the values in each row are separated by a character, usually a comma. If you open it in Notepad, you see something like this:
 
 \`\`\`
 Customer,City,Amount
@@ -35,7 +35,7 @@ The CSV's separator doesn't match the one your Excel expects. In countries where
 
 ### 2. Accented letters look wrong
 
-If «Muñoz» shows up as «MuÃ±oz» or «Córdoba» as «CÃ³rdoba», the problem is the encoding. Most current systems save CSV files as UTF-8, but Excel on Windows, if the file doesn't say so, reads it as if it were in the old Windows encoding, and each accented letter turns into two symbols. The same goes for any non-English characters: ü, ç, Chinese characters and so on.
+If “Muñoz” shows up as “MuÃ±oz” or “Córdoba” as “CÃ³rdoba”, the problem is the encoding. Most current systems save CSV files as UTF-8, but Excel on Windows, if the file doesn't say so, reads it as if it were in the old Windows encoding, and each accented letter turns into two symbols. The same goes for any non-English characters: ü, ç, Chinese characters and so on.
 
 The way to say so is an invisible mark at the start of the file, called a **BOM**. With it, Excel shows accents, ñ and other alphabets correctly.
 
@@ -45,7 +45,7 @@ Excel interprets every value when it opens a CSV, and sometimes gets it wrong:
 
 - **Codes with leading zeros** (007, a ZIP code like 02134) lose their zeros because Excel takes them as numbers.
 - **Long numbers**, such as a card, account or ID number with more than 15 digits, are rounded or shown in scientific notation: Excel only keeps 15 significant digits.
-- Some values turn into **dates** without you asking: a «1-2» can end up as January 2 or February 1.
+- Some values turn into **dates** without you asking: a “1-2” can end up as January 2 or February 1.
 
 The serious part is that if you then save the file from Excel, those changes are saved and the original data is lost.
 

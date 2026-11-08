@@ -6,7 +6,7 @@ import { AllToolsView, CategoryView } from "@/components/catalog/CatalogViews";
 import Converter from "@/components/converter/Converter";
 import ProcessingBadge from "@/components/converter/ProcessingBadge";
 import CreditsPage from "@/components/legal/CreditsPage";
-import { GuidesIndexView } from "@/components/guides/GuideViews";
+import { GuidesIndexView, PageGuides } from "@/components/guides/GuideViews";
 import ToolBlock from "@/components/tools/ToolBlock";
 import { Cloud, ShieldCheck } from "lucide-react";
 import ToolIcon from "@/components/tools/ToolIcon";
@@ -27,6 +27,7 @@ import {
   relatedConversions,
 } from "@/config/conversion-pages";
 import { creditsSlugs } from "@/config/credits";
+import { isIndexedCategory, isIndexedConversion, isIndexedTool, noindexFollow } from "@/config/indexing";
 import { formats, type Conversion } from "@/config/formats";
 import {
   availableTools,
@@ -43,6 +44,7 @@ import {
   longtailTranslation,
   type LongtailPage,
 } from "@/content/longtail";
+import { conversionContent } from "@/content/conversions";
 import { guideLocales, guidesSlugs } from "@/content/guides/meta";
 import { routing, type Locale } from "@/i18n/routing";
 import { limits } from "@/config/limits";
@@ -162,9 +164,10 @@ export async function generateMetadata({
     }
     const name = t(`categories.${page.category}.name`);
     return {
-      title: `${t("categoryTitle", { category: name })} — Fileflect`,
+      title: `${t("categoryTitle", { category: name, id: page.category })} — Fileflect`,
       description: t(`categories.${page.category}.description`),
       alternates,
+      ...(isIndexedCategory(page.category) ? {} : { robots: noindexFollow }),
     };
   }
   if (page.kind === "tool") {
@@ -176,6 +179,7 @@ export async function generateMetadata({
       title: `${t("title")} — Fileflect`,
       description: t("description"),
       alternates,
+      ...(isIndexedTool(page.tool.id) ? {} : { robots: noindexFollow }),
     };
   }
   const t = await getTranslations({
@@ -190,6 +194,7 @@ export async function generateMetadata({
     title: `${t("metaTitle", names)} — Fileflect`,
     description: t("description", names),
     alternates,
+    ...(isIndexedConversion(page.conversion) ? {} : { robots: noindexFollow }),
   };
 }
 
@@ -304,6 +309,8 @@ async function ToolView({ tool }: { tool: ToolInfo }) {
         <FaqList items={faq} locale={locale} />
       </section>
 
+      <PageGuides locale={locale} page={{ tool: tool.id }} />
+
       <nav aria-labelledby="related" className="flex flex-col gap-4">
         <h2 id="related" className="text-2xl font-bold">
           {tp("relatedTitle")}
@@ -336,8 +343,11 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
   const nextTools = toolsForConversion(conversion);
   const tt = await getTranslations("Tools");
   // Server (document) conversions have no quality or size options.
-  const steps = ["step1", conversion.engine === "browser" ? "step2" : "step2Document", "step3"] as const;
+  const genericSteps = ["step1", conversion.engine === "browser" ? "step2" : "step2Document", "step3"] as const;
   const PrivacyIcon = conversion.engine === "browser" ? ShieldCheck : Cloud;
+  // Indexed conversions carry text of their own (phase 19.2b).
+  const content = conversionContent(conversion, locale);
+  const steps = content?.steps ?? genericSteps.map((s) => t(s, names));
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-12 py-12">
@@ -346,21 +356,34 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
       </PageHero>
       <Converter from={conversion.from} to={conversion.to} />
 
+      {content && <ProseSection id="when" title={t("whenTitle", names)} paragraphs={content.when} />}
+
       <section aria-labelledby="how" className="flex flex-col gap-5">
         <h2 id="how" className="text-2xl font-bold">
           {t("howTitle", names)}
         </h2>
-        <ol className="grid gap-3 sm:grid-cols-3">
+        <ol className={`grid gap-3 ${steps.length === 4 ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>
           {steps.map((s, i) => (
             <li key={s} className={`${card} flex flex-col gap-3 p-5`}>
               <span className="grid h-9 w-9 place-items-center rounded-full bg-brand-solid font-display font-bold text-white">
                 {i + 1}
               </span>
-              <span className="text-sm">{t(s, names)}</span>
+              <span className="text-sm">{s}</span>
             </li>
           ))}
         </ol>
       </section>
+
+      {content && (
+        <>
+          <ProseSection id="differences" title={t("differencesTitle", names)} paragraphs={content.differences} />
+          <div className="grid gap-4 sm:grid-cols-2">
+            <ListCard id="kept" title={t("keptTitle")} items={content.kept} />
+            <ListCard id="lost" title={t("lostTitle")} items={content.lost} />
+          </div>
+          <ProseSection id="limits" title={t("limitsTitle")} paragraphs={content.limits} />
+        </>
+      )}
 
       <section
         aria-labelledby="privacy"
@@ -380,6 +403,17 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
           </p>
         </div>
       </section>
+
+      {content && (
+        <section aria-labelledby="faq" className="flex flex-col gap-4">
+          <h2 id="faq" className="text-2xl font-bold">
+            {t("faqTitle")}
+          </h2>
+          <FaqList items={content.faq} locale={locale} />
+        </section>
+      )}
+
+      <PageGuides locale={locale} page={{ conversion: `${conversion.from}-${conversion.to}` }} />
 
       {nextTools.length > 0 && (
         <nav aria-labelledby="next-tools" className="flex flex-col gap-4">
@@ -416,6 +450,36 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
         </nav>
       )}
     </div>
+  );
+}
+
+function ProseSection({ id, title, paragraphs }: { id: string; title: string; paragraphs: readonly string[] }) {
+  return (
+    <section aria-labelledby={id} className="flex flex-col gap-3">
+      <h2 id={id} className="text-2xl font-bold">
+        {title}
+      </h2>
+      {paragraphs.map((p) => (
+        <p key={p} className="leading-relaxed text-foreground/85">
+          {p}
+        </p>
+      ))}
+    </section>
+  );
+}
+
+function ListCard({ id, title, items }: { id: string; title: string; items: readonly string[] }) {
+  return (
+    <section aria-labelledby={id} className={`${card} flex flex-col gap-3 p-5`}>
+      <h2 id={id} className="text-xl font-bold">
+        {title}
+      </h2>
+      <ul className="flex list-disc flex-col gap-2 pl-5 text-sm leading-relaxed text-foreground/85">
+        {items.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </section>
   );
 }
 

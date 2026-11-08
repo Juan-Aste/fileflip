@@ -2,9 +2,10 @@ import type { MetadataRoute } from "next";
 import { allToolsSlugs, categorySlug, publishedCategories } from "@/config/categories";
 import { conversionPages, conversionSlug } from "@/config/conversion-pages";
 import { creditsSlugs } from "@/config/credits";
+import { isIndexedCategory, isIndexedConversion, isIndexedTool } from "@/config/indexing";
 import { availableTools, tools } from "@/config/tools";
 import { longtailPages, longtailTranslation } from "@/content/longtail";
-import { guideLocales, guidePath, guides, guidesSlugs } from "@/content/guides/meta";
+import { guideLocales, guidePath, guides, guidesFor, guidesSlugs } from "@/content/guides/meta";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 import { proEnabled } from "@/lib/pro";
 
@@ -45,7 +46,7 @@ export function alternatesFor(locale: Locale, path: LocalizedPath) {
   };
 }
 
-/** Every public, indexable page in every language, with its translations. */
+/** Every public, indexable page in every language, with its translations (noindex pages left out, see config/indexing.ts). */
 export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
   const pages: { path: LocalizedPath; priority: number }[] = [
     { path: () => "", priority: 1 },
@@ -53,11 +54,12 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
     { path: () => "/privacy", priority: 0.3 },
     { path: () => "/terms", priority: 0.3 },
     { path: () => "/contact", priority: 0.3 },
+    { path: () => "/about", priority: 0.5 },
     { path: (l: Locale) => `/${creditsSlugs[l]}`, priority: 0.2 },
     { path: (l: Locale) => `/${allToolsSlugs[l]}`, priority: 0.8 },
-    ...publishedCategories.map((c) => ({ path: (l: Locale) => `/${categorySlug(c, l)}`, priority: 0.8 })),
-    ...availableTools.map((id) => ({ path: (l: Locale) => `/${tools[id].slugs[l]}`, priority: 0.9 })),
-    ...conversionPages.map((c) => ({ path: (l: Locale) => `/${conversionSlug(c, l)}`, priority: 0.8 })),
+    ...publishedCategories.filter(isIndexedCategory).map((c) => ({ path: (l: Locale) => `/${categorySlug(c, l)}`, priority: 0.8 })),
+    ...availableTools.filter(isIndexedTool).map((id) => ({ path: (l: Locale) => `/${tools[id].slugs[l]}`, priority: 0.9 })),
+    ...conversionPages.filter(isIndexedConversion).map((c) => ({ path: (l: Locale) => `/${conversionSlug(c, l)}`, priority: 0.8 })),
   ];
   const localized = pages.flatMap(({ path, priority }) =>
     locales.map((locale) => ({
@@ -83,6 +85,8 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
   // Guides and their index exist only in the languages they are written in.
   const indexes = guideLocales.map((locale) => ({
     url: `${base}/${locale}/${guidesSlugs[locale]}`,
+    // The index changes when a guide is added or updated.
+    lastModified: guidesFor(locale)[0].updated,
     changeFrequency: "weekly" as const,
     priority: 0.6,
     alternates: { languages: Object.fromEntries(guideLocales.map((l) => [l, `${base}/${l}/${guidesSlugs[l]}`])) },

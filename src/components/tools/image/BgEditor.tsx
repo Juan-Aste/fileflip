@@ -415,20 +415,20 @@ export default function BgEditor({ prepared, mask, hints, paint, background, vie
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t("zoom")}>
-        <button type="button" className={zoomBtn} onClick={() => zoomButton(1 / 1.5)} aria-label={t("zoomOut")} aria-keyshortcuts="-">
+        <button type="button" className={zoomIcon} onClick={() => zoomButton(1 / 1.5)} aria-label={t("zoomOut")} aria-keyshortcuts="-">
           <ZoomOut aria-hidden="true" className="h-4 w-4" />
         </button>
         <span className="min-w-14 text-center text-sm tabular-nums" aria-live="polite" data-testid="zoom-level">
           {percent} %
         </span>
-        <button type="button" className={zoomBtn} onClick={() => zoomButton(1.5)} aria-label={t("zoomIn")} aria-keyshortcuts="+">
+        <button type="button" className={zoomIcon} onClick={() => zoomButton(1.5)} aria-label={t("zoomIn")} aria-keyshortcuts="+">
           <ZoomIn aria-hidden="true" className="h-4 w-4" />
         </button>
-        <button type="button" className={`${zoomBtn} w-auto px-3`} onClick={() => setView(fitted(size, W, H))} aria-keyshortcuts="0">
+        <button type="button" className={zoomText} onClick={() => setView(fitted(size, W, H))} aria-keyshortcuts="0">
           <Maximize aria-hidden="true" className="h-4 w-4" />
           {t("zoomFit")}
         </button>
-        <button type="button" className={`${zoomBtn} w-auto px-3`} onClick={() => zoomAt(size.w / 2, size.h / 2, 1)} aria-keyshortcuts="1">
+        <button type="button" className={zoomText} onClick={() => zoomAt(size.w / 2, size.h / 2, 1)} aria-keyshortcuts="1">
           100 %
         </button>
       </div>
@@ -468,7 +468,10 @@ export default function BgEditor({ prepared, mask, hints, paint, background, vie
 }
 
 const zoomBtn =
-  "inline-flex h-11 w-11 items-center justify-center gap-1.5 rounded-lg border border-border-strong bg-surface text-sm font-medium text-foreground transition hover:border-brand hover:text-brand sm:h-9 sm:w-9";
+  "inline-flex h-11 items-center justify-center gap-1.5 rounded-lg border border-border-strong bg-surface text-sm font-medium text-foreground transition hover:border-brand hover:text-brand sm:h-9";
+/** Square icon buttons; the ones with a label size to their text on one line. */
+const zoomIcon = `${zoomBtn} w-11 sm:w-9`;
+const zoomText = `${zoomBtn} shrink-0 whitespace-nowrap px-3`;
 
 function fitted(size: { w: number; h: number }, W: number, H: number): View {
   if (!size.w || !size.h) return { zoom: 1, x: 0, y: 0, fitted: true };

@@ -32,6 +32,11 @@ export interface GuideMeta {
   tools: ToolId[];
   /** Other guides to suggest (shown when they exist in the same language). */
   related: string[];
+  /**
+   * Pages this guide is the main guide for: they link to it first. Tool pages
+   * also link to the guides that list the tool in `tools`.
+   */
+  mainFor?: { tools?: ToolId[]; conversions?: string[] };
   /** Publish HowTo structured data from the first numbered list. */
   howTo?: boolean;
   /** First screenshot, also the image of the Article structured data. */
@@ -54,6 +59,12 @@ export const plannedGuideIds = [
   "read-aloud",
   "sign-pdf",
   "pdf-a",
+  "edit-pdf",
+  "fill-pdf-form",
+  "remove-background",
+  "old-video-to-mp4",
+  "compare-text",
+  "id-photo",
 ] as const;
 
 export const guides: GuideMeta[] = [
@@ -63,6 +74,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["ocr-pdf", "pdf-to-excel", "extract-pdf-images", "edit-pdf", "pdf-to-text", "fill-pdf-form"],
     related: ["reduce-pdf-size", "pdf-table-to-excel", "sign-pdf"],
+    mainFor: { conversions: ["pdf-docx"] },
     howTo: true,
     image: "pdf-a-word-convertir",
     versions: {
@@ -84,7 +96,7 @@ export const guides: GuideMeta[] = [
       fr: {
         slug: "comment-convertir-pdf-en-word",
         title: "Comment convertir un PDF en Word modifiable (et que faire des tableaux, des scans et des images)",
-        description: "Convertissez un PDF en Word pour le modifier : ce qui est conservé, ce qui change et quel outil utiliser si le PDF est scanné ou si vous voulez ses tableaux ou images.",
+        description: "Convertissez un PDF en Word pour le modifier : ce qui est conservé, ce qui change et quel outil utiliser si le PDF est scanné ou si vous voulez ses tableaux ou images.",
       },
       zh: {
         slug: "how-to-convert-pdf-to-word",
@@ -99,6 +111,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["compress-image", "resize-image", "remove-background", "svg-converter"],
     related: ["heic-to-jpg", "reduce-pdf-size"],
+    mainFor: { conversions: ["jpg-webp", "png-webp", "jpg-avif", "jpg-png", "png-jpg", "webp-jpg", "webp-png", "avif-jpg", "avif-png"] },
     howTo: true,
     image: "formatos-convertir",
     versions: {
@@ -119,8 +132,8 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "jpg-png-webp-avif-quel-format-choisir",
-        title: "JPG, PNG, WebP ou AVIF : quel format choisir",
-        description: "Les différences entre JPG, PNG, WebP et AVIF, poids mesurés sur une photo et une capture d'écran : lequel pour les photos, les logos, la transparence et le web.",
+        title: "JPG, PNG, WebP ou AVIF : quel format choisir",
+        description: "Les différences entre JPG, PNG, WebP et AVIF, poids mesurés sur une photo et une capture d’écran : lequel pour les photos, les logos, la transparence et le web.",
       },
       zh: {
         slug: "jpg-vs-png-vs-webp-vs-avif",
@@ -135,6 +148,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["compress-pdf", "delete-pdf-pages", "split-pdf", "images-to-pdf", "compress-image", "scan-document"],
     related: ["pdf-to-word", "image-formats", "pdf-a"],
+    mainFor: { tools: ["compress-pdf"] },
     howTo: true,
     image: "comprimir-pdf-resultado",
     versions: {
@@ -155,8 +169,8 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "comment-reduire-taille-pdf",
-        title: "Comment réduire la taille d'un PDF pour l'envoyer par e-mail ou WhatsApp",
-        description: "Ce qui alourdit un PDF et comment le réduire sans perdre en lisibilité : niveaux de compression mesurés, que faire s'il ne diminue pas et quel poids viser.",
+        title: "Comment réduire la taille d’un PDF pour l’envoyer par e-mail ou WhatsApp",
+        description: "Ce qui alourdit un PDF et comment le réduire sans perdre en lisibilité : niveaux de compression mesurés, que faire s’il ne diminue pas et quel poids viser.",
       },
       zh: {
         slug: "how-to-reduce-pdf-file-size",
@@ -171,6 +185,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["images-to-pdf", "compress-image", "remove-exif", "resize-image"],
     related: ["image-formats", "reduce-pdf-size"],
+    mainFor: { conversions: ["heic-jpg", "heic-png", "heic-pdf"] },
     howTo: true,
     image: "heic-convertir",
     versions: {
@@ -191,8 +206,8 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "convertir-photos-heic-iphone-en-jpg",
-        title: "Comment convertir les photos HEIC de l'iPhone en JPG",
-        description: "Ce qu'est le HEIC, comment convertir les photos de l'iPhone en JPG sans les envoyer en ligne et comment régler l'iPhone pour avoir des photos compatibles.",
+        title: "Comment convertir les photos HEIC de l’iPhone en JPG",
+        description: "Ce qu’est le HEIC, comment convertir les photos de l’iPhone en JPG sans les envoyer en ligne et comment régler l’iPhone pour avoir des photos compatibles.",
       },
       zh: {
         slug: "how-to-convert-iphone-heic-photos-to-jpg",
@@ -207,6 +222,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["pdf-to-excel", "ocr-pdf", "merge-excel", "excel-to-csv"],
     related: ["csv-vs-excel", "pdf-to-word"],
+    mainFor: { tools: ["pdf-to-excel"] },
     howTo: true,
     image: "pdf-excel-vista-previa",
     versions: {
@@ -228,7 +244,7 @@ export const guides: GuideMeta[] = [
       fr: {
         slug: "convertir-tableau-pdf-en-excel",
         title: "Comment convertir un tableau PDF en Excel",
-        description: "Passez le tableau d'un relevé, d'une facture ou d'une liste de prix en PDF dans Excel avec de vrais nombres : aperçu, séparateur décimal et PDF numérisés.",
+        description: "Passez le tableau d’un relevé, d’une facture ou d’une liste de prix en PDF dans Excel avec de vrais nombres : aperçu, séparateur décimal et PDF numérisés.",
       },
       zh: {
         slug: "how-to-convert-pdf-table-to-excel",
@@ -243,6 +259,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["csv-to-excel", "excel-to-csv", "merge-excel", "excel-to-json"],
     related: ["pdf-table-to-excel"],
+    mainFor: { tools: ["excel-to-csv", "csv-to-excel"] },
     howTo: true,
     image: "excel-csv-opciones",
     versions: {
@@ -263,8 +280,8 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "csv-ou-excel-ouvrir-un-csv-correctement",
-        title: "CSV ou Excel : différences et comment ouvrir un CSV correctement",
-        description: "Ce qui distingue un CSV d'un fichier Excel, pourquoi Excel abîme les accents ou met tout dans une colonne, et comment ouvrir et enregistrer un CSV sans perdre de données.",
+        title: "CSV ou Excel : différences et comment ouvrir un CSV correctement",
+        description: "Ce qui distingue un CSV d’un fichier Excel, pourquoi Excel abîme les accents ou met tout dans une colonne, et comment ouvrir et enregistrer un CSV sans perdre de données.",
       },
       zh: {
         slug: "csv-vs-excel-how-to-open-csv-correctly",
@@ -279,6 +296,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["audio-to-text", "trim-audio", "subtitle-sync", "text-to-speech"],
     related: ["read-aloud"],
+    mainFor: { tools: ["audio-to-text"] },
     howTo: true,
     image: "transcribir-resultado",
     versions: {
@@ -300,7 +318,7 @@ export const guides: GuideMeta[] = [
       fr: {
         slug: "transcrire-audio-en-texte-gratuitement",
         title: "Comment transcrire gratuitement un audio ou un message vocal en texte",
-        description: "Transformez un vocal WhatsApp, un enregistrement ou une vidéo en texte avec Whisper dans votre navigateur, sans rien envoyer : modèles, vitesse, erreurs et sous-titres.",
+        description: "Transformez un vocal WhatsApp, un enregistrement ou une vidéo en texte avec Whisper dans votre navigateur, sans rien envoyer : modèles, vitesse, erreurs et sous-titres.",
       },
       zh: {
         slug: "how-to-transcribe-audio-to-text",
@@ -315,6 +333,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["text-to-speech", "ocr-pdf", "audio-to-text"],
     related: ["transcribe-audio", "pdf-to-word"],
+    mainFor: { tools: ["text-to-speech"] },
     howTo: true,
     image: "leer-en-voz-alta",
     versions: {
@@ -335,7 +354,7 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "faire-lire-un-texte-a-voix-haute",
-        title: "Comment faire lire un texte ou un PDF à voix haute par l'ordinateur",
+        title: "Comment faire lire un texte ou un PDF à voix haute par l’ordinateur",
         description: "Les fonctions de lecture à voix haute de Windows, Mac, iPhone et Android, et comment écouter un texte, un PDF ou un Word avec surlignage et téléchargement MP3.",
       },
       zh: {
@@ -351,6 +370,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["sign-pdf", "edit-pdf", "fill-pdf-form", "protect-pdf"],
     related: ["pdf-a", "reduce-pdf-size", "pdf-to-word"],
+    mainFor: { tools: ["sign-pdf"] },
     howTo: true,
     image: "firmar-pdf-colocar",
     versions: {
@@ -371,7 +391,7 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "signer-un-pdf-sans-imprimer",
-        title: "Comment signer un PDF sans l'imprimer",
+        title: "Comment signer un PDF sans l’imprimer",
         description: "Apposez votre signature manuscrite sur un PDF depuis un ordinateur ou un téléphone, sans imprimer ni scanner, et comprenez la différence avec une signature électronique.",
       },
       zh: {
@@ -387,6 +407,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["pdf-to-pdfa", "unlock-pdf", "compress-pdf", "merge-pdf"],
     related: ["sign-pdf", "reduce-pdf-size"],
+    mainFor: { tools: ["pdf-to-pdfa"] },
     howTo: true,
     image: "pdfa-opciones",
     versions: {
@@ -407,13 +428,235 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "qu-est-ce-que-le-pdf-a",
-        title: "Qu'est-ce que le PDF/A et quand faut-il l'utiliser",
-        description: "Ce qu'est le format PDF/A, qui l'exige, quelle version choisir (1b, 2b ou 3b) et comment convertir un PDF pour qu'il ne soit pas refusé.",
+        title: "Qu’est-ce que le PDF/A et quand faut-il l’utiliser",
+        description: "Ce qu’est le format PDF/A, qui l’exige, quelle version choisir (1b, 2b ou 3b) et comment convertir un PDF pour qu’il ne soit pas refusé.",
       },
       zh: {
         slug: "what-is-pdf-a",
         title: "PDF/A 是什么，什么时候需要用它",
         description: "PDF/A 格式是什么、哪些机构要求使用它、该选哪个版本（1b、2b 还是 3b），以及如何转换 PDF 才不会被退回。",
+      },
+    },
+  },
+  {
+    id: "remove-background",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["remove-background", "id-photo", "crop-image", "resize-image", "compress-image", "round-image"],
+    related: ["image-formats", "id-photo"],
+    mainFor: { tools: ["remove-background"] },
+    howTo: true,
+    image: "quitar-fondo-producto",
+    versions: {
+      es: {
+        slug: "como-quitar-fondo-foto",
+        title: "Cómo quitar el fondo de una foto para un documento o una tienda online",
+        description: "Quita el fondo de una foto gratis y sin subirla: qué modo usar para personas y para productos, cómo corregir bordes y cuándo descargar PNG transparente o fondo blanco.",
+      },
+      en: {
+        slug: "how-to-remove-background-from-photo",
+        title: "How to remove the background from a photo for an ID or an online shop",
+        description: "Remove a photo’s background for free without uploading it: which mode suits people or products, how to fix edges and when to get a transparent PNG or a white background.",
+      },
+      pt: {
+        slug: "como-remover-fundo-de-foto",
+        title: "Como remover o fundo de uma foto para documento ou loja virtual",
+        description: "Remova o fundo de uma foto de graça e sem enviá-la: qual modo usar para pessoas e produtos, como corrigir bordas e quando baixar PNG transparente ou fundo branco.",
+      },
+      fr: {
+        slug: "comment-supprimer-arriere-plan-photo",
+        title: "Comment supprimer l’arrière-plan d’une photo pour un document ou une boutique en ligne",
+        description: "Détourez une photo gratuitement, sans l’envoyer : quel mode pour les personnes ou les produits, comment corriger les contours, PNG transparent ou fond blanc.",
+      },
+      zh: {
+        slug: "how-to-remove-background-from-photo",
+        title: "如何去除照片背景：用于证件照或网店商品图",
+        description: "免费去除照片背景，无需上传：人像和商品分别用哪种模式、如何修整边缘，以及什么时候下载透明 PNG 或白色背景图片。",
+      },
+    },
+  },
+  {
+    id: "compare-text",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["compare-text", "pdf-to-text", "ocr-pdf", "image-to-text", "remove-duplicate-lines", "word-counter", "case-converter", "edit-pdf"],
+    related: ["pdf-to-word", "edit-pdf", "sign-pdf"],
+    mainFor: { tools: ["compare-text"] },
+    howTo: true,
+    image: "comparar-textos-lineas",
+    versions: {
+      es: {
+        slug: "como-comparar-dos-textos",
+        title: "Cómo comparar dos versiones de un texto y ver qué cambió",
+        description: "Compara dos textos y ve qué se agregó, quitó o cambió: por líneas o por palabras, ignorando mayúsculas o espacios, y cómo hacerlo si las versiones están en PDF o Word.",
+      },
+      en: {
+        slug: "how-to-compare-two-texts",
+        title: "How to compare two versions of a text and see what changed",
+        description: "Compare two texts and see what was added, removed or changed: by lines or by words, ignoring case or spacing, and what to do when the versions are PDF or Word files.",
+      },
+      pt: {
+        slug: "como-comparar-dois-textos",
+        title: "Como comparar duas versões de um texto e ver o que mudou",
+        description: "Compare dois textos e veja o que foi acrescentado, tirado ou alterado: por linhas ou por palavras, ignorando maiúsculas ou espaços, e o que fazer com PDF ou Word.",
+      },
+      fr: {
+        slug: "comment-comparer-deux-textes",
+        title: "Comment comparer deux versions d’un texte et voir ce qui a changé",
+        description: "Comparez deux textes et voyez ce qui a été ajouté, supprimé ou modifié : par lignes ou par mots, en ignorant la casse ou les espaces, même depuis un PDF ou un Word.",
+      },
+      zh: {
+        slug: "how-to-compare-two-texts",
+        title: "如何对比一段文本的两个版本，看出改了哪些地方",
+        description: "对比两段文本，看清哪些内容被新增、删除或修改：可按行或按词对比，可忽略大小写和多余空格；两个版本是 PDF 或 Word 文件时也有办法。",
+      },
+    },
+  },
+  {
+    id: "id-photo",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["id-photo", "remove-background", "crop-image", "resize-image", "compress-image", "remove-exif"],
+    related: ["remove-background", "heic-to-jpg", "image-formats"],
+    mainFor: { tools: ["id-photo"] },
+    howTo: true,
+    image: "foto-carnet-encuadrar",
+    versions: {
+      es: {
+        slug: "como-hacer-foto-carnet-con-el-celular",
+        title: "Cómo hacer una foto carnet o de pasaporte con el celular",
+        description: "Saca la foto en casa, recórtala a 3×4, 4×4, 3,5×4,5 cm o 2×2 in con guía de rostro e imprime varias copias en una foto de 10×15 cm. Consejos de luz y fondo.",
+      },
+      en: {
+        slug: "how-to-take-a-passport-photo-with-your-phone",
+        title: "How to take a passport or ID photo with your phone",
+        description: "Take the photo at home, crop it to 2×2 in, 3.5×4.5 cm and other sizes with a face guide, and print several copies on one 4×6 in print. Light and background tips.",
+      },
+      pt: {
+        slug: "como-tirar-foto-3x4-pelo-celular",
+        title: "Como tirar foto 3x4 ou de passaporte pelo celular",
+        description: "Tire a foto em casa, corte em 3×4, 4×4, 3,5×4,5 cm ou 2×2 pol. com guia de rosto e imprima várias cópias numa foto 10×15 cm. Dicas de luz e fundo.",
+      },
+      fr: {
+        slug: "comment-faire-une-photo-d-identite-avec-son-telephone",
+        title: "Comment faire une photo d’identité ou de passeport avec son téléphone",
+        description: "Prenez la photo chez vous, recadrez-la en 3,5×4,5 cm, 2×2 po ou autre avec un guide pour le visage et imprimez plusieurs copies sur un tirage 10×15 cm.",
+      },
+      zh: {
+        slug: "how-to-make-an-id-photo-with-your-phone",
+        title: "如何用手机拍证件照和护照照片",
+        description: "在家用手机拍照，借助脸部参考框裁成 3.5×4.5 cm、2×2 英寸等证件尺寸，并在一张 10×15 cm 相纸上排版打印多张。附光线和背景建议。",
+      },
+    },
+  },
+  {
+    id: "fill-pdf-form",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["fill-pdf-form", "edit-pdf", "sign-pdf", "unlock-pdf", "scan-document", "compress-pdf"],
+    related: ["sign-pdf", "edit-pdf", "reduce-pdf-size"],
+    mainFor: { tools: ["fill-pdf-form"] },
+    howTo: true,
+    image: "rellenar-formulario-campos",
+    versions: {
+      es: {
+        slug: "como-rellenar-un-formulario-pdf",
+        title: "Cómo rellenar un formulario PDF desde la computadora o el celular",
+        description: "Completa los campos de un formulario PDF sin imprimirlo, aplánalo para entregarlo y qué hacer si el PDF no tiene campos, es XFA o tiene contraseña.",
+      },
+      en: {
+        slug: "how-to-fill-in-a-pdf-form",
+        title: "How to fill in a PDF form on a computer or phone",
+        description: "Fill in the fields of a PDF form without printing it, flatten it to hand it in, and what to do if the PDF has no fields, is XFA or has a password.",
+      },
+      pt: {
+        slug: "como-preencher-um-formulario-pdf",
+        title: "Como preencher um formulário PDF pelo computador ou celular",
+        description: "Preencha os campos de um formulário PDF sem imprimir, achate-o para entregar e saiba o que fazer se o PDF não tiver campos, for XFA ou tiver senha.",
+      },
+      fr: {
+        slug: "comment-remplir-un-formulaire-pdf",
+        title: "Comment remplir un formulaire PDF sur ordinateur ou téléphone",
+        description: "Remplissez les champs d’un formulaire PDF sans l’imprimer, aplatissez-le pour l’envoyer, et que faire si le PDF n’a pas de champs, est XFA ou protégé.",
+      },
+      zh: {
+        slug: "how-to-fill-in-a-pdf-form",
+        title: "如何在电脑或手机上填写 PDF 表单",
+        description: "不打印就能填写 PDF 表单的字段，扁平化后提交；以及填写中文、PDF 没有字段、XFA 表单或有密码时该怎么办。",
+      },
+    },
+  },
+  {
+    id: "old-video-to-mp4",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["video-converter", "compress-video", "trim-video", "join-videos", "video-speed", "extract-audio", "audio-to-text", "video-to-gif"],
+    related: ["heic-to-jpg", "transcribe-audio", "image-formats"],
+    mainFor: { tools: ["video-converter"] },
+    howTo: true,
+    image: "video-viejo-mp4-elegir",
+    versions: {
+      es: {
+        slug: "convertir-videos-viejos-a-mp4",
+        title: "Cómo convertir videos viejos (AVI, WMV, MOV, 3GP…) a MP4 para verlos en el celular o la tele",
+        description: "Pasa videos AVI, WMV, 3GP, FLV o MPG a MP4 en el navegador, sin subirlos: paso a paso, por qué no abren, cuánto tarda y qué límites tiene.",
+      },
+      en: {
+        slug: "convert-old-videos-to-mp4",
+        title: "How to convert old videos (AVI, WMV, MOV, 3GP…) to MP4 to watch them on your phone or TV",
+        description: "Turn AVI, WMV, 3GP, FLV or MPG videos into MP4 in your browser, without uploading them: step by step, why they won’t open, how long it takes and the limits.",
+      },
+      pt: {
+        slug: "converter-videos-antigos-para-mp4",
+        title: "Como converter vídeos antigos (AVI, WMV, MOV, 3GP…) para MP4 e assistir no celular ou na TV",
+        description: "Converta vídeos AVI, WMV, 3GP, FLV ou MPG para MP4 no navegador, sem enviá-los: passo a passo, por que não abrem, quanto demora e quais são os limites.",
+      },
+      fr: {
+        slug: "convertir-anciennes-videos-en-mp4",
+        title: "Comment convertir de vieilles vidéos (AVI, WMV, MOV, 3GP…) en MP4 pour les regarder sur téléphone ou télé",
+        description: "Passez vos vidéos AVI, WMV, 3GP, FLV ou MPG en MP4 dans le navigateur, sans les envoyer : étapes, pourquoi elles ne s’ouvrent pas, durée et limites.",
+      },
+      zh: {
+        slug: "convert-old-videos-to-mp4",
+        title: "如何把旧视频（AVI、WMV、MOV、3GP 等）转换为 MP4，在手机或电视上播放",
+        description: "在浏览器中把 AVI、WMV、3GP、FLV 或 MPG 视频转换为 MP4，无需上传：具体步骤、旧视频打不开的原因、转换耗时以及各项限制。",
+      },
+    },
+  },
+  {
+    id: "edit-pdf",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["edit-pdf", "fill-pdf-form", "sign-pdf", "organize-pdf", "merge-pdf", "pdf-watermark", "protect-pdf"],
+    related: ["pdf-to-word", "sign-pdf", "fill-pdf-form"],
+    mainFor: { tools: ["edit-pdf"] },
+    howTo: true,
+    image: "editar-pdf-texto",
+    versions: {
+      es: {
+        slug: "como-editar-un-pdf-gratis",
+        title: "Cómo editar un PDF gratis sin instalar nada",
+        description: "Agrega texto, resaltados, flechas e imágenes a un PDF o tapa datos, desde el navegador: qué se puede cambiar, cómo corregir un texto y cuándo pasarlo a Word.",
+      },
+      en: {
+        slug: "how-to-edit-a-pdf-for-free",
+        title: "How to edit a PDF for free without installing anything",
+        description: "Add text, highlights, arrows and images to a PDF or cover data, in your browser: what can be changed, how to fix existing text and when to convert to Word.",
+      },
+      pt: {
+        slug: "como-editar-pdf-gratis",
+        title: "Como editar um PDF de graça sem instalar nada",
+        description: "Acrescente texto, destaques, setas e imagens a um PDF ou cubra dados, no navegador: o que dá para mudar, como corrigir um texto e quando passar para Word.",
+      },
+      fr: {
+        slug: "modifier-un-pdf-gratuitement",
+        title: "Comment modifier un PDF gratuitement sans rien installer",
+        description: "Ajoutez texte, surlignage, flèches et images à un PDF ou masquez des données, dans le navigateur : ce qu’on peut changer, corriger un texte, passer par Word.",
+      },
+      zh: {
+        slug: "how-to-edit-a-pdf-for-free",
+        title: "如何免费编辑 PDF，无需安装任何软件",
+        description: "在浏览器中为 PDF 添加文字、高亮、箭头和图片，或遮盖个人信息：哪些内容可以修改、如何改正原有文字，以及什么时候该转成 Word。",
       },
     },
   },
@@ -435,6 +678,19 @@ export const guideLocales: Locale[] = locales.filter((l) => guidesFor(l).length 
 
 export function guideFromSlug(locale: Locale, slug: string): GuideMeta | undefined {
   return guides.find((g) => g.versions[locale]?.slug === slug);
+}
+
+/**
+ * Guides to link from a tool or conversion page, in that page's language: the
+ * ones written for it first, then (tool pages) those that use the tool. At most `max`.
+ */
+export function guidesForPage(locale: Locale, page: { tool?: ToolId; conversion?: string }, max = 2): GuideMeta[] {
+  const published = guidesFor(locale);
+  const main = published.filter(
+    (g) => (page.tool && g.mainFor?.tools?.includes(page.tool)) || (page.conversion && g.mainFor?.conversions?.includes(page.conversion)),
+  );
+  const using = page.tool ? published.filter((g) => !main.includes(g) && g.tools.includes(page.tool!)) : [];
+  return [...main, ...using].slice(0, max);
 }
 
 export function guidePath(guide: GuideMeta, locale: Locale): string | undefined {

@@ -114,7 +114,7 @@ export async function CategoryView({ category }: { category: ToolCategory }) {
     <div className="mx-auto flex max-w-3xl flex-col gap-10 py-12">
       <PageHero
         icon={<CategoryIcon category={category} className="h-7 w-7" />}
-        title={t("categoryTitle", { category: t(`categories.${category}.name`) })}
+        title={t("categoryTitle", { category: t(`categories.${category}.name`), id: category })}
       >
         <p className="max-w-xl text-lg text-muted text-pretty">{t(`categories.${category}.description`)}</p>
         {engines.size === 1 && <ProcessingBadge engine={[...engines][0]} />}

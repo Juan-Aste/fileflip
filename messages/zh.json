@@ -50,7 +50,8 @@
     },
     "allTools": "全部工具",
     "guides": "指南",
-    "source": "源代码"
+    "source": "源代码",
+    "about": "关于我们"
   },
   "HomePage": {
     "title": "转换文件，文件不离开你的电脑",
@@ -1622,7 +1623,7 @@
       "about": "只保留歌曲、语音消息、播客或录音中你需要的部分：输入分和秒，或用播放器（“使用当前位置”）选择开始和结束，可添加淡入或淡出，然后下载 MP3、WAV、FLAC、OGG、M4A 或 AIFF 格式的结果。剪切精确到采样点，并在你的设备上完成：文件不会上传到任何服务器。",
       "faq": {
         "q1": "如何选出准确的片段？",
-        "a1": "播放音频，在想开始的位置暂停，点击“开始”旁的“使用当前位置”；“结束”也一样。也可以按 分:秒 输入时间，可带十分之一秒，例如 0:12.5 或 1:05。",
+        "a1": "播放音频，在想开始的位置暂停，点击“开始”旁的“使用当前位置”；“结束”也一样。也可以按“分:秒”的格式输入时间，可带十分之一秒，例如 0:12.5 或 1:05。",
         "q2": "淡入淡出有什么用？",
         "a2": "淡入在前 2 秒内把音量从静音升起，淡出在最后 2 秒内降到静音，让片段不会突然开始或结束（做铃声很方便）。片段很短时，每段淡入淡出最多占一半。",
         "q3": "会损失音质吗？",
@@ -1747,7 +1748,7 @@
         "q1": "精确和快速有什么区别？",
         "a1": "精确模式从你标记的位置准确开始，但需要重新编码视频（耗时更长，并以高质量重新压缩）。快速模式按原样复制视频，几秒完成且没有任何损失，但只能从关键帧开始：结果可能会提前几秒开始。",
         "q2": "怎样找到准确的时刻？",
-        "a2": "播放视频并在需要的位置暂停；“使用当前位置”会把该时间填入输入框。也可以输入 分:秒，例如 1:23.5。",
+        "a2": "播放视频并在需要的位置暂停；“使用当前位置”会把该时间填入输入框。也可以按“分:秒”的格式输入，例如 1:23.5。",
         "q3": "可以删除中间的一段吗？",
         "a3": "目前每次只保留一个片段。要删除中间的部分，可以分别剪出前后两段，再用“合并视频”合并。",
         "q4": "有什么限制吗？",
@@ -2088,8 +2089,8 @@
     "monthly": "月付",
     "yearly": "年付",
     "save": "节省 {percent}",
-    "perMonth": "/月",
-    "perYear": "/年",
+    "perMonth": "月",
+    "perYear": "年",
     "free": "免费",
     "freePrice": "$0",
     "freeCta": "开始转换",
@@ -2141,7 +2142,13 @@
     "privacyServer": "文档通过加密连接在我们的服务器上用 LibreOffice 转换，并在 1 小时内自动删除。",
     "relatedTitle": "其他转换",
     "linkLabel": "{from} 转 {to}",
-    "toolsTitle": "更多适用于 {from} 和 {to} 文件的工具"
+    "toolsTitle": "更多适用于 {from} 和 {to} 文件的工具",
+    "whenTitle": "什么时候需要把 {from} 转成 {to}",
+    "differencesTitle": "{from} 和 {to} 有什么区别",
+    "keptTitle": "会保留的内容",
+    "lostTitle": "会丢失或可能变化的内容",
+    "limitsTitle": "工具的限制",
+    "faqTitle": "常见问题"
   },
   "Longtail": {
     "faqTitle": "常见问题"
@@ -2511,8 +2518,8 @@
     "conversionsFrom": "从 {format}",
     "toolCount": "{count} 个工具",
     "conversionCount": "{count} 种转换",
-    "seeCategory": "查看{category}的全部内容",
-    "categoryTitle": "{category}工具",
+    "seeCategory": "{category, select, PDF {查看全部 PDF 工具} OCR {查看全部 OCR 工具} 3D {查看全部 3D 工具} CAD {查看全部 CAD 工具} 实用工具 {查看全部实用工具} other {查看全部{category}工具}}",
+    "categoryTitle": "{id, select, other {{category, select, PDF {PDF 工具} OCR {OCR 工具} 3D {3D 工具} CAD {CAD 工具} 实用工具 {实用工具} other {{category}工具}}}}",
     "categories": {
       "image": {
         "name": "图片",
@@ -2594,7 +2601,7 @@
     }
   },
   "ToolPage": {
-    "aboutTitle": "{tool} 的功能",
+    "aboutTitle": "“{tool}”的功能",
     "limitsTitle": "限制",
     "limitSingle": "每次一个文件，最大 {size}。",
     "limitMultiple": "每次最多 {count} 个文件，每个最大 {size}。",
@@ -3237,7 +3244,7 @@
     "startHere": "使用当前位置",
     "endHere": "使用当前位置",
     "selection": "保留 {total} 中的 {length}。格式：分:秒（例如 1:23.5）。",
-    "rangeInvalid": "时间无效：请输入 分:秒（例如 1:23.5），开始早于结束，且不超过 {total}。",
+    "rangeInvalid": "时间无效：请按“分:秒”格式输入（例如 1:23.5），开始早于结束，且不超过 {total}。",
     "fadeIn": "淡入（{seconds} 秒）",
     "fadeOut": "淡出（{seconds} 秒）",
     "trimmed": "已剪切 {from} 至 {to}。",
@@ -3800,7 +3807,62 @@
     "contents": "本指南内容",
     "toolsTitle": "本指南用到的工具",
     "relatedTitle": "更多指南",
+    "pageGuidesTitle": "分步指南",
     "allGuides": "全部指南",
     "breadcrumb": "面包屑导航"
+  },
+  "About": {
+    "title": "关于我们",
+    "description": "Fileflect 由谁制作、为什么存在、如何保护你的文件、靠什么维持运营，以及如何联系我们。",
+    "intro": "Fileflect 是一套免费的在线工具，可以直接在浏览器中转换和编辑文件。本页介绍网站背后的人以及它的运作方式。",
+    "links": {
+      "privacy": "阅读隐私政策",
+      "credits": "查看致谢",
+      "source": "查看源代码",
+      "contact": "前往联系页面"
+    },
+    "sections": {
+      "who": {
+        "heading": "谁在做 Fileflect",
+        "body": [
+          "Fileflect 由住在阿根廷布宜诺斯艾利斯省 Vicente López 的 Juan Pablo Aste 开发和维护。这是一个独立项目，不隶属于任何大公司。",
+          "网站上的工具、文字和指南都在这里编写和测试。如果某个功能没有按你的预期工作，读邮件的人也正是能修复问题的人。"
+        ]
+      },
+      "why": {
+        "heading": "为什么要做 Fileflect",
+        "body": [
+          "把 PDF 转成 Word、把 iPhone 照片转成 JPG、合并两个文档，这些都是日常小事。可是很多提供这些功能的网站要求把私人文件上传到不明服务器、注册账号，或者在结果上加水印。",
+          "Fileflect 就是为了省掉这些麻烦而做的：无需强制注册，没有水印，而且只要能做到，文件就不会离开你的设备。"
+        ]
+      },
+      "privacy": {
+        "heading": "我们如何保护你的文件",
+        "body": [
+          "大多数工具都在你自己的浏览器中处理文件，所用的代码会下载到你的设备上：文件不会发送到任何服务器。",
+          "有些转换需要浏览器里无法运行的程序（例如 Word、Excel 或 PowerPoint 转 PDF）。这种情况下，文件会经加密传输到我们的服务器，处理完成后最迟 1 小时内删除。我们不会查看你的文件，不会保存文件名或内容，也不会出售任何数据。",
+          "完整说明请见隐私政策。"
+        ]
+      },
+      "source": {
+        "heading": "开源",
+        "body": [
+          "Fileflect 的代码是自由软件，采用 AGPL-3.0-or-later 许可证：任何人都可以查看文件是如何被处理的。它还使用了其他作者的开源组件，这些组件及其许可证列在致谢页面上。"
+        ]
+      },
+      "funding": {
+        "heading": "靠什么维持运营",
+        "body": [
+          "Fileflect 免费使用，靠页面上展示的 Google AdSense 广告维持运营。广告无法访问你处理的文件。",
+          "我们不使用 Google Analytics，也不使用社交媒体像素。"
+        ]
+      },
+      "contact": {
+        "heading": "联系我们",
+        "body": [
+          "如果你发现了问题、想要支持新的格式或有任何疑问，请发邮件到 {email}。我们在周一至周五回复。"
+        ]
+      }
+    }
   }
 }

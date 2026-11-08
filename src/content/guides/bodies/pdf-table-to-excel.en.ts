@@ -3,7 +3,7 @@ A bank statement, a supplier's price list, the report someone sent you: many tab
 
 ## Why copy and paste isn't enough
 
-A PDF doesn't store tables. It stores loose pieces of text with their position on the page: «84.35» is so many millimeters from the edge, «Supermarket» a little further left. The lines you see as cell borders are drawings unrelated to the text. When you copy, the PDF reader gives you the text in some order, and the row and column structure is lost.
+A PDF doesn't store tables. It stores loose pieces of text with their position on the page: “84.35” is so many millimeters from the edge, “Supermarket” a little further left. The lines you see as cell borders are drawings unrelated to the text. When you copy, the PDF reader gives you the text in some order, and the row and column structure is lost.
 
 Our tool rebuilds the table from those positions: it forms rows from the text that sits at the same height and columns from how it lines up, just as a person looking at the page would.
 

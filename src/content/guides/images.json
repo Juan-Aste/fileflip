@@ -1,4 +1,44 @@
 {
+  "comparar-textos-lineas": {
+    "width": 800,
+    "height": 890
+  },
+  "comparar-textos-lineas.en": {
+    "width": 800,
+    "height": 890
+  },
+  "comparar-textos-lineas.fr": {
+    "width": 800,
+    "height": 950
+  },
+  "comparar-textos-lineas.pt": {
+    "width": 800,
+    "height": 890
+  },
+  "comparar-textos-lineas.zh": {
+    "width": 800,
+    "height": 890
+  },
+  "comparar-textos-palabras": {
+    "width": 800,
+    "height": 790
+  },
+  "comparar-textos-palabras.en": {
+    "width": 800,
+    "height": 767
+  },
+  "comparar-textos-palabras.fr": {
+    "width": 800,
+    "height": 790
+  },
+  "comparar-textos-palabras.pt": {
+    "width": 800,
+    "height": 790
+  },
+  "comparar-textos-palabras.zh": {
+    "width": 800,
+    "height": 767
+  },
   "comprimir-pdf-resultado": {
     "width": 800,
     "height": 350
@@ -18,6 +58,46 @@
   "comprimir-pdf-resultado.zh": {
     "width": 800,
     "height": 350
+  },
+  "editar-pdf-tapar": {
+    "width": 800,
+    "height": 1337
+  },
+  "editar-pdf-tapar.en": {
+    "width": 800,
+    "height": 1337
+  },
+  "editar-pdf-tapar.fr": {
+    "width": 800,
+    "height": 1415
+  },
+  "editar-pdf-tapar.pt": {
+    "width": 800,
+    "height": 1415
+  },
+  "editar-pdf-tapar.zh": {
+    "width": 800,
+    "height": 1327
+  },
+  "editar-pdf-texto": {
+    "width": 800,
+    "height": 1447
+  },
+  "editar-pdf-texto.en": {
+    "width": 800,
+    "height": 1447
+  },
+  "editar-pdf-texto.fr": {
+    "width": 800,
+    "height": 1467
+  },
+  "editar-pdf-texto.pt": {
+    "width": 800,
+    "height": 1467
+  },
+  "editar-pdf-texto.zh": {
+    "width": 800,
+    "height": 1447
   },
   "excel-csv-opciones": {
     "width": 800,
@@ -78,6 +158,46 @@
   "formatos-convertir.zh": {
     "width": 800,
     "height": 746
+  },
+  "foto-carnet-encuadrar": {
+    "width": 800,
+    "height": 1172
+  },
+  "foto-carnet-encuadrar.en": {
+    "width": 800,
+    "height": 1172
+  },
+  "foto-carnet-encuadrar.fr": {
+    "width": 800,
+    "height": 1172
+  },
+  "foto-carnet-encuadrar.pt": {
+    "width": 800,
+    "height": 1172
+  },
+  "foto-carnet-encuadrar.zh": {
+    "width": 800,
+    "height": 1172
+  },
+  "foto-carnet-resultado": {
+    "width": 800,
+    "height": 418
+  },
+  "foto-carnet-resultado.en": {
+    "width": 800,
+    "height": 418
+  },
+  "foto-carnet-resultado.fr": {
+    "width": 800,
+    "height": 418
+  },
+  "foto-carnet-resultado.pt": {
+    "width": 800,
+    "height": 418
+  },
+  "foto-carnet-resultado.zh": {
+    "width": 800,
+    "height": 418
   },
   "heic-convertir": {
     "width": 800,
@@ -199,6 +319,86 @@
     "width": 800,
     "height": 426
   },
+  "quitar-fondo-blanco": {
+    "width": 800,
+    "height": 1647
+  },
+  "quitar-fondo-blanco.en": {
+    "width": 800,
+    "height": 1667
+  },
+  "quitar-fondo-blanco.fr": {
+    "width": 800,
+    "height": 1665
+  },
+  "quitar-fondo-blanco.pt": {
+    "width": 800,
+    "height": 1647
+  },
+  "quitar-fondo-blanco.zh": {
+    "width": 800,
+    "height": 1545
+  },
+  "quitar-fondo-producto": {
+    "width": 800,
+    "height": 1611
+  },
+  "quitar-fondo-producto.en": {
+    "width": 800,
+    "height": 1611
+  },
+  "quitar-fondo-producto.fr": {
+    "width": 800,
+    "height": 1609
+  },
+  "quitar-fondo-producto.pt": {
+    "width": 800,
+    "height": 1611
+  },
+  "quitar-fondo-producto.zh": {
+    "width": 800,
+    "height": 1509
+  },
+  "rellenar-formulario-campos": {
+    "width": 800,
+    "height": 1089
+  },
+  "rellenar-formulario-campos.en": {
+    "width": 800,
+    "height": 1113
+  },
+  "rellenar-formulario-campos.fr": {
+    "width": 800,
+    "height": 1089
+  },
+  "rellenar-formulario-campos.pt": {
+    "width": 800,
+    "height": 1089
+  },
+  "rellenar-formulario-campos.zh": {
+    "width": 800,
+    "height": 1089
+  },
+  "rellenar-formulario-sin-campos": {
+    "width": 800,
+    "height": 354
+  },
+  "rellenar-formulario-sin-campos.en": {
+    "width": 800,
+    "height": 354
+  },
+  "rellenar-formulario-sin-campos.fr": {
+    "width": 800,
+    "height": 354
+  },
+  "rellenar-formulario-sin-campos.pt": {
+    "width": 800,
+    "height": 354
+  },
+  "rellenar-formulario-sin-campos.zh": {
+    "width": 800,
+    "height": 354
+  },
   "transcribir-resultado": {
     "width": 800,
     "height": 1012
@@ -218,5 +418,45 @@
   "transcribir-resultado.zh": {
     "width": 800,
     "height": 996
+  },
+  "video-viejo-mp4-elegir": {
+    "width": 800,
+    "height": 574
+  },
+  "video-viejo-mp4-elegir.en": {
+    "width": 800,
+    "height": 574
+  },
+  "video-viejo-mp4-elegir.fr": {
+    "width": 800,
+    "height": 574
+  },
+  "video-viejo-mp4-elegir.pt": {
+    "width": 800,
+    "height": 574
+  },
+  "video-viejo-mp4-elegir.zh": {
+    "width": 800,
+    "height": 554
+  },
+  "video-viejo-mp4-resultado": {
+    "width": 800,
+    "height": 536
+  },
+  "video-viejo-mp4-resultado.en": {
+    "width": 800,
+    "height": 536
+  },
+  "video-viejo-mp4-resultado.fr": {
+    "width": 800,
+    "height": 536
+  },
+  "video-viejo-mp4-resultado.pt": {
+    "width": 800,
+    "height": 536
+  },
+  "video-viejo-mp4-resultado.zh": {
+    "width": 800,
+    "height": 536
   }
 }

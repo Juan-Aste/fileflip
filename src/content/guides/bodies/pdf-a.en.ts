@@ -1,5 +1,5 @@
 const body = `
-If an online filing system, a court or a university library has ever rejected your PDF with a message like «the file must be in PDF/A format», this guide is for you. It explains what PDF/A is, why it's required, which version to choose and how to convert an ordinary PDF with [PDF to PDF/A](tool:pdf-to-pdfa).
+If an online filing system, a court or a university library has ever rejected your PDF with a message like “the file must be in PDF/A format”, this guide is for you. It explains what PDF/A is, why it's required, which version to choose and how to convert an ordinary PDF with [PDF to PDF/A](tool:pdf-to-pdfa).
 
 ## What PDF/A is
 
@@ -23,7 +23,7 @@ It's required by institutions that have to **keep documents for years** and can'
 - Universities, for depositing theses in their repositories.
 - Archives, libraries and some electronic invoicing systems.
 
-Each institution states which version it accepts. If the requirement just says «PDF/A», the safest choice is usually PDF/A-2b.
+Each institution states which version it accepts. If the requirement just says “PDF/A”, the safest choice is usually PDF/A-2b.
 
 ## The versions: 1b, 2b, 3b (and what the letter means)
 
@@ -58,7 +58,7 @@ The conversion runs on **our server**, not in your browser, because it needs to 
 The content and the pages are kept, but there are details the format doesn't allow:
 
 - **Password**: a PDF/A can't be encrypted. If your PDF has a password, remove it first with [Remove a PDF password](tool:unlock-pdf).
-- **Links and interactive forms**: they may be lost. If the PDF is a form, fill it in first with [Fill PDF Form](tool:fill-pdf-form) and save it flattened.
+- **Links and interactive forms**: they may be lost. If the PDF is a form, fill it in first with [Fill PDF form](tool:fill-pdf-form) and save it flattened.
 - **Transparency in PDF/A-1b**: it gets flattened. In practice you hardly notice, but if the document uses transparency effects, PDF/A-2b keeps them.
 - **Digital signatures with a certificate**: converting the PDF modifies the file, and an earlier digital signature becomes invalid. If you need to sign digitally, convert to PDF/A first and sign afterwards.
 

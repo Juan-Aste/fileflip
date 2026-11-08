@@ -49,6 +49,36 @@ import transcribeAudioEs from "./bodies/transcribe-audio.es";
 import transcribeAudioFr from "./bodies/transcribe-audio.fr";
 import transcribeAudioPt from "./bodies/transcribe-audio.pt";
 import transcribeAudioZh from "./bodies/transcribe-audio.zh";
+import removeBackgroundEn from "./bodies/remove-background.en";
+import removeBackgroundEs from "./bodies/remove-background.es";
+import removeBackgroundFr from "./bodies/remove-background.fr";
+import removeBackgroundPt from "./bodies/remove-background.pt";
+import removeBackgroundZh from "./bodies/remove-background.zh";
+import compareTextEn from "./bodies/compare-text.en";
+import compareTextEs from "./bodies/compare-text.es";
+import compareTextFr from "./bodies/compare-text.fr";
+import compareTextPt from "./bodies/compare-text.pt";
+import compareTextZh from "./bodies/compare-text.zh";
+import idPhotoEn from "./bodies/id-photo.en";
+import idPhotoEs from "./bodies/id-photo.es";
+import idPhotoFr from "./bodies/id-photo.fr";
+import idPhotoPt from "./bodies/id-photo.pt";
+import idPhotoZh from "./bodies/id-photo.zh";
+import fillPdfFormEn from "./bodies/fill-pdf-form.en";
+import fillPdfFormEs from "./bodies/fill-pdf-form.es";
+import fillPdfFormFr from "./bodies/fill-pdf-form.fr";
+import fillPdfFormPt from "./bodies/fill-pdf-form.pt";
+import fillPdfFormZh from "./bodies/fill-pdf-form.zh";
+import oldVideoToMp4En from "./bodies/old-video-to-mp4.en";
+import oldVideoToMp4Es from "./bodies/old-video-to-mp4.es";
+import oldVideoToMp4Fr from "./bodies/old-video-to-mp4.fr";
+import oldVideoToMp4Pt from "./bodies/old-video-to-mp4.pt";
+import oldVideoToMp4Zh from "./bodies/old-video-to-mp4.zh";
+import editPdfEn from "./bodies/edit-pdf.en";
+import editPdfEs from "./bodies/edit-pdf.es";
+import editPdfFr from "./bodies/edit-pdf.fr";
+import editPdfPt from "./bodies/edit-pdf.pt";
+import editPdfZh from "./bodies/edit-pdf.zh";
 
 // Markdown body of each guide, by guide id and language (see meta.ts and
 // src/lib/guides/render.ts for the link and screenshot syntax). Imported only
@@ -64,4 +94,10 @@ export const guideBodies: Record<string, Partial<Record<Locale, string>>> = {
   "read-aloud": { es: readAloudEs, en: readAloudEn, pt: readAloudPt, fr: readAloudFr, zh: readAloudZh },
   "sign-pdf": { es: signPdfEs, en: signPdfEn, pt: signPdfPt, fr: signPdfFr, zh: signPdfZh },
   "pdf-a": { es: pdfAEs, en: pdfAEn, pt: pdfAPt, fr: pdfAFr, zh: pdfAZh },
+  "remove-background": { es: removeBackgroundEs, en: removeBackgroundEn, pt: removeBackgroundPt, fr: removeBackgroundFr, zh: removeBackgroundZh },
+  "compare-text": { es: compareTextEs, en: compareTextEn, pt: compareTextPt, fr: compareTextFr, zh: compareTextZh },
+  "id-photo": { es: idPhotoEs, en: idPhotoEn, pt: idPhotoPt, fr: idPhotoFr, zh: idPhotoZh },
+  "fill-pdf-form": { es: fillPdfFormEs, en: fillPdfFormEn, pt: fillPdfFormPt, fr: fillPdfFormFr, zh: fillPdfFormZh },
+  "old-video-to-mp4": { es: oldVideoToMp4Es, en: oldVideoToMp4En, pt: oldVideoToMp4Pt, fr: oldVideoToMp4Fr, zh: oldVideoToMp4Zh },
+  "edit-pdf": { es: editPdfEs, en: editPdfEn, pt: editPdfPt, fr: editPdfFr, zh: editPdfZh },
 };
