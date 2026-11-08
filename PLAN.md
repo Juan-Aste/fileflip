@@ -644,4 +644,4 @@ Calidad para Google y AdSense (pedido del dueño el 2026-11-07; en la tarea prog
 - [x] 19.4c (hecha 2026-11-08: `docs/seo/plan-editorial.md`, `mainFor` + «Guías paso a paso» en herramientas y conversiones, `lastmod` del índice) `docs/seo/plan-editorial.md` con 12 guías más; `lastmod` correcto de las guías en el sitemap; cada herramienta enlaza a su guía.
 
 ### 19.5 (pedida como 17.5) Verificación final
-- [ ] 19.5 Lighthouse, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium, test de URLs de Search Console, y `docs/launch-checklist.md` con los pasos del dueño en Search Console después del merge. «FASE 19 TERMINADA».
+- [x] 19.5 (hecha 2026-11-08: `docs/perf/2026-11-08-phase19.md`, `docs/launch-checklist.md` §9a) Lighthouse, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium, test de URLs de Search Console, y `docs/launch-checklist.md` con los pasos del dueño en Search Console después del merge. «FASE 19 TERMINADA».
