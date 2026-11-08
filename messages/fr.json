@@ -2141,7 +2141,13 @@
     "privacyServer": "Les documents sont convertis sur notre serveur avec LibreOffice, via une connexion chiffrée, et supprimés automatiquement sous 1 heure.",
     "relatedTitle": "Autres conversions",
     "linkLabel": "{from} en {to}",
-    "toolsTitle": "Plus d'outils pour vos fichiers {from} et {to}"
+    "toolsTitle": "Plus d'outils pour vos fichiers {from} et {to}",
+    "whenTitle": "Quand convertir {from} en {to}",
+    "differencesTitle": "{from} et {to} : quelles différences",
+    "keptTitle": "Ce qui est conservé",
+    "lostTitle": "Ce qui se perd ou peut changer",
+    "limitsTitle": "Limites de l’outil",
+    "faqTitle": "Questions fréquentes"
   },
   "Longtail": {
     "faqTitle": "Questions fréquentes"

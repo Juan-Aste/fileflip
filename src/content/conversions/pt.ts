@@ -1,0 +1,464 @@
+import type { ConversionContentMap } from "./types";
+
+// Fatos que os textos devem respeitar (revisar se o motor mudar):
+// - Documentos de escritório → PDF: LibreOffice (Gotenberg) no nosso servidor;
+//   plano gratuito: até 15 MB por arquivo e 5 arquivos por vez.
+// - PDF → Word: o texto é extraído com pdf.js e remontado em parágrafos e
+//   títulos, uma página do Word por página do PDF, até 300 páginas; sem
+//   imagens nem tabelas; um PDF digitalizado dá erro (é preciso passá-lo antes
+//   pelo OCR de PDF digitalizado).
+
+export const pt: ConversionContentMap = {
+  "pdf>docx": {
+    when: [
+      "Converter um PDF em Word é útil quando você precisa reaproveitar ou corrigir o texto: atualizar um currículo que você só tem em PDF, citar parágrafos de um relatório, traduzir um documento ou refazer um contrato com alterações. Copiar e colar do leitor de PDF costuma quebrar as linhas em qualquer lugar; aqui o texto já chega unido em parágrafos.",
+      "Se você só quer trocar uma palavra, adicionar uma assinatura ou ocultar um dado, não precisa passar pelo Word: é mais rápido usar o Editar PDF e manter o layout original intacto.",
+    ],
+    differences: [
+      "Um PDF foi feito para aparecer igual em qualquer tela e impressora: cada letra tem uma posição fixa na página, e o arquivo não sabe o que é um parágrafo, uma tabela ou uma lista. Já um documento do Word guarda o texto como um fluxo que se reorganiza enquanto você digita.",
+      "Por isso, converter de PDF para Word não é “abrir” o PDF, e sim reconstruir o documento: é preciso deduzir quais linhas formam um parágrafo e quais são títulos. Essa reconstrução funciona muito bem com documentos de texto corrido e pior com layouts complexos.",
+    ],
+    kept: [
+      "Todo o texto selecionável, na ordem de leitura.",
+      "Os parágrafos unidos (sem quebras no meio da frase) e os títulos marcados como títulos do Word.",
+      "O tamanho aproximado da fonte e o tamanho de página do PDF.",
+      "Uma quebra de página para cada página do PDF, para facilitar a comparação com o original.",
+    ],
+    lost: [
+      "Imagens, logotipos e gráficos não são incluídos.",
+      "Tabelas e colunas viram parágrafos soltos: o texto está lá, mas é preciso formatá-lo de novo.",
+      "A fonte exata, as cores e os cabeçalhos ou rodapés repetidos podem mudar.",
+    ],
+    limits: [
+      "Só funciona com PDFs que têm texto. Se o PDF for uma foto ou uma digitalização, não há letras para extrair e a conversão avisa do erro: passe-o primeiro pelo “OCR de PDF digitalizado”, que reconhece o texto, e depois converta para Word.",
+      "São convertidas até 300 páginas por arquivo. No plano gratuito, cada arquivo pode ter até 15 MB. PDFs protegidos com senha de abertura precisam ser desbloqueados antes (com “Remover senha de PDF”, se você souber a senha).",
+    ],
+    steps: [
+      "Escolha o PDF (ou arraste-o). Se quiser testar antes, abra o PDF e veja se consegue selecionar o texto com o mouse: se não der, é uma digitalização.",
+      "Deixe Word como formato de saída e clique em Converter.",
+      "Baixe o .docx e abra-o no Word, no LibreOffice ou no Google Docs.",
+      "Revise as tabelas e as listas, que costumam precisar de um ajuste, e insira de novo as imagens de que precisar.",
+    ],
+    faq: [
+      {
+        q: "Por que meu PDF não é convertido para Word?",
+        a: "Quase sempre é porque o PDF é uma digitalização ou uma foto: ele contém uma imagem da página, não letras. Passe-o pelo “OCR de PDF digitalizado” e converta o resultado. Também falha se o PDF estiver protegido com senha de abertura.",
+      },
+      {
+        q: "O Word fica igual ao PDF?",
+        a: "O texto, sim; o layout, nem tanto. Parágrafos e títulos ficam bons, mas tabelas, colunas e imagens não são reconstruídas. Para documentos de texto corrido (cartas, relatórios, contratos), dá para editar o resultado na hora.",
+      },
+      {
+        q: "Posso editar um PDF sem convertê-lo para Word?",
+        a: "Sim. Para pequenas alterações (adicionar texto ou uma assinatura, ocultar um dado ou preencher um formulário), use o Editar PDF: o layout original continua intacto e não é preciso converter.",
+      },
+      {
+        q: "Meus documentos ficam armazenados?",
+        a: "A conversão de PDF para Word é feita no nosso servidor porque exige mais processamento. O arquivo é enviado criptografado, não é usado para mais nada e é apagado em menos de 1 hora.",
+      },
+    ],
+  },
+
+  "docx>pdf": {
+    when: [
+      "Converter um Word em PDF é o passo de sempre antes de enviar um currículo, entregar um trabalho da faculdade, enviar um documento para um órgão ou processo, ou mandar um orçamento: o PDF aparece igual em qualquer computador ou celular, mesmo que a outra pessoa não tenha o Word ou use outra versão, e ninguém o altera sem querer.",
+      "Também vale a pena quando um site só aceita PDF ou quando você quer imprimir em outro lugar sem que as margens se desloquem.",
+    ],
+    differences: [
+      "Um .docx é um documento editável: o texto se reorganiza conforme as fontes instaladas, o tamanho da página e a versão do programa. Por isso, um mesmo Word pode aparecer diferente em dois computadores.",
+      "O PDF fixa cada página exatamente como ela está no momento da conversão, com as fontes incorporadas. Em troca, deixa de ser prático de editar: se depois for preciso mudar algo, o melhor é corrigir o Word e converter de novo.",
+    ],
+    kept: [
+      "O texto com seus estilos, tabelas, imagens, listas, cabeçalhos e rodapés.",
+      "Os números de página e as quebras de página do documento.",
+      "Os links, que continuam funcionando no PDF.",
+      "O tamanho do papel e as margens configurados no Word.",
+    ],
+    lost: [
+      "Os comentários e o controle de alterações não são impressos como na exibição de revisão do Word: aceite ou rejeite as alterações antes de converter para ter certeza do resultado.",
+      "Se o documento usar uma fonte pouco comum que não está no servidor, ela é substituída por outra de medidas parecidas, e alguma linha pode mudar de lugar.",
+      "Macros e campos que se atualizam sozinhos não são executados: o PDF mostra o último valor salvo.",
+    ],
+    limits: [
+      "A conversão é feita no nosso servidor com o LibreOffice. No plano gratuito, você pode converter até 5 arquivos por vez, de até 15 MB cada.",
+      "Documentos protegidos com senha de abertura não podem ser convertidos: remova a senha no Word antes de enviá-lo.",
+    ],
+    steps: [
+      "Salve as últimas alterações no Word e, se usou o controle de alterações, aceite-as ou rejeite-as.",
+      "Escolha o arquivo .docx (ou vários) e deixe PDF como formato de saída.",
+      "Clique em Converter e baixe o PDF.",
+      "Abra-o e confira as quebras de página antes de enviá-lo, principalmente se você usou fontes especiais.",
+    ],
+    faq: [
+      {
+        q: "Por que o PDF está com uma fonte diferente da do meu Word?",
+        a: "Porque essa fonte não está instalada no servidor e foi substituída por uma parecida. As fontes comuns (como Arial, Times New Roman ou Calibri) têm equivalentes com as mesmas medidas. Se você precisar de uma fonte exata, outra opção é exportar para PDF no seu próprio Word.",
+      },
+      {
+        q: "Dá para editar o PDF de novo?",
+        a: "Para pequenas alterações, sim, com o Editar PDF. Para mudanças maiores, é melhor editar o Word original e converter de novo; passar o PDF para Word outra vez perde imagens e tabelas.",
+      },
+      {
+        q: "Posso deixar o PDF mais leve?",
+        a: "Sim. Se o documento tiver muitas fotos, passe o PDF pelo Comprimir PDF: ele reduz as imagens e costuma diminuir bastante o tamanho sem que o texto perca qualidade.",
+      },
+      {
+        q: "O que acontece com meu documento depois da conversão?",
+        a: "Ele é convertido no nosso servidor por conexão criptografada, não é usado para mais nada e é apagado em menos de 1 hora.",
+      },
+    ],
+  },
+
+  "doc>pdf": {
+    when: [
+      "Os arquivos .doc são documentos do Word 97 a 2003. Eles ainda aparecem em arquivos antigos de empresas, escolas e escritórios: modelos de contrato, ofícios, formulários que circulam há anos. Convertê-los em PDF é a forma mais simples de compartilhá-los ou arquivá-los sem depender de que a outra pessoa tenha um programa que os abra direito.",
+      "Se você ainda vai continuar editando, é melhor abri-lo no Word ou no LibreOffice e salvá-lo como .docx; para enviar ou imprimir, o PDF basta.",
+    ],
+    differences: [
+      "O .doc é um formato binário antigo, anterior ao .docx (que é XML compactado). Os programas atuais o abrem, mas cada um interpreta alguns detalhes do seu jeito, e por isso um .doc antigo pode aparecer um pouco diferente em cada computador.",
+      "Ao convertê-lo em PDF, essa aparência fica fixa: o que você vê no PDF é o que qualquer pessoa verá ao abri-lo, em qualquer dispositivo.",
+    ],
+    kept: [
+      "O texto, os estilos, as tabelas, as imagens e os cabeçalhos e rodapés.",
+      "A numeração de páginas e o tamanho do papel do documento.",
+      "Os acentos e os caracteres especiais.",
+    ],
+    lost: [
+      "Elementos da época, como WordArt, objetos incorporados de outros programas ou desenhos feitos com as ferramentas antigas, podem aparecer diferentes ou como uma imagem estática.",
+      "As fontes que não estão no servidor são substituídas por outras de medidas parecidas.",
+      "As macros não são executadas.",
+    ],
+    limits: [
+      "A conversão é feita no nosso servidor com o LibreOffice, que lê muito bem o formato .doc. No plano gratuito: até 5 arquivos por vez, de até 15 MB cada.",
+      "Arquivos .doc protegidos com senha não podem ser convertidos.",
+    ],
+    steps: [
+      "Escolha o arquivo .doc (ou vários de uma vez, por exemplo uma pasta de modelos antigos).",
+      "Deixe PDF como formato de saída e clique em Converter.",
+      "Baixe os PDFs (com vários arquivos, você pode baixar todos juntos em um ZIP).",
+    ],
+    faq: [
+      {
+        q: ".doc e .docx são a mesma coisa?",
+        a: "Não. O .doc é o formato do Word até 2003, e o .docx é o do Word 2007 em diante. Os dois são convertidos em PDF igualmente bem; o .docx costuma dar um resultado mais fiel em layouts complicados.",
+      },
+      {
+        q: "Meu .doc antigo ficou estranho no PDF. O que eu faço?",
+        a: "Se ele tiver WordArt ou objetos incorporados, abra-o no Word ou no LibreOffice, salve como .docx e converta esse arquivo. Confira também se ele não usa fontes muito incomuns.",
+      },
+      {
+        q: "Meus arquivos ficam armazenados?",
+        a: "Eles são convertidos no nosso servidor por conexão criptografada e apagados em menos de 1 hora. Não são usados para mais nada.",
+      },
+    ],
+  },
+
+  "xlsx>pdf": {
+    when: [
+      "Converter um Excel em PDF serve para mandar uma planilha que a outra pessoa só precisa ler: um orçamento, uma tabela de preços, uma escala de horários, um relatório de despesas ou um demonstrativo de pagamento. O PDF não pode ser alterado sem querer, abre em qualquer celular e é impresso igual em qualquer lugar.",
+      "Se a outra pessoa precisar trabalhar com os dados (filtrar, somar, copiar), mande o Excel ou um CSV: no PDF os números aparecem, mas já não são uma tabela em que dá para fazer cálculos.",
+    ],
+    differences: [
+      "Uma planilha do Excel não tem páginas: é uma grade que pode ser muito mais larga e comprida do que uma folha de papel, com fórmulas que são recalculadas. O PDF, por outro lado, é organizado em páginas fixas.",
+      "Por isso, na conversão, a planilha é dividida em páginas conforme a configuração de impressão salva no arquivo: orientação, área de impressão, margens e a opção de ajustar a uma página de largura. O que você vê na visualização de impressão do Excel é o mais próximo do resultado.",
+    ],
+    kept: [
+      "Os valores como aparecem nas células (o resultado das fórmulas, não a fórmula).",
+      "A formatação: bordas, cores de preenchimento, negrito, formatos de número e de data.",
+      "Os gráficos e as imagens inseridas.",
+      "Todas as abas com conteúdo, uma depois da outra.",
+    ],
+    lost: [
+      "Fórmulas, filtros e tabelas dinâmicas deixam de funcionar: fica uma foto dos valores.",
+      "Se a planilha for mais larga do que a página e não estiver configurada para se ajustar, as colunas da direita vão para páginas separadas.",
+      "Abas ocultas, comentários e macros não são incluídos.",
+    ],
+    limits: [
+      "A conversão é feita no nosso servidor com o LibreOffice. No plano gratuito, até 5 arquivos por vez, de até 15 MB cada. Planilhas enormes (dezenas de milhares de linhas) podem demorar ou gerar centenas de páginas.",
+      "Arquivos protegidos com senha de abertura não podem ser convertidos.",
+    ],
+    steps: [
+      "No Excel, confira a visualização de impressão: escolha paisagem se a tabela for larga e “Ajustar Todas as Colunas em Uma Página” para que ela não seja cortada. Salve o arquivo.",
+      "Escolha o .xlsx e deixe PDF como formato de saída.",
+      "Clique em Converter e baixe o PDF.",
+      "Se alguma coluna foi parar em outra página, ajuste a configuração de impressão no Excel e converta de novo.",
+    ],
+    faq: [
+      {
+        q: "Por que minha tabela ficou cortada em várias páginas?",
+        a: "Porque a planilha é mais larga do que a folha. No Excel, em Layout da Página, escolha a orientação paisagem e ajuste para 1 página de largura, salve e converta de novo.",
+      },
+      {
+        q: "Posso converter só uma aba?",
+        a: "Todas as abas com conteúdo são convertidas. Se você quiser só uma, salve uma cópia do arquivo com essa aba ou escolha depois as páginas que interessam com o Dividir PDF.",
+      },
+      {
+        q: "E se eu precisar do caminho inverso, de PDF para Excel?",
+        a: "Use o PDF para Excel: ele detecta as tabelas de um PDF com texto e as passa para células. Funciona melhor com tabelas simples e alinhadas.",
+      },
+      {
+        q: "Minhas planilhas ficam armazenadas?",
+        a: "Elas são convertidas no nosso servidor por conexão criptografada e apagadas em menos de 1 hora.",
+      },
+    ],
+  },
+
+  "xls>pdf": {
+    when: [
+      "O .xls é o formato do Excel até a versão 2003. Muitas empresas ainda têm planilhas históricas, sistemas contábeis antigos que exportam .xls ou modelos que passam de mão em mão há anos. Convertê-las em PDF permite arquivá-las ou enviá-las sem se preocupar com compatibilidade.",
+      "Se você ainda vai atualizar os dados, salve a planilha como .xlsx no Excel ou no LibreOffice; para ler, imprimir ou anexar a um documento para um órgão ou processo, o PDF basta.",
+    ],
+    differences: [
+      "O .xls é um formato binário com os limites da sua época: até 65.536 linhas e 256 colunas por aba. O .xlsx moderno tem muito mais capacidade e é mais fácil de ler para os programas atuais.",
+      "O PDF não tem fórmulas nem células: é a planilha impressa em páginas, com a configuração de impressão que estiver salva no arquivo.",
+    ],
+    kept: [
+      "Os valores visíveis das células, com seus formatos de número, data e moeda.",
+      "Bordas, cores, fontes e gráficos.",
+      "Todas as abas com conteúdo.",
+    ],
+    lost: [
+      "As fórmulas e as macros (muito comuns em planilhas antigas) não são executadas: fica o último valor salvo.",
+      "As colunas que não cabem na largura da página vão para páginas separadas se a planilha não estiver configurada para se ajustar.",
+      "Abas ocultas e comentários não são incluídos.",
+    ],
+    limits: [
+      "A conversão é feita no nosso servidor com o LibreOffice. No plano gratuito: até 5 arquivos por vez e 15 MB por arquivo.",
+      "Arquivos com senha de abertura não podem ser convertidos.",
+    ],
+    steps: [
+      "Se puder, abra a planilha e confira a configuração de impressão (orientação e ajuste à página). Se você não tiver o Excel, converta direto e veja o resultado.",
+      "Escolha o .xls (ou vários) e deixe PDF como formato de saída.",
+      "Clique em Converter e baixe o PDF.",
+    ],
+    faq: [
+      {
+        q: "Os valores calculados saem certos se a planilha tiver macros?",
+        a: "Sai o último valor que ficou salvo no arquivo. As macros não são executadas durante a conversão; então, se a planilha precisar ser recalculada com uma macro, faça isso no Excel antes de converter.",
+      },
+      {
+        q: "Posso passar o .xls para um formato moderno?",
+        a: "Sim: abra-o no Excel ou no LibreOffice Calc e use Salvar como .xlsx. Se você só precisar dos dados, também pode exportá-los para CSV com o Excel para CSV.",
+      },
+      {
+        q: "Meus arquivos ficam armazenados?",
+        a: "Eles são convertidos no nosso servidor por conexão criptografada e apagados em menos de 1 hora.",
+      },
+    ],
+  },
+
+  "pptx>pdf": {
+    when: [
+      "Converter um PowerPoint em PDF é a forma mais segura de compartilhar uma apresentação: para mandar os slides depois de uma aula ou reunião, publicá-los em uma sala de aula virtual ou apresentar em um computador de outra pessoa sem surpresas com fontes ou versões.",
+      "O PDF é mais leve do que muitas apresentações, abre em qualquer celular e não deixa ninguém alterar o conteúdo sem querer.",
+    ],
+    differences: [
+      "Uma apresentação .pptx tem slides com animações, transições, vídeos e anotações do orador, e é exibida no modo de apresentação. O PDF é um documento estático: uma página por slide, exatamente como cada um fica no final.",
+      "Para apresentar ao vivo com animações, continue usando o PowerPoint; para distribuir ou arquivar, o PDF é mais prático.",
+    ],
+    kept: [
+      "Uma página por slide, com seu design, fundos, imagens, gráficos e tabelas.",
+      "O texto, que continua selecionável e pesquisável.",
+      "Os links para sites.",
+    ],
+    lost: [
+      "Animações e transições: cada slide aparece no estado final.",
+      "Vídeos e áudios incorporados: fica a imagem de capa, e eles não são reproduzidos.",
+      "As anotações do orador não são incluídas.",
+      "Fontes pouco comuns que não estão no servidor são substituídas por outras parecidas, e alguma caixa de texto pode ficar um pouco diferente.",
+    ],
+    limits: [
+      "A conversão é feita no nosso servidor com o LibreOffice. No plano gratuito, até 15 MB por arquivo e 5 arquivos por vez: se a sua apresentação for maior por causa dos vídeos, remova-os ou compacte-os antes.",
+      "Apresentações com senha de abertura não podem ser convertidas.",
+    ],
+    steps: [
+      "Se a apresentação tiver vídeos pesados, remova-os de uma cópia: no PDF eles não vão ser reproduzidos.",
+      "Escolha o .pptx e deixe PDF como formato de saída.",
+      "Clique em Converter e baixe o PDF.",
+      "Revise os slides com fontes especiais; se algo saiu do lugar, experimente uma fonte comum.",
+    ],
+    faq: [
+      {
+        q: "As anotações do orador são incluídas?",
+        a: "Não: o PDF tem só os slides, um por página. Se você precisar distribuir as anotações, no PowerPoint dá para imprimir o modo de exibição Anotações em PDF.",
+      },
+      {
+        q: "As animações se perdem?",
+        a: "Sim. Cada slide fica como aparece no final, com todos os elementos visíveis. Se uma animação escondia algo, isso também vai aparecer.",
+      },
+      {
+        q: "Meu PowerPoint tem mais de 15 MB. O que eu faço?",
+        a: "Quase sempre é por causa dos vídeos ou de fotos muito grandes. Remova os vídeos de uma cópia ou, no PowerPoint, use Compactar Imagens; depois converta. Se o PDF também ficar pesado, passe-o pelo Comprimir PDF.",
+      },
+      {
+        q: "Minhas apresentações ficam armazenadas?",
+        a: "Elas são convertidas no nosso servidor por conexão criptografada e apagadas em menos de 1 hora.",
+      },
+    ],
+  },
+
+  "ppt>pdf": {
+    when: [
+      "O .ppt é o formato do PowerPoint até 2003. Ele aparece em apresentações de cursos e treinamentos antigos que ainda circulam por aí. Convertê-las em PDF permite vê-las em qualquer dispositivo, inclusive em celulares que não abrem .ppt, e arquivá-las sem depender de um programa.",
+    ],
+    differences: [
+      "O .ppt é um formato binário antigo; os programas atuais o abrem, mas às vezes com pequenas diferenças no layout, nas fontes ou nos efeitos. O .pptx o substituiu em 2007.",
+      "O PDF deixa cada slide fixo como uma página: não há animações nem modo de apresentação, mas ele aparece igual em qualquer lugar.",
+    ],
+    kept: [
+      "Uma página por slide, com textos, imagens, fundos e tabelas.",
+      "O texto selecionável.",
+    ],
+    lost: [
+      "Animações, transições, sons e vídeos.",
+      "As anotações do orador.",
+      "Efeitos e WordArt da época podem aparecer um pouco diferentes; as fontes que não estão no servidor são substituídas por outras parecidas.",
+    ],
+    limits: [
+      "A conversão é feita no nosso servidor com o LibreOffice. No plano gratuito, até 15 MB por arquivo e 5 arquivos por vez.",
+      "Arquivos com senha de abertura não podem ser convertidos.",
+    ],
+    steps: [
+      "Escolha o arquivo .ppt (ou vários).",
+      "Deixe PDF como formato de saída e clique em Converter.",
+      "Baixe o PDF e confira se os slides com efeitos ficaram bons.",
+    ],
+    faq: [
+      {
+        q: "Posso passar um .ppt para .pptx?",
+        a: "Sim, abrindo-o no PowerPoint ou no LibreOffice Impress e salvando como .pptx. Para compartilhar, o PDF costuma ser suficiente.",
+      },
+      {
+        q: "Por que um slide ficou diferente no PDF?",
+        a: "Arquivos .ppt antigos às vezes usam efeitos ou fontes que hoje são desenhados de outro jeito. Se for importante, abra-o no PowerPoint, troque esse elemento e converta de novo.",
+      },
+      {
+        q: "Meus arquivos ficam armazenados?",
+        a: "Eles são convertidos no nosso servidor por conexão criptografada e apagados em menos de 1 hora.",
+      },
+    ],
+  },
+
+  "odt>pdf": {
+    when: [
+      "O .odt é o formato de texto do LibreOffice e do OpenOffice, usado por muitas equipes da administração pública e da educação. Convertê-lo em PDF é útil para enviar o documento a alguém que usa o Word ou a um site que só aceita PDF.",
+    ],
+    differences: [
+      "O ODT (OpenDocument) é um formato aberto e padronizado para documentos editáveis, como o .docx do Word. O Word consegue abri-lo, mas nem sempre o exibe igual ao LibreOffice. Já o PDF aparece igual em qualquer lugar.",
+      "Como a nossa conversão usa justamente o LibreOffice, o ODT é o formato que melhor se converte: o resultado é igual a exportar para PDF no LibreOffice Writer.",
+    ],
+    kept: [
+      "Texto, estilos, tabelas, imagens, notas de rodapé, cabeçalhos e rodapés.",
+      "Sumários e numeração de páginas.",
+      "Os links.",
+    ],
+    lost: [
+      "Os comentários e as alterações registradas não são impressos como na exibição de revisão: aceite-os ou rejeite-os antes.",
+      "As fontes que não estão no servidor são substituídas por outras parecidas.",
+    ],
+    limits: [
+      "A conversão é feita no nosso servidor. No plano gratuito, até 15 MB por arquivo e 5 arquivos por vez.",
+      "Documentos com senha não podem ser convertidos.",
+    ],
+    steps: [
+      "Escolha o arquivo .odt (ou vários).",
+      "Deixe PDF como formato de saída e clique em Converter.",
+      "Baixe o PDF.",
+    ],
+    faq: [
+      {
+        q: "Qual é a diferença em relação a exportar para PDF no LibreOffice?",
+        a: "Nenhuma no resultado: usamos o mesmo motor. Esta página é útil quando você não tem o LibreOffice à mão, por exemplo em um celular ou no computador de outra pessoa.",
+      },
+      {
+        q: "Posso converter planilhas ou apresentações do LibreOffice?",
+        a: "Sim, os arquivos .ods (planilhas) e .odp (apresentações) também são convertidos em PDF.",
+      },
+      {
+        q: "Meus documentos ficam armazenados?",
+        a: "Eles são convertidos no nosso servidor por conexão criptografada e apagados em menos de 1 hora.",
+      },
+    ],
+  },
+
+  "rtf>pdf": {
+    when: [
+      "O RTF (formato de texto rico) aparece em documentos gerados por sistemas de gestão, programas médicos ou contábeis, e em arquivos salvos com o WordPad ou o TextEdit. Convertê-lo em PDF é a forma de enviá-lo ou arquivá-lo com uma aparência fixa.",
+    ],
+    differences: [
+      "O RTF é um formato de texto com formatação básica (negrito, itálico, fontes, tabelas simples e imagens) que quase qualquer editor de texto consegue abrir. É muito compatível, mas cada programa o interpreta de um jeito um pouco diferente.",
+      "O PDF congela essa formatação em páginas, com as fontes incorporadas.",
+    ],
+    kept: [
+      "Texto com negrito, itálico, sublinhado, tamanhos e cores.",
+      "Tabelas simples, imagens e alinhamento de parágrafos.",
+      "Margens e tamanho da página, se o arquivo os definir.",
+    ],
+    lost: [
+      "Elementos que alguns programas adicionam ao RTF do seu próprio jeito (campos especiais, objetos incorporados) podem não aparecer.",
+      "As fontes que não estão no servidor são substituídas por outras parecidas.",
+    ],
+    limits: [
+      "A conversão é feita no nosso servidor com o LibreOffice. No plano gratuito, até 15 MB por arquivo e 5 arquivos por vez.",
+    ],
+    steps: [
+      "Escolha o arquivo .rtf (ou vários).",
+      "Deixe PDF como formato de saída e clique em Converter.",
+      "Baixe o PDF.",
+    ],
+    faq: [
+      {
+        q: "Dá para abrir o RTF no Word?",
+        a: "Sim, o Word, o LibreOffice e o Google Docs abrem esse formato. Convertê-lo em PDF é útil quando você quer que ele apareça sempre igual ou quando um sistema só aceita PDF.",
+      },
+      {
+        q: "Um sistema gera muitos RTFs para mim. Posso converter todos juntos?",
+        a: "Sim, escolha vários de uma vez (até 5 por lote no plano gratuito) e baixe-os juntos em um ZIP.",
+      },
+      {
+        q: "Meus arquivos ficam armazenados?",
+        a: "Eles são convertidos no nosso servidor por conexão criptografada e apagados em menos de 1 hora.",
+      },
+    ],
+  },
+
+  "txt>pdf": {
+    when: [
+      "Converter um TXT em PDF serve para entregar anotações, registros, listas ou código como um documento pronto para imprimir ou anexar, com páginas numeradas pelo leitor de PDF e uma aparência que não depende do programa usado para abri-lo.",
+    ],
+    differences: [
+      "Um .txt tem só caracteres e quebras de linha: não guarda fontes, tamanhos nem margens, e cada programa o exibe do seu jeito. O PDF o coloca em páginas com fonte e margens fixas.",
+    ],
+    kept: [
+      "Todo o texto, com suas quebras de linha e linhas em branco.",
+      "Os caracteres acentuados e os de outros alfabetos, se o arquivo estiver salvo em UTF-8.",
+    ],
+    lost: [
+      "Não há formatação para manter: o PDF usa uma fonte padrão, e as linhas muito longas são quebradas para caber na largura da página.",
+      "As tabulações podem ficar alinhadas de um jeito diferente do seu editor.",
+    ],
+    limits: [
+      "A conversão é feita no nosso servidor com o LibreOffice. No plano gratuito, até 15 MB por arquivo (é muito texto) e 5 arquivos por vez.",
+      "Se aparecerem caracteres estranhos no lugar dos acentos, o arquivo não está em UTF-8: abra-o no seu editor, salve com a codificação UTF-8 e converta de novo.",
+    ],
+    steps: [
+      "Escolha o arquivo .txt (ou vários).",
+      "Deixe PDF como formato de saída e clique em Converter.",
+      "Baixe o PDF e confira se os acentos aparecem corretamente.",
+    ],
+    faq: [
+      {
+        q: "Posso escolher a fonte ou o tamanho da letra?",
+        a: "Não nesta conversão. Se você quiser formatar o texto (títulos, negrito, listas), escreva-o em Markdown e use o Markdown para PDF, ou cole-o em um editor de texto.",
+      },
+      {
+        q: "Por que aparecem símbolos estranhos no lugar dos acentos?",
+        a: "Porque o arquivo está salvo em uma codificação antiga. Abra-o no Bloco de Notas ou em outro editor, salve como UTF-8 e converta de novo.",
+      },
+      {
+        q: "Meus arquivos ficam armazenados?",
+        a: "Eles são convertidos no nosso servidor por conexão criptografada e apagados em menos de 1 hora.",
+      },
+    ],
+  },
+};

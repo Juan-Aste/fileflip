@@ -2141,7 +2141,13 @@
     "privacyServer": "Los documentos se convierten en nuestro servidor con LibreOffice, por conexión cifrada, y se borran automáticamente en menos de 1 hora.",
     "relatedTitle": "Otras conversiones",
     "linkLabel": "{from} a {to}",
-    "toolsTitle": "Más herramientas para tus archivos {from} y {to}"
+    "toolsTitle": "Más herramientas para tus archivos {from} y {to}",
+    "whenTitle": "Cuándo conviene pasar {from} a {to}",
+    "differencesTitle": "{from} y {to}: en qué se diferencian",
+    "keptTitle": "Qué se conserva",
+    "lostTitle": "Qué se pierde o puede cambiar",
+    "limitsTitle": "Límites de la herramienta",
+    "faqTitle": "Preguntas frecuentes"
   },
   "Longtail": {
     "faqTitle": "Preguntas frecuentes"

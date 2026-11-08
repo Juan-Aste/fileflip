@@ -2141,7 +2141,13 @@
     "privacyServer": "文档通过加密连接在我们的服务器上用 LibreOffice 转换，并在 1 小时内自动删除。",
     "relatedTitle": "其他转换",
     "linkLabel": "{from} 转 {to}",
-    "toolsTitle": "更多适用于 {from} 和 {to} 文件的工具"
+    "toolsTitle": "更多适用于 {from} 和 {to} 文件的工具",
+    "whenTitle": "什么时候需要把 {from} 转成 {to}",
+    "differencesTitle": "{from} 和 {to} 有什么区别",
+    "keptTitle": "会保留的内容",
+    "lostTitle": "会丢失或可能变化的内容",
+    "limitsTitle": "工具的限制",
+    "faqTitle": "常见问题"
   },
   "Longtail": {
     "faqTitle": "常见问题"

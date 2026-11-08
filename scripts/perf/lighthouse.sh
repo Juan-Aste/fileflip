@@ -16,6 +16,8 @@ PAGES=(
   "home /es"
   "image-conversion /es/jpg-a-webp"
   "pdf-conversion /es/pdf-a-jpg"
+  "doc-conversion /es/word-a-pdf"
+  "pdf-word-conversion /es/pdf-a-word"
   "pdf-tool /es/comprimir-pdf"
   "longtail /es/heic-a-jpg-desde-iphone"
   "pricing /es/pricing"

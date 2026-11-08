@@ -2141,7 +2141,13 @@
     "privacyServer": "Documents are converted on our server with LibreOffice over an encrypted connection, and automatically deleted within 1 hour.",
     "relatedTitle": "Other conversions",
     "linkLabel": "{from} to {to}",
-    "toolsTitle": "More tools for your {from} and {to} files"
+    "toolsTitle": "More tools for your {from} and {to} files",
+    "whenTitle": "When to convert {from} to {to}",
+    "differencesTitle": "{from} vs. {to}: how they differ",
+    "keptTitle": "What is kept",
+    "lostTitle": "What is lost or may change",
+    "limitsTitle": "Limits of the tool",
+    "faqTitle": "Frequently asked questions"
   },
   "Longtail": {
     "faqTitle": "Frequently asked questions"
