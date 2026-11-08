@@ -289,6 +289,42 @@ async function compareTexts(page, l, a, b, mode) {
   return toolBlock(page);
 }
 
+/**
+ * An illustrated, made-up portrait (no real person) for the ID photo shots:
+ * 1200 × 1600 JPEG, head and eyes where the 3.5 × 4.5 cm framing guide expects them.
+ */
+async function portraitJpg(locale) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef2f5"/><stop offset="1" stop-color="#dde3e8"/></linearGradient>
+    <radialGradient id="skin" cx="45%" cy="40%" r="65%"><stop offset="0" stop-color="#e9b996"/><stop offset="1" stop-color="#c98f6b"/></radialGradient>
+    <linearGradient id="sweater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d5a80"/><stop offset="1" stop-color="#2b4162"/></linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#wall)"/>
+  <path d="M120 1600 C140 1430 300 1360 480 1330 L720 1330 C900 1360 1060 1430 1080 1600 Z" fill="url(#sweater)"/>
+  <path d="M500 1140 L700 1140 L715 1350 C660 1400 540 1400 485 1350 Z" fill="#c08564"/>
+  <path d="M485 1335 C540 1395 660 1395 715 1335 L760 1345 C700 1430 500 1430 440 1345 Z" fill="#2b4162"/>
+  <ellipse cx="600" cy="640" rx="345" ry="430" fill="#3b2a20"/>
+  <ellipse cx="292" cy="830" rx="42" ry="80" fill="#cf9572"/>
+  <ellipse cx="908" cy="830" rx="42" ry="80" fill="#cf9572"/>
+  <ellipse cx="600" cy="860" rx="305" ry="465" fill="url(#skin)"/>
+  <path d="M300 640 C320 380 480 300 620 310 C780 320 900 420 905 640 C860 470 760 420 600 430 C460 440 360 500 300 640 Z" fill="#3b2a20"/>
+  <path d="M420 628 C455 610 515 610 545 624" stroke="#3b2a20" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M655 624 C685 610 745 610 780 628" stroke="#3b2a20" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <ellipse cx="482" cy="690" rx="44" ry="22" fill="#fbfbf8"/>
+  <ellipse cx="718" cy="690" rx="44" ry="22" fill="#fbfbf8"/>
+  <circle cx="482" cy="690" r="17" fill="#4a3426"/>
+  <circle cx="718" cy="690" r="17" fill="#4a3426"/>
+  <circle cx="488" cy="684" r="5" fill="#fff"/>
+  <circle cx="724" cy="684" r="5" fill="#fff"/>
+  <path d="M600 720 C592 800 575 860 570 900 C585 918 615 918 632 905" stroke="#a8714f" stroke-width="9" fill="none" stroke-linecap="round"/>
+  <path d="M525 1030 C565 1042 635 1042 675 1030" stroke="#9c5a4a" stroke-width="12" fill="none" stroke-linecap="round"/>
+</svg>`;
+  const file = join(work, `${{ es: "retrato", en: "portrait", pt: "retrato", fr: "portrait", zh: "portrait" }[locale]}.jpg`);
+  writeFileSync(file, await sharp(Buffer.from(svg)).jpeg({ quality: 90 }).toBuffer());
+  return file;
+}
+
 // name → steps that leave the page ready for the shot in a language; returns the element to capture.
 const shots = {
   "pdf-a-word-convertir": async (page, l) => {
@@ -397,6 +433,23 @@ const shots = {
   },
   "comparar-textos-lineas": (page, l) => compareTexts(page, l, compareSamples[l].contractA, compareSamples[l].contractB, "line"),
   "comparar-textos-palabras": (page, l) => compareTexts(page, l, compareSamples[l].essayA, compareSamples[l].essayB, "word"),
+  "foto-carnet-encuadrar": async (page, l) => {
+    await open(page, l, toolSlug("id-photo", l));
+    await pick(page, l, [await portraitJpg(l)]);
+    await page.getByText(msg(l, "IdPhotoTool.frameHint")).waitFor({ timeout: 30_000 });
+    return toolBlock(page);
+  },
+  "foto-carnet-resultado": async (page, l) => {
+    await open(page, l, toolSlug("id-photo", l));
+    await pick(page, l, [await portraitJpg(l)]);
+    await page.getByText(msg(l, "IdPhotoTool.frameHint")).waitFor({ timeout: 30_000 });
+    await page.getByRole("button", { name: msg(l, "Tools.id-photo.action"), exact: true }).click();
+    // The result message itself ("… 8 copies …"), not the same words in the page's About text.
+    const [before, after] = msg(l, "IdPhotoTool.doneSheet").split("{copies}");
+    const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    await page.getByText(new RegExp(`^${escape(before)}\\d+${escape(after)}$`)).waitFor({ timeout: 60_000 });
+    return toolBlock(page);
+  },
 };
 
 const args = process.argv.slice(2);

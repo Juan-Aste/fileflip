@@ -119,6 +119,46 @@
     "width": 800,
     "height": 746
   },
+  "foto-carnet-encuadrar": {
+    "width": 800,
+    "height": 1172
+  },
+  "foto-carnet-encuadrar.en": {
+    "width": 800,
+    "height": 1172
+  },
+  "foto-carnet-encuadrar.fr": {
+    "width": 800,
+    "height": 1172
+  },
+  "foto-carnet-encuadrar.pt": {
+    "width": 800,
+    "height": 1172
+  },
+  "foto-carnet-encuadrar.zh": {
+    "width": 800,
+    "height": 1172
+  },
+  "foto-carnet-resultado": {
+    "width": 800,
+    "height": 418
+  },
+  "foto-carnet-resultado.en": {
+    "width": 800,
+    "height": 418
+  },
+  "foto-carnet-resultado.fr": {
+    "width": 800,
+    "height": 418
+  },
+  "foto-carnet-resultado.pt": {
+    "width": 800,
+    "height": 418
+  },
+  "foto-carnet-resultado.zh": {
+    "width": 800,
+    "height": 418
+  },
   "heic-convertir": {
     "width": 800,
     "height": 663

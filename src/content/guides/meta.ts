@@ -512,6 +512,43 @@ export const guides: GuideMeta[] = [
       },
     },
   },
+  {
+    id: "id-photo",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["id-photo", "remove-background", "crop-image", "resize-image", "compress-image", "remove-exif"],
+    related: ["remove-background", "heic-to-jpg", "image-formats"],
+    mainFor: { tools: ["id-photo"] },
+    howTo: true,
+    image: "foto-carnet-encuadrar",
+    versions: {
+      es: {
+        slug: "como-hacer-foto-carnet-con-el-celular",
+        title: "Cómo hacer una foto carnet o de pasaporte con el celular",
+        description: "Saca la foto en casa, recórtala a 3×4, 4×4, 3,5×4,5 cm o 2×2 in con guía de rostro e imprime varias copias en una foto de 10×15 cm. Consejos de luz y fondo.",
+      },
+      en: {
+        slug: "how-to-take-a-passport-photo-with-your-phone",
+        title: "How to take a passport or ID photo with your phone",
+        description: "Take the photo at home, crop it to 2×2 in, 3.5×4.5 cm and other sizes with a face guide, and print several copies on one 4×6 in print. Light and background tips.",
+      },
+      pt: {
+        slug: "como-tirar-foto-3x4-pelo-celular",
+        title: "Como tirar foto 3x4 ou de passaporte pelo celular",
+        description: "Tire a foto em casa, corte em 3×4, 4×4, 3,5×4,5 cm ou 2×2 pol. com guia de rosto e imprima várias cópias numa foto 10×15 cm. Dicas de luz e fundo.",
+      },
+      fr: {
+        slug: "comment-faire-une-photo-d-identite-avec-son-telephone",
+        title: "Comment faire une photo d’identité ou de passeport avec son téléphone",
+        description: "Prenez la photo chez vous, recadrez-la en 3,5×4,5 cm, 2×2 po ou autre avec un guide pour le visage et imprimez plusieurs copies sur un tirage 10×15 cm.",
+      },
+      zh: {
+        slug: "how-to-make-an-id-photo-with-your-phone",
+        title: "如何用手机拍证件照和护照照片",
+        description: "在家用手机拍照，借助脸部参考框裁成 3.5×4.5 cm、2×2 英寸等证件尺寸，并在一张 10×15 cm 相纸上排版打印多张。附光线和背景建议。",
+      },
+    },
+  },
 ];
 
 export function guideById(id: string): GuideMeta | undefined {

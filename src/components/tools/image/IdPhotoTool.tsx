@@ -29,8 +29,8 @@ type Preview = { status: "loading" } | { status: "ready"; url: string; image: Si
 
 /**
  * Where the head goes: an oval from the crown (12 % from the top) to the chin
- * (about 72 % of the photo's height, the middle of the 70–80 % passports ask
- * for), and a line for the eyes.
+ * (84 %), so the head is about 72 % of the photo's height (the middle of the
+ * 70–80 % passports ask for), and a line for the eyes.
  */
 function FaceGuide() {
   return (
