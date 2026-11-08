@@ -7,7 +7,7 @@ Every current operating system has a feature to read text aloud. They're worth k
 
 - **Windows**: the Edge browser has **Read aloud** (in the menu or with Ctrl + Shift + U) for web pages and PDFs you open in it. For the whole system there's **Narrator** (Ctrl + Windows + Enter), designed for blind users, with many shortcuts.
 - **Mac**: in **System Settings → Accessibility → Spoken Content**, turn on **Speak selection**. Then select any text and press Option + Esc.
-- **iPhone and iPad**: in **Settings → Accessibility → Spoken Content**, turn on **Speak Selection** («Speak» appears when you select text) and **Speak Screen** (swipe down with two fingers from the top of the screen).
+- **iPhone and iPad**: in **Settings → Accessibility → Spoken Content**, turn on **Speak Selection** (“Speak” appears when you select text) and **Speak Screen** (swipe down with two fingers from the top of the screen).
 - **Android**: in **Settings → Accessibility**, turn on **Select to Speak**. Names may vary slightly depending on the phone's brand.
 - **Microsoft Word**: on the **Review** tab, **Read Aloud** reads the document from where the cursor is.
 
@@ -39,7 +39,7 @@ The text is extracted and read on your device: the file is never uploaded to a s
 
 **Device voices**: the ones that come with your system or browser. They start reading instantly and don't download anything. Their quality depends a lot on the device: on a Mac or an iPhone they usually sound good; on some Windows or Android devices, more robotic. If no voice is installed for your language, the tool tells you and you can install voices from your system settings.
 
-A privacy detail: some browser voices, marked **«online»** (such as Google's or Microsoft's in Chrome and Edge), send the text to that provider to generate the audio. If the text is private, choose a voice that isn't marked «online».
+A privacy detail: some browser voices, marked **“online”** (such as Google's or Microsoft's in Chrome and Edge), send the text to that provider to generate the audio. If the text is private, choose a voice that isn't marked “online”.
 
 **AI voice**: a speech synthesis model (Supertonic 3) that runs inside your browser. It sounds more natural, has 10 voices and lets you **download an MP3**. In exchange:
 
@@ -74,10 +74,10 @@ If what you need is the opposite, turning what someone said in a recording or a 
 
 ## Summary
 
-- Your system already reads aloud: Edge and Narrator on Windows, «Spoken Content» on Mac and iPhone, «Select to Speak» on Android.
+- Your system already reads aloud: Edge and Narrator on Windows, “Spoken Content” on Mac and iPhone, “Select to Speak” on Android.
 - [Text to speech](tool:text-to-speech) reads text, PDF, Word, EPUB and photos, highlights the sentence and lets you choose the speed, without uploading the file.
 - Device voices start instantly; the AI voice sounds more natural and lets you download an MP3.
-- Avoid «online» voices if the text is private.
+- Avoid “online” voices if the text is private.
 `;
 
 export default body;

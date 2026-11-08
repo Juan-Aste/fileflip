@@ -8,7 +8,7 @@ It's worth clarifying first, because they're different things:
 - **Handwritten signature on the PDF**: an image of your signature placed on the page, just as if you signed the paper and scanned it. This is what our tool does, and it's enough for many private agreements, authorizations, statements and forms.
 - **Digital signature with a certificate**: it uses a certificate issued by an authorized provider (on a token, a card or an official app) and is recorded cryptographically inside the PDF. Any later change invalidates it. Many official procedures and some contracts require it.
 
-The legal validity of each depends on the country and the procedure. If the organization or company asks for a «digital signature», an image of your signature doesn't replace it; if they ask you to «sign and return the PDF», a handwritten signature is usually enough. If in doubt, ask whoever requested it.
+The legal validity of each depends on the country and the procedure. If the organization or company asks for a “digital signature”, an image of your signature doesn't replace it; if they ask you to “sign and return the PDF”, a handwritten signature is usually enough. If in doubt, ask whoever requested it.
 
 ## How to sign a PDF, step by step
 
@@ -49,7 +49,7 @@ If you also need to **initial** every page or add text such as your name, your I
 
 ## If the PDF is a form
 
-Many PDF forms have fields to fill in (checkboxes, text boxes, lists). Fill in the data first with [Fill PDF Form](tool:fill-pdf-form) and save the PDF flattened, then sign it. That way the data and the signature are fixed on the page and look the same in any reader or printer.
+Many PDF forms have fields to fill in (checkboxes, text boxes, lists). Fill in the data first with [Fill PDF form](tool:fill-pdf-form) and save the PDF flattened, then sign it. That way the data and the signature are fixed on the page and look the same in any reader or printer.
 
 If the form has no fields, just lines to write on by hand, fill in the data with [Edit PDF](tool:edit-pdf).
 
@@ -57,7 +57,7 @@ If the form has no fields, just lines to write on by hand, fill in the data with
 
 - **Check the result** before sending it: open the downloaded PDF and make sure the signature is on the right page and in the right place.
 - **If it's too large** to email, [Compress PDF](tool:compress-pdf) shrinks it. The guide [How to reduce the size of a PDF](guide:reduce-pdf-size) explains which level to choose.
-- **If it's confidential**, you can add an opening password with [Password protect a PDF](tool:protect-pdf) and send the password through another channel.
+- **If it's confidential**, you can add an open password with [Password protect a PDF](tool:protect-pdf) and send the password through another channel.
 
 The signature is drawn on the page as an image, so it looks the same in any PDF reader and when printed. Keep in mind that, unlike a digital signature with a certificate, it doesn't stop anyone from changing the document afterwards: keep a copy of the PDF you sent.
 
@@ -66,7 +66,7 @@ The signature is drawn on the page as an image, so it looks the same in any PDF 
 - [Sign PDF](tool:sign-pdf) puts your handwritten signature on the PDF, without printing or scanning, and without uploading anything.
 - Draw your signature or upload a photo on white paper: the background is removed automatically.
 - Sign one page at a time; for more pages, open the signed PDF again.
-- Fill in forms before signing, with Fill PDF Form or Edit PDF.
+- Fill in forms before signing, with Fill PDF form or Edit PDF.
 - A handwritten signature on a PDF is not a digital signature with a certificate: if that's what's required, it doesn't replace it.
 `;
 

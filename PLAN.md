@@ -632,7 +632,7 @@ Calidad para Google y AdSense (pedido del dueño el 2026-11-07; en la tarea prog
 - [x] 19.2b1 (hecha 2026-11-08: `src/content/conversions/` en 5 idiomas, `conversions.test.ts`, `conversion-content.spec.ts`) Contenido propio (cuándo conviene, diferencias entre formatos, qué se pierde y qué no, límites de la herramienta, pasos y FAQ específicos; 5 idiomas, sin relleno) para las 10 conversiones de documentos de oficina indexadas (PDF → Word, Word/DOC/Excel/XLS/PowerPoint/PPT/ODT/RTF/TXT → PDF), con un test que exija ese contenido en cada conversión indexada del grupo.
 - [x] 19.2b2 (hecha 2026-11-08: 11 entradas más en `src/content/conversions/`) Ídem para las 11 de fotos e imágenes ↔ PDF (HEIC → JPG/PNG/PDF, WEBP → JPG/PNG, AVIF → JPG/PNG, JPG/PNG → PDF, PDF → JPG/PNG).
 - [x] 19.2b3 (hecha 2026-11-08: las 38 tienen texto propio; `conversions.test.ts` las exige todas) Ídem para las 17 restantes (formatos de imagen comunes, íconos y SVG); el test pasa a exigirlo en las 38.
-- [ ] 19.2c Revisión de traducciones de páginas indexadas en pt, fr, en y zh (≥ 10 por idioma).
+- [x] 19.2c (hecha 2026-11-08: 14 páginas por idioma revisadas; ver PROGRESS.md) Revisión de traducciones de páginas indexadas en pt, fr, en y zh (≥ 10 por idioma).
 - [ ] 19.2d Tests: el sitemap solo lista indexables; las noindex tienen la meta correcta; ninguna indexable es noindex por error.
 
 ### 19.3 (pedida como 17.3) Confianza: «Quiénes somos»

@@ -15,7 +15,7 @@ This ten-second check saves you the most common frustration: an empty Word file 
 ## How to convert a PDF to Word, step by step
 
 1. Open [PDF to Word](conv:pdf-docx) and drag the PDF onto the box, or tap it to choose the file from your device.
-2. Check that **Word** is selected under «Convert to».
+2. Check that **Word** is selected under “Convert to”.
 3. Press **Convert** and wait a few seconds.
 4. Download the .docx file with its button and open it in Word, LibreOffice Writer, Google Docs or Pages.
 
@@ -60,14 +60,14 @@ Photos and logos in the PDF don't make it into the Word file. To get them back, 
 
 Converting is often a detour. Before you do it, think about what you actually need:
 
-- **Fill in a form**: if the PDF has fields, [Fill PDF Form](tool:fill-pdf-form) shows them as a normal form. If it's a form without fields (just lines to write on), [Edit PDF](tool:edit-pdf) lets you type on the page.
-- **Change a word or a date**: in Edit PDF you can cover the old text with a white box and type the new text on top, without touching the rest of the layout. Keep in mind that covering doesn't erase: the text underneath is still in the file unless you tick «Really hide».
+- **Fill in a form**: if the PDF has fields, [Fill PDF form](tool:fill-pdf-form) shows them as a normal form. If it's a form without fields (just lines to write on), [Edit PDF](tool:edit-pdf) lets you type on the page.
+- **Change a word or a date**: in Edit PDF you can cover the old text with a white box and type the new text on top, without touching the rest of the layout. Keep in mind that covering doesn't erase: the text underneath is still in the file unless you tick “Really hide”.
 - **Copy a paragraph**: [PDF to text](tool:pdf-to-text) gives you all the text in a .txt file, without going through Word.
 - **Sign it**: there's no need to print or convert; [Sign PDF](tool:sign-pdf) adds your signature directly.
 
 ## After editing: back to PDF
 
-When you finish correcting the document in Word, you'll usually want to send it as a PDF again so it looks the same on any device. You can use «Save as PDF» in Word or run the .docx through [Word to PDF](conv:docx-pdf). If the result is too heavy to send by email, the guide [How to reduce the size of a PDF](guide:reduce-pdf-size) explains what to do.
+When you finish correcting the document in Word, you'll usually want to send it as a PDF again so it looks the same on any device. You can use “Save as PDF” in Word or run the .docx through [Word to PDF](conv:docx-pdf). If the result is too heavy to send by email, the guide [How to reduce the size of a PDF](guide:reduce-pdf-size) explains what to do.
 
 ## Summary
 

@@ -13,7 +13,7 @@ That has two practical consequences:
 ## Step by step
 
 1. Open [Audio to text](tool:audio-to-text) and choose the audio or video file. You'll see its length.
-2. Choose the **Model**: **Fast** or **Precise (slower)**. Next to each one you can see the download size, or «downloaded» if you've already used it.
+2. Choose the **Model**: **Fast** or **Precise (slower)**. Next to each one you can see the download size, or “downloaded” if you've already used it.
 3. Choose the **Language of the audio**, or leave **Detect automatically**.
 4. Press **Transcribe**. You'll see the progress and the time left; you can cancel at any moment.
 5. Check the text, fix what's needed and copy it or download it as **TXT**, **SRT** or **VTT**.
@@ -37,7 +37,7 @@ Start with the **fast** one, especially on a phone. If the result has many mista
 
 ## How good is the result
 
-With a clear voice, a single speaker and little noise, the text comes out nearly ready. The short English recording in the screenshot above came out word for word. Longer or harder audio is a different story: on a 36-second Spanish recording in our tests, the fast model got almost every word right but stumbled on the hardest parts. It wrote the brand name «Fileflect» as «File Efect» and swapped a couple of words in phrases that sound alike. Those are the typical errors: proper names, brands, unusual words and phrases that sound similar. In our tests, the precise model transcribed that same audio with fewer errors.
+With a clear voice, a single speaker and little noise, the text comes out nearly ready. The short English recording in the screenshot above came out word for word. Longer or harder audio is a different story: on a 36-second Spanish recording in our tests, the fast model got almost every word right but stumbled on the hardest parts. It wrote the brand name “Fileflect” as “File Efect” and swapped a couple of words in phrases that sound alike. Those are the typical errors: proper names, brands, unusual words and phrases that sound similar. In our tests, the precise model transcribed that same audio with fewer errors.
 
 Other limits worth knowing:
 
@@ -54,9 +54,9 @@ If the detected language is wrong (it happens with very short recordings or mixe
 
 **iPhone Voice Memos**: in the Voice Memos app, tap the recording, then the three dots and **Share**, and choose **Save to Files**. You get an .m4a file.
 
-**Meeting recordings or videos**: if you have the video, there's no need to extract the sound; the tool does it. If you just want the audio to keep or send, [Extract Audio from Video](tool:extract-audio) separates it.
+**Meeting recordings or videos**: if you have the video, there's no need to extract the sound; the tool does it. If you just want the audio to keep or send, [Extract audio from video](tool:extract-audio) separates it.
 
-If your browser can't read the file (it happens with some M4A files in certain browsers), try Chrome, Edge or Safari, or convert it first with the [Audio Converter](tool:audio-converter).
+If your browser can't read the file (it happens with some M4A files in certain browsers), try Chrome, Edge or Safari, or convert it first with the [Audio converter](tool:audio-converter).
 
 ## Recordings longer than 30 minutes
 

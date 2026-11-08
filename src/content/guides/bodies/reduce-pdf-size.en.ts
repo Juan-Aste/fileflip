@@ -1,11 +1,11 @@
 const body = `
-A PDF that's too large is a practical problem: the email bounces, the upload form asks for «under 2 MB», or the person you send it to on WhatsApp has to spend their mobile data to open it. The good news is that it can almost always be shrunk a lot without becoming hard to read. The key is understanding **what takes up the space** inside the PDF.
+A PDF that's too large is a practical problem: the email bounces, the upload form asks for “under 2 MB”, or the person you send it to on WhatsApp has to spend their mobile data to open it. The good news is that it can almost always be shrunk a lot without becoming hard to read. The key is understanding **what takes up the space** inside the PDF.
 
 ## Why a PDF is so large
 
 A text PDF, like one saved from Word with nothing but words, is tiny: a page takes a few kilobytes. What makes a PDF weigh megabytes is almost always **the images inside it**, and especially photos taken with a phone.
 
-The typical case: you «scanned» a contract by photographing it with your phone and put the photos together in a PDF. Each photo has 12 megapixels or more, far more resolution than you need to read a page, and the PDF ends up at 1 to 3 MB per page.
+The typical case: you “scanned” a contract by photographing it with your phone and put the photos together in a PDF. Each photo has 12 megapixels or more, far more resolution than you need to read a page, and the PDF ends up at 1 to 3 MB per page.
 
 That's why our tool [Compress PDF](tool:compress-pdf) works on the images: it saves them again with less resolution and more compression, and leaves the text, fonts and vector drawings untouched. The text stays sharp and can still be selected and searched.
 
@@ -62,7 +62,7 @@ There's no single number, but there are useful references:
 
 - **Compressing the same PDF several times.** Each pass loses some quality and, from the second one on, barely reduces the size. Better to go back to the original and choose a stronger level.
 - **Turning the PDF into images to shrink it.** Converting each page to JPG and rebuilding the PDF means the text is no longer text: it can't be searched or copied, and the file often ends up larger.
-- **Adding a password before compressing.** Compress first, then protect. If the PDF already has an opening password, remove it with [Remove a PDF password](tool:unlock-pdf), compress it and protect it again with [Password protect a PDF](tool:protect-pdf).
+- **Adding a password before compressing.** Compress first, then protect. If the PDF already has an open password, remove it with [Remove a PDF password](tool:unlock-pdf), compress it and protect it again with [Password protect a PDF](tool:protect-pdf).
 
 ## Summary
 

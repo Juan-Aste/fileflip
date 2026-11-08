@@ -2518,7 +2518,7 @@
     "toolCount": "{count, plural, one {# herramienta} other {# herramientas}}",
     "conversionCount": "{count, plural, one {# conversión} other {# conversiones}}",
     "seeCategory": "Ver todo en {category}",
-    "categoryTitle": "{category}: herramientas online",
+    "categoryTitle": "{id, select, other {{category}: herramientas online}}",
     "categories": {
       "image": {
         "name": "Imágenes",

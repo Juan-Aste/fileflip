@@ -164,7 +164,7 @@ export async function generateMetadata({
     }
     const name = t(`categories.${page.category}.name`);
     return {
-      title: `${t("categoryTitle", { category: name })} — Fileflect`,
+      title: `${t("categoryTitle", { category: name, id: page.category })} — Fileflect`,
       description: t(`categories.${page.category}.description`),
       alternates,
       ...(isIndexedCategory(page.category) ? {} : { robots: noindexFollow }),

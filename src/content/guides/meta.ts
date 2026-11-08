@@ -84,7 +84,7 @@ export const guides: GuideMeta[] = [
       fr: {
         slug: "comment-convertir-pdf-en-word",
         title: "Comment convertir un PDF en Word modifiable (et que faire des tableaux, des scans et des images)",
-        description: "Convertissez un PDF en Word pour le modifier : ce qui est conservé, ce qui change et quel outil utiliser si le PDF est scanné ou si vous voulez ses tableaux ou images.",
+        description: "Convertissez un PDF en Word pour le modifier : ce qui est conservé, ce qui change et quel outil utiliser si le PDF est scanné ou si vous voulez ses tableaux ou images.",
       },
       zh: {
         slug: "how-to-convert-pdf-to-word",
@@ -119,8 +119,8 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "jpg-png-webp-avif-quel-format-choisir",
-        title: "JPG, PNG, WebP ou AVIF : quel format choisir",
-        description: "Les différences entre JPG, PNG, WebP et AVIF, poids mesurés sur une photo et une capture d'écran : lequel pour les photos, les logos, la transparence et le web.",
+        title: "JPG, PNG, WebP ou AVIF : quel format choisir",
+        description: "Les différences entre JPG, PNG, WebP et AVIF, poids mesurés sur une photo et une capture d’écran : lequel pour les photos, les logos, la transparence et le web.",
       },
       zh: {
         slug: "jpg-vs-png-vs-webp-vs-avif",
@@ -155,8 +155,8 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "comment-reduire-taille-pdf",
-        title: "Comment réduire la taille d'un PDF pour l'envoyer par e-mail ou WhatsApp",
-        description: "Ce qui alourdit un PDF et comment le réduire sans perdre en lisibilité : niveaux de compression mesurés, que faire s'il ne diminue pas et quel poids viser.",
+        title: "Comment réduire la taille d’un PDF pour l’envoyer par e-mail ou WhatsApp",
+        description: "Ce qui alourdit un PDF et comment le réduire sans perdre en lisibilité : niveaux de compression mesurés, que faire s’il ne diminue pas et quel poids viser.",
       },
       zh: {
         slug: "how-to-reduce-pdf-file-size",
@@ -191,8 +191,8 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "convertir-photos-heic-iphone-en-jpg",
-        title: "Comment convertir les photos HEIC de l'iPhone en JPG",
-        description: "Ce qu'est le HEIC, comment convertir les photos de l'iPhone en JPG sans les envoyer en ligne et comment régler l'iPhone pour avoir des photos compatibles.",
+        title: "Comment convertir les photos HEIC de l’iPhone en JPG",
+        description: "Ce qu’est le HEIC, comment convertir les photos de l’iPhone en JPG sans les envoyer en ligne et comment régler l’iPhone pour avoir des photos compatibles.",
       },
       zh: {
         slug: "how-to-convert-iphone-heic-photos-to-jpg",
@@ -228,7 +228,7 @@ export const guides: GuideMeta[] = [
       fr: {
         slug: "convertir-tableau-pdf-en-excel",
         title: "Comment convertir un tableau PDF en Excel",
-        description: "Passez le tableau d'un relevé, d'une facture ou d'une liste de prix en PDF dans Excel avec de vrais nombres : aperçu, séparateur décimal et PDF numérisés.",
+        description: "Passez le tableau d’un relevé, d’une facture ou d’une liste de prix en PDF dans Excel avec de vrais nombres : aperçu, séparateur décimal et PDF numérisés.",
       },
       zh: {
         slug: "how-to-convert-pdf-table-to-excel",
@@ -263,8 +263,8 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "csv-ou-excel-ouvrir-un-csv-correctement",
-        title: "CSV ou Excel : différences et comment ouvrir un CSV correctement",
-        description: "Ce qui distingue un CSV d'un fichier Excel, pourquoi Excel abîme les accents ou met tout dans une colonne, et comment ouvrir et enregistrer un CSV sans perdre de données.",
+        title: "CSV ou Excel : différences et comment ouvrir un CSV correctement",
+        description: "Ce qui distingue un CSV d’un fichier Excel, pourquoi Excel abîme les accents ou met tout dans une colonne, et comment ouvrir et enregistrer un CSV sans perdre de données.",
       },
       zh: {
         slug: "csv-vs-excel-how-to-open-csv-correctly",
@@ -300,7 +300,7 @@ export const guides: GuideMeta[] = [
       fr: {
         slug: "transcrire-audio-en-texte-gratuitement",
         title: "Comment transcrire gratuitement un audio ou un message vocal en texte",
-        description: "Transformez un vocal WhatsApp, un enregistrement ou une vidéo en texte avec Whisper dans votre navigateur, sans rien envoyer : modèles, vitesse, erreurs et sous-titres.",
+        description: "Transformez un vocal WhatsApp, un enregistrement ou une vidéo en texte avec Whisper dans votre navigateur, sans rien envoyer : modèles, vitesse, erreurs et sous-titres.",
       },
       zh: {
         slug: "how-to-transcribe-audio-to-text",
@@ -335,7 +335,7 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "faire-lire-un-texte-a-voix-haute",
-        title: "Comment faire lire un texte ou un PDF à voix haute par l'ordinateur",
+        title: "Comment faire lire un texte ou un PDF à voix haute par l’ordinateur",
         description: "Les fonctions de lecture à voix haute de Windows, Mac, iPhone et Android, et comment écouter un texte, un PDF ou un Word avec surlignage et téléchargement MP3.",
       },
       zh: {
@@ -371,7 +371,7 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "signer-un-pdf-sans-imprimer",
-        title: "Comment signer un PDF sans l'imprimer",
+        title: "Comment signer un PDF sans l’imprimer",
         description: "Apposez votre signature manuscrite sur un PDF depuis un ordinateur ou un téléphone, sans imprimer ni scanner, et comprenez la différence avec une signature électronique.",
       },
       zh: {
@@ -407,8 +407,8 @@ export const guides: GuideMeta[] = [
       },
       fr: {
         slug: "qu-est-ce-que-le-pdf-a",
-        title: "Qu'est-ce que le PDF/A et quand faut-il l'utiliser",
-        description: "Ce qu'est le format PDF/A, qui l'exige, quelle version choisir (1b, 2b ou 3b) et comment convertir un PDF pour qu'il ne soit pas refusé.",
+        title: "Qu’est-ce que le PDF/A et quand faut-il l’utiliser",
+        description: "Ce qu’est le format PDF/A, qui l’exige, quelle version choisir (1b, 2b ou 3b) et comment convertir un PDF pour qu’il ne soit pas refusé.",
       },
       zh: {
         slug: "what-is-pdf-a",

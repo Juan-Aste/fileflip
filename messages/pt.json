@@ -169,7 +169,7 @@
   },
   "FakeTransparency": {
     "title": "Esta imagem tem um fundo transparente falso (está desenhado)",
-    "help": "O quadriculado cinza e branco faz parte dos pixels, por isso é mantido ao converter. «Remover fundo falso» o transforma em transparência real e entrega um {to}.",
+    "help": "O quadriculado cinza e branco faz parte dos pixels, por isso é mantido ao converter. “Remover fundo falso” o transforma em transparência real e entrega um {to}.",
     "noAlpha": "{format} não suporta transparência: para mantê-la, o resultado sem fundo é entregue em PNG.",
     "action": "Remover fundo falso"
   },
@@ -283,7 +283,7 @@
       "title": "Dividir PDF",
       "description": "Separe um PDF em vários arquivos ou extraia só as páginas que você precisa.",
       "action": "Dividir PDF",
-      "about": "Dividir PDF separa um documento em vários arquivos. Você pode salvar cada página como um PDF, criar um PDF por intervalo (por exemplo 1-3, 4-6) ou extrair só algumas páginas em um único arquivo. Quando o resultado tem vários PDF, eles são baixados juntos em um ZIP.",
+      "about": "Dividir PDF separa um documento em vários arquivos. Você pode salvar cada página como um PDF, criar um PDF por intervalo (por exemplo 1-3, 4-6) ou extrair só algumas páginas em um único arquivo. Quando o resultado tem vários PDFs, eles são baixados juntos em um ZIP.",
       "faq": {
         "q1": "Como escrevo os intervalos de páginas?",
         "a1": "Separe os intervalos com vírgulas: 1-3, 5, 8-. Um número sozinho é uma página e \"8-\" significa da página 8 até o final.",
@@ -339,7 +339,7 @@
       "title": "Comprimir PDF",
       "description": "Diminua o tamanho dos seus PDFs para enviar por e-mail ou WhatsApp.",
       "action": "Comprimir PDF",
-      "about": "Comprimir PDF reduz o tamanho do arquivo recodificando as fotos que ele contém, que costumam ser o motivo de um PDF pesado. Texto, fontes e desenhos vetoriais são mantidos como estão. Há três níveis: baixa (melhor qualidade), recomendada e forte (arquivo mais leve).",
+      "about": "Comprimir PDF reduz o tamanho do arquivo recodificando as fotos que ele contém, que costumam ser o motivo de um PDF pesado. Texto, fontes e desenhos vetoriais são mantidos como estão. Há três níveis de compressão: baixa (melhor qualidade), recomendada e forte (arquivo mais leve).",
       "faq": {
         "q1": "Por que meu PDF quase não diminuiu?",
         "a1": "Se o PDF tem principalmente texto, ou as imagens já estão otimizadas, há pouco a reduzir. Nesse caso o Fileflect avisa em vez de entregar um arquivo maior.",
@@ -552,7 +552,7 @@
       "about": "O gerador de hash calcula as somas MD5, SHA-1, SHA-256 e SHA-512 de um texto (como UTF-8) ou de qualquer arquivo, sem enviá-lo: os arquivos são lidos em partes no seu navegador, então também funciona com arquivos grandes. Cole o hash publicado por quem distribui um arquivo para conferir se o seu download está completo e não foi alterado. O resultado é baixado como checksums.txt no formato que o sha256sum -c lê.",
       "faq": {
         "q1": "Como confiro se um download não está corrompido?",
-        "a1": "Escolha o arquivo, cole em «Hash esperado» a soma publicada no site oficial e calcule. Você verá se coincide e com qual algoritmo; ele é reconhecido pelo comprimento.",
+        "a1": "Escolha o arquivo, cole em “Hash esperado” a soma publicada no site oficial e calcule. Você verá se coincide e com qual algoritmo; ele é reconhecido pelo comprimento.",
         "q2": "Qual algoritmo devo usar?",
         "a2": "SHA-256 ou SHA-512. MD5 e SHA-1 detectam erros de download, mas não são mais seguros contra alguém que fabrica de propósito arquivos com o mesmo hash.",
         "q3": "Um hash serve para guardar senhas?",
@@ -647,14 +647,14 @@
       "title": "Converter maiúsculas e minúsculas",
       "description": "Passe um texto para MAIÚSCULAS, minúsculas, Tipo Título, Tipo frase ou aLtErNaDo na hora, com as regras de cada idioma.",
       "action": "Converter",
-      "about": "Cole um texto digitado com o Caps Lock ligado, um título todo em minúsculas ou uma lista de nomes e mude com um clique. «Tipo frase» deixa maiúscula só no começo de cada frase; «Tipo Título» põe maiúscula em cada palavra e, se a opção ficar marcada, deixa em minúscula os artigos, preposições e conjunções curtas do idioma escolhido (de, da, e, of, the…), menos a primeira e a última palavra. As regras próprias de cada idioma são respeitadas, como o İ com ponto do turco e o IJ do holandês. Se o resultado não servir, «Desfazer» volta ao texto anterior.",
+      "about": "Cole um texto digitado com o Caps Lock ligado, um título todo em minúsculas ou uma lista de nomes e mude com um clique. “Tipo frase” deixa maiúscula só no começo de cada frase; “Tipo Título” põe maiúscula em cada palavra e, se a opção ficar marcada, deixa em minúscula os artigos, preposições e conjunções curtas do idioma escolhido (de, da, e, of, the…), menos a primeira e a última palavra. As regras próprias de cada idioma são respeitadas, como o İ com ponto do turco e o IJ do holandês. Se o resultado não servir, “Desfazer” volta ao texto anterior.",
       "faq": {
         "q1": "Qual é a diferença entre Tipo Título e Tipo frase?",
-        "a1": "Tipo frase deixa tudo em minúscula menos a primeira letra de cada frase. Tipo Título põe maiúscula em cada palavra importante, como é comum em títulos em inglês («The Lord of the Rings») e em muitos títulos em português («O Nome da Rosa»).",
+        "a1": "Tipo frase deixa tudo em minúscula menos a primeira letra de cada frase. Tipo Título põe maiúscula em cada palavra importante, como é comum em títulos em inglês (“The Lord of the Rings”) e em muitos títulos em português (“O Nome da Rosa”).",
         "q2": "Os nomes próprios ficam em minúscula?",
-        "a2": "Sim: a ferramenta não sabe quais palavras são nomes, então em minúsculas ou Tipo frase «Lisboa» vira «lisboa». Revise os nomes depois de converter.",
+        "a2": "Sim: a ferramenta não sabe quais palavras são nomes, então em minúsculas ou Tipo frase “Lisboa” vira “lisboa”. Revise os nomes depois de converter.",
         "q3": "Para que serve o idioma do texto?",
-        "a3": "Para escolher quais palavras curtas ficam em minúscula no Tipo Título e aplicar regras especiais: em turco o i minúsculo vira İ com ponto e em holandês «ijsland» vira «IJsland».",
+        "a3": "Para escolher quais palavras curtas ficam em minúscula no Tipo Título e aplicar regras especiais: em turco o i minúsculo vira İ com ponto e em holandês “ijsland” vira “IJsland”.",
         "q4": "Meu texto é enviado para algum servidor?",
         "a4": "Não. A conversão é feita no seu navegador e o texto não sai do seu dispositivo."
       }
@@ -668,7 +668,7 @@
         "q1": "Qual é a diferença entre comparar por linha e por palavra?",
         "a1": "Por linha serve para listas, código, configurações ou contratos cujos parágrafos não mudam de lugar: cada linha aparece com o seu número. Por palavra junta o texto todo e marca as palavras diferentes: é melhor para um parágrafo reescrito em que as quebras de linha mudaram.",
         "q2": "Posso comparar arquivos do Word ou PDF?",
-        "a2": "Diretamente não: a ferramenta compara texto. Copie o texto de cada documento e cole, ou extraia antes com «PDF para texto» e depois compare aqui.",
+        "a2": "Diretamente não: a ferramenta compara texto. Copie o texto de cada documento e cole, ou extraia antes com “PDF para texto” e depois compare aqui.",
         "q3": "O que é o arquivo .diff?",
         "a3": "É um patch no formato unificado: lista só as linhas alteradas com 3 linhas de contexto. O git, as ferramentas de revisão de código e o comando patch leem esse formato, e o patch pode aplicar as mudanças ao texto original.",
         "q4": "Meus textos são enviados para algum servidor?",
@@ -679,14 +679,14 @@
       "title": "Remover linhas duplicadas",
       "description": "Elimine as linhas repetidas de uma lista, tire as vazias, apare os espaços e ordene alfabeticamente, na hora e no seu navegador.",
       "action": "Limpar",
-      "about": "Cole uma lista de e-mails, nomes, palavras-chave ou códigos e o resultado aparece na hora sem as linhas repetidas: fica a primeira vez que cada uma aparece, na ordem original. Você pode não diferenciar maiúsculas (assim «Ana» e «ana» contam como a mesma), aparar os espaços do começo e do fim que não se veem mas fazem duas linhas parecerem diferentes, tirar as linhas vazias e ordenar de A a Z ou ao contrário com as regras do idioma: as letras acentuadas ficam junto da sua letra e os números são ordenados pelo valor («item 2» antes de «item 10»). Embaixo aparece quantas linhas foram removidas.",
+      "about": "Cole uma lista de e-mails, nomes, palavras-chave ou códigos e o resultado aparece na hora sem as linhas repetidas: fica a primeira vez que cada uma aparece, na ordem original. Você pode não diferenciar maiúsculas (assim “Ana” e “ana” contam como a mesma), aparar os espaços do começo e do fim que não se veem mas fazem duas linhas parecerem diferentes, tirar as linhas vazias e ordenar de A a Z ou ao contrário com as regras do idioma: as letras acentuadas ficam junto da sua letra e os números são ordenados pelo valor (“item 2” antes de “item 10”). Embaixo aparece quantas linhas foram removidas.",
       "faq": {
         "q1": "Qual das linhas repetidas é mantida?",
         "a1": "A primeira, no lugar onde aparece. Se você não diferenciar maiúsculas, ela fica escrita como nessa primeira vez.",
         "q2": "Por que duas linhas iguais não são detectadas como duplicadas?",
-        "a2": "Geralmente por espaços invisíveis no começo ou no fim, ou por maiúsculas diferentes. Deixe marcada «Aparar espaços» e marque «Não diferenciar maiúsculas de minúsculas».",
+        "a2": "Geralmente por espaços invisíveis no começo ou no fim, ou por maiúsculas diferentes. Deixe marcada “Aparar espaços” e marque “Não diferenciar maiúsculas de minúsculas”.",
         "q3": "Como ordena palavras com acento ou ç?",
-        "a3": "Com a ordem alfabética do idioma da página: «árvore» fica junto de «arbusto» e não no final, e os números dentro do texto são comparados pelo valor.",
+        "a3": "Com a ordem alfabética do idioma da página: “árvore” fica junto de “arbusto” e não no final, e os números dentro do texto são comparados pelo valor.",
         "q4": "Minha lista é enviada para algum servidor?",
         "a4": "Não. Tudo é feito no seu navegador e a lista não sai do seu dispositivo, então você pode limpar listas de e-mails ou de clientes sem compartilhá-las."
       }
@@ -695,10 +695,10 @@
       "title": "Gerador de Lorem ipsum",
       "description": "Gere texto de preenchimento Lorem ipsum por parágrafos, frases ou palavras, como texto ou HTML, para maquetes e layouts.",
       "action": "Gerar",
-      "about": "O Lorem ipsum é o texto de preenchimento usado há décadas em design e gráfica para ver como fica uma página antes de ter o texto real: parece latim, então não distrai, mas não significa nada. Vem de um trecho de Cícero («De finibus bonorum et malorum») cortado e embaralhado. Escolha quantos parágrafos, frases ou palavras quer, se deve começar com o clássico «Lorem ipsum dolor sit amet…» e se prefere parágrafos HTML (tags p) para colar numa página web. Cada vez que você gera, sai um texto diferente.",
+      "about": "O Lorem ipsum é o texto de preenchimento usado há décadas em design e gráfica para ver como fica uma página antes de ter o texto real: parece latim, então não distrai, mas não significa nada. Vem de um trecho de Cícero (“De finibus bonorum et malorum”) cortado e embaralhado. Escolha quantos parágrafos, frases ou palavras quer, se deve começar com o clássico “Lorem ipsum dolor sit amet…” e se prefere parágrafos HTML (tags p) para colar numa página web. Cada vez que você gera, sai um texto diferente.",
       "faq": {
         "q1": "O que significa Lorem ipsum?",
-        "a1": "Nada: são palavras latinas de um texto de Cícero cortadas e misturadas. «Dolorem ipsum» quer dizer «a própria dor», mas o texto de preenchimento não tem sentido de propósito, para que se olhe o design e não o conteúdo.",
+        "a1": "Nada: são palavras latinas de um texto de Cícero cortadas e misturadas. “Dolorem ipsum” quer dizer “a própria dor”, mas o texto de preenchimento não tem sentido de propósito, para que se olhe o design e não o conteúdo.",
         "q2": "Quanto texto posso gerar?",
         "a2": "Até 100 parágrafos, 500 frases ou 10.000 palavras de uma vez.",
         "q3": "Para que serve a opção HTML?",
@@ -744,7 +744,7 @@
         "q1": "Quanto uma foto diminui?",
         "a1": "Depende da foto: uma foto de celular em JPG costuma diminuir de 40% a 80% no nível recomendado. Se a imagem já estava otimizada e não dá para reduzir, devolvemos o original sem alterações.",
         "q2": "Como deixo uma foto com menos de 100 KB para um formulário?",
-        "a2": "Escolha «Tamanho exato» e o botão de 100 KB (ou digite outro tamanho). A foto resultante terá no máximo esse tamanho; se necessário, as dimensões em pixels também diminuem e avisamos quanto.",
+        "a2": "Escolha “Tamanho exato” e o botão de 100 KB (ou digite outro tamanho). A foto resultante terá no máximo esse tamanho; se necessário, as dimensões em pixels também diminuem e avisamos quanto.",
         "q3": "Por que meu PNG foi salvo como JPG?",
         "a3": "No modo de tamanho exato os PNG são salvos como JPG, porque o PNG não tem ajuste de qualidade. Se o seu PNG tem transparência, escolha WEBP para mantê-la.",
         "q4": "A qualidade diminui?",
@@ -758,9 +758,9 @@
       "about": "Redimensionar imagem muda a largura e a altura das suas fotos: digite os pixels que quer (mantendo ou não as proporções), uma porcentagem, ou escolha uma medida pronta para redes sociais, como o post quadrado do Instagram, um story ou a miniatura do YouTube. Se a proporção não bater, você pode cortar as bordas ou adicionar bordas para não perder nada da foto. Funciona com JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF e HEIC, em lotes, e você pode mudar o formato ao mesmo tempo. Tudo é processado no seu navegador.",
       "faq": {
         "q1": "Uma imagem menor que o tamanho pedido é ampliada?",
-        "a1": "No modo em pixels com proporções, não, a menos que você marque «Permitir ampliar imagens menores», porque ampliar não acrescenta detalhes. As medidas de redes sociais ampliam para preencher o formato.",
+        "a1": "No modo em pixels com proporções, não, a menos que você marque “Permitir ampliar imagens menores”, porque ampliar não acrescenta detalhes. As medidas de redes sociais ampliam para preencher o formato.",
         "q2": "E se a foto não tiver a proporção da rede social?",
-        "a2": "Com «Cortar as bordas» o centro da foto é mantido e o que sobra é cortado. Com «Adicionar bordas» a foto inteira entra e as laterais são preenchidas (brancas em JPG, transparentes em PNG, WEBP e AVIF).",
+        "a2": "Com “Cortar as bordas” o centro da foto é mantido e o que sobra é cortado. Com “Adicionar bordas” a foto inteira entra e as laterais são preenchidas (brancas em JPG, transparentes em PNG, WEBP e AVIF).",
         "q3": "Existe um tamanho máximo?",
         "a3": "O resultado pode ter até cerca de 36 megapixels (por exemplo, 6928 × 5196); pedidos maiores são reduzidos mantendo a forma. Cada arquivo pode ter até 50 MB.",
         "q4": "Funciona com GIF animados?",
@@ -774,13 +774,13 @@
       "about": "Girar imagem gira suas fotos 90° para a direita, 90° para a esquerda ou 180°, e também pode espelhá-las (horizontal) ou virá-las de cabeça para baixo (vertical). Antes de girar é aplicada a orientação que a câmera salvou, então o resultado fica exatamente como você vê na tela e aparece igual em qualquer programa. Funciona com JPG, PNG, WEBP, AVIF, GIF, BMP, TIFF e HEIC, em lotes, e mantém o formato (HEIC é salvo como JPG). Tudo é processado no seu navegador.",
       "faq": {
         "q1": "Minha foto aparece certa no celular, mas de lado no computador. Isso resolve?",
-        "a1": "Sim. Escolha «Só endireitar»: a orientação salva pela câmera é aplicada e a foto fica em pé em qualquer programa, sem girar a mais.",
+        "a1": "Sim. Escolha “Só endireitar”: a orientação salva pela câmera é aplicada e a foto fica em pé em qualquer programa, sem girar a mais.",
         "q2": "A qualidade diminui ao girar?",
         "a2": "PNG, BMP, TIFF e GIF não perdem nada. JPG, WEBP e AVIF são salvos de novo com qualidade alta (92), uma diferença que na prática não se nota.",
         "q3": "Posso girar e espelhar ao mesmo tempo?",
         "a3": "Sim: primeiro a imagem é girada e depois espelhada. Por exemplo, 90° para a direita com espelhamento horizontal.",
         "q4": "Os dados EXIF são mantidos?",
-        "a4": "Não: ao salvar a imagem girada os metadados são removidos, inclusive a localização GPS. Para remover só os metadados sem mexer na imagem, use «Remover metadados EXIF»."
+        "a4": "Não: ao salvar a imagem girada os metadados são removidos, inclusive a localização GPS. Para remover só os metadados sem mexer na imagem, use “Remover metadados EXIF”."
       }
     },
     "remove-exif": {
@@ -837,12 +837,12 @@
       "title": "Remover fundo de imagem",
       "description": "Remova o fundo de fotos de pessoas no automático, ou de objetos marcando um retângulo, e retoque com pincéis. PNG transparente, JPG ou WEBP, sem enviar a foto.",
       "action": "Remover fundo",
-      "about": "Remove o fundo de uma foto de duas maneiras. No modo «Pessoas (automático)», um modelo de inteligência artificial (MediaPipe Selfie Segmenter, do Google) encontra a pessoa assim que você escolhe a foto, e um método clássico (GrabCut) ajusta a borda com as cores da própria foto. No modo «Objetos e produtos (retângulo)», para produtos, objetos ou animais, você envolve o objeto num retângulo e o GrabCut separa as cores dele das do fundo, sem nenhum modelo. Nos dois você vê o resultado na hora e corrige com um pincel para «manter» e outro para «remover». Tudo acontece no seu dispositivo: a foto não é enviada. Você baixa um PNG ou WEBP com fundo transparente, ou um JPG ou WEBP sobre branco ou a cor que escolher, do mesmo tamanho do original.",
+      "about": "Remove o fundo de uma foto de duas maneiras. No modo “Pessoas (automático)”, um modelo de inteligência artificial (MediaPipe Selfie Segmenter, do Google) encontra a pessoa assim que você escolhe a foto, e um método clássico (GrabCut) ajusta a borda com as cores da própria foto. No modo “Objetos e produtos (retângulo)”, para produtos, objetos ou animais, você envolve o objeto num retângulo e o GrabCut separa as cores dele das do fundo, sem nenhum modelo. Nos dois você vê o resultado na hora e corrige com um pincel para “manter” e outro para “remover”. Tudo acontece no seu dispositivo: a foto não é enviada. Você baixa um PNG ou WEBP com fundo transparente, ou um JPG ou WEBP sobre branco ou a cor que escolher, do mesmo tamanho do original.",
       "faq": {
         "q1": "Qual modo escolho?",
-        "a1": "«Pessoas (automático)» para retratos, selfies e fotos de uma ou mais pessoas: o recorte sai sozinho e às vezes é preciso retocar o cabelo, as mãos ou algo que a pessoa segura. «Objetos e produtos (retângulo)» para todo o resto (um produto sobre a mesa, um objeto, um animal): o modelo automático só reconhece pessoas. O retângulo funciona melhor quando o objeto se distingue do fundo pela cor.",
+        "a1": "“Pessoas (automático)” para retratos, selfies e fotos de uma ou mais pessoas: o recorte sai sozinho e às vezes é preciso retocar o cabelo, as mãos ou algo que a pessoa segura. “Objetos e produtos (retângulo)” para todo o resto (um produto sobre a mesa, um objeto, um animal): o modelo automático só reconhece pessoas. O retângulo funciona melhor quando o objeto se distingue do fundo pela cor.",
         "q2": "Minhas fotos são enviadas para a internet?",
-        "a2": "Não. A foto é processada no seu navegador e nem ela nem o resultado saem do seu dispositivo. O modo «Pessoas» baixa uma única vez, do Fileflect, o motor e o modelo do MediaPipe (cerca de 4 MB; depois ficam no cache do navegador); o modo retângulo não baixa nada.",
+        "a2": "Não. A foto é processada no seu navegador e nem ela nem o resultado saem do seu dispositivo. O modo “Pessoas” baixa uma única vez, do Fileflect, o motor e o modelo do MediaPipe (cerca de 4 MB; depois ficam no cache do navegador); o modo retângulo não baixa nada.",
         "q3": "Por que o modo automático é só para pessoas?",
         "a3": "Os modelos que removem o fundo de qualquer coisa são treinados com milhares de fotos de terceiros, e não encontramos nenhum cujas fotos de treino permitam claramente o uso comercial. Para pessoas usamos o MediaPipe Selfie Segmenter, que o Google publica sob a licença Apache-2.0 e que, segundo a ficha do modelo, foi treinado com fotos de pessoas que deram consentimento. Para objetos preferimos um recorte assistido honesto: você indica o objeto com o retângulo e o método faz o resto.",
         "q4": "Qual formato baixo?",
@@ -878,13 +878,13 @@
       "about": "Arredondar imagem dá cantos arredondados às suas fotos, logos e capturas de tela, ou as recorta em círculo para fotos de perfil e avatares. Escolha o raio em pixels ou em porcentagem do lado menor e, se quiser, arredonde só alguns cantos. No modo círculo é usado um quadrado centralizado que você pode mover para enquadrar, ou uma elipse se preferir manter a proporção original. O que fica de fora pode ser transparente (PNG, WEBP ou AVIF) ou de uma cor à sua escolha (qualquer formato, inclusive JPG). A borda é suavizada para não ficar serrilhada, você vê o resultado ao vivo e pode processar várias imagens de uma vez. Tudo acontece no seu navegador: as imagens não são enviadas a nenhum servidor.",
       "faq": {
         "q1": "Como faço uma foto de perfil redonda?",
-        "a1": "Escolha «Círculo»: é usado um quadrado centralizado do tamanho do lado menor. Se o rosto não ficar no centro, arraste a prévia ou use «Enquadramento» para movê-lo. Baixe em PNG para que o lado de fora fique transparente.",
+        "a1": "Escolha “Círculo”: é usado um quadrado centralizado do tamanho do lado menor. Se o rosto não ficar no centro, arraste a prévia ou use “Enquadramento” para movê-lo. Baixe em PNG para que o lado de fora fique transparente.",
         "q2": "Por que não posso ter transparência em JPG?",
         "a2": "O formato JPG não guarda transparência. Se você escolher fundo transparente com JPG, a imagem é salva em PNG e avisamos; para usar JPG, escolha uma cor para o lado de fora.",
         "q3": "Perde qualidade?",
         "a3": "O interior fica idêntico ao original, pixel por pixel. PNG não perde nada; WEBP, AVIF e JPG são salvos com qualidade alta (92). Só mudam os cantos ou a borda do círculo, que são suavizados.",
         "q4": "Posso arredondar só alguns cantos?",
-        "a4": "Sim: em «Cantos arredondados» marque os que quiser (superior esquerdo, superior direito, inferior esquerdo, inferior direito). O raio pode ser em pixels ou em porcentagem do lado menor (até 50 %, que numa imagem quadrada vira um círculo)."
+        "a4": "Sim: em “Cantos arredondados” marque os que quiser (superior esquerdo, superior direito, inferior esquerdo, inferior direito). O raio pode ser em pixels ou em porcentagem do lado menor (até 50 %, que numa imagem quadrada vira um círculo)."
       }
     },
     "scan-document": {
@@ -1076,30 +1076,30 @@
         "q2": "Qual a diferença para Dividir PDF?",
         "a2": "Dividir PDF separa o documento inteiro em intervalos. Aqui você escolhe visualmente só as páginas que interessam, uma a uma.",
         "q3": "Posso tirar cada página num arquivo separado?",
-        "a3": "Sim. Escolha «Um PDF por página (ZIP)» e você baixa um ZIP com um PDF para cada página selecionada, com o número da página no nome.",
+        "a3": "Sim. Escolha “Um PDF por página (ZIP)” e você baixa um ZIP com um PDF para cada página selecionada, com o número da página no nome.",
         "q4": "O PDF original muda?",
         "a4": "Não. Um arquivo novo é criado no seu navegador e o original continua igual no seu dispositivo."
       }
     },
     "pdf-page-numbers": {
       "title": "Numerar páginas de um PDF",
-      "description": "Adicione números de página aos seus PDF na posição e no formato que escolher, também em páginas giradas.",
+      "description": "Adicione números de página aos seus PDFs na posição e no formato que escolher, também em páginas giradas.",
       "action": "Numerar páginas",
-      "about": "Numerar páginas de um PDF coloca o número em cada folha de um TCC, um contrato ou um processo. Escolha o canto ou o centro, em cima ou embaixo, o formato (1, «1 / 10» ou «Página 1 de 10»), o tamanho e o número inicial; dá para deixar a capa sem número. Os números são escritos como texto real e ficam na posição certa mesmo quando a página está salva de lado. Numere vários PDF de uma vez.",
+      "about": "Numerar páginas de um PDF coloca o número em cada folha de um TCC, um contrato ou um processo. Escolha o canto ou o centro, em cima ou embaixo, o formato (1, “1 / 10” ou “Página 1 de 10”), o tamanho e o número inicial; dá para deixar a capa sem número. Os números são escritos como texto real e ficam na posição certa mesmo quando a página está salva de lado. Numere vários PDFs de uma vez.",
       "faq": {
         "q1": "Posso deixar a capa sem número?",
-        "a1": "Sim. Marque «Sem número na primeira página»: a numeração começa na segunda folha com o número que você escolher (por exemplo 1).",
+        "a1": "Sim. Marque “Sem número na primeira página”: a numeração começa na segunda folha com o número que você escolher (por exemplo 1).",
         "q2": "E as páginas na horizontal ou giradas?",
         "a2": "O número é colocado conforme a página aparece ao ser aberta: embaixo no centro continua embaixo no centro numa página paisagem ou digitalizada de lado.",
         "q3": "Dá para começar em outro número?",
-        "a3": "Sim. Digite o número inicial, por exemplo 15 se o PDF continua outro documento. O total de «Página N de M» se ajusta sozinho.",
+        "a3": "Sim. Digite o número inicial, por exemplo 15 se o PDF continua outro documento. O total de “Página N de M” se ajusta sozinho.",
         "q4": "Meus PDF são enviados para um servidor?",
         "a4": "Não. Os números são adicionados no seu navegador e seus arquivos não saem do seu dispositivo."
       }
     },
     "pdf-watermark": {
       "title": "Adicionar marca d’água a um PDF",
-      "description": "Coloque um texto como CONFIDENCIAL ou RASCUNHO nos seus PDF, na diagonal, na horizontal ou em mosaico, com a opacidade que quiser.",
+      "description": "Coloque um texto como CONFIDENCIAL ou RASCUNHO nos seus PDFs, na diagonal, na horizontal ou em mosaico, com a opacidade que quiser.",
       "action": "Adicionar marca d’água",
       "about": "Adicionar marca d’água a um PDF carimba um texto nas páginas para indicar que é uma cópia, um rascunho ou um documento confidencial, ou para identificar para quem você enviou. Escolha o texto, a disposição (uma diagonal grande, uma linha horizontal no centro ou um mosaico repetido que cobre a folha inteira), o tamanho, a cor e a opacidade, e se vai em todas as páginas ou só em algumas. Funciona com acentos, cedilha e também com chinês ou emojis.",
       "faq": {
@@ -1108,16 +1108,16 @@
         "q2": "Dá para tirar depois?",
         "a2": "Ela fica escrita nas páginas como conteúdo, então não sai com um clique. Mesmo assim, alguém com um editor de PDF poderia removê-la: não substitui uma assinatura nem uma proteção com senha.",
         "q3": "Posso marcar só algumas páginas?",
-        "a3": "Sim. Escolha «Só algumas» e digite as páginas ou intervalos, por exemplo 1, 3-5. Com vários PDF, as páginas valem para cada um.",
+        "a3": "Sim. Escolha “Só algumas” e digite as páginas ou intervalos, por exemplo 1, 3-5. Com vários PDFs, as páginas valem para cada um.",
         "q4": "Meu PDF é enviado para a internet?",
         "a4": "Não. A marca d’água é adicionada no seu navegador e o arquivo não sai do seu dispositivo."
       }
     },
     "pdf-to-text": {
       "title": "PDF para texto",
-      "description": "Extraia o texto dos seus PDF para um arquivo TXT para copiar, pesquisar ou reaproveitar, sem enviá-los.",
+      "description": "Extraia o texto dos seus PDFs para um arquivo TXT para copiar, pesquisar ou reaproveitar, sem enviá-los.",
       "action": "Extrair texto",
-      "about": "PDF para texto copia todo o texto de um PDF para um arquivo TXT em UTF-8, página por página e na ordem de leitura, para colar num e-mail, procurar uma frase ou reaproveitar um contrato sem digitar de novo. Você pode marcar onde começa cada página e processar vários PDF de uma vez. Se o PDF for uma digitalização (só imagens), avisamos: esse texto precisa de reconhecimento óptico (OCR).",
+      "about": "PDF para texto copia todo o texto de um PDF para um arquivo TXT em UTF-8, página por página e na ordem de leitura, para colar num e-mail, procurar uma frase ou reaproveitar um contrato sem digitar de novo. Você pode marcar onde começa cada página e processar vários PDFs de uma vez. Se o PDF for uma digitalização (só imagens), avisamos: esse texto precisa de reconhecimento óptico (OCR).",
       "faq": {
         "q1": "A formatação, as tabelas ou as colunas são mantidas?",
         "a1": "Não. O resultado é texto puro: as palavras e as quebras de linha ficam, mas não as fontes, as cores nem a posição exata. As tabelas viram linhas de texto.",
@@ -1165,12 +1165,12 @@
       "title": "Editar PDF",
       "description": "Adicione texto, destaque, desenhe, coloque formas e imagens ou cubra partes de um PDF no seu navegador, sem instalar nada e sem enviar o arquivo.",
       "action": "Salvar PDF",
-      "about": "Editar PDF deixa você escrever em qualquer página (por exemplo, para preencher um formulário que não tem campos), destacar frases, desenhar à mão livre, marcar com retângulos, linhas e setas, colocar uma imagem como um logotipo ou um carimbo e cobrir partes com um retângulo branco. Escolha a página nas miniaturas, use o zoom para trabalhar com precisão e desfaça ou refaça qualquer mudança. No celular funciona com o dedo. O que você adiciona é desenhado na página e aparece igual em qualquer leitor e impressora. Importante: cobrir com branco só esconde da vista; o texto de baixo continua no arquivo. Para eliminá-lo de verdade, marque «Ocultar de verdade» no retângulo e essa página é salva como imagem.",
+      "about": "Editar PDF deixa você escrever em qualquer página (por exemplo, para preencher um formulário que não tem campos), destacar frases, desenhar à mão livre, marcar com retângulos, linhas e setas, colocar uma imagem como um logotipo ou um carimbo e cobrir partes com um retângulo branco. Escolha a página nas miniaturas, use o zoom para trabalhar com precisão e desfaça ou refaça qualquer mudança. No celular funciona com o dedo. O que você adiciona é desenhado na página e aparece igual em qualquer leitor e impressora. Importante: cobrir com branco só esconde da vista; o texto de baixo continua no arquivo. Para eliminá-lo de verdade, marque “Ocultar de verdade” no retângulo e essa página é salva como imagem.",
       "faq": {
         "q1": "Posso mudar o texto que o PDF já tem?",
         "a1": "Não diretamente: um PDF guarda o texto como desenhos de letras em posições fixas, não como um documento do Word. O que dá para fazer é cobrir a parte antiga com um retângulo branco e escrever o texto novo por cima.",
         "q2": "Cobrir com branco apaga a informação?",
-        "a2": "Não. O retângulo branco só esconde: o texto de baixo ainda pode ser copiado, pesquisado ou recuperado. Se você vai compartilhar um documento com dados privados, marque «Ocultar de verdade»: essa página vira imagem e o texto some do arquivo (em troca, o texto dessa página não pode mais ser selecionado).",
+        "a2": "Não. O retângulo branco só esconde: o texto de baixo ainda pode ser copiado, pesquisado ou recuperado. Se você vai compartilhar um documento com dados privados, marque “Ocultar de verdade”: essa página vira imagem e o texto some do arquivo (em troca, o texto dessa página não pode mais ser selecionado).",
         "q3": "Quais fontes posso usar?",
         "a3": "Helvetica (normal e negrito), Times e Courier, que todos os leitores de PDF têm. Letras de outros alfabetos, como o chinês, e emojis são adicionados como imagem com as fontes do seu dispositivo.",
         "q4": "Meu PDF é enviado para algum servidor?",
@@ -1300,7 +1300,7 @@
         "q2": "A aparência do documento muda?",
         "a2": "O conteúdo e as páginas são mantidos. Alguns detalhes podem variar: as fontes são incorporadas e, no PDF/A-1b, as transparências são achatadas. Links e formulários interativos podem se perder porque o formato de arquivamento não os permite.",
         "q3": "Posso converter um PDF com senha?",
-        "a3": "Não: o PDF/A não permite criptografia. Remova primeiro a senha com «Remover senha de PDF» e depois converta.",
+        "a3": "Não: o PDF/A não permite criptografia. Remova primeiro a senha com “Remover senha de PDF” e depois converta.",
         "q4": "Meus arquivos são enviados a um servidor?",
         "a4": "Sim: a conversão é feita no nosso servidor (não em um serviço de terceiros), por conexão criptografada, e o arquivo é processado em memória sem ser guardado."
       }
@@ -1330,7 +1330,7 @@
         "q1": "O que é mantido na conversão?",
         "a1": "Todas as abas, os valores (texto, números, datas) e as fórmulas com o último resultado. A formatação visual não é mantida: cores, fontes, bordas, larguras de coluna, gráficos e imagens.",
         "q2": "Por que o Excel mostra os acentos errados ou tudo em uma coluna?",
-        "a2": "O Excel em português espera ponto e vírgula como separador e vírgula decimal. Escolha «Ponto e vírgula» e deixe marcada a opção UTF-8 com BOM para que os acentos e o ç apareçam certos com um clique duplo.",
+        "a2": "O Excel em português espera ponto e vírgula como separador e vírgula decimal. Escolha “Ponto e vírgula” e deixe marcada a opção UTF-8 com BOM para que os acentos e o ç apareçam certos com um clique duplo.",
         "q3": "E uma pasta de trabalho com várias abas ao converter para CSV?",
         "a3": "Um CSV tem só uma tabela, então é criado um CSV por aba (com o nome da aba no arquivo), ou só o da primeira se você desmarcar a opção.",
         "q4": "Existe limite de tamanho?",
@@ -1706,19 +1706,19 @@
       "title": "Extrair áudio de vídeo",
       "description": "Tire o som de um vídeo MP4, MOV, MKV ou WebM e salve como M4A, MP3, WAV, FLAC ou OGG, no seu navegador.",
       "action": "Extrair áudio",
-      "about": "Guarde só o som de um vídeo: a música de um clipe, a fala de uma aula gravada ou o áudio de um vídeo do WhatsApp. Com «Original» a faixa é copiada como está, sem recomprimir: leva segundos e mantém a qualidade exata (um vídeo de celular gera um M4A com AAC). Se preferir outro formato, escolha MP3, WAV, FLAC, OGG (Opus), M4A (AAC) ou AIFF e a qualidade. Aceita MP4, MOV, MKV e WebM, vários de uma vez. Tudo acontece no seu dispositivo: os vídeos não são enviados a nenhum servidor.",
+      "about": "Guarde só o som de um vídeo: a música de um clipe, a fala de uma aula gravada ou o áudio de um vídeo do WhatsApp. Com “Original” a faixa é copiada como está, sem recomprimir: leva segundos e mantém a qualidade exata (um vídeo de celular gera um M4A com AAC). Se preferir outro formato, escolha MP3, WAV, FLAC, OGG (Opus), M4A (AAC) ou AIFF e a qualidade. Aceita MP4, MOV, MKV e WebM, vários de uma vez. Tudo acontece no seu dispositivo: os vídeos não são enviados a nenhum servidor.",
       "faq": {
         "q1": "Qual formato escolho?",
-        "a1": "«Original» é o mais rápido e não perde nada: o áudio fica no formato que já tinha dentro do vídeo (quase sempre AAC, num arquivo .m4a que iPhone, Android, Windows e Mac abrem). Escolha MP3 para máxima compatibilidade, ou WAV/FLAC para editar.",
-        "q2": "Por que meu arquivo saiu em MP3 com «Original»?",
+        "a1": "“Original” é o mais rápido e não perde nada: o áudio fica no formato que já tinha dentro do vídeo (quase sempre AAC, num arquivo .m4a que iPhone, Android, Windows e Mac abrem). Escolha MP3 para máxima compatibilidade, ou WAV/FLAC para editar.",
+        "q2": "Por que meu arquivo saiu em MP3 com “Original”?",
         "a2": "Alguns codecs de áudio não têm um formato próprio para serem copiados como estão (por exemplo, o AC-3 de alguns filmes). Nesse caso ele é convertido para MP3 de 192 kbps e o resultado informa isso.",
         "q3": "Posso extrair o áudio de um vídeo do YouTube?",
         "a3": "Só de arquivos que você já tem no seu dispositivo e tem direito de usar. Esta ferramenta não baixa vídeos da internet.",
         "q4": "Existe algum limite?",
-        "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro) e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos.",
-        "a4NoPro": "Até 200 MB por vídeo e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com «Original» funciona em todos.",
+        "a4": "Até 200 MB por vídeo no plano grátis (500 MB com Pro) e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com “Original” funciona em todos.",
+        "a4NoPro": "Até 200 MB por vídeo e 3 horas de áudio. É extraída a faixa de áudio principal. Para converter o áudio AAC de um MP4 para outro formato é preciso um navegador que leia AAC (Chrome, Edge ou Safari); com “Original” funciona em todos.",
         "q5": "Funciona com vídeos AVI, WMV, FLV, MPG ou VOB?",
-        "a5": "Sim: esses formatos antigos são lidos com um motor FFmpeg baixado na primeira vez (cerca de 31 MB), e o som é salvo no formato que você escolher (com «Original» sai em MP3). O máximo é 1 hora de áudio por arquivo. Tudo acontece no seu dispositivo."
+        "a5": "Sim: esses formatos antigos são lidos com um motor FFmpeg baixado na primeira vez (cerca de 31 MB), e o som é salvo no formato que você escolher (com “Original” sai em MP3). O máximo é 1 hora de áudio por arquivo. Tudo acontece no seu dispositivo."
       }
     },
     "compress-video": {
@@ -1742,17 +1742,17 @@
       "title": "Cortar vídeo",
       "description": "Corte um vídeo MP4, MOV, MKV ou WebM e fique com a parte que quiser, no seu navegador.",
       "action": "Cortar vídeo",
-      "about": "Fique só com o momento que importa: o gol, o recado ou a parte de uma reunião gravada. Reproduza o vídeo, marque o início e o fim com «Usar posição atual» (ou digite os tempos) e baixe o trecho no mesmo formato. O modo exato corta no quadro preciso recodificando o vídeo; o modo rápido copia sem recomprimir, em segundos e sem perda, começando no quadro-chave anterior ao início. Tudo acontece no seu dispositivo: o vídeo não é enviado a nenhum servidor.",
+      "about": "Fique só com o momento que importa: o gol, o recado ou a parte de uma reunião gravada. Reproduza o vídeo, marque o início e o fim com “Usar posição atual” (ou digite os tempos) e baixe o trecho no mesmo formato. O modo exato corta no quadro preciso recodificando o vídeo; o modo rápido copia sem recomprimir, em segundos e sem perda, começando no quadro-chave anterior ao início. Tudo acontece no seu dispositivo: o vídeo não é enviado a nenhum servidor.",
       "faq": {
         "q1": "Qual a diferença entre exato e rápido?",
         "a1": "O exato começa exatamente onde você marcou, mas precisa recodificar o vídeo (demora mais e recomprime em alta qualidade). O rápido copia o vídeo como está, então leva segundos e não perde nada, mas só pode começar num quadro-chave: o resultado pode começar até alguns segundos antes.",
         "q2": "Como encontro o momento certo?",
-        "a2": "Reproduza o vídeo e pause onde quiser; «Usar posição atual» copia esse tempo para o campo. Você também pode digitar minutos:segundos, por exemplo 1:23.5.",
+        "a2": "Reproduza o vídeo e pause onde quiser; “Usar posição atual” copia esse tempo para o campo. Você também pode digitar minutos:segundos, por exemplo 1:23.5.",
         "q3": "Posso tirar uma parte do meio?",
-        "a3": "Por enquanto se mantém um trecho por vez. Para tirar algo do meio, corte as duas partes e junte-as com «Juntar vídeos».",
+        "a3": "Por enquanto, só é possível manter um trecho por vez. Para tirar algo do meio, corte as duas partes e junte-as com “Juntar vídeos”.",
         "q4": "Existe algum limite?",
-        "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro) e 2 horas de duração. Se o navegador não reproduzir o arquivo (por exemplo MKV ou H.264 em alguns), você ainda pode digitar os tempos.",
-        "a4NoPro": "Um vídeo por vez, até 200 MB e 2 horas de duração. Se o navegador não reproduzir o arquivo (por exemplo MKV ou H.264 em alguns), você ainda pode digitar os tempos."
+        "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro) e 2 horas de duração. Se o navegador não reproduzir o arquivo (por exemplo, MKV, ou H.264 em alguns navegadores), você ainda pode digitar os tempos.",
+        "a4NoPro": "Um vídeo por vez, até 200 MB e 2 horas de duração. Se o navegador não reproduzir o arquivo (por exemplo, MKV, ou H.264 em alguns navegadores), você ainda pode digitar os tempos."
       }
     },
     "video-to-gif": {
@@ -1766,7 +1766,7 @@
         "q2": "Quanto tempo pode durar?",
         "a2": "Até 300 quadros: 30 s a 10 quadros por segundo, 20 s a 15 ou 60 s a 5. Se passar disso, avisamos antes de começar.",
         "q3": "Tem som?",
-        "a3": "Não: o formato GIF não tem som. Se precisar do áudio, use «Cortar vídeo» e compartilhe o vídeo.",
+        "a3": "Não: o formato GIF não tem som. Se precisar do áudio, use “Cortar vídeo” e compartilhe o vídeo.",
         "q4": "Existe algum limite?",
         "a4": "Um vídeo por vez, até 200 MB no plano grátis (500 MB com Pro). O navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários). A imagem nunca é ampliada.",
         "a4NoPro": "Um vídeo por vez, até 200 MB. O navegador precisa conseguir decodificar o vídeo (H.264 não é decodificado em alguns navegadores sem codecs proprietários). A imagem nunca é ampliada."
@@ -2518,7 +2518,7 @@
     "toolCount": "{count, plural, one {# ferramenta} other {# ferramentas}}",
     "conversionCount": "{count, plural, one {# conversão} other {# conversões}}",
     "seeCategory": "Ver tudo em {category}",
-    "categoryTitle": "{category}: ferramentas online",
+    "categoryTitle": "{id, select, other {{category}: ferramentas online}}",
     "categories": {
       "image": {
         "name": "Imagens",
@@ -2709,7 +2709,7 @@
     "lineResult": "{before, plural, one {# linha} other {# linhas}} → {after, plural, one {# linha} other {# linhas}} ({duplicates, plural, one {# duplicada removida} other {# duplicadas removidas}}, {empty, plural, one {# vazia} other {# vazias}}).",
     "result": "Resultado",
     "loremUnit": "Gerar",
-    "startWithLorem": "Começar com «Lorem ipsum dolor sit amet…»",
+    "startWithLorem": "Começar com “Lorem ipsum dolor sit amet…”",
     "asHtml": "Em parágrafos HTML (tags p)",
     "generate": "Gerar texto",
     "regenerate": "Gerar outro",
@@ -3457,7 +3457,7 @@
     "cutting": "Calculando o recorte…",
     "status": "Recorte pronto: {percent} % da foto é mantido.",
     "step1": "Ajuste o retângulo para que envolva o assunto com uma pequena margem (arraste-o ou os cantos; pelo teclado, setas e Shift + setas). Tudo o que ficar fora é removido.",
-    "step2": "Veja o resultado. Se sobrou fundo, escolha «Pincel: remover» e pinte por cima; se parte do assunto sumiu, escolha «Pincel: manter» e pinte por cima.",
+    "step2": "Veja o resultado. Se sobrou fundo, escolha “Pincel: remover” e pinte por cima; se parte do assunto sumiu, escolha “Pincel: manter” e pinte por cima.",
     "step3": "Escolha o fundo (transparente, branco ou uma cor) e o formato e baixe. A foto mantém o tamanho original.",
     "mode": "Ferramenta",
     "modeRect": "Retângulo",
@@ -3483,7 +3483,7 @@
     "noPerson": "Não encontramos uma pessoa clara nesta foto. O modo automático é só para pessoas.",
     "useRect": "Usar o modo retângulo",
     "peopleStep1": "A pessoa é recortada sozinha. Veja o resultado.",
-    "peopleStep2": "Se sobrou fundo, escolha «Pincel: remover» e pinte por cima; se faltou parte da pessoa (cabelo, mãos, algo que ela segura), escolha «Pincel: manter» e pinte por cima.",
+    "peopleStep2": "Se sobrou fundo, escolha “Pincel: remover” e pinte por cima; se faltou parte da pessoa (cabelo, mãos, algo que ela segura), escolha “Pincel: manter” e pinte por cima.",
     "modeView": "Ver",
     "brushEdge": "Borda do pincel",
     "edgeSoft": "Suave",
@@ -3496,8 +3496,8 @@
     "viewChecker": "Xadrez",
     "viewBlack": "Preto",
     "viewMagenta": "Magenta",
-    "paintHint": "A borracha e «Restaurar» mudam exatamente os pixels que você pinta (sem recalcular o recorte): ideais para restos em cantos e recantos. Aproxime com o zoom para trabalhar com precisão. Atalhos: [ e ] mudam o tamanho.",
-    "zoomHint": "Zoom: roda do mouse, pinça com dois dedos ou os botões. Para se mover: segure a barra de espaço e arraste, use «Mão» ou deslize com dois dedos (um dedo pinta).",
+    "paintHint": "A borracha e “Restaurar” mudam exatamente os pixels que você pinta (sem recalcular o recorte): ideais para restos em cantos e recantos. Aproxime com o zoom para trabalhar com precisão. Atalhos: [ e ] mudam o tamanho.",
+    "zoomHint": "Zoom: roda do mouse, pinça com dois dedos ou os botões. Para se mover: segure a barra de espaço e arraste, use “Mão” ou deslize com dois dedos (um dedo pinta).",
     "zoom": "Zoom",
     "zoomIn": "Aproximar",
     "zoomOut": "Afastar",
@@ -3537,7 +3537,7 @@
     "download": "Baixar os avisos de terceiros (.txt)",
     "downloadHint": "Textos completos das licenças, avisos de copyright e arquivos NOTICE de todos os componentes.",
     "sourceCodeHeading": "Código-fonte",
-    "sourceCodeIntro": "O Fileflect é software livre: seu código é publicado sob a licença GNU AGPL-3.0 ou posterior. Você pode lê-lo, modificá-lo e redistribuí-lo conforme essa licença. A marca «Fileflect» e o logotipo não fazem parte da licença.",
+    "sourceCodeIntro": "O Fileflect é software livre: seu código é publicado sob a licença GNU AGPL-3.0 ou posterior. Você pode lê-lo, modificá-lo e redistribuí-lo conforme essa licença. A marca “Fileflect” e o logotipo não fazem parte da licença.",
     "sourceCodeLink": "Ver o código-fonte do Fileflect",
     "lgplHeading": "Componentes sob LGPL",
     "lgplIntro": "Estes componentes são usados sob a Licença Pública Geral Menor GNU (LGPL), sem modificações e como arquivos separados (módulos WebAssembly ou bibliotecas dinâmicas) que podem ser substituídos por outra versão. Os links de cada um levam ao código-fonte exato e às instruções com que foi compilado.",
@@ -3579,7 +3579,7 @@
     "count": "{count} de {max} caracteres",
     "truncated": "O texto tinha {count} caracteres: foi cortado nos primeiros {max}.",
     "limitReached": "Você chegou ao limite de {max} caracteres.",
-    "loadedFrom": "Texto de «{name}». Você pode editá-lo antes de ouvir.",
+    "loadedFrom": "Texto de “{name}”. Você pode editá-lo antes de ouvir.",
     "language": "Idioma",
     "detected": "Detectado: {language}",
     "play": "Reproduzir",
@@ -3600,7 +3600,7 @@
     "statusFinished": "Leitura concluída",
     "editText": "Editar texto",
     "shortcut": "Barra de espaço: pausa e continua.",
-    "onlineNote": "As vozes «online» enviam o texto ao provedor (Google, Microsoft…) para gerar o áudio. As outras leem no seu dispositivo: se preferir que o texto não saia do seu aparelho, escolha uma delas (fica salva).",
+    "onlineNote": "As vozes “online” enviam o texto ao provedor (Google, Microsoft…) para gerar o áudio. As outras leem no seu dispositivo: se preferir que o texto não saia do seu aparelho, escolha uma delas (fica salva).",
     "noSupport": "Seu navegador não consegue ler em voz alta com as vozes do dispositivo. Tente um Chrome, Edge, Safari ou Firefox atualizado.",
     "noVoices": "Não encontramos vozes em {language} no seu dispositivo: será usada a voz padrão do navegador, que pode pronunciar mal. Você pode instalar vozes nas configurações do sistema.",
     "speechError": "Não foi possível ler com esta voz. Tente outra voz ou tente de novo.",
@@ -3725,7 +3725,7 @@
     "textPlaceholder": "Digite aqui…",
     "redact": "Ocultar de verdade (transforma esta página em imagem)",
     "redactNote": "A página é salva como uma imagem de alta qualidade: o que foi coberto some do arquivo, mas o texto dessa página não poderá mais ser selecionado nem pesquisado.",
-    "whiteoutNote": "Cobrir com branco esconde da vista, mas o texto de baixo continua no arquivo e pode ser copiado ou pesquisado. Para eliminá-lo, selecione o retângulo e marque «Ocultar de verdade».",
+    "whiteoutNote": "Cobrir com branco esconde da vista, mas o texto de baixo continua no arquivo e pode ser copiado ou pesquisado. Para eliminá-lo, selecione o retângulo e marque “Ocultar de verdade”.",
     "whiteBox": "Retângulo branco",
     "redactedBox": "Retângulo branco (a página vai virar imagem)",
     "delete": "Apagar",
