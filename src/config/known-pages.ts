@@ -104,7 +104,7 @@ export function foreignSlugRedirect(locale: Locale, path: string): string | unde
 }
 
 /** Public pages with the same path in every language (Search Console saw them without prefix). */
-const samePathPages = ["/privacy", "/terms", "/contact"];
+const samePathPages = ["/privacy", "/terms", "/contact", "/about"];
 
 /** Order used to guess the language of a slug without prefix. */
 const detectionOrder: Locale[] = ["es", "en", "pt", "fr", "zh"];

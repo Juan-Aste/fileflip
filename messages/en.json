@@ -50,7 +50,8 @@
     },
     "allTools": "All tools",
     "guides": "Guides",
-    "source": "Source code"
+    "source": "Source code",
+    "about": "About"
   },
   "HomePage": {
     "title": "Convert your files without them ever leaving your computer",
@@ -3808,5 +3809,59 @@
     "relatedTitle": "More guides",
     "allGuides": "All guides",
     "breadcrumb": "Breadcrumb"
+  },
+  "About": {
+    "title": "About Fileflect",
+    "description": "Who makes Fileflect, why it exists, how it protects your files, how it is funded and how to get in touch.",
+    "intro": "Fileflect is a set of free tools for converting and editing files in your browser. This page explains who is behind it and how it works.",
+    "links": {
+      "privacy": "Read the privacy policy",
+      "credits": "See the credits",
+      "source": "View the source code",
+      "contact": "Go to the contact page"
+    },
+    "sections": {
+      "who": {
+        "heading": "Who is behind it",
+        "body": [
+          "Fileflect is built and maintained by Juan Pablo Aste, from Vicente López, in the province of Buenos Aires, Argentina. It is an independent project, not part of a larger company.",
+          "The tools, texts and guides on the site are written and tested here. If something doesn't work the way you expected, the person reading the emails is the same one who can fix it."
+        ]
+      },
+      "why": {
+        "heading": "Why it exists",
+        "body": [
+          "Turning a PDF into Word, an iPhone photo into a JPG or merging two documents are everyday tasks. Many sites that do them ask you to upload private files to an unknown server, create an account or accept a watermark on the result.",
+          "Fileflect was made to handle those tasks without the hassle: no required sign-up, no watermarks and, whenever possible, without your file ever leaving your device."
+        ]
+      },
+      "privacy": {
+        "heading": "How we look after your files",
+        "body": [
+          "Most tools process the file in your own browser, with code that is downloaded to your device: the file is not sent to any server.",
+          "Some conversions need programs that can't run in a browser (for example, Word, Excel or PowerPoint to PDF). In those cases the file is sent encrypted to our server, processed and deleted within 1 hour at most. We don't look at your files, we don't keep their names or contents, and we don't sell data.",
+          "The full details are in the privacy policy."
+        ]
+      },
+      "source": {
+        "heading": "Open source",
+        "body": [
+          "Fileflect's code is free software, licensed under AGPL-3.0-or-later, so anyone can check how files are handled. It also relies on open-source components by other authors, listed with their licenses on the credits page."
+        ]
+      },
+      "funding": {
+        "heading": "How it is funded",
+        "body": [
+          "Fileflect is free and is paid for by Google AdSense ads shown on its pages. The ads have no access to the files you process.",
+          "We don't use Google Analytics or social media pixels."
+        ]
+      },
+      "contact": {
+        "heading": "Contact",
+        "body": [
+          "If you found a bug, want to request a new format or have a question, write to us at {email}. We reply Monday to Friday."
+        ]
+      }
+    }
   }
 }

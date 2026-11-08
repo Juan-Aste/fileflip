@@ -636,7 +636,7 @@ Calidad para Google y AdSense (pedido del dueño el 2026-11-07; en la tarea prog
 - [x] 19.2d (hecha 2026-11-08: prueba exhaustiva en `seo-urls.spec.ts`) Tests: el sitemap solo lista indexables; las noindex tienen la meta correcta; ninguna indexable es noindex por error.
 
 ### 19.3 (pedida como 17.3) Confianza: «Quiénes somos»
-- [ ] 19.3 Página «Quiénes somos»/«About» en 5 idiomas, enlazada desde el footer, con schema Organization/AboutPage (quién está detrás, por qué existe, privacidad, código abierto si `NEXT_PUBLIC_SOURCE_URL`, financiación con anuncios, contacto contact@fileflect.com).
+- [x] 19.3 (hecha 2026-11-08: `/about` en 5 idiomas, `src/lib/about.ts`) Página «Quiénes somos»/«About» en 5 idiomas, enlazada desde el footer, con schema Organization/AboutPage (quién está detrás, por qué existe, privacidad, código abierto si `NEXT_PUBLIC_SOURCE_URL`, financiación con anuncios, contacto contact@fileflect.com).
 
 ### 19.4 (pedida como 17.4) Guías
 - [ ] 19.4a 3 guías nuevas (reglas de la fase 10E: pasos verificados, capturas reales con Playwright, 800–1500 palabras, es + 4 idiomas).

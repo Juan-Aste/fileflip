@@ -16,7 +16,7 @@ const linkClass = "text-muted transition hover:text-brand";
 // No pricing link while the Pro plan is off.
 const companyPages = () => [
   ...(proEnabled() ? (["pricing"] as const) : []),
-  ...(["privacy", "terms", "credits", "contact"] as const),
+  ...(["about", "privacy", "terms", "credits", "contact"] as const),
 ];
 
 export default function Footer() {

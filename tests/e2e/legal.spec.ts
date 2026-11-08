@@ -5,6 +5,7 @@
 // next to the sign-in buttons (billing-states.spec.ts checks the one next to
 // the subscribe button). legal-sections.test.ts checks that the Pro sections
 // appear with the switch on.
+import { axeViolations } from "./axe";
 import { expect, test } from "./support";
 
 const draftNotes = /\[(revisar|decidir|definir|consultar)|\bBORRADOR\b|\bDRAFT\b/;
@@ -72,4 +73,48 @@ test("source code link only with NEXT_PUBLIC_SOURCE_URL", async ({ page }) => {
   await expect(page.locator("main")).toContainText("AGPL-3.0");
   await page.goto("/en");
   await expect(page.locator("footer").getByRole("link", { name: "Source code", exact: true })).toHaveAttribute("href", new URL(source).href);
+});
+
+// About page (19.3): 5 languages, footer link, facts, links, schema and axe.
+const aboutTitles: Record<string, { title: string; footer: string }> = {
+  es: { title: "Quiénes somos", footer: "Quiénes somos" },
+  en: { title: "About Fileflect", footer: "About" },
+  pt: { title: "Quem somos", footer: "Quem somos" },
+  fr: { title: "Qui sommes-nous", footer: "Qui sommes-nous" },
+  zh: { title: "关于我们", footer: "关于我们" },
+};
+for (const [locale, t] of Object.entries(aboutTitles)) {
+  test(`about page (${locale}) @xb`, async ({ page }) => {
+    await page.goto(`/${locale}`);
+    await page.locator("footer").getByRole("link", { name: t.footer, exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`/${locale}/about$`));
+    await expect(page.getByRole("heading", { level: 1, name: t.title })).toBeVisible();
+    const main = page.locator("main");
+    await expect(main).toContainText("Juan Pablo Aste");
+    await expect(main).toContainText("Vicente López");
+    await expect(main).toContainText("AdSense");
+    await expect(main).not.toContainText("{email}");
+    await expect(main.locator('a[href="mailto:contact@fileflect.com"]')).toBeVisible();
+    await expect(main.locator(`a[href="/${locale}/privacy"]`)).toBeVisible();
+    await expect(main.locator(`a[href="/${locale}/contact"]`)).toBeVisible();
+    const source = process.env.NEXT_PUBLIC_SOURCE_URL?.trim();
+    await expect(main.locator(`a[href="${source ? new URL(source).href : "__none__"}"]`)).toHaveCount(source ? 1 : 0);
+    expect(await main.innerText()).not.toMatch(draftNotes);
+    const ld = (await page.locator('script[type="application/ld+json"]').allTextContents()).map((s) => JSON.parse(s));
+    const about = ld.find((d) => d["@type"] === "AboutPage");
+    expect(about?.mainEntity?.["@type"]).toBe("Organization");
+    expect(about?.mainEntity?.founder?.name).toBe("Juan Pablo Aste");
+    expect(await page.locator('link[rel="canonical"]').getAttribute("href")).toMatch(new RegExp(`/${locale}/about$`));
+  });
+}
+
+test("about page: axe light, dark and Chinese; unprefixed URL redirects", async ({ page }) => {
+  for (const [path, scheme] of [["/es/about", "light"], ["/es/about", "dark"], ["/zh/about", "light"]] as const) {
+    await page.emulateMedia({ colorScheme: scheme });
+    await page.goto(path, { waitUntil: "networkidle" });
+    expect(await axeViolations(page), `${path} ${scheme}`).toEqual([]);
+  }
+  const res = await page.request.get("/about", { maxRedirects: 0 });
+  expect(res.status()).toBe(301);
+  expect(res.headers().location).toMatch(/\/es\/about$/);
 });

@@ -54,6 +54,7 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
     { path: () => "/privacy", priority: 0.3 },
     { path: () => "/terms", priority: 0.3 },
     { path: () => "/contact", priority: 0.3 },
+    { path: () => "/about", priority: 0.5 },
     { path: (l: Locale) => `/${creditsSlugs[l]}`, priority: 0.2 },
     { path: (l: Locale) => `/${allToolsSlugs[l]}`, priority: 0.8 },
     ...publishedCategories.filter(isIndexedCategory).map((c) => ({ path: (l: Locale) => `/${categorySlug(c, l)}`, priority: 0.8 })),

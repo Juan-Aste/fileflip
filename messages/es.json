@@ -50,7 +50,8 @@
     },
     "allTools": "Todas las herramientas",
     "guides": "Guías",
-    "source": "Código fuente"
+    "source": "Código fuente",
+    "about": "Quiénes somos"
   },
   "HomePage": {
     "title": "Convierte tus archivos sin que salgan de tu computadora",
@@ -3808,5 +3809,59 @@
     "relatedTitle": "Otras guías",
     "allGuides": "Todas las guías",
     "breadcrumb": "Ruta de navegación"
+  },
+  "About": {
+    "title": "Quiénes somos",
+    "description": "Quién hace Fileflect, por qué existe, cómo protege tus archivos, cómo se financia y cómo contactarnos.",
+    "intro": "Fileflect es un conjunto de herramientas gratuitas para convertir y editar archivos desde el navegador. Esta página cuenta quién está detrás y cómo funciona.",
+    "links": {
+      "privacy": "Leer la política de privacidad",
+      "credits": "Ver los créditos",
+      "source": "Ver el código fuente",
+      "contact": "Ir a la página de contacto"
+    },
+    "sections": {
+      "who": {
+        "heading": "Quién está detrás",
+        "body": [
+          "Fileflect lo hace y lo mantiene Juan Pablo Aste, desde Vicente López, en la provincia de Buenos Aires, Argentina. Es un proyecto independiente: no forma parte de una empresa más grande.",
+          "Las herramientas, los textos y las guías del sitio se escriben y se prueban acá. Si algo no funciona como esperabas, la persona que lee los correos es la misma que puede arreglarlo."
+        ]
+      },
+      "why": {
+        "heading": "Por qué existe",
+        "body": [
+          "Pasar un PDF a Word, una foto del iPhone a JPG o unir dos documentos son tareas de todos los días. Muchos sitios que las resuelven piden subir archivos privados a un servidor desconocido, crear una cuenta o aceptar marcas de agua en el resultado.",
+          "Fileflect nació para hacer esas tareas sin esas trabas: sin registro obligatorio, sin marcas de agua y, siempre que se pueda, sin que el archivo salga de tu dispositivo."
+        ]
+      },
+      "privacy": {
+        "heading": "Cómo cuidamos tus archivos",
+        "body": [
+          "La mayoría de las herramientas procesan el archivo en tu propio navegador, con código que se descarga a tu dispositivo: el archivo no viaja a ningún servidor.",
+          "Algunas conversiones necesitan programas que no corren en el navegador (por ejemplo, Word, Excel o PowerPoint a PDF). En esos casos el archivo se envía cifrado a nuestro servidor, se procesa y se elimina en un máximo de 1 hora. No miramos los archivos, no guardamos su nombre ni su contenido y no vendemos datos.",
+          "El detalle completo está en la política de privacidad."
+        ]
+      },
+      "source": {
+        "heading": "Código abierto",
+        "body": [
+          "El código de Fileflect es software libre, con licencia AGPL-3.0-or-later: cualquiera puede revisar cómo se tratan los archivos. Usa además componentes abiertos de otros autores, que se listan con sus licencias en la página de créditos."
+        ]
+      },
+      "funding": {
+        "heading": "Cómo se financia",
+        "body": [
+          "Fileflect es gratis y se sostiene con anuncios de Google AdSense que se muestran en las páginas. Los anuncios no tienen acceso a los archivos que procesas.",
+          "No usamos Google Analytics ni píxeles de redes sociales."
+        ]
+      },
+      "contact": {
+        "heading": "Contacto",
+        "body": [
+          "Si encontraste un error, quieres pedir un formato nuevo o tienes una pregunta, escríbenos a {email}. Respondemos de lunes a viernes."
+        ]
+      }
+    }
   }
 }
