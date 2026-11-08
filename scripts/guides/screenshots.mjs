@@ -188,6 +188,107 @@ async function photoContractPdf(browser, locale) {
   return file;
 }
 
+/** A product photo drawn as SVG (a ceramic mug on a wooden table against a wall), nothing personal. */
+async function productPhoto() {
+  const file = join(work, "taza.jpg");
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900">` +
+    `<defs>` +
+    `<linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9b9a6"/><stop offset="1" stop-color="#b3a28d"/></linearGradient>` +
+    `<linearGradient id="wood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a5a35"/><stop offset="1" stop-color="#6b4226"/></linearGradient>` +
+    `<linearGradient id="mug" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#14706b"/><stop offset="0.35" stop-color="#2bb3a8"/><stop offset="1" stop-color="#0c4f4b"/></linearGradient>` +
+    `<radialGradient id="shadow"><stop offset="0" stop-color="#000" stop-opacity="0.35"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>` +
+    `</defs>` +
+    `<rect width="1200" height="620" fill="url(#wall)"/><rect y="620" width="1200" height="280" fill="url(#wood)"/>` +
+    Array.from({ length: 9 }, (_, i) => `<path d="M0 ${650 + i * 28} C 300 ${640 + i * 28}, 800 ${662 + i * 28}, 1200 ${648 + i * 28}" stroke="#5a3820" stroke-opacity="0.35" stroke-width="2" fill="none"/>`).join("") +
+    `<ellipse cx="590" cy="735" rx="230" ry="34" fill="url(#shadow)"/>` +
+    `<path d="M745 360 C 880 360, 880 600, 745 600" stroke="#106662" stroke-width="44" fill="none"/>` +
+    `<path d="M430 300 L770 300 L755 700 Q 600 740 445 700 Z" fill="url(#mug)"/>` +
+    `<ellipse cx="600" cy="300" rx="170" ry="34" fill="#0c4f4b"/><ellipse cx="600" cy="300" rx="150" ry="24" fill="#3a2414"/>` +
+    `<rect x="520" y="430" width="160" height="110" rx="14" fill="#f4efe6"/><circle cx="600" cy="485" r="30" fill="#e2683c"/>` +
+    `</svg>`;
+  writeFileSync(file, await sharp(Buffer.from(svg)).jpeg({ quality: 90 }).toBuffer());
+  return file;
+}
+
+/** Clicks a pill of a ChoiceGroup by its exact text (the radio itself is visually hidden). */
+const pill = (page, text) =>
+  page.locator("label").filter({ hasText: new RegExp(`^${text.replace(/[()]/g, "\\$&")}$`) }).first().click();
+
+/** "Remove background" in rectangle mode with the product photo, once the cut is ready. */
+async function removeBackgroundProduct(page, l) {
+  await open(page, l, toolSlug("remove-background", l));
+  await pill(page, msg(l, "RemoveBackgroundTool.methodRect"));
+  await pick(page, l, [await productPhoto()]);
+  const ready = msg(l, "RemoveBackgroundTool.status").split("{percent}")[0].trim();
+  await page.getByRole("status").filter({ hasText: ready }).first().waitFor({ timeout: 60_000 });
+}
+
+// Two versions of a short contract (line by line) and of a school paragraph
+// (word by word), in each language, with visible differences.
+const compareSamples = {
+  es: {
+    contractA:
+      "Cláusula 1. El prestador entregará el sitio web el 15 de marzo.\nCláusula 2. El cliente pagará 1.200 dólares en dos cuotas.\nCláusula 3. Cualquier cambio deberá acordarse por escrito.\nCláusula 4. El contrato podrá rescindirse con 30 días de aviso.",
+    contractB:
+      "Cláusula 1. El prestador entregará el sitio web el 30 de marzo.\nCláusula 2. El cliente pagará 1.500 dólares en tres cuotas.\nCláusula 3. Cualquier cambio deberá acordarse por escrito.\nCláusula 4. El contrato podrá rescindirse con 60 días de aviso.\nCláusula 5. El prestador mantendrá el sitio durante seis meses.",
+    essayA:
+      "La fotosíntesis es el proceso por el cual las plantas transforman la luz del sol en energía química. Ocurre principalmente en las hojas, dentro de los cloroplastos.",
+    essayB:
+      "La fotosíntesis es el proceso mediante el cual las plantas, las algas y algunas bacterias transforman la luz del sol en energía química. Ocurre sobre todo en las hojas, dentro de los cloroplastos, y libera oxígeno.",
+  },
+  en: {
+    contractA:
+      "Clause 1. The provider will deliver the website on March 15.\nClause 2. The client will pay 1,200 dollars in two installments.\nClause 3. Any change must be agreed in writing.\nClause 4. Either party may terminate with 30 days' notice.",
+    contractB:
+      "Clause 1. The provider will deliver the website on March 30.\nClause 2. The client will pay 1,500 dollars in three installments.\nClause 3. Any change must be agreed in writing.\nClause 4. Either party may terminate with 60 days' notice.\nClause 5. The provider will maintain the site for six months.",
+    essayA:
+      "Photosynthesis is the process by which plants turn sunlight into chemical energy. It takes place mainly in the leaves, inside the chloroplasts.",
+    essayB:
+      "Photosynthesis is the process through which plants, algae and some bacteria turn sunlight into chemical energy. It takes place mostly in the leaves, inside the chloroplasts, and releases oxygen.",
+  },
+  pt: {
+    contractA:
+      "Cláusula 1. O prestador entregará o site em 15 de março.\nCláusula 2. O cliente pagará 1.200 reais em duas parcelas.\nCláusula 3. Qualquer alteração deverá ser combinada por escrito.\nCláusula 4. O contrato poderá ser rescindido com 30 dias de aviso.",
+    contractB:
+      "Cláusula 1. O prestador entregará o site em 30 de março.\nCláusula 2. O cliente pagará 1.500 reais em três parcelas.\nCláusula 3. Qualquer alteração deverá ser combinada por escrito.\nCláusula 4. O contrato poderá ser rescindido com 60 dias de aviso.\nCláusula 5. O prestador fará a manutenção do site durante seis meses.",
+    essayA:
+      "A fotossíntese é o processo pelo qual as plantas transformam a luz do sol em energia química. Ela ocorre principalmente nas folhas, dentro dos cloroplastos.",
+    essayB:
+      "A fotossíntese é o processo por meio do qual as plantas, as algas e algumas bactérias transformam a luz do sol em energia química. Ela ocorre sobretudo nas folhas, dentro dos cloroplastos, e libera oxigênio.",
+  },
+  fr: {
+    contractA:
+      "Article 1. Le prestataire livrera le site web le 15 mars.\nArticle 2. Le client paiera 1 200 euros en deux versements.\nArticle 3. Toute modification devra être convenue par écrit.\nArticle 4. Le contrat pourra être résilié avec un préavis de 30 jours.",
+    contractB:
+      "Article 1. Le prestataire livrera le site web le 30 mars.\nArticle 2. Le client paiera 1 500 euros en trois versements.\nArticle 3. Toute modification devra être convenue par écrit.\nArticle 4. Le contrat pourra être résilié avec un préavis de 60 jours.\nArticle 5. Le prestataire assurera la maintenance du site pendant six mois.",
+    essayA:
+      "La photosynthèse est le processus par lequel les plantes transforment la lumière du soleil en énergie chimique. Elle a lieu principalement dans les feuilles, à l’intérieur des chloroplastes.",
+    essayB:
+      "La photosynthèse est le processus grâce auquel les plantes, les algues et certaines bactéries transforment la lumière du soleil en énergie chimique. Elle a lieu surtout dans les feuilles, à l’intérieur des chloroplastes, et libère de l’oxygène.",
+  },
+  zh: {
+    contractA:
+      "第一条 服务方应于 3 月 15 日交付网站。\n第二条 客户分两期支付 1200 元。\n第三条 任何变更均须以书面形式约定。\n第四条 任何一方可提前 30 天通知解除合同。",
+    contractB:
+      "第一条 服务方应于 3 月 30 日交付网站。\n第二条 客户分三期支付 1500 元。\n第三条 任何变更均须以书面形式约定。\n第四条 任何一方可提前 60 天通知解除合同。\n第五条 服务方负责网站六个月的维护。",
+    essayA: "光合作用是植物把阳光转化为化学能的过程。它主要发生在叶片的叶绿体中。",
+    essayB: "光合作用是植物、藻类和部分细菌把阳光转化为化学能的过程。它大多发生在叶片的叶绿体中，并释放氧气。",
+  },
+};
+
+/** Fills both boxes of Compare text, picks the mode and compares. */
+async function compareTexts(page, l, a, b, mode) {
+  await open(page, l, toolSlug("compare-text", l));
+  await mark(page);
+  await page.getByRole("textbox", { name: msg(l, "TextTools.textA"), exact: true }).fill(a);
+  await page.getByRole("textbox", { name: msg(l, "TextTools.textB"), exact: true }).fill(b);
+  await label(page, msg(l, mode === "line" ? "TextTools.byLine" : "TextTools.byWord")).click();
+  await page.getByRole("button", { name: msg(l, "TextTools.compare"), exact: true }).click();
+  await page.getByRole("heading", { name: msg(l, "TextTools.differences") }).waitFor();
+  return toolBlock(page);
+}
+
 // name → steps that leave the page ready for the shot in a language; returns the element to capture.
 const shots = {
   "pdf-a-word-convertir": async (page, l) => {
@@ -279,6 +380,23 @@ const shots = {
     await page.locator("main a[download]").first().waitFor({ timeout: 120_000 });
     return toolBlock(page);
   },
+  "quitar-fondo-producto": async (page, l) => {
+    await removeBackgroundProduct(page, l);
+    // The transparent result, seen on the checkerboard.
+    await pill(page, msg(l, "RemoveBackgroundTool.viewChecker"));
+    await page.waitForTimeout(400);
+    return toolBlock(page);
+  },
+  "quitar-fondo-blanco": async (page, l) => {
+    await removeBackgroundProduct(page, l);
+    // White background and JPG, as most online shops ask.
+    await pill(page, msg(l, "RemoveBackgroundTool.white"));
+    await pill(page, "JPG");
+    await page.waitForTimeout(400);
+    return toolBlock(page);
+  },
+  "comparar-textos-lineas": (page, l) => compareTexts(page, l, compareSamples[l].contractA, compareSamples[l].contractB, "line"),
+  "comparar-textos-palabras": (page, l) => compareTexts(page, l, compareSamples[l].essayA, compareSamples[l].essayB, "word"),
 };
 
 const args = process.argv.slice(2);

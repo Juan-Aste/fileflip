@@ -1,4 +1,44 @@
 {
+  "comparar-textos-lineas": {
+    "width": 800,
+    "height": 890
+  },
+  "comparar-textos-lineas.en": {
+    "width": 800,
+    "height": 890
+  },
+  "comparar-textos-lineas.fr": {
+    "width": 800,
+    "height": 950
+  },
+  "comparar-textos-lineas.pt": {
+    "width": 800,
+    "height": 890
+  },
+  "comparar-textos-lineas.zh": {
+    "width": 800,
+    "height": 890
+  },
+  "comparar-textos-palabras": {
+    "width": 800,
+    "height": 790
+  },
+  "comparar-textos-palabras.en": {
+    "width": 800,
+    "height": 767
+  },
+  "comparar-textos-palabras.fr": {
+    "width": 800,
+    "height": 790
+  },
+  "comparar-textos-palabras.pt": {
+    "width": 800,
+    "height": 790
+  },
+  "comparar-textos-palabras.zh": {
+    "width": 800,
+    "height": 767
+  },
   "comprimir-pdf-resultado": {
     "width": 800,
     "height": 350
@@ -198,6 +238,46 @@
   "pdfa-opciones.zh": {
     "width": 800,
     "height": 426
+  },
+  "quitar-fondo-blanco": {
+    "width": 800,
+    "height": 1647
+  },
+  "quitar-fondo-blanco.en": {
+    "width": 800,
+    "height": 1667
+  },
+  "quitar-fondo-blanco.fr": {
+    "width": 800,
+    "height": 1665
+  },
+  "quitar-fondo-blanco.pt": {
+    "width": 800,
+    "height": 1647
+  },
+  "quitar-fondo-blanco.zh": {
+    "width": 800,
+    "height": 1545
+  },
+  "quitar-fondo-producto": {
+    "width": 800,
+    "height": 1611
+  },
+  "quitar-fondo-producto.en": {
+    "width": 800,
+    "height": 1611
+  },
+  "quitar-fondo-producto.fr": {
+    "width": 800,
+    "height": 1609
+  },
+  "quitar-fondo-producto.pt": {
+    "width": 800,
+    "height": 1611
+  },
+  "quitar-fondo-producto.zh": {
+    "width": 800,
+    "height": 1509
   },
   "transcribir-resultado": {
     "width": 800,

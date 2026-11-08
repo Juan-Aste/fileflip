@@ -59,6 +59,12 @@ export const plannedGuideIds = [
   "read-aloud",
   "sign-pdf",
   "pdf-a",
+  "edit-pdf",
+  "fill-pdf-form",
+  "remove-background",
+  "old-video-to-mp4",
+  "compare-text",
+  "id-photo",
 ] as const;
 
 export const guides: GuideMeta[] = [
@@ -429,6 +435,80 @@ export const guides: GuideMeta[] = [
         slug: "what-is-pdf-a",
         title: "PDF/A 是什么，什么时候需要用它",
         description: "PDF/A 格式是什么、哪些机构要求使用它、该选哪个版本（1b、2b 还是 3b），以及如何转换 PDF 才不会被退回。",
+      },
+    },
+  },
+  {
+    id: "remove-background",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["remove-background", "id-photo", "crop-image", "resize-image", "compress-image", "round-image"],
+    related: ["image-formats", "id-photo"],
+    mainFor: { tools: ["remove-background"] },
+    howTo: true,
+    image: "quitar-fondo-producto",
+    versions: {
+      es: {
+        slug: "como-quitar-fondo-foto",
+        title: "Cómo quitar el fondo de una foto para un documento o una tienda online",
+        description: "Quita el fondo de una foto gratis y sin subirla: qué modo usar para personas y para productos, cómo corregir bordes y cuándo descargar PNG transparente o fondo blanco.",
+      },
+      en: {
+        slug: "how-to-remove-background-from-photo",
+        title: "How to remove the background from a photo for an ID or an online shop",
+        description: "Remove a photo’s background for free without uploading it: which mode suits people or products, how to fix edges and when to get a transparent PNG or a white background.",
+      },
+      pt: {
+        slug: "como-remover-fundo-de-foto",
+        title: "Como remover o fundo de uma foto para documento ou loja virtual",
+        description: "Remova o fundo de uma foto de graça e sem enviá-la: qual modo usar para pessoas e produtos, como corrigir bordas e quando baixar PNG transparente ou fundo branco.",
+      },
+      fr: {
+        slug: "comment-supprimer-arriere-plan-photo",
+        title: "Comment supprimer l’arrière-plan d’une photo pour un document ou une boutique en ligne",
+        description: "Détourez une photo gratuitement, sans l’envoyer : quel mode pour les personnes ou les produits, comment corriger les contours, PNG transparent ou fond blanc.",
+      },
+      zh: {
+        slug: "how-to-remove-background-from-photo",
+        title: "如何去除照片背景：用于证件照或网店商品图",
+        description: "免费去除照片背景，无需上传：人像和商品分别用哪种模式、如何修整边缘，以及什么时候下载透明 PNG 或白色背景图片。",
+      },
+    },
+  },
+  {
+    id: "compare-text",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["compare-text", "pdf-to-text", "ocr-pdf", "image-to-text", "remove-duplicate-lines", "word-counter", "case-converter", "edit-pdf"],
+    related: ["pdf-to-word", "edit-pdf", "sign-pdf"],
+    mainFor: { tools: ["compare-text"] },
+    howTo: true,
+    image: "comparar-textos-lineas",
+    versions: {
+      es: {
+        slug: "como-comparar-dos-textos",
+        title: "Cómo comparar dos versiones de un texto y ver qué cambió",
+        description: "Compara dos textos y ve qué se agregó, quitó o cambió: por líneas o por palabras, ignorando mayúsculas o espacios, y cómo hacerlo si las versiones están en PDF o Word.",
+      },
+      en: {
+        slug: "how-to-compare-two-texts",
+        title: "How to compare two versions of a text and see what changed",
+        description: "Compare two texts and see what was added, removed or changed: by lines or by words, ignoring case or spacing, and what to do when the versions are PDF or Word files.",
+      },
+      pt: {
+        slug: "como-comparar-dois-textos",
+        title: "Como comparar duas versões de um texto e ver o que mudou",
+        description: "Compare dois textos e veja o que foi acrescentado, tirado ou alterado: por linhas ou por palavras, ignorando maiúsculas ou espaços, e o que fazer com PDF ou Word.",
+      },
+      fr: {
+        slug: "comment-comparer-deux-textes",
+        title: "Comment comparer deux versions d’un texte et voir ce qui a changé",
+        description: "Comparez deux textes et voyez ce qui a été ajouté, supprimé ou modifié : par lignes ou par mots, en ignorant la casse ou les espaces, même depuis un PDF ou un Word.",
+      },
+      zh: {
+        slug: "how-to-compare-two-texts",
+        title: "如何对比一段文本的两个版本，看出改了哪些地方",
+        description: "对比两段文本，看清哪些内容被新增、删除或修改：可按行或按词对比，可忽略大小写和多余空格；两个版本是 PDF 或 Word 文件时也有办法。",
       },
     },
   },

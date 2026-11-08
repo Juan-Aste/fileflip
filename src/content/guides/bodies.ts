@@ -49,6 +49,16 @@ import transcribeAudioEs from "./bodies/transcribe-audio.es";
 import transcribeAudioFr from "./bodies/transcribe-audio.fr";
 import transcribeAudioPt from "./bodies/transcribe-audio.pt";
 import transcribeAudioZh from "./bodies/transcribe-audio.zh";
+import removeBackgroundEn from "./bodies/remove-background.en";
+import removeBackgroundEs from "./bodies/remove-background.es";
+import removeBackgroundFr from "./bodies/remove-background.fr";
+import removeBackgroundPt from "./bodies/remove-background.pt";
+import removeBackgroundZh from "./bodies/remove-background.zh";
+import compareTextEn from "./bodies/compare-text.en";
+import compareTextEs from "./bodies/compare-text.es";
+import compareTextFr from "./bodies/compare-text.fr";
+import compareTextPt from "./bodies/compare-text.pt";
+import compareTextZh from "./bodies/compare-text.zh";
 
 // Markdown body of each guide, by guide id and language (see meta.ts and
 // src/lib/guides/render.ts for the link and screenshot syntax). Imported only
@@ -64,4 +74,6 @@ export const guideBodies: Record<string, Partial<Record<Locale, string>>> = {
   "read-aloud": { es: readAloudEs, en: readAloudEn, pt: readAloudPt, fr: readAloudFr, zh: readAloudZh },
   "sign-pdf": { es: signPdfEs, en: signPdfEn, pt: signPdfPt, fr: signPdfFr, zh: signPdfZh },
   "pdf-a": { es: pdfAEs, en: pdfAEn, pt: pdfAPt, fr: pdfAFr, zh: pdfAZh },
+  "remove-background": { es: removeBackgroundEs, en: removeBackgroundEn, pt: removeBackgroundPt, fr: removeBackgroundFr, zh: removeBackgroundZh },
+  "compare-text": { es: compareTextEs, en: compareTextEn, pt: compareTextPt, fr: compareTextFr, zh: compareTextZh },
 };

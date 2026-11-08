@@ -81,7 +81,8 @@ async function exportImage(
   const image = await decode(input, from);
   onProgress(0.3);
   const data = new Uint8ClampedArray(image.data);
-  applyMask(data, image.width, image.height, new Uint8Array(mask), maskWidth, maskHeight, to === "png" ? background : background.kind === "color" ? background : { kind: "color", rgb: [255, 255, 255] }, paint);
+  // PNG and WEBP keep transparency; only JPG needs a solid background.
+  applyMask(data, image.width, image.height, new Uint8Array(mask), maskWidth, maskHeight, to !== "jpg" || background.kind === "color" ? background : { kind: "color", rgb: [255, 255, 255] }, paint);
   onProgress(0.6);
   const encode = encoders[to];
   if (!encode) throw new Error(`No encoder for ${to}`);
