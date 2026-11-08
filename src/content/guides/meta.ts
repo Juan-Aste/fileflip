@@ -586,6 +586,80 @@ export const guides: GuideMeta[] = [
       },
     },
   },
+  {
+    id: "old-video-to-mp4",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["video-converter", "compress-video", "trim-video", "join-videos", "video-speed", "extract-audio", "audio-to-text", "video-to-gif"],
+    related: ["heic-to-jpg", "transcribe-audio", "image-formats"],
+    mainFor: { tools: ["video-converter"] },
+    howTo: true,
+    image: "video-viejo-mp4-elegir",
+    versions: {
+      es: {
+        slug: "convertir-videos-viejos-a-mp4",
+        title: "Cómo convertir videos viejos (AVI, WMV, MOV, 3GP…) a MP4 para verlos en el celular o la tele",
+        description: "Pasa videos AVI, WMV, 3GP, FLV o MPG a MP4 en el navegador, sin subirlos: paso a paso, por qué no abren, cuánto tarda y qué límites tiene.",
+      },
+      en: {
+        slug: "convert-old-videos-to-mp4",
+        title: "How to convert old videos (AVI, WMV, MOV, 3GP…) to MP4 to watch them on your phone or TV",
+        description: "Turn AVI, WMV, 3GP, FLV or MPG videos into MP4 in your browser, without uploading them: step by step, why they won’t open, how long it takes and the limits.",
+      },
+      pt: {
+        slug: "converter-videos-antigos-para-mp4",
+        title: "Como converter vídeos antigos (AVI, WMV, MOV, 3GP…) para MP4 e assistir no celular ou na TV",
+        description: "Converta vídeos AVI, WMV, 3GP, FLV ou MPG para MP4 no navegador, sem enviá-los: passo a passo, por que não abrem, quanto demora e quais são os limites.",
+      },
+      fr: {
+        slug: "convertir-anciennes-videos-en-mp4",
+        title: "Comment convertir de vieilles vidéos (AVI, WMV, MOV, 3GP…) en MP4 pour les regarder sur téléphone ou télé",
+        description: "Passez vos vidéos AVI, WMV, 3GP, FLV ou MPG en MP4 dans le navigateur, sans les envoyer : étapes, pourquoi elles ne s’ouvrent pas, durée et limites.",
+      },
+      zh: {
+        slug: "convert-old-videos-to-mp4",
+        title: "如何把旧视频（AVI、WMV、MOV、3GP 等）转换为 MP4，在手机或电视上播放",
+        description: "在浏览器中把 AVI、WMV、3GP、FLV 或 MPG 视频转换为 MP4，无需上传：具体步骤、旧视频打不开的原因、转换耗时以及各项限制。",
+      },
+    },
+  },
+  {
+    id: "edit-pdf",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["edit-pdf", "fill-pdf-form", "sign-pdf", "organize-pdf", "merge-pdf", "pdf-watermark", "protect-pdf"],
+    related: ["pdf-to-word", "sign-pdf", "fill-pdf-form"],
+    mainFor: { tools: ["edit-pdf"] },
+    howTo: true,
+    image: "editar-pdf-texto",
+    versions: {
+      es: {
+        slug: "como-editar-un-pdf-gratis",
+        title: "Cómo editar un PDF gratis sin instalar nada",
+        description: "Agrega texto, resaltados, flechas e imágenes a un PDF o tapa datos, desde el navegador: qué se puede cambiar, cómo corregir un texto y cuándo pasarlo a Word.",
+      },
+      en: {
+        slug: "how-to-edit-a-pdf-for-free",
+        title: "How to edit a PDF for free without installing anything",
+        description: "Add text, highlights, arrows and images to a PDF or cover data, in your browser: what can be changed, how to fix existing text and when to convert to Word.",
+      },
+      pt: {
+        slug: "como-editar-pdf-gratis",
+        title: "Como editar um PDF de graça sem instalar nada",
+        description: "Acrescente texto, destaques, setas e imagens a um PDF ou cubra dados, no navegador: o que dá para mudar, como corrigir um texto e quando passar para Word.",
+      },
+      fr: {
+        slug: "modifier-un-pdf-gratuitement",
+        title: "Comment modifier un PDF gratuitement sans rien installer",
+        description: "Ajoutez texte, surlignage, flèches et images à un PDF ou masquez des données, dans le navigateur : ce qu’on peut changer, corriger un texte, passer par Word.",
+      },
+      zh: {
+        slug: "how-to-edit-a-pdf-for-free",
+        title: "如何免费编辑 PDF，无需安装任何软件",
+        description: "在浏览器中为 PDF 添加文字、高亮、箭头和图片，或遮盖个人信息：哪些内容可以修改、如何改正原有文字，以及什么时候该转成 Word。",
+      },
+    },
+  },
 ];
 
 export function guideById(id: string): GuideMeta | undefined {

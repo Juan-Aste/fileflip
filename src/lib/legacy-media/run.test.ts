@@ -7,7 +7,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { beforeAll, describe, expect, it } from "vitest";
 import { LEGACY_MAX_AUDIO_SECONDS, legacyArgs, looksLegacy, parseAudioShape, parseDuration } from "./options";
-import { runLegacy, type FFmpegCore } from "./run";
+import { hasRealVideo, runLegacy, type FFmpegCore } from "./run";
 
 const hasFfmpeg = (() => {
   try {
@@ -65,6 +65,15 @@ describe("legacy media options", () => {
     expect(parseAudioShape("  Stream #0:0: Audio: amr_nb (samr / 0x726D6173), 8000 Hz, mono, flt")).toEqual({ sampleRate: 8000, channels: 1 });
   });
 
+  it("tells a real video track (MJPEG too) from cover art", () => {
+    const audio = "  Stream #0:0: Audio: mp3, 44100 Hz, mono, fltp, 64 kb/s";
+    const cover = "  Stream #0:1: Video: mjpeg (Baseline), yuvj444p(pc), 64x64 [SAR 1:1 DAR 1:1], 90k tbr, 90k tbn (attached pic)";
+    const mjpeg = "  Stream #0:0: Video: mjpeg (Baseline) (MJPG / 0x47504A4D), yuvj444p(pc), 160x120 [SAR 1:1 DAR 4:3], 842 kb/s, 25 fps";
+    expect(hasRealVideo([audio, cover].join("\n"))).toBe(false);
+    expect(hasRealVideo([mjpeg, audio].join("\n"))).toBe(true);
+    expect(hasRealVideo("  Stream #0:0: Video: wmv2 (WMV2 / 0x32564D57), yuv420p, 320x240")).toBe(true);
+  });
+
   it("keeps the audio at most stereo and 48 kHz, never upsampling", () => {
     const args = legacyArgs("audio", "in", "out.wav", { audio: { sampleRate: 8000, channels: 1 } });
     expect(args.join(" ")).toContain("-ac 1 -c:a pcm_s16le -ar 8000");
@@ -116,6 +125,7 @@ describe.skipIf(!hasFfmpeg)("FFmpeg WASM fallback (real core)", () => {
 
   const videos: [string, string[]][] = [
     ["avi (MPEG-4 Part 2 + MP3)", ["-c:v", "mpeg4", "-c:a", "libmp3lame", "-f", "avi"]],
+    ["avi (Motion JPEG + PCM, old photo cameras)", ["-c:v", "mjpeg", "-q:v", "5", "-c:a", "pcm_s16le", "-f", "avi"]],
     ["wmv (WMV2 + WMA2)", ["-c:v", "wmv2", "-c:a", "wmav2", "-f", "asf"]],
     ["flv (Sorenson Spark + MP3)", ["-c:v", "flv", "-c:a", "libmp3lame", "-ar", "44100", "-f", "flv"]],
     ["mpg (MPEG-1 + MP2)", ["-c:v", "mpeg1video", "-c:a", "mp2", "-f", "mpeg"]],

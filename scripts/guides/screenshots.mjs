@@ -9,6 +9,7 @@
 // CHROME_PATH to the Playwright Chromium preinstalled in the cloud environment.
 // Without names, every shot is taken again. Sample files are generated on the
 // fly (nothing personal).
+import { execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -476,6 +477,168 @@ async function enrollmentFormPdf(browser, locale) {
   return file;
 }
 
+/** Old home videos' names in each language: an AVI from a camera, a WMV from Windows Movie Maker, a 3GP from an old phone. */
+const oldVideoNames = {
+  es: ["cumpleanos-2006.avi", "boda-2003.wmv", "celular-2008.3gp"],
+  en: ["birthday-2006.avi", "wedding-2003.wmv", "phone-2008.3gp"],
+  pt: ["aniversario-2006.avi", "casamento-2003.wmv", "celular-2008.3gp"],
+  fr: ["anniversaire-2006.avi", "mariage-2003.wmv", "portable-2008.3gp"],
+  zh: ["生日-2006.avi", "婚礼-2003.wmv", "手机-2008.3gp"],
+};
+
+/** Short videos in old formats (Xvid + MP3 in AVI, WMV 8 + WMA, H.263 + AAC in 3GP), made with the system's ffmpeg like the legacy-media tests. */
+function oldVideos(locale) {
+  const codecs = [
+    ["-s", "640x480", "-c:v", "mpeg4", "-vtag", "xvid", "-q:v", "4", "-c:a", "libmp3lame"],
+    ["-s", "640x480", "-c:v", "wmv2", "-b:v", "1500k", "-c:a", "wmav2"],
+    ["-s", "176x144", "-c:v", "h263", "-c:a", "aac", "-ar", "8000", "-ac", "1"],
+  ];
+  const mimeTypes = ["video/x-msvideo", "video/x-ms-wmv", "video/3gpp"];
+  return oldVideoNames[locale].map((name, i) => {
+    // An ASCII path on disk (Playwright doesn't pick files whose path has Chinese characters); the page gets `name`.
+    const file = join(work, `old-${locale}-${i}${name.slice(name.lastIndexOf("."))}`);
+    const source = ["-f", "lavfi", "-i", "testsrc2=size=640x480:rate=25:duration=12", "-f", "lavfi", "-i", "sine=frequency=440:duration=12"];
+    execFileSync("ffmpeg", ["-v", "error", "-y", ...source, ...codecs[i], file]);
+    return { name, mimeType: mimeTypes[i], buffer: readFileSync(file) };
+  });
+}
+
+// Edit PDF: a one-page notice for neighbors (A4, 794 × 1122 px) with its key lines at known positions.
+const noticeSamples = {
+  es: {
+    title: "Reunión de vecinos",
+    intro: "Se convoca a todos los vecinos del edificio a la reunión ordinaria para tratar los temas de mantenimiento y el presupuesto del próximo año.",
+    date: "Fecha: jueves 12 de noviembre",
+    time: ["Hora:", "19:00"],
+    newTime: "20:30",
+    note: "Nuevo horario",
+    place: "Lugar: salón del primer piso",
+    agendaTitle: "Orden del día",
+    agenda: ["Pintura de la entrada y del hall", "Cambio de la bomba de agua", "Presupuesto de gastos comunes", "Varios"],
+    contact: "Consultas: administración, tel. 555 0134",
+  },
+  en: {
+    title: "Residents’ meeting",
+    intro: "All residents of the building are invited to the regular meeting to discuss maintenance work and next year’s budget.",
+    date: "Date: Thursday, November 12",
+    time: ["Time:", "7:00 PM"],
+    newTime: "8:30 PM",
+    note: "New time",
+    place: "Place: first-floor common room",
+    agendaTitle: "Agenda",
+    agenda: ["Painting the entrance and the lobby", "Replacing the water pump", "Service charge budget", "Any other business"],
+    contact: "Questions: building office, tel. 555 0134",
+  },
+  pt: {
+    title: "Reunião de condomínio",
+    intro: "Ficam convocados todos os moradores do prédio para a reunião ordinária, para tratar da manutenção e do orçamento do próximo ano.",
+    date: "Data: quinta-feira, 12 de novembro",
+    time: ["Horário:", "19h00"],
+    newTime: "20h30",
+    note: "Novo horário",
+    place: "Local: salão do primeiro andar",
+    agendaTitle: "Pauta",
+    agenda: ["Pintura da entrada e do hall", "Troca da bomba d’água", "Orçamento das despesas comuns", "Assuntos gerais"],
+    contact: "Dúvidas: administração, tel. 555 0134",
+  },
+  fr: {
+    title: "Réunion des copropriétaires",
+    intro: "Tous les résidents de l’immeuble sont invités à la réunion ordinaire pour traiter des travaux d’entretien et du budget de l’année prochaine.",
+    date: "Date : jeudi 12 novembre",
+    time: ["Heure :", "19 h 00"],
+    newTime: "20 h 30",
+    note: "Nouvel horaire",
+    place: "Lieu : salle du premier étage",
+    agendaTitle: "Ordre du jour",
+    agenda: ["Peinture de l’entrée et du hall", "Remplacement de la pompe à eau", "Budget des charges communes", "Questions diverses"],
+    contact: "Renseignements : syndic, tél. 555 0134",
+  },
+  zh: {
+    title: "业主大会通知",
+    intro: "兹定于下列时间召开本楼业主例会，讨论楼宇维修事项及明年的费用预算，请各位业主准时参加。",
+    date: "日期：11 月 12 日（星期四）",
+    time: ["时间：", "19:00"],
+    newTime: "20:30",
+    note: "时间已更改",
+    place: "地点：一楼活动室",
+    agendaTitle: "会议议程",
+    agenda: ["粉刷大门和大堂", "更换水泵", "公共费用预算", "其他事项"],
+    contact: "咨询：物业管理处，电话 555 0134",
+  },
+};
+
+/** Where things are on the notice, in px of the 794 × 1122 page. */
+const notice = { date: { x: 96, y: 300, w: 300 }, time: { x: 96, value: 175, y: 340 }, contact: { x: 96, y: 610, w: 330 } };
+
+async function noticePdf(browser, locale) {
+  const s = noticeSamples[locale];
+  const page = await browser.newPage();
+  const at = (x, y, html, extra = "") => `<div style="position:absolute;left:${x}px;top:${y}px;${extra}">${html}</div>`;
+  const agenda = s.agenda.map((a, i) => `<p style="margin:0 0 6px">${i + 1}. ${a}</p>`).join("");
+  await page.setContent(
+    `<body style="margin:0;font:15px/24px sans-serif;color:#222"><div style="position:relative;width:794px;height:1122px">` +
+      at(96, 90, `<h1 style="margin:0;font-size:26px;line-height:32px">${s.title}</h1>`) +
+      at(96, 150, `<p style="margin:0;width:600px">${s.intro}</p>`) +
+      at(notice.date.x, notice.date.y, s.date) +
+      at(notice.time.x, notice.time.y, s.time[0]) +
+      at(notice.time.value, notice.time.y, s.time[1]) +
+      at(96, 380, s.place) +
+      at(96, 440, `<h2 style="margin:0 0 10px;font-size:17px">${s.agendaTitle}</h2>${agenda}`) +
+      at(notice.contact.x, notice.contact.y, s.contact) +
+      `</div></body>`,
+  );
+  const file = join(work, `notice-${locale}.pdf`);
+  writeFileSync(file, await page.pdf({ width: "794px", height: "1122px", printBackground: true }));
+  await page.close();
+  return file;
+}
+
+/** Opens the notice in Edit PDF, with the page at the top of the viewport; returns a px → screen point mapper. */
+async function openEditor(page, l, browser) {
+  await open(page, l, toolSlug("edit-pdf", l));
+  await pick(page, l, [await noticePdf(browser, l)]);
+  const surface = page.getByTestId("edit-surface");
+  await surface.waitFor();
+  // The rendered page image, not the "loading" placeholder.
+  await page.waitForFunction(() => document.querySelector('[data-testid="edit-surface"]')?.previousElementSibling?.tagName === "IMG");
+  // Measured each time: the options above the page change height with the tool, and
+  // clicking them may scroll. Points out of view (or under the sticky header) are scrolled to.
+  const point = async (x, y) => {
+    const box = await surface.boundingBox();
+    return [box.x + (x / 794) * box.width, box.y + (y / 1122) * box.height];
+  };
+  return async (x, y) => {
+    const [px, py] = await point(x, y);
+    if (py > 120 && py < 860) return [px, py];
+    await page.evaluate((dy) => window.scrollBy(0, dy), py - 450);
+    await page.waitForTimeout(100);
+    return point(x, y);
+  };
+}
+
+async function editTool(page, l, id) {
+  await page.getByRole("button", { name: msg(l, `EditPdf.tools.${id}`), exact: true }).click();
+  // Let the options above the page settle: the page moves with them.
+  await page.waitForTimeout(250);
+}
+async function editDrag(page, at, from, to) {
+  const [x1, y1] = await at(...from);
+  const [x2, y2] = await at(...to);
+  await page.mouse.move(x1, y1);
+  await page.mouse.down();
+  for (let i = 1; i <= 8; i++) await page.mouse.move(x1 + ((x2 - x1) * i) / 8, y1 + ((y2 - y1) * i) / 8);
+  await page.mouse.up();
+}
+async function editText(page, l, at, [x, y], text, { size, color, font = "helvetica" }) {
+  await editTool(page, l, "text");
+  await page.getByLabel(msg(l, "EditPdf.font")).selectOption(font);
+  await page.getByLabel(msg(l, "EditPdf.fontSize")).fill(String(size));
+  await page.getByRole("button", { name: msg(l, `EditPdf.colors.${color}`), exact: true }).click();
+  await page.waitForTimeout(250);
+  await page.mouse.click(...(await at(x, y)));
+  await page.locator("textarea").fill(text);
+}
+
 // name → steps that leave the page ready for the shot in a language; returns the element to capture.
 const shots = {
   "pdf-a-word-convertir": async (page, l) => {
@@ -621,6 +784,42 @@ const shots = {
     await open(page, l, toolSlug("fill-pdf-form", l));
     await pick(page, l, [join(fixtures, "document.pdf")]);
     await page.getByText(msg(l, "FillPdfForm.editPdfLink")).waitFor({ timeout: 30_000 });
+    return toolBlock(page);
+  },
+  "video-viejo-mp4-elegir": async (page, l) => {
+    await open(page, l, toolSlug("video-converter", l));
+    await pick(page, l, oldVideos(l));
+    return toolBlock(page);
+  },
+  "video-viejo-mp4-resultado": async (page, l) => {
+    await open(page, l, toolSlug("video-converter", l));
+    await pick(page, l, oldVideos(l));
+    await page.getByRole("button", { name: msg(l, "Tools.video-converter.action"), exact: true }).click();
+    await page.getByRole("button", { name: msg(l, "Converter.downloadAll").replace("{count}", "3") }).waitFor({ timeout: 300_000 });
+    return toolBlock(page);
+  },
+  "editar-pdf-texto": async (page, l, browser) => {
+    const at = await openEditor(page, l, browser);
+    const { date, time } = notice;
+    await editTool(page, l, "highlight");
+    await editDrag(page, at, [date.x - 4, date.y], [date.x + date.w, date.y + 24]);
+    await editTool(page, l, "arrow");
+    await editDrag(page, at, [400, time.y + 12], [time.value + 92, time.y + 12]);
+    await editText(page, l, at, [410, time.y + 4], noticeSamples[l].note, { size: 12, color: "red", font: "helvetica-bold" });
+    // The old time covered with a white box and the new one written on top.
+    await editTool(page, l, "whiteout");
+    await editDrag(page, at, [time.value - 4, time.y + 1], [time.value + 80, time.y + 23]);
+    await editText(page, l, at, [time.value, time.y + 5], noticeSamples[l].newTime, { size: 11, color: "black" });
+    return toolBlock(page);
+  },
+  "editar-pdf-tapar": async (page, l, browser) => {
+    const at = await openEditor(page, l, browser);
+    const { contact } = notice;
+    await editTool(page, l, "whiteout");
+    await editDrag(page, at, [contact.x - 4, contact.y - 2], [contact.x + contact.w + 120, contact.y + 26]);
+    await editTool(page, l, "select");
+    await page.mouse.click(...(await at(contact.x + 20, contact.y + 12)));
+    await label(page, msg(l, "EditPdf.redact")).click();
     return toolBlock(page);
   },
 };

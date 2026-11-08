@@ -639,9 +639,9 @@ Calidad para Google y AdSense (pedido del dueño el 2026-11-07; en la tarea prog
 - [x] 19.3 (hecha 2026-11-08: `/about` en 5 idiomas, `src/lib/about.ts`) Página «Quiénes somos»/«About» en 5 idiomas, enlazada desde el footer, con schema Organization/AboutPage (quién está detrás, por qué existe, privacidad, código abierto si `NEXT_PUBLIC_SOURCE_URL`, financiación con anuncios, contacto contact@fileflect.com).
 
 ### 19.4 (pedida como 17.4) Guías
-- [ ] 19.4a 3 guías nuevas (reglas de la fase 10E: pasos verificados, capturas reales con Playwright, 800–1500 palabras, es + 4 idiomas).
-- [ ] 19.4b 3 guías nuevas más.
-- [ ] 19.4c `docs/seo/plan-editorial.md` con 12 guías más; `lastmod` correcto de las guías en el sitemap; cada herramienta enlaza a su guía.
+- [x] 19.4a (hecha 2026-11-08: editar un PDF, rellenar un formulario PDF, quitar el fondo de una foto) 3 guías nuevas (reglas de la fase 10E: pasos verificados, capturas reales con Playwright, 800–1500 palabras, es + 4 idiomas).
+- [x] 19.4b (hecha 2026-11-08: videos viejos a MP4, comparar dos textos, foto carnet) 3 guías nuevas más.
+- [x] 19.4c (hecha 2026-11-08: `docs/seo/plan-editorial.md`, `mainFor` + «Guías paso a paso» en herramientas y conversiones, `lastmod` del índice) `docs/seo/plan-editorial.md` con 12 guías más; `lastmod` correcto de las guías en el sitemap; cada herramienta enlaza a su guía.
 
 ### 19.5 (pedida como 17.5) Verificación final
 - [ ] 19.5 Lighthouse, detector de clics, axe, Firefox y WebKit de las páginas tocadas, suite de Chromium, test de URLs de Search Console, y `docs/launch-checklist.md` con los pasos del dueño en Search Console después del merge. «FASE 19 TERMINADA».

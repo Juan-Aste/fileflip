@@ -49,7 +49,7 @@ export function runLegacy(core: FFmpegCore, inputPath: string, kind: LegacyKind,
   core.exec("-hide_banner", "-i", inputPath);
   core.reset();
   const text = log.join("\n");
-  const hasVideo = /Stream #\d+:\d+.*: Video: (?!mjpeg|png|bmp)/.test(text);
+  const hasVideo = hasRealVideo(text);
   const hasAudio = /Stream #\d+:\d+.*: Audio: /.test(text);
   if (!/Input #0/.test(text) || (!hasVideo && !hasAudio)) throw new LegacyError(/Invalid data|could not find codec|Unknown format/i.test(text) || !/Input #0/.test(text) ? "unsupportedFormat" : "fileDamaged");
   if (kind === "video" && !hasVideo) throw new LegacyError("noVideoTrack");
@@ -89,4 +89,13 @@ function lastTime(text: string): number | null {
   const all = [...text.matchAll(/time=(\d+):(\d+):(\d+(?:\.\d+)?)/g)];
   const m = all.at(-1);
   return m ? Number(m[1]) * 3600 + Number(m[2]) * 60 + Number(m[3]) : null;
+}
+
+/**
+ * Whether FFmpeg's stream list has a real video track. Cover art (an MP3's or
+ * WMA's picture) is a video stream marked "(attached pic)"; a real MJPEG video,
+ * like old cameras' AVI files, is not.
+ */
+export function hasRealVideo(ffmpegLog: string): boolean {
+  return ffmpegLog.split("\n").some((line) => /Stream #\d+:\d+.*: Video: /.test(line) && !/\(attached pic\)/.test(line));
 }

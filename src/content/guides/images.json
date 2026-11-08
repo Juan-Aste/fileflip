@@ -59,6 +59,46 @@
     "width": 800,
     "height": 350
   },
+  "editar-pdf-tapar": {
+    "width": 800,
+    "height": 1337
+  },
+  "editar-pdf-tapar.en": {
+    "width": 800,
+    "height": 1337
+  },
+  "editar-pdf-tapar.fr": {
+    "width": 800,
+    "height": 1415
+  },
+  "editar-pdf-tapar.pt": {
+    "width": 800,
+    "height": 1415
+  },
+  "editar-pdf-tapar.zh": {
+    "width": 800,
+    "height": 1327
+  },
+  "editar-pdf-texto": {
+    "width": 800,
+    "height": 1447
+  },
+  "editar-pdf-texto.en": {
+    "width": 800,
+    "height": 1447
+  },
+  "editar-pdf-texto.fr": {
+    "width": 800,
+    "height": 1467
+  },
+  "editar-pdf-texto.pt": {
+    "width": 800,
+    "height": 1467
+  },
+  "editar-pdf-texto.zh": {
+    "width": 800,
+    "height": 1447
+  },
   "excel-csv-opciones": {
     "width": 800,
     "height": 546
@@ -378,5 +418,45 @@
   "transcribir-resultado.zh": {
     "width": 800,
     "height": 996
+  },
+  "video-viejo-mp4-elegir": {
+    "width": 800,
+    "height": 574
+  },
+  "video-viejo-mp4-elegir.en": {
+    "width": 800,
+    "height": 574
+  },
+  "video-viejo-mp4-elegir.fr": {
+    "width": 800,
+    "height": 574
+  },
+  "video-viejo-mp4-elegir.pt": {
+    "width": 800,
+    "height": 574
+  },
+  "video-viejo-mp4-elegir.zh": {
+    "width": 800,
+    "height": 554
+  },
+  "video-viejo-mp4-resultado": {
+    "width": 800,
+    "height": 536
+  },
+  "video-viejo-mp4-resultado.en": {
+    "width": 800,
+    "height": 536
+  },
+  "video-viejo-mp4-resultado.fr": {
+    "width": 800,
+    "height": 536
+  },
+  "video-viejo-mp4-resultado.pt": {
+    "width": 800,
+    "height": 536
+  },
+  "video-viejo-mp4-resultado.zh": {
+    "width": 800,
+    "height": 536
   }
 }

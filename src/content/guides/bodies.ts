@@ -69,6 +69,16 @@ import fillPdfFormEs from "./bodies/fill-pdf-form.es";
 import fillPdfFormFr from "./bodies/fill-pdf-form.fr";
 import fillPdfFormPt from "./bodies/fill-pdf-form.pt";
 import fillPdfFormZh from "./bodies/fill-pdf-form.zh";
+import oldVideoToMp4En from "./bodies/old-video-to-mp4.en";
+import oldVideoToMp4Es from "./bodies/old-video-to-mp4.es";
+import oldVideoToMp4Fr from "./bodies/old-video-to-mp4.fr";
+import oldVideoToMp4Pt from "./bodies/old-video-to-mp4.pt";
+import oldVideoToMp4Zh from "./bodies/old-video-to-mp4.zh";
+import editPdfEn from "./bodies/edit-pdf.en";
+import editPdfEs from "./bodies/edit-pdf.es";
+import editPdfFr from "./bodies/edit-pdf.fr";
+import editPdfPt from "./bodies/edit-pdf.pt";
+import editPdfZh from "./bodies/edit-pdf.zh";
 
 // Markdown body of each guide, by guide id and language (see meta.ts and
 // src/lib/guides/render.ts for the link and screenshot syntax). Imported only
@@ -88,4 +98,6 @@ export const guideBodies: Record<string, Partial<Record<Locale, string>>> = {
   "compare-text": { es: compareTextEs, en: compareTextEn, pt: compareTextPt, fr: compareTextFr, zh: compareTextZh },
   "id-photo": { es: idPhotoEs, en: idPhotoEn, pt: idPhotoPt, fr: idPhotoFr, zh: idPhotoZh },
   "fill-pdf-form": { es: fillPdfFormEs, en: fillPdfFormEn, pt: fillPdfFormPt, fr: fillPdfFormFr, zh: fillPdfFormZh },
+  "old-video-to-mp4": { es: oldVideoToMp4Es, en: oldVideoToMp4En, pt: oldVideoToMp4Pt, fr: oldVideoToMp4Fr, zh: oldVideoToMp4Zh },
+  "edit-pdf": { es: editPdfEs, en: editPdfEn, pt: editPdfPt, fr: editPdfFr, zh: editPdfZh },
 };
