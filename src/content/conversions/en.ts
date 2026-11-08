@@ -460,4 +460,481 @@ export const en: ConversionContentMap = {
       },
     ],
   },
+
+  // Photos and images ↔ PDF (19.2b2). Facts: everything runs in the browser;
+  // HEIC via libheif (WASM, ~2 MB, downloaded the first time), primary image,
+  // rotation applied; converting decodes and re-encodes, so metadata (date,
+  // GPS, camera) doesn’t carry over to the new file; transparency → white
+  // background in JPG; adjustable quality (82 by default) and size; image →
+  // PDF: one page the size of the image, JPG and PNG not recompressed; PDF →
+  // image: 72/150/300 DPI (150 by default), one image per page, ZIP if there
+  // are several; password-protected PDF: the password has to be removed first.
+  // Per-file limit depends on the device’s memory (100 MB on most; less on
+  // low-memory phones).
+  "heic>jpg": {
+    when: [
+      "iPhones have saved photos as HEIC for years. They look fine on the iPhone itself and on a Mac, but plenty of web forms, government and application portals, older Windows programs and some Android apps won’t accept them. Converting them to JPG is the safest way to make sure any person or site can open them.",
+      "If you’re only going to store the photos or view them on Apple devices, there’s no need to convert them: HEIC takes up less space at the same quality.",
+    ],
+    differences: [
+      "HEIC uses a modern video codec (HEVC) to compress photos: at the same visual quality, it takes up roughly half the space of a JPG. JPG dates from 1992 and is far less efficient, but absolutely everything opens it: browsers, phones, printers, social networks and business systems.",
+      "A HEIC file can also store things JPG can’t, like several images in one file or depth data for Portrait mode.",
+    ],
+    kept: [
+      "The main photo at full resolution.",
+      "The orientation: a portrait photo stays upright.",
+      "The colors, with a loss of quality you won’t notice at the default quality setting.",
+    ],
+    lost: [
+      "Metadata (date, GPS location, camera model) doesn’t carry over to the JPG, which also protects your privacy if you’re going to share the photo.",
+      "Live Photos become still photos; Portrait mode depth data isn’t kept.",
+      "The JPG is larger than the original HEIC, usually 1.5 to 2 times the size.",
+    ],
+    limits: [
+      "The conversion happens in your browser: your photos aren’t uploaded to any server. The first time, the HEIC decoder (about 2 MB) is downloaded, and after that it stays in your browser’s cache.",
+      "You can convert lots of photos at once. On phones with little memory, very large photos may take longer; if one fails, convert it on its own.",
+    ],
+    steps: [
+      "Copy the photos from your iPhone to your computer (or open them right on the phone) and select them all together.",
+      "Leave JPG as the output format. If you want smaller files, lower the quality to 70–80 or reduce the size.",
+      "Click Convert.",
+      "Download the photos one by one or all together in a ZIP.",
+    ],
+    faq: [
+      {
+        q: "Do I lose quality going from HEIC to JPG?",
+        a: "A little, because JPG also uses lossy compression, but at the default quality you can’t see it with the naked eye. If you’re going to print the photo or edit it heavily, raise the quality to 90 or more, or convert it to PNG.",
+      },
+      {
+        q: "How do I get my iPhone to take photos in JPG directly?",
+        a: "Go to Settings → Camera → Formats and choose “Most Compatible.” New photos will be saved as JPG and take up more space; you can convert the ones you already have in HEIC here.",
+      },
+      {
+        q: "Is the photo’s location kept?",
+        a: "No: the new JPG doesn’t carry the date, GPS or camera data. That’s handy for sharing photos without revealing where they were taken.",
+      },
+      {
+        q: "Are my photos uploaded to the internet?",
+        a: "No. The HEIC is decoded and converted in your own browser; no server ever receives your photos.",
+      },
+    ],
+  },
+
+  "heic>png": {
+    when: [
+      "Converting HEIC to PNG makes sense when you’re going to edit the photo: crop it several times, add text, use it in a design or a presentation. PNG doesn’t lose quality every time you save it, so it’s a better starting point than a JPG for working on an image.",
+      "To send photos in a message or upload them to a form, on the other hand, JPG is the better choice: the files are much smaller.",
+    ],
+    differences: [
+      "HEIC is a format with very efficient compression, designed to store photos in little space. PNG is a lossless format: it stores every pixel exactly, at the cost of much larger files, especially with photos.",
+      "PNG also supports transparency, which comes in handy if you later want to cut out the person or object in the photo.",
+    ],
+    kept: [
+      "The main photo at full resolution, pixel for pixel exactly as decoded from the HEIC.",
+      "The photo’s orientation.",
+      "The quality: PNG doesn’t add any lossy compression.",
+    ],
+    lost: [
+      "The file grows a lot: a 2 MB HEIC photo can top 15 MB as a PNG.",
+      "Metadata (date, location, camera) isn’t copied.",
+      "Live Photos become still photos.",
+    ],
+    limits: [
+      "Everything happens in your browser, without uploading your photos. The first time, the HEIC decoder (about 2 MB) is downloaded.",
+      "Since PNG photos are large, on phones with little memory it’s best to convert just a few photos at a time.",
+    ],
+    steps: [
+      "Choose the HEIC photos.",
+      "Choose PNG as the output format. If you don’t need full resolution, reduce the size so the file is smaller.",
+      "Click Convert and download the PNGs (or the ZIP).",
+    ],
+    faq: [
+      {
+        q: "PNG or JPG for my iPhone photos?",
+        a: "JPG for sharing and storing (the files are much smaller); PNG if you’re going to edit the photo or need it not to lose any quality along the way.",
+      },
+      {
+        q: "Why is the PNG so much bigger than the HEIC?",
+        a: "Because PNG doesn’t throw away any information: it stores every pixel as is. For drawings or screenshots that means small files, but for highly detailed photos the files get very large.",
+      },
+      {
+        q: "Can I remove the background afterward?",
+        a: "Yes. With the PNG, use Remove image background: the result keeps the transparency.",
+      },
+    ],
+  },
+
+  "heic>pdf": {
+    when: [
+      "HEIC to PDF is useful when you’ve taken photos of a document with your iPhone (an ID card, a receipt, a prescription, a certificate) and you need to send it or upload it to a site that only accepts PDF.",
+      "If several photos make up a single document, use Images to PDF to combine them into one file with the pages in the order you choose. And if you want the photo to look like a scan, try Scan document.",
+    ],
+    differences: [
+      "A HEIC is a photo; a PDF is a document made of pages. When you convert, the photo is placed on a page the same size as the image, so it looks the same but can now be attached wherever a PDF is required.",
+    ],
+    kept: [
+      "The whole photo, with no margins or cropping.",
+      "The correct orientation.",
+      "Good quality: the photo is turned into a high-quality JPG before it goes into the PDF.",
+    ],
+    lost: [
+      "The text in the photo can’t be selected or searched: the PDF contains an image. To make it searchable, run it through “OCR scanned PDF” afterward.",
+      "The photo’s metadata doesn’t carry over to the PDF.",
+    ],
+    limits: [
+      "The conversion happens in your browser: photos of your documents aren’t uploaded to any server.",
+      "Each photo becomes its own one-page PDF. To combine several, use Images to PDF.",
+    ],
+    steps: [
+      "Choose the HEIC photo (or several, if you want one PDF per photo).",
+      "Leave PDF as the output format and click Convert.",
+      "Download the PDF. If it’s too big for the site you’re uploading it to, use Compress PDF.",
+    ],
+    faq: [
+      {
+        q: "How do I combine several photos into a single PDF?",
+        a: "With Images to PDF: you choose all the photos (HEIC works too), put them in order, and you get a single PDF with one page per photo.",
+      },
+      {
+        q: "The site wants a PDF under 1 or 2 MB. What do I do?",
+        a: "Run the PDF through Compress PDF, or reduce the photo’s size with Resize image before converting. For a document, 1,500 to 2,000 pixels on the long side is usually enough for it to read clearly.",
+      },
+      {
+        q: "Are the photos of my documents uploaded anywhere?",
+        a: "No. They’re converted in your browser and never leave your device.",
+      },
+    ],
+  },
+
+  "webp>jpg": {
+    when: [
+      "Many sites serve their images as WEBP, so when you save a picture from your browser it often ends up with that extension. Converting it to JPG makes sense when an older editing program, an app, a form or a printer doesn’t recognize it.",
+      "If the image has transparent areas (a logo, an icon), convert it to PNG instead of JPG, because JPG doesn’t support transparency.",
+    ],
+    differences: [
+      "WEBP is a Google format designed for the web: at the same quality, it’s 25–35% smaller than a JPG, and it also supports transparency and animation. JPG is older and less efficient, but every program and device accepts it.",
+    ],
+    kept: [
+      "The image’s resolution.",
+      "The colors, with a loss of quality you won’t notice at the default quality setting.",
+    ],
+    lost: [
+      "Transparency: transparent areas turn white.",
+      "If the WEBP is animated, only the first frame is converted.",
+      "The JPG is usually somewhat larger than the original WEBP.",
+    ],
+    limits: [
+      "The conversion happens in your browser, without uploading your images, and you can convert lots of them at once.",
+    ],
+    steps: [
+      "Choose the WEBP files (or drag them in).",
+      "Leave JPG as the output format and, if you like, adjust the quality or size.",
+      "Click Convert and download the images (or the ZIP).",
+    ],
+    faq: [
+      {
+        q: "Why are the images I save from the internet WEBP?",
+        a: "Because sites serve them in that format so they load faster. Your browser saves the file exactly as it received it.",
+      },
+      {
+        q: "What happens to a transparent background?",
+        a: "JPG doesn’t support transparency, so those areas turn white. If you want to keep it, convert the WEBP to PNG.",
+      },
+      {
+        q: "Are my images uploaded?",
+        a: "No, the conversion happens in your browser.",
+      },
+    ],
+  },
+
+  "webp>png": {
+    when: [
+      "WEBP to PNG is the right conversion when the image has transparency (logos, icons, stickers, cutouts) and you need to open it in a program that can’t read WEBP, or when you’re going to edit it and don’t want to lose quality every time you save.",
+    ],
+    differences: [
+      "Both formats support transparency. WEBP compresses more (it can be lossy or lossless) and is ideal for publishing on the web; PNG is lossless and opens in any image editor, word processor or design program.",
+      "A rule of thumb: for publishing on a website, WEBP; for editing, printing or inserting into a Word document or a presentation, PNG.",
+    ],
+    kept: [
+      "Transparency, including soft edges.",
+      "The resolution and colors exactly as they look in the WEBP.",
+    ],
+    lost: [
+      "If the WEBP is animated, only the first frame is converted.",
+      "The PNG is usually quite a bit larger, especially if the image is a photo.",
+    ],
+    limits: [
+      "The conversion happens in your browser, without uploading your images.",
+    ],
+    steps: [
+      "Choose the WEBP files.",
+      "Leave PNG as the output format.",
+      "Click Convert and download the PNGs (or the ZIP).",
+    ],
+    faq: [
+      {
+        q: "Do I lose quality going from WEBP to PNG?",
+        a: "No additional loss: the PNG stores exactly the pixels in the WEBP. If the WEBP already lost quality when it was compressed, that can’t be recovered.",
+      },
+      {
+        q: "Why is the PNG so big?",
+        a: "Because it doesn’t throw away any information. If the file is too big and you don’t need transparency, convert it to JPG.",
+      },
+      {
+        q: "Are my images uploaded?",
+        a: "No, everything is processed on your device.",
+      },
+    ],
+  },
+
+  "avif>jpg": {
+    when: [
+      "AVIF is becoming more and more common on websites and on some newer phones and cameras. Converting it to JPG helps when a program, a social network, an older messaging app or a government or application portal doesn’t accept it yet.",
+    ],
+    differences: [
+      "AVIF is a modern format based on the AV1 video codec: at the same quality, it takes up much less space than a JPG and even less than a WEBP, and it supports transparency and greater color depth. JPG is much older, but it’s compatible with everything.",
+    ],
+    kept: [
+      "The image’s resolution.",
+      "The colors, with a loss you won’t notice at the default quality setting.",
+    ],
+    lost: [
+      "Transparency: it turns white.",
+      "High dynamic range (HDR) AVIF images are shown with a JPG’s standard range.",
+      "The JPG is larger than the AVIF, sometimes twice the size or more.",
+    ],
+    limits: [
+      "The conversion happens in your browser, without uploading your images. If your browser can’t decode AVIF on its own, a decoder built into the page is used.",
+    ],
+    steps: [
+      "Choose the AVIF files.",
+      "Leave JPG as the output format and adjust the quality if you like.",
+      "Click Convert and download the images (or the ZIP).",
+    ],
+    faq: [
+      {
+        q: "Which programs can’t open AVIF?",
+        a: "Current browsers can, but many editing programs, photo viewers in older versions of Windows and file upload systems still can’t. That’s why JPG is still the safe choice for sharing.",
+      },
+      {
+        q: "AVIF to JPG or to PNG?",
+        a: "JPG if it’s a photo and you want a small file; PNG if the image has transparency or you’re going to edit it.",
+      },
+      {
+        q: "Are my images uploaded?",
+        a: "No, the conversion happens in your browser.",
+      },
+    ],
+  },
+
+  "avif>png": {
+    when: [
+      "AVIF to PNG makes sense when the image has transparency or when you’re going to edit it in a program that can’t read AVIF yet, like many desktop editors and design programs.",
+      "It’s also useful for keeping a working copy of an image downloaded from the web: starting from the PNG, you can crop, retouch and export again as many times as you like without adding quality loss at each step.",
+    ],
+    differences: [
+      "AVIF compresses very efficiently and is designed for publishing; PNG stores the image losslessly and is the universal format for working with images that have transparency.",
+    ],
+    kept: [
+      "Transparency.",
+      "The resolution and colors exactly as they look on screen.",
+    ],
+    lost: [
+      "If the AVIF is HDR or has more than 8 bits per channel, the PNG is saved with the standard range and depth (8 bits).",
+      "If the AVIF is animated, only the first frame is converted.",
+      "The file is quite a bit larger.",
+    ],
+    limits: [
+      "The conversion happens in your browser, without uploading your images.",
+    ],
+    steps: [
+      "Choose the AVIF files.",
+      "Leave PNG as the output format.",
+      "Click Convert and download the PNGs (or the ZIP).",
+    ],
+    faq: [
+      {
+        q: "Is the transparent background kept?",
+        a: "Yes, the PNG keeps the AVIF’s transparency, soft edges included.",
+      },
+      {
+        q: "Why is the PNG so much bigger than the AVIF?",
+        a: "AVIF is one of the most heavily compressed formats; PNG doesn’t throw anything away. It’s normal for the PNG to be several times larger.",
+      },
+      {
+        q: "Are my images uploaded?",
+        a: "No, everything is processed on your device.",
+      },
+    ],
+  },
+
+  "jpg>pdf": {
+    when: [
+      "JPG to PDF is useful for sending a photo of a document, a receipt or a drawing somewhere that only accepts PDF: government portals, online classrooms, job applications or health insurance forms.",
+      "If you have several photos that make up a single document (for example, the front and back of an ID card), use Images to PDF to combine them into one file.",
+    ],
+    differences: [
+      "A JPG is a standalone image; a PDF is a document made of pages that looks the same everywhere and that online forms and portals accept as a document.",
+    ],
+    kept: [
+      "The photo at its original quality: the JPG goes into the PDF without being recompressed.",
+      "The orientation (if the photo has its rotation stored in the EXIF data, it’s applied).",
+      "A page exactly the size of the image, with no white borders.",
+    ],
+    lost: [
+      "The text in the photo can’t be selected or searched. For that, run the PDF through “OCR scanned PDF.”",
+      "The photo’s EXIF data isn’t visible in the PDF.",
+    ],
+    limits: [
+      "The conversion happens in your browser: photos of your documents aren’t uploaded.",
+      "Each JPG becomes its own one-page PDF. To choose A4 or Letter size, set margins or combine several images, use Images to PDF.",
+    ],
+    steps: [
+      "Choose the photo (or several, if you want one PDF per photo).",
+      "Leave PDF as the output format and click Convert.",
+      "Download the PDF. If it’s too big, run it through Compress PDF.",
+    ],
+    faq: [
+      {
+        q: "How do I put several photos into a single PDF?",
+        a: "Use Images to PDF: you choose all the images, drag them into order, and you get a single PDF.",
+      },
+      {
+        q: "Is the PDF the size of an A4 sheet?",
+        a: "With this conversion, the page is the size of the photo. If you need A4 or Letter with margins (for printing), use Images to PDF and choose the page size.",
+      },
+      {
+        q: "Do I lose quality?",
+        a: "No. The JPG is stored inside the PDF as is, without being recompressed.",
+      },
+    ],
+  },
+
+  "png>pdf": {
+    when: [
+      "PNG to PDF is handy for delivering screenshots, diagrams, floor plans, infographics or documents scanned as PNG in a document format anyone can open and print.",
+    ],
+    differences: [
+      "PNG is a lossless image format, ideal for screenshots and graphics with crisp text. The PDF wraps it in a document page without changing the pixels.",
+    ],
+    kept: [
+      "The image with no loss of quality: the PNG is stored inside the PDF as is.",
+      "The crisp text and lines in screenshots and diagrams.",
+      "Transparency (the PDF shows whatever is underneath, which on a new page is white).",
+    ],
+    lost: [
+      "The text in the image can’t be selected. For that, run the PDF through “OCR scanned PDF.”",
+      "A photo saved as PNG makes a large PDF; if it’s a photo, convert it to JPG first or compress the PDF.",
+    ],
+    limits: [
+      "The conversion happens in your browser, without uploading your images.",
+      "Each PNG becomes its own one-page PDF, the size of the image. To combine several or choose A4, use Images to PDF.",
+    ],
+    steps: [
+      "Choose the PNG (or several).",
+      "Leave PDF as the output format and click Convert.",
+      "Download the PDF.",
+    ],
+    faq: [
+      {
+        q: "Will the screenshot look blurry in the PDF?",
+        a: "No: the PNG goes into the PDF without being recompressed. If it looks small when printed, that’s because the page is the size of the image; use Images to PDF with A4 size so it fits the sheet.",
+      },
+      {
+        q: "Can I combine several screenshots into one PDF?",
+        a: "Yes, with Images to PDF.",
+      },
+      {
+        q: "Are my images uploaded?",
+        a: "No, everything is processed in your browser.",
+      },
+    ],
+  },
+
+  "pdf>jpg": {
+    when: [
+      "PDF to JPG is useful for posting a page from a PDF on social media, inserting it into a presentation or a document as an image, sending it over WhatsApp so it shows up without opening anything, or uploading a certificate to a site that only accepts images.",
+    ],
+    differences: [
+      "A PDF can contain text, vectors and images, and it stays sharp at any zoom level. A JPG is a snapshot of the page at a fixed resolution: easier to share and view anywhere, but with no selectable text or infinite zoom.",
+    ],
+    kept: [
+      "The look of every page: text, images, colors and layout, just as they appear in a viewer.",
+      "All the pages: one image per page.",
+    ],
+    lost: [
+      "The text is no longer selectable and links stop working.",
+      "Infinite sharpness: the image has the resolution you choose (72, 150 or 300 DPI).",
+      "Transparent areas of the PDF turn white.",
+    ],
+    limits: [
+      "The conversion happens in your browser, without uploading the PDF.",
+      "With several pages, you get a ZIP with one image per page. If the PDF has an open password, remove it first with “Remove a PDF password.”",
+    ],
+    steps: [
+      "Choose the PDF.",
+      "Leave JPG as the output format and choose the resolution: 150 DPI for screens, 300 DPI if you’re going to print or need to read small print.",
+      "Click Convert.",
+      "Download the image or the ZIP with all the pages.",
+    ],
+    faq: [
+      {
+        q: "Which resolution should I choose?",
+        a: "150 DPI is enough for viewing on screen or sending in a message. 300 DPI gives larger, sharper images, for printing or for documents with small print. 72 DPI gives very small files.",
+      },
+      {
+        q: "Can I convert just one page?",
+        a: "All pages are converted. If you only want one, pull it out first with Extract pages from a PDF and convert that file.",
+      },
+      {
+        q: "JPG or PNG?",
+        a: "JPG for pages with photos and to keep files small; PNG for pages with text, tables or charts, because the letters come out cleaner.",
+      },
+      {
+        q: "What if I want the photos inside the PDF?",
+        a: "Use Extract images from a PDF: it pulls out the original images without the page around them.",
+      },
+    ],
+  },
+
+  "pdf>png": {
+    when: [
+      "PDF to PNG is the way to go when the page has text, tables, charts or plans and you’re going to use it as an image in a presentation, a document, a wiki or a website: PNG keeps letters and lines clean, without the “noise” JPG adds around edges.",
+    ],
+    differences: [
+      "A PDF is a document made of pages with text and vectors; a PNG is a lossless image. When you convert, each page is rendered as an image at the resolution you choose.",
+    ],
+    kept: [
+      "The exact look of every page, with no loss of quality in what’s rendered.",
+      "Crisp letters and lines.",
+      "All the pages, one image per page.",
+    ],
+    lost: [
+      "The text can’t be selected and links don’t work.",
+      "Pages with lots of photos produce large PNGs; for those, JPG is better.",
+    ],
+    limits: [
+      "The conversion happens in your browser, without uploading the PDF.",
+      "With several pages you get a ZIP. PDFs with an open password have to be unlocked first.",
+    ],
+    steps: [
+      "Choose the PDF.",
+      "Leave PNG as the output format and choose the resolution (300 DPI so small print is easy to read).",
+      "Click Convert and download the image or the ZIP.",
+    ],
+    faq: [
+      {
+        q: "Why does text look better in PNG than in JPG?",
+        a: "Because JPG uses lossy compression and leaves small smudges around sharp edges, like those of letters. PNG stores them exactly.",
+      },
+      {
+        q: "Does the PNG have a transparent background?",
+        a: "No: each page is rendered on a white background, just as it looks in a PDF viewer.",
+      },
+      {
+        q: "Is my PDF uploaded?",
+        a: "No, it’s converted in your browser.",
+      },
+    ],
+  },
 };

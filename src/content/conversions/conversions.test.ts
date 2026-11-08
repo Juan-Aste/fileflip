@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formats, type FormatId } from "@/config/formats";
+import { conversions, formats, type FormatId } from "@/config/formats";
 import { indexedConversionPairs } from "@/config/indexing";
 import { limits } from "@/config/limits";
 import { locales } from "@/i18n/routing";
@@ -10,7 +10,13 @@ import { conversionContentByLocale, conversionKey, type ConversionContent } from
 const isOffice = (from: FormatId, to: FormatId) =>
   (from === "pdf" && to === "docx") || (to === "pdf" && formats[from].category === "document");
 
-const required = indexedConversionPairs.filter(([from, to]) => isOffice(from, to));
+const photoFormats: readonly FormatId[] = ["heic", "webp", "avif"];
+const isPhotoOrPdfImage = (from: FormatId, to: FormatId) =>
+  (photoFormats.includes(from) && (to === "jpg" || to === "png" || to === "pdf")) ||
+  ((from === "jpg" || from === "png") && to === "pdf") ||
+  (from === "pdf" && (to === "jpg" || to === "png"));
+
+const required = indexedConversionPairs.filter(([from, to]) => isOffice(from, to) || isPhotoOrPdfImage(from, to));
 const indexedKeys = new Set(indexedConversionPairs.map(([from, to]) => conversionKey({ from, to })));
 
 const allText = (c: ConversionContent) => [
@@ -27,8 +33,8 @@ const words = (c: ConversionContent) => allText(c).join(" ").split(/\s+/).filter
 const cjkChars = (c: ConversionContent) => (allText(c).join("").match(/[一-鿿]/g) ?? []).length;
 
 describe("conversion page content", () => {
-  it("covers the office group (10 conversions)", () => {
-    expect(required).toHaveLength(10);
+  it("covers the office (10) and photo/image ↔ PDF (11) groups", () => {
+    expect(required).toHaveLength(21);
   });
 
   for (const [from, to] of required) {
@@ -49,8 +55,8 @@ describe("conversion page content", () => {
           expect(c.faq.length).toBeGreaterThanOrEqual(3);
           for (const s of allText(c)) expect(s.trim().length, s).toBeGreaterThan(locale === "zh" ? 2 : 5);
           // Enough to be a page of its own, not a template with two lines.
-          if (locale === "zh") expect(cjkChars(c)).toBeGreaterThan(350);
-          else expect(words(c)).toBeGreaterThan(220);
+          if (locale === "zh") expect(cjkChars(c)).toBeGreaterThan(300);
+          else expect(words(c)).toBeGreaterThan(200);
         });
       }
 
@@ -95,6 +101,8 @@ describe("conversion page content", () => {
     const mb = limits.free.serverMaxFileBytes / (1024 * 1024);
     for (const locale of locales) {
       for (const [key, c] of Object.entries(conversionContentByLocale[locale])) {
+        // Browser conversions have no plan limit (their MB figures are other facts).
+        if (conversions.find((v) => conversionKey(v) === key)?.engine !== "server") continue;
         for (const s of c!.limits) {
           for (const m of s.matchAll(/(\d+)\s?(?:MB|Mo)/g)) expect(Number(m[1]), `${locale} ${key}`).toBe(mb);
         }

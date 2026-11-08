@@ -18,6 +18,7 @@ PAGES=(
   "pdf-conversion /es/pdf-a-jpg"
   "doc-conversion /es/word-a-pdf"
   "pdf-word-conversion /es/pdf-a-word"
+  "heic-conversion /es/heic-a-jpg"
   "pdf-tool /es/comprimir-pdf"
   "longtail /es/heic-a-jpg-desde-iphone"
   "pricing /es/pricing"

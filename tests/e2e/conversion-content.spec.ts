@@ -44,7 +44,7 @@ test.describe("conversion pages with own content", () => {
   for (const scheme of ["light", "dark"] as const) {
     test(`axe, ${scheme}`, async ({ page }) => {
       await page.emulateMedia({ colorScheme: scheme });
-      for (const path of ["/es/pdf-a-word", "/en/excel-to-pdf", "/zh/powerpoint-to-pdf"]) {
+      for (const path of ["/es/pdf-a-word", "/en/excel-to-pdf", "/zh/powerpoint-to-pdf", "/pt/heic-para-jpg", "/fr/pdf-en-png"]) {
         await page.goto(path, { waitUntil: "networkidle" });
         await page.locator("details").first().locator("summary").click();
         expect(await axeViolations(page), `${path} ${scheme}`).toEqual([]);
