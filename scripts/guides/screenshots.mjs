@@ -12,7 +12,7 @@
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument, PDFHexString, PDFName, rgb } from "pdf-lib";
 import { chromium } from "playwright-core";
 import sharp from "sharp";
 
@@ -325,6 +325,157 @@ async function portraitJpg(locale) {
   return file;
 }
 
+// Sample enrollment form with real AcroForm fields, in each language.
+// File names in each language (pinyin for Chinese: Playwright's setInputFiles drops files whose path is not ASCII).
+const formFileName = { es: "ficha-inscripcion.pdf", en: "enrollment-form.pdf", pt: "ficha-inscricao.pdf", fr: "fiche-inscription.pdf", zh: "baomingbiao.pdf" };
+const formSamples = {
+  es: {
+    title: "Ficha de inscripción — Taller de fotografía",
+    intro: "Completa esta ficha y envíala por correo antes del inicio del taller. Los datos solo se usan para organizar los grupos.",
+    name: "Nombre y apellido",
+    birth: "Fecha de nacimiento (dd/mm/aaaa)",
+    email: "Correo electrónico",
+    shift: "Turno",
+    shifts: ["Mañana", "Tarde", "Noche"],
+    level: "Nivel",
+    levels: ["Inicial", "Intermedio", "Avanzado"],
+    comments: "Comentarios",
+    rules: "Acepto el reglamento del taller",
+    news: "Quiero recibir novedades por correo",
+    sign: "Firma",
+    values: { name: "Laura Gómez", birth: "14/03/1990", email: "laura.gomez@example.com", shift: "Tarde", level: "Intermedio" },
+  },
+  en: {
+    title: "Enrollment form — Photography workshop",
+    intro: "Fill in this form and email it back before the workshop starts. Your details are only used to organize the groups.",
+    name: "Full name",
+    birth: "Date of birth (MM/DD/YYYY)",
+    email: "Email address",
+    shift: "Session",
+    shifts: ["Morning", "Afternoon", "Evening"],
+    level: "Level",
+    levels: ["Beginner", "Intermediate", "Advanced"],
+    comments: "Comments",
+    rules: "I accept the workshop rules",
+    news: "Send me news by email",
+    sign: "Signature",
+    values: { name: "Laura Green", birth: "03/14/1990", email: "laura.green@example.com", shift: "Afternoon", level: "Intermediate" },
+  },
+  pt: {
+    title: "Ficha de inscrição — Oficina de fotografia",
+    intro: "Preencha esta ficha e envie por e-mail antes do início da oficina. Os dados são usados apenas para organizar as turmas.",
+    name: "Nome completo",
+    birth: "Data de nascimento (dd/mm/aaaa)",
+    email: "E-mail",
+    shift: "Turno",
+    shifts: ["Manhã", "Tarde", "Noite"],
+    level: "Nível",
+    levels: ["Iniciante", "Intermediário", "Avançado"],
+    comments: "Comentários",
+    rules: "Aceito o regulamento da oficina",
+    news: "Quero receber novidades por e-mail",
+    sign: "Assinatura",
+    values: { name: "Laura Souza", birth: "14/03/1990", email: "laura.souza@example.com", shift: "Tarde", level: "Intermediário" },
+  },
+  fr: {
+    title: "Fiche d’inscription — Atelier photo",
+    intro: "Remplissez cette fiche et renvoyez-la par e-mail avant le début de l’atelier. Vos données servent uniquement à organiser les groupes.",
+    name: "Nom et prénom",
+    birth: "Date de naissance (jj/mm/aaaa)",
+    email: "Adresse e-mail",
+    shift: "Créneau",
+    shifts: ["Matin", "Après-midi", "Soir"],
+    level: "Niveau",
+    levels: ["Débutant", "Intermédiaire", "Avancé"],
+    comments: "Commentaires",
+    rules: "J’accepte le règlement de l’atelier",
+    news: "Je souhaite recevoir les actualités par e-mail",
+    sign: "Signature",
+    values: { name: "Laura Martin", birth: "14/03/1990", email: "laura.martin@example.com", shift: "Après-midi", level: "Intermédiaire" },
+  },
+  zh: {
+    title: "报名表 — 摄影工作坊",
+    intro: "请在工作坊开始前填写本表并通过邮件发回。所填信息仅用于分组。",
+    name: "姓名",
+    birth: "出生日期（年-月-日）",
+    email: "电子邮箱",
+    shift: "时段",
+    shifts: ["上午", "下午", "晚上"],
+    level: "水平",
+    levels: ["入门", "中级", "高级"],
+    comments: "备注",
+    rules: "我同意工作坊的规定",
+    news: "通过邮件接收活动通知",
+    sign: "签名",
+    values: { name: "李明", birth: "1990-03-14", email: "li.ming@example.com", shift: "下午", level: "中级" },
+  },
+};
+
+/**
+ * A one-page form (A4) with real AcroForm fields: text (one with a length limit,
+ * one multiline), radio buttons, a dropdown and checkboxes. The page is drawn
+ * from HTML (any script) and the fields are added with pdf-lib, each with a
+ * tooltip (/TU) in the sample's language, which the tool shows as its label.
+ */
+async function enrollmentFormPdf(browser, locale) {
+  const s = formSamples[locale];
+  const page = await browser.newPage();
+  // Positions in CSS px of a 794 × 1122 page (1 px = 0.75 pt).
+  const text = (left, top, content, style = "") => `<div style="position:absolute;left:${left}px;top:${top}px;${style}">${content}</div>`;
+  const parts = [
+    text(96, 80, s.title, "font-size:24px;font-weight:bold"),
+    text(96, 126, s.intro, "width:602px;color:#444"),
+    text(96, 204, s.name),
+    text(96, 274, s.birth),
+    text(350, 274, s.email),
+    text(96, 344, s.shift),
+    ...s.shifts.map((o, i) => text(122 + i * 150, 372, o)),
+    text(96, 414, s.level),
+    text(96, 484, s.comments),
+    text(122, 620, s.rules),
+    text(122, 652, s.news),
+    `<div style="position:absolute;left:455px;top:880px;width:240px;border-top:1px solid #222;text-align:center;font-size:13px;padding-top:6px">${s.sign}</div>`,
+  ];
+  await page.setContent(`<body style="margin:0;font:15px/1.5 sans-serif;color:#222"><div style="position:relative;width:794px;height:1122px">${parts.join("")}</div></body>`);
+  const doc = await PDFDocument.load(await page.pdf({ width: "794px", height: "1122px", printBackground: true }));
+  await page.close();
+  const pdfPage = doc.getPage(0);
+  const form = doc.getForm();
+  const H = pdfPage.getHeight();
+  // A box in CSS px → pdf-lib options in points (origin bottom-left).
+  const at = (left, top, width, height) => ({ x: left * 0.75, y: H - (top + height) * 0.75, width: width * 0.75, height: height * 0.75, borderColor: rgb(0.55, 0.55, 0.6), borderWidth: 1 });
+  const tip = (field, label) => field.acroField.dict.set(PDFName.of("TU"), PDFHexString.fromText(label));
+  const name = form.createTextField("alumno.nombre");
+  name.addToPage(pdfPage, at(96, 230, 602, 28));
+  tip(name, s.name);
+  const birth = form.createTextField("alumno.fecha_nacimiento");
+  birth.setMaxLength(10);
+  birth.addToPage(pdfPage, at(96, 300, 200, 28));
+  tip(birth, s.birth);
+  const email = form.createTextField("alumno.correo");
+  email.addToPage(pdfPage, at(350, 300, 348, 28));
+  tip(email, s.email);
+  const shift = form.createRadioGroup("turno");
+  s.shifts.forEach((o, i) => shift.addOptionToPage(o, pdfPage, at(100 + i * 150, 374, 16, 16)));
+  tip(shift, s.shift);
+  const level = form.createDropdown("nivel");
+  level.addOptions(s.levels);
+  level.addToPage(pdfPage, at(96, 440, 240, 28));
+  tip(level, s.level);
+  const comments = form.createTextField("comentarios");
+  comments.enableMultiline();
+  comments.addToPage(pdfPage, at(96, 510, 602, 84));
+  tip(comments, s.comments);
+  for (const [id, label, top] of [["reglamento", s.rules, 622], ["novedades", s.news, 654]]) {
+    const box = form.createCheckBox(id);
+    box.addToPage(pdfPage, at(98, top, 16, 16));
+    tip(box, label);
+  }
+  const file = join(work, formFileName[locale]);
+  writeFileSync(file, await doc.save());
+  return file;
+}
+
 // name → steps that leave the page ready for the shot in a language; returns the element to capture.
 const shots = {
   "pdf-a-word-convertir": async (page, l) => {
@@ -448,6 +599,28 @@ const shots = {
     const [before, after] = msg(l, "IdPhotoTool.doneSheet").split("{copies}");
     const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     await page.getByText(new RegExp(`^${escape(before)}\\d+${escape(after)}$`)).waitFor({ timeout: 60_000 });
+    return toolBlock(page);
+  },
+  "rellenar-formulario-campos": async (page, l, browser) => {
+    const s = formSamples[l];
+    // Wide enough for the fields and the preview side by side.
+    await page.setViewportSize({ width: 1100, height: 900 });
+    await open(page, l, toolSlug("fill-pdf-form", l));
+    await pick(page, l, [await enrollmentFormPdf(browser, l)]);
+    await page.getByTestId("form-preview").locator("img").waitFor({ timeout: 30_000 });
+    await page.getByLabel(s.birth, { exact: true }).fill(s.values.birth);
+    await page.getByLabel(s.email, { exact: true }).fill(s.values.email);
+    await page.getByLabel(s.values.shift, { exact: true }).check();
+    await page.getByLabel(s.level, { exact: true }).selectOption(s.values.level);
+    await page.getByLabel(s.rules, { exact: true }).check();
+    // The field being filled is highlighted in the preview.
+    await page.getByLabel(s.name, { exact: true }).fill(s.values.name);
+    return toolBlock(page);
+  },
+  "rellenar-formulario-sin-campos": async (page, l) => {
+    await open(page, l, toolSlug("fill-pdf-form", l));
+    await pick(page, l, [join(fixtures, "document.pdf")]);
+    await page.getByText(msg(l, "FillPdfForm.editPdfLink")).waitFor({ timeout: 30_000 });
     return toolBlock(page);
   },
 };

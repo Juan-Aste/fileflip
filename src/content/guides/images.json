@@ -319,6 +319,46 @@
     "width": 800,
     "height": 1509
   },
+  "rellenar-formulario-campos": {
+    "width": 800,
+    "height": 1089
+  },
+  "rellenar-formulario-campos.en": {
+    "width": 800,
+    "height": 1113
+  },
+  "rellenar-formulario-campos.fr": {
+    "width": 800,
+    "height": 1089
+  },
+  "rellenar-formulario-campos.pt": {
+    "width": 800,
+    "height": 1089
+  },
+  "rellenar-formulario-campos.zh": {
+    "width": 800,
+    "height": 1089
+  },
+  "rellenar-formulario-sin-campos": {
+    "width": 800,
+    "height": 354
+  },
+  "rellenar-formulario-sin-campos.en": {
+    "width": 800,
+    "height": 354
+  },
+  "rellenar-formulario-sin-campos.fr": {
+    "width": 800,
+    "height": 354
+  },
+  "rellenar-formulario-sin-campos.pt": {
+    "width": 800,
+    "height": 354
+  },
+  "rellenar-formulario-sin-campos.zh": {
+    "width": 800,
+    "height": 354
+  },
   "transcribir-resultado": {
     "width": 800,
     "height": 1012

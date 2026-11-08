@@ -549,6 +549,43 @@ export const guides: GuideMeta[] = [
       },
     },
   },
+  {
+    id: "fill-pdf-form",
+    published: "2026-11-08",
+    updated: "2026-11-08",
+    tools: ["fill-pdf-form", "edit-pdf", "sign-pdf", "unlock-pdf", "scan-document", "compress-pdf"],
+    related: ["sign-pdf", "edit-pdf", "reduce-pdf-size"],
+    mainFor: { tools: ["fill-pdf-form"] },
+    howTo: true,
+    image: "rellenar-formulario-campos",
+    versions: {
+      es: {
+        slug: "como-rellenar-un-formulario-pdf",
+        title: "Cómo rellenar un formulario PDF desde la computadora o el celular",
+        description: "Completa los campos de un formulario PDF sin imprimirlo, aplánalo para entregarlo y qué hacer si el PDF no tiene campos, es XFA o tiene contraseña.",
+      },
+      en: {
+        slug: "how-to-fill-in-a-pdf-form",
+        title: "How to fill in a PDF form on a computer or phone",
+        description: "Fill in the fields of a PDF form without printing it, flatten it to hand it in, and what to do if the PDF has no fields, is XFA or has a password.",
+      },
+      pt: {
+        slug: "como-preencher-um-formulario-pdf",
+        title: "Como preencher um formulário PDF pelo computador ou celular",
+        description: "Preencha os campos de um formulário PDF sem imprimir, achate-o para entregar e saiba o que fazer se o PDF não tiver campos, for XFA ou tiver senha.",
+      },
+      fr: {
+        slug: "comment-remplir-un-formulaire-pdf",
+        title: "Comment remplir un formulaire PDF sur ordinateur ou téléphone",
+        description: "Remplissez les champs d’un formulaire PDF sans l’imprimer, aplatissez-le pour l’envoyer, et que faire si le PDF n’a pas de champs, est XFA ou protégé.",
+      },
+      zh: {
+        slug: "how-to-fill-in-a-pdf-form",
+        title: "如何在电脑或手机上填写 PDF 表单",
+        description: "不打印就能填写 PDF 表单的字段，扁平化后提交；以及填写中文、PDF 没有字段、XFA 表单或有密码时该怎么办。",
+      },
+    },
+  },
 ];
 
 export function guideById(id: string): GuideMeta | undefined {

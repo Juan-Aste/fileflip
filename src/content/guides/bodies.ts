@@ -64,6 +64,11 @@ import idPhotoEs from "./bodies/id-photo.es";
 import idPhotoFr from "./bodies/id-photo.fr";
 import idPhotoPt from "./bodies/id-photo.pt";
 import idPhotoZh from "./bodies/id-photo.zh";
+import fillPdfFormEn from "./bodies/fill-pdf-form.en";
+import fillPdfFormEs from "./bodies/fill-pdf-form.es";
+import fillPdfFormFr from "./bodies/fill-pdf-form.fr";
+import fillPdfFormPt from "./bodies/fill-pdf-form.pt";
+import fillPdfFormZh from "./bodies/fill-pdf-form.zh";
 
 // Markdown body of each guide, by guide id and language (see meta.ts and
 // src/lib/guides/render.ts for the link and screenshot syntax). Imported only
@@ -82,4 +87,5 @@ export const guideBodies: Record<string, Partial<Record<Locale, string>>> = {
   "remove-background": { es: removeBackgroundEs, en: removeBackgroundEn, pt: removeBackgroundPt, fr: removeBackgroundFr, zh: removeBackgroundZh },
   "compare-text": { es: compareTextEs, en: compareTextEn, pt: compareTextPt, fr: compareTextFr, zh: compareTextZh },
   "id-photo": { es: idPhotoEs, en: idPhotoEn, pt: idPhotoPt, fr: idPhotoFr, zh: idPhotoZh },
+  "fill-pdf-form": { es: fillPdfFormEs, en: fillPdfFormEn, pt: fillPdfFormPt, fr: fillPdfFormFr, zh: fillPdfFormZh },
 };
