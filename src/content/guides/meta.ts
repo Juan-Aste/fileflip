@@ -32,6 +32,11 @@ export interface GuideMeta {
   tools: ToolId[];
   /** Other guides to suggest (shown when they exist in the same language). */
   related: string[];
+  /**
+   * Pages this guide is the main guide for: they link to it first. Tool pages
+   * also link to the guides that list the tool in `tools`.
+   */
+  mainFor?: { tools?: ToolId[]; conversions?: string[] };
   /** Publish HowTo structured data from the first numbered list. */
   howTo?: boolean;
   /** First screenshot, also the image of the Article structured data. */
@@ -63,6 +68,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["ocr-pdf", "pdf-to-excel", "extract-pdf-images", "edit-pdf", "pdf-to-text", "fill-pdf-form"],
     related: ["reduce-pdf-size", "pdf-table-to-excel", "sign-pdf"],
+    mainFor: { conversions: ["pdf-docx"] },
     howTo: true,
     image: "pdf-a-word-convertir",
     versions: {
@@ -99,6 +105,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["compress-image", "resize-image", "remove-background", "svg-converter"],
     related: ["heic-to-jpg", "reduce-pdf-size"],
+    mainFor: { conversions: ["jpg-webp", "png-webp", "jpg-avif", "jpg-png", "png-jpg", "webp-jpg", "webp-png", "avif-jpg", "avif-png"] },
     howTo: true,
     image: "formatos-convertir",
     versions: {
@@ -135,6 +142,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["compress-pdf", "delete-pdf-pages", "split-pdf", "images-to-pdf", "compress-image", "scan-document"],
     related: ["pdf-to-word", "image-formats", "pdf-a"],
+    mainFor: { tools: ["compress-pdf"] },
     howTo: true,
     image: "comprimir-pdf-resultado",
     versions: {
@@ -171,6 +179,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["images-to-pdf", "compress-image", "remove-exif", "resize-image"],
     related: ["image-formats", "reduce-pdf-size"],
+    mainFor: { conversions: ["heic-jpg", "heic-png", "heic-pdf"] },
     howTo: true,
     image: "heic-convertir",
     versions: {
@@ -207,6 +216,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["pdf-to-excel", "ocr-pdf", "merge-excel", "excel-to-csv"],
     related: ["csv-vs-excel", "pdf-to-word"],
+    mainFor: { tools: ["pdf-to-excel"] },
     howTo: true,
     image: "pdf-excel-vista-previa",
     versions: {
@@ -243,6 +253,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["csv-to-excel", "excel-to-csv", "merge-excel", "excel-to-json"],
     related: ["pdf-table-to-excel"],
+    mainFor: { tools: ["excel-to-csv", "csv-to-excel"] },
     howTo: true,
     image: "excel-csv-opciones",
     versions: {
@@ -279,6 +290,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["audio-to-text", "trim-audio", "subtitle-sync", "text-to-speech"],
     related: ["read-aloud"],
+    mainFor: { tools: ["audio-to-text"] },
     howTo: true,
     image: "transcribir-resultado",
     versions: {
@@ -315,6 +327,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["text-to-speech", "ocr-pdf", "audio-to-text"],
     related: ["transcribe-audio", "pdf-to-word"],
+    mainFor: { tools: ["text-to-speech"] },
     howTo: true,
     image: "leer-en-voz-alta",
     versions: {
@@ -351,6 +364,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["sign-pdf", "edit-pdf", "fill-pdf-form", "protect-pdf"],
     related: ["pdf-a", "reduce-pdf-size", "pdf-to-word"],
+    mainFor: { tools: ["sign-pdf"] },
     howTo: true,
     image: "firmar-pdf-colocar",
     versions: {
@@ -387,6 +401,7 @@ export const guides: GuideMeta[] = [
     updated: "2026-10-28",
     tools: ["pdf-to-pdfa", "unlock-pdf", "compress-pdf", "merge-pdf"],
     related: ["sign-pdf", "reduce-pdf-size"],
+    mainFor: { tools: ["pdf-to-pdfa"] },
     howTo: true,
     image: "pdfa-opciones",
     versions: {
@@ -435,6 +450,19 @@ export const guideLocales: Locale[] = locales.filter((l) => guidesFor(l).length 
 
 export function guideFromSlug(locale: Locale, slug: string): GuideMeta | undefined {
   return guides.find((g) => g.versions[locale]?.slug === slug);
+}
+
+/**
+ * Guides to link from a tool or conversion page, in that page's language: the
+ * ones written for it first, then (tool pages) those that use the tool. At most `max`.
+ */
+export function guidesForPage(locale: Locale, page: { tool?: ToolId; conversion?: string }, max = 2): GuideMeta[] {
+  const published = guidesFor(locale);
+  const main = published.filter(
+    (g) => (page.tool && g.mainFor?.tools?.includes(page.tool)) || (page.conversion && g.mainFor?.conversions?.includes(page.conversion)),
+  );
+  const using = page.tool ? published.filter((g) => !main.includes(g) && g.tools.includes(page.tool!)) : [];
+  return [...main, ...using].slice(0, max);
 }
 
 export function guidePath(guide: GuideMeta, locale: Locale): string | undefined {

@@ -6,7 +6,7 @@ import { AllToolsView, CategoryView } from "@/components/catalog/CatalogViews";
 import Converter from "@/components/converter/Converter";
 import ProcessingBadge from "@/components/converter/ProcessingBadge";
 import CreditsPage from "@/components/legal/CreditsPage";
-import { GuidesIndexView } from "@/components/guides/GuideViews";
+import { GuidesIndexView, PageGuides } from "@/components/guides/GuideViews";
 import ToolBlock from "@/components/tools/ToolBlock";
 import { Cloud, ShieldCheck } from "lucide-react";
 import ToolIcon from "@/components/tools/ToolIcon";
@@ -309,6 +309,8 @@ async function ToolView({ tool }: { tool: ToolInfo }) {
         <FaqList items={faq} locale={locale} />
       </section>
 
+      <PageGuides locale={locale} page={{ tool: tool.id }} />
+
       <nav aria-labelledby="related" className="flex flex-col gap-4">
         <h2 id="related" className="text-2xl font-bold">
           {tp("relatedTitle")}
@@ -410,6 +412,8 @@ async function ConversionView({ conversion }: { conversion: Conversion }) {
           <FaqList items={content.faq} locale={locale} />
         </section>
       )}
+
+      <PageGuides locale={locale} page={{ conversion: `${conversion.from}-${conversion.to}` }} />
 
       {nextTools.length > 0 && (
         <nav aria-labelledby="next-tools" className="flex flex-col gap-4">

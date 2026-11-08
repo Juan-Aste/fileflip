@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { allToolsSlugs } from "@/config/categories";
-import { conversionFromSlug } from "@/config/conversion-pages";
+import { conversionFromSlug, conversionPages } from "@/config/conversion-pages";
 import { creditsSlugs } from "@/config/credits";
 import { translatePathname } from "@/config/routes";
 import { availableTools, toolFromSlug } from "@/config/tools";
@@ -11,7 +11,7 @@ import { renderGuide, shotSrc } from "@/lib/guides/render";
 import { guideJsonLd } from "@/lib/guides/schema";
 import { sitemapEntries } from "@/lib/seo";
 import { guideBodies } from "./bodies";
-import { guideLocales, guidePath, guides, guidesFor, guidesSlugs, plannedGuideIds } from "./meta";
+import { guideLocales, guidePath, guides, guidesFor, guidesForPage, guidesSlugs, plannedGuideIds } from "./meta";
 import images from "./images.json";
 
 // Content rules for the guides (PLAN.md, phase 10E): 800–1500 words, every
@@ -28,8 +28,41 @@ describe("guides section", () => {
     }
   });
 
+  it("lists every guide and index in the sitemap with its last update", () => {
+    const entries = sitemapEntries("https://x.test");
+    for (const l of guideLocales) {
+      const index = entries.find((e) => e.url === `https://x.test/${l}/${guidesSlugs[l]}`);
+      expect(index?.lastModified).toBe(guidesFor(l).map((g) => g.updated).sort().at(-1));
+      for (const g of guidesFor(l)) expect(entries.find((e) => e.url === `https://x.test/${l}${guidePath(g, l)}`)?.lastModified).toBe(g.updated);
+    }
+  });
+
   it("has an index only in languages with guides", () => {
     for (const l of locales) expect(guideLocales.includes(l)).toBe(guidesFor(l).length > 0);
+  });
+});
+
+describe("guides linked from tool and conversion pages", () => {
+  it("point at pages that exist", () => {
+    const conversions = conversionPages.map((c) => `${c.from}-${c.to}`);
+    for (const g of guides) {
+      expect(g.mainFor, `${g.id} has pages it is the main guide for`).toBeTruthy();
+      for (const id of g.mainFor?.tools ?? []) expect(availableTools).toContain(id);
+      for (const c of g.mainFor?.conversions ?? []) expect(conversions).toContain(c);
+    }
+  });
+
+  it("put the main guide first, then guides that use the tool, at most 2", () => {
+    for (const l of guideLocales) {
+      for (const g of guidesFor(l)) {
+        for (const id of g.mainFor?.tools ?? []) expect(guidesForPage(l, { tool: id }).map((x) => x.id)).toContain(g.id);
+        for (const c of g.mainFor?.conversions ?? []) expect(guidesForPage(l, { conversion: c })[0]?.id).toBe(g.id);
+        for (const id of g.tools) expect(guidesForPage(l, { tool: id }).length).toBeGreaterThan(0);
+      }
+      for (const id of availableTools) expect(guidesForPage(l, { tool: id }).length).toBeLessThanOrEqual(2);
+    }
+    expect(guidesForPage("es", { tool: "sign-pdf" })[0]?.id).toBe("sign-pdf");
+    expect(guidesForPage("es", { tool: "uuid-generator" })).toEqual([]);
   });
 });
 

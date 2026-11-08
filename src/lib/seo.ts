@@ -5,7 +5,7 @@ import { creditsSlugs } from "@/config/credits";
 import { isIndexedCategory, isIndexedConversion, isIndexedTool } from "@/config/indexing";
 import { availableTools, tools } from "@/config/tools";
 import { longtailPages, longtailTranslation } from "@/content/longtail";
-import { guideLocales, guidePath, guides, guidesSlugs } from "@/content/guides/meta";
+import { guideLocales, guidePath, guides, guidesFor, guidesSlugs } from "@/content/guides/meta";
 import { defaultLocale, locales, type Locale } from "@/i18n/routing";
 import { proEnabled } from "@/lib/pro";
 
@@ -85,6 +85,8 @@ export function sitemapEntries(base = siteUrl()): MetadataRoute.Sitemap {
   // Guides and their index exist only in the languages they are written in.
   const indexes = guideLocales.map((locale) => ({
     url: `${base}/${locale}/${guidesSlugs[locale]}`,
+    // The index changes when a guide is added or updated.
+    lastModified: guidesFor(locale)[0].updated,
     changeFrequency: "weekly" as const,
     priority: 0.6,
     alternates: { languages: Object.fromEntries(guideLocales.map((l) => [l, `${base}/${l}/${guidesSlugs[l]}`])) },

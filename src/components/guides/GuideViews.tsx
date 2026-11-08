@@ -5,9 +5,9 @@ import ToolIcon from "@/components/tools/ToolIcon";
 import PageHero from "@/components/ui/PageHero";
 import PillLink from "@/components/ui/PillLink";
 import { card } from "@/components/ui/styles";
-import { tools } from "@/config/tools";
+import { tools, type ToolId } from "@/config/tools";
 import { guideBodies } from "@/content/guides/bodies";
-import { guideById, guidePath, guidesFor, guidesSlugs, type GuideMeta } from "@/content/guides/meta";
+import { guideById, guidePath, guidesFor, guidesForPage, guidesSlugs, type GuideMeta } from "@/content/guides/meta";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { jsonLdString } from "@/lib/faq";
@@ -36,6 +36,36 @@ function Breadcrumbs({ label, items }: { label: string; items: { label: string; 
           </li>
         ))}
       </ol>
+    </nav>
+  );
+}
+
+/** The guides about a tool or conversion page, linked from it (nothing when there are none). */
+export async function PageGuides({ locale, page }: { locale: Locale; page: { tool?: ToolId; conversion?: string } }) {
+  const list = guidesForPage(locale, page);
+  if (list.length === 0) return null;
+  const t = await getTranslations({ locale, namespace: "Guides" });
+  return (
+    <nav aria-labelledby="guides" className="flex flex-col gap-4">
+      <h2 id="guides" className="text-2xl font-bold">
+        {t("pageGuidesTitle")}
+      </h2>
+      <ul className="flex flex-col gap-3">
+        {list.map((guide) => {
+          const v = guide.versions[locale]!;
+          return (
+            <li key={guide.id}>
+              <Link href={guidePath(guide, locale)!} className={`group flex items-start gap-3 p-5 transition hover:border-brand ${card}`}>
+                <BookOpen aria-hidden="true" className="mt-1 h-5 w-5 shrink-0 text-brand" />
+                <span className="flex flex-col gap-1">
+                  <span className="font-bold group-hover:text-brand">{v.title}</span>
+                  <span className="text-sm text-muted">{v.description}</span>
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }
